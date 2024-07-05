@@ -11,13 +11,26 @@ templates = Jinja2Templates(directory="templates")
 authorisation = D4kAuth0(app)
 authorisation.register()
 
+def protect_endpoint(request: Request) -> None:
+  """
+  This Dependency protects an endpoint and it can only be accessed if the user has an active session
+  """
+  if not 'id_token' in request.session:  
+    # it could be userinfo instead of id_token
+    # this will redirect people to the login after if they are not logged in
+    raise HTTPException(
+      status_code=status.HTTP_307_TEMPORARY_REDIRECT, 
+      detail="Not authorized",
+      headers={"Location": "/login"}
+    )
+
 def get_abs_path(route: str):
   app_domain = "http://localhost:8000"
   return f"{app_domain}{app.url_path_for(route)}"
 
 @app.get("/")
 def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("home.html", {"request": request})
 
 @app.get("/login")
 async def login(request: Request):
@@ -29,15 +42,16 @@ async def login(request: Request):
     )
   return RedirectResponse(url=app.url_path_for("profile"))
 
-@app.get("/profile", dependencies=[Depends(authorisation.protect_endpoint)])
+@app.get("/profile", dependencies=[Depends(protect_endpoint)])
 def profile(request: Request):
   return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/logout")
 def logout(request: Request):
     data = {"returnTo": get_abs_path("home"),"client_id": authorisation.client_id}
-    response = RedirectResponse(
-        url=f"https://{authorisation.domain}/v2/logout?{urlencode(data,quote_via=quote_plus,)}")
+    url=f"https://{authorisation.domain}/v2/logout?{urlencode(data,quote_via=quote_plus,)}"
+    print(f"URL: {url}")
+    response = RedirectResponse(url=url)
     request.session.clear()
     return response
 
