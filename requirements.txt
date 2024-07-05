@@ -1,2 +1,5 @@
-ttkbootstrap==1.10.1
-pyinstaller==6.8.0
+fastapi
+d4kms
+itsdangerous 
+starlette    
+Authlib     
