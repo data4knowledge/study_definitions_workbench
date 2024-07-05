@@ -3,7 +3,7 @@ from urllib.parse import quote_plus, urlencode
 from fastapi import Depends, FastAPI, Request, HTTPException, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from d4kms_generic.auth0 import Auth0 as D4kAuth0
+from d4kms_generic.auth0 import protect_endpoint, Auth0 as D4kAuth0
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -11,22 +11,22 @@ templates = Jinja2Templates(directory="templates")
 authorisation = D4kAuth0(app)
 authorisation.register()
 
-def protect_endpoint(request: Request) -> None:
-  """
-  This Dependency protects an endpoint and it can only be accessed if the user has an active session
-  """
-  if not 'id_token' in request.session:  
-    # it could be userinfo instead of id_token
-    # this will redirect people to the login after if they are not logged in
-    raise HTTPException(
-      status_code=status.HTTP_307_TEMPORARY_REDIRECT, 
-      detail="Not authorized",
-      headers={"Location": "/login"}
-    )
+# def protect_endpoint(request: Request) -> None:
+#   """
+#   This Dependency protects an endpoint and it can only be accessed if the user has an active session
+#   """
+#   if not 'id_token' in request.session:  
+#     # it could be userinfo instead of id_token
+#     # this will redirect people to the login after if they are not logged in
+#     raise HTTPException(
+#       status_code=status.HTTP_307_TEMPORARY_REDIRECT, 
+#       detail="Not authorized",
+#       headers={"Location": "/login"}
+#     )
 
-def get_abs_path(route: str):
-  app_domain = "http://localhost:8000"
-  return f"{app_domain}{app.url_path_for(route)}"
+# def get_abs_path(route: str):
+#   app_domain = "http://localhost:8000"
+#   return f"{app_domain}{app.url_path_for(route)}"
 
 @app.get("/")
 def home(request: Request):
