@@ -11,22 +11,8 @@ templates = Jinja2Templates(directory="templates")
 authorisation = D4kAuth0(app)
 authorisation.register()
 
-# def protect_endpoint(request: Request) -> None:
-#   """
-#   This Dependency protects an endpoint and it can only be accessed if the user has an active session
-#   """
-#   if not 'id_token' in request.session:  
-#     # it could be userinfo instead of id_token
-#     # this will redirect people to the login after if they are not logged in
-#     raise HTTPException(
-#       status_code=status.HTTP_307_TEMPORARY_REDIRECT, 
-#       detail="Not authorized",
-#       headers={"Location": "/login"}
-#     )
-
-# def get_abs_path(route: str):
-#   app_domain = "http://localhost:8000"
-#   return f"{app_domain}{app.url_path_for(route)}"
+def protect_endpoint(request: Request) -> None:
+  authorisation.protect_route(request, "/login")
 
 @app.get("/")
 def home(request: Request):
@@ -36,11 +22,6 @@ def home(request: Request):
 async def login(request: Request):
   if not 'id_token' in request.session:  # it could be userinfo instead of id_token
     return await authorisation.login(request)
-    # return await authorisation.oauth.auth0.authorize_redirect(
-    #     request,
-    #     redirect_uri=get_abs_path("callback"),
-    #     audience=authorisation.audience
-    # )
   return RedirectResponse(url=app.url_path_for("profile"))
 
 @app.get("/profile", dependencies=[Depends(protect_endpoint)])
@@ -49,8 +30,6 @@ def profile(request: Request):
 
 @app.get("/logout")
 def logout(request: Request):
-  # data = {"returnTo": get_abs_path("home"),"client_id": authorisation.client_id}
-  # url=f"https://{authorisation.domain}/v2/logout?{urlencode(data,quote_via=quote_plus,)}"
   url = authorisation.logout(request)
   return RedirectResponse(url=url)
 
@@ -58,12 +37,6 @@ def logout(request: Request):
 async def callback(request: Request):
   try:
     await authorisation.save_token(request)
-    # token = await authorisation.oauth.auth0.authorize_access_token(request)
-    # # Store `access_token`, `id_token`, and `userinfo` in session
-    # request.session['access_token'] = token['access_token']
-    # request.session['id_token'] = token['id_token']
-    # request.session['userinfo'] = token['userinfo']
-    # print(f"USER: {token['userinfo']}")
     return RedirectResponse("/profile")
   except:
     return RedirectResponse("/logout")
