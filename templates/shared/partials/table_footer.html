@@ -1,0 +1,9 @@
+<div>
+  <ul class="pagination">
+    {% for button in pagination.pages: %}
+      <li class="page-item {{button.active}} {{button.disabled}}">
+        <a class="page-link" href="#" hx-get="{{button.link}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{button.text|safe}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

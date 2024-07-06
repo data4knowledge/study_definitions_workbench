@@ -1,0 +1,25 @@
+{% extends "shared/_layout.html" %}
+{% block main_content %}
+  <div class="row row-cols-2 g-4">
+    <div class="col">
+      <div class="card mt-3">
+        <div class="card-header bg-light text-black">
+          <h5 class="card-title m-0">Release Notes</h5>
+        </div>
+        <div class="card-body">
+          {{release_notes|safe}}
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card mt-3">
+        <div class="card-header bg-light text-black">
+          <h5 class="card-title m-0">System and Version Details</h5>
+        </div>
+        <div class="card-body">
+          <p><strong>System Details:</strong> {{ data['system'] }} (v{{ data['version'] }})</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

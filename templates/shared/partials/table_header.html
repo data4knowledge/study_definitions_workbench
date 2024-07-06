@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col">
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+      <label>
+        Rows: 
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">{{pagination.page_size}}</button>
+        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          {% for i in ["5", "10", "20", "50", "100"]: %}
+            <li>
+              {% set url = pagination.base_link_with_filter("1", i) %}
+              <a class="dropdown-item" href="#" hx-get="{{url}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{i}}</a>
+            </li>
+          {% endfor %}
+        </ul> 
+      </label>
+    </div>
+  </div>    
+  <div class="col">
+  </div>
+  <div class="col">
+    <div class="input-group">
+      <span class="input-group-append bg-white border-left-0">
+        <span class="input-group-text bg-transparent">
+          <i class="bi bi-search"></i>
+        </span>
+      </span>
+      {% set url = pagination.base_link("1", "10") %}
+      {% set autofocus = pagination.autofocus() %}
+      {% set disabled = pagination.filter_disabled() %}
+      <input class="form-control border-right-0" type="search" {{autofocus}} {{disabled}}
+        name="filter" placeholder="{{pagination.filter_text()}}" 
+        hx-get="{{url}}" 
+        hx-trigger="keyup changed delay:750ms, search" 
+        hx-target="#data_div"
+        value="{{pagination.filter}}">
+<!--
+      <button type="button" class="btn bg-transparent" style="margin-left: -40px; z-index: 100;"
+        hx-get="{{url}}&filter=" 
+        hx-trigger="click" 
+        hx-target="#data_div">
+          <i class="bi bi-x"></i>
+      </button>
+-->
+    </div>  
+  </div>    
+</div>

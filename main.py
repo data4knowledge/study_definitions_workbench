@@ -3,9 +3,22 @@ from urllib.parse import quote_plus, urlencode
 from fastapi import Depends, FastAPI, Request, HTTPException, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
+from d4kms_ui.release_notes import ReleaseNotes
+from d4kms_generic.service_environment import ServiceEnvironment
+from d4kms_generic import application_logger
 
-app = FastAPI()
+VERSION = '0.2'
+SYSTEM_NAME = "d4k Study Definitions Workbench"
+
+app = FastAPI(
+  title = SYSTEM_NAME,
+  description = "d4k Study Definitions Workbench. The Swiss Army Knife for DDF / USDM Study Definitions",
+  version = VERSION
+)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 authorisation = Auth0Service(app)
@@ -16,7 +29,12 @@ def protect_endpoint(request: Request) -> None:
 
 @app.get("/")
 def home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+  response = templates.TemplateResponse('home/home.html', {"request": request, "version": VERSION})
+  return response
+
+# @app.get("/")
+# def home(request: Request):
+#     return templates.TemplateResponse("home.html", {"request": request})
 
 @app.get("/login")
 async def login(request: Request):
@@ -24,9 +42,9 @@ async def login(request: Request):
     return await authorisation.login(request)
   return RedirectResponse(url=app.url_path_for("profile"))
 
-@app.get("/profile", dependencies=[Depends(protect_endpoint)])
+@app.get("/index", dependencies=[Depends(protect_endpoint)])
 def profile(request: Request):
-  return templates.TemplateResponse("index.html", {"request": request})
+  return templates.TemplateResponse("home/index.html", {"request": request})
 
 @app.get("/logout")
 def logout(request: Request):
@@ -37,6 +55,6 @@ def logout(request: Request):
 async def callback(request: Request):
   try:
     await authorisation.save_token(request)
-    return RedirectResponse("/profile")
+    return RedirectResponse("/index")
   except:
     return RedirectResponse("/logout")
