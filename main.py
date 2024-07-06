@@ -40,11 +40,15 @@ def home(request: Request):
 async def login(request: Request):
   if not 'id_token' in request.session:  # it could be userinfo instead of id_token
     return await authorisation.login(request)
-  return RedirectResponse(url=app.url_path_for("profile"))
+  return RedirectResponse("/index")
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
-def profile(request: Request):
+def index(request: Request):
   return templates.TemplateResponse("home/index.html", {"request": request})
+
+@app.get("/test", dependencies=[Depends(protect_endpoint)])
+def test(request: Request):
+  return templates.TemplateResponse("home/test.html", {"request": request})
 
 @app.get("/logout")
 def logout(request: Request):
