@@ -15,7 +15,7 @@
             border-width:0!important;
         }
 
-        #wrapper {
+        /* #wrapper {
           overflow-x: hidden;
         }
 
@@ -58,92 +58,53 @@
           body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
             margin-left: -15rem;
           }
-        }
+        } */
       </style>
       {% block additional_css %}
       {% endblock %}      
   </head>
   <body>
-    <div class="d-flex" id="wrapper">
-      <!-- Sidebar-->
-      <div class="border-end bg-white" id="sidebar-wrapper">
-        <div class="sidebar-heading border-bottom custom-bg">
-          <a href="/index">
-            <img src="/static/images/wide_logo.png" alt="" height="24">
+    <nav class="navbar navbar-expand-lg navbar-light custom-bg border-bottom">
+    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> -->
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/index">
+          <img src="/static/images/wide_logo.png" alt="" height="24">
+        </a>    
+        <div class="collapse navbar-collapse" id="navbarColor04">
+          <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="/index">
+                <i class="bi bi-house me-2"></i>Home
+              </a>
+            </li>
+            <!-- <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">Help</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
+              </div>
+            </li> -->
+            <li class="nav-item active">
+              <a class="nav-link" href="/logout">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+              </a>
+            </li>
+          </ul>
         </div>
-        <div class="list-group list-group-flush">
-          <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Dashboard</a>
-          <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Shortcuts</a>
-          <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
-          <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
-          <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-          <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
-        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04" aria-controls="navbarColor04" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>    
       </div>
-      <!-- Page content wrapper-->
-      <div id="page-content-wrapper">
-        <!-- Top navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light custom-bg border-bottom">
-          <div class="container-fluid">
-            <button class="btn" id="sidebarToggle"><i id="sidebarToggleImage" class="bi bi-arrow-left-square me-2"></i>Menu</button>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                  <a class="nav-link" href="/index">
-                    <i class="bi bi-house me-2"></i>Home
-                  </a>
-                </li>
-                <!-- <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">Help</a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
-                  </div>
-                </li> -->
-                <li class="nav-item active">
-                  <a class="nav-link" href="/logout">
-                    <i class="bi bi-box-arrow-right me-2"></i>Logout
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <!-- Page content-->
-        <div class="container-fluid">
-          {% block main_content %}
-          {% endblock %}
-        </div>
-      </div>
+    </nav>
+
+    <!-- Page content-->
+    <div class="container-fluid">
+      {% block main_content %}
+      {% endblock %}
     </div>
-  
+    
     <script src="/static/js/htmx.min.js"></script>
     <script src="/static/js/bootstrap.bundle.min.js"></script>
-    <script>
-      window.addEventListener('DOMContentLoaded', event => {
-        // Toggle the side navigation
-        const sidebarToggle = document.body.querySelector('#sidebarToggle');
-        const sidebarToggleImage = document.body.querySelector('#sidebarToggleImage');        
-        if (sidebarToggle) {
-          // Uncomment Below to persist sidebar toggle between refreshes
-          // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-          //     document.body.classList.toggle('sb-sidenav-toggled');
-          // }
-          sidebarToggle.addEventListener('click', event => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-            if (sidebarToggleImage.classList.contains('bi-arrow-left-square')) {
-              sidebarToggleImage.classList.add("bi-arrow-right-square");
-              sidebarToggleImage.classList.remove("bi-arrow-left-square");
-            } else {
-              sidebarToggleImage.classList.add("bi-arrow-left-square");
-              sidebarToggleImage.classList.remove("bi-arrow-right-square");
-            }
-          });
-        }
-      });
-    </script>
+
     {% block additional_js %}
     {% endblock %}
 
