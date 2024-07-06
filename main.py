@@ -3,12 +3,12 @@ from urllib.parse import quote_plus, urlencode
 from fastapi import Depends, FastAPI, Request, HTTPException, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from d4kms_generic.auth0 import protect_endpoint, Auth0 as D4kAuth0
+from d4kms_generic.auth0_service import Auth0Service
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-authorisation = D4kAuth0(app)
+authorisation = Auth0Service(app)
 authorisation.register()
 
 def protect_endpoint(request: Request) -> None:
