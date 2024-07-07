@@ -39,7 +39,7 @@ def home(request: Request):
 @app.get("/login")
 async def login(request: Request):
   if not 'id_token' in request.session:  # it could be userinfo instead of id_token
-    return await authorisation.login(request)
+    return await authorisation.login(request, "callback")
   return RedirectResponse("/index")
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
@@ -56,7 +56,7 @@ def test2(request: Request):
 
 @app.get("/logout")
 def logout(request: Request):
-  url = authorisation.logout(request)
+  url = authorisation.logout(request, "home")
   return RedirectResponse(url=url)
 
 @app.get("/callback")
