@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
 
-VERSION = '0.2'
+VERSION = '0.3'
 SYSTEM_NAME = "d4k Study Definitions Workbench"
 
 app = FastAPI(
@@ -16,7 +16,7 @@ app = FastAPI(
   version = VERSION
 )
 
-application_logger.info("*****HERE*****")
+application_logger.info(f"Starting {SYSTEM_NAME}")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")

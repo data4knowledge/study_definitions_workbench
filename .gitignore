@@ -162,3 +162,4 @@ setup_env.sh
 **/.DS_Store
 .development_env
 .production_env
+install_local_d4kms.sh
