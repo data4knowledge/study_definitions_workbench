@@ -5,8 +5,6 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
-from d4kms_ui.release_notes import ReleaseNotes
-from d4kms_generic.service_environment import ServiceEnvironment
 from d4kms_generic import application_logger
 
 VERSION = '0.2'
@@ -17,6 +15,8 @@ app = FastAPI(
   description = "d4k Study Definitions Workbench. The Swiss Army Knife for DDF / USDM Study Definitions",
   version = VERSION
 )
+
+application_logger.info("*****HERE*****")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -46,9 +46,13 @@ async def login(request: Request):
 def index(request: Request):
   return templates.TemplateResponse("home/index.html", {"request": request})
 
-@app.get("/test", dependencies=[Depends(protect_endpoint)])
-def test(request: Request):
-  return templates.TemplateResponse("home/test.html", {"request": request})
+@app.get("/test1", dependencies=[Depends(protect_endpoint)])
+def test1(request: Request):
+  return templates.TemplateResponse("home/test1.html", {"request": request})
+
+@app.get("/test2", dependencies=[Depends(protect_endpoint)])
+def test2(request: Request):
+  return templates.TemplateResponse("home/test2.html", {"request": request})
 
 @app.get("/logout")
 def logout(request: Request):
