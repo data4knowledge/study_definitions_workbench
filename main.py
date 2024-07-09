@@ -6,9 +6,15 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
+from model.database import SessionLocal, engine, get_db
+from model.user import User, UserCreate
+from sqlalchemy.orm import Session
+from model import models
 
 VERSION = '0.3'
 SYSTEM_NAME = "d4k Study Definitions Workbench"
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
   title = SYSTEM_NAME,
@@ -43,7 +49,10 @@ async def login(request: Request):
   return RedirectResponse("/index")
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
-def index(request: Request):
+def index(request: Request, db: Session = Depends(get_db)):
+  print(f"SESSION: {request.session['userinfo']}")
+  user_info = request.session['userinfo']
+  User.check(user_info['email'], db)
   return templates.TemplateResponse("home/index.html", {"request": request})
 
 @app.get("/test1", dependencies=[Depends(protect_endpoint)])
