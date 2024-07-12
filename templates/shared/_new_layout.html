@@ -26,9 +26,11 @@
         </a>      
         <div class="collapse navbar-collapse" id="navBarMain">
           <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-            <span class="navbar-text text-info me-2">
-              <i class="bi bi-person me-1"></i>{% block user %}{% endblock %}
-            </span>
+            <li class="nav-item active">
+              <a class="nav-link text-info" href="/users">
+                <i class="bi bi-person me-1"></i>{% block user %}{% endblock %}
+              </a>
+            </li>
             <li class="nav-item active">
               <a class="nav-link" href="/index">
                 <i class="bi bi-house me-1"></i>Home
@@ -69,11 +71,12 @@
                   <span style="font-size: 1.1rem;" class="text-dark"><i class="bi bi-box-arrow-in-down me-2"></i>Import</span>
                 </a>
               </li>
-              <li class="nav-item active">
+              {% block menu %}{% endblock %}
+              <!-- <li class="nav-item active">
                 <a class="nav-link" href="/test1">
                   <span style="font-size: 1.1rem;" class="text-dark"><i class="bi bi-box-arrow-up me-2"></i>Export</span>
                 </a>
-              </li>
+              </li> -->
             </ul>
         </div>
       </div>  

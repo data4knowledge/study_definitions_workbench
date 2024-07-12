@@ -1,0 +1,50 @@
+{% extends "shared/_new_layout.html" %}
+{% block user %}
+  {% with request=request %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+{% block main_content %}
+  <div class="container-fluid mt-3">
+    <div class="row row-cols-3">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">User Details</h4>
+            <h6 class="card-subtitle mb-2 text-muted">Your details</h6>
+            <div class="row row-cols-2">
+              {% set user_info = request.session['userinfo'] %}
+              <div class="col-4">
+                Email
+              </div>
+              <div class="col-8">
+                {{user_info['email']}}
+              </div>
+            </div>
+            <div class="row row-cols-2">
+              <div class="col-4">
+                Display Name
+              </div>
+              <div class="col-8">
+                {{user_info['nickname']}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Display Name</h4>
+            <h6 class="card-subtitle mb-2 text-muted">Update your display name</h6>
+            <div class="mb-3" id="displayNameDiv">
+              <label for="displayName" class="form-label mt-4">Update Display Name</label>
+              <input type="text" class="form-control" id="displayName">
+            </div>
+            <button type="submit" class="btn btn-outline-primary rounded-5" hx-post="/users/{{user.id}}/displayName" hx-trigger="click" hx-target="#displayNameDiv" hx-swap="outerHTML">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

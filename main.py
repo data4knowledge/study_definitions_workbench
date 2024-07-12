@@ -11,7 +11,7 @@ from model.user import User, UserCreate
 from sqlalchemy.orm import Session
 from model import models
 
-VERSION = '0.3'
+VERSION = '0.4'
 SYSTEM_NAME = "d4k Study Definitions Workbench"
 
 models.Base.metadata.create_all(bind=engine)
@@ -33,14 +33,15 @@ authorisation.register()
 def protect_endpoint(request: Request) -> None:
   authorisation.protect_route(request, "/login")
 
+def user_details(request: Request, db):
+  user_info = request.session['userinfo']
+  user, present_in_db = User.check(user_info['email'], db)
+  return user, present_in_db
+
 @app.get("/")
 def home(request: Request):
-  response = templates.TemplateResponse('home/home.html', {"request": request, "version": VERSION})
+  response = templates.TemplateResponse('home/home.html', {'request': request, "version": VERSION})
   return response
-
-# @app.get("/")
-# def home(request: Request):
-#     return templates.TemplateResponse("home.html", {"request": request})
 
 @app.get("/login")
 async def login(request: Request):
@@ -50,18 +51,21 @@ async def login(request: Request):
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, db: Session = Depends(get_db)):
-  print(f"SESSION: {request.session['userinfo']}")
-  user_info = request.session['userinfo']
-  User.check(user_info['email'], db)
-  return templates.TemplateResponse("home/index.html", {"request": request})
+  user, present_in_db = user_details(request, db)
+  if present_in_db:
+    return templates.TemplateResponse("home/index.html", {'request': request, 'user': user})
+  else:
+    return templates.TemplateResponse("user/edit.html", {'request': request, 'user': user})
 
-@app.get("/test1", dependencies=[Depends(protect_endpoint)])
-def test1(request: Request):
-  return templates.TemplateResponse("home/test1.html", {"request": request})
+@app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
+def user_show(request: Request, db: Session = Depends(get_db)):
+  user = User.find(id)
+  return templates.TemplateResponse("users/show.html", {'request': request, 'user': user})
 
-@app.get("/test2", dependencies=[Depends(protect_endpoint)])
-def test2(request: Request):
-  return templates.TemplateResponse("home/test2.html", {"request": request})
+@app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
+def user_display_name(request: Request, db: Session = Depends(get_db)):
+  user = User.find(id)
+  return templates.TemplateResponse(f"users/partials/displayName.html", {'request': request, 'user': user})
 
 @app.get("/logout")
 def logout(request: Request):
