@@ -1,0 +1,57 @@
+<div id="status_{{item['uuid']}}_div" class="d-flex justify-right">
+  {% set help_text_1 = "Click to delete the files" %}
+  {% set help_text_2 = "Click to download the JSON file" %}
+  {% set help_text_3 = "Click to download the errors file" %}
+  {% set help_text_4 = "Click to download the PDF file" %}
+  {% set help_text_5 = "Click to display the protocol" %}
+  {% set help_text_6 = "Click to display the protocol with the USDM mapping highlighted" %}
+  {% set help_text_7 = "Click to display the protocol timeline(s)" %}
+  {% set help_text_8 = "Lock the file to prevent deletion" %}
+  {% set help_text_9 = "Unlock the file to allow deletion" %}
+  {% set help_text_10 = "Click to download the FHIR JSON message" %}
+  {% if item['processed']: %}
+    {% if not item['locked']: %}
+      <a class="link-danger" hx-get="/files/{{item['uuid']}}/lock" hx-trigger="click" hx-target="#list_div">
+        <i class="ps-2 bi bi-unlock" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_8}}"></i>
+      </a>
+      <a class="link-danger" onclick="return confirm('Are you sure?')" hx-delete="/files/{{item['uuid']}}"  hx-trigger="click" hx-target="#list_div">
+        <i class="ps-2 bi bi-trash-fill" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_1}}"></i>
+      </a>
+    {% else %}
+      <a class="link-danger" hx-get="/files/{{item['uuid']}}/unlock" hx-trigger="click" hx-target="#list_div">
+        <i class="ps-2 bi bi-lock" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_9}}"></i>
+      </a>
+    {% endif %}
+    <a class="link-success" href="/files/{{item['uuid']}}/results" >
+      <i class="ps-2 bi bi-filetype-json" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_2}}"></i>
+    </a>
+    <a class="link-success" href="/files/{{item['uuid']}}/pdf" >
+      <i class="ps-2 bi bi-file-earmark-pdf" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text4}}"></i>
+    </a>
+    {% if item['fhir']: %}
+      <a class="link-warning" href="/files/{{item['uuid']}}/fhir" >
+        <i class="ps-2 bi bi-fire" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_10}}"></i>
+      </a>
+    {% endif %}
+    {% if item['errors']: %}
+      <a class="link-warning" href="/files/{{item['uuid']}}/errors" >
+        <i class="ps-2 bi bi-bug-fill" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_3}}"></i>
+      </a>
+    {% endif %}
+    <a class="link-info" href="/protocol/{{item['uuid']}}" >
+      <i class="ps-2 bi bi-file-earmark-word" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_5}}"></i>
+    </a>
+    <a class="link-info" href="/highlights/{{item['uuid']}}" >
+      <i class="ps-2 bi bi-gear" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_6}}"></i>
+    </a>
+    <a class="link-info" href="/timeline/{{item['uuid']}}" >
+      <i class="ps-2 bi bi-alarm" style="font-size: 1.5rem;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{help_text_7}}"></i>
+    </a>
+  {% else %}
+    <div id="status_{{item['uuid']}}_div" hx-get="/files/{{item['uuid']}}/status" hx-trigger="every 1s" hx-target="#status_{{item['uuid']}}_div" hx-swap="innerHTML">
+      <div class="spinner-border spinner-border-sm" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  {% endif %}
+</div>
