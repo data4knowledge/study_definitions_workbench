@@ -27,21 +27,24 @@
         <div class="collapse navbar-collapse" id="navBarMain">
           <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-              <a class="nav-link text-info" href="/users">
+              <!-- <a class="nav-link text-info" href="/users">
                 <i class="bi bi-person me-1"></i>{% block user %}{% endblock %}
-              </a>
+              </a> -->
+              {% block user_content %}{% endblock %}
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="/index">
                 <i class="bi bi-house me-1"></i>Home
               </a>
             </li>
-            <!-- <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">Help</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+                <i class="bi bi-info-circle me-1"></i>Help
+              </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
+                <a class="dropdown-item" href="/about">About</a>
               </div>
-            </li> -->
+            </li>
             <li class="nav-item active">
               <a class="nav-link" href="/logout">
                 <i class="bi bi-box-arrow-right me-1"></i>Logout
@@ -71,7 +74,7 @@
                   <span style="font-size: 1.1rem;" class="text-dark"><i class="bi bi-box-arrow-in-down me-2"></i>Import</span>
                 </a>
               </li>
-              {% block menu %}{% endblock %}
+              {% block menu_content %}{% endblock %}
               <!-- <li class="nav-item active">
                 <a class="nav-link" href="/test1">
                   <span style="font-size: 1.1rem;" class="text-dark"><i class="bi bi-box-arrow-up me-2"></i>Export</span>

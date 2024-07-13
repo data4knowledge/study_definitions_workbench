@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
+from d4kms_ui.release_notes import ReleaseNotes
 from model.database import SessionLocal, engine, get_db
 from model.user import User, UserCreate
 from sqlalchemy.orm import Session
@@ -58,14 +59,20 @@ def index(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("user/edit.html", {'request': request, 'user': user})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
-def user_show(request: Request, db: Session = Depends(get_db)):
-  user = User.find(id)
+def user_show(request: Request, id: int, db: Session = Depends(get_db)):
+  user = User.find(id, db)
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user})
 
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
-def user_display_name(request: Request, db: Session = Depends(get_db)):
-  user = User.find(id)
+def user_display_name(request: Request, id: int, db: Session = Depends(get_db)):
+  user = User.find(id, db)
   return templates.TemplateResponse(f"users/partials/displayName.html", {'request': request, 'user': user})
+
+@app.get("/about", dependencies=[Depends(protect_endpoint)])
+def user_show(request: Request, db: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, db)
+  data = {'release_notes': ReleaseNotes().notes(), 'system': SYSTEM_NAME, 'version': VERSION}
+  return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/logout")
 def logout(request: Request):

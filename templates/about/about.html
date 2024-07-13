@@ -1,0 +1,31 @@
+{% extends "shared/_new_layout.html" %}
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+{% block main_content %}
+  {% set user_info = request.session['userinfo'] %}
+  <div class="container-fluid mt-3">
+    <div class="row row-cols-2">
+      <div class="col">
+        <div class="card rounded-3">
+          <div class="card-body">
+            <h4 class="card-title">{{ data['system'] }} (v{{ data['version'] }})</h4>
+            <h6 class="card-subtitle mb-2 text-muted">System Information</h6>
+            <p>This tool is the swiss army knife for the TransCelerate / CDISC Unified Studies Definition Model.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card rounded-3">
+          <div class="card-body">
+            <h4 class="card-title">Version History</h4>
+            <h6 class="card-subtitle mb-2 text-muted">System release log</h6>
+            {{data['release_notes']|safe}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

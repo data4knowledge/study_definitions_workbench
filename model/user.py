@@ -20,6 +20,10 @@ class User(UserBase):
    return get_user(db, id)
 
   @classmethod
+  def find_by_email(cls, email: str, db: Session):
+   return get_user_by_email(db, email)
+
+  @classmethod
   def check(cls, email: str, db: Session):
     present_in_db = True
     user = get_user_by_email(db, email)

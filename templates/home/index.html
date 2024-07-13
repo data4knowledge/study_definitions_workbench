@@ -1,6 +1,6 @@
 {% extends "shared/_new_layout.html" %}
-{% block user %}
-  {% with request=request %}
+{% block user_content %}
+  {% with request=request, user=user %}
     {% include "shared/partials/user.html" %}
   {% endwith %}    
 {% endblock %}
