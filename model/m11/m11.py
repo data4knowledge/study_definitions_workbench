@@ -1,4 +1,4 @@
-from logger import application_logger
+from d4kms_generic import application_logger
 from model.document.raw import *
 
 #class M11Section(RawSection):

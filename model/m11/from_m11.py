@@ -15,7 +15,7 @@ from usdm_excel.id_manager import IdManager
 from usdm_excel.cdisc_ct_library import CDISCCTLibrary
 from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
-from logger import application_logger
+from d4kms_generic import application_logger
 
 class FromM11():
   

@@ -1,14 +1,14 @@
 import os
 import re
-import yaml
+#import yaml
 import json
-import argparse
+#import argparse
 import docx2txt
-import pandas as pd
+#import pandas as pd
 from model.document.raw import *
 from model.from_m11 import FromM11
 from model.document.m11 import M11
-from logger import application_logger
+from d4kms_generic import application_logger
 import docx
 from docx import Document as DocXProcessor
 from docx.document import Document
@@ -17,7 +17,7 @@ from docx.oxml.text.paragraph import CT_P
 from docx.table import _Cell, Table
 from docx.text.paragraph import Paragraph
 from lxml import etree
-from usdm_db import USDMDb, Wrapper
+#from usdm_db import USDMDb, Wrapper
 
 add_image = True
 
@@ -178,25 +178,25 @@ def is_list(paragraph):
       return True
   return False
 
-if __name__ == "__main__":
-  parser = argparse.ArgumentParser(
-    prog='Import M11 Protocol Document Program',
-    description='Will import a M11 Protocl Document into USDM',
-    epilog='Note: Not that sophisticated! :)'
-  )
-  parser.add_argument('filename', help="The filename.") 
-  dir = 'source_data'
-  documents = [
-    "ICH_M11_Template_ASP8062_Example.docx",
-    "ICH_M11_Template_WA42380_Example.docx", 
-    "ICH_M11_Template_DEUCRALIP_Example.docx",
-    "ICH_M11_Template_IGBJ_Example.docx",
-    "ICH_M11_Template_LZZT_Example.docx",
-    "ICH_M11_Template_RadVax_Example.docx",
-    "ICH_M11_Template_Test.docx",
-  ]
-  for item in documents:
-    print(f"\n\nProcessing {item} ...")
+# if __name__ == "__main__":
+#   parser = argparse.ArgumentParser(
+#     prog='Import M11 Protocol Document Program',
+#     description='Will import a M11 Protocl Document into USDM',
+#     epilog='Note: Not that sophisticated! :)'
+#   )
+#   parser.add_argument('filename', help="The filename.") 
+#   dir = 'source_data'
+#   documents = [
+#     "ICH_M11_Template_ASP8062_Example.docx",
+#     "ICH_M11_Template_WA42380_Example.docx", 
+#     "ICH_M11_Template_DEUCRALIP_Example.docx",
+#     "ICH_M11_Template_IGBJ_Example.docx",
+#     "ICH_M11_Template_LZZT_Example.docx",
+#     "ICH_M11_Template_RadVax_Example.docx",
+#     "ICH_M11_Template_Test.docx",
+#   ]
+#   for item in documents:
+#     print(f"\n\nProcessing {item} ...")
     try:
       add_image = True
       file_root, file_extension = os.path.splitext(item)
@@ -234,19 +234,19 @@ if __name__ == "__main__":
           application_logger.warning(f"Ignoring element")
           raise ValueError
       
-      df = pd.DataFrame.from_records([s.to_dict() for s in target_document.sections])
-      df.to_excel(f'{file_root}.xlsx', index=False)
+      # df = pd.DataFrame.from_records([s.to_dict() for s in target_document.sections])
+      # df.to_excel(f'{file_root}.xlsx', index=False)
 
-      full_text = ('\n').join([s.to_dict()['text'] for s in target_document.sections])
-      save_as_html_file(full_text, f'{file_root}.html')
+      # full_text = ('\n').join([s.to_dict()['text'] for s in target_document.sections])
+      # save_as_html_file(full_text, f'{file_root}.html')
 
       m11 = M11(target_document)
       from_m11 = FromM11(m11)
       wrapper = from_m11.from_m11()
       save_as_json_file(wrapper.to_json(), f'{file_root}_usdm.json')
-      usdm = USDMDb()
-      usdm._wrapper = wrapper
-      save_as_json_file(usdm.to_fhir(), f'{file_root}_fhir.json')
+      # usdm = USDMDb()
+      # usdm._wrapper = wrapper
+      # save_as_json_file(usdm.to_fhir(), f'{file_root}_fhir.json')
 
     except Exception as e:
       application_logger.exception(f"Exception raised processing '{item}'", e)
