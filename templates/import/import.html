@@ -5,9 +5,19 @@
   {% endwith %}    
 {% endblock %}
 {% block main_content %}
-  <div class="mt-3 row align-items-start">
-    <div class="col-12">
-      {% with url="/files/upload", text="Upload an Excel (.xlsx) file and zero, one or more images files. Images can be '.png' or '.jpg' files. Click 'Choose files' to select files or to clear selection and reselect files.", disable=False %}
+  <div class="mt-3 row row-cols-3">
+    <div class="col">
+      {% with url="/files/upload", title="Import M11 Protocol", text="Upload a Word (.docx) file.", disable=False %}
+        {% include "import/partials/file_select.html" %}
+      {% endwith %}
+    </div>
+    <div class="col">
+      {% with url="/files/upload", title="Import USDM Excel Definition", text="Upload an Excel (.xlsx) file and zero, one or more images files. Images can be '.png' or '.jpg' files.", disable=False %}
+        {% include "import/partials/file_select.html" %}
+      {% endwith %}
+    </div>
+    <div class="col">
+      {% with url="/files/upload", title="Import USDM JSON Definition", text="Upload an JSON (.json) file", disable=False %}
         {% include "import/partials/file_select.html" %}
       {% endwith %}
     </div>
