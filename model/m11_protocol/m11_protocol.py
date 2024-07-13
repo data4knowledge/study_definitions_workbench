@@ -1,12 +1,11 @@
 from d4kms_generic import application_logger
-from model.document.raw import *
+from model.docx.document import Document
+from model.docx.table import Table
+from model.m11_protocol.m11_protocol_to_usdm import M11ProtocolToUSDM
 
-#class M11Section(RawSection):
-#  pass
+class M11Protocol():
 
-class M11():
-
-  def __init__(self, raw: RawDocument):
+  def __init__(self, raw: Document):
     self.raw = raw
     self.sections = []
     self.full_title = None
@@ -25,6 +24,10 @@ class M11():
     self._decode_title_page()
     self._build_sections()
     #print(f"Titles {self.full_title}, {self.short_title}")
+
+  def to_usdm(self):
+    m11_to_usdm = M11ProtocolToUSDM(self)
+    return m11_to_usdm.to_usdm()
 
   def _decode_title_page(self):
     section = self.raw.section_by_ordinal(1)
@@ -48,7 +51,7 @@ class M11():
     for section in self.raw.sections:
       self.sections.append(section)
 
-  def _table_get_row(self, table: RawTable, key: str) -> str:
+  def _table_get_row(self, table: Table, key: str) -> str:
     for row in table.rows:
       if row.cells[0].is_text():
         if row.cells[0].text().upper().startswith(key.upper()):

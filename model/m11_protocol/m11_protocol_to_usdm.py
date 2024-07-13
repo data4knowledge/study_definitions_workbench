@@ -1,4 +1,4 @@
-from model.document.m11 import M11
+from model.m11_protocol.m11_protocol import M11Protocol
 from usdm_model.wrapper import Wrapper
 from usdm_model.study import Study
 from usdm_model.study_design import StudyDesign
@@ -17,18 +17,17 @@ from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
 from d4kms_generic import application_logger
 
-class FromM11():
+class M11ProtocolToUSDM():
   
-  SYSTEM_NAME = 'M11 Doc Converter'
   DIV_OPEN_NS = '<div xmlns="http://www.w3.org/1999/xhtml">'
   DIV_CLOSE = '</div>'
 
-  def __init__(self, m11: M11):
+  def __init__(self, m11: M11Protocol):
     self.m11 = m11
     self._id_manager = IdManager(application_logger)
     self._cdisc_ct_manager = CDISCCTLibrary(application_logger)
 
-  def from_m11(self) -> Wrapper:
+  def to_usdm(self) -> Wrapper:
     try:
       study = self._study(self.m11.full_title)
       doc_version = self._document_version(study)
