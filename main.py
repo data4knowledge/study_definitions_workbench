@@ -88,10 +88,12 @@ from model.file_import import FileImport
 
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 async def upload_m11(request: Request, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+  print("A")
   return await process_m11(request, background_tasks, templates)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
 async def upload_xl(request: Request, background_tasks: BackgroundTasks):
+  print("B")
   return await process_xl(request, background_tasks, templates)
 
 @app.get("/logout")
