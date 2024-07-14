@@ -90,11 +90,11 @@ from model.file_import import FileImport
 async def upload_file(request: Request, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
   try:
     form = await request.form()
-    word, images, messages = await get_m11_files(form)
+    word, messages = await get_m11_files(form)
     if word:
-      file_import = FileImport.create(fullpath='', filename='', user_id='', db=db)
-      if file_import.uuid:
-        background_tasks.add_task(process_excel, file_import.uuid)
+      uuid = save_m11_files(word)
+      if uuid:
+        background_tasks.add_task(process_excel, uuid)
         return templates.TemplateResponse('files/partials/upload.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
@@ -112,7 +112,7 @@ async def upload_file(request: Request, background_tasks: BackgroundTasks):
     form = await request.form()
     excel, images, messages = await get_xl_files(form)
     if excel:
-      uuid = Files(manifest_lock).update_or_add(excel['filename'], excel['contents'], images)
+      uuid = save_xl_files(excel, images)
       if uuid:
         background_tasks.add_task(process_excel, uuid)
         return templates.TemplateResponse('files/partials/upload.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
