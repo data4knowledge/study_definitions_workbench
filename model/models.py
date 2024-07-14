@@ -12,6 +12,7 @@ class User(Base):
   is_active = Column(Boolean, default=True)
 
   studies = relationship("Study", back_populates="study_owner")
+  imports = relationship("Import", back_populates="study_owner")
 
 class Study(Base):
     
@@ -33,3 +34,12 @@ class Version(Base):
   owner_id = Column(Integer, ForeignKey("study.id"))
 
   version_owner = relationship("Study", back_populates="versions")
+
+class Import(Base):
+    
+  __tablename__ = "import"
+
+  id = Column(Integer, primary_key=True)
+  owner_id = Column(Integer, ForeignKey("user.id"))
+
+  study_owner = relationship("User", back_populates="imports")
