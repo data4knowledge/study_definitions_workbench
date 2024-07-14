@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from model.file_import_db import get_import, get_import_by_uuid, create_import
+from model.file_import_db import get_file_import, get_file_import_by_uuid, create_file_import
 
 class FileImportBase(BaseModel):
   filename: str
@@ -19,12 +19,12 @@ class FileImport(FileImportBase):
 
   @classmethod
   def find(cls, id: int, db: Session):
-   return get_import(db, id)
+   return get_file_import(db, id)
 
   @classmethod
   def find_by_uuid(cls, uuid: str, db: Session):
-   return get_import_by_uuid(db, uuid)
+   return get_file_import_by_uuid(db, uuid)
 
   @classmethod
   def create(cls, fullpath: str, filename: str, user_id: int, db: Session):
-   return create_import(db, {'fullpath': fullpath, 'filename': filename}, user_id=user_id)
+   return create_file_import(db, {'fullpath': fullpath, 'filename': filename}, user_id=user_id)
