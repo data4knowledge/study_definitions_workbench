@@ -7,7 +7,7 @@
 {% block main_content %}
   <div class="mt-3 row row-cols-2">
     <div class="col">
-      {% with url="/files/upload", title="Import USDM Excel Definition", text="Upload an Excel (.xlsx) file and zero, one or more images files. Images can be '.png' or '.jpg' files.", disable=False %}
+      {% with url="/import/xl", title="Import USDM Excel Definition", text="Upload an Excel (.xlsx) file and zero, one or more images files. Images can be '.png' or '.jpg' files.", disable=False %}
         {% include "import/partials/file_select.html" %}
       {% endwith %}
     </div>

@@ -7,7 +7,7 @@
 {% block main_content %}
   <div class="mt-3 row row-cols-2">
     <div class="col">
-      {% with url="/files/upload", title="Import M11 Protocol", text="Upload a Word (.docx) file.", disable=False %}
+      {% with url="/import/m11", title="Import M11 Protocol", text="Upload a Word (.docx) file.", disable=False %}
         {% include "import/partials/file_select.html" %}
       {% endwith %}
     </div>
