@@ -1,0 +1,24 @@
+{% extends "shared/_main_layout.html" %}
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+{% block main_content %}
+  <div class="mt-3 row row-cols-2">
+    <div class="col">
+      {% with url="/files/upload", title="Import M11 Protocol", text="Upload a Word (.docx) file.", disable=False %}
+        {% include "import/partials/file_select.html" %}
+      {% endwith %}
+    </div>
+    <div class="col">
+      <div class="card rounded-3">
+        <div class="card-body">
+          <h4 class="card-title">M11 Import</h4>
+          <h6 class="card-subtitle mb-2 text-muted">Details</h6>
+          Import an M11 formatted protocol developed in Micorsoft Word. THe import will extract the following information if possible
+        </div>  
+      </div>
+    </div>
+  </div>
+{% endblock %}

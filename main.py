@@ -74,10 +74,15 @@ def user_show(request: Request, db: Session = Depends(get_db)):
   data = {'release_notes': ReleaseNotes().notes(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
-@app.get("/import", dependencies=[Depends(protect_endpoint)])
+@app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, db: Session = Depends(get_db)):
   user, present_in_db = user_details(request, db)
-  return templates.TemplateResponse("import/import.html", {'request': request, 'user': user})
+  return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user})
+
+@app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
+def user_show(request: Request, db: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, db)
+  return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
 
 @app.get("/logout")
 def logout(request: Request):
