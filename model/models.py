@@ -12,7 +12,7 @@ class User(Base):
   is_active = Column(Boolean, default=True)
 
   studies = relationship("Study", back_populates="study_owner")
-  imports = relationship("Import", back_populates="study_owner")
+  imports = relationship("FileImport", back_populates="study_owner")
 
 class Study(Base):
     
@@ -35,11 +35,15 @@ class Version(Base):
 
   version_owner = relationship("Study", back_populates="versions")
 
-class Import(Base):
+class FileImport(Base):
     
   __tablename__ = "import"
 
   id = Column(Integer, primary_key=True)
+  uuid = Column(String)
+  filename = Column(String)
+  filepath = Column(String)
+  status = Column(String)
   owner_id = Column(Integer, ForeignKey("user.id"))
 
   study_owner = relationship("User", back_populates="imports")

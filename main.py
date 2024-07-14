@@ -84,21 +84,23 @@ def user_show(request: Request, db: Session = Depends(get_db)):
   user, present_in_db = user_details(request, db)
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
 
+from model.file_import import FileImport
+
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
-async def upload_file(request: Request, background_tasks: BackgroundTasks):
+async def upload_file(request: Request, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
   try:
     form = await request.form()
-    excel, images, messages = await get_files(form)
-    if excel:
-      uuid = Files(manifest_lock).update_or_add(excel['filename'], excel['contents'], images)
-      if uuid:
-        background_tasks.add_task(process_excel, uuid)
+    word, images, messages = await get_m11_files(form)
+    if word:
+      file_import = FileImport.create(fullpath='', filename='', user_id='', db=db)
+      if file_import.uuid:
+        background_tasks.add_task(process_excel, file_import.uuid)
         return templates.TemplateResponse('files/partials/upload.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
         return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
     else:
-      messages.append("No Excel file detected, file upload ignored")
+      messages.append("No Word file detected, file upload ignored")
       return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': messages})  
   except Exception as e:
     application_logger.exception("Exception uploading files", e)
@@ -108,7 +110,7 @@ async def upload_file(request: Request, background_tasks: BackgroundTasks):
 async def upload_file(request: Request, background_tasks: BackgroundTasks):
   try:
     form = await request.form()
-    excel, images, messages = await get_files(form)
+    excel, images, messages = await get_xl_files(form)
     if excel:
       uuid = Files(manifest_lock).update_or_add(excel['filename'], excel['contents'], images)
       if uuid:
