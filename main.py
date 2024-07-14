@@ -1,6 +1,4 @@
-from urllib.parse import quote_plus, urlencode
-
-from fastapi import Depends, FastAPI, Request, HTTPException, status
+from fastapi import Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -11,6 +9,8 @@ from model.database import SessionLocal, engine, get_db
 from model.user import User, UserCreate
 from sqlalchemy.orm import Session
 from model import models
+from utility.background import *
+from utility.upload import *
 
 VERSION = '0.4'
 SYSTEM_NAME = "d4k Study Definitions Workbench"
@@ -83,6 +83,47 @@ def user_show(request: Request, db: Session = Depends(get_db)):
 def user_show(request: Request, db: Session = Depends(get_db)):
   user, present_in_db = user_details(request, db)
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
+
+@app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
+async def upload_file(request: Request, background_tasks: BackgroundTasks):
+  try:
+    form = await request.form()
+    excel, images, messages = await get_files(form)
+    if excel:
+      uuid = Files(manifest_lock).update_or_add(excel['filename'], excel['contents'], images)
+      if uuid:
+        background_tasks.add_task(process_excel, uuid)
+        return templates.TemplateResponse('files/partials/upload.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+      else:
+        messages.append("Failed to process the Excel file")
+        return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+    else:
+      messages.append("No Excel file detected, file upload ignored")
+      return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': messages})  
+  except Exception as e:
+    application_logger.exception("Exception uploading files", e)
+    return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
+
+@app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
+async def upload_file(request: Request, background_tasks: BackgroundTasks):
+  try:
+    form = await request.form()
+    excel, images, messages = await get_files(form)
+    if excel:
+      uuid = Files(manifest_lock).update_or_add(excel['filename'], excel['contents'], images)
+      if uuid:
+        background_tasks.add_task(process_excel, uuid)
+        return templates.TemplateResponse('files/partials/upload.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+      else:
+        messages.append("Failed to process the Excel file")
+        return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+    else:
+      messages.append("No Excel file detected, file upload ignored")
+      return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': messages})  
+  except Exception as e:
+    application_logger.exception("Exception uploading files", e)
+    return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
+
 
 @app.get("/logout")
 def logout(request: Request):
