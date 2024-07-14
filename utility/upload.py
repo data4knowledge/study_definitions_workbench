@@ -1,8 +1,28 @@
 import os
 from fastapi import File
 from model.files import Files
-from model.file_import import FileImport
+#from model.file_import import FileImport
 from d4kms_generic import application_logger
+from utility.background import process_excel
+
+async def process_xl(request, background_tasks, templates):
+  try:
+    form = await request.form()
+    excel, images, messages = await get_xl_files(form)
+    if excel:
+      file_path, uuid = save_xl_files(excel, images)
+      if uuid:
+        background_tasks.add_task(process_excel, uuid)
+        return templates.TemplateResponse('files/partials/upload.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+      else:
+        messages.append("Failed to process the Excel file")
+        return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+    else:
+      messages.append("No Excel file detected, file upload ignored")
+      return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': messages})  
+  except Exception as e:
+    application_logger.exception("Exception uploading files", e)
+    return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
 
 async def get_xl_files(form: File):
   images = []
@@ -26,35 +46,33 @@ async def get_xl_files(form: File):
   return excel, images, messages
 
 def save_xl_files(excel: dict, images: dict, user_id, db):
+  files = Files()
   filename = excel['filename']
   contents = excel['contents']
-  full_path = Files.save(uuid, filename, "xlsx", contents)
-  file_import = FileImport.create(fullpath='', filename='', user_id=user_id, db=db)
-  uuid = file_import.uuid      
+  uuid, full_path = files.save(uuid, filename, "xlsx", contents)
   for image in images:
+    filename = image['filename']
+    contents = image['contents']
+    uuid, full_path = files.save(uuid, filename, "image", contents)
 
-  self._save_source_file(record['uuid'], contents)
-    self._save_images(record['uuid'], images)
-    record.update({ 
-
-  def _save_source_file(self, uuid, contents):
-    try:
-      full_path = self._file_path(uuid, 'definition', 'xlsx')
-      with open(full_path, 'wb') as f:
-        f.write(contents)
-      return full_path
-    except Exception as e:
-      application_logger.exception(f"Exception saving source file", e)
-
-  def _save_images(self, uuid, images):
-    for image in images:
-      try:
-        full_path = self._image_file_path(uuid, image['filename'])
-        with open(full_path, 'wb') as f:
-          f.write(image['contents'])
-      except Exception as e:
-        application_logger.exception(f"Exception saving source file", e)
-
+async def process_m11(request, background_tasks, templates):
+  try:
+    form = await request.form()
+    word, messages = await get_m11_files(form)
+    if word:
+      uuid = save_m11_files(word)
+      if uuid:
+        background_tasks.add_task(process_excel, uuid)
+        return templates.TemplateResponse('files/partials/upload.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+      else:
+        messages.append("Failed to process the Excel file")
+        return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+    else:
+      messages.append("No Word file detected, file upload ignored")
+      return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': messages})  
+  except Exception as e:
+    application_logger.exception("Exception uploading files", e)
+    return templates.TemplateResponse('files/partials/upload_failed.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
 
 async def get_m11_files(form: File):
   images = []
@@ -72,3 +90,10 @@ async def get_m11_files(form: File):
     else:
       messages.append(f"File '{filename}' was ignored, not .docx file")
   return excel, [], messages
+
+def save_m11_files(excel: dict, user_id, db):
+  files = Files()
+  filename = excel['filename']
+  contents = excel['contents']
+  uuid, full_path = files.save(uuid, filename, "docx", contents)
+  

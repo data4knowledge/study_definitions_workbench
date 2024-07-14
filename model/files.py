@@ -3,7 +3,7 @@ import json
 import csv
 import shutil
 from pathlib import Path
-from uuid import uuid4()
+from uuid import uuid4
 from d4kms_generic import application_logger
 
 class Files:
@@ -25,9 +25,7 @@ class Files:
     uuid = uuid4()
     filename = filename if self.media_type[type]['use_original'] else self.media_type[type]['filename']
     full_path = self.media_type[type]['method'](uuid, contents, filename)
-    return full_path, uuid
-    file_import = FileImport.create(fullpath=full_path, user_id=user_id, db=db)
-    
+    return full_path, uuid    
 
   def read(self, uuid, type):
     full_path = self._file_path(uuid, type, type)
