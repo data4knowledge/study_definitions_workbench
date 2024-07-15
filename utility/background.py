@@ -4,9 +4,9 @@ from model.files import Files
 
 def process_excel(uuid):
   try:
-    files = Files()
+    files = Files(uuid)
     db = USDMDb()
-    errors = db.from_excel(files.read(uuid, 'xlsx'))
+    errors = db.from_excel(files.path(uuid, 'xlsx'))
     files.save(uuid, 'errors', errors)
     files.save(uuid, 'usdm', db.to_json())
   except Exception as e:

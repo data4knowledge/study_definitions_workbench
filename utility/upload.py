@@ -10,7 +10,7 @@ async def process_xl(request, background_tasks, templates):
     form = await request.form()
     excel, images, messages = await get_xl_files(form)
     if excel:
-      file_path, uuid = save_xl_files(excel, images)
+      uuid = save_xl_files(excel, images)
       if uuid:
         background_tasks.add_task(process_excel, uuid)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
@@ -45,15 +45,17 @@ async def get_xl_files(form: File):
       messages.append(f"File '{filename}' was ignored, not .xlsx or an image file")
   return excel, images, messages
 
-def save_xl_files(excel: dict, images: dict, user_id, db):
+def save_xl_files(excel: dict, images: dict):
   files = Files()
+  uuid = files.new()
   filename = excel['filename']
   contents = excel['contents']
-  uuid, full_path = files.save(uuid, filename, "xlsx", contents)
+  full_path = files.save(filename, "xlsx", contents)
   for image in images:
     filename = image['filename']
     contents = image['contents']
-    uuid, full_path = files.save(uuid, filename, "image", contents)
+    full_path = files.save(filename, "image", contents)
+  return uuid
 
 async def process_m11(request, background_tasks, templates):
   try:
@@ -93,7 +95,8 @@ async def get_m11_files(form: File):
 
 def save_m11_files(excel: dict, user_id, db):
   files = Files()
+  uuid = files.new()
   filename = excel['filename']
   contents = excel['contents']
-  uuid, full_path = files.save(uuid, filename, "docx", contents)
-  
+  full_path = files.save(filename, "docx", contents)
+  return uuid

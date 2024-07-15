@@ -8,29 +8,38 @@ from d4kms_generic import application_logger
 
 class Files:
   
-  DIR = "tmp"
+  DIR = "datafiles"
 
-  def __init__(self):
+  def __init__(self, uuid=None):
     self.media_type = {
-      "xlsx": {'method': self._save_xlsx_file(), 'use_original':  False, 'filename': 'xl'},
-      "usdm": {'method': self._save_json_file(), 'use_original':  False, 'filename': 'usdm'},
-      "fhir": {'method': self._save_json_file(), 'use_original':  False, 'filename': 'fhir'},
-      "errors": {'method': self._save_csv_file(), 'use_original':  False, 'filename': 'errors'},
-      "protocol": {'method': self._save_html_file(), 'use_original':  False, 'filename': 'protocol'},
-      "highlight": {'method': self._save_html_file(), 'use_original':  False, 'filename': 'highlight'},
-      "image": {'method': self._save_image_file(), 'use_original':  True, 'filename': ''}
+      "xlsx": {'method': self._save_xlsx_file, 'use_original':  False, 'filename': 'xl'},
+      "usdm": {'method': self._save_json_file, 'use_original':  False, 'filename': 'usdm'},
+      "fhir": {'method': self._save_json_file, 'use_original':  False, 'filename': 'fhir'},
+      "errors": {'method': self._save_csv_file, 'use_original':  False, 'filename': 'errors'},
+      "protocol": {'method': self._save_html_file, 'use_original':  False, 'filename': 'protocol'},
+      "highlight": {'method': self._save_html_file, 'use_original':  False, 'filename': 'highlight'},
+      "image": {'method': self._save_image_file, 'use_original':  True, 'filename': ''}
     }
+    self.uuid = uuid
+
+  def new(self):
+    self.uuid = str(uuid4())
+    if not self._create_dir(self.uuid):
+      self.uuid = None
+    return self.uuid
 
   def save(self, filename, type, contents):
-    uuid = uuid4()
     filename = filename if self.media_type[type]['use_original'] else self.media_type[type]['filename']
-    full_path = self.media_type[type]['method'](uuid, contents, filename)
-    return full_path, uuid    
+    full_path = self.media_type[type]['method'](self.uuid, contents, filename)
+    return full_path 
 
   def read(self, uuid, type):
-    full_path = self._file_path(uuid, type, type)
+    full_path = self._file_path(uuid, self.media_type[type]['filename'], type)
     with open(full_path, "r") as stream:
       return stream.read()
+
+  def path(self, uuid, type):
+    return self._file_path(uuid, self.media_type[type]['filename'], type)
 
   def delete(self, uuid):
     try:
@@ -53,7 +62,8 @@ class Files:
   def _save_image_file(self, uuid, contents, filename):
     try:
       stem, ext = self._stem_and_extension(filename)
-      full_path = self._image_file_path(uuid, stem, ext)
+      print(f"STEM, EXT: {stem}, {ext}")
+      full_path = self._file_path(uuid, stem, ext)
       with open(full_path, 'wb') as f:
         f.write(contents)
     except Exception as e:
@@ -87,6 +97,8 @@ class Files:
       application_logger.exception(f"Exception saving timeline file", e)
 
   def _save_csv_file(self, uuid, contents, filename):
+    if not contents:
+      contents = [{'sheet': '', 'row': '', 'column': '', 'message': '', 'level': ''}]
     try:
       full_path = self._file_path(uuid, filename, 'csv')
       with open(full_path, 'w', newline='') as file:
@@ -102,7 +114,7 @@ class Files:
       os.mkdir(os.path.join(self.DIR, uuid))
       return True
     except Exception as e:
-      application_logger.exception(f"Exceptioncreating dir '{uuid}'", e)
+      application_logger.exception(f"Exception creating dir '{uuid}'", e)
       return False
 
   def _file_path(self, uuid, filename, extension):
@@ -111,10 +123,7 @@ class Files:
   def _dir_path(self, uuid):
     return os.path.join(self.DIR, uuid)
 
-  # def _filename_from_path(self, full_path):
-  #   return os.path.basename(full_path)
-
   def _stem_and_extension(self, filename):
     path_filename = Path(filename)
-    return path_filename.stem, path_filename.suffix
+    return path_filename.stem, path_filename.suffix[1:]
 
