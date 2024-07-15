@@ -163,3 +163,5 @@ setup_env.sh
 .development_env
 .production_env
 install_local_d4kms.sh
+datafiles/*/
+
