@@ -35,8 +35,10 @@ class RawDocx():
     self.image_path = os.path.join(self.dir, 'images')
     self.image_rels = {}
     self._organise_dir()
+    print(f"RAW DOCX: {self.full_path}, {self.dir}, {self.filename}, {self.image_path}")
     self.source_document = DocXProcessor(self.full_path)
     self.target_document = RawDocument()
+    self._process()
 
   def _organise_dir(self):
     try:
@@ -46,7 +48,8 @@ class RawDocx():
     except Exception as e:
       application_logger.exception("Failed to create image directory", e)
 
-  def process(self):
+  def _process(self):
+    print(f"RAW DOCX: Process")
     try:
       self._extract_images()
       for block_item in self._iter_block_items(self.source_document):
@@ -106,7 +109,7 @@ class RawDocx():
       return 0
     
   def _process_table(self, table, target: RawSection | RawTableCell):
-    target_table = Table()
+    target_table = RawTable()
     #print(f"TABLE: {type(target)}")
     target.add(target_table)
     for row in table.rows:
@@ -146,7 +149,7 @@ class RawDocx():
       list.add(item)
       #print(f"List: <{paragraph.style.name}> <{list_level}> {paragraph.text}")
     else:
-      target_paragraph = Paragraph(paragraph.text)
+      target_paragraph = RawParagraph(paragraph.text)
       target_cell.add(target_paragraph)
       #for c in paragraph.text[0:2]:
       #  print(ord(c), hex(ord(c)), c.encode('utf-8'))
@@ -176,13 +179,13 @@ class RawDocx():
       #print(f"!!!!! Graphic !!!!!!")
       for rId in image_rels:
         if rId in paragraph._p.xml:
-          target_image = Image(image_rels[rId])
+          target_image = RawImage(image_rels[rId])
           #if add_image:
           target_section.add(target_image)
           #  add_image = False
           # Your image will be in os.path.join(img_path, rels[rId])
     else:
-      target_paragraph = Paragraph(paragraph.text)
+      target_paragraph = RawParagraph(paragraph.text)
       target_section.add(target_paragraph)
       #for c in paragraph.text[0:2]:
       #  print(ord(c), hex(ord(c)), c.encode('utf-8'))

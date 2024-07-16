@@ -11,9 +11,7 @@ from sqlalchemy.orm import Session
 from model import models
 from utility.background import *
 from utility.upload import *
-
-VERSION = '0.4'
-SYSTEM_NAME = "d4k Study Definitions Workbench"
+from model import VERSION, SYSTEM_NAME
 
 models.Base.metadata.create_all(bind=engine)
 

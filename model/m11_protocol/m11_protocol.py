@@ -23,11 +23,12 @@ class M11Protocol():
   DIV_OPEN_NS = '<div xmlns="http://www.w3.org/1999/xhtml">'
   DIV_CLOSE = '</div>'
 
-  def __init__(self, filepath):
-    docx = RawDocx(filepath)
+  def __init__(self, filepath, system_name, system_version):
+    self._raw_docx = RawDocx(filepath)
     self._id_manager = IdManager(application_logger)
     self._cdisc_ct_manager = CDISCCTLibrary(application_logger)
-    self.raw = docx.target_document
+    self._system_name = system_name
+    self._system_version = system_version
     self.sections = []
     self.full_title = None
     self.sponsor_protocol_identifier = None
@@ -44,23 +45,23 @@ class M11Protocol():
     self.sponsor_approval_date = None
     self._decode_title_page()
     self._build_sections()
-    #print(f"Titles {self.full_title}, {self.short_title}")
+    print(f"Titles {self.full_title}, {self.short_title}")
 
   def to_usdm(self) -> Wrapper:
     try:
-      study = self._study(self.m11.full_title)
+      study = self._study(self.full_title)
       doc_version = self._document_version(study)
       root = self._model_instance(NarrativeContent, {'name': 'ROOT', 'sectionNumber': '0', 'sectionTitle': 'Root', 'text': '', 'childIds': [], 'previousId': None, 'nextId': None})
       doc_version.contents.append(root)
-      local_index = self._sections(root, self.m11.sections, 0, 1, doc_version)
+      local_index = self._sections(root, self.sections, 0, 1, doc_version)
       self._double_link(doc_version.contents, 'previousId', 'nextId')
-      return Wrapper(study=study, usdmVersion=usdm_version, systemName=self.SYSTEM_NAME, systemVersion=system_version)
+      return Wrapper(study=study, usdmVersion=usdm_version, systemName=self._system_name, systemVersion=self._system_version).to_json()
     except Exception as e:
       application_logger.exception(f"Exception raised parsing M11 content. See logs for more details", e)
       return None
 
   def _decode_title_page(self):
-    section = self.raw.section_by_ordinal(1)
+    section = self._raw_docx.target_document.section_by_ordinal(1)
     tables = section.tables()
     table = tables[0]
     self.full_title = self._table_get_row(table, 'Full Title')
@@ -162,7 +163,7 @@ class M11Protocol():
         setattr(item, next, the_id)
   
   def _build_sections(self):
-    for section in self.raw.sections:
+    for section in self._raw_docx.target_document.sections:
       self.sections.append(section)
 
   def _table_get_row(self, table: RawTable, key: str) -> str:
