@@ -50,7 +50,7 @@ async def login(request: Request):
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, db)
+  user, present_in_db = user_details(request, session)
   if present_in_db:
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user})
   else:
@@ -58,40 +58,40 @@ def index(request: Request, session: Session = Depends(get_db)):
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
-  user = User.find(id, db)
+  user = User.find(id, session)
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user})
 
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
 def user_display_name(request: Request, id: int, session: Session = Depends(get_db)):
-  user = User.find(id, db)
+  user = User.find(id, session)
   return templates.TemplateResponse(f"users/partials/displayName.html", {'request': request, 'user': user})
 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, db)
+  user, present_in_db = user_details(request, session)
   data = {'release_notes': ReleaseNotes().notes(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, db)
+  user, present_in_db = user_details(request, session)
   return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user})
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, db)
+  user, present_in_db = user_details(request, session)
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
 
 from model.file_import import FileImport
 
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 async def upload_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, db)
+  user, present_in_db = user_details(request, session)
   return await process_m11(request, background_tasks, templates, user, session)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
 async def upload_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, db)
+  user, present_in_db = user_details(request, session)
   return await process_xl(request, background_tasks, templates, user, session)
 
 @app.get("/logout")
