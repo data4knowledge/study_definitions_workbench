@@ -1,52 +1,6 @@
-from model.docx.paragraph import Paragraph
-from model.docx.list import List
-from model.docx.table import Table
-from model.docx.image import Image
+from model.word_docx.section import Section
 from d4kms_generic import application_logger
 
-class Section():
-
-  def __init__(self, title: str | None, number: str | None, level: int):
-    self.title = title.strip() if title else title
-    self.number = number.strip() if number else number
-    self.level = level
-    self.items = []
-
-  def add(self, item: Paragraph | List | Table | Image) -> None:
-    self.items.append(item)
-
-  def is_in_list(self) -> bool:
-    if self.items:
-      if isinstance(self.items[-1], List):
-        return True
-    return False
-  
-  def current_list(self) -> List:
-    return self.items[-1] if isinstance(self.items[-1], List) else None
-
-  def to_dict(self):
-    return { 'sectionNumber': self.number, 'sectionTitle': self.title, 'name': '', 'text': self.to_html()} 
-
-  def to_html(self):
-    text = [self._format_heading()]
-    for item in self.items:
-      result = item.to_html()
-      text.append(result)
-    return ('\n').join(text)
-
-  def tables(self):
-    return [x for x in self.items if isinstance(x, Table)]
-
-  def _format_heading(self):
-    if self.number and self.title:
-      return f'<h{self.level}>{self.number} {self.title}</h{self.level}>'
-    elif self.number:
-      return f'<h{self.level}>{self.number}</h{self.level}>'
-    elif self.title:
-      return f'<h{self.level}>{self.title}</h{self.level}>'
-    else:
-      return ''
-        
 class Document():
   
   def __init__(self):

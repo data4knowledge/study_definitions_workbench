@@ -1,5 +1,5 @@
 from d4kms_generic import application_logger
-from model.docx.list_item import ListItem
+from model.word_docx.list_item import ListItem
 
 class List():
 

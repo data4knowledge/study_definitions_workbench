@@ -2,17 +2,18 @@ import os
 import re
 import docx
 import docx2txt
-from model.docx.document import Document
-from model.docx.section import Section
-from model.docx.paragraph import Paragraph
-from model.docx.list import List
-from model.docx.list_item import ListItem
-from model.docx.table import Table
-from model.docx.table_row import TableRow
-from model.docx.table_cell import TableCell
-from model.docx.image import Image
+from pathlib import Path
+from model.word_docx.document import Document
+from model.word_docx.section import Section
+from model.word_docx.paragraph import Paragraph
+from model.word_docx.list import List
+from model.word_docx.list_item import ListItem
+from model.word_docx.table import Table
+from model.word_docx.table_row import TableRow
+from model.word_docx.table_cell import TableCell
+from model.word_docx.image import Image
 from d4kms_generic import application_logger
-from docx import Document as DocXProcessor
+from model.word_docx.word_docx import Document as DocXProcessor
 from docx.document import Document
 from docx.oxml.table import CT_Tbl, CT_TcPr
 from docx.oxml.text.paragraph import CT_P
@@ -20,31 +21,30 @@ from docx.table import _Cell, Table
 from docx.text.paragraph import Paragraph
 from lxml import etree
 
-class Docx():
+class WordDocx():
 
   class LogicError(Exception):
     pass
 
-  def __init__(self, dir: str, filename: str):
-    self.dir = dir
-    self.filename = filename
-    self.image_path = None
-    self.full_path = None
+  def __init__(self, full_path: str):
+    path = Path(full_path)
+    #path.stem, path.suffix[1:]
+    self.full_path = full_path
+    self.dir = path.parent
+    self.filename = path.name
+    self.image_path = os.path.join(self.dir, 'images')
     self.image_rels = {}
     self._organise_dir()
     self.source_document = DocXProcessor(self.full_path)
     self.target_document = Document()
 
   def _organise_dir(self):
-    file_root, file_extension = os.path.splitext(self.filename)
-    self.full_path = f"{self.dir}/{self.filename}"
-    self.image_path = os.path.join(file_root)
     try:
       os.mkdir(self.image_path) 
     except FileExistsError as e:
       pass
     except Exception as e:
-      application_logger.exception("Make directory error", e)
+      application_logger.exception("Failed to create image directory", e)
 
   def process(self):
     try:

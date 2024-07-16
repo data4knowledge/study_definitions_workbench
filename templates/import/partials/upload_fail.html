@@ -7,21 +7,16 @@
     {% endif %}
     <ul class="mt-3 list-group">
       {% for message in messages %}
-        <li class="list-group-item list-group-item-danger"">{{message}}</li>
+        <li class="list-group-item list-group-item-danger">{{message}}</li>
       {% endfor %}
     </ul>
   </div>
   <div class="row">
     <div class="col-6">
       <div class="d-flex justify-right">
-        <a href="/home" >
-          <button type="button" class="btn btn-primary">
-             File list
-          </button>
-        </a>
-        <a class="ps-2" href="/files/upload" >
-          <button type="button" class="btn btn-primary">
-             Back to file upload
+        <a href="/index" >
+          <button type="button" class="btn btn-outline-primary rounded-5">
+             Home
           </button>
         </a>
       </div>

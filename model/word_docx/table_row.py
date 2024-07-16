@@ -1,4 +1,4 @@
-from model.docx.table_cell import TableCell
+from model.word_docx.table_cell import TableCell
 from d4kms_generic import application_logger
 
 class TableRow():
