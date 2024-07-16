@@ -1,34 +1,46 @@
 from pydantic import BaseModel
+from model.models import User as UserDB
 from sqlalchemy.orm import Session
-from model.user_db import get_user_by_email, create_user, get_user
 
 class UserBase(BaseModel):
   email: str
+  is_active: bool
 
 class UserCreate(UserBase):
   pass
 
 class User(UserBase):
   id: int
-  is_active: bool
-
+  
   class Config:
-    orm_mode = True
+     from_attributes = True
 
   @classmethod
-  def find(cls, id: int, db: Session):
-   return get_user(db, id)
+  def create(cls, email: str, session: Session):
+    db_item = UserDB(email=email)
+    session.add(db_item)
+    session.commit()
+    session.refresh(db_item)
+    return cls(**db_item.__dict__)
+  
+  @classmethod
+  def find(cls, id: int, session: Session):
+    db_item = session.query(UserDB).filter(UserDB.id == id).first()
+    return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def find_by_email(cls, email: str, db: Session):
-   return get_user_by_email(db, email)
+  def find_by_email(cls, email: str, session: Session):
+    db_item = session.query(UserDB).filter(UserDB.email == email).first()
+    return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def check(cls, email: str, db: Session):
+  def check(cls, email: str, session: Session):
     present_in_db = True
-    user = get_user_by_email(db, email)
+    user = cls.find_by_email(email, session)
     if not user:
       present_in_db = False
-      user = create_user(db, email)
+      user = cls.create(email, session)
     return user, present_in_db
 
+# def get_users(session: Session, skip: int = 0, limit: int = 100):
+#   return session.query(User).offset(skip).limit(limit).all()
