@@ -5,14 +5,14 @@ from model.files import Files
 from d4kms_generic import application_logger
 from utility.background import process_excel, process_word
 
-async def process_xl(request, background_tasks, templates):
+async def process_xl(request, background_tasks, templates, user, session):
   try:
     form = await request.form()
     excel_file, image_files, messages = await get_xl_files(form)
     if excel_file:
       uuid = save_xl_files(excel_file, image_files)
       if uuid:
-        background_tasks.add_task(process_excel, uuid)
+        background_tasks.add_task(process_excel, uuid, user, session)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': excel_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
@@ -57,14 +57,14 @@ def save_xl_files(excel_file: dict, image_files: dict):
     full_path = files.save(filename, "image", contents)
   return uuid
 
-async def process_m11(request, background_tasks, templates):
+async def process_m11(request, background_tasks, templates, user, session):
   try:
     form = await request.form()
     word_file, messages = await get_m11_files(form)
     if word_file:
       uuid = save_m11_files(word_file)
       if uuid:
-        background_tasks.add_task(process_word, uuid)
+        background_tasks.add_task(process_word, uuid, user, session)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': word_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")

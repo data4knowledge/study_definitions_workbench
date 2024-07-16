@@ -165,3 +165,4 @@ setup_env.sh
 install_local_d4kms.sh
 datafiles/*/
 
+test_db.py

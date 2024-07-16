@@ -86,13 +86,13 @@ from model.file_import import FileImport
 
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 async def upload_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
-  print("A")
-  return await process_m11(request, background_tasks, templates)
+  user, present_in_db = user_details(request, db)
+  return await process_m11(request, background_tasks, templates, user, session)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
-async def upload_xl(request: Request, background_tasks: BackgroundTasks):
-  print("B")
-  return await process_xl(request, background_tasks, templates)
+async def upload_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, db)
+  return await process_xl(request, background_tasks, templates, user, session)
 
 @app.get("/logout")
 def logout(request: Request):
