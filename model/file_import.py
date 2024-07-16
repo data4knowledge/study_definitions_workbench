@@ -34,9 +34,15 @@ class FileImport(FileImportBase):
     db_item = session.query(FileImportDB).filter(FileImportDB.uuid == uuid).first()
     return cls(**db_item.__dict__) if db_item else None  
 
+  @classmethod
+  def list(cls, session: Session, skip: int = 0, limit: int = 100):
+    return session.query(FileImportDB).offset(skip).limit(limit).all()
+  
   def update_status(self, status: str, session: Session) -> 'FileImport':
+    print(f"update_status: {status}")
     db_item = session.query(FileImportDB).filter(FileImportDB.id == self.id).first()
     db_item.status = status
     session.commit()
     session.refresh(db_item)
     return self.__class__(**db_item.__dict__)
+
