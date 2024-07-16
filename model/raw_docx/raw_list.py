@@ -1,19 +1,19 @@
 from d4kms_generic import application_logger
-from model.word_docx.list_item import ListItem
+from model.raw_docx.raw_list_item import RawListItem
 
-class List():
+class RawList():
 
   def __init__(self, level=0):
     self.items = []
     self.level = level
 
-  def add(self, item: ListItem) -> None:
+  def add(self, item: RawListItem) -> None:
     if item.level == self.level:
       self.items.append(item)
     elif item.level > self.level:
       list = self.items[-1] if self.items else None
-      if not isinstance(list, List):
-        list = List(item.level)
+      if not isinstance(list, RawList):
+        list = RawList(item.level)
         self.items.append(list)
       list.add(item)
       if item.level > self.level + 1:

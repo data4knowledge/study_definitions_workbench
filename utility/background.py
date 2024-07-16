@@ -16,9 +16,7 @@ def process_excel(uuid):
 def process_word(uuid):
   try:
     files = Files(uuid)
-    m11 = M11Protocol()
-    errors = db.from_excel(files.path(uuid, 'xlsx'))
-    files.save(uuid, 'errors', errors)
-    files.save(uuid, 'usdm', db.to_json())
+    m11 = M11Protocol(files.path(uuid, 'docx'))
+    files.save(uuid, 'usdm', m11.to_usdm())
   except Exception as e:
     application_logger.exception(f"Exception '{e}' raised processing Excel file", e)

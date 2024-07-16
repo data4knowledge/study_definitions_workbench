@@ -2,7 +2,7 @@ import os
 import base64
 from d4kms_generic import application_logger
 
-class Image():
+class RawImage():
 
   FILE_TYPE_MAP = {'.png': 'png', '.jpg': 'jpg', '.jpeg': 'jpg'}
 

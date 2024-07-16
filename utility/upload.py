@@ -3,20 +3,20 @@ from fastapi import File
 from model.files import Files
 #from model.file_import import FileImport
 from d4kms_generic import application_logger
-from utility.background import process_excel
+from utility.background import process_excel, process_word
 
 async def process_xl(request, background_tasks, templates):
   try:
     form = await request.form()
-    excel, images, messages = await get_xl_files(form)
-    if excel:
-      uuid = save_xl_files(excel, images)
+    excel_file, image_files, messages = await get_xl_files(form)
+    if excel_file:
+      uuid = save_xl_files(excel_file, image_files)
       if uuid:
         background_tasks.add_task(process_excel, uuid)
-        return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+        return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': excel_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
-        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': excel['filename'], 'messages': messages})  
+        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': excel_file['filename'], 'messages': messages})  
     else:
       messages.append("No Excel file detected, file upload ignored")
       return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages})  
@@ -25,9 +25,9 @@ async def process_xl(request, background_tasks, templates):
     return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
 
 async def get_xl_files(form: File):
-  images = []
+  image_files = []
   messages = []
-  excel = None
+  excel_file = None
   files = form.getlist('files')
   for v in files:
     filename = v.filename
@@ -35,23 +35,23 @@ async def get_xl_files(form: File):
     file_root, file_extension = os.path.splitext(filename)
     if file_extension == '.xlsx':
       messages.append(f"Excel file '{filename}' accepted")
-      excel = {'filename': filename, 'contents': contents}
+      excel_file = {'filename': filename, 'contents': contents}
       application_logger.info(f"Processing upload file '{file_root}'")
     elif file_extension in ['.png', 'jpg', 'jpeg']:
       messages.append(f"Image file '{filename}' accepted")
-      images.append({'filename': filename, 'contents': contents})
+      image_files.append({'filename': filename, 'contents': contents})
       application_logger.info(f"Processing upload file '{file_root}'")
     else:
       messages.append(f"File '{filename}' was ignored, not .xlsx or an image file")
-  return excel, images, messages
+  return excel_file, image_files, messages
 
-def save_xl_files(excel: dict, images: dict):
+def save_xl_files(excel_file: dict, image_files: dict):
   files = Files()
   uuid = files.new()
-  filename = excel['filename']
-  contents = excel['contents']
+  filename = excel_file['filename']
+  contents = excel_file['contents']
   full_path = files.save(filename, "xlsx", contents)
-  for image in images:
+  for image in image_files:
     filename = image['filename']
     contents = image['contents']
     full_path = files.save(filename, "image", contents)
@@ -60,15 +60,15 @@ def save_xl_files(excel: dict, images: dict):
 async def process_m11(request, background_tasks, templates):
   try:
     form = await request.form()
-    word, messages = await get_m11_files(form)
-    if word:
-      uuid = save_m11_files(word)
+    word_file, messages = await get_m11_files(form)
+    if word_file:
+      uuid = save_m11_files(word_file)
       if uuid:
-        background_tasks.add_task(process_excel, uuid)
-        return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': word['filename'], 'messages': messages})  
+        background_tasks.add_task(process_word, uuid)
+        return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': word_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
-        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': word['filename'], 'messages': messages})  
+        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': word_file['filename'], 'messages': messages})  
     else:
       messages.append("No Word file detected, file upload ignored")
       return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages})  
@@ -77,9 +77,8 @@ async def process_m11(request, background_tasks, templates):
     return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
 
 async def get_m11_files(form: File):
-  images = []
   messages = []
-  excel = None
+  word_file = None
   files = form.getlist('files')
   for v in files:
     filename = v.filename
@@ -87,16 +86,16 @@ async def get_m11_files(form: File):
     file_root, file_extension = os.path.splitext(filename)
     if file_extension == '.docx':
       messages.append(f"Word file '{filename}' accepted")
-      excel = {'filename': filename, 'contents': contents}
+      word_file = {'filename': filename, 'contents': contents}
       application_logger.info(f"Processing upload file '{file_root}'")
     else:
       messages.append(f"File '{filename}' was ignored, not .docx file")
-  return excel, messages
+  return word_file, messages
 
-def save_m11_files(excel: dict, user_id, db):
+def save_m11_files(word_file: dict):
   files = Files()
   uuid = files.new()
-  filename = excel['filename']
-  contents = excel['contents']
+  filename = word_file['filename']
+  contents = word_file['contents']
   full_path = files.save(filename, "docx", contents)
   return uuid

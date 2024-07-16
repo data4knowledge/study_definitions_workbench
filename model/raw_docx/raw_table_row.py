@@ -1,12 +1,12 @@
-from model.word_docx.table_cell import TableCell
+from model.raw_docx.raw_table_cell import RawTableCell
 from d4kms_generic import application_logger
 
-class TableRow():
+class RawTableRow():
   
   def __init__(self):
     self.cells = []
   
-  def add(self, cell: TableCell):
+  def add(self, cell: RawTableCell):
     self.cells.append(cell) 
   
   def to_html(self):

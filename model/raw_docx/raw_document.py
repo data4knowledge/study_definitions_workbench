@@ -1,63 +1,17 @@
-from model.word_docx.paragraph import Paragraph
-from model.word_docx.list import List
-from model.word_docx.table import Table
-from model.word_docx.image import Image
+from model.raw_docx.raw_section import RawSection
 from d4kms_generic import application_logger
 
-class Section():
-
-  def __init__(self, title: str | None, number: str | None, level: int):
-    self.title = title.strip() if title else title
-    self.number = number.strip() if number else number
-    self.level = level
-    self.items = []
-
-  def add(self, item: Paragraph | List | Table | Image) -> None:
-    self.items.append(item)
-
-  def is_in_list(self) -> bool:
-    if self.items:
-      if isinstance(self.items[-1], List):
-        return True
-    return False
-  
-  def current_list(self) -> List:
-    return self.items[-1] if isinstance(self.items[-1], List) else None
-
-  def to_dict(self):
-    return { 'sectionNumber': self.number, 'sectionTitle': self.title, 'name': '', 'text': self.to_html()} 
-
-  def to_html(self):
-    text = [self._format_heading()]
-    for item in self.items:
-      result = item.to_html()
-      text.append(result)
-    return ('\n').join(text)
-
-  def tables(self):
-    return [x for x in self.items if isinstance(x, Table)]
-
-  def _format_heading(self):
-    if self.number and self.title:
-      return f'<h{self.level}>{self.number} {self.title}</h{self.level}>'
-    elif self.number:
-      return f'<h{self.level}>{self.number}</h{self.level}>'
-    elif self.title:
-      return f'<h{self.level}>{self.title}</h{self.level}>'
-    else:
-      return ''
-        
-class Document():
+class RawDocument():
   
   def __init__(self):
     self.sections = []
     self._levels = [0,0,0,0,0,0]
     self._section_number_mapping = {} 
     self._section_title_mapping = {} 
-    section = Section(None, None, 1)
+    section = RawSection(None, None, 1)
     self.add(section, False) # No section number increment
 
-  def add(self, section: Section, increment=True):
+  def add(self, section: RawSection, increment=True):
     if increment:
       self._inc_section_number(section.level)
       section.number = self._get_section_number(section.level)
@@ -65,24 +19,24 @@ class Document():
     self._section_title_mapping[section.title] = section
     self.sections.append(section)
 
-  def current_section(self) -> Section:
+  def current_section(self) -> RawSection:
     return self.sections[-1]
 
-  def section_by_ordinal(self, ordinal: int) -> Section:
+  def section_by_ordinal(self, ordinal: int) -> RawSection:
     if 1 >= ordinal <= len(self.sections):
       return self.sections[ordinal - 1]
     else:
       application_logger.error(f"Could not find section in ordinal position '{ordinal}'")
       return None
 
-  def section_by_number(self, section_number: str) -> Section:
+  def section_by_number(self, section_number: str) -> RawSection:
     if section_number in self._section_number_mapping:
       return self._section_number_mapping[section_number] 
     else:
       application_logger.error(f"Could not find section with number '{section_number}'")
       return None
 
-  def section_by_title(self, section_title: str) -> Section:
+  def section_by_title(self, section_title: str) -> RawSection:
     if section_title in self._section_title_mapping:
       return self._section_title_mapping[section_title] 
     else:

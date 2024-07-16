@@ -12,7 +12,8 @@ class Files:
 
   def __init__(self, uuid=None):
     self.media_type = {
-      "xlsx": {'method': self._save_xlsx_file, 'use_original':  False, 'filename': 'xl'},
+      "xlsx": {'method': self._save_excel_file, 'use_original':  False, 'filename': 'xl'},
+      "docx": {'method': self._save_word_file, 'use_original':  False, 'filename': 'doc'},
       "usdm": {'method': self._save_json_file, 'use_original':  False, 'filename': 'usdm'},
       "fhir": {'method': self._save_json_file, 'use_original':  False, 'filename': 'fhir'},
       "errors": {'method': self._save_csv_file, 'use_original':  False, 'filename': 'errors'},
@@ -50,9 +51,15 @@ class Files:
       application_logger.exception(f"Exception deleting directory '{path}'", e)
       return False
   
-  def _save_xlsx_file(self, uuid, contents, suffix):
+  def _save_excel_file(self, uuid, contents, suffix):
+    self._save_binary_file(uuid, contents, suffix, 'xlsx')
+
+  def _save_word_file(self, uuid, contents, suffix):
+    self._save_binary_file(uuid, contents, suffix, 'docx')
+
+  def _save_binary_file(self, uuid, contents, suffix, extension):
     try:
-      full_path = self._file_path(uuid, suffix, 'xlsx')
+      full_path = self._file_path(uuid, suffix, extension)
       with open(full_path, 'wb') as f:
         f.write(contents)
       return full_path

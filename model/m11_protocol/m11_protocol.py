@@ -1,5 +1,5 @@
-from model.word_docx.word_docx import WordDocx
-from model.word_docx.table import Table
+from model.raw_docx.raw_docx import RawDocx
+from model.raw_docx.raw_table import RawTable
 from usdm_model.wrapper import Wrapper
 from usdm_model.study import Study
 from usdm_model.study_design import StudyDesign
@@ -24,7 +24,7 @@ class M11Protocol():
   DIV_CLOSE = '</div>'
 
   def __init__(self, filepath):
-    docx = WordDocx(filepath)
+    docx = RawDocx(filepath)
     self._id_manager = IdManager(application_logger)
     self._cdisc_ct_manager = CDISCCTLibrary(application_logger)
     self.raw = docx.target_document
@@ -165,7 +165,7 @@ class M11Protocol():
     for section in self.raw.sections:
       self.sections.append(section)
 
-  def _table_get_row(self, table: Table, key: str) -> str:
+  def _table_get_row(self, table: RawTable, key: str) -> str:
     for row in table.rows:
       if row.cells[0].is_text():
         if row.cells[0].text().upper().startswith(key.upper()):

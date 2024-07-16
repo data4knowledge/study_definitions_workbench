@@ -1,6 +1,6 @@
 from d4kms_generic import application_logger
 
-class ListItem():
+class RawListItem():
 
   def __init__(self, text: str, level: int):
     self.text = text

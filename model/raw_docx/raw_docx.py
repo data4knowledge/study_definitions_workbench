@@ -3,17 +3,17 @@ import re
 import docx
 import docx2txt
 from pathlib import Path
-from model.word_docx.document import Document
-from model.word_docx.section import Section
-from model.word_docx.paragraph import Paragraph
-from model.word_docx.list import List
-from model.word_docx.list_item import ListItem
-from model.word_docx.table import Table
-from model.word_docx.table_row import TableRow
-from model.word_docx.table_cell import TableCell
-from model.word_docx.image import Image
+from model.raw_docx.raw_document import RawDocument
+from model.raw_docx.raw_section import RawSection
+from model.raw_docx.raw_paragraph import RawParagraph
+from model.raw_docx.raw_list import RawList
+from model.raw_docx.raw_list_item import RawListItem
+from model.raw_docx.raw_table import RawTable
+from model.raw_docx.raw_table_row import RawTableRow
+from model.raw_docx.raw_table_cell import RawTableCell
+from model.raw_docx.raw_image import RawImage
 from d4kms_generic import application_logger
-from model.word_docx.word_docx import Document as DocXProcessor
+from docx import Document as DocXProcessor
 from docx.document import Document
 from docx.oxml.table import CT_Tbl, CT_TcPr
 from docx.oxml.text.paragraph import CT_P
@@ -21,7 +21,7 @@ from docx.table import _Cell, Table
 from docx.text.paragraph import Paragraph
 from lxml import etree
 
-class WordDocx():
+class RawDocx():
 
   class LogicError(Exception):
     pass
@@ -36,7 +36,7 @@ class WordDocx():
     self.image_rels = {}
     self._organise_dir()
     self.source_document = DocXProcessor(self.full_path)
-    self.target_document = Document()
+    self.target_document = RawDocument()
 
   def _organise_dir(self):
     try:
@@ -77,6 +77,7 @@ class WordDocx():
     Document object, but also works for a _Cell object, which itself can
     contain paragraphs and tables.
     """
+    print(f"ITERATION: {parent}")
     if isinstance(parent, Document):
       parent_elm = parent.element.body
     elif isinstance(parent, _Cell):
@@ -104,16 +105,16 @@ class WordDocx():
     except Exception as e:
       return 0
     
-  def _process_table(self, table, target: Section | TableCell):
+  def _process_table(self, table, target: RawSection | RawTableCell):
     target_table = Table()
     #print(f"TABLE: {type(target)}")
     target.add(target_table)
     for row in table.rows:
-      target_row = TableRow()
+      target_row = RawTableRow()
       target_table.add(target_row)
       cells = row.cells
       for cell in cells:
-        target_cell = TableCell()
+        target_cell = RawTableCell()
         target_row.add(target_cell)
         for block_item in self._iter_block_items(cell):
           #print(f"CELL BLOCK: {type(block_item)}")
@@ -131,16 +132,16 @@ class WordDocx():
           else:
             raise self.LogicError(f"something's not right with a child {type(block_item)}")
 
-  def _process_cell(self, paragraph, target_cell: TableCell):
+  def _process_cell(self, paragraph, target_cell: RawTableCell):
     if self._is_list(paragraph):
       list_level = self.get_list_level(paragraph)
-      item = ListItem(paragraph.text, list_level)
+      item = RawListItem(paragraph.text, list_level)
       if target_cell.is_in_list():
         #print(f"IN LIST:")
         list = target_cell.current_list()
       else:
         #print(f"NEW LIST:")
-        list = List()
+        list = RawList()
         target_cell.add(list)
       list.add(item)
       #print(f"List: <{paragraph.style.name}> <{list_level}> {paragraph.text}")
@@ -151,23 +152,23 @@ class WordDocx():
       #  print(ord(c), hex(ord(c)), c.encode('utf-8'))
       #print(f"Text: <{paragraph.style.name}> {paragraph.text}")
 
-  def _process_paragraph(self, paragraph, target_section: Section, image_rels: dict):
+  def _process_paragraph(self, paragraph, target_section: RawSection, image_rels: dict):
     global add_image
     if self._is_heading(paragraph.style.name):
       level = self._get_level(paragraph.style.name[0:2])
-      target_section = Section(paragraph.text, paragraph.text, level)
+      target_section = RawSection(paragraph.text, paragraph.text, level)
       self.target_document.add(target_section)
       #print(f"Heading: {paragraph.style.name} {paragraph.text}")
     elif self._is_list(paragraph):
       list_level = self.get_list_level(paragraph)
       #print(f"SECTION FOR LIST: {section.number}")
-      item = ListItem(paragraph.text, list_level)
+      item = RawListItem(paragraph.text, list_level)
       if target_section.is_in_list():
         #print(f"IN LIST:")
         list = target_section.current_list()
       else:
         #print(f"NEW LIST:")
-        list = List()
+        list = RawList()
         target_section.add(list)
       list.add(item)
       #print(f"List: <{paragraph.style.name}> <{list_level}> {paragraph.text}")
