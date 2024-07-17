@@ -2,6 +2,7 @@ from d4kms_generic import application_logger
 from usdm_db import USDMDb
 from model.files import Files
 from model.file_import import FileImport
+from model.study import Study
 from model.m11_protocol.m11_protocol import M11Protocol
 from model import VERSION, SYSTEM_NAME
 
@@ -15,10 +16,11 @@ def process_excel(uuid, user, session):
     errors = db.from_excel(full_path)
     files.save(uuid, 'errors', errors)
     files.save(uuid, 'usdm', db.to_json())
+    Study.study_and_version('XXXX', user.id, file_import.id, session)
     file_import.update_status('Successful', session)
   except Exception as e:
     if file_import:
-      file_import.update_status('Exception')
+      file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Excel file", e)
 
 def process_word(uuid, user, session):
@@ -29,8 +31,9 @@ def process_word(uuid, user, session):
     m11 = M11Protocol(files.path(uuid, 'docx'), SYSTEM_NAME, VERSION)
     file_import.update_status('Saving', session)
     files.save(uuid, 'usdm', m11.to_usdm())
+    Study.study_and_version('XXXX', user.id, file_import.id, session)
     file_import.update_status('Successful', session)
   except Exception as e:
     if file_import:
-      file_import.update_status('Exception')
+      file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Word file", e)

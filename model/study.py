@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from model.models import Study as StudyDB
+from model.models import Study as StudyDB, Version as VersionDB
+from model.version import Version
 from sqlalchemy.orm import Session
 
 class StudyBase(BaseModel):
@@ -10,7 +11,7 @@ class StudyCreate(StudyBase):
 
 class Study(StudyBase):
   id: int
-  owner_id: int
+  user_id: int
 
   class Config:
     from_attributes = True
@@ -34,10 +35,24 @@ class Study(StudyBase):
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def check(cls, name: str, session: Session):
+  def study_and_version(cls, name: str, user_id: int, import_id: int, session: Session):
     present_in_db = True
-    item = cls.find_by_name(name, session)
-    if not item:
+    study = cls.find_by_name(name, session)
+    if not study:
       present_in_db = False
-      user = cls.create(name, session)
-    return item, present_in_db
+      study = StudyDB(name=name, user_id=user_id)
+      version = VersionDB(version=1, import_id=import_id)
+
+      study.versions.append(version)
+      session.add(study)
+
+      session.commit()
+      study = cls.find_by_name(name, session)
+    else:
+      latest_version = Version.find_latest_version(study.id, session)
+      version = latest_version + 1 if latest_version else 1
+      new_version = VersionDB(version=version, study_id=study.id, import_id=import_id)
+      session.add(new_version)
+      session.commit()
+    study = cls(**study.__dict__)
+    return study, present_in_db
