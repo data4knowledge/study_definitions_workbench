@@ -35,8 +35,19 @@ class FileImport(FileImportBase):
     return cls(**db_item.__dict__) if db_item else None  
 
   @classmethod
-  def list(cls, session: Session, skip: int = 0, limit: int = 100):
-    return session.query(FileImportDB).offset(skip).limit(limit).all()
+  def list(cls, session: Session, page: int=1, size: int=10):
+    page = page if page >= 1 else 1
+    size = size if size > 0 else 10
+    skip = (page - 1) * size
+    count = session.query(FileImportDB).count()
+    print(f"list: {count}, {page}, {size}, {skip}")
+    data = session.query(FileImportDB).offset(skip).limit(size).all()
+    results = []
+    for db_item in data:
+      results.append(db_item.__dict__)
+    result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
+    print(f"list: {result}")
+    return result
   
   def update_status(self, status: str, session: Session) -> 'FileImport':
     print(f"update_status: {status}")

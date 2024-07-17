@@ -5,8 +5,10 @@ from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
 from d4kms_ui.release_notes import ReleaseNotes
+from d4kms_ui.pagination import Pagination
 from model.database import SessionLocal, engine, get_db
 from model.user import User, UserCreate
+from model.file_import import FileImport
 from sqlalchemy.orm import Session
 from model import models
 from utility.background import *
@@ -93,6 +95,13 @@ async def upload_m11(request: Request, background_tasks: BackgroundTasks, sessio
 async def upload_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return await process_xl(request, background_tasks, templates, user, session)
+
+@app.get('/import/status', dependencies=[Depends(protect_endpoint)])
+async def upload_xl(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  data = FileImport.list(session, page, size)
+  pagination = Pagination(data, "/import/status") 
+  return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get("/logout")
 def logout(request: Request):
