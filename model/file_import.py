@@ -1,24 +1,27 @@
+import datetime
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from uuid import uuid4
 from model.models import FileImport as FileImportDB
 
 class FileImportBase(BaseModel):
-  filename: str
   filepath: str
+  type: str
   status: str
   uuid: str
 
 class FileImport(FileImportBase):
   id: int
+  user_id: int
+  created: datetime.datetime
 
   class Config:
     from_attributes = True
 
   @classmethod
-  def create(cls, fullpath: str, filename: str, status: str, user_id: int, session: Session) -> 'FileImport':
-    data = {'filepath': fullpath, 'filename': filename, 'status': status, 'uuid': str(uuid4())}
-    db_item = FileImportDB(**data, owner_id=user_id)
+  def create(cls, fullpath: str, status: str, type: str, user_id: int, session: Session) -> 'FileImport':
+    data = {'filepath': fullpath, 'status': status, 'type': type, 'uuid': str(uuid4())}
+    db_item = FileImportDB(**data, user_id=user_id)
     session.add(db_item)
     session.commit()
     session.refresh(db_item)
@@ -35,13 +38,13 @@ class FileImport(FileImportBase):
     return cls(**db_item.__dict__) if db_item else None  
 
   @classmethod
-  def list(cls, session: Session, page: int=1, size: int=10):
+  def list(cls, page: int, size: int, user_id: int, session: Session):
     page = page if page >= 1 else 1
     size = size if size > 0 else 10
     skip = (page - 1) * size
-    count = session.query(FileImportDB).count()
+    count = session.query(FileImportDB).filter(FileImportDB.user_id == user_id).count()
     print(f"list: {count}, {page}, {size}, {skip}")
-    data = session.query(FileImportDB).offset(skip).limit(size).all()
+    data = session.query(FileImportDB).filter(FileImportDB.user_id == user_id).offset(skip).limit(size).all()
     results = []
     for db_item in data:
       results.append(db_item.__dict__)

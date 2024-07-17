@@ -56,7 +56,7 @@ def index(request: Request, session: Session = Depends(get_db)):
   if present_in_db:
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user})
   else:
-    return templates.TemplateResponse("user/edit.html", {'request': request, 'user': user})
+    return templates.TemplateResponse("users/show.html", {'request': request, 'user': user})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
@@ -99,7 +99,7 @@ async def upload_xl(request: Request, background_tasks: BackgroundTasks, session
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def upload_xl(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = FileImport.list(session, page, size)
+  data = FileImport.list(page, size, user.id, session)
   pagination = Pagination(data, "/import/status") 
   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
