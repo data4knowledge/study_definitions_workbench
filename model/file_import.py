@@ -43,13 +43,11 @@ class FileImport(FileImportBase):
     size = size if size > 0 else 10
     skip = (page - 1) * size
     count = session.query(FileImportDB).filter(FileImportDB.user_id == user_id).count()
-    print(f"list: {count}, {page}, {size}, {skip}")
     data = session.query(FileImportDB).filter(FileImportDB.user_id == user_id).offset(skip).limit(size).all()
     results = []
     for db_item in data:
       results.append(db_item.__dict__)
     result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
-    print(f"list: {result}")
     return result
   
   def update_status(self, status: str, session: Session) -> 'FileImport':

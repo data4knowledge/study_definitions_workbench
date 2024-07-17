@@ -54,7 +54,9 @@ async def login(request: Request):
 def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if present_in_db:
-    return templates.TemplateResponse("home/index.html", {'request': request, 'user': user})
+    data = Study.list(1, 10, user.id, session)
+    pagination = Pagination(data, "/index") 
+    return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user})
 

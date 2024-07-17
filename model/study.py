@@ -42,10 +42,8 @@ class Study(StudyBase):
       present_in_db = False
       study = StudyDB(name=name, user_id=user_id)
       version = VersionDB(version=1, import_id=import_id)
-
       study.versions.append(version)
       session.add(study)
-
       session.commit()
       study = cls.find_by_name(name, session)
     else:
@@ -56,3 +54,18 @@ class Study(StudyBase):
       session.commit()
     study = cls(**study.__dict__)
     return study, present_in_db
+
+  @classmethod
+  def list(cls, page: int, size: int, user_id: int, session: Session):
+    page = page if page >= 1 else 1
+    size = size if size > 0 else 10
+    skip = (page - 1) * size
+    count = session.query(StudyDB).filter(StudyDB.user_id == user_id).count()
+    data = session.query(StudyDB).filter(StudyDB.user_id == user_id).offset(skip).limit(size).all()
+    results = []
+    for db_item in data:
+      record = db_item.__dict__
+      record['versions'] = Version.version_count(db_item.id, session)
+      results.append(record)
+    result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
+    return result

@@ -39,3 +39,6 @@ class Version(VersionBase):
     db_item = session.query(VersionDB).filter(VersionDB.study_id == study_id).order_by(desc(VersionDB.version)).first()
     return db_item.version if db_item else None
 
+  @classmethod
+  def version_count(cls, study_id, session: Session):
+    return session.query(VersionDB).filter(VersionDB.study_id == study_id).count()

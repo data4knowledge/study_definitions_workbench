@@ -5,13 +5,40 @@
   {% endwith %}    
 {% endblock %}
 {% block main_content %}
-  <div class="container-fluid mt-3">
-    <div class="row row-cols-3">
-      <div class="col">
-        <div class="card rounded-3 shadow-sm h-100 text-center d-flex">
-          <div class="card-body ">
-            <a href="/logout">Logout</a>
-          </div>  
+  <div class="mt-3 row">
+    <div class="col">
+      <div class="card rounded-3">
+        <div class="card-body">
+          <h4 class="card-title">Import Status</h4>
+          <h6 class="card-subtitle mb-2 text-muted">Status of the imports perfomed by you</h6>
+
+          {% with pagination=pagination %}
+            {% include "shared/partials/table_header.html" %}
+          {% endwith %}  
+        
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Versions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in data['items']: %}
+                  <tr>
+                    <td>{{item['name']}}</td> 
+                    <td>{{item['versions']}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        
+          {% with pagination=pagination %}
+            {% include "shared/partials/table_footer.html" %}
+          {% endwith %}  
+
         </div>
       </div>
     </div>
