@@ -44,15 +44,21 @@ def process_word(uuid, user, session):
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Word file", e)
 
+from model.object_path import ObjectPath
+
 def _study_parameters(json_str: str) -> dict:
-  print(f"STUDY PARAMS: {type(json_str)}")
-  data = json.loads(json_str) 
-  db = USDMDb()
   try:
+    data = json.loads(json_str) 
+    db = USDMDb()
     db.from_json(data)
-    study = db.wrapper().study
-    name = study.name
-    return {'name': name}
+    object_path = ObjectPath(db.wrapper())
+    return {
+      'name': _get_parameter(object_path, 'study/name')
+    }
   except Exception as e:
-    print(f"STUDY PARAMS: exception {e}")
+    application_logger.exception(f"Exception raised extracting study parameters", e)
     return None
+  
+def _get_parameter(object_path: ObjectPath, path: str) -> str:
+  value = object_path.get(path)
+  return value if value else ''
