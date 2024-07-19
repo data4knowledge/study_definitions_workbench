@@ -57,7 +57,7 @@ def _study_parameters(json_str: str) -> dict:
     return {
       'name': _get_parameter(object_path, 'study/name'),
       'phase': _get_parameter(object_path, 'study/versions[0]/studyPhase/standardCode/decode'),
-      'full_title': _get_parameter(object_path, 'study/versions[0]/studyPhase/standardCode/decode'),
+      'full_title': _get_parameter(object_path, "study/versions[0]/titles[type/@code='C99905x2']/text"),
     }
   except Exception as e:
     application_logger.exception(f"Exception raised extracting study parameters", e)

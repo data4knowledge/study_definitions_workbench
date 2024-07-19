@@ -17,7 +17,7 @@ class ObjectPath():
 
   def _path(self, object_value: object, instruction: str) -> object:
     try:
-      group_result = re.match(r"(?P<attribute>\w+)(\[@(?P<name>\w+)='(?P<value>\w+)'\])?(\[(?P<index>\d+)\])?", instruction)
+      group_result = re.match(r"(?P<attribute>\w+)(@(?P<name>\w+)='(?P<value>\w+)')?(\[(?P<subpath>\S+)\])?(\[(?P<index>\d+)\])?", instruction)
       result = group_result.groupdict()
       if result['name'] and result['value'] and result['attribute']:
         object_value = getattr(object_value, result['attribute'], None)
@@ -31,6 +31,8 @@ class ObjectPath():
             if getattr(item, result['name'], None) == result['value']:
               object_value = item
               break
+      elif result['subpath'] and result['attribute']:
+        print(f"SUBPATH: {result['subpath']}")
       elif result['index'] and result['attribute']:
         object_value = getattr(object_value, result['attribute'], None)[int(result['index'])]
       elif result['attribute']:
