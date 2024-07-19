@@ -2,58 +2,69 @@ import pytest
 from model.object_path import ObjectPath
 
 class KlassA():
-  a: str
-  b: str
-  c: str
+  a_a: str
+  a_b: str
+  a_c: str
 
 class KlassB():
-  a: str
-  b: KlassA
+  b_a: str
+  b_b: KlassA
 
 class KlassC():
-  a: str
-  b: KlassB
+  c_a: str
+  c_b: KlassB
 
 class Root():
-  a: str
-  b: int
-  c: list[KlassA]
-  d: KlassC
+  r_a: str
+  r_b: int
+  r_c: list[KlassA]
+  r_d: KlassC
 
 a1 = KlassA()
-a1.a = "Hello Klass A 1"
-a1.b = 14
-a1.c = "X"
+a1.a_a = "Hello Klass A 1"
+a1.a_b = 14
+a1.a_c = "X"
 a2 = KlassA()
-a2.a = "Hello Klass A 2"
-a2.b = 21
-a2.c = "Y"
+a2.a_a = "Hello Klass A 2"
+a2.a_b = 21
+a2.a_c = "Y"
 a3 = KlassA()
-a3.a = "Hello Klass A 3"
-a3.b = 100
-a3.c = "Z"
+a3.a_a = "Hello Klass A 3"
+a3.a_b = 100
+a3.a_c = "Z"
 a4 = KlassA()
-a4.a = "Hello Klass A 4"
-a4.b = 1000
-a4.c = "W"
+a4.a_a = "Hello Klass A 4"
+a4.a_b = 1000
+a4.a_c = "W"
 b1 = KlassB()
-b1.a = "Klass B"
-b1.b = a2
+b1.b_a = "Klass B"
+b1.b_b = a2
 c1 = KlassC
-c1.a = "Klass C"
-c1.b = b1
+c1.c_a = "Klass C"
+c1.c_b = b1
 root = Root()
-root.a = "root"
-root.b = 6543
-root.c = [a1, a3, a4]
-root.d = c1
+root.r_a = "root"
+root.r_b = 6543
+root.r_c = [a1, a3, a4]
+root.r_d = c1
 
 def test_1():
   x = ObjectPath(root)
-  assert x.get('b') == 6543
+  assert x.get('r_b') == 6543
 
-# print(f"2: {x.get('d/a')}\n\n")
-# print(f"3: {x.get('c[1]/a')}\n\n")
-# print(f"4: {x.get('d/b/b/a')}\n\n")
-# r = x.get("c[@c='W']/a")
-# print(f"5: {r}\n\n")
+def test_2():
+  x = ObjectPath(root)
+  assert x.get('r_d/c_a') == "Klass C"
+
+def test_3():
+  x = ObjectPath(root)
+  assert x.get('r_c[1]/a_a') == "Hello Klass A 3"
+
+def test_4():
+  x = ObjectPath(root)
+  assert x.get('r_d/c_b/b_b/a_a') == "Hello Klass A 2"
+
+def test_5():
+  x = ObjectPath(root)
+  assert x.get("r_c[@a_c='W']/a_b") == 1000
+
