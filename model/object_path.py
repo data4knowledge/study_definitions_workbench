@@ -40,7 +40,7 @@ class ObjectPath():
         object_value = None
       return object_value if self._empty() or None else self._path(object_value, self._pop())
     except Exception as e:
-      application_logger.exception("Exception raised processing object path '{self._original_path}'", e)
+      application_logger.exception(f"Exception raised processing object path '{self._original_path}'", e)
 
   def _pop(self):
     return self._queue.pop(0)

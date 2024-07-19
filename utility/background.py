@@ -20,6 +20,7 @@ def process_excel(uuid, user, session):
     usdm_json = db.to_json()
     files.save(uuid, 'usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
+    print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters['name'], user.id, file_import.id, session)
     file_import.update_status('Successful', session)
   except Exception as e:
@@ -37,6 +38,7 @@ def process_word(uuid, user, session):
     usdm_json = m11.to_usdm()
     files.save(uuid, 'usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
+    print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters['name'], user.id, file_import.id, session)
     file_import.update_status('Successful', session)
   except Exception as e:
@@ -53,7 +55,9 @@ def _study_parameters(json_str: str) -> dict:
     db.from_json(data)
     object_path = ObjectPath(db.wrapper())
     return {
-      'name': _get_parameter(object_path, 'study/name')
+      'name': _get_parameter(object_path, 'study/name'),
+      'phase': _get_parameter(object_path, 'study/versions[0]/studyPhase/standardCode/decode'),
+      'full_title': _get_parameter(object_path, 'study/versions[0]/studyPhase/standardCode/decode'),
     }
   except Exception as e:
     application_logger.exception(f"Exception raised extracting study parameters", e)
