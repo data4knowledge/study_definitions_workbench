@@ -1,4 +1,5 @@
 import pytest
+from model.object_path import ObjectPath
 
 class KlassA():
   a: str
@@ -13,7 +14,7 @@ class KlassC():
   a: str
   b: KlassB
 
-class Wrapper():
+class Root():
   a: str
   b: int
   c: list[KlassA]
@@ -41,18 +42,18 @@ b1.b = a2
 c1 = KlassC
 c1.a = "Klass C"
 c1.b = b1
-wrapper = Wrapper()
-wrapper.a = "Wrapper"
-wrapper.b = 6543
-wrapper.c = [a1, a3, a4]
-wrapper.d = c1
+root = Root()
+root.a = "root"
+root.b = 6543
+root.c = [a1, a3, a4]
+root.d = c1
 
+def test_1():
+  x = ObjectPath(root)
+  assert x.get('b') == 6543
 
-x = USDMPath(wrapper)
-print("\n\n")
-print(f"1: {x.get('b')}\n\n")
-print(f"2: {x.get('d/a')}\n\n")
-print(f"3: {x.get('c[1]/a')}\n\n")
-print(f"4: {x.get('d/b/b/a')}\n\n")
-r = x.get("c[@c='W']/a")
-print(f"5: {r}\n\n")
+# print(f"2: {x.get('d/a')}\n\n")
+# print(f"3: {x.get('c[1]/a')}\n\n")
+# print(f"4: {x.get('d/b/b/a')}\n\n")
+# r = x.get("c[@c='W']/a")
+# print(f"5: {r}\n\n")
