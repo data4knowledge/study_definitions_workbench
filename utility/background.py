@@ -21,7 +21,7 @@ def process_excel(uuid, user, session):
     files.save(uuid, 'usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
     print(f"PARAMETERS: {parameters}")
-    Study.study_and_version(parameters['name'], user.id, file_import.id, session)
+    Study.study_and_version(parameters, user.id, file_import.id, session)
     file_import.update_status('Successful', session)
   except Exception as e:
     if file_import:
@@ -39,7 +39,7 @@ def process_word(uuid, user, session):
     files.save(uuid, 'usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
     print(f"PARAMETERS: {parameters}")
-    Study.study_and_version(parameters['name'], user.id, file_import.id, session)
+    Study.study_and_version(parameters, user.id, file_import.id, session)
     file_import.update_status('Successful', session)
   except Exception as e:
     if file_import:

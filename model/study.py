@@ -5,6 +5,11 @@ from sqlalchemy.orm import Session
 
 class StudyBase(BaseModel):
   name: str
+  title: str
+  phase: str
+  sponsor: str
+  sponsor_identifier: str
+  nct_identifier: str
 
 class StudyCreate(StudyBase):
   pass
@@ -12,13 +17,13 @@ class StudyCreate(StudyBase):
 class Study(StudyBase):
   id: int
   user_id: int
-
+  
   class Config:
     from_attributes = True
 
   @classmethod
-  def create(cls, name: str, session: Session):
-    db_item = StudyDB(name=name)
+  def create(cls, name: str, title: str, phase: str, sponsor: str, sponsor_identifier: str, nct_identifier: str, session: Session):
+    db_item = StudyDB(name=name, title=title, phase=phase, sponsor=sponsor, sponsor_identifier=sponsor_identifier, nct_identifier=nct_identifier)
     session.add(db_item)
     session.commit()
     session.refresh(db_item)
@@ -35,17 +40,25 @@ class Study(StudyBase):
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def study_and_version(cls, name: str, user_id: int, import_id: int, session: Session):
+  def study_and_version(cls, parameters: dict, user_id: int, import_id: int, session: Session):
     present_in_db = True
-    study = cls.find_by_name(name, session)
+    study = cls.find_by_name(parameters['name'], session)
     if not study:
       present_in_db = False
-      study = StudyDB(name=name, user_id=user_id)
+      study = StudyDB(
+        name=parameters['name'], 
+        title=parameters['full_title'], 
+        phase=parameters['phase'], 
+        sponsor=parameters['sponsor'], 
+        sponsor_identifier=parameters['sponsor_identifier'], 
+        nct_identifier=parameters['nct_identifier'],
+        user_id=user_id
+      )
       version = VersionDB(version=1, import_id=import_id)
       study.versions.append(version)
       session.add(study)
       session.commit()
-      study = cls.find_by_name(name, session)
+      study = cls.find_by_name(parameters['name'], session)
     else:
       latest_version = Version.find_latest_version(study.id, session)
       version = latest_version + 1 if latest_version else 1
