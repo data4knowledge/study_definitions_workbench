@@ -57,7 +57,11 @@ def _study_parameters(json_str: str) -> dict:
     return {
       'name': _get_parameter(object_path, 'study/name'),
       'phase': _get_parameter(object_path, 'study/versions[0]/studyPhase/standardCode/decode'),
-      'full_title': _get_parameter(object_path, "study/versions[0]/titles[type/@code='C99905x2']/text"),
+      #'full_title': _get_parameter(object_path, "study/versions[0]/titles[type/@code='C99905x2']/text"),
+      'full_title': _official_title(db.wrapper()),
+      'sponsor_identifier': _sponsor_identifier(db.wrapper()),
+      'nct_identifier': _nct_identifier(db.wrapper()),
+      'sponsor': _sponsor(db.wrapper()),
     }
   except Exception as e:
     application_logger.exception(f"Exception raised extracting study parameters", e)
@@ -66,3 +70,36 @@ def _study_parameters(json_str: str) -> dict:
 def _get_parameter(object_path: ObjectPath, path: str) -> str:
   value = object_path.get(path)
   return value if value else ''
+
+# Temporary
+def _official_title(wrapper: Wrapper):
+  study_version = wrapper.study.versions[0]
+  title_type = 'Official Study Title'
+  for title in study_version.titles:
+    if title.type.decode == title_type:
+      return title.text
+  return ''
+
+def _sponsor_identifier(wrapper: Wrapper):
+  study_version = wrapper.study.versions[0]
+  identifiers = study_version.studyIdentifiers
+  for identifier in identifiers:
+    if identifier.studyIdentifierScope.organizationType.code == 'C70793':
+      return identifier.studyIdentifier
+  return ''
+
+def _nct_identifier(wrapper: Wrapper):
+  study_version = wrapper.study.versions[0]
+  identifiers = study_version.studyIdentifiers
+  for identifier in identifiers:
+    if identifier.studyIdentifierScope.name == 'ClinicalTrials.gov':
+      return identifier.studyIdentifier
+  return ''
+
+def _sponsor(wrapper: Wrapper):
+  study_version = wrapper.study.versions[0]
+  identifiers = study_version.studyIdentifiers
+  for identifier in identifiers:
+    if identifier.studyIdentifierScope.organizationType.code == 'C70793':
+      return identifier.studyIdentifierScope.name
+  return ''

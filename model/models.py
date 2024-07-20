@@ -20,6 +20,11 @@ class Study(Base):
 
   id = Column(Integer, primary_key=True)
   name = Column(String, index=True, nullable=False)
+  title = Column(String, index=True, nullable=True)
+  phase = Column(String, index=True, nullable=True)
+  sponsor = Column(String, index=True, nullable=True)
+  sponsor_identifier = Column(String, index=True, nullable=True)
+  nct_identifier = Column(String, index=True, nullable=True)
   user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
   versions = relationship('Version', backref='study')
 
