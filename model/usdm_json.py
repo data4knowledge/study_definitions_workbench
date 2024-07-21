@@ -7,10 +7,11 @@ class USDMJson():
 
   def __init__(self, file_import: FileImport):
     files = Files(file_import.uuid)
-    self._data = files.read(file_import.uuid, 'usdm')
-    db = USDMDb()
-    self._usdm = db.from_json(self._data)
-    self._wrapper = self._usdm.wrapper()
+    f = open(files.path('usdm'))
+    self._data = json.load(f)
+    # self._db = USDMDb()
+    # self._usdm = self._db.from_json(self._data)
+    # self._wrapper = self._db.wrapper()
 
   def study_version(self):
     # query = """
@@ -22,4 +23,19 @@ class USDMJson():
     #   MATCH (sv)-[]->(sd:StudyDesign)
     #   RETURN sv, st, stc, si, pc, o, oc, sd ORDER BY sv.version
     # """ % (self.uuid)
-    return self._wrapper().study.versions[0]
+    #version = self._wrapper.study.versions[0]
+    version = self._data['study']['versions'][0]
+    result = {
+      'identifiers': {},
+      'titles': {},
+      'study_designs': {},
+      'phase': ''
+    }
+    for identifier in version['studyIdentifiers']:
+      result['identifiers'][identifier['studyIdentifierScope']['organizationType']['decode']] = identifier
+    for title in version['titles']:
+      result['titles'][title['type']['decode']] = title['text']
+    for design in version['studyDesigns']:
+      result['study_designs'][design['id']] = {'name': design['name'], 'label': design['label']}
+    result['phase'] = version['studyPhase']
+    return result

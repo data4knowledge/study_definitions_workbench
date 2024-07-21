@@ -114,6 +114,7 @@ async def upload_xl(request: Request, id: int, session: Session = Depends(get_db
   file_import = FileImport.find(version.import_id, session)
   usdm = USDMJson(file_import)
   data = usdm.study_version()
+  print(f"DATA: {data}")
   return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/logout")
