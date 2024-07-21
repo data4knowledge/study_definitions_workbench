@@ -7,12 +7,14 @@ from d4kms_generic import application_logger
 from d4kms_ui.release_notes import ReleaseNotes
 from d4kms_ui.pagination import Pagination
 from model.database import SessionLocal, engine, get_db
-from model.user import User, UserCreate
+from model.user import User
+from model.version import Version
 from model.file_import import FileImport
 from sqlalchemy.orm import Session
 from model import models
 from utility.background import *
 from utility.upload import *
+from model.usdm_json import USDMJson
 from model import VERSION, SYSTEM_NAME
 
 models.Base.metadata.create_all(bind=engine)
@@ -104,6 +106,15 @@ async def upload_xl(request: Request, page: int, size: int, filter: str="", sess
   data = FileImport.list(page, size, user.id, session)
   pagination = Pagination(data, "/import/status") 
   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+
+@app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
+async def upload_xl(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  version = Version.find(id, session)
+  file_import = FileImport.find(version.import_id, session)
+  usdm = USDMJson(file_import)
+  data = usdm.study_version()
+  return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/logout")
 def logout(request: Request):

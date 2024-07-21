@@ -12,12 +12,13 @@ class VersionCreate(VersionBase):
 class Version(VersionBase):
   id: int
   study_id: int
+  import_id: int
 
   class Config:
     from_attributes = True
 
   @classmethod
-  def create(cls, version: int, study_id: int, session: Session):
+  def create(cls, version: int, study_id: int, session: Session) -> 'Version':
     db_item = VersionDB(version=version)
     session.add(**db_item, study_id=study_id)
     session.commit()
@@ -25,20 +26,20 @@ class Version(VersionBase):
     return cls(**db_item.__dict__)
   
   @classmethod
-  def find(cls, id: int, session: Session):
+  def find(cls, id: int, session: Session) -> 'Version':
     db_item = session.query(VersionDB).filter(VersionDB.id == id).first()
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def find_by_name(cls, name: str, session: Session):
+  def find_by_name(cls, name: str, session: Session) -> 'Version':
     db_item = session.query(VersionDB).filter(VersionDB.name == name).first()
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def find_latest_version(cls, study_id, session: Session):
+  def find_latest_version(cls, study_id, session: Session) -> 'Version':
     db_item = session.query(VersionDB).filter(VersionDB.study_id == study_id).order_by(desc(VersionDB.version)).first()
-    return db_item.version if db_item else None
+    return db_item if db_item else None
 
   @classmethod
-  def version_count(cls, study_id, session: Session):
+  def version_count(cls, study_id, session: Session) -> int:
     return session.query(VersionDB).filter(VersionDB.study_id == study_id).count()

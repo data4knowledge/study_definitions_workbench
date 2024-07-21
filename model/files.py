@@ -12,14 +12,14 @@ class Files:
 
   def __init__(self, uuid=None):
     self.media_type = {
-      "xlsx": {'method': self._save_excel_file, 'use_original':  False, 'filename': 'xl'},
-      "docx": {'method': self._save_word_file, 'use_original':  False, 'filename': 'doc'},
-      "usdm": {'method': self._save_json_file, 'use_original':  False, 'filename': 'usdm'},
-      "fhir": {'method': self._save_json_file, 'use_original':  False, 'filename': 'fhir'},
-      "errors": {'method': self._save_csv_file, 'use_original':  False, 'filename': 'errors'},
-      "protocol": {'method': self._save_html_file, 'use_original':  False, 'filename': 'protocol'},
-      "highlight": {'method': self._save_html_file, 'use_original':  False, 'filename': 'highlight'},
-      "image": {'method': self._save_image_file, 'use_original':  True, 'filename': ''}
+      "xlsx": {'method': self._save_excel_file, 'use_original':  False, 'filename': 'xl', 'extension': 'xlsx'},
+      "docx": {'method': self._save_word_file, 'use_original':  False, 'filename': 'doc', 'extension': 'docx'},
+      "usdm": {'method': self._save_json_file, 'use_original':  False, 'filename': 'usdm', 'extension': 'json'},
+      "fhir": {'method': self._save_json_file, 'use_original':  False, 'filename': 'fhir', 'extension': 'json'},
+      "errors": {'method': self._save_csv_file, 'use_original':  False, 'filename': 'errors', 'extension': 'csv'},
+      "protocol": {'method': self._save_html_file, 'use_original':  False, 'filename': 'protocol', 'extension': 'html'},
+      "highlight": {'method': self._save_html_file, 'use_original':  False, 'filename': 'highlight', 'extension': 'html'},
+      "image": {'method': self._save_image_file, 'use_original':  True, 'filename': '', 'extension': ''}
     }
     self.uuid = uuid
 
@@ -29,22 +29,24 @@ class Files:
       self.uuid = None
     return self.uuid
 
-  def save(self, filename, type, contents):
+  def save(self, type, contents, filename=''):
     filename = filename if self.media_type[type]['use_original'] else self.media_type[type]['filename']
     full_path = self.media_type[type]['method'](self.uuid, contents, filename)
     return full_path 
 
-  def read(self, uuid, type):
-    full_path = self._file_path(uuid, self.media_type[type]['filename'], type)
+  def read(self, type):
+    extension = self.media_type[type]['extension']
+    full_path = self._file_path(self.uuid, self.media_type[type]['filename'], extension)
     with open(full_path, "r") as stream:
       return stream.read()
 
-  def path(self, uuid, type):
-    return self._file_path(uuid, self.media_type[type]['filename'], type)
+  def path(self, type):
+    extension = self.media_type[type]['extension']
+    return self._file_path(self.uuid, self.media_type[type]['filename'], extension)
 
-  def delete(self, uuid):
+  def delete(self):
     try:
-      path = self._dir_path(uuid)
+      path = self._dir_path(self.uuid)
       shutil.rmtree(path) 
       return True
     except Exception as e:

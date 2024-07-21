@@ -61,7 +61,7 @@ class Study(StudyBase):
       study = cls.find_by_name(parameters['name'], session)
     else:
       latest_version = Version.find_latest_version(study.id, session)
-      version = latest_version + 1 if latest_version else 1
+      version = latest_version.version + 1 if latest_version else 1
       new_version = VersionDB(version=version, study_id=study.id, import_id=import_id)
       session.add(new_version)
       session.commit()
@@ -79,6 +79,7 @@ class Study(StudyBase):
     for db_item in data:
       record = db_item.__dict__
       record['versions'] = Version.version_count(db_item.id, session)
+      record['latest_version_id'] = Version.find_latest_version(record['id'], session).id
       results.append(record)
     result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
     return result
