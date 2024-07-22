@@ -2,15 +2,13 @@
 {% block main_content %}
   <div class="mt-3 row">
     <div class="col-3">
-      <div class="card rounded-3 shadow-sm">
-        <div class="card-body">
-          <h4 class="card-title">{{data['titles']['Brief Study Title']}}</h4>
-          <h6 class="card-subtitle mb-2 text-muted">Sponsor: {{data['identifiers']['Clinical Study Sponsor']['organization']}} | Identifier: {{data['identifiers']['Clinical Study Sponsor']['identifier']}} | Version: {{data['versionIdentifier']}}</h6>
-        </div>
+      <div class="card card-body rounded-3 shadow-sm">
+        <h4 class="card-title">{{data['titles']['Brief Study Title']}}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Sponsor: {{data['identifiers']['Clinical Study Sponsor']['organization']}} | Identifier: {{data['identifiers']['Clinical Study Sponsor']['identifier']}} | Version: {{data['versionIdentifier']}}</h6>
       </div>
     </div>
     <div class="col-3">
-      <div class="card card-body rounded-3 h-100">
+      <div class="card card-body rounded-3 shadow-sm">
         <div class="row">
           <div class="col-12">
             <h5 class="card-subtitle">Sponsor</h5>
@@ -23,8 +21,8 @@
             <table class="table responsive table-striped mt-1">
               {% for k, v in data['identifiers'].items() %}
                 <tr>
-                  <td><p class="card-text">{{v['organization']}}</p></td>
-                  <td><p class="card-text">{{v['identifier']}}</p></td>
+                  <td><p class="card-text">{{v['studyIdentifierScope']['name']}}</p></td>
+                  <td><p class="card-text">{{v['studyIdentifier']}}</p></td>
                 </tr>
               {% endfor %}                
             </table>
@@ -32,14 +30,14 @@
         </div>
         <div class="row mt-2">
           <div class="col-6">
-            <span class="badge rounded-pill badge-phase text-dark">{{data['phase']}}</span>  
+            <span class="badge rounded-pill bg-info">{{data['phase']['standardCode']['decode']}}</span>  
             <span class="badge rounded-pill bg-info">Version: {{data['versionIdentifier']}}</span>  
           </div>
         </div>
       </div>
     </div>
-    <div class="col-9">
-      <div class="card card-body rounded-3 h-100">
+    <div class="col-6">
+      <div class="card card-body rounded-3 shadow-sm">
         <h5 class="card-subtitle">Titles</h5>
         <table class="table responsive table-striped mt-1">
           {% for k, v in data['titles'].items() %}
