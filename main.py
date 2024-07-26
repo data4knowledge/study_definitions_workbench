@@ -73,49 +73,62 @@ def user_display_name(request: Request, id: int, session: Session = Depends(get_
   return templates.TemplateResponse(f"users/partials/displayName.html", {'request': request, 'user': user})
 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])
-def user_show(request: Request, session: Session = Depends(get_db)):
+def about(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = {'release_notes': ReleaseNotes().notes(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
-def user_show(request: Request, session: Session = Depends(get_db)):
+def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user})
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
-def user_show(request: Request, session: Session = Depends(get_db)):
+def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
 
 from model.file_import import FileImport
 
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
-async def upload_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return await process_m11(request, background_tasks, templates, user, session)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
-async def upload_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return await process_xl(request, background_tasks, templates, user, session)
 
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
-async def upload_xl(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = FileImport.list(page, size, user.id, session)
   pagination = Pagination(data, "/import/status") 
   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
-async def upload_xl(request: Request, id: int, session: Session = Depends(get_db)):
+async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  version = Version.find(id, session)
-  file_import = FileImport.find(version.import_id, session)
-  usdm = USDMJson(file_import)
+  usdm = USDMJson(id, session)
   data = usdm.study_version()
   print(f"DATA: {data}")
   return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = {'id': version_id, 'study_design_id': study_design_id}
+  return templates.TemplateResponse("study_designs/summary.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/parameters', dependencies=[Depends(protect_endpoint)])
+async def get_vstudy_design_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_parameters(study_design_id)
+  print(f"DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/parameters.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/logout")
 def logout(request: Request):

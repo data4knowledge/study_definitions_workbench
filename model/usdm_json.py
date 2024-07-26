@@ -1,11 +1,16 @@
 import json
-from usdm_db import USDMDb
 from model.file_import import FileImport
 from model.files import Files
+from model.version import Version
+from sqlalchemy.orm import Session
 
 class USDMJson():
 
-  def __init__(self, file_import: FileImport):
+  def __init__(self, id: int, session: Session):
+    self.id = id
+    version = Version.find(id, session)
+    file_import = FileImport.find(version.import_id, session)
+    self.uuid = file_import.uuid
     files = Files(file_import.uuid)
     f = open(files.path('usdm'))
     self._data = json.load(f)
@@ -26,6 +31,7 @@ class USDMJson():
     #version = self._wrapper.study.versions[0]
     version = self._data['study']['versions'][0]
     result = {
+      'id': self.id,
       'identifiers': {},
       'titles': {},
       'study_designs': {},
@@ -36,6 +42,41 @@ class USDMJson():
     for title in version['titles']:
       result['titles'][title['type']['decode']] = title['text']
     for design in version['studyDesigns']:
-      result['study_designs'][design['id']] = {'name': design['name'], 'label': design['label']}
+      result['study_designs'][design['id']] = {'id': design['name'], 'name': design['name'], 'label': design['label']}
     result['phase'] = version['studyPhase']
     return result
+
+  def study_design_parameters(self, id: str):
+      # query = """
+      #   MATCH (sd:StudyDesign {uuid: '%s'})
+      #   WITH sd
+      #   MATCH (sd)-[:TRIAL_TYPES_REL]->(ttc:Code)
+      #   MATCH (sd)-[:INTERVENTION_MODEL_REL]->(imc:Code)
+      #   MATCH (sd)-[:TRIAL_INTENT_TYPES_REL]->(tic:Code)
+      #   OPTIONAL MATCH (sd)-[:THERAPEUTIC_AREAS_REL]->(tac:Code)
+      #   OPTIONAL MATCH (sd)-[:CHARACTERISTICS_REL]->(cc:Code)
+      #   MATCH (sd)-[:POPULATION_REL]->(sdp:StudyDesignPopulation)
+      #   OPTIONAL MATCH (sdp)-[:COHORTS_REL]->(coh:StudyCohort)
+      #   RETURN sd, ttc, imc, tic, tac, cc, sdp, coh
+      # """ % (self.uuid)
+    design = next((x for x in self._data['study']['versions'][0]['studyDesigns'] if x['id'] == id), None)
+    if design:
+      result = {
+        'id': self.id,
+        'trial_types': {},
+        'trial_intent': {},
+        'intervention_models': {},
+        'therapeutic_areas': {},
+        'characteristics': {},
+        'population':  None
+      }
+      result['trial_intent'][design['trialIntent']['decode']] = item['decode']
+      for item in design['trialTypes']:
+        result['trial_types'][item['decode']] = tt['decode']
+      for item in design['intervention_models']:
+        result['trial_types'][item['decode']] = item['decode']
+      for item in design['characteristics']:
+        result['trial_types'][item['decode']] = item['decode']
+      return result
+    else:
+      return None

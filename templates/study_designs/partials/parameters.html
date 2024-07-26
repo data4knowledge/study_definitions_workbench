@@ -1,0 +1,44 @@
+<div>
+  <table class="table responsive table-striped mt-1">
+    <tr>
+      <td>
+        <p class="card-text">Trial types</p>
+      </td>
+      <td>
+        {{ data['trial_types']|join(', ') }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text">Trial Intent</p>
+      </td>
+      <td>
+        {{ data['trial_intent']|join(', ') }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text">Intervention Models</p>
+      </td>
+      <td>
+        {{ data['intervention_models']|join(', ') }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text">Characteristics</p>
+      </td>
+      <td>
+        {{ data['characteristics']|join(', ') }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text">Therapeutic Areas</p>
+      </td>
+      <td>
+        {{ data['therapeutic_areas']|join(', ') }}
+      </td>
+    </tr>
+  </table>
+</div>

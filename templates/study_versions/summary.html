@@ -69,7 +69,7 @@
         <div class="tab-content mt-2">
           {% for k, v in data['study_designs'].items() %}
             {% set id = "tab-" ~ loop.index0 ~ "_div" %}
-            <div id="{{id}}" class="tab-pane fade show active" role="tabpanel" hx-get="/studyDesigns/{{v['uuid']}}/summary" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
+            <div id="{{id}}" class="tab-pane fade show active" role="tabpanel" hx-get="/versions/{{data['id']}}/studyDesigns/{{v['id']}}/summary" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
               {% with %}
                 {% include "shared/partials/spinner.html" %}
               {% endwith %}            
