@@ -42,11 +42,11 @@ class USDMJson():
     for title in version['titles']:
       result['titles'][title['type']['decode']] = title['text']
     for design in version['studyDesigns']:
-      result['study_designs'][design['id']] = {'id': design['name'], 'name': design['name'], 'label': design['label']}
+      result['study_designs'][design['id']] = {'id': design['id'], 'name': design['name'], 'label': design['label']}
     result['phase'] = version['studyPhase']
     return result
 
-  def study_design_parameters(self, id: str):
+  def study_design_overall_parameters(self, id: str):
       # query = """
       #   MATCH (sd:StudyDesign {uuid: '%s'})
       #   WITH sd
@@ -59,24 +59,43 @@ class USDMJson():
       #   OPTIONAL MATCH (sdp)-[:COHORTS_REL]->(coh:StudyCohort)
       #   RETURN sd, ttc, imc, tic, tac, cc, sdp, coh
       # """ % (self.uuid)
-    design = next((x for x in self._data['study']['versions'][0]['studyDesigns'] if x['id'] == id), None)
+    version = self._data['study']['versions'][0]
+    design = next((x for x in version['studyDesigns'] if x['id'] == id), None)
     if design:
       result = {
         'id': self.id,
         'trial_types': {},
         'trial_intent': {},
-        'intervention_models': {},
+        'intervention_model': None,
         'therapeutic_areas': {},
         'characteristics': {},
         'population':  None
       }
-      result['trial_intent'][design['trialIntent']['decode']] = item['decode']
+      for item in design['trialIntentTypes']:
+        result['trial_intent'][item['decode']] = item['decode']
       for item in design['trialTypes']:
-        result['trial_types'][item['decode']] = tt['decode']
-      for item in design['intervention_models']:
         result['trial_types'][item['decode']] = item['decode']
+      result['intervention_model'] = design['interventionModel']['decode']
       for item in design['characteristics']:
-        result['trial_types'][item['decode']] = item['decode']
+        result['characteristics'][item['decode']] = item['decode']
+      return result
+    else:
+      return None
+
+  def study_design_design_parameters(self, id: str):
+    version = self._data['study']['versions'][0]
+    design = next((x for x in version['studyDesigns'] if x['id'] == id), None)
+    if design:
+      result = {
+        'id': self.id,
+        'arms': 0,
+        'trial_blind_scheme': {},
+        'blinded_roles': {},
+        'participants': None,
+        'duration': None,
+        'independent_committee':  None
+      }
+      result['arms'] = len(design['arms'])
       return result
     else:
       return None

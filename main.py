@@ -122,13 +122,21 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   data = {'id': version_id, 'study_design_id': study_design_id}
   return templates.TemplateResponse("study_designs/summary.html", {'request': request, 'user': user, 'data': data})
 
-@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/parameters', dependencies=[Depends(protect_endpoint)])
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/overallParameters', dependencies=[Depends(protect_endpoint)])
 async def get_vstudy_design_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
-  data = usdm.study_design_parameters(study_design_id)
+  data = usdm.study_design_overall_parameters(study_design_id)
   print(f"DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/parameters.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse("study_designs/partials/overall_parameters.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/designParameters', dependencies=[Depends(protect_endpoint)])
+async def get_vstudy_design_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_design_parameters(study_design_id)
+  print(f"DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/design_parameters.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/logout")
 def logout(request: Request):

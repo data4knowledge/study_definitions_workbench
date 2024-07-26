@@ -1,0 +1,116 @@
+<div>
+  <table class="table responsive table-striped mt-1">
+    <tr>
+      <td>
+        <p class="card-text"><small>Intervention Model</small> </p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['intervention_models']}}</small> </p>
+      </td>
+      <td>
+        <p class="card-text"><small>Population Type</p></small>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Control Type</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>Population Diagnosis or Condition</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Control Description</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>Population Age</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Intervention Assignment Method</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>Site Distribution and Geographic Scope</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Adaptove Trial Design</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+      <td>
+        <p class="card-text">Master Protocol Design</p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Drug / Device Combination Product Indication</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>TBD</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small></small></p>
+      </td>
+      <td>
+        <p class="card-text"><small></small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Characteristics</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['characteristics']|join(', ') }}</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>Trial Intent</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['trial_intent']|join(', ') }}</small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Therapeutic Areas</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['therapeutic_areas']|join(', ') }}</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>Trial Types</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['trial_types']|join(', ') }}</small></p>
+      </td>
+    </tr>
+  </table>
+</div>
