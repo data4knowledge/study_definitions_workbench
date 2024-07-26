@@ -11,6 +11,7 @@ from usdm_model.code import Code
 from usdm_model.study_identifier import StudyIdentifier
 from usdm_model.organization import Organization
 from usdm_model.address import Address
+from usdm_model.alias_code import AliasCode
 from usdm_model.narrative_content import NarrativeContent
 from usdm_excel.id_manager import IdManager
 from usdm_excel.cdisc_ct_library import CDISCCTLibrary
@@ -84,32 +85,23 @@ class M11Protocol():
     local_index = index
     loop = 0
     while process:
-      #loop += 1
-      #if loop > 400:
-      #  process = False
       section = sections[local_index]
-      #print(f"INDEX: {local_index} {section.level} {level}")
       if section.level == level:
-        #print(f"INDEX: EQ")
         sn = section.number if section.number else ''
         st = section.title if section.title else '-'
         nc_text = f"{self.DIV_OPEN_NS}{section.to_html()}{self.DIV_CLOSE}"
-        #print(f"NC: {nc_text}")
         nc = self._model_instance(NarrativeContent, {'name': f"NC-{sn}", 'sectionNumber': sn, 'sectionTitle': st, 'text': nc_text, 'childIds': [], 'previousId': None, 'nextId': None})
-        #print(f"NC: {nc.text}")
         doc_version.contents.append(nc)
         parent.childIds.append(nc.id)
         previous = nc
         local_index += 1
       elif section.level > level: 
-        #print(f"INDEX: GT")
         if previous:
           local_index = self._sections(previous, sections, local_index, level + 1, doc_version)
         else:
           application_logger.error(f"No previous set processing sections")
           local_index += 1
       elif section.level < level: 
-        #print(f"INDEX: LT")
         return local_index
       if local_index >= len(sections):
         process = False
@@ -119,8 +111,10 @@ class M11Protocol():
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
     protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
     intervention_model_code = self._cdisc_ct_code('C82639', 'Parallel Study')
+    temp_phase_code = self._cdisc_ct_code('C82639', 'Parallel Study')
+    phase = self._model_instance(AliasCode, {'standardCode': temp_phase_code})
     country_code = self._iso_country_code('DNK', 'Denmark')
-    sponsor_code = self._cdisc_ct_code("C70793", '"Clinical Study Sponsor')
+    sponsor_code = self._cdisc_ct_code("C70793", 'Clinical Study Sponsor')
     study_title = self._model_instance(StudyTitle, {'text': title, 'type': sponsor_title_code})
     protocl_document_version = self._model_instance(StudyProtocolDocumentVersion, {'protocolVersion': '1', 'protocolStatus': protocl_status_code})
     protocl_document = self._model_instance(StudyProtocolDocument, {'name': 'PROTOCOL V1', 'label': '', 'description': '', 'versions': [protocl_document_version]})
@@ -131,7 +125,7 @@ class M11Protocol():
     organization = self._model_instance(Organization, {'name': 'Sponsor', 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'studyIdentifier': 'SPONSOR-1234', 'studyIdentifierScope': organization})
     study_version = self._model_instance(StudyVersion, {'versionIdentifier': '1', 'rationale': 'XXX', 'titles': [study_title], 'studyDesigns': [study_design], 
-                                                     'documentVersionId': protocl_document_version.id, 'studyIdentifiers': [identifier]}) 
+                                                     'documentVersionId': protocl_document_version.id, 'studyIdentifiers': [identifier], 'studyPhase': phase}) 
     study = self._model_instance(Study, {'id': uuid4(), 'name': 'Study', 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}) 
     return study
 
