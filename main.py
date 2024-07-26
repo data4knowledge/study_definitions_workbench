@@ -138,6 +138,14 @@ async def get_vstudy_design_parameters(request: Request, version_id: int, study_
   print(f"DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/design_parameters.html", {'request': request, 'user': user, 'data': data})
 
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/schema', dependencies=[Depends(protect_endpoint)])
+async def get_vstudy_design_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_schema(study_design_id)
+  print(f"SCHEMA DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/schema.html", {'request': request, 'user': user, 'data': data})
+
 @app.get("/logout")
 def logout(request: Request):
   url = authorisation.logout(request, "home")

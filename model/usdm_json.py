@@ -1,8 +1,10 @@
 import json
+import warnings
 from model.file_import import FileImport
 from model.files import Files
 from model.version import Version
 from sqlalchemy.orm import Session
+from bs4 import BeautifulSoup
 
 class USDMJson():
 
@@ -11,27 +13,17 @@ class USDMJson():
     version = Version.find(id, session)
     file_import = FileImport.find(version.import_id, session)
     self.uuid = file_import.uuid
+    self.type = file_import.type
+    self.m11 = True if self.type == "DOCX" else False
     files = Files(file_import.uuid)
     f = open(files.path('usdm'))
     self._data = json.load(f)
-    # self._db = USDMDb()
-    # self._usdm = self._db.from_json(self._data)
-    # self._wrapper = self._db.wrapper()
 
   def study_version(self):
-    # query = """
-    #   MATCH (sv:StudyVersion {uuid: '%s'})
-    #   WITH sv
-    #   MATCH (sv)-[:TITLES_REL]->(st)-[:TYPE_REL]->(stc)
-    #   MATCH (sv)-[:STUDY_IDENTIFIERS_REL]->(si)-[:STUDY_IDENTIFIER_SCOPE_REL]->(o:Organization)-[:ORGANIZATION_TYPE_REL]->(oc:Code)
-    #   MATCH (sv)-[:STUDY_PHASE_REL]->(ac:AliasCode)-[:STANDARD_CODE_REL]->(pc:Code)
-    #   MATCH (sv)-[]->(sd:StudyDesign)
-    #   RETURN sv, st, stc, si, pc, o, oc, sd ORDER BY sv.version
-    # """ % (self.uuid)
-    #version = self._wrapper.study.versions[0]
     version = self._data['study']['versions'][0]
     result = {
       'id': self.id,
+      'version_identifier': version['versionIdentifier'],
       'identifiers': {},
       'titles': {},
       'study_designs': {},
@@ -47,20 +39,7 @@ class USDMJson():
     return result
 
   def study_design_overall_parameters(self, id: str):
-      # query = """
-      #   MATCH (sd:StudyDesign {uuid: '%s'})
-      #   WITH sd
-      #   MATCH (sd)-[:TRIAL_TYPES_REL]->(ttc:Code)
-      #   MATCH (sd)-[:INTERVENTION_MODEL_REL]->(imc:Code)
-      #   MATCH (sd)-[:TRIAL_INTENT_TYPES_REL]->(tic:Code)
-      #   OPTIONAL MATCH (sd)-[:THERAPEUTIC_AREAS_REL]->(tac:Code)
-      #   OPTIONAL MATCH (sd)-[:CHARACTERISTICS_REL]->(cc:Code)
-      #   MATCH (sd)-[:POPULATION_REL]->(sdp:StudyDesignPopulation)
-      #   OPTIONAL MATCH (sdp)-[:COHORTS_REL]->(coh:StudyCohort)
-      #   RETURN sd, ttc, imc, tic, tac, cc, sdp, coh
-      # """ % (self.uuid)
-    version = self._data['study']['versions'][0]
-    design = next((x for x in version['studyDesigns'] if x['id'] == id), None)
+    design = self._study_design(id)
     if design:
       result = {
         'id': self.id,
@@ -83,8 +62,7 @@ class USDMJson():
       return None
 
   def study_design_design_parameters(self, id: str):
-    version = self._data['study']['versions'][0]
-    design = next((x for x in version['studyDesigns'] if x['id'] == id), None)
+    design = self._study_design(id)
     if design:
       result = {
         'id': self.id,
@@ -98,4 +76,50 @@ class USDMJson():
       result['arms'] = len(design['arms'])
       return result
     else:
+      return None
+
+  def study_design_schema(self, id: str):
+    design = self._study_design(id)
+    if design:
+      section = self._section_by_number("1.2") if self.m11 else self._section_by_title_contains("study design")
+      return self._image_in_section(section)
+
+  def _image_in_section(self, section):
+    soup = self._get_soup(section['text'])
+    for ref in soup(['img']):
+      return ref
+    return ""
+
+  def _section_by_number(self, number):
+    document = self._document()
+    if document:
+      return next((x for x in document['contents'] if x['sectionNumber'] == number), None)
+    return None
+
+  def _section_by_title_contains(self, title):
+    document = self._document()
+    if document:
+      return next((x for x in document['contents'] if title.upper() in x['sectionTitle'].upper()), None)
+    return None
+
+  def _study_design(self, id: str):
+    version = self._data['study']['versions'][0]
+    return next((x for x in version['studyDesigns'] if x['id'] == id), None)
+  
+  def _document(self):
+    version = self._data['study']['versions'][0]
+    id = version['documentVersionId']
+    return next((x for x in self._data['study']['documentedBy']['versions'] if x['id'] == id), None)
+
+  def _get_soup(self, text: str):
+    try:
+      with warnings.catch_warnings(record=True) as warning_list:
+        result =  BeautifulSoup(text, 'html.parser')
+      if warning_list:
+        pass
+        #for item in warning_list:
+        #  errors_and_logging.debug(f"Warning raised within Soup package, processing '{text}'\nMessage returned '{item.message}'")
+      return result
+    except Exception as e:
+      #errors_and_logging.exception(f"Parsing '{text}' with soup", e)
       return None
