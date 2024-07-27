@@ -84,7 +84,6 @@ class M11Protocol():
     self.short_title = self._table_get_row(table, 'Short Title')
     self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
     self.sponsor_name, self.sponsor_address = self._sponsor_name_and_address()
-    print(f"NAME: {self.sponsor_name_and_address}")
     self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
     self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
 
@@ -137,7 +136,7 @@ class M11Protocol():
     return study
 
   def _cdisc_ct_code(self, code, decode):
-    return self._model_instance(Code, {'code': 'code', 'decode': decode, 'codeSystem': self._cdisc_ct_manager.system, 'codeSystemVersion': self._cdisc_ct_manager.version})
+    return self._model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': self._cdisc_ct_manager.system, 'codeSystemVersion': self._cdisc_ct_manager.version})
 
   def _iso_country_code(self, code, decode):
     return self._model_instance(Code, {'code': 'code', 'decode': decode, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08'})

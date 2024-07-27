@@ -24,7 +24,7 @@ def process_excel(uuid, user: User, session: Session) -> None:
     usdm_json = db.to_json()
     files.save('usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
-    print(f"PARAMETERS: {parameters}")
+    #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
   except Exception as e:
@@ -43,7 +43,7 @@ def process_word(uuid, user: User, session: Session) -> None:
     usdm_json = m11.to_usdm()
     files.save('usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
-    print(f"PARAMETERS: {parameters}")
+    #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
   except Exception as e:
