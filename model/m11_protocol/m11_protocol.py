@@ -44,6 +44,8 @@ class M11Protocol():
     self.trial_phase_raw = None
     self.short_title = None
     self.sponsor_name_and_address = None
+    self.sponsor_name = None
+    self.sponsor_address = None
     self.regulatory_agency_identifiers = None
     self.sponsor_approval_date = None
     self._decode_title_page()
@@ -79,6 +81,8 @@ class M11Protocol():
     self.trial_phase_raw = self._table_get_row(table, 'Trial Phase')
     self.short_title = self._table_get_row(table, 'Short Title')
     self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
+    self.sponsor_name, self.sponsor_address = self._sponsor_name_and_address()
+    print(f"NAME: {self.sponsor_name_and_address}")
     self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
     self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
 
@@ -125,7 +129,7 @@ class M11Protocol():
       'rationale': 'XXX', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
       'epochs': [], 'population': None})
     address = self._model_instance(Address, {'line': 'Den Lille Havfrue', 'city': 'Copenhagen', 'district': '', 'state': '', 'postalCode': '12345', 'country': country_code})
-    organization = self._model_instance(Organization, {'name': 'Sponsor', 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
+    organization = self._model_instance(Organization, {'name': self.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'studyIdentifier': self.sponsor_protocol_identifier, 'studyIdentifierScope': organization})
     study_version = self._model_instance(StudyVersion, {'versionIdentifier': '1', 'rationale': 'XXX', 'titles': [study_title], 'studyDesigns': [study_design], 
                                                      'documentVersionId': protocl_document_version.id, 'studyIdentifiers': [identifier], 'studyPhase': phase}) 
@@ -170,8 +174,17 @@ class M11Protocol():
           return row.cells[1].text().strip()
     return None
 
+  def _sponsor_name_and_address(self):
+    name = '[Sponsor Name]'
+    address = '[Sponsor Address]'
+    parts = self.sponsor_name_and_address.split('\n')
+    if len(parts) > 0:
+      name = parts[0].strip()
+    if len(parts) > 1:
+      address = (',').join([x.strip() for x in parts[1:]])
+    return name, address
+
   def _study_name(self):
-    # NCT Identifier
     items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
     for item in items:
       if item:
