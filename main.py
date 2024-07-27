@@ -151,7 +151,7 @@ async def get_study_design_interventions(request: Request, version_id: int, stud
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_interventions(study_design_id)
   print(f"SCHEMA DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/interventions.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse("study_designs/partials/section.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/estimands', dependencies=[Depends(protect_endpoint)])
 async def get_vstudy_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -159,7 +159,7 @@ async def get_vstudy_design_estimands(request: Request, version_id: int, study_d
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_estimands(study_design_id)
   print(f"SCHEMA DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/estimands.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse("study_designs/partials/section.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/logout")
 def logout(request: Request):
