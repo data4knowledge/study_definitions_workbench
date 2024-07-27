@@ -83,7 +83,19 @@ class USDMJson():
     design = self._study_design(id)
     if design:
       section = self._section_by_number("1.2") if self.m11 else self._section_by_title_contains("study design")
-      return self._image_in_section(section)
+      return self._image_in_section(section) if section else '[Study Design]'
+
+  def study_design_interventions(self, id: str):
+    design = self._study_design(id)
+    if design:
+      section = self._section_by_number("6.1") if self.m11 else self._section_by_title_contains("Trial Interventions")
+      return section['text'] if section else '[Trial Interventions]'
+
+  def study_design_estimands(self, id: str):
+    design = self._study_design(id)
+    if design:
+      section = self._section_by_number("3.1") if self.m11 else self._section_by_title_contains("Primary Objective")
+      return section['text'] if section else '[Estimands]'
 
   def _image_in_section(self, section):
     soup = self._get_soup(section['text'])
