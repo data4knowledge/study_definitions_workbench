@@ -15,6 +15,7 @@ from model import models
 from utility.background import *
 from utility.upload import *
 from model.usdm_json import USDMJson
+from model.file_import import FileImport
 from model import VERSION, SYSTEM_NAME
 
 models.Base.metadata.create_all(bind=engine)
@@ -87,8 +88,6 @@ def import_m11(request: Request, session: Session = Depends(get_db)):
 def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
-
-from model.file_import import FileImport
 
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 async def import_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):

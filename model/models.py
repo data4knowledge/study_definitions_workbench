@@ -46,6 +46,7 @@ class FileImport(Base):
   type = Column(String, nullable=False)
   created = Column(DateTime(timezone=True), default=func.now(), nullable=False)
   filepath = Column(String, nullable=False)
+  filename = Column(String, nullable=False)
   status = Column(String, nullable=False)
   user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
   version = relationship('Version', backref='file_import', uselist=False)

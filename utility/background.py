@@ -5,10 +5,13 @@ from usdm_db import USDMDb, Wrapper
 from model.files import Files
 from model.file_import import FileImport
 from model.study import Study
+from model.user import User
 from model.m11_protocol.m11_protocol import M11Protocol
 from model import VERSION, SYSTEM_NAME
+from sqlalchemy.orm import Session
+from model.object_path import ObjectPath
 
-def process_excel(uuid, user, session):
+def process_excel(uuid, user: User, session: Session) -> None:
   try:
     file_import = None
     files = Files(uuid)
@@ -29,7 +32,7 @@ def process_excel(uuid, user, session):
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Excel file", e)
 
-def process_word(uuid, user, session):
+def process_word(uuid, user: User, session: Session) -> None:
   try:
     file_import = None
     files = Files(uuid)
@@ -41,14 +44,12 @@ def process_word(uuid, user, session):
     files.save('usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
     print(f"PARAMETERS: {parameters}")
-    Study.study_and_version(parameters, user.id, file_import.id, session)
+    Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
   except Exception as e:
     if file_import:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Word file", e)
-
-from model.object_path import ObjectPath
 
 def _study_parameters(json_str: str) -> dict:
   try:

@@ -1,3 +1,4 @@
+import re  
 from model.raw_docx.raw_docx import RawDocx
 from model.raw_docx.raw_table import RawTable
 from usdm_model.wrapper import Wrapper
@@ -31,6 +32,7 @@ class M11Protocol():
     self._system_name = system_name
     self._system_version = system_version
     self.sections = []
+    self.acronym = None
     self.full_title = None
     self.sponsor_protocol_identifier = None
     self.original_protocol = None
@@ -66,6 +68,7 @@ class M11Protocol():
     tables = section.tables()
     table = tables[0]
     self.full_title = self._table_get_row(table, 'Full Title')
+    self.acronym = self._table_get_row(table, 'Acronym')
     self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')
     self.original_protocol = self._table_get_row(table, 'Original Protocol')
     self.version_number = self._table_get_row(table, 'Version Number')
@@ -123,10 +126,10 @@ class M11Protocol():
       'epochs': [], 'population': None})
     address = self._model_instance(Address, {'line': 'Den Lille Havfrue', 'city': 'Copenhagen', 'district': '', 'state': '', 'postalCode': '12345', 'country': country_code})
     organization = self._model_instance(Organization, {'name': 'Sponsor', 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
-    identifier = self._model_instance(StudyIdentifier, {'studyIdentifier': 'SPONSOR-1234', 'studyIdentifierScope': organization})
+    identifier = self._model_instance(StudyIdentifier, {'studyIdentifier': self.sponsor_protocol_identifier, 'studyIdentifierScope': organization})
     study_version = self._model_instance(StudyVersion, {'versionIdentifier': '1', 'rationale': 'XXX', 'titles': [study_title], 'studyDesigns': [study_design], 
                                                      'documentVersionId': protocl_document_version.id, 'studyIdentifiers': [identifier], 'studyPhase': phase}) 
-    study = self._model_instance(Study, {'id': uuid4(), 'name': 'Study', 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}) 
+    study = self._model_instance(Study, {'id': uuid4(), 'name': self._study_name(), 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}) 
     return study
 
   def _cdisc_ct_code(self, code, decode):
@@ -166,3 +169,14 @@ class M11Protocol():
         if row.cells[0].text().upper().startswith(key.upper()):
           return row.cells[1].text().strip()
     return None
+
+  def _study_name(self):
+    # NCT Identifier
+    items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
+    for item in items:
+      if item:
+        return self._clean_study_name(item)
+    return ''
+
+  def _clean_study_name(self, s):
+    return re.sub('[\W_]+', '', s.upper())

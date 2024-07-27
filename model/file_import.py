@@ -1,10 +1,12 @@
 import datetime
+from pathlib import Path
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from model.models import FileImport as FileImportDB
 
 class FileImportBase(BaseModel):
   filepath: str
+  filename: str
   type: str
   status: str
   uuid: str
@@ -19,7 +21,8 @@ class FileImport(FileImportBase):
 
   @classmethod
   def create(cls, fullpath: str, status: str, type: str, uuid: str, user_id: int, session: Session) -> 'FileImport':
-    data = {'filepath': fullpath, 'status': status, 'type': type, 'uuid': uuid}
+    filename = Path(fullpath)
+    data = {'filepath': fullpath, 'filename': filename.stem, 'status': status, 'type': type, 'uuid': uuid}
     db_item = FileImportDB(**data, user_id=user_id)
     session.add(db_item)
     session.commit()
@@ -35,6 +38,14 @@ class FileImport(FileImportBase):
   def find_by_uuid(cls, uuid: str, session: Session) -> 'FileImport':
     db_item = session.query(FileImportDB).filter(FileImportDB.uuid == uuid).first()
     return cls(**db_item.__dict__) if db_item else None  
+
+  @classmethod
+  def find_by_filename(cls, filename: str, session: Session) -> list['FileImport']:
+    db_items = session.query(FileImportDB).filter(FileImportDB.filename == filename)
+    results = []
+    for db_item in db_items:
+      results.append(cls(**db_item.__dict__))
+    return results
 
   @classmethod
   def list(cls, page: int, size: int, user_id: int, session: Session):

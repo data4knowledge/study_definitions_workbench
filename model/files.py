@@ -8,18 +8,21 @@ from d4kms_generic import application_logger
 
 class Files:
   
+  class LogicError(Exception):
+    pass
+
   DIR = "datafiles"
 
   def __init__(self, uuid=None):
     self.media_type = {
-      "xlsx": {'method': self._save_excel_file, 'use_original':  False, 'filename': 'xl', 'extension': 'xlsx'},
-      "docx": {'method': self._save_word_file, 'use_original':  False, 'filename': 'doc', 'extension': 'docx'},
-      "usdm": {'method': self._save_json_file, 'use_original':  False, 'filename': 'usdm', 'extension': 'json'},
-      "fhir": {'method': self._save_json_file, 'use_original':  False, 'filename': 'fhir', 'extension': 'json'},
-      "errors": {'method': self._save_csv_file, 'use_original':  False, 'filename': 'errors', 'extension': 'csv'},
-      "protocol": {'method': self._save_html_file, 'use_original':  False, 'filename': 'protocol', 'extension': 'html'},
-      "highlight": {'method': self._save_html_file, 'use_original':  False, 'filename': 'highlight', 'extension': 'html'},
-      "image": {'method': self._save_image_file, 'use_original':  True, 'filename': '', 'extension': ''}
+      "xlsx": {'method': self._save_excel_file, 'use_original': True, 'filename': 'xl', 'extension': 'xlsx'},
+      "docx": {'method': self._save_word_file, 'use_original': True, 'filename': 'doc', 'extension': 'docx'},
+      "usdm": {'method': self._save_json_file, 'use_original': False, 'filename': 'usdm', 'extension': 'json'},
+      "fhir": {'method': self._save_json_file, 'use_original': False, 'filename': 'fhir', 'extension': 'json'},
+      "errors": {'method': self._save_csv_file, 'use_original': False, 'filename': 'errors', 'extension': 'csv'},
+      "protocol": {'method': self._save_html_file, 'use_original': False, 'filename': 'protocol', 'extension': 'html'},
+      "highlight": {'method': self._save_html_file, 'use_original': False, 'filename': 'highlight', 'extension': 'html'},
+      "image": {'method': self._save_image_file, 'use_original': True, 'filename': '', 'extension': ''}
     }
     self.uuid = uuid
 
@@ -30,7 +33,7 @@ class Files:
     return self.uuid
 
   def save(self, type, contents, filename=''):
-    filename = filename if self.media_type[type]['use_original'] else self.media_type[type]['filename']
+    filename = filename if self.media_type[type]['use_original'] else self._form_filename(type)
     full_path = self.media_type[type]['method'](self.uuid, contents, filename)
     return full_path 
 
@@ -41,8 +44,16 @@ class Files:
       return stream.read()
 
   def path(self, type):
-    extension = self.media_type[type]['extension']
-    return self._file_path(self.uuid, self.media_type[type]['filename'], extension)
+    if self.media_type[type]['use_original']:
+      files = self._dir_files_by_extension(self.media_type[type]['extension'])
+      if len(files) == 1:
+        filename = files[0]
+      else:
+        application_logger.error(f"Found multiple files for type '{type}' when forming path")
+        raise self.LogicError
+    else:
+      filename = self._form_filename(type)
+    return self._file_path(self.uuid, filename)
 
   def delete(self):
     try:
@@ -53,15 +64,15 @@ class Files:
       application_logger.exception(f"Exception deleting directory '{path}'", e)
       return False
   
-  def _save_excel_file(self, uuid, contents, suffix):
-    self._save_binary_file(uuid, contents, suffix, 'xlsx')
+  def _save_excel_file(self, uuid, contents, filename):
+      self._save_binary_file(uuid, contents, filename)
 
-  def _save_word_file(self, uuid, contents, suffix):
-    self._save_binary_file(uuid, contents, suffix, 'docx')
+  def _save_word_file(self, uuid, contents, filename):
+      self._save_binary_file(uuid, contents, filename)
 
-  def _save_binary_file(self, uuid, contents, suffix, extension):
+  def _save_binary_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, suffix, extension)
+      full_path = self._file_path(uuid, filename)
       with open(full_path, 'wb') as f:
         f.write(contents)
       return full_path
@@ -70,9 +81,7 @@ class Files:
 
   def _save_image_file(self, uuid, contents, filename):
     try:
-      stem, ext = self._stem_and_extension(filename)
-      print(f"STEM, EXT: {stem}, {ext}")
-      full_path = self._file_path(uuid, stem, ext)
+      full_path = self._file_path(uuid, filename)
       with open(full_path, 'wb') as f:
         f.write(contents)
     except Exception as e:
@@ -80,7 +89,7 @@ class Files:
 
   def _save_json_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename, 'json')
+      full_path = self._file_path(uuid, filename)
       with open(full_path, 'w', encoding='utf-8') as f:
         f.write(json.dumps(json.loads(contents), indent=2))
       return full_path
@@ -89,7 +98,7 @@ class Files:
 
   def _save_pdf_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename, 'pdf')
+      full_path = self._file_path(uuid, filename)
       with open(full_path, 'w+b') as f:
         f.write(contents)
       return full_path
@@ -98,7 +107,7 @@ class Files:
 
   def _save_html_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename, 'html')
+      full_path = self._file_path(uuid, filename)
       with open(full_path, 'w', encoding='utf-8') as f:
         f.write(contents)
       return full_path
@@ -109,7 +118,7 @@ class Files:
     if not contents:
       contents = [{'sheet': '', 'row': '', 'column': '', 'message': '', 'level': ''}]
     try:
-      full_path = self._file_path(uuid, filename, 'csv')
+      full_path = self._file_path(uuid, filename)
       with open(full_path, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=list(contents[0].keys()))
         writer.writeheader()
@@ -126,13 +135,27 @@ class Files:
       application_logger.exception(f"Exception creating dir '{uuid}'", e)
       return False
 
-  def _file_path(self, uuid, filename, extension):
-    return os.path.join(self.DIR, uuid, f"{filename}.{extension}")
+  def _file_path(self, uuid, filename):
+    return os.path.join(self.DIR, uuid, filename)
+
+  def _form_filename(self, type):
+    return f"{self.media_type[type]['filename']}.{self.media_type[type]['extension']}"
 
   def _dir_path(self, uuid):
     return os.path.join(self.DIR, uuid)
 
-  def _stem_and_extension(self, filename):
-    path_filename = Path(filename)
-    return path_filename.stem, path_filename.suffix[1:]
+  def _dir_files_by_extension(self, extension):
+    dir = self._dir_files()
+    return [f for f in dir if self._extension(f) == extension]
 
+  def _dir_files(self):
+    path = self._dir_path(self.uuid)
+    return [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+
+  def _stem_and_extension(self, filename):
+    result = os.path.splitext(filename)
+    return result[0], result[1][1:]
+
+  def _extension(self, filename):
+    result = os.path.splitext(filename)
+    return result[1][1:]
