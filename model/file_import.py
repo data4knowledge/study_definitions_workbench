@@ -1,5 +1,4 @@
 import datetime
-from pathlib import Path
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from model.models import FileImport as FileImportDB
@@ -20,9 +19,8 @@ class FileImport(FileImportBase):
     from_attributes = True
 
   @classmethod
-  def create(cls, fullpath: str, status: str, type: str, uuid: str, user_id: int, session: Session) -> 'FileImport':
-    filename = Path(fullpath)
-    data = {'filepath': fullpath, 'filename': filename.stem, 'status': status, 'type': type, 'uuid': uuid}
+  def create(cls, fullpath: str, filename: str, status: str, type: str, uuid: str, user_id: int, session: Session) -> 'FileImport':
+    data = {'filepath': fullpath, 'filename': filename, 'status': status, 'type': type, 'uuid': uuid}
     db_item = FileImportDB(**data, user_id=user_id)
     session.add(db_item)
     session.commit()

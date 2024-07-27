@@ -15,8 +15,8 @@ def process_excel(uuid, user: User, session: Session) -> None:
   try:
     file_import = None
     files = Files(uuid)
-    full_path = files.path('xlsx')
-    file_import = FileImport.create(full_path, 'Processing', 'XLSX', uuid, user.id, session)
+    full_path, filename = files.path('xlsx')
+    file_import = FileImport.create(full_path, filename, 'Processing', 'XLSX', uuid, user.id, session)
     db = USDMDb()
     file_import.update_status('Saving', session)
     errors = db.from_excel(full_path)
@@ -25,7 +25,7 @@ def process_excel(uuid, user: User, session: Session) -> None:
     files.save('usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
     print(f"PARAMETERS: {parameters}")
-    Study.study_and_version(parameters, user.id, file_import.id, session)
+    Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
   except Exception as e:
     if file_import:
@@ -36,9 +36,9 @@ def process_word(uuid, user: User, session: Session) -> None:
   try:
     file_import = None
     files = Files(uuid)
-    full_path = files.path('docx')
-    file_import = FileImport.create(full_path, 'Processing', 'DOCX', uuid, user.id, session)
-    m11 = M11Protocol(files.path('docx'), SYSTEM_NAME, VERSION)
+    full_path, filename = files.path('docx')
+    file_import = FileImport.create(full_path, filename, 'Processing', 'DOCX', uuid, user.id, session)
+    m11 = M11Protocol(full_path, SYSTEM_NAME, VERSION)
     file_import.update_status('Saving', session)
     usdm_json = m11.to_usdm()
     files.save('usdm', usdm_json)

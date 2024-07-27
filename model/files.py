@@ -53,11 +53,11 @@ class Files:
         raise self.LogicError
     else:
       filename = self._form_filename(type)
-    return self._file_path(self.uuid, filename)
+    return self._file_path(filename), filename
 
   def delete(self):
     try:
-      path = self._dir_path(self.uuid)
+      path = self._dir_path()
       shutil.rmtree(path) 
       return True
     except Exception as e:
@@ -72,7 +72,7 @@ class Files:
 
   def _save_binary_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename)
+      full_path = self._file_path(filename)
       with open(full_path, 'wb') as f:
         f.write(contents)
       return full_path
@@ -81,7 +81,7 @@ class Files:
 
   def _save_image_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename)
+      full_path = self._file_path(filename)
       with open(full_path, 'wb') as f:
         f.write(contents)
     except Exception as e:
@@ -89,7 +89,7 @@ class Files:
 
   def _save_json_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename)
+      full_path = self._file_path(filename)
       with open(full_path, 'w', encoding='utf-8') as f:
         f.write(json.dumps(json.loads(contents), indent=2))
       return full_path
@@ -98,7 +98,7 @@ class Files:
 
   def _save_pdf_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename)
+      full_path = self._file_path(filename)
       with open(full_path, 'w+b') as f:
         f.write(contents)
       return full_path
@@ -107,7 +107,7 @@ class Files:
 
   def _save_html_file(self, uuid, contents, filename):
     try:
-      full_path = self._file_path(uuid, filename)
+      full_path = self._file_path(filename)
       with open(full_path, 'w', encoding='utf-8') as f:
         f.write(contents)
       return full_path
@@ -118,7 +118,7 @@ class Files:
     if not contents:
       contents = [{'sheet': '', 'row': '', 'column': '', 'message': '', 'level': ''}]
     try:
-      full_path = self._file_path(uuid, filename)
+      full_path = self._file_path(filename)
       with open(full_path, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=list(contents[0].keys()))
         writer.writeheader()
@@ -135,21 +135,21 @@ class Files:
       application_logger.exception(f"Exception creating dir '{uuid}'", e)
       return False
 
-  def _file_path(self, uuid, filename):
-    return os.path.join(self.DIR, uuid, filename)
+  def _dir_path(self):
+    return os.path.join(self.DIR, self.uuid)
+
+  def _file_path(self, filename):
+    return os.path.join(self.DIR, self.uuid, filename)
 
   def _form_filename(self, type):
     return f"{self.media_type[type]['filename']}.{self.media_type[type]['extension']}"
-
-  def _dir_path(self, uuid):
-    return os.path.join(self.DIR, uuid)
 
   def _dir_files_by_extension(self, extension):
     dir = self._dir_files()
     return [f for f in dir if self._extension(f) == extension]
 
   def _dir_files(self):
-    path = self._dir_path(self.uuid)
+    path = self._dir_path()
     return [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
 
   def _stem_and_extension(self, filename):
