@@ -1,3 +1,4 @@
+from typing import Optional
 import datetime
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -28,12 +29,12 @@ class FileImport(FileImportBase):
     return cls(**db_item.__dict__)
 
   @classmethod
-  def find(cls, id: int, session: Session) -> 'FileImport':
+  def find(cls, id: int, session: Session) -> Optional['FileImport']:
     db_item = session.query(FileImportDB).filter(FileImportDB.id == id).first()
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def find_by_uuid(cls, uuid: str, session: Session) -> 'FileImport':
+  def find_by_uuid(cls, uuid: str, session: Session) -> Optional['FileImport']:
     db_item = session.query(FileImportDB).filter(FileImportDB.uuid == uuid).first()
     return cls(**db_item.__dict__) if db_item else None  
 
@@ -46,7 +47,7 @@ class FileImport(FileImportBase):
     return results
 
   @classmethod
-  def list(cls, page: int, size: int, user_id: int, session: Session):
+  def list(cls, page: int, size: int, user_id: int, session: Session) -> list['FileImport']:
     page = page if page >= 1 else 1
     size = size if size > 0 else 10
     skip = (page - 1) * size

@@ -85,7 +85,9 @@ class Study(StudyBase):
     for db_item in data:
       record = db_item.__dict__
       record['versions'] = Version.version_count(db_item.id, session)
-      record['latest_version_id'] = Version.find_latest_version(record['id'], session).id
+      latest_version = Version.find_latest_version(record['id'], session)
+      record['latest_version_id'] = latest_version.id
+      record['import_type'] = FileImport.find(latest_version.import_id, session).type
       results.append(record)
     result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
     return result

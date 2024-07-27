@@ -30,6 +30,12 @@
               {% endif %}            
               <span class="badge rounded-pill bg-info">{{item['phase']}}</span>
               <span class="badge rounded-pill bg-info">{{vtext}}</span>  
+              {% if item['import_type'] == "DOCX" %}
+                <span class="badge rounded-pill bg-primary">M11 Document</span>
+              {% else %}
+                <span class="badge rounded-pill bg-success">USDM Excel</span>
+              {% endif %}            
+              
             </div>
           </div>
           <div class="row mt-3">
