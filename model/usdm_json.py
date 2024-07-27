@@ -16,8 +16,9 @@ class USDMJson():
     self.type = file_import.type
     self.m11 = True if self.type == "DOCX" else False
     files = Files(file_import.uuid)
-    fullpath, filename = open(files.path('usdm'))
-    self._data = json.load(fullpath)
+    fullpath, filename = files.path('usdm')
+    data = open(fullpath)
+    self._data = json.load(data)
 
   def study_version(self):
     version = self._data['study']['versions'][0]

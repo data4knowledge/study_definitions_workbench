@@ -42,6 +42,7 @@ class M11Protocol():
     self.compound_codes = None
     self.compund_names = None
     self.trial_phase_raw = None
+    self.trial_phase = None
     self.short_title = None
     self.sponsor_name_and_address = None
     self.sponsor_name = None
@@ -79,6 +80,7 @@ class M11Protocol():
     self.compound_codes = self._table_get_row(table, 'Compound Code(s)')
     self.compund_names = self._table_get_row(table, 'Compound Name(s)')
     self.trial_phase_raw = self._table_get_row(table, 'Trial Phase')
+    self.trial_phase = self._phase()
     self.short_title = self._table_get_row(table, 'Short Title')
     self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
     self.sponsor_name, self.sponsor_address = self._sponsor_name_and_address()
@@ -118,8 +120,6 @@ class M11Protocol():
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
     protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
     intervention_model_code = self._cdisc_ct_code('C82639', 'Parallel Study')
-    temp_phase_code = self._cdisc_ct_code('C82639', 'Parallel Study')
-    phase = self._model_instance(AliasCode, {'standardCode': temp_phase_code})
     country_code = self._iso_country_code('DNK', 'Denmark')
     sponsor_code = self._cdisc_ct_code("C70793", 'Clinical Study Sponsor')
     study_title = self._model_instance(StudyTitle, {'text': title, 'type': sponsor_title_code})
@@ -132,15 +132,15 @@ class M11Protocol():
     organization = self._model_instance(Organization, {'name': self.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'studyIdentifier': self.sponsor_protocol_identifier, 'studyIdentifierScope': organization})
     study_version = self._model_instance(StudyVersion, {'versionIdentifier': '1', 'rationale': 'XXX', 'titles': [study_title], 'studyDesigns': [study_design], 
-                                                     'documentVersionId': protocl_document_version.id, 'studyIdentifiers': [identifier], 'studyPhase': phase}) 
+                                                     'documentVersionId': protocl_document_version.id, 'studyIdentifiers': [identifier], 'studyPhase': self.trial_phase}) 
     study = self._model_instance(Study, {'id': uuid4(), 'name': self._study_name(), 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}) 
     return study
 
   def _cdisc_ct_code(self, code, decode):
-    return self._model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': self._cdisc_ct_manager.system, 'codeSystemVersion': self._cdisc_ct_manager.version})
+    return self._model_instance(Code, {'code': 'code', 'decode': decode, 'codeSystem': self._cdisc_ct_manager.system, 'codeSystemVersion': self._cdisc_ct_manager.version})
 
   def _iso_country_code(self, code, decode):
-    return self._model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08'})
+    return self._model_instance(Code, {'code': 'code', 'decode': decode, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08'})
   
   def _document_version(self, study):
     return study.documentedBy.versions[0]
@@ -180,6 +180,7 @@ class M11Protocol():
     parts = self.sponsor_name_and_address.split('\n')
     if len(parts) > 0:
       name = parts[0].strip()
+      application_logger.info(f"Sponsor name set to '{name}'")
     if len(parts) > 1:
       address = (',').join([x.strip() for x in parts[1:]])
     return name, address
@@ -188,8 +189,44 @@ class M11Protocol():
     items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
     for item in items:
       if item:
-        return self._clean_study_name(item)
-    return ''
+        name = re.sub('[\W_]+', '', item.upper())
+        application_logger.info(f"Study name set to '{name}'")
+        return name
+    return ''  
+  
+  def _phase(self):
+    phase_map = [
+      (['0', 'PRE-CLINICAL', 'PRE CLINICAL'], {'code': 'C54721',  'decode': 'Phase 0 Trial'}),
+      (['1', 'I'],                            {'code': 'C15600',  'decode': 'Phase I Trial'}),
+      (['1-2'],                               {'code': 'C15693',  'decode': 'Phase I/II Trial'}),
+      (['1/2/3'],                             {'code': 'C198366', 'decode': 'Phase I/II/III Trial'}),
+      (['1/3'],                               {'code': 'C198367', 'decode': 'Phase I/III Trial'}),
+      (['1A', 'IA'],                          {'code': 'C199990', 'decode': 'Phase Ia Trial'}),
+      (['1B', 'IB'],                          {'code': 'C199989', 'decode': 'Phase Ib Trial'}),
+      (['2', 'II'],                           {'code': 'C15601',  'decode': 'Phase II Trial'}),
+      (['2-3', 'II-III'],                     {'code': 'C15694',  'decode': 'Phase II/III Trial'}),
+      (['2A', 'IIA'],                         {'code': 'C49686',  'decode': 'Phase IIa Trial'}),
+      (['2B', 'IIB'],                         {'code': 'C49688',  'decode': 'Phase IIb Trial'}),
+      (['3', 'III'],                          {'code': 'C15602',  'decode': 'Phase III Trial'}),
+      (['3A', 'IIIA'],                        {'code': 'C49687',  'decode': 'Phase IIIa Trial'}),
+      (['3B', 'IIIB'],                        {'code': 'C49689',  'decode': 'Phase IIIb Trial'}),
+      (['4', 'IV'],                           {'code': 'C15603',  'decode': 'Phase IV Trial'}),
+      (['5', 'V'],                            {'code': 'C47865',  'decode': 'Phase V Trial'})
+    ]
+    phase = self.trial_phase_raw.upper().replace('PHASE', '').strip()
+    #print(f"PHASE1: {phase}")
+    for tuple in phase_map:
+      #print(f"PHASE2: {tuple}")
+      if phase in tuple[0]:
+        entry = tuple[1]
+        cdisc_phase_code = self._cdisc_ct_code(entry['code'], entry['decode'])
+        application_logger.info(f"Trial phase '{phase}' decoded as '{entry['code']}', '{entry['decode']}'")
+        return self._model_instance(AliasCode, {'standardCode': cdisc_phase_code})
+    cdisc_phase_code = self._cdisc_ct_code('C48660', '[Trial Phase] Not Applicable')
+    application_logger.warning(f"Trial phase '{phase}' not decoded")
+    return self._model_instance(AliasCode, {'standardCode': cdisc_phase_code})
 
-  def _clean_study_name(self, s):
-    return re.sub('[\W_]+', '', s.upper())
+
+
+
+

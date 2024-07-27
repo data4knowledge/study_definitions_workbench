@@ -35,7 +35,7 @@ class RawDocx():
     self.image_path = os.path.join(self.dir, 'images')
     self.image_rels = {}
     self._organise_dir()
-    print(f"RAW DOCX: {self.full_path}, {self.dir}, {self.filename}, {self.image_path}")
+    #print(f"RAW DOCX: {self.full_path}, {self.dir}, {self.filename}, {self.image_path}")
     self.source_document = DocXProcessor(self.full_path)
     self.target_document = RawDocument()
     self._process()
@@ -49,7 +49,7 @@ class RawDocx():
       application_logger.exception("Failed to create image directory", e)
 
   def _process(self):
-    print(f"RAW DOCX: Process")
+    #print(f"RAW DOCX: Process")
     try:
       self._extract_images()
       for block_item in self._iter_block_items(self.source_document):
@@ -80,7 +80,7 @@ class RawDocx():
     Document object, but also works for a _Cell object, which itself can
     contain paragraphs and tables.
     """
-    print(f"ITERATION: {parent}")
+    #print(f"ITERATION: {parent}")
     if isinstance(parent, Document):
       parent_elm = parent.element.body
     elif isinstance(parent, _Cell):

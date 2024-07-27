@@ -17,12 +17,12 @@ class ObjectPath():
 
   def _path(self, object_value: object, instruction: str) -> object:
     try:
-      print(f"PATH: {object_value}, {instruction}")
+      #print(f"PATH: {object_value}, {instruction}")
       group_result = re.match(r"(?P<attribute>\w+)(\[@(?P<name>\w+)='(?P<value>\w+)'\])?(\[(?P<subpath_index>\S+)\])?", instruction)
       if group_result:
         result = group_result.groupdict()
         is_digits = True if result['subpath_index'] and result['subpath_index'].isdigit() else False
-        print(f"RESULT: {instruction}, {result}")
+        #print(f"RESULT: {instruction}, {result}")
         if result['name'] and result['value'] and result['attribute']:
           object_value = getattr(object_value, result['attribute'], None)
           if isinstance(object_value, dict):
@@ -36,12 +36,13 @@ class ObjectPath():
                 object_value = item
                 break
         elif result['subpath_index'] and result['attribute'] and not is_digits :
-          print(f"SUBPATH: {result['subpath_index']}")
+          #print(f"SUBPATH: {result['subpath_index']}")
+          pass
         elif result['subpath_index']  and result['attribute'] and is_digits :
           object_value = getattr(object_value, result['attribute'], None)[int(result['subpath_index'])]
         elif result['attribute']:
           object_value = getattr(object_value, result['attribute'], None)
-          print(f"OBJECT: {object_value}")
+          #print(f"OBJECT: {object_value}")
         else:
           application_logger.error(f"Failed to find path, logical error '{self._original_path}'")
           object_value = None
