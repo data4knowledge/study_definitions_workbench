@@ -84,6 +84,7 @@ class USDMJson():
       }
       result['arms'] = len(design['arms'])
       result['trial_blind_scheme'] = design['blindingSchema']['standardCode']['decode'] if design['blindingSchema'] else '[Triaæ Blind Schema]'
+      result['participants'] = self._population_recruitment(design) if design['population'] else {'enroll': 0, 'complete': '0'}
       for item in design['maskingRoles']:
         result['blinded_roles'][item['role']['decode']] = item['role']['decode']
       return result
@@ -162,3 +163,9 @@ class USDMJson():
   def _min_max(self, item):
     print(f"ITEM: {item}")
     return {'min': int(item['minValue']), 'max': int(item['maxValue']), 'unit': item['unit']['decode']} if item else {'min': 100, 'max': 0, 'unit': 'Year'}
+
+  def _population_recruitment(self, study_design: dict) -> dict:
+    population = study_design['population']
+    enroll = population['plannedEnrollmentNumber']
+    complete = population['plannedCompletionNumber']
+    return {'enroll': int(enroll['maxValue']), 'complete': int(complete['maxValue'])} if enroll and complete else {'enroll': 0, 'complete': '0'}
