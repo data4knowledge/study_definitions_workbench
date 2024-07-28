@@ -76,13 +76,16 @@ class USDMJson():
       result = {
         'id': self.id,
         'arms': 0,
-        'trial_blind_scheme': {},
+        'trial_blind_scheme': None,
         'blinded_roles': {},
         'participants': None,
         'duration': None,
         'independent_committee':  None
       }
       result['arms'] = len(design['arms'])
+      result['trial_blind_scheme'] = design['blindingSchema']['standardCode']['decode'] if design['blindingSchema'] else '[Triaæ Blind Schema]'
+      for item in design['maskingRoles']:
+        result['blinded_roles'][item['role']['decode']] = item['role']['decode']
       return result
     else:
       return None
