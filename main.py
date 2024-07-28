@@ -111,7 +111,7 @@ async def get_version_summary(request: Request, id: int, session: Session = Depe
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
   data = usdm.study_version()
-  print(f"VERSION SUMMARY DATA: {data}")
+  #print(f"VERSION SUMMARY DATA: {data}")
   return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])
@@ -126,7 +126,7 @@ async def get_study_design_o_parameters(request: Request, version_id: int, study
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_overall_parameters(study_design_id)
-  print(f"DATA: {data}")
+  print(f"OVERALL SUMMARY DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/overall_parameters.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/designParameters', dependencies=[Depends(protect_endpoint)])

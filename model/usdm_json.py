@@ -40,6 +40,7 @@ class USDMJson():
     return result
 
   def study_design_overall_parameters(self, id: str):
+    version = self._data['study']['versions'][0]
     design = self._study_design(id)
     if design:
       result = {
@@ -49,15 +50,22 @@ class USDMJson():
         'intervention_model': None,
         'therapeutic_areas': {},
         'characteristics': {},
-        'population':  None
+        'population_age':  None,
+        'population_type':  None,
+        'master_protocol': 'Yex' if len(version['studyDesigns']) > 1 else 'No',
+        'adaptive_design': 'No'
       }
+      result['intervention_model'] = design['interventionModel']['decode'] if design['interventionModel'] else '[Intervention Model]'
+      result['population_age'] = self._population_age(design) if design['population'] else '[Population Age]'
+      result['population_type'] = 'Adult' if result['population_age']['min'] >= 18 else 'Child'
       for item in design['trialIntentTypes']:
         result['trial_intent'][item['decode']] = item['decode']
       for item in design['trialTypes']:
         result['trial_types'][item['decode']] = item['decode']
-      result['intervention_model'] = design['interventionModel']['decode']
       for item in design['characteristics']:
         result['characteristics'][item['decode']] = item['decode']
+        if item['decode'] == "ADAPTIVE":
+          result['adaptive_design'] = 'Yes'
       return result
     else:
       return None
@@ -136,3 +144,18 @@ class USDMJson():
     except Exception as e:
       #errors_and_logging.exception(f"Parsing '{text}' with soup", e)
       return None
+
+  def _population_age(self, study_design: dict) -> dict:
+    population = study_design['population']
+    result = self._min_max(population['plannedAge'])
+    for cohort in population['cohorts']:
+      cohort = self._min_max(population['plannedAge'])
+      if cohort['min'] < result['min']:
+        result['min'] = cohort['min']
+      if cohort['max'] > result['max']:
+        result['max'] = cohort['max']
+    return result
+
+  def _min_max(self, item):
+    print(f"ITEM: {item}")
+    return {'min': int(item['minValue']), 'max': int(item['maxValue']), 'unit': item['unit']['decode']} if item else {'min': 100, 'max': 0, 'unit': 'Year'}

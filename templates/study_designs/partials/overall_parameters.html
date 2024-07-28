@@ -5,13 +5,13 @@
         <p class="card-text"><small>Intervention Model</small> </p>
       </td>
       <td>
-        <p class="card-text"><small>{{ data['intervention_models']}}</small> </p>
+        <p class="card-text"><small>{{ data['intervention_model']}}</small> </p>
       </td>
       <td>
         <p class="card-text"><small>Population Type</p></small>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small>{{data['population_type']}}</small></p>
       </td>
     </tr>
     <tr>
@@ -19,13 +19,13 @@
         <p class="card-text"><small>Control Type</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small><i>Not Implemented</i></small></p>
       </td>
       <td>
         <p class="card-text"><small>Population Diagnosis or Condition</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small><i>Not Implemented</i></small></p>
       </td>
     </tr>
     <tr>
@@ -33,13 +33,14 @@
         <p class="card-text"><small>Control Description</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small><i>Not Implemented</i></small></p>
       </td>
       <td>
         <p class="card-text"><small>Population Age</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        {% set pop_age = data['population_age'] %}
+        <p class="card-text"><small>{{pop_age['min']}} to {{pop_age['max']}} {{pop_age['unit']}}</small></p>
       </td>
     </tr>
     <tr>
@@ -47,27 +48,27 @@
         <p class="card-text"><small>Intervention Assignment Method</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small><i>Not Implemented</i></small></p>
       </td>
       <td>
         <p class="card-text"><small>Site Distribution and Geographic Scope</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small><i>Not Implemented</i></small></p>
       </td>
     </tr>
     <tr>
       <td>
-        <p class="card-text"><small>Adaptove Trial Design</small></p>
+        <p class="card-text"><small>Adaptive Trial Design</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small>{{data['adaptive_design']}}</small></p>
       </td>
       <td>
-        <p class="card-text">Master Protocol Design</p>
+        <p class="card-text"><small>Master Protocol Design</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small>{{data['master_protocol']}}</small></p>
       </td>
     </tr>
     <tr>
@@ -75,7 +76,7 @@
         <p class="card-text"><small>Drug / Device Combination Product Indication</small></p>
       </td>
       <td>
-        <p class="card-text"><small>TBD</small></p>
+        <p class="card-text"><small><i>Not Implemented</i></small></p>
       </td>
       <td>
         <p class="card-text"><small></small></p>
