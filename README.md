@@ -15,6 +15,13 @@ AUTH0_AUDIENCE=<from the Auth0 configuation>
 ROOT_URL=<base URL for the app>
 ```
 
-the following variables are required
+the following variables are required for local development
 
 ```DATABASE_URL = "sqlite:///./database.db"```
+
+Creating a volume
+
+```
+fly volumes create <name>
+fly secrets set DATABASE_URL=sqlite:////mnt/<name>/production.sqlite 
+```

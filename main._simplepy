@@ -1,0 +1,27 @@
+from fastapi import Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File
+from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from d4kms_generic.auth0_service import Auth0Service
+from d4kms_generic import application_logger
+from d4kms_ui.release_notes import ReleaseNotes
+from d4kms_ui.pagination import Pagination
+from model import VERSION, SYSTEM_NAME
+
+#models.Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+  title = SYSTEM_NAME,
+  description = "d4k Study Definitions Workbench. The Swiss Army Knife for DDF / USDM Study Definitions",
+  version = VERSION
+)
+
+application_logger.info(f"Starting {SYSTEM_NAME}")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/")
+def home(request: Request):
+  response = templates.TemplateResponse('home/home.html', {'request': request, "version": VERSION})
+  return response
