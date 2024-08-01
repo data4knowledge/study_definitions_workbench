@@ -47,6 +47,14 @@ def home(request: Request):
   response = templates.TemplateResponse('home/home.html', {'request': request, "version": VERSION})
   return response
 
+@app.get("/københavn")
+def cph(request: Request, session: Session = Depends(get_db)):
+  data = {}
+  data['users'] = json.dumps(User.debug(session), indent=2)
+  data['imports'] = json.dumps(FileImport.debug(session), indent=2)
+  response = templates.TemplateResponse('home/debug.html', {'request': request, 'data': data})
+  return response
+
 @app.get("/login")
 async def login(request: Request):
   if not 'id_token' in request.session:  # it could be userinfo instead of id_token

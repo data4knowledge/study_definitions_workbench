@@ -34,6 +34,17 @@ class User(UserBase):
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
+  def debug(cls, session: Session) -> list['User']:
+    count = session.query(UserDB).count()
+    data = session.query(UserDB).all()
+    results = []
+    for db_item in data:
+      results.append(db_item.__dict__)
+      results[-1].pop('_sa_instance_state')
+    result = {'items': results, 'count': count }
+    return result
+
+  @classmethod
   def check(cls, email: str, session: Session):
     present_in_db = True
     user = cls.find_by_email(email, session)
