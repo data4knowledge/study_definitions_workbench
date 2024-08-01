@@ -45,27 +45,26 @@ class USDMJson():
     if design:
       result = {
         'id': self.id,
-        'trial_types': {},
-        'trial_intent': {},
         'intervention_model': None,
-        'therapeutic_areas': {},
-        'characteristics': {},
-        'population_age':  None,
         'population_type':  None,
-        'master_protocol': 'Yex' if len(version['studyDesigns']) > 1 else 'No',
-        'adaptive_design': 'No'
+        'population_condition': '[Population Condition]',
+        'population_age':  None,
+        'control_type': '[Control Type]',
+        'control_description': '[Control Description]',
+        'master_protocol': 'Yes' if len(version['studyDesigns']) > 1 else 'No',
+        'adaptive_design': 'No',
+        'intervention_method': '[Intervention Assignment Method]',
+        'site_distribution': '[Site Distribution and Geographic Scope]',
+        'drug_device_indication': '[Drug / Device Combination Product Indication]'
       }
+      # result['trial_types'] = self._set_trial_types(id)
+      # result['trial_intent'] = self._set_trial_intent_types(id)
       result['intervention_model'] = design['interventionModel']['decode'] if design['interventionModel'] else '[Intervention Model]'
-      result['population_age'] = self._population_age(design) if design['population'] else '[Population Age]'
+      result['population_age'] = self._population_age(design) if design['population'] else {'min': 0, 'max': 0, 'unit': ''}
       result['population_type'] = 'Adult' if result['population_age']['min'] >= 18 else 'Child'
-      for item in design['trialIntentTypes']:
-        result['trial_intent'][item['decode']] = item['decode']
-      for item in design['trialTypes']:
-        result['trial_types'][item['decode']] = item['decode']
-      for item in design['characteristics']:
-        result['characteristics'][item['decode']] = item['decode']
-        if item['decode'] == "ADAPTIVE":
-          result['adaptive_design'] = 'Yes'
+      result['characteristics'] = self._set_characteristics(id)
+      if "ADAPTIVE" in result['characteristics']:
+        result['adaptive_design'] = 'Yes'
       return result
     else:
       return None
@@ -75,21 +74,49 @@ class USDMJson():
     if design:
       result = {
         'id': self.id,
-        'arms': 0,
+        'arms': None,
         'trial_blind_scheme': None,
-        'blinded_roles': {},
+        'blinded_roles': None,
         'participants': None,
-        'duration': None,
-        'independent_committee':  None
+        'duration': '[Duration]',
+        'independent_committee': '[Independent Committee]'
       }
-      result['arms'] = len(design['arms'])
-      result['trial_blind_scheme'] = design['blindingSchema']['standardCode']['decode'] if design['blindingSchema'] else '[Triaæ Blind Schema]'
-      result['participants'] = self._population_recruitment(design) if design['population'] else {'enroll': 0, 'complete': '0'}
-      for item in design['maskingRoles']:
-        result['blinded_roles'][item['role']['decode']] = item['role']['decode']
+      result['arms'] = len(design['arms']) if design['arms'] else '[Arms]'
+      result['trial_blind_scheme'] = design['blindingSchema']['standardCode']['decode'] if design['blindingSchema'] else '[Trial Blind Schema]'
+      result['blinded_roles'] = self._set_blinded_roles(id)
+      result['participants'] = self._population_recruitment(design) if design['population'] else {'enroll': 0, 'complete': 0}
       return result
     else:
       return None
+
+  def _set_blinded_roles(self, id) -> dict:
+    design = self._study_design(id)
+    result = {}
+    if design['maskingRoles']:
+      for item in design['maskingRoles']:
+        result[item['role']['decode']] = item['role']['decode']
+    else:
+      result['[Blinded Roles]'] = '[Blinded Roles]'
+    return result
+
+  def _set_characteristics(self, id) -> dict:
+    return self._set_multiple(id, 'characteristics', '[Characteristics]')
+
+  def _set_trial_intent_types(self, id) -> dict:
+    return self._set_multiple(id, 'trialIntentTypes', '[Trial Intent]')
+
+  def _set_trial_types(self, id) -> dict:
+    return self._set_multiple(id, 'trialTypes', '[Trial TYpes]')
+
+  def _set_multiple(self, id: str, collection: str, missing: str) -> dict:
+    design = self._study_design(id)
+    result = {}
+    if design[collection]:
+      for item in design[collection]:
+        result[item['decode']] = item['decode']
+    else:
+      result[missing] = missing
+    return result
 
   def study_design_schema(self, id: str):
     design = self._study_design(id)

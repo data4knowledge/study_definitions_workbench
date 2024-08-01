@@ -19,13 +19,13 @@
         <p class="card-text"><small>Control Type</small></p>
       </td>
       <td>
-        <p class="card-text"><small><i>Coming in UI soon!</i></small></p>
+        <p class="card-text"><small>{{data['control_type']}}</small></p>
       </td>
       <td>
         <p class="card-text"><small>Population Diagnosis or Condition</small></p>
       </td>
       <td>
-        <p class="card-text"><small><i>Coming in UI soon!</i></small></p>
+        <p class="card-text"><small>{{data['population_condition']}}</small></p>
       </td>
     </tr>
     <tr>
@@ -33,7 +33,7 @@
         <p class="card-text"><small>Control Description</small></p>
       </td>
       <td>
-        <p class="card-text"><small><i>Coming in UI soon!</i></small></p>
+        <p class="card-text"><small>{{data['control_description']}}</small></p>
       </td>
       <td>
         <p class="card-text"><small>Population Age</small></p>
@@ -48,13 +48,13 @@
         <p class="card-text"><small>Intervention Assignment Method</small></p>
       </td>
       <td>
-        <p class="card-text"><small><i>Coming in UI soon!</i></small></p>
+        <p class="card-text"><small>{{data['intervention_method']}}</small></p>
       </td>
       <td>
         <p class="card-text"><small>Site Distribution and Geographic Scope</small></p>
       </td>
       <td>
-        <p class="card-text"><small><i>Coming in UI soon!</i></small></p>
+        <p class="card-text"><small>{{data['site_distribution']}}</small></p>
       </td>
     </tr>
     <tr>
@@ -76,41 +76,13 @@
         <p class="card-text"><small>Drug / Device Combination Product Indication</small></p>
       </td>
       <td>
-        <p class="card-text"><small><i>Coming in UI soon!</i></small></p>
+        <p class="card-text"><small>{{data['drug_device_indication']}}</small></p>
       </td>
       <td>
         <p class="card-text"><small></small></p>
       </td>
       <td>
         <p class="card-text"><small></small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Characteristics</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{ data['characteristics']|join(', ') }}</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>Trial Intent</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{ data['trial_intent']|join(', ') }}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Therapeutic Areas</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{ data['therapeutic_areas']|join(', ') }}</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>Trial Types</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{ data['trial_types']|join(', ') }}</small></p>
       </td>
     </tr>
   </table>

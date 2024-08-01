@@ -132,7 +132,7 @@ async def get_study_design_d_parameters(request: Request, version_id: int, study
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_design_parameters(study_design_id)
-  print(f"DATA: {data}")
+  print(f"DESIGN PARAMETERS DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/design_parameters.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/schema', dependencies=[Depends(protect_endpoint)])

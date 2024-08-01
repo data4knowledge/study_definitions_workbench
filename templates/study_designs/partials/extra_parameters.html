@@ -1,0 +1,32 @@
+<div>
+  <table class="table responsive table-striped mt-1">
+    <tr>
+      <td>
+        <p class="card-text"><small>Characteristics</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['characteristics']|join(', ') }}</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>Trial Intent</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['trial_intent']|join(', ') }}</small></p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="card-text"><small>Therapeutic Areas</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['therapeutic_areas']|join(', ') }}</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>Trial Types</small></p>
+      </td>
+      <td>
+        <p class="card-text"><small>{{ data['trial_types']|join(', ') }}</small></p>
+      </td>
+    </tr>
+  </table>
+</div>
