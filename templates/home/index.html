@@ -6,55 +6,64 @@
 {% endblock %}
 {% block main_content %}
   <div class="container-fluid">
-    {% for item in data['items'] %}
-      {% set id = "card-" ~ loop.index0 ~ "_div" %}
-      {% if loop.index0 % 4 == 0 %}
-        <div class="mt-3 row row-cols-4">
-      {% endif %}
+    {% if data['items']|length == 0 %}
       <div class="col">
-        <div class="card card-body rounded-3 h-100">
-          <div class="row">
-            <h6 class="card-subtitle">{{item['sponsor']}}: {{item['sponsor_identifier']}}</h6>
-          </div>
-          <div class="row mt-2">
-            <div class="container">
-              <p class="card-text text-muted lh-1"><small>{{item['title']}}</small></p>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <div class="container">
-              {% if item['versions'] == 1 %}
-                {% set vtext = "1 version" %}
-              {% else %}
-                {% set vtext = item['versions'] ~ " versions" %}
-              {% endif %}            
-              <span class="badge rounded-pill bg-info">{{item['phase']}}</span>
-              <span class="badge rounded-pill bg-info">{{vtext}}</span>  
-              {% if item['import_type'] == "DOCX" %}
-                <span class="badge rounded-pill bg-primary">M11 Document</span>
-              {% else %}
-                <span class="badge rounded-pill bg-success">USDM Excel</span>
-              {% endif %}            
-              
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="container">
-              <a href="/versions/{{item['latest_version_id']}}/summary" class="btn btn-sm btn-outline-primary rounded-5">
-                <i class="bi bi-gear"></i>
-                View Details
-              </a>  
-              <a href="/versions/{{item['latest_version_id']}}/protocolDocument" class="btn btn-sm btn-outline-primary rounded-5">
-                <i class="bi bi-file-text"></i>
-                View Protocol Document
-              </a>  
-            </div>
-          </div>
+        <div class="card card-body rounded-3">
+          <h6 class="card-subtitle">You have not loaded any studies yet.</h6>
+          <p class="card-text text-muted lh-1"><small>Use the import menu to upload one or more studies</small></p>
         </div>
       </div>
-      {% if loop.index0 % 4 == 3 %}
+    {% else %}
+      {% for item in data['items'] %}
+        {% set id = "card-" ~ loop.index0 ~ "_div" %}
+        {% if loop.index0 % 4 == 0 %}
+          <div class="mt-3 row row-cols-4">
+        {% endif %}
+        <div class="col">
+          <div class="card card-body rounded-3 h-100">
+            <div class="row">
+              <h6 class="card-subtitle">{{item['sponsor']}}: {{item['sponsor_identifier']}}</h6>
+            </div>
+            <div class="row mt-2">
+              <div class="container">
+                <p class="card-text text-muted lh-1"><small>{{item['title']}}</small></p>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="container">
+                {% if item['versions'] == 1 %}
+                  {% set vtext = "1 version" %}
+                {% else %}
+                  {% set vtext = item['versions'] ~ " versions" %}
+                {% endif %}            
+                <span class="badge rounded-pill bg-info">{{item['phase']}}</span>
+                <span class="badge rounded-pill bg-info">{{vtext}}</span>  
+                {% if item['import_type'] == "DOCX" %}
+                  <span class="badge rounded-pill bg-primary">M11 Document</span>
+                {% else %}
+                  <span class="badge rounded-pill bg-success">USDM Excel</span>
+                {% endif %}            
+                
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="container">
+                <a href="/versions/{{item['latest_version_id']}}/summary" class="btn btn-sm btn-outline-primary rounded-5">
+                  <i class="bi bi-gear"></i>
+                  View Details
+                </a>  
+                <a href="/versions/{{item['latest_version_id']}}/protocolDocument" class="btn btn-sm btn-outline-primary rounded-5">
+                  <i class="bi bi-file-text"></i>
+                  View Protocol Document
+                </a>  
+              </div>
+            </div>
+          </div>
         </div>
-      {% endif %}
-    {% endfor %}
+        {% if loop.index0 % 4 == 3 %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
 {% endblock %}
