@@ -5,6 +5,7 @@ from model.files import Files
 from model.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
+from usdm_db import USDMDb
 
 class USDMJson():
 
@@ -15,10 +16,24 @@ class USDMJson():
     self.uuid = file_import.uuid
     self.type = file_import.type
     self.m11 = True if self.type == "DOCX" else False
-    files = Files(file_import.uuid)
-    fullpath, filename = files.path('usdm')
+    self._files = Files(file_import.uuid)
+    fullpath, filename = self._files.path('usdm')
     data = open(fullpath)
     self._data = json.load(data)
+
+  def fhir(self):
+    usdm = USDMDb()
+    usdm.from_json(self._data)
+    data = usdm.to_fhir()
+    fullpath, filename = self._files.save("fhir", data)
+    return fullpath, filename, 'text/plain' 
+
+  def pdf(self):
+    usdm = USDMDb()
+    usdm.from_json(self._data)
+    data = usdm.to_pdf()
+    fullpath, filename = self._files.save("protocol", data)
+    return fullpath, filename, 'text/plain' 
 
   def study_version(self):
     version = self._data['study']['versions'][0]

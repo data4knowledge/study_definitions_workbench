@@ -1,4 +1,23 @@
 {% extends "shared/_main_layout.html" %}
+
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+
+{% block menu_content %}
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+      <i class="bi bi-box-arrow-in-down me-2"></i>Export
+    </a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/versions/{{data['id']}}/export/fhir">Download FHIR Message (JSON)</a>
+      <a class="dropdown-item" href="/versions/{{data['id']}}/export/protocol">Download Protocol (PDF)</a>
+    </div>
+  </li>
+{% endblock %}
+
 {% block main_content %}
   {% set sponsor = data['identifiers']['Clinical Study Sponsor'] %}
   <div class="mt-3 row">
@@ -36,5 +55,4 @@
       </div>
     </div>
   </div>
-
 {% endblock %}

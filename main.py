@@ -1,5 +1,5 @@
 from fastapi import Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
@@ -152,12 +152,32 @@ async def get_study_design_interventions(request: Request, version_id: int, stud
   return templates.TemplateResponse("study_designs/partials/section.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/estimands', dependencies=[Depends(protect_endpoint)])
-async def get_vstudy_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_estimands(study_design_id)
   print(f"SCHEMA DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/section.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{id}/export/fhir', dependencies=[Depends(protect_endpoint)])
+async def export_fhir(request: Request, id: int, session: Session = Depends(get_db)):
+  usdm = USDMJson(id, session)
+  full_path, filename, media_type = usdm.fhir()
+  if full_path == None:
+    results = 'Not found'
+    return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
+  else:
+    return FileResponse(path=full_path, filename=filename, media_type=media_type)
+
+@app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
+async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
+  usdm = USDMJson(id, session)
+  full_path, filename, media_type = usdm.pdf()
+  if full_path == None:
+    results = 'Not found'
+    return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
+  else:
+    return FileResponse(path=full_path, filename=filename, media_type=media_type)
 
 @app.get("/logout")
 def logout(request: Request):

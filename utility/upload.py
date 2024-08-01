@@ -50,11 +50,11 @@ def save_xl_files(excel_file: dict, image_files: dict):
   uuid = files.new()
   filename = excel_file['filename']
   contents = excel_file['contents']
-  full_path = files.save("xlsx", contents, filename)
+  saved_full_path, saved_filename = files.save("xlsx", contents, filename)
   for image in image_files:
     filename = image['filename']
     contents = image['contents']
-    full_path = files.save("image", contents, filename)
+    saved_full_path, saved_filename = files.save("image", contents, filename)
   return uuid
 
 async def process_m11(request, background_tasks, templates, user, session):
@@ -97,5 +97,5 @@ def save_m11_files(word_file: dict):
   uuid = files.new()
   filename = word_file['filename']
   contents = word_file['contents']
-  full_path = files.save("docx", contents, filename)
+  saved_full_path, saved_filename = files.save("docx", contents, filename)
   return uuid

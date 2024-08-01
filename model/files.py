@@ -20,7 +20,7 @@ class Files:
       "usdm": {'method': self._save_json_file, 'use_original': False, 'filename': 'usdm', 'extension': 'json'},
       "fhir": {'method': self._save_json_file, 'use_original': False, 'filename': 'fhir', 'extension': 'json'},
       "errors": {'method': self._save_csv_file, 'use_original': False, 'filename': 'errors', 'extension': 'csv'},
-      "protocol": {'method': self._save_html_file, 'use_original': False, 'filename': 'protocol', 'extension': 'html'},
+      "protocol": {'method': self._save_pdf_file, 'use_original': False, 'filename': 'protocol', 'extension': 'pdf'},
       "highlight": {'method': self._save_html_file, 'use_original': False, 'filename': 'highlight', 'extension': 'html'},
       "image": {'method': self._save_image_file, 'use_original': True, 'filename': '', 'extension': ''}
     }
@@ -28,14 +28,14 @@ class Files:
 
   def new(self):
     self.uuid = str(uuid4())
-    if not self._create_dir(self.uuid):
+    if not self._create_dir():
       self.uuid = None
     return self.uuid
 
-  def save(self, type, contents, filename=''):
+  def save(self, type: str, contents, filename: str ='') -> tuple[str, str]:
     filename = filename if self.media_type[type]['use_original'] else self._form_filename(type)
-    full_path = self.media_type[type]['method'](self.uuid, contents, filename)
-    return full_path 
+    full_path = self.media_type[type]['method'](contents, filename)
+    return full_path, filename 
 
   def read(self, type):
     extension = self.media_type[type]['extension']
@@ -64,13 +64,13 @@ class Files:
       application_logger.exception(f"Exception deleting directory '{path}'", e)
       return False
   
-  def _save_excel_file(self, uuid, contents, filename):
-      self._save_binary_file(uuid, contents, filename)
+  def _save_excel_file(self, contents, filename):
+      self._save_binary_file(contents, filename)
 
-  def _save_word_file(self, uuid, contents, filename):
-      self._save_binary_file(uuid, contents, filename)
+  def _save_word_file(self, contents, filename):
+      self._save_binary_file(contents, filename)
 
-  def _save_binary_file(self, uuid, contents, filename):
+  def _save_binary_file(self, contents, filename):
     try:
       full_path = self._file_path(filename)
       with open(full_path, 'wb') as f:
@@ -79,7 +79,7 @@ class Files:
     except Exception as e:
       application_logger.exception(f"Exception saving source file", e)
 
-  def _save_image_file(self, uuid, contents, filename):
+  def _save_image_file(self, contents, filename):
     try:
       full_path = self._file_path(filename)
       with open(full_path, 'wb') as f:
@@ -87,7 +87,7 @@ class Files:
     except Exception as e:
       application_logger.exception(f"Exception saving source file", e)
 
-  def _save_json_file(self, uuid, contents, filename):
+  def _save_json_file(self, contents, filename):
     try:
       full_path = self._file_path(filename)
       with open(full_path, 'w', encoding='utf-8') as f:
@@ -96,7 +96,7 @@ class Files:
     except Exception as e:
       application_logger.exception(f"Exception saving results file", e)
 
-  def _save_pdf_file(self, uuid, contents, filename):
+  def _save_pdf_file(self, contents, filename):
     try:
       full_path = self._file_path(filename)
       with open(full_path, 'w+b') as f:
@@ -105,7 +105,7 @@ class Files:
     except Exception as e:
       application_logger.exception(f"Exception saving PDF file", e)
 
-  def _save_html_file(self, uuid, contents, filename):
+  def _save_html_file(self, contents, filename):
     try:
       full_path = self._file_path(filename)
       with open(full_path, 'w', encoding='utf-8') as f:
@@ -114,7 +114,7 @@ class Files:
     except Exception as e:
       application_logger.exception(f"Exception saving timeline file", e)
 
-  def _save_csv_file(self, uuid, contents, filename):
+  def _save_csv_file(self, contents, filename):
     if not contents:
       contents = [{'sheet': '', 'row': '', 'column': '', 'message': '', 'level': ''}]
     try:
@@ -127,12 +127,12 @@ class Files:
     except Exception as e:
       application_logger.exception(f"Exception saving error file", e)
 
-  def _create_dir(self, uuid):
+  def _create_dir(self):
     try:
-      os.mkdir(os.path.join(self.DIR, uuid))
+      os.mkdir(os.path.join(self.DIR, self.uuid))
       return True
     except Exception as e:
-      application_logger.exception(f"Exception creating dir '{uuid}'", e)
+      application_logger.exception(f"Exception creating dir '{self.uuid}'", e)
       return False
 
   def _dir_path(self):
