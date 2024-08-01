@@ -18,6 +18,8 @@ from model.usdm_json import USDMJson
 from model.file_import import FileImport
 from model import VERSION, SYSTEM_NAME
 
+models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
   title = SYSTEM_NAME,
   description = "d4k Study Definitions Workbench. The Swiss Army Knife for DDF / USDM Study Definitions",
