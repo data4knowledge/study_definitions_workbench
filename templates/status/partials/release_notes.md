@@ -1,3 +1,7 @@
+**Release 0.6, 2024-08-02**
+
+- Deployment
+
 **Release 0.5, 2024-08-01**
 
 - Export FHIR message
