@@ -1,3 +1,9 @@
-**Releases 0.1 to 0.n, 2024-07**
+**Release 0.5, 2024-08-01**
+
+- Export FHIR message
+- Export Protocol as PDF
+
+**Releases 0.1 to 0.4, 2024-07**
 
 Initial drafts of the tool
+
