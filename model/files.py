@@ -5,13 +5,12 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 from d4kms_generic import application_logger
+from d4kms_generic.service_environment import ServiceEnvironment
 
 class Files:
   
   class LogicError(Exception):
     pass
-
-  DIR = "datafiles"
 
   def __init__(self, uuid=None):
     self.media_type = {
@@ -25,6 +24,8 @@ class Files:
       "image": {'method': self._save_image_file, 'use_original': True, 'filename': '', 'extension': ''}
     }
     self.uuid = uuid
+    se = ServiceEnvironment()
+    self.dir = se.get("DATAFILE_URL")
 
   def new(self):
     self.uuid = str(uuid4())
@@ -129,17 +130,17 @@ class Files:
 
   def _create_dir(self):
     try:
-      os.mkdir(os.path.join(self.DIR, self.uuid))
+      os.mkdir(os.path.join(self.dir, self.uuid))
       return True
     except Exception as e:
       application_logger.exception(f"Exception creating dir '{self.uuid}'", e)
       return False
 
   def _dir_path(self):
-    return os.path.join(self.DIR, self.uuid)
+    return os.path.join(self.dir, self.uuid)
 
   def _file_path(self, filename):
-    return os.path.join(self.DIR, self.uuid, filename)
+    return os.path.join(self.dir, self.uuid, filename)
 
   def _form_filename(self, type):
     return f"{self.media_type[type]['filename']}.{self.media_type[type]['extension']}"

@@ -23,5 +23,6 @@ Creating a volume
 
 ```
 fly volumes create <name>
-fly secrets set DATABASE_URL=sqlite:////mnt/<name>/production.sqlite 
+fly secrets set DATABASE_URL=sqlite:////mnt/<name>/production.db
+fly secrets set DATAFILE_URL=/mnt/<name> 
 ```
