@@ -14,7 +14,7 @@ class DatabaseManager():
   def clear_all(self):
     self.session.query(StudyDB).delete()
     self.session.query(VersionDB).delete()
-    self.session.query(FileImportDB).all()
+    self.session.query(FileImportDB).delete()
     self.session.commit()
     Files().delete_all()
 
