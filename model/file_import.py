@@ -47,7 +47,7 @@ class FileImport(FileImportBase):
     return results
 
   @classmethod
-  def debug(cls, session: Session) -> list['FileImport']:
+  def debug(cls, session: Session) -> list[dict]:
     count = session.query(FileImportDB).count()
     data = session.query(FileImportDB).all()
     results = []

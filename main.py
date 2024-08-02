@@ -205,6 +205,8 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
   if user.email == "daveih1664dk@gmail.com":
     data = {}
     data['users'] = json.dumps(User.debug(session), indent=2)
+    data['studies'] = json.dumps(Study.debug(session), indent=2)
+    data['versions'] = json.dumps(Version.debug(session), indent=2)
     data['imports'] = json.dumps(FileImport.debug(session), indent=2)
     response = templates.TemplateResponse('database/debug.html', {'request': request, 'data': data})
     return response

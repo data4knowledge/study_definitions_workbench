@@ -31,6 +31,17 @@ class Version(VersionBase):
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
+  def debug(cls, session: Session) -> list[dict]:
+    count = session.query(VersionDB).count()
+    data = session.query(VersionDB).all()
+    results = []
+    for db_item in data:
+      results.append(db_item.__dict__)
+      results[-1].pop('_sa_instance_state')
+    result = {'items': results, 'count': count }
+    return result
+
+  @classmethod
   def find_by_name(cls, name: str, session: Session) -> 'Version':
     db_item = session.query(VersionDB).filter(VersionDB.name == name).first()
     return cls(**db_item.__dict__) if db_item else None

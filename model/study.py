@@ -39,8 +39,8 @@ class Study(StudyBase):
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def find_by_name(cls, name: str, session: Session) -> Optional['Study']:
-    db_item = session.query(StudyDB).filter(StudyDB.name == name).first()
+  def find_by_name_and_user(cls, user: User, name: str, session: Session) -> Optional['Study']:
+    db_item = session.query(StudyDB).filter(StudyDB.name == name, StudyDB.user_id == user.id).first()
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
@@ -48,7 +48,7 @@ class Study(StudyBase):
     present_in_db = True
     if not parameters['name']:
       parameters['name'] = cls._set_study_name(file_import)
-    study = cls.find_by_name(parameters['name'], session)
+    study = cls.find_by_name_and_user(user, parameters['name'], session)
     if not study:
       present_in_db = False
       study = StudyDB(
@@ -64,7 +64,7 @@ class Study(StudyBase):
       study.versions.append(version)
       session.add(study)
       session.commit()
-      study = cls.find_by_name(parameters['name'], session)
+      study = cls.find_by_name_and_user(user, parameters['name'], session)
     else:
       latest_version = Version.find_latest_version(study.id, session)
       version = latest_version.version + 1 if latest_version else 1
@@ -90,6 +90,17 @@ class Study(StudyBase):
       record['import_type'] = FileImport.find(latest_version.import_id, session).type
       results.append(record)
     result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
+    return result
+
+  @classmethod
+  def debug(cls, session: Session) -> list[dict]:
+    count = session.query(StudyDB).count()
+    data = session.query(StudyDB).all()
+    results = []
+    for db_item in data:
+      results.append(db_item.__dict__)
+      results[-1].pop('_sa_instance_state')
+    result = {'items': results, 'count': count }
     return result
 
   @staticmethod

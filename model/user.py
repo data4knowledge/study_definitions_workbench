@@ -34,7 +34,7 @@ class User(UserBase):
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
-  def debug(cls, session: Session) -> list['User']:
+  def debug(cls, session: Session) -> list[dict]:
     count = session.query(UserDB).count()
     data = session.query(UserDB).all()
     results = []

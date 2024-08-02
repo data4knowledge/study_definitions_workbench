@@ -11,7 +11,7 @@
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">User Details</h4>
+            <h5 class="card-title">User Details</h5>
             <h6 class="card-subtitle mb-2 text-muted">Your details</h6>
             <div class="row row-cols-2">
               <div class="col-4">
@@ -35,7 +35,7 @@
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Display Name</h4>
+            <h5 class="card-title">Display Name</h5>
             <h6 class="card-subtitle mb-2 text-muted">Update your display name</h6>
             {% with request=request %}
               {% include "users/partials/display_name_input.html" %}
@@ -47,14 +47,14 @@
         <div class="col">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Database Delete</h4>
+              <h5 class="card-title">Database Delete</h5>
               <h6 class="card-subtitle mb-2 text-muted">Delete the entire database for all users</h6>
               <a type="submit" class="btn btn-outline-danger rounded-5" href="/database/clean" onclick="return confirm('Are you sure?')">Delete Database</a>
             </div>
           </div>
           <div class="card mt-3">
             <div class="card-body">
-              <h4 class="card-title">Database View</h4>
+              <h5 class="card-title">Database View</h5>
               <h6 class="card-subtitle mb-2 text-muted">Show debug view of the database</h6>
               <a type="submit" class="btn btn-outline-primary rounded-5" href="/database/debug">View Database</a>
             </div>
