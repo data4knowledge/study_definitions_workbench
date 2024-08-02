@@ -56,9 +56,22 @@ class Files:
       filename = self._form_filename(type)
     return self._file_path(filename), filename
 
-  def delete(self):
+  def delete_all(self):
+    path = self.dir
     try:
-      path = self._dir_path()
+      for root, dirs, files in os.walk(path):
+        for f in files:
+          os.unlink(os.path.join(root, f))
+        for d in dirs:
+          shutil.rmtree(os.path.join(root, d))
+      return True
+    except Exception as e:
+      application_logger.exception(f"Exception deleting entire directory '{path}'", e)
+      return False
+
+  def delete(self):
+    path = self._dir_path()
+    try:
       shutil.rmtree(path) 
       return True
     except Exception as e:

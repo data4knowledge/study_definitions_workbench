@@ -65,7 +65,7 @@ async def login(request: Request):
 def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if present_in_db:
-    data = Study.list(1, 10, user.id, session)
+    data = Study.page(1, 10, user.id, session)
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
@@ -110,7 +110,7 @@ async def import_xl(request: Request, background_tasks: BackgroundTasks, session
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = FileImport.list(page, size, user.id, session)
+  data = FileImport.page(page, size, user.id, session)
   pagination = Pagination(data, "/import/status") 
   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
@@ -188,6 +188,21 @@ async def export_protocol(request: Request, id: int, session: Session = Depends(
     return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
   else:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
+
+from model.database_manager import DatabaseManager
+
+@app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
+async def database_clean(request: Request, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  if user.email == "daveih1664dk@gmail.com":
+    database_managr = DatabaseManager(session)
+    database_managr.clear_all()    
+    application_logger.info(f"User '{user.id}', '{user.email} cleared the database")
+  else:
+    # Error here
+    application_logger.warning(f"User '{user.id}', '{user.email} attempted to clear the database!")
+    pass
+  return RedirectResponse("/index")
 
 @app.get("/logout")
 def logout(request: Request):

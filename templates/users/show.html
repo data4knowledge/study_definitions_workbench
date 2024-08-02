@@ -43,6 +43,17 @@
           </div>
         </div>
       </div>
-    </div>
+      {% if user_info.email == "daveih1664dk@gmail.com" %}
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Database Delete</h4>
+              <h6 class="card-subtitle mb-2 text-muted">Delete the entire database for all users</h6>
+              <a type="submit" class="btn btn-outline-danger rounded-5" href="/database/clean" onclick="return confirm('Are you sure?')"">Delete Database</a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      </div>
   </div>
 {% endblock %}

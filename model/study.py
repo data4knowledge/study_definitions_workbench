@@ -75,7 +75,7 @@ class Study(StudyBase):
     return study, present_in_db
 
   @classmethod
-  def list(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
+  def page(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
     page = page if page >= 1 else 1
     size = size if size > 0 else 10
     skip = (page - 1) * size
