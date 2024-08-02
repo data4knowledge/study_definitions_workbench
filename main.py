@@ -17,7 +17,10 @@ from utility.upload import *
 from model.usdm_json import USDMJson
 from model.file_import import FileImport
 from model import VERSION, SYSTEM_NAME
+from model.database_manager import DatabaseManager as DBM
 
+Files.check()
+DBM.check()
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(

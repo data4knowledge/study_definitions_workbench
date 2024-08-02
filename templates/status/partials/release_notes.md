@@ -1,6 +1,6 @@
 **Release 0.6, 2024-08-02**
 
-- Deployment
+- Initial web deployment, simple infrastructure
 
 **Release 0.5, 2024-08-01**
 

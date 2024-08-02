@@ -27,6 +27,21 @@ class Files:
     se = ServiceEnvironment()
     self.dir = se.get("DATAFILE_URL")
 
+  @classmethod
+  def check(cls):
+    se = ServiceEnvironment()
+    dir = se.get("DATAFILE_PATH")
+    application_logger.info("Checking datafiles dir exists")
+    try:
+      os.mkdir(dir)
+      application_logger.info("Datafiles dir created")
+      return True
+    except FileExistsError as e:
+      application_logger.info("Datafiles dir exists")
+    except Exception as e:
+      application_logger.exception(f"Exception checking/creating datafiles dir '{dir}'", e)
+      return False
+
   def new(self):
     self.uuid = str(uuid4())
     if not self._create_dir():
@@ -57,25 +72,26 @@ class Files:
     return self._file_path(filename), filename
 
   def delete_all(self):
-    path = self.dir
     try:
-      for root, dirs, files in os.walk(path):
+      for root, dirs, files in os.walk(self.dir):
         for f in files:
           os.unlink(os.path.join(root, f))
         for d in dirs:
           shutil.rmtree(os.path.join(root, d))
+      application_logger.info("Deleted datafiles dir")
       return True
     except Exception as e:
-      application_logger.exception(f"Exception deleting entire directory '{path}'", e)
+      application_logger.exception(f"Exception deleting datafiles dir '{self.dir}'", e)
       return False
 
   def delete(self):
     path = self._dir_path()
     try:
       shutil.rmtree(path) 
+      application_logger.info("Deleted study dir '{path}'")
       return True
     except Exception as e:
-      application_logger.exception(f"Exception deleting directory '{path}'", e)
+      application_logger.exception(f"Exception deleting study dir '{path}'", e)
       return False
   
   def _save_excel_file(self, contents, filename):
