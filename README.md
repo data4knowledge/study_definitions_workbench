@@ -31,4 +31,5 @@ Run on one machine at the moment, sharing of file store is an issue as well as d
 
 ```
 fly machine destroy e7843d41a59078 --force
+fly deploy --ha=false
 ```
