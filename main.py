@@ -47,14 +47,6 @@ def home(request: Request):
   response = templates.TemplateResponse('home/home.html', {'request': request, "version": VERSION})
   return response
 
-@app.get("/københavn")
-def cph(request: Request, session: Session = Depends(get_db)):
-  data = {}
-  data['users'] = json.dumps(User.debug(session), indent=2)
-  data['imports'] = json.dumps(FileImport.debug(session), indent=2)
-  response = templates.TemplateResponse('home/debug.html', {'request': request, 'data': data})
-  return response
-
 @app.get("/login")
 async def login(request: Request):
   if not 'id_token' in request.session:  # it could be userinfo instead of id_token
@@ -201,8 +193,21 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
   else:
     # Error here
     application_logger.warning(f"User '{user.id}', '{user.email} attempted to clear the database!")
-    pass
   return RedirectResponse("/index")
+
+@app.get("/database/debug", dependencies=[Depends(protect_endpoint)])
+async def database_clean(request: Request, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  if user.email == "daveih1664dk@gmail.com":
+    data = {}
+    data['users'] = json.dumps(User.debug(session), indent=2)
+    data['imports'] = json.dumps(FileImport.debug(session), indent=2)
+    response = templates.TemplateResponse('database/debug.html', {'request': request, 'data': data})
+    return response
+  else:
+    # Error here
+    application_logger.warning(f"User '{user.id}', '{user.email} attempted to debug the database!")
+    return RedirectResponse("/index")
 
 @app.get("/logout")
 def logout(request: Request):
