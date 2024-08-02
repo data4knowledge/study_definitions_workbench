@@ -1,4 +1,5 @@
-from fastapi import Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File
+from typing import Annotated
+from fastapi import Form, Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -10,6 +11,7 @@ from model.database import SessionLocal, engine, get_db
 from model.user import User
 from model.version import Version
 from model.file_import import FileImport
+from model.endpoint import Endpoint
 from sqlalchemy.orm import Session
 from model import models
 from utility.background import *
@@ -70,12 +72,22 @@ def index(request: Request, session: Session = Depends(get_db)):
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  return templates.TemplateResponse("users/show.html", {'request': request, 'user': user})
+  data = {}
+  data['endpoints'] = Endpoint.page(1, 100, user.id, session)
+  return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
 def user_display_name(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  return templates.TemplateResponse(f"users/partials/displayName.html", {'request': request, 'user': user})
+  return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': user})
+
+@app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
+def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
+  user = User.find(id, session)
+  data = {}
+  endpoint = Endpoint.create(name, url, "FHIR", id, session)
+  data['endpoints'] = Endpoint.page(1, 100, user.id, session)
+  return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):

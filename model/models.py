@@ -13,6 +13,7 @@ class User(Base):
   is_active = Column(Boolean, default=True)
   imports = relationship('FileImport', backref='user')
   studies = relationship('Study', backref='user')
+  endpoints = relationship('Endpoint', backref='user')
 
 class Study(Base):
     
@@ -50,3 +51,13 @@ class FileImport(Base):
   status = Column(String, nullable=False)
   user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
   version = relationship('Version', backref='file_import', uselist=False)
+
+class Endpoint(Base):
+    
+  __tablename__ = "endpoint"
+
+  id = Column(Integer, primary_key=True)
+  type = Column(String, nullable=False)
+  name = Column(String, nullable=False)
+  endpoint = Column(String, nullable=False)
+  user_id = Column(Integer, ForeignKey("user.id"), nullable=False)

@@ -1,0 +1,6 @@
+{% with request=request %}
+  {% include "users/partials/endpoint_input.html" %}
+{% endwith %}
+{% with request=request, data=data %}
+  {% include "users/partials/endpoint_list.html" %}
+{% endwith %}   

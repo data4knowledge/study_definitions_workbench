@@ -31,14 +31,26 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
+        <div class="card mt-3">
           <div class="card-body">
             <h5 class="card-title">Display Name</h5>
             <h6 class="card-subtitle mb-2 text-muted">Update your display name</h6>
             {% with request=request %}
               {% include "users/partials/display_name_input.html" %}
+            {% endwith %}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Endpoints</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Update your endpoints</h6>
+            {% with request=request %}
+              {% include "users/partials/endpoint_input.html" %}
+            {% endwith %}
+            {% with request=request, data=data %}
+              {% include "users/partials/endpoint_list.html" %}
             {% endwith %}
           </div>
         </div>
