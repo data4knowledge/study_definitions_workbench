@@ -26,3 +26,9 @@ fly volumes create <name>
 fly secrets set DATABASE_URL=sqlite:////mnt/<name>/production.db
 fly secrets set DATAFILE_URL=/mnt/<name> 
 ```
+
+Run on one machine at the moment, sharing of file store is an issue as well as database
+
+```
+fly machine destroy e7843d41a59078 --force
+```
