@@ -1,3 +1,8 @@
+**Release 0.8, 2024-08-02**
+
+- Fix to stop app pausing
+- Fix multi-user bug
+
 **Release 0.7, 2024-08-02**
 
 - Fixes for web deployment
