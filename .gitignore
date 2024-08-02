@@ -163,7 +163,7 @@ setup_env.sh
 .development_env
 .production_env
 install_local_d4kms.sh
-datafiles/*/
 
-test_db.py
-database/database.db
+# Mount for DB and data files
+mount/database/database.db
+mount/datafiles/*/

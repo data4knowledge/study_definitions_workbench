@@ -25,7 +25,42 @@ class Files:
     }
     self.uuid = uuid
     se = ServiceEnvironment()
-    self.dir = se.get("DATAFILE_URL")
+    self.dir = se.get("DATAFILE_PATH")
+
+  @classmethod
+  def clean_and_tidy(cls):
+    se = ServiceEnvironment()
+    dir = se.get("MNT_PATH")
+    keep = [se.get("DATAFILE_PATH"), se.get("DATABASE_PATH")]
+    application_logger.info(f"Running clean and tidy on '{dir}'")
+    try:
+      for file in os.listdir(dir):
+        path = os.path.join(dir, file)
+        #print(f"ITEM: {file} {path}")
+        if os.path.isfile(path):
+          #print(f"FILE: {file}")
+          try:
+            path = os.path.join(dir, file)
+            os.unlink(path)
+            application_logger.info(f"Unlinked file '{path}' during clean and tidy")
+          except Exception as e:
+            application_logger.exception(f"Exception unlinking file '{path}' during clean and tidy dir '{dir}'", e)
+        else:
+          #print(f"DIR: {file}")
+          path = os.path.join(dir, file)
+          if path not in keep:
+            try:
+              shutil.rmtree(path)
+              application_logger.info(f"Removed dir '{path}' during clean and tidy")
+            except Exception as e:
+              application_logger.exception(f"Exception deleting '{path}' during clean and tidy dir '{dir}'", e)
+          else:
+            application_logger.info(f"Keeping dir '{path}' during clean and tidy")
+      application_logger.info("Deleted datafiles dir")
+      return True
+    except Exception as e:
+      application_logger.exception(f"Exception during clean and tidy '{dir}'", e)
+      return False
 
   @classmethod
   def check(cls):

@@ -1,3 +1,7 @@
+**Release 0.7, 2024-08-02**
+
+- Fixes for web deployment
+
 **Release 0.6, 2024-08-02**
 
 - Initial web deployment, simple infrastructure
