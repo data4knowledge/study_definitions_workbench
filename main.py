@@ -20,6 +20,7 @@ from model.usdm_json import USDMJson
 from model.file_import import FileImport
 from model import VERSION, SYSTEM_NAME
 from model.database_manager import DatabaseManager as DBM
+from utility.fhir_service import FHIRService
 
 Files.clean_and_tidy()
 Files.check()
@@ -63,7 +64,7 @@ def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
-    print(f"INDEX DATA: {data}")
+    #print(f"INDEX DATA: {data}")
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
@@ -136,7 +137,7 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
-  data = usdm.study_version()
+  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
   #print(f"VERSION SUMMARY DATA: {data}")
   return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
 
@@ -196,6 +197,20 @@ async def export_fhir(request: Request, id: int, session: Session = Depends(get_
     return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
   else:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
+
+@app.get('/versions/{id}/transmit/{endpoint_id}', dependencies=[Depends(protect_endpoint)])
+async def get_version_summary(request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(id, session)
+  data = usdm.fhir_data()
+  endpoint = Endpoint.find(endpoint_id, session)
+  application_logger.info(f"Sending FHIR message from study version '{id}' to endpoint: {endpoint.endpoint}")
+  server = FHIRService(endpoint.endpoint)
+  response = await server.post('Bundle', data)
+  response = json.dumps(response, indent=2)
+  usdm = USDMJson(id, session)
+  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session), 'response': response}
+  return templates.TemplateResponse('study_versions/transmit.html', {"request": request, 'data': data, 'user': user})
 
 @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
 async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):

@@ -22,11 +22,14 @@ class USDMJson():
     self._data = json.load(data)
 
   def fhir(self):
-    usdm = USDMDb()
-    usdm.from_json(self._data)
-    data = usdm.to_fhir()
+    data = self.fhir_data()
     fullpath, filename = self._files.save("fhir", data)
     return fullpath, filename, 'text/plain' 
+
+  def fhir_data(self):
+    usdm = USDMDb()
+    usdm.from_json(self._data)
+    return usdm.to_fhir()
 
   def pdf(self):
     usdm = USDMDb()

@@ -49,23 +49,14 @@
   <div class="mt-3 row">
     <div class="col-12">
       <div class="card card-body rounded-3 h-100">
-        <ul class="nav nav-tabs role="tablist">
-          {% for k, v in data['version']['study_designs'].items() %}
-            {% set id = "tab-" ~ loop.index0 ~ "_div" %}
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{id}}">Study Design 1</a>
-            </li>
-          {% endfor %}
-        </ul>
-        <div class="tab-content mt-2">
-          {% for k, v in data['version']['study_designs'].items() %}
-            {% set id = "tab-" ~ loop.index0 ~ "_div" %}
-            <div id="{{id}}" class="tab-pane fade show active" role="tabpanel" hx-get="/versions/{{data['version']['id']}}/studyDesigns/{{v['id']}}/summary" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
-              {% with %}
-                {% include "shared/partials/spinner.html" %}
-              {% endwith %}            
-            </div>
-          {% endfor %}
+        <div class="mt-3" id="json_div">
+          <pre>{{data['response']}}</pre>
+          <a href="/versions/{{data['version']['id']}}/summary" >
+            <button type="submit" class="btn btn-outline-primary rounded-5 mt-3">
+              <i class="bi bi-send me-2"></i>
+              Return to the main summary window
+            </button>
+          </a>
         </div>
       </div>
     </div>

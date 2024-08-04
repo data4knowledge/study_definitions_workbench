@@ -17,10 +17,10 @@ class UserEndpoint(UserEndpointBase):
   def debug(cls, session: Session) -> list[dict]:
     count = session.query(UserEndpointDB).count()
     data = session.query(UserEndpointDB).all()
-    print(f"DEBUG: {data}")
+    #print(f"DEBUG: {data}")
     results = []
     for db_item in data:
-      print(f"DEBUG: {db_item}")
+      #print(f"DEBUG: {db_item}")
       results.append(db_item.__dict__)
       results[-1].pop('_sa_instance_state')
     result = {'items': results, 'count': count }
