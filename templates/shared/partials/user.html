@@ -1,4 +1,5 @@
 {% set user_info = request.session['userinfo'] %}
 <a class="nav-link text-info" href="/users/{{user.id}}/show">
-  <i class="bi bi-person me-1"></i>{{user_info['nickname']}}
+  <!--<i class="bi bi-person me-1"></i>{{user_info['nickname']}}-->
+  <i class="bi bi-person me-1"></i>{{user.display_name}}
 </a>

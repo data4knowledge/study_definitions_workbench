@@ -1,3 +1,9 @@
+**Release 0.9, 2024-08-04**
+
+- Add endpoints
+- Simple DB migrations
+- Note about prototype release
+
 **Release 0.8, 2024-08-02**
 
 - Fix to stop app pausing

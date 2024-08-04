@@ -1,19 +1,27 @@
-import datetime
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from model.database import Base
+
+class UserEndpoint(Base):
+    
+    __tablename__ = "user_endpoint"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    endpoint_id = Column(Integer, ForeignKey('endpoint.id'))
 
 class User(Base):
 
   __tablename__ = "user"
 
   id = Column(Integer, primary_key=True)
-  email = Column(String, unique=True, index=True)
-  is_active = Column(Boolean, default=True)
+  email = Column(String, unique=True, nullable=False, index=True)
+  display_name = Column(String, nullable=False)
+  is_active = Column(Boolean, nullable=False, default=True)
   imports = relationship('FileImport', backref='user')
   studies = relationship('Study', backref='user')
-  endpoints = relationship('Endpoint', backref='user')
+  endpoints = relationship('Endpoint', secondary='user_endpoint', backref='user')
 
 class Study(Base):
     
@@ -59,5 +67,5 @@ class Endpoint(Base):
   id = Column(Integer, primary_key=True)
   type = Column(String, nullable=False)
   name = Column(String, nullable=False)
-  endpoint = Column(String, nullable=False)
-  user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+  endpoint = Column(String, unique=True, nullable=False)
+  #users = relationship('User', secondary='user_endpoint', backref='endpoint')

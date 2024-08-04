@@ -1,12 +1,12 @@
-<div id="endpointInputDiv">
-  <div class="mb-3">
-    <form id='endpoint_form' hx-post="/users/{{user.id}}/endpoint" hx-target="#endpointInputDiv" hx-swap="outerHTML">
-      <label for="name" class="form-label mt-2">Endpoint Name</label>
-      <input type="text" name="name" class="form-control" id="name" value="TBD">
-      <label for="url" class="form-label mt-2">Endpoint URL</label>
-      <input type="text" name="url" class="form-control" id="url" value="TBD">
-      <input type="hidden" name="id" id="id" value="{{user.id}}">
-      <button type="submit" class="btn btn-outline-primary rounded-5 mt-3">Add</button>
-    </form>
-  </div>
+<div class="mb-3">
+  <form id='endpoint_form' hx-post="/users/{{user.id}}/endpoint" hx-target="#endpoint_input_div" hx-swap="outerHTML">
+    <label for="name" class="form-label mt-2">Endpoint Name</label>
+    <input type="text" name="name" class="form-control" id="name" placeholder="Enter a name for the server" value="">
+    <label for="url" class="form-label mt-2">Endpoint URL</label>
+    <input type="text" name="url" class="form-control" id="url" placeholder="Enter the url of the server", value="">
+    <button type="submit" class="btn btn-outline-primary rounded-5 mt-3">
+      <i class="bi bi-hdd-network pe-2"></i>
+      Add Endpoint
+    </button>
+  </form>
 </div>

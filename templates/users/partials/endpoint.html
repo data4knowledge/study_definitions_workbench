@@ -1,6 +1,10 @@
-{% with request=request %}
-  {% include "users/partials/endpoint_input.html" %}
-{% endwith %}
-{% with request=request, data=data %}
-  {% include "users/partials/endpoint_list.html" %}
-{% endwith %}   
+<div id="endpoint_list_div" hx-swap-oob="true">
+  {% with request=request, data=data %}
+    {% include "users/partials/endpoint_list.html" %}
+  {% endwith %}   
+</div>
+<div id="endpoint_input_div" hx-swap-oob="true">
+  {% with request=request %}
+    {% include "users/partials/endpoint_input.html" %}
+  {% endwith %}
+</div>

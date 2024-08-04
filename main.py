@@ -7,13 +7,13 @@ from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
 from d4kms_ui.release_notes import ReleaseNotes
 from d4kms_ui.pagination import Pagination
-from model.database import SessionLocal, engine, get_db
+from model.database import get_db
 from model.user import User
 from model.version import Version
 from model.file_import import FileImport
 from model.endpoint import Endpoint
+from model.user_endpoint import UserEndpoint
 from sqlalchemy.orm import Session
-from model import models
 from utility.background import *
 from utility.upload import *
 from model.usdm_json import USDMJson
@@ -24,7 +24,6 @@ from model.database_manager import DatabaseManager as DBM
 Files.clean_and_tidy()
 Files.check()
 DBM.check()
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
   title = SYSTEM_NAME,
@@ -45,7 +44,7 @@ def protect_endpoint(request: Request) -> None:
 
 def user_details(request: Request, db):
   user_info = request.session['userinfo']
-  user, present_in_db = User.check(user_info['email'], db)
+  user, present_in_db = User.check(user_info, db)
   return user, present_in_db
 
 @app.get("/")
@@ -64,6 +63,7 @@ def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
+    print(f"INDEX DATA: {data}")
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
@@ -73,7 +73,7 @@ def index(request: Request, session: Session = Depends(get_db)):
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
   data = {}
-  data['endpoints'] = Endpoint.page(1, 100, user.id, session)
+  data['endpoints'] = User.endpoints_page(1, 100, user.id, session)
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
@@ -85,8 +85,17 @@ def user_display_name(request: Request, id: int, session: Session = Depends(get_
 def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
   data = {}
-  endpoint = Endpoint.create(name, url, "FHIR", id, session)
-  data['endpoints'] = Endpoint.page(1, 100, user.id, session)
+  endpoint = Endpoint.create(name, url, "FHIR", user.id, session)
+  data['endpoints'] = User.endpoints_page(1, 100, user.id, session)
+  return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
+
+@app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
+def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)):
+  user = User.find(id, session)
+  endpoint = Endpoint.find(endpoint_id, session)
+  endpoint.delete(user.id, session)
+  data = {}
+  data['endpoints'] = User.endpoints_page(1, 100, user.id, session)
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])
@@ -220,6 +229,8 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
     data['studies'] = json.dumps(Study.debug(session), indent=2)
     data['versions'] = json.dumps(Version.debug(session), indent=2)
     data['imports'] = json.dumps(FileImport.debug(session), indent=2)
+    data['endpoints'] = json.dumps(Endpoint.debug(session), indent=2)
+    data['user_endpoints'] = json.dumps(UserEndpoint.debug(session), indent=2)
     response = templates.TemplateResponse('database/debug.html', {'request': request, 'data': data})
     return response
   else:

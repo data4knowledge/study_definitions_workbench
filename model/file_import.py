@@ -47,19 +47,7 @@ class FileImport(FileImportBase):
     return results
 
   @classmethod
-  def debug(cls, session: Session) -> list[dict]:
-    count = session.query(FileImportDB).count()
-    data = session.query(FileImportDB).all()
-    results = []
-    for db_item in data:
-      results.append(db_item.__dict__)
-      results[-1]['created'] = results[-1]['created'].isoformat()
-      results[-1].pop('_sa_instance_state')
-    result = {'items': results, 'count': count }
-    return result
-
-  @classmethod
-  def page(cls, page: int, size: int, user_id: int, session: Session) -> list['FileImport']:
+  def page(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
     page = page if page >= 1 else 1
     size = size if size > 0 else 10
     skip = (page - 1) * size
@@ -69,6 +57,18 @@ class FileImport(FileImportBase):
     for db_item in data:
       results.append(db_item.__dict__)
     result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
+    return result
+
+  @classmethod
+  def debug(cls, session: Session) -> list[dict]:
+    count = session.query(FileImportDB).count()
+    data = session.query(FileImportDB).all()
+    results = []
+    for db_item in data:
+      results.append(db_item.__dict__)
+      results[-1]['created'] = results[-1]['created'].isoformat()
+      results[-1].pop('_sa_instance_state')
+    result = {'items': results, 'count': count }
     return result
 
   def update_status(self, status: str, session: Session) -> 'FileImport':

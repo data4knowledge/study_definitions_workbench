@@ -44,14 +44,24 @@
       <div class="col">
         <div class="card">
           <div class="card-body">
+            <h5 class="card-title">Current Endpoints</h5>
+            <h6 class="card-subtitle mb-2 text-muted">A list of the current available endpoints</h6>
+            <div id="endpoint_list_div">
+              {% with request=request, data=data %}
+                {% include "users/partials/endpoint_list.html" %}
+              {% endwith %}
+            </div>
+          </div>
+        </div>
+        <div class="card mt-3">
+          <div class="card-body">
             <h5 class="card-title">Endpoints</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Update your endpoints</h6>
-            {% with request=request %}
-              {% include "users/partials/endpoint_input.html" %}
-            {% endwith %}
-            {% with request=request, data=data %}
-              {% include "users/partials/endpoint_list.html" %}
-            {% endwith %}
+            <h6 class="card-subtitle mb-2 text-muted">Add an endpoint</h6>
+            <div id="endpoint_input_div">
+              {% with request=request %}
+                {% include "users/partials/endpoint_input.html" %}
+              {% endwith %}
+            </div>
           </div>
         </div>
       </div>
@@ -61,14 +71,18 @@
             <div class="card-body">
               <h5 class="card-title">Database Delete</h5>
               <h6 class="card-subtitle mb-2 text-muted">Delete the entire database for all users</h6>
-              <a type="submit" class="btn btn-outline-danger rounded-5" href="/database/clean" onclick="return confirm('Are you sure?')">Delete Database</a>
+              <a type="submit" class="btn btn-outline-danger rounded-5" href="/database/clean" onclick="return confirm('Are you sure?')">
+                <i class="bi bi-database-down pe-2"></i>Delete Database
+              </a>
             </div>
           </div>
           <div class="card mt-3">
             <div class="card-body">
               <h5 class="card-title">Database View</h5>
               <h6 class="card-subtitle mb-2 text-muted">Show debug view of the database</h6>
-              <a type="submit" class="btn btn-outline-primary rounded-5" href="/database/debug">View Database</a>
+              <a type="submit" class="btn btn-outline-primary rounded-5" href="/database/debug">
+                <i class="bi bi-database pe-2"></i>View Database
+              </a>
             </div>
           </div>
         </div>
