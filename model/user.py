@@ -1,3 +1,4 @@
+import re 
 from pydantic import BaseModel
 from model.models import User as UserDB
 from model.exceptions import FindException
@@ -80,3 +81,13 @@ class User(UserBase):
     session.commit()
     session.refresh(db_item)
     return self.__class__(**db_item.__dict__)
+  
+  def _build(cls, email: str, display_name: str) -> tuple['UserDB', dict]:
+    item = None
+    validation = {
+      'display_name': bool(re.match('[a-zA-Z ]+$', display_name)),
+      'email': True
+    }
+    if all(value == True for value in validation.values()):
+      item = UserDB(email=email, display_name=display_name)
+    return item, validation
