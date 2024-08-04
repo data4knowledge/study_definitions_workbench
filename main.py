@@ -35,7 +35,7 @@ app = FastAPI(
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, exc: Exception):
-  return templates.TemplateResponse("errors/error.html", {'request': request, 'data': {'error': exc.msg}})
+  return templates.TemplateResponse("errors/error.html", {'request': request, 'data': {'error': f"{exc}"}})
 
 @app.exception_handler(FindException)
 async def exception_callback(request: Request, exc: FindException):
