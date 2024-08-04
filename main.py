@@ -206,7 +206,7 @@ async def get_version_summary(request: Request, id: int, endpoint_id: int, sessi
   endpoint = Endpoint.find(endpoint_id, session)
   application_logger.info(f"Sending FHIR message from study version '{id}' to endpoint: {endpoint.endpoint}")
   server = FHIRService(endpoint.endpoint)
-  response = await server.post('Bundle', data)
+  response = await server.post('Bundle', data, 20.0)
   response = json.dumps(response, indent=2)
   usdm = USDMJson(id, session)
   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session), 'response': response}

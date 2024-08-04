@@ -11,5 +11,5 @@ class FHIRService(Service):
   def get(self, url):
     return super().get(url)
 
-  def post(self, url, data={}):
-    return super().post(url, data)
+  def post(self, url, data={}, timeout=None):
+    return super().post(url, data, timeout)

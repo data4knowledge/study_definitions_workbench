@@ -4,9 +4,11 @@ from d4kms_generic.logger import application_logger
 
 class Service():
 
+  DEFAULT_TIMEOUT = 5.0
+
   def __init__(self, base_url):
     self.base_url = base_url[:-1] if base_url.endswith("/") else base_url
-    self._client = httpx.AsyncClient()
+    self._client = httpx.AsyncClient(timeout=self.DEFAULT_TIMEOUT)
     
   async def status(self):
     return await self.get(self.base_url)
@@ -22,14 +24,15 @@ class Service():
     try:
       full_url = self._full_url(url)
       response = await self._client.post(full_url, files=files, data=data) if data else await self._client.post(full_url, files=files)
-      return json.loads(response.text) if response.status_code == 201 else self._bad_response(response)
+      return json.loads(response.text) if response.status_code in [200, 201] else self._bad_response(response)
     except httpx.HTTPError as e:
       return self._exception("POST (file)", e)
 
-  async def post(self, url, data={}):
+  async def post(self, url, data={}, timeout=None):
     try:
-      response = await self._client.post(self._full_url(url), json=data)       
-      return json.loads(response.text) if response.status_code == 201 else self._bad_response(response)
+      timeout = timeout if timeout else self.DEFAULT_TIMEOUT
+      response = await self._client.post(self._full_url(url), json=data, timeout=timeout)       
+      return json.loads(response.text) if response.status_code in [200, 201] else self._bad_response(response)
     except httpx.HTTPError as e:
       return self._exception("POST", e)
 
