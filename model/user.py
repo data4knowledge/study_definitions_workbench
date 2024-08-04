@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from model.models import User as UserDB
-from model.endpoint import Endpoint
+from model.exceptions import FindException
 from sqlalchemy.orm import Session
+from d4kms_generic.logger import application_logger
 
 class UserBase(BaseModel):
   email: str
@@ -15,10 +16,10 @@ class User(UserBase):
   id: int
   
   class Config:
-     from_attributes = True
+    from_attributes = True
 
   @classmethod
-  def create(cls, email: str, display_name: str, session: Session):
+  def create(cls, email: str, display_name: str, session: Session) -> 'User':
     db_item = UserDB(email=email, display_name=display_name)
     session.add(db_item)
     session.commit()
@@ -26,10 +27,14 @@ class User(UserBase):
     return cls(**db_item.__dict__)
   
   @classmethod
-  def find(cls, id: int, session: Session):
+  def find(cls, id: int, session: Session) -> 'User':
     db_item = session.query(UserDB).filter(UserDB.id == id).first()
-    return cls(**db_item.__dict__) if db_item else None
-
+    if db_item:
+      return cls(**db_item.__dict__) 
+    else:
+      application_logger.error(f"Failed to find User with id '{id}'")
+      raise FindException(cls, id)
+    
   @classmethod
   def find_by_email(cls, email: str, session: Session):
     db_item = session.query(UserDB).filter(UserDB.email == email).first()

@@ -1,0 +1,7 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block error_content %}
+  {% with request=request, user=user %}
+    {% include "errors/partials/error.html" %}
+  {% endwith %}    
+{% endblock %}

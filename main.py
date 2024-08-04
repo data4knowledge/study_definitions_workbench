@@ -21,6 +21,7 @@ from model.file_import import FileImport
 from model import VERSION, SYSTEM_NAME
 from model.database_manager import DatabaseManager as DBM
 from utility.fhir_service import FHIRService
+from model.exceptions import FindException
 
 Files.clean_and_tidy()
 Files.check()
@@ -31,6 +32,14 @@ app = FastAPI(
   description = "d4k Study Definitions Workbench. The Swiss Army Knife for DDF / USDM Study Definitions",
   version = VERSION
 )
+
+@app.exception_handler(Exception)
+async def exception_callback(request: Request, exc: Exception):
+  return templates.TemplateResponse("errors/error.html", {'request': request, 'data': {'error': exc.msg}})
+
+@app.exception_handler(FindException)
+async def exception_callback(request: Request, exc: FindException):
+  return templates.TemplateResponse("errors/error.html", {'request': request, 'data': {'error': exc.msg}})
 
 application_logger.info(f"Starting {SYSTEM_NAME}")
 
@@ -73,22 +82,20 @@ def index(request: Request, session: Session = Depends(get_db)):
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  data = {}
-  data['endpoints'] = User.endpoints_page(1, 100, user.id, session)
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session)}
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
-
+  
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
 def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
   user = user.update_display_name(name, session)
   return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': user})
-
+  
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
 def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
-  data = {}
   endpoint = Endpoint.create(name, url, "FHIR", user.id, session)
-  data['endpoints'] = User.endpoints_page(1, 100, user.id, session)
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session)}
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
@@ -96,8 +103,7 @@ def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session 
   user = User.find(id, session)
   endpoint = Endpoint.find(endpoint_id, session)
   endpoint.delete(user.id, session)
-  data = {}
-  data['endpoints'] = User.endpoints_page(1, 100, user.id, session)
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session)}
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])
