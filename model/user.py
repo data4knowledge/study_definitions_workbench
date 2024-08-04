@@ -41,10 +41,8 @@ class User(UserBase):
     size = size if size > 0 else 10
     skip = (page - 1) * size
     user = session.query(UserDB).filter(UserDB.id == user_id).first()
-    print(f"USER: {user}")
     count = len(user.endpoints)
     data = user.endpoints[skip:skip+size]
-    print(f"USER: {count} {data}")
     results = []
     for db_item in data:
       results.append(db_item.__dict__)

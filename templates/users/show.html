@@ -1,8 +1,10 @@
 {% extends "shared/_main_layout.html" %}
 {% block user_content %}
-  {% with request=request, user=user %}
-    {% include "shared/partials/user.html" %}
-  {% endwith %}    
+  <div id="nav_display_name_div">  
+    {% with request=request, user=user %}
+      {% include "shared/partials/user.html" %}
+    {% endwith %}    
+  </div>
 {% endblock %}
 {% block main_content %}
   {% set user_info = request.session['userinfo'] %}
@@ -25,8 +27,8 @@
               <div class="col-4">
                 Display Name
               </div>
-              <div class="col-8">
-                {{user_info['nickname']}}
+              <div id="user_details_display_name_div" class="col-8">
+                {{user.display_name}}
               </div>
             </div>
           </div>
@@ -35,9 +37,11 @@
           <div class="card-body">
             <h5 class="card-title">Display Name</h5>
             <h6 class="card-subtitle mb-2 text-muted">Update your display name</h6>
-            {% with request=request %}
-              {% include "users/partials/display_name_input.html" %}
-            {% endwith %}
+            <div id="display_name_input_div">
+              {% with user=user %}
+                {% include "users/partials/display_name_input.html" %}
+              {% endwith %}
+            </div>
           </div>
         </div>
       </div>

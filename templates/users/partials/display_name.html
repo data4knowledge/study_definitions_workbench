@@ -1,1 +1,14 @@
-{% include "users/partials/display_name_input.html" %}
+<div id="display_name_input_div">
+  {% with user=user %}
+    {% include "users/partials/display_name_input.html" %}
+  {% endwith %}
+</div>
+<div id="user_details_display_name_div" class="col-8" hx-swap-oob="true">
+  {{user.display_name}}
+</div>
+<div id="nav_display_name_div" hx-swap-oob="true">
+  {% with user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}
+</div>
+

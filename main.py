@@ -77,8 +77,9 @@ def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
-def user_display_name(request: Request, id: int, session: Session = Depends(get_db)):
+def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
+  user = user.update_display_name(name, session)
   return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': user})
 
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])

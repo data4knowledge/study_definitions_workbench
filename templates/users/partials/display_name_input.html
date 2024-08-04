@@ -1,8 +1,7 @@
-<div id="displayNameInputDiv">
-  {% set user_info = request.session['userinfo'] %}
-  <div class="mb-3">
-    <label for="displayName" class="form-label mt-2">Update Display Name</label>
-    <input type="text" class="form-control" id="displayNameInput" value="{{user_info['nickname']}}">
-  </div>
-  <button type="submit" class="btn btn-outline-primary rounded-5" hx-post="/users/{{user.id}}/displayName" hx-trigger="click" hx-target="#displayNameInputDiv" hx-swap="outerHTML">Submit</button>
-</div>
+<form id='endpoint_form' hx-post="/users/{{user.id}}/displayName" hx-target="#display_name_input_div" hx-swap="outerHTML">
+  <label for="name" class="form-label mt-2">Display Name: {{user.display_name}}</label>
+  <input type="text" name="name" class="form-control" id="name" placeholder="Enter a new display name" value="">
+  <button type="submit" class="btn btn-outline-primary rounded-5 mt-3">
+    <i class="bi bi-person-badge pe-2"></i>Update Display Name
+  </button>
+</form>
