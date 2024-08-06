@@ -1,4 +1,4 @@
-<form id='endpoint_form' hx-post="/users/{{user.id}}/displayName" hx-target="#display_name_input_div" hx-swap="outerHTML">
+<form id='display_name_form' hx-post="/users/{{user.id}}/displayName" hx-target="#display_name_input_div" hx-swap="outerHTML">
   {% set validation = data['validation'] %}
   <label for="name" class="form-label mt-2">Display Name: {{user.display_name}}</label>
   {% if not validation['display_name']['valid'] %}

@@ -89,9 +89,10 @@ def user_show(request: Request, id: int, session: Session = Depends(get_db)):
 def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
   updated_user, validation = user.update_display_name(name, session)
+  use_user = updated_user if updated_user else user
   data = {'validation': validation}
   print(f"UPDATE DISPLAY NAME: {data}")
-  return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': use_user, 'data': data})
   
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
 def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
