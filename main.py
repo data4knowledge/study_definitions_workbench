@@ -54,8 +54,8 @@ def protect_endpoint(request: Request) -> None:
 
 def user_details(request: Request, db):
   user_info = request.session['userinfo']
-  user, present_in_db = User.check(user_info, db)
-  return user, present_in_db
+  user, validation, present_in_db = User.check(user_info, db)
+  return user, validation, present_in_db
 
 @app.get("/")
 def home(request: Request):
@@ -70,7 +70,7 @@ async def login(request: Request):
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
+  user, validation, present_in_db = user_details(request, session)
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
     #print(f"INDEX DATA: {data}")
@@ -82,14 +82,16 @@ def index(request: Request, session: Session = Depends(get_db)):
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session)}
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': User.valid()}
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
 def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
-  user = user.update_display_name(name, session)
-  return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': user})
+  updated_user, validation = user.update_display_name(name, session)
+  data = {'validation': validation}
+  print(f"UPDATE DISPLAY NAME: {data}")
+  return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
 def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):

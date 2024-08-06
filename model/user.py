@@ -21,11 +21,15 @@ class User(UserBase):
 
   @classmethod
   def create(cls, email: str, display_name: str, session: Session) -> 'User':
-    db_item = UserDB(email=email, display_name=display_name)
-    session.add(db_item)
-    session.commit()
-    session.refresh(db_item)
-    return cls(**db_item.__dict__)
+    valid, validation = cls._is_valid(email=email, display_name=display_name)
+    if valid:
+      db_item = UserDB(email=email, display_name=display_name)
+      session.add(db_item)
+      session.commit()
+      session.refresh(db_item)
+      return cls(**db_item.__dict__), validation
+    else:
+      return None, validation
   
   @classmethod
   def find(cls, id: int, session: Session) -> 'User':
@@ -58,12 +62,14 @@ class User(UserBase):
   @classmethod
   def check(cls, info: dict, session: Session):
     present_in_db = True
+    validation = cls.valid()
     user = cls.find_by_email(info['email'], session)
     if not user:
       present_in_db = False
-      user = cls.create(info['email'], info['nickname'], session)
-    return user, present_in_db
-
+      clean_display_name = re.sub(r'[^a-zA-Z0-9]', '', info['nickname'])
+      user, validation = cls.create(info['email'], clean_display_name, session)
+    return user, validation, present_in_db
+  
   @classmethod
   def debug(cls, session: Session) -> list[dict]:
     count = session.query(UserDB).count()
@@ -77,17 +83,25 @@ class User(UserBase):
 
   def update_display_name(self, display_name: str, session: Session) -> 'User':
     db_item = session.query(UserDB).filter(UserDB.id == self.id).first()
-    db_item.display_name = display_name
-    session.commit()
-    session.refresh(db_item)
-    return self.__class__(**db_item.__dict__)
+    valid, validation = self.__class__._is_valid(db_item.email, display_name)
+    if valid:
+      db_item.display_name = display_name
+      session.commit()
+      session.refresh(db_item)
+      return self.__class__(**db_item.__dict__), validation
+    else:
+      return None, validation
   
-  def _build(cls, email: str, display_name: str) -> tuple['UserDB', dict]:
-    item = None
+  @classmethod
+  def valid(cls):
+    return {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}}
+
+  @staticmethod
+  def _is_valid(email: str, display_name: str) -> tuple['UserDB', dict]:
+    dn_validation = bool(re.match('[a-zA-Z0-9 ]+$', display_name))
     validation = {
-      'display_name': bool(re.match('[a-zA-Z ]+$', display_name)),
-      'email': True
+      'display_name': {'valid': dn_validation, 'message': 'A display name should only contain alphanumeric characters or spaces' if not dn_validation else None},
+      'email': {'valid': True, 'message': ''}
     }
-    if all(value == True for value in validation.values()):
-      item = UserDB(email=email, display_name=display_name)
-    return item, validation
+    valid = all(value['valid'] == True for value in validation.values())
+    return valid, validation

@@ -38,7 +38,7 @@
             <h5 class="card-title">Display Name</h5>
             <h6 class="card-subtitle mb-2 text-muted">Update your display name</h6>
             <div id="display_name_input_div">
-              {% with user=user %}
+              {% with user=user, data=data %}
                 {% include "users/partials/display_name_input.html" %}
               {% endwith %}
             </div>
