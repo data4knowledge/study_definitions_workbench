@@ -65,10 +65,11 @@ class User(UserBase):
     validation = cls.valid()
     user = cls.find_by_email(info['email'], session)
     if not user:
+      print(f"USER: Not in DB")
       present_in_db = False
       clean_display_name = re.sub(r'[^a-zA-Z0-9]', '', info['nickname'])
       user, validation = cls.create(info['email'], clean_display_name, session)
-    return user, validation, present_in_db
+    return user, present_in_db
   
   @classmethod
   def debug(cls, session: Session) -> list[dict]:

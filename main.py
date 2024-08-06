@@ -54,8 +54,8 @@ def protect_endpoint(request: Request) -> None:
 
 def user_details(request: Request, db):
   user_info = request.session['userinfo']
-  user, validation, present_in_db = User.check(user_info, db)
-  return user, validation, present_in_db
+  user, present_in_db = User.check(user_info, db)
+  return user, present_in_db
 
 @app.get("/")
 def home(request: Request):
@@ -70,14 +70,17 @@ async def login(request: Request):
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, session: Session = Depends(get_db)):
-  user, validation, present_in_db = user_details(request, session)
+  user, present_in_db = user_details(request, session)
+  print(f"INDEX DATA: {user}, {present_in_db}")
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
     #print(f"INDEX DATA: {data}")
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
-    return templates.TemplateResponse("users/show.html", {'request': request, 'user': user})
+    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': User.valid()}
+    print(f"INDEX DATA: {data}")
+    return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
