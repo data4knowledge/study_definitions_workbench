@@ -78,14 +78,15 @@ def index(request: Request, session: Session = Depends(get_db)):
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
-    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': User.valid()}
+    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}}
     print(f"INDEX DATA: {data}")
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': User.valid()}
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}}
+  print(f"USER SHOW: {data}")
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
@@ -93,7 +94,7 @@ def user_display_name(request: Request, id: int, name: Annotated[str, Form()], s
   user = User.find(id, session)
   updated_user, validation = user.update_display_name(name, session)
   use_user = updated_user if updated_user else user
-  data = {'validation': validation}
+  data = {'validation': {'user': validation}}
   print(f"UPDATE DISPLAY NAME: {data}")
   return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': use_user, 'data': data})
   
@@ -101,7 +102,8 @@ def user_display_name(request: Request, id: int, name: Annotated[str, Form()], s
 def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
   endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': validation}
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': validation}}
+  print(f"UPDATE ENDPOINT: {data}")
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
@@ -109,7 +111,7 @@ def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session 
   user = User.find(id, session)
   endpoint = Endpoint.find(endpoint_id, session)
   endpoint.delete(user.id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session)}
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': Endpoint.valid()}}
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])

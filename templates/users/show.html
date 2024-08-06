@@ -62,7 +62,7 @@
             <h5 class="card-title">Add Endpoints</h5>
             <h6 class="card-subtitle mb-2 text-muted">Add an endpoint</h6>
             <div id="endpoint_input_div">
-              {% with request=request %}
+              {% with request=request, data=data %}
                 {% include "users/partials/endpoint_input.html" %}
               {% endwith %}
             </div>

@@ -72,18 +72,23 @@ class Endpoint(EndpointBase):
     result = {}
     for attribute, definition in EndpointBase.model_fields.items():
       result[attribute] = {'valid': True, 'message': ''}
+    #print(f"ENDPOINT VALID: {result}")
     return result
   
   @staticmethod
   def _is_valid(name: str, endpoint: str, type: str) -> tuple[bool, dict]:
     name_validation = bool(re.match('[a-zA-Z0-9 ]+$', name))
-    endpoint_valiadation = http_url_adapter.validate_python(endpoint)
+    try:
+      http_url_adapter.validate_python(endpoint)
+      endpoint_valiadation = True
+    except Exception as e:
+      endpoint_valiadation = False
     type_valiadation = type in ['FHIR']
-    print(f"ENDPOINT VALIDATION: {validation}")
     validation = {
-      'name': {'valid': name_validation, 'message': 'An endpoint name should only contain alphanumeric characters or spaces' if not dn_validation else None},
-      'endpoint': {'valid': endpoint_valiadation, 'message': 'An endpoint should be a valid URL'},
-      'type': {'valid': type_valiadation, 'message': "Type should be 'FHIR'"},
+      'name': {'valid': name_validation, 'message': 'An endpoint name should only contain alphanumeric characters or spaces' if not name_validation else ''},
+      'endpoint': {'valid': endpoint_valiadation, 'message': 'An endpoint should be a valid URL' if not endpoint_valiadation else ''},
+      'type': {'valid': type_valiadation, 'message': "Type should be 'FHIR'" if not type_valiadation else ''},
     }
     valid = all(value['valid'] == True for value in validation.values())
+    #print(f"ENDPOINT VALIDATION: {validation}")
     return valid, validation

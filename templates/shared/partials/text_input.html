@@ -1,4 +1,3 @@
-{% set validation = data['validation'] %}
 <label for="{{input_id}}" class="form-label mt-2">{{label}}</label>
 {% if not validation[field]['valid'] %}
   <input type="text" name="{{input_id}}" class="form-control is-invalid" id="{{input_id}}" placeholder="{{placeholder}}" value="" required>
