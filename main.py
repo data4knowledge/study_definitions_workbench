@@ -100,8 +100,8 @@ def user_display_name(request: Request, id: int, name: Annotated[str, Form()], s
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
 def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
-  endpoint = Endpoint.create(name, url, "FHIR", user.id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session)}
+  endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': validation}
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])

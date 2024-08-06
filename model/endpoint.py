@@ -1,9 +1,12 @@
+import re
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl, TypeAdapter
 from sqlalchemy.orm import Session
 from model.models import Endpoint as EndpointDB
 from model.models import UserEndpoint as UserEndpointDB
 from model.models import User as UserDB
+
+http_url_adapter = TypeAdapter(HttpUrl)
 
 class EndpointBase(BaseModel):
   name: str
@@ -21,6 +24,9 @@ class Endpoint(EndpointBase):
     db_item  = session.query(EndpointDB).filter(EndpointDB.endpoint == endpoint).first()
     user = session.query(UserDB).filter(UserDB.id == user_id).first()
     if not db_item:
+      valid, validation = cls._is_valid(name, endpoint, type)
+      if not valid:
+        return None, validation
       data = {'name': name, 'endpoint': endpoint, 'type': type}
       db_item = EndpointDB(**data)
       session.add(db_item)
@@ -28,7 +34,7 @@ class Endpoint(EndpointBase):
     session.add(user)
     session.commit()
     session.refresh(db_item)
-    return cls(**db_item.__dict__)
+    return cls(**db_item.__dict__), cls.valid()
 
   @classmethod
   def find_by_endpoint(cls, endpoint: str, session: Session):
@@ -60,3 +66,24 @@ class Endpoint(EndpointBase):
       endpoint.delete()
     session.commit()
     return 1
+
+  @classmethod
+  def valid(cls):
+    result = {}
+    for attribute, definition in EndpointBase.model_fields.items():
+      result[attribute] = {'valid': True, 'message': ''}
+    return result
+  
+  @staticmethod
+  def _is_valid(name: str, endpoint: str, type: str) -> tuple[bool, dict]:
+    name_validation = bool(re.match('[a-zA-Z0-9 ]+$', name))
+    endpoint_valiadation = http_url_adapter.validate_python(endpoint)
+    type_valiadation = type in ['FHIR']
+    print(f"ENDPOINT VALIDATION: {validation}")
+    validation = {
+      'name': {'valid': name_validation, 'message': 'An endpoint name should only contain alphanumeric characters or spaces' if not dn_validation else None},
+      'endpoint': {'valid': endpoint_valiadation, 'message': 'An endpoint should be a valid URL'},
+      'type': {'valid': type_valiadation, 'message': "Type should be 'FHIR'"},
+    }
+    valid = all(value['valid'] == True for value in validation.values())
+    return valid, validation

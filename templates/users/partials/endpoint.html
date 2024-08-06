@@ -4,7 +4,7 @@
   {% endwith %}   
 </div>
 <div id="endpoint_input_div" hx-swap-oob="true">
-  {% with request=request, user=user %}
+  {% with request=request, user=user, data=data %}
     {% include "users/partials/endpoint_input.html" %}
   {% endwith %}
 </div>

@@ -1,5 +1,19 @@
 <div class="mb-3">
   <form id='endpoint_form' hx-post="/users/{{user.id}}/endpoint" hx-target="#endpoint_input_div" hx-swap="outerHTML">
+
+    {% set validation = data['validation'] %}
+    <label for="name" class="form-label mt-2">Display Name: {{user.display_name}}</label>
+    {% if not validation['display_name']['valid'] %}
+      <input type="text" name="name" class="form-control is-invalid" id="name" placeholder="Enter a new display name" value="" required>
+      <div class="invalid-feedback">
+        {{validation['display_name']['message']}}
+      </div>
+    {% else %}
+      <input type="text" name="name" class="form-control" id="name" placeholder="Enter a new display name" value="" required>
+    {% endif %}
+  
+
+
     <label for="name" class="form-label mt-2">Endpoint Name</label>
     <input type="text" name="name" class="form-control" id="name" placeholder="Enter a name for the server" value="">
     <label for="url" class="form-label mt-2">Endpoint URL</label>
