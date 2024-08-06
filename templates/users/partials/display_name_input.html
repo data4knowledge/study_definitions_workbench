@@ -1,15 +1,9 @@
 <form id='display_name_form' hx-post="/users/{{user.id}}/displayName" hx-target="#display_name_input_div" hx-swap="outerHTML">
   {% set validation = data['validation']['user'] %}
-  <label for="name" class="form-label mt-2">Display Name: {{user.display_name}}</label>
-  {% if not validation['display_name']['valid'] %}
-    <input type="text" name="name" class="form-control is-invalid" id="name" placeholder="Enter a new display name" value="" required>
-    <div class="invalid-feedback">
-      {{validation['display_name']['message']}}
-    </div>
-  {% else %}
-    <input type="text" name="name" class="form-control" id="name" placeholder="Enter a new display name" value="" required>
-  {% endif %}
-  <button type="submit" class="btn btn-outline-primary rounded-5 mt-3">
-    <i class="bi bi-person-badge pe-2"></i>Update Display Name
-  </button>
+  {% with field="display_name", validation=validation, input_id="name", label="Display Name: " ~ user.display_name, placeholder="Enter a new display name" %}
+    {% include "shared/partials/text_input.html" %}
+  {% endwith %}
+  {% with icon="bi-person-badge", label="Update Display Name" %}
+    {% include "shared/partials/submit.html" %}
+  {% endwith %}
 </form>

@@ -7,9 +7,8 @@
     {% with field="endpoint", validation=validation, input_id="url", label="Endpoint URL", placeholder="Enter the url for the server" %}
       {% include "shared/partials/text_input.html" %}
     {% endwith %}
-    <button type="submit" class="btn btn-outline-primary rounded-5 mt-3">
-      <i class="bi bi-hdd-network pe-2"></i>
-      Add Endpoint
-    </button>
+    {% with icon="bi-hdd-network", label="Add Endpoint" %}
+      {% include "shared/partials/submit.html" %}
+    {% endwith %}
   </form>
 </div>
