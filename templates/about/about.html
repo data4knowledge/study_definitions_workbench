@@ -1,4 +1,9 @@
 {% extends "shared/_main_layout.html" %}
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
+  {% endwith %}    
+{% endblock %}
 {% block user_content %}
   {% with request=request, user=user %}
     {% include "shared/partials/user.html" %}
@@ -14,7 +19,7 @@
             <h4 class="card-title">{{ data['system'] }} (v{{ data['version'] }})</h4>
             <h6 class="card-subtitle mb-2 text-muted">System Information</h6>
             <p>This tool is the swiss army knife for the TransCelerate / CDISC Unified Studies Definition Model.</p>
-            <p>The tool is currently at a beta level of level of development to expect bugs and issues. If you encounter any issues please feel free to send an email 'company' then the funny atty symbol and then 'data4knowledge.dk' [written this way to avoid the spammers].</p>
+            <p>The tool is currently at a beta level of level of development so expect bugs and issues. If you encounter any issues please feel free to send an email 'company' then the funny atty symbol and then 'data4knowledge.dk' [written this way to avoid the spammers].</p>
           </div>
         </div>
       </div>

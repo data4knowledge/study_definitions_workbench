@@ -1,11 +1,14 @@
 {% extends "shared/_main_layout.html" %}
-
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
+  {% endwith %}    
+{% endblock %}
 {% block user_content %}
   {% with request=request, user=user %}
     {% include "shared/partials/user.html" %}
   {% endwith %}    
 {% endblock %}
-
 {% block menu_content %}
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">

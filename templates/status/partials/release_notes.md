@@ -1,4 +1,8 @@
-**Release 0.9, 2024-08-04**
+**Release 0.10, 2024-08-09**
+
+- Add environment in header
+
+**Release 0.9, 2024-08-07**
 
 - Add endpoints
 - Simple DB migrations

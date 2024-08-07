@@ -1,4 +1,9 @@
 {% extends "shared/_main_layout.html" %}
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
+  {% endwith %}    
+{% endblock %}
 {% block user_content %}
   <div id="nav_display_name_div">  
     {% with request=request, user=user %}

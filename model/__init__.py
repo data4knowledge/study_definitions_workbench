@@ -1,2 +1,2 @@
-VERSION = '0.9'
+VERSION = '0.10'
 SYSTEM_NAME = "d4k Study Definitions Workbench"

@@ -23,7 +23,8 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="/index">
           <img class="me-2" src="/static/images/wide_logo.png" alt="" height="24">
-        </a>      
+        </a>
+        {% block environment_content %}{% endblock %}
         <div class="collapse navbar-collapse" id="navBarMain">
           <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
             <li class="nav-item active">
