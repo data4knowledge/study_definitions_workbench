@@ -1,6 +1,7 @@
 **Release 0.10, 2024-08-09**
 
 - Add environment in header
+- Reorganise code to move into 'app' directory
 
 **Release 0.9, 2024-08-07**
 
