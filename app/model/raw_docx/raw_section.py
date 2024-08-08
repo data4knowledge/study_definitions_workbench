@@ -1,7 +1,7 @@
-from model.raw_docx.raw_paragraph import RawParagraph
-from model.raw_docx.raw_list import RawList
-from model.raw_docx.raw_table import RawTable
-from model.raw_docx.raw_image import RawImage
+from app.model.raw_docx.raw_paragraph import RawParagraph
+from app.model.raw_docx.raw_list import RawList
+from app.model.raw_docx.raw_table import RawTable
+from app.model.raw_docx.raw_image import RawImage
 from d4kms_generic import application_logger
 
 class RawSection():

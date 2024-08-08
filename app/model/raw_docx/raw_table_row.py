@@ -1,4 +1,4 @@
-from model.raw_docx.raw_table_cell import RawTableCell
+from app.model.raw_docx.raw_table_cell import RawTableCell
 from d4kms_generic import application_logger
 
 class RawTableRow():

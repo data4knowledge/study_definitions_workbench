@@ -1,5 +1,5 @@
 import pytest
-from model.object_path import ObjectPath
+from app.model.object_path import ObjectPath
 
 class KlassA():
   a_a: str

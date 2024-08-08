@@ -1,4 +1,4 @@
-from utility.service import Service
+from app.utility.service import Service
 
 class FHIRService(Service):
 

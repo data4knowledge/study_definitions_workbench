@@ -1,24 +1,9 @@
-from model.raw_docx.raw_paragraph import RawParagraph
-from model.raw_docx.raw_list import RawList
+from app.model.raw_docx.raw_list import RawList
+from app.model.raw_docx.raw_table import RawTable
+from app.model.raw_docx.raw_paragraph import RawParagraph
 from d4kms_generic import application_logger
 
-class RawTable():
-
-  def __init__(self):
-    self.rows = []
-  
-  def add(self, item: 'TableRow'):
-    self.rows.append(item) 
-
-  def to_html(self):
-    lines = []
-    lines.append("<table>")
-    for item in self.rows:
-      lines.append(item.to_html())
-    lines.append("</table>")
-    return ("\n").join(lines)
-
-class TableCell():
+class RawTableCell():
   
   def __init__(self):
     self.items = []
@@ -50,21 +35,5 @@ class TableCell():
     for item in self.items:
       lines.append(item.to_html())
     lines.append("</td>")
-    return ("\n").join(lines)
-
-class TableRow():
-  
-  def __init__(self):
-    self.cells = []
-  
-  def add(self, cell: TableCell):
-    self.cells.append(cell) 
-  
-  def to_html(self):
-    lines = []
-    lines.append("<tr>")
-    for item in self.cells:
-      lines.append(item.to_html())
-    lines.append("</tr>")
     return ("\n").join(lines)
 

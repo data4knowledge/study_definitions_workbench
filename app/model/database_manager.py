@@ -1,9 +1,9 @@
 import os
-from model import models
-from model.database import engine
-from model.models import Study as StudyDB, Version as VersionDB, FileImport as FileImportDB, Endpoint as EndpointDB
-from model.models import UserEndpoint as UserEndpointDB, User as UserDB
-from model.files import Files
+from app.model import models
+from app.model.database import engine
+from app.model.models import Study as StudyDB, Version as VersionDB, FileImport as FileImportDB, Endpoint as EndpointDB
+from app.model.models import UserEndpoint as UserEndpointDB, User as UserDB
+from app.model.files import Files
 from sqlalchemy.orm import Session
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Table, MetaData
 from d4kms_generic.service_environment import ServiceEnvironment

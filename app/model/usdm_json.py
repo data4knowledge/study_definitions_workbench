@@ -1,8 +1,8 @@
 import json
 import warnings
-from model.file_import import FileImport
-from model.files import Files
-from model.version import Version
+from app.model.file_import import FileImport
+from app.model.files import Files
+from app.model.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
 from usdm_db import USDMDb

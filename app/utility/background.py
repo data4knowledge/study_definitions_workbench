@@ -2,14 +2,14 @@ import json
 from d4kms_generic import application_logger
 from usdm_db import USDMDb
 from usdm_db import USDMDb, Wrapper
-from model.files import Files
-from model.file_import import FileImport
-from model.study import Study
-from model.user import User
-from model.m11_protocol.m11_protocol import M11Protocol
-from model import VERSION, SYSTEM_NAME
+from app.model.files import Files
+from app.model.file_import import FileImport
+from app.model.study import Study
+from app.model.user import User
+from app.model.m11_protocol.m11_protocol import M11Protocol
+from app import VERSION, SYSTEM_NAME
 from sqlalchemy.orm import Session
-from model.object_path import ObjectPath
+from app.model.object_path import ObjectPath
 
 def process_excel(uuid, user: User, session: Session) -> None:
   try:

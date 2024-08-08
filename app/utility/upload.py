@@ -1,9 +1,9 @@
 import os
 from fastapi import File
-from model.files import Files
-#from model.file_import import FileImport
+from app.model.files import Files
+#from app.model.file_import import FileImport
 from d4kms_generic import application_logger
-from utility.background import process_excel, process_word
+from app.utility.background import process_excel, process_word
 
 async def process_xl(request, background_tasks, templates, user, session):
   try:

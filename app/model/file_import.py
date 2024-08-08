@@ -2,7 +2,7 @@ from typing import Optional
 import datetime
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from model.models import FileImport as FileImportDB
+from app.model.models import FileImport as FileImportDB
 
 class FileImportBase(BaseModel):
   filepath: str

@@ -1,6 +1,6 @@
 import re  
-from model.raw_docx.raw_docx import RawDocx
-from model.raw_docx.raw_table import RawTable
+from app.model.raw_docx.raw_docx import RawDocx
+from app.model.raw_docx.raw_table import RawTable
 from usdm_model.wrapper import Wrapper
 from usdm_model.study import Study
 from usdm_model.study_design import StudyDesign

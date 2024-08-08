@@ -1,5 +1,5 @@
 from d4kms_generic import application_logger
-from model.raw_docx.raw_list_item import RawListItem
+from app.model.raw_docx.raw_list_item import RawListItem
 
 class RawList():
 

@@ -1,7 +1,7 @@
 import re 
 from pydantic import BaseModel
-from model.models import User as UserDB
-from model.exceptions import FindException
+from app.model.models import User as UserDB
+from app.model.exceptions import FindException
 from sqlalchemy.orm import Session
 from d4kms_generic.logger import application_logger
 

@@ -7,21 +7,21 @@ from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
 from d4kms_ui.release_notes import ReleaseNotes
 from d4kms_ui.pagination import Pagination
-from model.database import get_db
-from model.user import User
-from model.version import Version
-from model.file_import import FileImport
-from model.endpoint import Endpoint
-from model.user_endpoint import UserEndpoint
+from app.model.database import get_db
+from app.model.user import User
+from app.model.version import Version
+from app.model.file_import import FileImport
+from app.model.endpoint import Endpoint
+from app.model.user_endpoint import UserEndpoint
 from sqlalchemy.orm import Session
-from utility.background import *
-from utility.upload import *
-from model.usdm_json import USDMJson
-from model.file_import import FileImport
-from model import VERSION, SYSTEM_NAME
-from model.database_manager import DatabaseManager as DBM
-from utility.fhir_service import FHIRService
-from model.exceptions import FindException
+from app.utility.background import *
+from app.utility.upload import *
+from app.model.usdm_json import USDMJson
+from app.model.file_import import FileImport
+from app import VERSION, SYSTEM_NAME
+from app.model.database_manager import DatabaseManager as DBM
+from app.utility.fhir_service import FHIRService
+from app.model.exceptions import FindException
 
 Files.clean_and_tidy()
 Files.check()
@@ -43,8 +43,10 @@ async def exception_callback(request: Request, exc: FindException):
 
 application_logger.info(f"Starting {SYSTEM_NAME}")
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+dir_path = os.path.dirname(os.path.realpath(__file__))
+print(f"DIR: {dir_path}")
+app.mount("/static", StaticFiles(directory=f"{dir_path}/static"), name="static")
+templates = Jinja2Templates(directory=f"{dir_path}/templates")
 
 authorisation = Auth0Service(app)
 authorisation.register()
@@ -236,7 +238,7 @@ async def export_protocol(request: Request, id: int, session: Session = Depends(
   else:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
 
-from model.database_manager import DatabaseManager
+from app.model.database_manager import DatabaseManager
 
 @app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
 async def database_clean(request: Request, session: Session = Depends(get_db)):
@@ -261,7 +263,7 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
     data['imports'] = json.dumps(FileImport.debug(session), indent=2)
     data['endpoints'] = json.dumps(Endpoint.debug(session), indent=2)
     data['user_endpoints'] = json.dumps(UserEndpoint.debug(session), indent=2)
-    response = templates.TemplateResponse('database/debug.html', {'request': request, 'data': data})
+    response = templates.TemplateResponse('database/debug.html', {'request': request, 'user': user, 'data': data})
     return response
   else:
     # Error here

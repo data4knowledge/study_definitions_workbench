@@ -1,4 +1,4 @@
-from model.raw_docx.raw_section import RawSection
+from app.model.raw_docx.raw_section import RawSection
 from d4kms_generic import application_logger
 
 class RawDocument():

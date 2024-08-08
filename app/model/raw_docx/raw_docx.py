@@ -3,15 +3,15 @@ import re
 import docx
 import docx2txt
 from pathlib import Path
-from model.raw_docx.raw_document import RawDocument
-from model.raw_docx.raw_section import RawSection
-from model.raw_docx.raw_paragraph import RawParagraph
-from model.raw_docx.raw_list import RawList
-from model.raw_docx.raw_list_item import RawListItem
-from model.raw_docx.raw_table import RawTable
-from model.raw_docx.raw_table_row import RawTableRow
-from model.raw_docx.raw_table_cell import RawTableCell
-from model.raw_docx.raw_image import RawImage
+from app.model.raw_docx.raw_document import RawDocument
+from app.model.raw_docx.raw_section import RawSection
+from app.model.raw_docx.raw_paragraph import RawParagraph
+from app.model.raw_docx.raw_list import RawList
+from app.model.raw_docx.raw_list_item import RawListItem
+from app.model.raw_docx.raw_table import RawTable
+from app.model.raw_docx.raw_table_row import RawTableRow
+from app.model.raw_docx.raw_table_cell import RawTableCell
+from app.model.raw_docx.raw_image import RawImage
 from d4kms_generic import application_logger
 from docx import Document as DocXProcessor
 from docx.document import Document

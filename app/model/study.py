@@ -1,10 +1,10 @@
 import re
 from typing import Optional
 from pydantic import BaseModel
-from model.models import Study as StudyDB, Version as VersionDB
-from model.version import Version
-from model.user import User
-from model.file_import import FileImport
+from app.model.models import Study as StudyDB, Version as VersionDB
+from app.model.version import Version
+from app.model.user import User
+from app.model.file_import import FileImport
 from sqlalchemy.orm import Session
 
 class StudyBase(BaseModel):

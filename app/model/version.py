@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from model.models import Version as VersionDB
+from app.model.models import Version as VersionDB
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
