@@ -1,5 +1,7 @@
 <a class="nav-link text-info" href="#">
   {% if request.client.host == '127.0.0.1' %}
     DEVELOPMENT
+  {% else %}
+    {{request.client.host.upper()}}
   {% endif %}
 </a>
