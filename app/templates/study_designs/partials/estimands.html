@@ -1,0 +1,87 @@
+<div>
+  {% if data['estimands'] %}
+    <ul class="nav nav-tabs role="tablist">
+      {% for item in data['estimands'] %}
+        {% set id = "estimand_tab-" ~ loop.index0 ~ "_div" %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{id}}">Study Design 1</a>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="tab-content mt-2">
+      {% for item in data['estimands'] %}
+        {% set id = "estimand_tab-" ~ loop.index0 ~ "_div" %}
+        <div id="{{id}}" class="tab-pane fade show active" role="tabpanel" hx-get="/versions/{{data['version']['id']}}/studyDesigns/{{v['id']}}/summary" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
+
+          <table class="table responsive table-striped mt-1">
+            <thead>
+              <tr>
+                <th scope="col">Estimand & Characteristics</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p class="card-text"><small>Population</small> </p>
+                </td>
+                <td>
+                  <p class="card-text"><small>{{data['population']}}</small> </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="card-text"><small>Treatment</small></p>
+                </td>
+                <td>
+                  <p class="card-text"><small>{{data['treatment']}}</small></p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="card-text"><small>Endpoint</small></p>
+                </td>
+                <td>
+                  <p class="card-text"><small>{{data['endpoint']}}</small></p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="card-text"><small>Population Level Summary</small></p>
+                </td>
+                <td>
+                  <p class="card-text"><small>{{data['population_summary']}}</small></p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="card-text"><small>Intercurrent Event</small></p>
+                </td>
+                <td>
+                  <p class="card-text"><small>{{data['intercurrent_event']}}</small></p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="card-text"><small>Rescue Medication</small></p>
+                </td>
+                <td>
+                  <p class="card-text"><small>[Rescuse Medication]</small></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="overflow-auto">
+      {{data['text']|safe}}
+    </div>
+  {% endif %}
+</div>
+
+
+

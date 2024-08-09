@@ -6,6 +6,7 @@ from app.model.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
 from usdm_db import USDMDb
+from usdm_model import StudyDesign, Estimand
 
 class USDMJson():
 
@@ -107,6 +108,78 @@ class USDMJson():
     else:
       return None
 
+  def study_design_schema(self, id: str):
+    design = self._study_design(id)
+    if design:
+      section = self._section_by_number("1.2") if self.m11 else self._section_by_title_contains("study design")
+      return self._image_in_section(section) if section else '[Study Design]'
+
+  def study_design_interventions(self, id: str):
+    design = self._study_design(id)
+    print(f"INTERVENTIONS: {'design' if design else ''}")
+    if design:
+      section = self._section_by_number("6.1") if self.m11 else self._section_by_title_contains("Trial Interventions")
+      result = {
+        'id': self.id,
+        'interventions': [],
+        'text': section['text'] if section else '[Trial Interventions]'
+      }
+      for intervention in design['studyInterventions']:
+        print(f"R1:")
+        record = {}
+        record['arm'] = self._arm_from_intervention(design, intervention['id'])
+        record['intervention'] = intervention
+        result['interventions'].append(record)
+      print(f"INTERVENTIONS: {result}")
+      return result
+    else:
+      return None
+
+  def study_design_estimands(self, id: str):
+    design = self._study_design(id)
+    print(f"ESTIMANDS: {'design' if design else ''}")
+    if design:
+      section = self._section_by_number("3.1") if self.m11 else self._section_by_title_contains("Primary Objective")
+      result = {
+        'id': self.id,
+        'estimands': [],
+        'text': section['text'] if section else '[Estimands]'
+      }
+      for estimand in design['estimands']:
+        record = {}
+        print(f"R1:")
+        record['treatment'] = self._intervention(design, estimand['interventionId'])
+        record['summary_measure'] = estimand['summaryMeasure']
+        record['analysis_population'] = estimand['analysisPopulation']
+        record['intercurrent_events'] = estimand['intercurrentEvents']
+        record['objective'], record['endpoint'] = self._objective_endpoint_from_estimand(design, estimand['variableOfInterestId'])
+        result['estimands'].append(record)
+      print(f"ESTIMANDS: {result}")
+      return result
+    else:
+      return None
+
+  def _intervention(self, study_design: dict, intervention_id: str) -> dict:
+    return next((x for x in study_design['studyInterventions'] if x['id'] == intervention_id), None)
+
+  def _objective_endpoint_from_estimand(self, study_design: dict, variable_of_interest_id: str) -> dict:
+    for objective in study_design['objectives']:
+      endpoint = self._endpoint_from_objective(objective, variable_of_interest_id)
+      if endpoint:
+        return objective, endpoint
+    return None, None
+  
+  def _endpoint_from_objective(self, objective: list, endpoint_id: str) -> dict:
+    return next((x for x in objective['endpoints'] if x['id'] == endpoint_id), None)
+
+  def _arm_from_intervention(self, study_design: dict, intervention_id: str) -> dict:
+    element = next((x for x in study_design['studyInterventions'] if x['id'] == intervention_id), None)
+    if element:
+      cell = next((x for x in study_design['studyCells'] if intervention_id in x['elementIds']), None)
+      if cell:
+        return next((x for x in study_design['arms'] if x['id'] == cell['id']), None)
+    return {'label': '[Not Found]', 'type': {'decode': '[Not Found]'}}
+  
   def _set_blinded_roles(self, id) -> dict:
     design = self._study_design(id)
     result = {}
@@ -136,47 +209,29 @@ class USDMJson():
       result[missing] = missing
     return result
 
-  def study_design_schema(self, id: str):
-    design = self._study_design(id)
-    if design:
-      section = self._section_by_number("1.2") if self.m11 else self._section_by_title_contains("study design")
-      return self._image_in_section(section) if section else '[Study Design]'
-
-  def study_design_interventions(self, id: str):
-    design = self._study_design(id)
-    if design:
-      section = self._section_by_number("6.1") if self.m11 else self._section_by_title_contains("Trial Interventions")
-      return section['text'] if section else '[Trial Interventions]'
-
-  def study_design_estimands(self, id: str):
-    design = self._study_design(id)
-    if design:
-      section = self._section_by_number("3.1") if self.m11 else self._section_by_title_contains("Primary Objective")
-      return section['text'] if section else '[Estimands]'
-
   def _image_in_section(self, section):
     soup = self._get_soup(section['text'])
     for ref in soup(['img']):
       return ref
     return ""
 
-  def _section_by_number(self, number):
+  def _section_by_number(self, number) -> dict:
     document = self._document()
     if document:
       return next((x for x in document['contents'] if x['sectionNumber'] == number), None)
     return None
 
-  def _section_by_title_contains(self, title):
+  def _section_by_title_contains(self, title) -> dict:
     document = self._document()
     if document:
       return next((x for x in document['contents'] if title.upper() in x['sectionTitle'].upper()), None)
     return None
 
-  def _study_design(self, id: str):
+  def _study_design(self, id: str) -> dict:
     version = self._data['study']['versions'][0]
     return next((x for x in version['studyDesigns'] if x['id'] == id), None)
   
-  def _document(self):
+  def _document(self) -> dict:
     version = self._data['study']['versions'][0]
     id = version['documentVersionId']
     return next((x for x in self._data['study']['documentedBy']['versions'] if x['id'] == id), None)
@@ -205,7 +260,7 @@ class USDMJson():
         result['max'] = cohort['max']
     return result
 
-  def _min_max(self, item):
+  def _min_max(self, item) -> dict:
     print(f"ITEM: {item}")
     return {'min': int(item['minValue']), 'max': int(item['maxValue']), 'unit': item['unit']['decode']} if item else {'min': 100, 'max': 0, 'unit': 'Year'}
 

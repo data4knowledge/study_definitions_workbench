@@ -50,7 +50,7 @@
     <div class="card rounded-3">
       <div class="card-body">
         <h5 class="card-title">Objectives, Endpoints, Estimands</h5>
-        <h6 class="card-subtitle text-muted">To be implemented</h6>
+        <!-- <h6 class="card-subtitle text-muted">To be implemented</h6> -->
         {% set id = "estimands_" ~ data['uuid'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/estimands" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}

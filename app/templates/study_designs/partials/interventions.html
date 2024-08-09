@@ -1,0 +1,65 @@
+<div class="overflow-auto">
+  {% if data['interventions'] %}
+    <table class="table responsive mt-1">
+      <thead>
+        <tr>
+          <th scope="col">Arm Name</th>
+          <th scope="col">Arm Type</th>
+          <th scope="col">Intervention Name</th>
+          <th scope="col">Intervention Type</th>
+          <th scope="col">Dose Form</th>
+          <th scope="col">Unit Dose Strength</th>
+          <th scope="col">Dosage Level</th>
+          <th scope="col">Route of Administration</th>
+          <th scope="col">Regimen Treatment Period</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data['interventions'] %}
+          {% set arm = item['arm'] %}
+          {% set intervention = item['intervention'] %}
+          {% set admins = intervention['administrations'] %}
+          {% set admin_count = admins|length %}
+          {% for admin in admins %}
+            <tr>
+              {% if loop.index0 == 0 %}
+                <td rowspan="{{admin_count}}">
+                  <p class="card-text"><small>{{arm['label']}}</small> </p>
+                </td>
+                <td rowspan="{{admin_count}}">
+                  <p class="card-text"><small>{{arm['type']['decode']}}</small></p>
+                </td>
+                <td rowspan="{{admin_count}}">
+                  <p class="card-text"><small>{{intervention['label']}}</small></p>
+                </td>
+                <td rowspan="{{admin_count}}">
+                  <p class="card-text"><small>{{intervention['role']['decode']}}</small></p>
+                </td>
+              {% endif %}
+              <td>
+                <p class="card-text"><small>[Not Found]</small></p>
+              </td>
+              <td>
+                <p class="card-text"><small>{{admin['dose']['unit']['standardCode']['decode']}}</small></p>
+              </td>
+              <td>
+                <p class="card-text"><small>{{admin['dose']['value']}}</small></p>
+              </td>
+              <td>
+                <p class="card-text"><small>{{admin['route']['standardCode']['decode']}}</small></p>
+              </td>
+              <td>
+                <p class="card-text"><small>{{admin['duration']['quantity']['value']}} {{admin['duration']['quantity']['unit']['standardCode']['decode']}}</small></p>
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    {{data['text']|safe}}
+  {% endif %}
+</div>
+
+
+
