@@ -1,4 +1,5 @@
-from app.utility.service import Service
+#from app.utility.service import Service
+from d4kms_generic.service import Service
 
 class FHIRService(Service):
 

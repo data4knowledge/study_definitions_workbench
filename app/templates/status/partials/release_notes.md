@@ -1,5 +1,6 @@
 **Release 0.10, 2024-08-09**
 
+- Update to new microservices package (0.7)
 - Add environment in header
 - Reorganise code to move into 'app' directory
 

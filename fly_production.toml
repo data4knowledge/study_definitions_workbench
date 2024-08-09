@@ -1,0 +1,32 @@
+# fly.toml app configuration file generated for d4k-sdw on 2024-08-09T12:01:21+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'd4k-sdw'
+primary_region = 'ams'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
+
+[build]
+  builder = 'paketobuildpacks/builder:full'
+
+[env]
+  PORT = '8080'
+
+[[mounts]]
+  source = 'sdw_data'
+  destination = '/mnt/sdw_data'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
