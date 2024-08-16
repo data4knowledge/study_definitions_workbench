@@ -51,6 +51,27 @@ def process_word(uuid, user: User, session: Session) -> None:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Word file", e)
 
+def process_fhir_v1(uuid, user: User, session: Session) -> None:
+  try:
+    file_import = None
+    files = Files(uuid)
+    full_path, filename = files.path('fhir')
+    file_import = FileImport.create(full_path, filename, 'Processing', 'FHIR V1', uuid, user.id, session)
+    db = USDMDb()
+    file_import.update_status('Saving', session)
+    data = files.read('fhir')
+    db.from_fhir(data)
+    usdm_json = db.to_json()
+    files.save('usdm', usdm_json)
+    parameters = _study_parameters(usdm_json)
+    #print(f"PARAMETERS: {parameters}")
+    Study.study_and_version(parameters, user, file_import, session)
+    file_import.update_status('Successful', session)
+  except Exception as e:
+    if file_import:
+      file_import.update_status('Exception', session)
+    application_logger.exception(f"Exception '{e}' raised processing FHIR V1 file", e)
+
 def _study_parameters(json_str: str) -> dict:
   try:
     data = json.loads(json_str) 

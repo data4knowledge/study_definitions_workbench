@@ -19,6 +19,7 @@ from app.utility.upload import *
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
+from app.utility.fhir_version import check_fhir_version
 from app.model.database_manager import DatabaseManager as DBM
 from app.utility.fhir_service import FHIRService
 from app.model.exceptions import FindException
@@ -135,6 +136,18 @@ def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
 
+@app.get("/import/fhir", dependencies=[Depends(protect_endpoint)])
+def import_fhir(request: Request, version: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  valid, description = check_fhir_version(version)
+  if valid:
+    data = {'version': version, 'description': description}
+    return templates.TemplateResponse("import/import_fhir.html", {'request': request, 'user': user, 'data': data})
+  else:
+    message = f"Invalid FHIR version '{version}'"
+    application_logger.error(message)
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'data': {'error': message}})
+    
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 async def import_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
@@ -144,6 +157,11 @@ async def import_m11(request: Request, background_tasks: BackgroundTasks, sessio
 async def import_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return await process_xl(request, background_tasks, templates, user, session)
+
+@app.post('/import/fhir', dependencies=[Depends(protect_endpoint)])
+async def import_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  return await process_fhir(request, background_tasks, templates, user, session)
 
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
@@ -213,7 +231,7 @@ async def export_fhir(request: Request, id: int, session: Session = Depends(get_
   full_path, filename, media_type = usdm.fhir()
   if full_path == None:
     results = 'Not found'
-    return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
+    return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': results})
   else:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
 
@@ -237,7 +255,7 @@ async def export_protocol(request: Request, id: int, session: Session = Depends(
   full_path, filename, media_type = usdm.pdf()
   if full_path == None:
     results = 'Not found'
-    return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
+    return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': results})
   else:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
 

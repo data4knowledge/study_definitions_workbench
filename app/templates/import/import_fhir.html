@@ -7,7 +7,7 @@
 {% block main_content %}
   <div class="mt-3 row row-cols-2">
     <div class="col">
-      {% with url="/import/m11", title="Import M11 Protocol", subtitle="Import for a M11 formatted '.docx' file", text="Select a single M11 file", disable=False %}
+      {% with url="/import/fhir?version=" ~ data['version'], title="Import FHIR JSON", subtitle="Import for a version " ~ data['version'] ~ " (" ~ data['description'] ~ ") FHIR '.json' file", text="Select a single FHIR file", disable=False %}
         {% include "import/partials/file_select.html" %}
       {% endwith %}
     </div>
