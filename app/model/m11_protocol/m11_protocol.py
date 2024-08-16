@@ -51,7 +51,7 @@ class M11Protocol():
     self.sponsor_approval_date = None
     self._decode_title_page()
     self._build_sections()
-    print(f"Titles {self.full_title}, {self.short_title}")
+    #print(f"Titles {self.full_title}, {self.short_title}")
 
   def to_usdm(self) -> Wrapper:
     try:
@@ -224,8 +224,3 @@ class M11Protocol():
     cdisc_phase_code = self._cdisc_ct_code('C48660', '[Trial Phase] Not Applicable')
     application_logger.warning(f"Trial phase '{phase}' not decoded")
     return self._model_instance(AliasCode, {'standardCode': cdisc_phase_code})
-
-
-
-
-
