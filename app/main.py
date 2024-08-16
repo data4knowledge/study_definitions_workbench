@@ -230,8 +230,7 @@ async def export_fhir(request: Request, id: int, session: Session = Depends(get_
   usdm = USDMJson(id, session)
   full_path, filename, media_type = usdm.fhir()
   if full_path == None:
-    results = 'Not found'
-    return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': results})
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'data': {'error': f"The study with id '{id}' was not found"}})
   else:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
 

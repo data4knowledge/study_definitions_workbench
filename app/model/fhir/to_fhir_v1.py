@@ -48,13 +48,14 @@ class ToFHIRV1():
 
   def _content_to_section(self, content: NarrativeContent) -> CompositionSection:
     div = self._translate_references(content.text)
-    text = self._add_section_heading(content, div)
+    #text = self._add_section_heading(content, div)
+    text = str(div)
     text = self._remove_line_feeds(text)
     narrative = Narrative(status='generated', div=text)
     title = self._format_section_title(content.sectionTitle)
     code = CodeableConcept(text=f"section{content.sectionNumber}-{title}")
     #print(f"COMPOSITION: {code.text}, {title}, {narrative}, {div}")
-    section = CompositionSection(title=content.sectionTitle, code=code, text=narrative, section=[])
+    section = CompositionSection(title=f"{content.sectionTitle}", code=code, text=narrative, section=[])
     for id in content.childIds:
       content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
       child = self._content_to_section(content)
@@ -121,6 +122,7 @@ class ToFHIRV1():
 
   def _remove_line_feeds(self, div: str) -> str:
     #print(f"LB: {len(div)}")
+    print(f"DIV: {div}")
     text = div.replace('\n', '')
     #print(f"LA: {len(text)}")
     return text
