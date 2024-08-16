@@ -7,6 +7,7 @@ from app.model.file_import import FileImport
 from app.model.study import Study
 from app.model.user import User
 from app.model.m11_protocol.m11_protocol import M11Protocol
+from app.model.fhir.from_fhir_v1 import FromFHIRV1
 from app import VERSION, SYSTEM_NAME
 from sqlalchemy.orm import Session
 from app.model.object_path import ObjectPath
@@ -57,14 +58,13 @@ def process_fhir_v1(uuid, user: User, session: Session) -> None:
     files = Files(uuid)
     full_path, filename = files.path('fhir')
     file_import = FileImport.create(full_path, filename, 'Processing', 'FHIR V1', uuid, user.id, session)
-    db = USDMDb()
     file_import.update_status('Saving', session)
-    data = files.read('fhir')
-    db.from_fhir(data)
-    usdm_json = db.to_json()
+    fhir = FromFHIRV1(uuid)
+    file_import.update_status('Saving', session)
+    usdm_json = fhir.to_usdm()
     files.save('usdm', usdm_json)
     parameters = _study_parameters(usdm_json)
-    #print(f"PARAMETERS: {parameters}")
+    print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
   except Exception as e:
