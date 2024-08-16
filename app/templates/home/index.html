@@ -45,8 +45,10 @@
                 <span class="badge rounded-pill bg-info">{{vtext}}</span>  
                 {% if item['import_type'] == "DOCX" %}
                   <span class="badge rounded-pill bg-primary">M11 Document</span>
-                {% else %}
+                {% elif item['import_type'] == "XLSX" %}
                   <span class="badge rounded-pill bg-success">USDM Excel</span>
+                {% else %}
+                  <span class="badge rounded-pill bg-success">FHIR</span>
                 {% endif %}            
                 
               </div>

@@ -89,8 +89,7 @@ class Files:
     return full_path, filename 
 
   def read(self, type):
-    extension = self.media_type[type]['extension']
-    full_path = self._file_path(self.uuid, self.media_type[type]['filename'], extension)
+    full_path = self._file_path(self._form_filename(type))
     with open(full_path, "r") as stream:
       return stream.read()
 
