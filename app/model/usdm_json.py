@@ -2,6 +2,7 @@ import json
 import warnings
 from app.model.file_import import FileImport
 from app.model.files import Files
+from app.model.fhir.to_fhir_v1 import ToFHIRV1
 from app.model.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
@@ -30,7 +31,9 @@ class USDMJson():
   def fhir_data(self):
     usdm = USDMDb()
     usdm.from_json(self._data)
-    return usdm.to_fhir()
+    study = usdm.wrapper().study
+    fhir = ToFHIRV1(study)
+    return fhir.to_fhir(self.uuid)
 
   def pdf(self):
     usdm = USDMDb()
