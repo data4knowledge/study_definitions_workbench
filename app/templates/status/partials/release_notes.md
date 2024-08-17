@@ -1,3 +1,12 @@
+**Release 0.11.0, 2024-08-17**
+
+- Add import og FHIR V1 message
+- Add protocol document display
+
+**Release 0.10.1, 2024-08-09**
+
+- Add environment label in nav bar 
+
 **Release 0.10, 2024-08-09**
 
 - Update to new microservices package (0.7)
