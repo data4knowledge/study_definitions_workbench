@@ -32,6 +32,7 @@ class FromFHIRV1():
     self._id_manager = IdManager(self._errors_and_logging)
     self._cdisc_ct_manager = CDISCCTLibrary(self._errors_and_logging)
     self._uuid = uuid
+    self._ncs = []
     
   def to_usdm(self) -> str:
     try:
@@ -50,30 +51,34 @@ class FromFHIRV1():
     return study
 
   def _document(self, bundle):
+    self._ncs = []
     protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
     protocl_document_version = self._model_instance(StudyProtocolDocumentVersion, {'protocolVersion': '1', 'protocolStatus': protocl_status_code})
     protocl_document = self._model_instance(StudyProtocolDocument, {'name': 'PROTOCOL V1', 'label': '', 'description': '', 'versions': [protocl_document_version]})
     root = self._model_instance(NarrativeContent, {'name': 'ROOT', 'sectionNumber': '0', 'sectionTitle': 'Root', 'text': '', 'childIds': [], 'previousId': None, 'nextId': None})
     protocl_document_version.contents.append(root)
     for item in bundle.entry[0].resource.section:
-      nc_item = self._section(item, protocl_document_version)
-      root.childIds.append(nc_item.id)
+      nc = self._section(item, protocl_document_version)
+      root.childIds.append(nc.id)
     self._double_link(protocl_document_version.contents, 'previousId', 'nextId')
+    print(f"DOC: {protocl_document}")
     return protocl_document
 
-  def _section(self, section: CompositionSection, doc_version):
+  def _section(self, section: CompositionSection, protocol_document_version: StudyProtocolDocumentVersion):
     #print(f"SECTION: {section.title}, {section.code.text}")
     nc = self._model_instance(NarrativeContent, {'name': f"{section.code.text}", 'sectionNumber': '', 'sectionTitle': section.title, 'text': section.text.div, 'childIds': [], 'previousId': None, 'nextId': None})
-    doc_version.contents.append(nc)
+    protocol_document_version.contents.append(nc)
     if section.section:
       for item in section.section:
-        item_nc = self._section(item, doc_version)
-        nc.childIds.append(item_nc.id)
+        child_nc = self._section(item, protocol_document_version)
+        nc.childIds.append(child_nc.id)
     return nc
     
   def _study(self, protocol_document: StudyProtocolDocument):
     protocol_document_version = protocol_document.versions[0]
+    print(f"PDV: {protocol_document_version}")
     sections = protocol_document_version.contents
+    print(f"SECTION: {protocol_document_version}")
     title_page = FHIRTitlePage(sections[1].text)
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
     study_title = self._model_instance(StudyTitle, {'text': title_page.full_title, 'type': sponsor_title_code})
@@ -81,8 +86,8 @@ class FromFHIRV1():
     intervention_model_code = self._cdisc_ct_code('C82639', 'Parallel Study')
     country_code = self._iso_country_code('DNK', 'Denmark')
     sponsor_code = self._cdisc_ct_code("C70793", 'Clinical Study Sponsor')
-    protocol_document_version = self._model_instance(StudyProtocolDocumentVersion, {'protocolVersion': title_page.version_number, 'protocolStatus': protocl_status_code})
-    protocol_document = self._model_instance(StudyProtocolDocument, {'name': f'PROTOCOL_DOCUMENT', 'label': f'Protocol Document', 'description': 'The protocol document for the study', 'versions': [protocol_document_version]})
+    #protocol_document_version = self._model_instance(StudyProtocolDocumentVersion, {'protocolVersion': title_page.version_number, 'protocolStatus': protocl_status_code})
+    #protocol_document = self._model_instance(StudyProtocolDocument, {'name': f'PROTOCOL_DOCUMENT', 'label': f'Protocol Document', 'description': 'The protocol document for the study', 'versions': [protocol_document_version]})
     study_design = self._model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
       'rationale': '[Not Found]', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
       'epochs': [], 'population': None})

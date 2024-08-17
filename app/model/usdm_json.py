@@ -165,9 +165,12 @@ class USDMJson():
   def protocol_sections(self):
     document = self._document()
     if document:
+      print("A")
       sections = []
       narrative_content = self._first_narrative_content(document)
+      print(f"B {narrative_content}")
       while narrative_content:
+        print(f"C {narrative_content}")
         sections.append(narrative_content)
         narrative_content = self._find_narrative_content(document, narrative_content['nextId'])
       return sections
