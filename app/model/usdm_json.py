@@ -176,9 +176,35 @@ class USDMJson():
   def section(self, id):
     document = self._document()
     if document:
-      return self._find_narrative_content(document, id)
+      narrative_content = self._find_narrative_content(document, id)
+      narrative_content['heading'], narrative_content['level'] = self._format_heading(narrative_content)
+      return narrative_content
     return None
 
+  def _get_level(self, narrative_content: dict):
+    section_number = narrative_content['sectionNumber']
+    if section_number.lower().startswith("appendix"):
+      result = 1
+    else:
+      text = section_number[:-1] if section_number.endswith('.') else section_number
+      result = len(text.split('.'))
+    return result
+  
+  def _format_heading(self, narrative_content):
+    level = self._get_level(narrative_content)
+    number = narrative_content['sectionNumber']
+    title = narrative_content['sectionTitle']
+    if number and number == '0':
+      return '', level
+    elif number and title:
+      return f'<h{level}>{number} {title}</h{level}>', level
+    elif number:
+      return f'<h{level}>{number}</h{level}>', level
+    elif title:
+      return f'<h{level}>{title}</h{level}>', level
+    else:
+      return '', level
+    
   def _first_narrative_content(self, document: dict) -> dict:
     return next((x for x in document['contents'] if not x['previousId'] and x['nextId']), None)
 
