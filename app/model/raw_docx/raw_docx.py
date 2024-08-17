@@ -102,12 +102,6 @@ class RawDocx():
       else:
         raise ValueError(f"something's not right with a child {type(child)}")
 
-  def _get_level(self, text):
-    try:
-      return int(text)
-    except Exception as e:
-      return 0
-    
   def _process_table(self, table, target: RawSection | RawTableCell):
     target_table = RawTable()
     #print(f"TABLE: {type(target)}")
@@ -156,9 +150,9 @@ class RawDocx():
       #print(f"Text: <{paragraph.style.name}> {paragraph.text}")
 
   def _process_paragraph(self, paragraph, target_section: RawSection, image_rels: dict):
-    global add_image
-    if self._is_heading(paragraph.style.name):
-      level = self._get_level(paragraph.style.name[0:2])
+    #global add_image
+    is_heading, level = self._is_heading(paragraph.style.name)
+    if is_heading:
       target_section = RawSection(paragraph.text, paragraph.text, level)
       self.target_document.add(target_section)
       #print(f"Heading: {paragraph.style.name} {paragraph.text}")
@@ -196,7 +190,22 @@ class RawDocx():
     return int(str(list_level[0])) if list_level else 0
 
   def _is_heading(self, text):
-    return True if re.match("^\d\dHeading \d", text) else False
+    application_logger.debug(f"Checking '{text}' for heading")
+    if re.match("^\d\dHeading \d", text):
+      try:
+        level = int(text[0:2])
+        application_logger.debug(f"Found heading level {level}")
+        return True, level
+      except Exception as e:
+        return True, 0
+    if re.match("^Heading \d", text):
+      try:
+        level = int(text[8])
+        application_logger.debug(f"Found heading level {level}")
+        return True, level
+      except Exception as e:
+        return True, 0
+    return False, 0
 
   def _is_list(self, paragraph):
     level = paragraph._p.xpath("./w:pPr/w:numPr/w:ilvl/@w:val")
