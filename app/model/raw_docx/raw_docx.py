@@ -179,6 +179,7 @@ class RawDocx():
           #  add_image = False
           # Your image will be in os.path.join(img_path, rels[rId])
     else:
+      application_logger.debug(f"STYLE: {paragraph.style.name}")
       target_paragraph = RawParagraph(paragraph.text)
       target_section.add(target_paragraph)
       #for c in paragraph.text[0:2]:
@@ -190,18 +191,15 @@ class RawDocx():
     return int(str(list_level[0])) if list_level else 0
 
   def _is_heading(self, text):
-    application_logger.debug(f"Checking '{text}' for heading")
     if re.match("^\d\dHeading \d", text):
       try:
         level = int(text[0:2])
-        application_logger.debug(f"Found heading level {level}")
         return True, level
       except Exception as e:
         return True, 0
     if re.match("^Heading \d", text):
       try:
         level = int(text[8])
-        application_logger.debug(f"Found heading level {level}")
         return True, level
       except Exception as e:
         return True, 0
