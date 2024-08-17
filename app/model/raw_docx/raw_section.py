@@ -28,7 +28,8 @@ class RawSection():
     return { 'sectionNumber': self.number, 'sectionTitle': self.title, 'name': '', 'text': self.to_html()} 
 
   def to_html(self):
-    text = [self._format_heading()]
+    #text = [self._format_heading()]
+    text = []
     for item in self.items:
       result = item.to_html()
       text.append(result)
