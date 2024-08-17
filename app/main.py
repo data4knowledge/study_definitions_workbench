@@ -258,13 +258,28 @@ async def export_protocol(request: Request, id: int, session: Session = Depends(
   else:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
 
-from app.model.database_manager import DatabaseManager
+@app.get("/versions/{id}/protocol", dependencies=[Depends(protect_endpoint)])
+async def protocol(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(id, session)
+  data = {'version': usdm.study_version(), 'sections': usdm.protocol_sections()}
+  #print(f"PROTOCOL SECTION: {data}")
+  response = templates.TemplateResponse('versions/protocol/show.html', {"request": request, "data": data })
+  return response
+
+@app.get("/versions/{id}/section/{section_id}", dependencies=[Depends(protect_endpoint)])
+async def protocl_section(request: Request, id: int, section_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(id, session)
+  data = {'section': usdm.section(section_id)}
+  response = templates.TemplateResponse('versions/protocol//partials/section.html', {"request": request, "data": data })
+  return response
 
 @app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
 async def database_clean(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if user.email == "daveih1664dk@gmail.com":
-    database_managr = DatabaseManager(session)
+    database_managr = DBM(session)
     database_managr.clear_all()    
     application_logger.info(f"User '{user.id}', '{user.email} cleared the database")
   else:

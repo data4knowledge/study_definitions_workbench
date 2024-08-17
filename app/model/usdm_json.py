@@ -162,6 +162,29 @@ class USDMJson():
     else:
       return None
 
+  def protocol_sections(self):
+    document = self._document()
+    if document:
+      sections = []
+      narrative_content = self._first_narrative_content(document)
+      while narrative_content:
+        sections.append(narrative_content)
+        narrative_content = self._find_narrative_content(document, narrative_content['nextId'])
+      return sections
+    return None
+
+  def section(self, id):
+    document = self._document()
+    if document:
+      return self._find_narrative_content(document, id)
+    return None
+
+  def _first_narrative_content(self, document: dict) -> dict:
+    return next((x for x in document['contents'] if not x['previousId'] and x['nextId']), None)
+
+  def _find_narrative_content(self, document: dict, id: str) -> dict:
+    return next((x for x in document['contents'] if x['id'] == id), None)
+
   def _intervention(self, study_design: dict, intervention_id: str) -> dict:
     return next((x for x in study_design['studyInterventions'] if x['id'] == intervention_id), None)
 

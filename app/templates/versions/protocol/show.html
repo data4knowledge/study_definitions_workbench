@@ -1,0 +1,33 @@
+{% extends "shared/_main_layout.html" %}
+{% block additional_css %}
+  <style>
+    .outer-div {
+      background-color: #E6ECED;
+    }
+
+    .m11-div {
+      width: 818px; 
+      margin: 0 auto; 
+      background-color: white; 
+      padding-top: 10px; 
+      box-sizing: border-box; 
+      border: 1px solid #C6C6C6;
+    }
+  </style>
+{% endblock %}   
+{% block main_content %}
+  <div class="outer-div row">
+    <div class="col-12 mt-3">
+      <div class="m11-div">
+        {% for section in data['sections'] %}
+          {% set id = section['id'] %}
+          <div id="{{id}}" class="" hx-get="/versions/{{data['version']['id']}}/section/{{section['id']}}" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
+            {% with %}
+              {% include "shared/partials/spinner.html" %}
+            {% endwith %}  
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
