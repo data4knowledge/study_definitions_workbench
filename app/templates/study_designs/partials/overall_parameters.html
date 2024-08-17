@@ -1,89 +1,95 @@
 <div>
-  <table class="table responsive table-striped mt-1">
-    <tr>
-      <td>
-        <p class="card-text"><small>Intervention Model</small> </p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{ data['intervention_model']}}</small> </p>
-      </td>
-      <td>
-        <p class="card-text"><small>Population Type</p></small>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['population_type']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Control Type</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['control_type']}}</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>Population Diagnosis or Condition</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['population_condition']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Control Description</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['control_description']}}</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>Population Age</small></p>
-      </td>
-      <td>
-        {% set pop_age = data['population_age'] %}
-        <p class="card-text"><small>{{pop_age['min']}} to {{pop_age['max']}} {{pop_age['unit']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Intervention Assignment Method</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['intervention_method']}}</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>Site Distribution and Geographic Scope</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['site_distribution']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Adaptive Trial Design</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['adaptive_design']}}</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>Master Protocol Design</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['master_protocol']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Drug / Device Combination Product Indication</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['drug_device_indication']}}</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small></small></p>
-      </td>
-      <td>
-        <p class="card-text"><small></small></p>
-      </td>
-    </tr>
-  </table>
+  {% if not data['m11'] %}
+    <table class="table responsive table-striped mt-1">
+      <tr>
+        <td>
+          <p class="card-text"><small>Intervention Model</small> </p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{ data['intervention_model']}}</small> </p>
+        </td>
+        <td>
+          <p class="card-text"><small>Population Type</p></small>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['population_type']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Control Type</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['control_type']}}</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>Population Diagnosis or Condition</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['population_condition']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Control Description</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['control_description']}}</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>Population Age</small></p>
+        </td>
+        <td>
+          {% set pop_age = data['population_age'] %}
+          <p class="card-text"><small>{{pop_age['min']}} to {{pop_age['max']}} {{pop_age['unit']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Intervention Assignment Method</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['intervention_method']}}</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>Site Distribution and Geographic Scope</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['site_distribution']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Adaptive Trial Design</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['adaptive_design']}}</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>Master Protocol Design</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['master_protocol']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Drug / Device Combination Product Indication</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['drug_device_indication']}}</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small></small></p>
+        </td>
+        <td>
+          <p class="card-text"><small></small></p>
+        </td>
+      </tr>
+    </table>
+  {% else %}
+    <div class="overflow-auto">
+      {{data['text']|safe}}
+    </div>
+  {% endif %}
 </div>

@@ -17,7 +17,7 @@ class USDMJson():
     file_import = FileImport.find(version.import_id, session)
     self.uuid = file_import.uuid
     self.type = file_import.type
-    self.m11 = True if self.type == "DOCX" else False
+    self.m11 = True if self.type == "DOCX" or self.type == "FHIR V1" else False
     self._files = Files(file_import.uuid)
     fullpath, filename = self._files.path('usdm')
     data = open(fullpath)
@@ -65,8 +65,15 @@ class USDMJson():
     version = self._data['study']['versions'][0]
     design = self._study_design(id)
     if design:
+      section = None
+      if self.m11:
+        section = self._section_by_number("1.1.2")
+      if not section:
+        section = self._section_by_title_contains("Overall Design")
       result = {
         'id': self.id,
+        'm11': self.m11,
+        'text': section['text'] if section else '[Overall Parameters]',
         'intervention_model': None,
         'population_type':  None,
         'population_condition': '[Population Condition]',
@@ -96,6 +103,7 @@ class USDMJson():
     if design:
       result = {
         'id': self.id,
+        'm11': self.m11,
         'arms': None,
         'trial_blind_scheme': None,
         'blinded_roles': None,
@@ -114,16 +122,30 @@ class USDMJson():
   def study_design_schema(self, id: str):
     design = self._study_design(id)
     if design:
-      section = self._section_by_number("1.2") if self.m11 else self._section_by_title_contains("study design")
+      section = None
+      if self.m11:
+        section = self._section_by_number("1.2") 
+      if not section:
+        section = self._section_by_title_contains("trial schema")  
+      if not section:
+        section = self._section_by_title_contains("study design")
       return self._image_in_section(section) if section else '[Study Design]'
-
+    else:
+      return None
+    
   def study_design_interventions(self, id: str):
     design = self._study_design(id)
-    print(f"INTERVENTIONS: {'design' if design else ''}")
     if design:
-      section = self._section_by_number("6.1") if self.m11 else self._section_by_title_contains("Trial Interventions")
+      section = None
+      if self.m11:
+        section = self._section_by_number("6.1")
+      if not section:
+        section = self._section_by_title_contains("Trial Intervention")
+      if not section:
+        section = self._section_by_title_contains("Intervention")
       result = {
         'id': self.id,
+        'm11': self.m11,
         'interventions': [],
         'text': section['text'] if section else '[Trial Interventions]'
       }
@@ -142,9 +164,14 @@ class USDMJson():
     design = self._study_design(id)
     print(f"ESTIMANDS: {'design' if design else ''}")
     if design:
-      section = self._section_by_number("3.1") if self.m11 else self._section_by_title_contains("Primary Objective")
+      section = None
+      if self.m11:
+        section = self._section_by_number("3.1")
+      if not section:
+        section = self._section_by_title_contains("Primary Objective")
       result = {
         'id': self.id,
+        'm11': self.m11,
         'estimands': [],
         'text': section['text'] if section else '[Estimands]'
       }

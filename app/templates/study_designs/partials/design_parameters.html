@@ -1,52 +1,58 @@
 <div>
-  <table class="table responsive table-striped mt-1">
-    <tr>
-      <td>
-        <p class="card-text"><small>Number of Arms</small> </p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{ data['arms']}}</small> </p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Trial Blind Scheme</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['trial_blind_scheme']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Blinded Roles</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['blinded_roles']|join(', ')}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Number of Participants</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['participants']['enroll']}} / {{data['participants']['complete']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Duration</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['duration']}}</small></p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p class="card-text"><small>Independent Committee</small></p>
-      </td>
-      <td>
-        <p class="card-text"><small>{{data['independent_committee']}}</small></p>
-      </td>
-    </tr>
-  </table>
+  {% if not data['m11'] %}
+    <table class="table responsive table-striped mt-1">
+      <tr>
+        <td>
+          <p class="card-text"><small>Number of Arms</small> </p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{ data['arms']}}</small> </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Trial Blind Scheme</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['trial_blind_scheme']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Blinded Roles</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['blinded_roles']|join(', ')}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Number of Participants</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['participants']['enroll']}} / {{data['participants']['complete']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Duration</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['duration']}}</small></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="card-text"><small>Independent Committee</small></p>
+        </td>
+        <td>
+          <p class="card-text"><small>{{data['independent_committee']}}</small></p>
+        </td>
+      </tr>
+    </table>
+  {% else %}
+    <div class="overflow-auto">
+      <i>See above</i>
+    </div>
+  {% endif %}
 </div>

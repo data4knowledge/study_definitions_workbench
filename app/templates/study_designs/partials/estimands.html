@@ -1,5 +1,5 @@
 <div>
-  {% if data['estimands'] %}
+  {% if not data['m11'] %}
     <ul class="nav nav-tabs role="tablist">
       {% for item in data['estimands'] %}
         {% set id = "estimand_tab-" ~ loop.index0 ~ "_div" %}
