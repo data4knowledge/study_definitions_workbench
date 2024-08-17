@@ -6,17 +6,23 @@ class RawTable():
 
   def __init__(self):
     self.rows = []
+    self.klasses = []
   
   def add(self, item: 'TableRow'):
     self.rows.append(item) 
 
   def to_html(self):
     lines = []
-    lines.append("<table>")
+    klass_list = ' '.join(self.klasses)
+    open_tag = f'<table class="{klass_list}">' if self.klasses else '<table>'
+    lines.append(open_tag)
     for item in self.rows:
       lines.append(item.to_html())
     lines.append("</table>")
     return ("\n").join(lines)
+
+  def add_class(self, klass):
+    self.klasses.append(klass)
 
 class TableCell():
   

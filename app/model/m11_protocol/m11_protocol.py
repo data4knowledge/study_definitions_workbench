@@ -24,6 +24,13 @@ class M11Protocol():
   
   DIV_OPEN_NS = '<div xmlns="http://www.w3.org/1999/xhtml">'
   DIV_CLOSE = '</div>'
+  ICH_HEADERS = [
+    ('INTERNATIONAL COUNCIL FOR HARMONISATION OF TECHNICAL REQUIREMENTS FOR PHARMACEUTICALS FOR HUMAN USE', 'ich-header-1'),
+    ('ICH HARMONISED GUIDELINE', 'ich-header-2'),
+    ('Clinical electronic Structured Harmonised Protocol', 'ich-header-3'),
+    ('(CeSHarP)', 'ich-header-4'),
+    ('Example', 'ich-header-4')
+  ]
 
   def __init__(self, filepath, system_name, system_version):
     self._raw_docx = RawDocx(filepath)
@@ -49,6 +56,7 @@ class M11Protocol():
     self.sponsor_address = None
     self.regulatory_agency_identifiers = None
     self.sponsor_approval_date = None
+    self._decode_ich_header()
     self._decode_title_page()
     self._build_sections()
     #print(f"Titles {self.full_title}, {self.short_title}")
@@ -66,10 +74,18 @@ class M11Protocol():
       application_logger.exception(f"Exception raised parsing M11 content. See logs for more details", e)
       return None
 
+  def _decode_ich_header(self):
+    section = self._raw_docx.target_document.section_by_ordinal(1)
+    for header in self.ICH_HEADERS:
+      items = section.find(header[0])
+      for item in items:
+        item.add_class(header[1])
+
   def _decode_title_page(self):
     section = self._raw_docx.target_document.section_by_ordinal(1)
     tables = section.tables()
     table = tables[0]
+    table.add_class('ich-title-page')
     self.full_title = self._table_get_row(table, 'Full Title')
     self.acronym = self._table_get_row(table, 'Acronym')
     self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')
@@ -96,7 +112,7 @@ class M11Protocol():
       section = sections[local_index]
       if section.level == level:
         sn = section.number if section.number else ''
-        st = section.title if section.title else '-'
+        st = section.title if section.title else '&nbsp;'
         nc_text = f"{self.DIV_OPEN_NS}{section.to_html()}{self.DIV_CLOSE}"
         nc = self._model_instance(NarrativeContent, {'name': f"NC-{sn}", 'sectionNumber': sn, 'sectionTitle': st, 'text': nc_text, 'childIds': [], 'previousId': None, 'nextId': None})
         doc_version.contents.append(nc)

@@ -38,6 +38,9 @@ class RawSection():
   def tables(self):
     return [x for x in self.items if isinstance(x, RawTable)]
 
+  def find(self, text):
+    return [x for x in self.items if isinstance(x, RawParagraph) and x.find(text)]
+  
   def _format_heading(self):
     if self.number and self.title:
       return f'<h{self.level}>{self.number} {self.title}</h{self.level}>'
