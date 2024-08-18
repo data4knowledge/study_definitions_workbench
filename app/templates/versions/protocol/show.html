@@ -1,13 +1,33 @@
 {% extends "shared/_main_layout.html" %}
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
+  {% endwith %}    
+{% endblock %}
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
 {% block additional_css %}
   {% with %}
     {% include "shared/styles/m11.html" %}
   {% endwith %}  
 {% endblock %}   
+{% block menu_content %}
+<li class="nav-item active">
+  <a class="nav-link" type="button" data-bs-toggle="offcanvas" href="#protocol_menu">
+    <i class="ps-2 bi bi-list me-1"></i>Sections
+  </a>  
+</li>  
+{% endblock %}
 {% block main_content %}
   <div class="outer-div row">
     <div class="col-12 mt-3">
       <div class="document-div">
+        {% with data=data['section_list'] %}
+          {% include "versions/protocol/partials/menu.html" %}
+        {% endwith %}  
         {% for section in data['sections'] %}
           {% set id = section['id'] %}
           <div id="{{id}}" class="section-div" hx-get="/versions/{{data['version']['id']}}/section/{{section['id']}}" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">

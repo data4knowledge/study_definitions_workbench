@@ -189,15 +189,22 @@ class USDMJson():
     else:
       return None
 
+  def protocol_sections_list(self):
+    sections = self.protocol_sections()
+    result = []
+    for section in sections:
+      if section['sectionNumber'] and section['sectionNumber'] != '0' and section['sectionTitle']:
+        result.append({'section_number': section['sectionNumber'], 'section_title': section['sectionTitle']})
+    return result
+
   def protocol_sections(self):
     document = self._document()
     if document:
-      print("A")
+      #print("A")
       sections = []
       narrative_content = self._first_narrative_content(document)
-      print(f"B {narrative_content}")
+      #print(f"B {narrative_content}")
       while narrative_content:
-        print(f"C {narrative_content}")
         sections.append(narrative_content)
         narrative_content = self._find_narrative_content(document, narrative_content['nextId'])
       return sections
@@ -211,6 +218,12 @@ class USDMJson():
       return narrative_content
     return None
 
+  def _get_number(self, narrative_content: dict):
+    try:
+      return int(narrative_content['sectionNumber'])
+    except Exception as e:
+      return 0
+    
   def _get_level(self, narrative_content: dict):
     section_number = narrative_content['sectionNumber']
     if section_number.lower().startswith("appendix"):

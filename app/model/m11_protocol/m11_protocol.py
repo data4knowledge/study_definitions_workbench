@@ -131,7 +131,7 @@ class M11Protocol():
       section = sections[local_index]
       if section.level == level:
         sn = section.number if section.number else ''
-        st = section.title if section.title else '&nbsp;'
+        st = section.title if section.title else ''
         nc_text = f"{self.DIV_OPEN_NS}{section.to_html()}{self.DIV_CLOSE}"
         nc = self._model_instance(NarrativeContent, {'name': f"NC-{sn}", 'sectionNumber': sn, 'sectionTitle': st, 'text': nc_text, 'childIds': [], 'previousId': None, 'nextId': None})
         doc_version.contents.append(nc)

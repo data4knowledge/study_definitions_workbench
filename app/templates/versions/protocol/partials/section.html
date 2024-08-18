@@ -1,4 +1,5 @@
-<div class="section-div overflow-auto">
+{% set id = "section_" ~ data['section']['sectionNumber'] ~ "_div" %}
+<div id="{{id}}" class="section-div overflow-auto">
   {{data['section']['heading']|safe}}
   {{data['section']['text']|safe}}
 </div>

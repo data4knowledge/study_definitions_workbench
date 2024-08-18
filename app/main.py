@@ -262,9 +262,9 @@ async def export_protocol(request: Request, id: int, session: Session = Depends(
 async def protocol(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
-  data = {'version': usdm.study_version(), 'sections': usdm.protocol_sections()}
+  data = {'version': usdm.study_version(), 'sections': usdm.protocol_sections(), 'section_list': usdm.protocol_sections_list()}
   #print(f"PROTOCOL SECTION: {data}")
-  response = templates.TemplateResponse('versions/protocol/show.html', {"request": request, "data": data })
+  response = templates.TemplateResponse('versions/protocol/show.html', {"request": request, "data": data, 'user': user})
   return response
 
 @app.get("/versions/{id}/section/{section_id}", dependencies=[Depends(protect_endpoint)])

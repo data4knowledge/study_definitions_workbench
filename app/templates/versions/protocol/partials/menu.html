@@ -1,0 +1,26 @@
+<style>
+  a.section-link {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: gray;
+  }
+</style>
+<div class="offcanvas offcanvas-start" data-bs-backdrop="false" tabindex="-1" id="protocol_menu">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Table of Contents</h5>
+    <button type="button" class="btn-close btn-sm" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="nav nav-pills flex-column">
+      <li class="nav-item">
+        <a class="section-link" data-bs-dismiss="offcanvas" href="#">Title Page</a>
+      </li>
+      {% for record in data: %}
+        {% set id = "section_" ~ record['section_number'] ~ "_div" %}
+        <li class="nav-item">
+          <a class="section-link" data-bs-dismiss="offcanvas" href="#{{id}}">{{record['section_number']}} {{record['section_title']}}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
