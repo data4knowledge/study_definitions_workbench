@@ -31,6 +31,14 @@ class M11Protocol():
     ('(CeSHarP)', 'ich-m11-header-4'),
     ('Example', 'ich-m11-header-4')
   ]
+  DESIGN_ITEMS = [
+    ('Number of Arms', 'ich-m11-overall-design-title'),
+    ('Trial Blind Schema', 'ich-m11-overall-design-title'),
+    ('Number of Participants', 'ich-m11-overall-design-title'),
+    ('Duration', 'ich-m11-overall-design-title'),
+    ('Committees', 'ich-m11-overall-design-title'),
+    ('Blinded Roles', 'ich-m11-overall-design-title')
+  ]
 
   def __init__(self, filepath, system_name, system_version):
     self._raw_docx = RawDocx(filepath)
@@ -58,6 +66,7 @@ class M11Protocol():
     self.sponsor_approval_date = None
     self._decode_ich_header()
     self._decode_title_page()
+    self._decode_trial_design_summary()
     self._build_sections()
     #print(f"Titles {self.full_title}, {self.short_title}")
 
@@ -81,11 +90,21 @@ class M11Protocol():
       for item in items:
         item.add_class(header[1])
 
+  def _decode_trial_design_summary(self):
+    section = self._raw_docx.target_document.section_by_number('1.1.2')
+    tables = section.tables()
+    table = tables[0]
+    table.replace_class('ich-m11-table', 'ich-m11-overall-design-table')
+    for design_item in self.DESIGN_ITEMS:
+      items = section.find_at_start(design_item[0])
+      for item in items:
+        item.add_span(design_item[0], design_item[1])
+
   def _decode_title_page(self):
     section = self._raw_docx.target_document.section_by_ordinal(1)
     tables = section.tables()
     table = tables[0]
-    table.replace_class('ich-m11-title-page-table')
+    table.replace_class('ich-m11-table', 'ich-m11-title-page-table')
     self.full_title = self._table_get_row(table, 'Full Title')
     self.acronym = self._table_get_row(table, 'Acronym')
     self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')

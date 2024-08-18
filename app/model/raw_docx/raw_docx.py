@@ -150,41 +150,27 @@ class RawDocx():
       #print(f"Text: <{paragraph.style.name}> {paragraph.text}")
 
   def _process_paragraph(self, paragraph, target_section: RawSection, image_rels: dict):
-    #global add_image
     is_heading, level = self._is_heading(paragraph.style.name)
     if is_heading:
       target_section = RawSection(paragraph.text, paragraph.text, level)
       self.target_document.add(target_section)
-      #print(f"Heading: {paragraph.style.name} {paragraph.text}")
     elif self._is_list(paragraph):
       list_level = self.get_list_level(paragraph)
-      #print(f"SECTION FOR LIST: {section.number}")
       item = RawListItem(paragraph.text, list_level)
       if target_section.is_in_list():
-        #print(f"IN LIST:")
         list = target_section.current_list()
       else:
-        #print(f"NEW LIST:")
         list = RawList()
         target_section.add(list)
       list.add(item)
-      #print(f"List: <{paragraph.style.name}> <{list_level}> {paragraph.text}")
     elif 'Graphic' in paragraph._p.xml:
-      #print(f"!!!!! Graphic !!!!!!")
       for rId in image_rels:
         if rId in paragraph._p.xml:
           target_image = RawImage(image_rels[rId])
-          #if add_image:
           target_section.add(target_image)
-          #  add_image = False
-          # Your image will be in os.path.join(img_path, rels[rId])
     else:
-      application_logger.debug(f"STYLE: {paragraph.style.name}")
       target_paragraph = RawParagraph(paragraph.text)
       target_section.add(target_paragraph)
-      #for c in paragraph.text[0:2]:
-      #  print(ord(c), hex(ord(c)), c.encode('utf-8'))
-      #print(f"Text: <{paragraph.style.name}> {paragraph.text}")
 
   def get_list_level(self, paragraph):
     list_level = paragraph._p.xpath("./w:pPr/w:numPr/w:ilvl/@w:val")

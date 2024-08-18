@@ -101,7 +101,7 @@ def user_display_name(request: Request, id: int, name: Annotated[str, Form()], s
   updated_user, validation = user.update_display_name(name, session)
   use_user = updated_user if updated_user else user
   data = {'validation': {'user': validation}}
-  print(f"UPDATE DISPLAY NAME: {data}")
+  #print(f"UPDATE DISPLAY NAME: {data}")
   return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': use_user, 'data': data})
   
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
@@ -109,7 +109,7 @@ def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: 
   user = User.find(id, session)
   endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': validation}}
-  print(f"UPDATE ENDPOINT: {data}")
+  #print(f"UPDATE ENDPOINT: {data}")
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
@@ -175,7 +175,7 @@ async def get_version_summary(request: Request, id: int, session: Session = Depe
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
-  print(f"VERSION SUMMARY DATA: {data}")
+  #print(f"VERSION SUMMARY DATA: {data}")
   return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])
@@ -190,7 +190,7 @@ async def get_study_design_o_parameters(request: Request, version_id: int, study
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_overall_parameters(study_design_id)
-  print(f"OVERALL SUMMARY DATA: {data}")
+  #print(f"OVERALL SUMMARY DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/overall_parameters.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/designParameters', dependencies=[Depends(protect_endpoint)])
@@ -198,7 +198,7 @@ async def get_study_design_d_parameters(request: Request, version_id: int, study
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_design_parameters(study_design_id)
-  print(f"DESIGN PARAMETERS DATA: {data}")
+  #print(f"DESIGN PARAMETERS DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/design_parameters.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/schema', dependencies=[Depends(protect_endpoint)])
@@ -206,7 +206,7 @@ async def get_study_design_schema(request: Request, version_id: int, study_desig
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_schema(study_design_id)
-  print(f"SCHEMA DATA: {data}")
+  #print(f"SCHEMA DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/schema.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/interventions', dependencies=[Depends(protect_endpoint)])
@@ -214,7 +214,7 @@ async def get_study_design_interventions(request: Request, version_id: int, stud
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_interventions(study_design_id)
-  print(f"INTERVENTION DATA: {data}")
+  #print(f"INTERVENTION DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/interventions.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/estimands', dependencies=[Depends(protect_endpoint)])
@@ -222,7 +222,7 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_estimands(study_design_id)
-  print(f"ESTIMAND DATA: {data}")
+  #print(f"ESTIMAND DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/estimands.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{id}/export/fhir', dependencies=[Depends(protect_endpoint)])

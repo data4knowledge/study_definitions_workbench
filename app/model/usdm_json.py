@@ -155,7 +155,7 @@ class USDMJson():
         record['arm'] = self._arm_from_intervention(design, intervention['id'])
         record['intervention'] = intervention
         result['interventions'].append(record)
-      print(f"INTERVENTIONS: {result}")
+      #print(f"INTERVENTIONS: {result}")
       return result
     else:
       return None
@@ -184,7 +184,7 @@ class USDMJson():
         record['intercurrent_events'] = estimand['intercurrentEvents']
         record['objective'], record['endpoint'] = self._objective_endpoint_from_estimand(design, estimand['variableOfInterestId'])
         result['estimands'].append(record)
-      print(f"ESTIMANDS: {result}")
+      #print(f"ESTIMANDS: {result}")
       return result
     else:
       return None
