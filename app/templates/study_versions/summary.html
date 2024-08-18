@@ -9,6 +9,11 @@
     {% include "shared/partials/user.html" %}
   {% endwith %}    
 {% endblock %}
+{% block additional_css %}
+  {% with %}
+    {% include "shared/styles/m11.html" %}
+  {% endwith %}  
+{% endblock %}   
 {% block menu_content %}
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
