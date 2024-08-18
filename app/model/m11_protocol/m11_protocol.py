@@ -25,11 +25,11 @@ class M11Protocol():
   DIV_OPEN_NS = '<div xmlns="http://www.w3.org/1999/xhtml">'
   DIV_CLOSE = '</div>'
   ICH_HEADERS = [
-    ('INTERNATIONAL COUNCIL FOR HARMONISATION OF TECHNICAL REQUIREMENTS FOR PHARMACEUTICALS FOR HUMAN USE', 'ich-header-1'),
-    ('ICH HARMONISED GUIDELINE', 'ich-header-2'),
-    ('Clinical electronic Structured Harmonised Protocol', 'ich-header-3'),
-    ('(CeSHarP)', 'ich-header-4'),
-    ('Example', 'ich-header-4')
+    ('INTERNATIONAL COUNCIL FOR HARMONISATION OF TECHNICAL REQUIREMENTS FOR PHARMACEUTICALS FOR HUMAN USE', 'ich-m11-header-1'),
+    ('ICH HARMONISED GUIDELINE', 'ich-m11-header-2'),
+    ('Clinical electronic Structured Harmonised Protocol', 'ich-m11-header-3'),
+    ('(CeSHarP)', 'ich-m11-header-4'),
+    ('Example', 'ich-m11-header-4')
   ]
 
   def __init__(self, filepath, system_name, system_version):
@@ -85,7 +85,7 @@ class M11Protocol():
     section = self._raw_docx.target_document.section_by_ordinal(1)
     tables = section.tables()
     table = tables[0]
-    table.add_class('ich-title-page')
+    table.replace_class('ich-m11-title-page-table')
     self.full_title = self._table_get_row(table, 'Full Title')
     self.acronym = self._table_get_row(table, 'Acronym')
     self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')

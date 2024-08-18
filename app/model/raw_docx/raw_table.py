@@ -6,7 +6,7 @@ class RawTable():
 
   def __init__(self):
     self.rows = []
-    self.klasses = []
+    self.klasses = ['ich-m11-table']
   
   def add(self, item: 'TableRow'):
     self.rows.append(item) 
@@ -23,6 +23,10 @@ class RawTable():
 
   def add_class(self, klass):
     self.klasses.append(klass)
+
+  def replace_class(self, old_klass, new_klass):
+    self.klasses.remove(old_klass)
+    self.klasses.append(new_klass)
 
 class TableCell():
   
