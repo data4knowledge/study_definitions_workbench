@@ -57,7 +57,13 @@
       </tbody>
     </table>
   {% else %}
-    {{data['text']|safe}}
+    <div class="outer-div row mt-3">
+      <div class="col-12 extract-div mt-3 mb-3">
+        <div class="overflow-auto section-div">
+          {{data['text']|safe}}
+        </div>
+      </div>
+    </div>  
   {% endif %}
 </div>
 
