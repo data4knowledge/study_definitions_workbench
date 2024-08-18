@@ -3,28 +3,30 @@
     <div class="card rounded-3">
       <div class="card-body">
         <h5 class="card-title">Overall Design</h5>
-        <h6 class="card-subtitle text-muted">Parameters</h6>
+        <h6 class="card-subtitle text-muted">Key aspects of the design</h6>
         {% set id = "overall_param_" ~ data['uuid'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/overallParameters" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
           {% endwith %}            
         </div>
-        <h6 class="card-subtitle text-muted mt-3">Design Parameters</h6>
-        {% set id = "design_param_" ~ data['uuid'] ~"_div" %}
-        <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/designParameters" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
-          {% with %}
-            {% include "shared/partials/spinner.html" %}
-          {% endwith %}            
+        {% if not data['m11'] %}
+          <h6 class="card-subtitle text-muted mt-3">Design Parameters</h6>
+          {% set id = "design_param_" ~ data['uuid'] ~"_div" %}
+          <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/designParameters" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
+            {% with %}
+              {% include "shared/partials/spinner.html" %}
+            {% endwith %}            
+          </div>
+        {% endif %}
         </div>
-      </div>
     </div>
   </div> 
   <div class="col-4">
     <div class="card rounded-3">
       <div class="card-body">
         <h5 class="card-title">Trial Schema</h5>
-        <h6 class="card-subtitle text-muted">The trial schema</h6>
+        <h6 class="card-subtitle text-muted">Overall trial schema</h6>
         {% set id = "schema_" ~ data['id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/schema" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
@@ -50,7 +52,7 @@
     <div class="card rounded-3">
       <div class="card-body">
         <h5 class="card-title">Objectives, Endpoints, Estimands</h5>
-        <!-- <h6 class="card-subtitle text-muted">To be implemented</h6> -->
+        <h6 class="card-subtitle text-muted">Estimands, objectives and associated endpoints</h6>
         {% set id = "estimands_" ~ data['uuid'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/estimands" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}

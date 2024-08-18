@@ -182,7 +182,7 @@ async def get_version_summary(request: Request, id: int, session: Session = Depe
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
-  data = {'id': version_id, 'study_design_id': study_design_id}
+  data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
   return templates.TemplateResponse("study_designs/summary.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/overallParameters', dependencies=[Depends(protect_endpoint)])
