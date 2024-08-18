@@ -1,56 +1,8 @@
 {% extends "shared/_main_layout.html" %}
 {% block additional_css %}
-  <style>
-    
-    .outer-div {
-      background-color: #E6ECED;
-    }
-
-    .document-div {
-      width: 900px; 
-      margin: 0 auto; 
-      background-color: white; 
-      padding-top: 10px; 
-      box-sizing: border-box; 
-      border: 1px solid #C6C6C6;
-    }
-
-    .section-div {
-      width: 80%; 
-      margin: 0 auto;
-      font:12pt 'Times New Roman'; 
-    }
-
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-    table { 
-      border: 1px solid black; 
-      border-collapse: collapse; 
-      width: 100%;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-    thead, tbody, tfoot { vertical-align: top }
-    td, th, tr { vertical-align: inherit }
-    td { border: 1px solid black; padding: 8px; }
-
-    h1 { font-size: 16pt; font-weight: bold; }
-    h2 { font-size: 14pt; font-weight: bold; }
-    h3 { font-size: 12pt; font-weight: bold; }
-
-    .ich-header-1 { font-size: 14pt; text-align: center }
-    .ich-header-2 { font-size: 14pt; text-align: center }
-    .ich-header-3 { font-size: 18pt; text-align: center; font-weight: bold; margin-top: 200px;}
-    .ich-header-4 { font-size: 18pt; text-align: center; font-weight: bold; }
-
-    .ich-title-page { margin-top: 200px; border: none;}
-    .ich-title-page td { border: none; }
-    .ich-title-page td:first-child { font-weight: bold; }
-
-  </style>
+  {% with %}
+    {% include "shared/styles/m11.html" %}
+  {% endwith %}  
 {% endblock %}   
 {% block main_content %}
   <div class="outer-div row">
