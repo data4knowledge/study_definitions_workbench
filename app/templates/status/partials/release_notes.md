@@ -1,7 +1,7 @@
 **Release 0.12.0, 2024-08-19**
 
 - Improve menu structure
-
+- Fix FHIR Rx section number handling bug
 
 **Release 0.11.0, 2024-08-17**
 
