@@ -123,7 +123,8 @@ def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = {'release_notes': ReleaseNotes(os.path.join(templates_path, 'status', 'partials')).notes(), 'system': SYSTEM_NAME, 'version': VERSION}
+  rn = ReleaseNotes(os.path.join(templates_path, 'status', 'partials'))
+  data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
