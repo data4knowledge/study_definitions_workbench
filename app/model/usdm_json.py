@@ -193,7 +193,7 @@ class USDMJson():
     sections = self.protocol_sections()
     result = []
     for section in sections:
-      if section['sectionNumber'] and section['sectionNumber'] != '0' and section['sectionTitle']:
+      if (section['sectionNumber'] and section['sectionNumber'] != '0') and section['sectionTitle']:
         result.append({'section_number': section['sectionNumber'], 'section_title': section['sectionTitle']})
     return result
 

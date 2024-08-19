@@ -10,7 +10,7 @@
   {% endwith %}    
 {% endblock %}
 {% block menu_content %}
-  {% with %}
+  {% with data=data %}
     {% include "shared/partials/import_menu.html" %}
   {% endwith %} 
 {% endblock %}

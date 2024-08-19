@@ -55,7 +55,8 @@ class ToFHIRV1():
     title = self._format_section_title(content.sectionTitle)
     code = CodeableConcept(text=f"section{content.sectionNumber}-{title}")
     #print(f"COMPOSITION: {code.text}, {title}, {narrative}, {div}")
-    section = CompositionSection(title=f"{content.sectionTitle}", code=code, text=narrative, section=[])
+    title = content.sectionTitle if content.sectionTitle else '&nbsp;'
+    section = CompositionSection(title=f"{title}", code=code, text=narrative, section=[])
     for id in content.childIds:
       content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
       child = self._content_to_section(content)
