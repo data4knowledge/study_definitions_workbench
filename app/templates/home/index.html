@@ -9,6 +9,11 @@
     {% include "shared/partials/user.html" %}
   {% endwith %}    
 {% endblock %}
+{% block menu_content %}
+  {% with %}
+    {% include "shared/partials/import_menu.html" %}
+  {% endwith %} 
+{% endblock %}
 {% block main_content %}
   <div class="container-fluid">
     {% if data['items']|length == 0 %}

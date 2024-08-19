@@ -15,30 +15,12 @@
   {% endwith %}  
 {% endblock %}   
 {% block menu_content %}
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
-      <i class="bi bi-box-arrow-in-down me-2"></i>Export
-    </a>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir">Download FHIR Message (JSON)</a>
-      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/protocol">Download Protocol (PDF)</a>
-    </div>
-  </li>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
-      <i class="bi bi-send me-2"></i>Transmit
-    </a>
-    <div class="dropdown-menu">
-      {% if data['endpoints']['count'] == 0 %}
-        <a class="dropdown-item" href="#">No endpoints available, you need to create one or more</a>
-      {% else %}
-        {% for item in data['endpoints']['items'] %}
-          {% set id = "tab-" ~ loop.index0 ~ "_div" %}
-          <a class="dropdown-item" href="/versions/{{data['version']['id']}}/transmit/{{item['id']}}">{{item['name']}}</a>
-        {% endfor %}
-      {% endif %}
-    </div>
-  </li>
+  {% with data=data %}
+    {% include "shared/partials/export_menu.html" %}
+  {% endwith %} 
+  {% with data=data %}
+    {% include "shared/partials/transmit_menu.html" %}
+  {% endwith %} 
 {% endblock %}
 
 {% block main_content %}

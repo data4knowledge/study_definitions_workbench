@@ -1,0 +1,15 @@
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+    <i class="bi bi-send me-2"></i>Transmit
+  </a>
+  <div class="dropdown-menu">
+    {% if data['endpoints']['count'] == 0 %}
+      <a class="dropdown-item" href="#">No endpoints available, you need to create one or more</a>
+    {% else %}
+      {% for item in data['endpoints']['items'] %}
+        {% set id = "tab-" ~ loop.index0 ~ "_div" %}
+        <a class="dropdown-item" href="/versions/{{data['version']['id']}}/transmit/{{item['id']}}">{{item['name']}}</a>
+      {% endfor %}
+    {% endif %}
+  </div>
+</li>
