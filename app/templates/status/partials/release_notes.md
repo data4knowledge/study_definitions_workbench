@@ -1,3 +1,8 @@
+**Release 0.12.0, 2024-08-19**
+
+- Improve menu structure
+
+
 **Release 0.11.0, 2024-08-17**
 
 - Add import og FHIR V1 message
