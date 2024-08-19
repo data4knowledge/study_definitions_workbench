@@ -3,7 +3,7 @@
 - Improve menu structure
 - Fix FHIR Rx section number handling bug
 
-**Release 0.11.0, 2024-08-17**
+**Release 0.11.0, 2024-08-18**
 
 - Add import og FHIR V1 message
 - Add protocol document display
