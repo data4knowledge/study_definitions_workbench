@@ -61,12 +61,13 @@ class FromFHIRV1():
       nc = self._section(item, protocl_document_version)
       root.childIds.append(nc.id)
     self._double_link(protocl_document_version.contents, 'previousId', 'nextId')
-    print(f"DOC: {protocl_document}")
+    #print(f"DOC: {protocl_document}")
     return protocl_document
 
   def _section(self, section: CompositionSection, protocol_document_version: StudyProtocolDocumentVersion):
     #print(f"SECTION: {section.title}, {section.code.text}")
     section_number = self._get_section_number(section.code.text)
+    #print(f"SECTION NUMBER: {section.code.text} -> {section_number}")
     nc = self._model_instance(NarrativeContent, {'name': f"{section.code.text}", 'sectionNumber': section_number, 'sectionTitle': section.title, 'text': section.text.div, 'childIds': [], 'previousId': None, 'nextId': None})
     protocol_document_version.contents.append(nc)
     if section.section:
@@ -77,7 +78,7 @@ class FromFHIRV1():
 
   def _get_section_number(self, text):
     parts = text.split('-')
-    return parts[0].replace('section', '') if len(parts) == 2 else ''
+    return parts[0].replace('section', '') if len(parts) >= 2 else ''
       
   def _study(self, protocol_document: StudyProtocolDocument):
     protocol_document_version = protocol_document.versions[0]
