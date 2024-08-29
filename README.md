@@ -19,7 +19,9 @@ the following variables are required for local development
 
 ```DATABASE_URL = "sqlite:///./database.db"```
 
-Creating a volume
+# Fly Deployment
+
+## Creating a volume
 
 ```
 fly volumes create <name>
@@ -34,7 +36,14 @@ fly machine destroy e7843d41a59078 --force
 fly deploy --ha=false
 ```
 
-Applications
+## Separate Applications
 
 With ```fly```command line utility use ```-a <app name>``` to address the production and staging applications
 Note the separate ```.toml``` configuration files
+
+# Docker
+
+```
+docker volume create sdw_data
+docker run -d --name sdw --mount source=sdw_data,target=/mount -p 80:80 sdw
+```
