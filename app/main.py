@@ -241,6 +241,22 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
   return templates.TemplateResponse("study_designs/safety.html", {'request': request, 'user': user, 'data': data})
 
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/aeSpecialInterest', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_estimands(study_design_id)
+  print(f"AE SPECIAL INTEREST DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/ae_special_interest.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/safetyAssessments', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_estimands(study_design_id)
+  print(f"SAFETY ASSESSMENT DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/safety_assessments.html", {'request': request, 'user': user, 'data': data})
+
 @app.get('/versions/{id}/statistics', dependencies=[Depends(protect_endpoint)])
 async def get_version_statistics(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
@@ -255,6 +271,30 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   usdm = USDMJson(version_id, session)
   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
   return templates.TemplateResponse("study_designs/statistics.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/sampleSize', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_estimands(study_design_id)
+  print(f"SAMPLE SIZE DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/sample_size.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/analysisSets', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_estimands(study_design_id)
+  print(f"ANALYSIS SETS DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/analysis_sets.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/analysisObjective', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.study_design_estimands(study_design_id)
+  print(f"ANALYSIS OBJECTIVES DATA: {data}")
+  return templates.TemplateResponse("study_designs/partials/analysis_objective.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{id}/export/fhir', dependencies=[Depends(protect_endpoint)])
 async def export_fhir(request: Request, id: int, session: Session = Depends(get_db)):

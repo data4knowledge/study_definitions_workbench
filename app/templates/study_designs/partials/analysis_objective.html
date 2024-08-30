@@ -1,0 +1,14 @@
+<div>
+  {% if not data['m11'] %}
+    {% with %}
+      {% include "study_designs/partials/not_supported.html" %}
+    {% endwith %} 
+  {% else %}
+    {% with data=data %}
+      {% include "study_designs/partials/doc_text.html" %}
+    {% endwith %} 
+  {% endif %}
+</div>
+
+
+
