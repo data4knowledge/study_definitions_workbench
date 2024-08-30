@@ -16,7 +16,7 @@ from app.model.user_endpoint import UserEndpoint
 from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
-from app.utility.template_methods import hostname
+from app.utility.template_methods import server_environment
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
@@ -56,7 +56,7 @@ application_logger.info(f"Static dir set to '{static_path}'")
 authorisation = Auth0Service(app)
 authorisation.register()
 
-templates.env.globals['hostname'] = hostname
+templates.env.globals['server_environment'] = server_environment
 
 def protect_endpoint(request: Request) -> None:
   authorisation.protect_route(request, "/login")

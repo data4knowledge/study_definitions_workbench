@@ -99,8 +99,8 @@
               <h5 class="card-title">Server</h5>
               <h6 class="card-subtitle mb-2 text-muted">Server information</h6>
               <p>Server: {{request.scope['server'][0]}}<br>
-              Port: {{request.scope['server'][1]}}</p>
-              {{hostname()}}
+              Port: {{request.scope['server'][1]}}<br>
+              Environment: {{server_environment()}}</p>
             </div>
           </div>
           

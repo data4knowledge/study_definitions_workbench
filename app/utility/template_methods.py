@@ -1,6 +1,6 @@
 from d4kms_generic.service_environment import ServiceEnvironment
 
-def hostname() -> str:
+def server_environment() -> str:
   se = ServiceEnvironment()
   name = se.get('ROOT_URL')
   if 'staging' in name:
