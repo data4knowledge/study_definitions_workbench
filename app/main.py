@@ -245,7 +245,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
 async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
-  data = usdm.study_design_estimands(study_design_id)
+  data = usdm.adverse_events_special_interest(study_design_id)
   print(f"AE SPECIAL INTEREST DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/ae_special_interest.html", {'request': request, 'user': user, 'data': data})
 
@@ -253,7 +253,7 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
 async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
-  data = usdm.study_design_estimands(study_design_id)
+  data = usdm.safety_assessments(study_design_id)
   print(f"SAFETY ASSESSMENT DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/safety_assessments.html", {'request': request, 'user': user, 'data': data})
 

@@ -177,7 +177,7 @@ class USDMJson():
       }
       for estimand in design['estimands']:
         record = {}
-        print(f"R1:")
+        #print(f"R1:")
         record['treatment'] = self._intervention(design, estimand['interventionId'])
         record['summary_measure'] = estimand['summaryMeasure']
         record['analysis_population'] = estimand['analysisPopulation']
@@ -197,6 +197,12 @@ class USDMJson():
 
   def analysis_objectives(self, id: str) -> dict:
     return self._section_response(id, '10.4', 'analysis associated with primary', '[Analysis Associated with the Primary Objectives]')
+
+  def adverse_events_special_interest(self, id: str) -> dict:
+    return self._section_response(id, '9.3.2', 'adverse events of special interest', '[Adverse Events of Special Interest]')
+
+  def safety_assessments(self, id: str) -> dict:
+    return self._section_response(id, '8.4', 'safety assessments and procedures', '[Safety Assessment and Procedures]')
 
   def protocol_sections_list(self):
     sections = self.protocol_sections()
@@ -227,22 +233,35 @@ class USDMJson():
       return narrative_content
     return None
 
-  def _section_response(self, id: str, section: str, title: str, default: str) -> dict:
+  def _section_response(self, id: str, number: str, title: str, default: str) -> dict:
     design = self._study_design(id)
-    if design:
-      section = None
-      if self.m11:
-        section = self._section_by_number(section) 
-      if not section:
-        section = self._section_by_title_contains(title)
-      result = {
+    if design and self.m11:
+      return {
         'id': self.id,
         'm11': self.m11,
-        'text': section['text'] if section else default
+        'text': self._section_full_text(number, title, default)
       }
-      return result
-    else:
-      return None
+    return None
+
+  def _section_full_text(self, number: str, title: str, default: str) -> str:
+    section = None
+    document = self._document()
+    if document:
+      section = self._section_by_number(number) 
+      if not section:
+        section = self._section_by_title_contains(title)
+      if section:
+        text = []
+        process = True
+        top_level = self._get_level(section)
+        while process:
+          print(f"SECTION: {section}")
+          heading, level = self._format_heading(section)
+          text.append(heading)
+          text.append(section['text'])
+          section = self._find_narrative_content(document, section['nextId'])
+          process = True if self._get_level(section) > top_level else False
+    return ('').join(text) if section else default
 
   def _get_number(self, narrative_content: dict):
     try:
