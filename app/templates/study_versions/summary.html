@@ -45,8 +45,9 @@
         <ul class="nav nav-tabs role="tablist">
           {% for k, v in data['version']['study_designs'].items() %}
             {% set id = "study_design_tab-" ~ loop.index0 ~ "_div" %}
+            {% set title = v['label'] or v['name'] %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{id}}">Study Design 1</a>
+              <a class="nav-link active" aria-current="page" href="{{id}}">Summary: {{title}}</a>
             </li>
           {% endfor %}
         </ul>
