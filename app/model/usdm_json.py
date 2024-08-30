@@ -189,6 +189,15 @@ class USDMJson():
     else:
       return None
 
+  def sample_size(self, id: str) -> dict:
+    return self._section_response(id, '10.11', 'sample size', '[Sample Size]')
+  
+  def analysis_sets(self, id: str) -> dict:
+    return self._section_response(id, '10.2', 'analysis sets', '[Analysis Sets]')
+
+  def analysis_objectives(self, id: str) -> dict:
+    return self._section_response(id, '10.4', 'analysis associated with primary', '[Analysis Associated with the Primary Objectives]')
+
   def protocol_sections_list(self):
     sections = self.protocol_sections()
     result = []
@@ -217,6 +226,23 @@ class USDMJson():
       narrative_content['heading'], narrative_content['level'] = self._format_heading(narrative_content)
       return narrative_content
     return None
+
+  def _section_response(self, id: str, section: str, title: str, default: str) -> dict:
+    design = self._study_design(id)
+    if design:
+      section = None
+      if self.m11:
+        section = self._section_by_number(section) 
+      if not section:
+        section = self._section_by_title_contains(title)
+      result = {
+        'id': self.id,
+        'm11': self.m11,
+        'text': section['text'] if section else default
+      }
+      return result
+    else:
+      return None
 
   def _get_number(self, narrative_content: dict):
     try:

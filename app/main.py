@@ -276,7 +276,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
-  data = usdm.study_design_estimands(study_design_id)
+  data = usdm.sample_size(study_design_id)
   print(f"SAMPLE SIZE DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/sample_size.html", {'request': request, 'user': user, 'data': data})
 
@@ -284,7 +284,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
-  data = usdm.study_design_estimands(study_design_id)
+  data = usdm.analysis_sets(study_design_id)
   print(f"ANALYSIS SETS DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/analysis_sets.html", {'request': request, 'user': user, 'data': data})
 
@@ -292,7 +292,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
-  data = usdm.study_design_estimands(study_design_id)
+  data = usdm.analysis_objectives(study_design_id)
   print(f"ANALYSIS OBJECTIVES DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/analysis_objective.html", {'request': request, 'user': user, 'data': data})
 

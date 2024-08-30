@@ -59,14 +59,14 @@
             {% include "shared/partials/spinner.html" %}
           {% endwith %}            
         </div>
-        <h6 class="card-subtitle text-muted">Analysis Sets</h6>
+        <h6 class="card-subtitle text-muted mt-3">Analysis Sets</h6>
         {% set id = "analysis_sets_" ~ data['id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/analysisSets" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
           {% endwith %}            
         </div>
-        <h6 class="card-subtitle text-muted">Analysis Associated with Primary Objective</h6>
+        <h6 class="card-subtitle text-muted mt-3">Analysis Associated with Primary Objective</h6>
         {% set id = "analysis_objective_" ~ data['id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/analysisObjective" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
