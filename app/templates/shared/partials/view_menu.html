@@ -1,0 +1,16 @@
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+    <i class="bi bi-eye me-2"></i>Views
+  </a>
+  <div class="dropdown-menu">
+    {% if view != 'summary' %}  
+      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/summary">Summary View</a>
+    {% endif %}  
+    {% if view != 'safety' %}  
+      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/safety">Safety View</a>
+    {% endif %}  
+    {% if view != 'statistics' %}  
+      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/statistics">Statistics View</a>
+    {% endif %}  
+    </div>
+</li>

@@ -15,14 +15,8 @@
   {% endwith %}  
 {% endblock %}   
 {% block menu_content %}
-  {% with view='summary', data=data %}
+  {% with view='safety', data=data %}
     {% include "shared/partials/view_menu.html" %}
-  {% endwith %} 
-  {% with data=data %}
-    {% include "shared/partials/export_menu.html" %}
-  {% endwith %} 
-  {% with data=data %}
-    {% include "shared/partials/transmit_menu.html" %}
   {% endwith %} 
 {% endblock %}
 
@@ -53,7 +47,7 @@
         <div class="tab-content mt-2">
           {% for k, v in data['version']['study_designs'].items() %}
             {% set id = "study_design_tab-" ~ loop.index0 ~ "_div" %}
-            <div id="{{id}}" class="tab-pane fade show active" role="tabpanel" hx-get="/versions/{{data['version']['id']}}/studyDesigns/{{v['id']}}/summary" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
+            <div id="{{id}}" class="tab-pane fade show active" role="tabpanel" hx-get="/versions/{{data['version']['id']}}/studyDesigns/{{v['id']}}/safety" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
               {% with %}
                 {% include "shared/partials/spinner.html" %}
               {% endwith %}            

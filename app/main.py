@@ -226,6 +226,36 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   #print(f"ESTIMAND DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/estimands.html", {'request': request, 'user': user, 'data': data})
 
+@app.get('/versions/{id}/safety', dependencies=[Depends(protect_endpoint)])
+async def get_version_safety(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(id, session)
+  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
+  #print(f"VERSION SUMMARY DATA: {data}")
+  return templates.TemplateResponse("study_versions/safety.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/safety', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
+  return templates.TemplateResponse("study_designs/safety.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{id}/statistics', dependencies=[Depends(protect_endpoint)])
+async def get_version_statistics(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(id, session)
+  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
+  #print(f"VERSION SUMMARY DATA: {data}")
+  return templates.TemplateResponse("study_versions/statistics.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/statistics', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
+  return templates.TemplateResponse("study_designs/statistics.html", {'request': request, 'user': user, 'data': data})
+
 @app.get('/versions/{id}/export/fhir', dependencies=[Depends(protect_endpoint)])
 async def export_fhir(request: Request, id: int, session: Session = Depends(get_db)):
   usdm = USDMJson(id, session)
