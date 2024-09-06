@@ -2,9 +2,9 @@ import re
 from typing import Optional
 from pydantic import BaseModel, HttpUrl, TypeAdapter
 from sqlalchemy.orm import Session
-from app.model.models import Endpoint as EndpointDB
-from app.model.models import UserEndpoint as UserEndpointDB
-from app.model.models import User as UserDB
+from app.model.database_tables import Endpoint as EndpointDB
+from app.model.database_tables import UserEndpoint as UserEndpointDB
+from app.model.database_tables import User as UserDB
 
 http_url_adapter = TypeAdapter(HttpUrl)
 

@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 from pydantic import BaseModel
-from app.model.models import Study as StudyDB, Version as VersionDB
+from app.model.database_tables import Study as StudyDB, Version as VersionDB
 from app.model.version import Version
 from app.model.user import User
 from app.model.file_import import FileImport

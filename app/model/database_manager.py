@@ -1,8 +1,8 @@
 import os
-from app.model import models
+from app.model import database_tables
 from app.model.database import engine
-from app.model.models import Study as StudyDB, Version as VersionDB, FileImport as FileImportDB, Endpoint as EndpointDB
-from app.model.models import UserEndpoint as UserEndpointDB, User as UserDB
+from app.model.database_tables import Study as StudyDB, Version as VersionDB, FileImport as FileImportDB, Endpoint as EndpointDB
+from app.model.database_tables import UserEndpoint as UserEndpointDB, User as UserDB
 from app.model.files import Files
 from sqlalchemy.orm import Session
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Table, MetaData
@@ -22,12 +22,12 @@ class DatabaseManager():
     try:
       os.mkdir(dir)
       application_logger.info("Database dir created")
-      models.Base.metadata.create_all(bind=engine)
+      database_tables.Base.metadata.create_all(bind=engine)
       application_logger.info("Database created")
       return True
     except FileExistsError as e:
       application_logger.info("Database dir exists")
-      models.Base.metadata.create_all(bind=engine)
+      database_tables.Base.metadata.create_all(bind=engine)
       return False
     except Exception as e:
       application_logger.exception(f"Exception checking/creating database dir '{dir}'", e)

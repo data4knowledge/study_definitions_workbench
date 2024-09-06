@@ -21,7 +21,17 @@ class User(Base):
   is_active = Column(Boolean, nullable=False, default=True)
   imports = relationship('FileImport', backref='user')
   studies = relationship('Study', backref='user')
+  options = relationship('Option', backref='user')
   endpoints = relationship('Endpoint', secondary='user_endpoint', backref='user')
+
+class Option(Base):
+    
+  __tablename__ = "option"
+
+  id = Column(Integer, primary_key=True)
+  name = Column(String, index=True, nullable=False)
+  value = Column(String, nullable=False)
+  user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
 class Study(Base):
     
