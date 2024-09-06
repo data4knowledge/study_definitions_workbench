@@ -1,4 +1,5 @@
 from d4kms_generic import application_logger
+from app.model.connection_manager import connection_manager
 from app.model.user import User
 from app.model.endpoint import Endpoint
 from sqlalchemy.orm import Session
@@ -21,6 +22,7 @@ async def transmit(version_id: int, endpoint_id: int, user: User, session: Sessi
     response = await server.post('Bundle', data, 20.0)
     tx.update_status(status=f'Complete. {response}', session=session)
     application_logger.info(f"Sending FHIR message response: {response}")
+    await connection_manager.send_message("Sending of FHIR message completed: {response}", str(user.id))
   except Exception as e:
     application_logger.exception("Exception transmititng FHIR message from version '{version_id}' to endpoint: {endpoint_id}", e)
 

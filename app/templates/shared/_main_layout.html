@@ -65,12 +65,14 @@
     <div class="container-fluid">
       {% block error_content %}
         <div id="alert_div"></div>
+        <div id="alert_ws_div" hx-ws="connect:/alerts/1"></div>
       {% endblock %}
       {% block main_content %}
       {% endblock %}
     </div>
     
     <script src="/static/js/htmx.min.js"></script>
+    <script src="/static/js/htmx.ws.js"></script>
     <script src="/static/js/bootstrap.bundle.min.js"></script>
 
     {% block additional_js %}

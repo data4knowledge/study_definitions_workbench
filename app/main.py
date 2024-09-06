@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import Form, Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File
+from fastapi import Form, Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -14,6 +14,7 @@ from app.model.file_import import FileImport
 from app.model.endpoint import Endpoint
 from app.model.user_endpoint import UserEndpoint
 from app.model.transmission import Transmission
+from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
@@ -66,6 +67,15 @@ def user_details(request: Request, db):
   user_info = request.session['userinfo']
   user, present_in_db = User.check(user_info, db)
   return user, present_in_db
+
+@app.websocket("/alerts/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+  await connection_manager.connect(user_id, websocket)
+  try:
+    while True:
+      await websocket.receive_text()
+  except WebSocketDisconnect:
+      connection_manager.disconnect(user_id)
 
 @app.get("/")
 def home(request: Request):
@@ -179,7 +189,7 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = Transmission.page(page, size, user.id, session)
-  pagination = Pagination(data, "/transmission/status") 
+  pagination = Pagination(data, "/transmission/status")
   return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
@@ -320,7 +330,7 @@ async def export_fhir(request: Request, id: int, session: Session = Depends(get_
 async def version_transmit(request: Request, id: int, endpoint_id: int, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   background_tasks.add_task(transmit, id, endpoint_id, user, session)
-  return templates.TemplateResponse('versions/transmit/partials/transmit_in_progress.html', {"request": request, 'data': {'success': 'Transmission in progress'}, 'user': user})
+  return RedirectResponse(f'/versions/{id}/summary')
 
 @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
 async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
