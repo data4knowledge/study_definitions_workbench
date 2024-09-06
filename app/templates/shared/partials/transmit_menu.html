@@ -8,7 +8,7 @@
     {% else %}
       {% for item in data['endpoints']['items'] %}
         {% set id = "tab-" ~ loop.index0 ~ "_div" %}
-        <a class="dropdown-item" href="/versions/{{data['version']['id']}}/transmit/{{item['id']}}">{{item['name']}}</a>
+        <a class="dropdown-item" hx-boost="true" hx-target="#alert_div" href="/versions/{{data['version']['id']}}/transmit/{{item['id']}}">{{item['name']}}</a>
       {% endfor %}
     {% endif %}
   </div>

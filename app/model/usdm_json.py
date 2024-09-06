@@ -162,7 +162,7 @@ class USDMJson():
 
   def study_design_estimands(self, id: str):
     design = self._study_design(id)
-    print(f"ESTIMANDS: {'design' if design else ''}")
+    #print(f"ESTIMANDS: {'design' if design else ''}")
     if design:
       section = None
       if self.m11:

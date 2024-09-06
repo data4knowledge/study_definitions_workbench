@@ -21,17 +21,8 @@ class User(Base):
   is_active = Column(Boolean, nullable=False, default=True)
   imports = relationship('FileImport', backref='user')
   studies = relationship('Study', backref='user')
-  options = relationship('Option', backref='user')
+  transmissions = relationship('TransmissionTable', backref='user')
   endpoints = relationship('Endpoint', secondary='user_endpoint', backref='user')
-
-class Option(Base):
-    
-  __tablename__ = "option"
-
-  id = Column(Integer, primary_key=True)
-  name = Column(String, index=True, nullable=False)
-  value = Column(String, nullable=False)
-  user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
 class Study(Base):
     
@@ -69,6 +60,17 @@ class FileImport(Base):
   status = Column(String, nullable=False)
   user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
   version = relationship('Version', backref='file_import', uselist=False)
+
+class TransmissionTable(Base):
+    
+  __tablename__ = "transmission"
+
+  id = Column(Integer, primary_key=True)
+  created = Column(DateTime(timezone=True), default=func.now(), nullable=False)
+  status = Column(String, nullable=False)
+  study = Column(String, nullable=False)
+  version = Column(Integer, nullable=False)
+  user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
 class Endpoint(Base):
     

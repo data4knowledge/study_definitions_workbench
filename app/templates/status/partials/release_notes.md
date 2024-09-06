@@ -1,7 +1,8 @@
 **Release 0.14.0, 2024-09-10**
 
+- Improve Tx functionality (background)
 - Add in ability to generate v2 FHIR message (Atlanta connectathon)
-- Add in XML FHIR Tx and Rx
+- Add in FHIR Receive (XML or JSON) (Transmit is always JSON for the moment)
 
 **Release 0.13.0, 2024-08-30**
 

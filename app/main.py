@@ -16,13 +16,13 @@ from app.model.user_endpoint import UserEndpoint
 from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
+from app.utility.transmit import transmit
 from app.utility.template_methods import server_environment
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
 from app.utility.fhir_version import check_fhir_version
 from app.model.database_manager import DatabaseManager as DBM
-from app.utility.fhir_service import FHIRService
 from app.model.exceptions import FindException
 
 Files.clean_and_tidy()
@@ -80,7 +80,7 @@ async def login(request: Request):
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  print(f"INDEX DATA: {user}, {present_in_db}")
+  #print(f"INDEX DATA: {user}, {present_in_db}")
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
     #print(f"INDEX DATA: {data}")
@@ -88,7 +88,7 @@ def index(request: Request, session: Session = Depends(get_db)):
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
     data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}}
-    print(f"INDEX DATA: {data}")
+    #print(f"INDEX DATA: {data}")
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
@@ -309,18 +309,10 @@ async def export_fhir(request: Request, id: int, session: Session = Depends(get_
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
 
 @app.get('/versions/{id}/transmit/{endpoint_id}', dependencies=[Depends(protect_endpoint)])
-async def get_version_summary(request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)):
+async def version_transmit(request: Request, id: int, endpoint_id: int, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  usdm = USDMJson(id, session)
-  data = usdm.fhir_data()
-  endpoint = Endpoint.find(endpoint_id, session)
-  application_logger.info(f"Sending FHIR message from study version '{id}' to endpoint: {endpoint.endpoint}")
-  server = FHIRService(endpoint.endpoint)
-  response = await server.post('Bundle', data, 20.0)
-  response = json.dumps(response, indent=2)
-  usdm = USDMJson(id, session)
-  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session), 'response': response}
-  return templates.TemplateResponse('study_versions/transmit.html', {"request": request, 'data': data, 'user': user})
+  background_tasks.add_task(transmit, id, endpoint_id, user, session)
+  return templates.TemplateResponse('versions/transmit/partials/transmit_in_progress.html', {"request": request, 'data': {'success': 'Transmission in progress'}, 'user': user})
 
 @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
 async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
