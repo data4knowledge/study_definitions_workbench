@@ -63,9 +63,8 @@
     </nav>  
 
     <div class="container-fluid">
-      {% block error_content %}
-        <div id="alert_div"></div>
-        <div id="alert_ws_div" hx-ws="connect:/alerts/1"></div>
+      <div id="alert_div"></div>
+      {% block ws_content %}
       {% endblock %}
       {% block main_content %}
       {% endblock %}
