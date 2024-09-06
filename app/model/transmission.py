@@ -54,7 +54,6 @@ class Transmission(TransmissionBase):
     return result
 
   def update_status(self, status: str, session: Session) -> 'Transmission':
-    print(f"update_status: {status}")
     db_item = session.query(TransmissionTable).filter(TransmissionTable.id == self.id).first()
     db_item.status = status
     session.commit()
