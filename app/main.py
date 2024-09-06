@@ -13,6 +13,7 @@ from app.model.version import Version
 from app.model.file_import import FileImport
 from app.model.endpoint import Endpoint
 from app.model.user_endpoint import UserEndpoint
+from app.model.transmission import Transmission
 from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
@@ -173,6 +174,13 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
   data = FileImport.page(page, size, user.id, session)
   pagination = Pagination(data, "/import/status") 
   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+
+@app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
+async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  data = Transmission.page(page, size, user.id, session)
+  pagination = Pagination(data, "/transmission/status") 
+  return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):

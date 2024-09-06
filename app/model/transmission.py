@@ -6,6 +6,7 @@ from sqlalchemy import desc
 class TransmissionBase(BaseModel):
   version: int
   study: str
+  status: str
 
 class Transmission(TransmissionBase):
   id: int
@@ -15,9 +16,10 @@ class Transmission(TransmissionBase):
     from_attributes = True
 
   @classmethod
-  def create(cls, version: int, study: str, user_id: int, session: Session) -> 'Transmission':
-    db_item = TransmissionTable(version=version, studt=study)
-    session.add(**db_item, user_id=user_id)
+  def create(cls, version: int, study: str, status: str, user_id: int, session: Session) -> 'Transmission':
+    data = {'version': version, 'study': study, 'status': status}
+    db_item = TransmissionTable(**data, user_id=user_id)
+    session.add(db_item)
     session.commit()
     session.refresh(db_item)
     return cls(**db_item.__dict__)
@@ -50,4 +52,12 @@ class Transmission(TransmissionBase):
       results[-1].pop('_sa_instance_state')
     result = {'items': results, 'count': count }
     return result
+
+  def update_status(self, status: str, session: Session) -> 'Transmission':
+    print(f"update_status: {status}")
+    db_item = session.query(TransmissionTable).filter(TransmissionTable.id == self.id).first()
+    db_item.status = status
+    session.commit()
+    session.refresh(db_item)
+    return self.__class__(**db_item.__dict__)
 

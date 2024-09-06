@@ -11,5 +11,6 @@
         <a class="dropdown-item" hx-boost="true" hx-target="#alert_div" href="/versions/{{data['version']['id']}}/transmit/{{item['id']}}">{{item['name']}}</a>
       {% endfor %}
     {% endif %}
+    <a class="dropdown-item" href="/transmissions/status?page=1&size=10">Transmission Status</a>
   </div>
 </li>
