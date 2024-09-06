@@ -1,3 +1,8 @@
+**Release 0.14.0, 2024-09-10**
+
+- Add in ability to generate v2 FHIR message (Atlanta connectathon)
+- Add in XML FHIR Tx and Rx
+
 **Release 0.13.0, 2024-08-30**
 
 - Add additional views
