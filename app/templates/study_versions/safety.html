@@ -1,4 +1,5 @@
 {% extends "shared/_main_layout.html" %}
+
 {% block environment_content %}
   {% with request=request %}
     {% include "shared/partials/environment.html" %}
@@ -9,6 +10,10 @@
     {% include "shared/partials/user.html" %}
   {% endwith %}    
 {% endblock %}
+{% block ws_content %}
+  <div id="alert_ws_div" hx-ws="connect:/alerts/{{user.id}}"></div>
+{% endblock %}  
+
 {% block additional_css %}
   {% with %}
     {% include "shared/styles/m11.html" %}
