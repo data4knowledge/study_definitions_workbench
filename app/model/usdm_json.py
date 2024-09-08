@@ -24,15 +24,16 @@ class USDMJson():
     data = open(fullpath)
     self._data = json.load(data)
 
-  def fhir(self, version='V1'):
+  def fhir(self, version='1'):
     data = self.fhir_data(version)
     fullpath, filename = self._files.save("fhir", data)
     return fullpath, filename, 'text/plain' 
 
-  def fhir_data(self, version='V1'):
-    return self.fhir_v2_data() if version.upper() == 'V2' else self.fhir_v1_data()
+  def fhir_data(self, version='1'):
+    return self.fhir_v2_data() if version.upper() == '2' else self.fhir_v1_data()
 
   def fhir_v1_data(self):
+    #print(f"FHIR: VER 1 DATA")
     usdm = USDMDb()
     usdm.from_json(self._data)
     study = usdm.wrapper().study
@@ -40,6 +41,7 @@ class USDMJson():
     return fhir.to_fhir(self.uuid)
 
   def fhir_v2_data(self):
+    #print(f"FHIR: VER 2 DATA")
     usdm = USDMDb()
     usdm.from_json(self._data)
     study = usdm.wrapper().study
