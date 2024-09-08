@@ -337,7 +337,7 @@ async def version_transmit(request: Request, id: int, endpoint_id: int, version:
   user, present_in_db = user_details(request, session)
   valid, description = check_fhir_version(version)
   if valid:
-    background_tasks.add_task(fhir_transmit, id, endpoint_id, '1', user, session)
+    background_tasks.add_task(fhir_transmit, id, endpoint_id, version, user, session)
     return RedirectResponse(f'/versions/{id}/summary')
   else:
     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."}})

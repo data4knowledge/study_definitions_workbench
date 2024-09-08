@@ -14,7 +14,7 @@ async def fhir_transmit(version_id: int, endpoint_id: int, version: str, user: U
     application_logger.info(f"Sending FHIR message from version id '{version_id}' to endpoint id '{endpoint_id}'")
     usdm = USDMJson(version_id, session)
     details = usdm.study_version()
-    print(f"DETAILS: {details}")
+    #print(f"DETAILS: {details}")
     tx = Transmission.create(version=version_id, study=details['titles']['Official Study Title'], status='Preparing', user_id=user.id, session=session)
     data = usdm.fhir_data(version)
     endpoint = Endpoint.find(endpoint_id, session)
