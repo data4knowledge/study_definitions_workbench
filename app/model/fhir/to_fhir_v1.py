@@ -1,4 +1,4 @@
-from fhir.to_fhir import ToFHIR
+from app.model.fhir.to_fhir import ToFHIR
 from fhir.resources.bundle import Bundle, BundleEntry
 from fhir.resources.identifier import Identifier
 from fhir.resources.composition import Composition
@@ -20,7 +20,6 @@ class ToFHIRV1(ToFHIR):
         content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
         sections.append(self._content_to_section(content))
       type_code = CodeableConcept(text=f"EvidenceReport")
-      #date = datetime.datetime.now().isoformat()
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
       composition = Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author])

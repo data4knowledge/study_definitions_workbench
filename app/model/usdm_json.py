@@ -3,6 +3,7 @@ import warnings
 from app.model.file_import import FileImport
 from app.model.files import Files
 from app.model.fhir.to_fhir_v1 import ToFHIRV1
+from app.model.fhir.to_fhir_v2 import ToFHIRV2
 from app.model.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
@@ -23,16 +24,26 @@ class USDMJson():
     data = open(fullpath)
     self._data = json.load(data)
 
-  def fhir(self):
-    data = self.fhir_data()
+  def fhir(self, version='V1'):
+    data = self.fhir_data(version)
     fullpath, filename = self._files.save("fhir", data)
     return fullpath, filename, 'text/plain' 
 
-  def fhir_data(self):
+  def fhir_data(self, version='V1'):
+    return self.fhir_v2_data() if version.upper() == 'V2' else self.fhir_v1_data()
+
+  def fhir_v1_data(self):
     usdm = USDMDb()
     usdm.from_json(self._data)
     study = usdm.wrapper().study
     fhir = ToFHIRV1(study)
+    return fhir.to_fhir(self.uuid)
+
+  def fhir_v2_data(self):
+    usdm = USDMDb()
+    usdm.from_json(self._data)
+    study = usdm.wrapper().study
+    fhir = ToFHIRV2(study)
     return fhir.to_fhir(self.uuid)
 
   def pdf(self):

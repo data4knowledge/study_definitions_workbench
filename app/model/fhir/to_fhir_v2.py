@@ -1,9 +1,10 @@
-from fhir.to_fhir import ToFHIR
+from app.model.fhir.to_fhir import ToFHIR
 from fhir.resources.bundle import Bundle, BundleEntry
 from fhir.resources.identifier import Identifier
 from fhir.resources.composition import Composition
 from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.reference import Reference
+from fhir.resources.researchstudy import ResearchStudy
 from uuid import uuid4
 
 import datetime
@@ -32,3 +33,22 @@ class ToFHIRV2(ToFHIR):
       self._errors_and_logging.exception(f"Exception raised generating FHIR content. See logs for more details", e)
       return None
 
+  def _research_study(self) -> ResearchStudy:
+    version = self.study_version
+    result = ResearchStudy()
+    # result = {
+    #   'id': self.id,
+    #   'version_identifier': version['versionIdentifier'],
+    #   'identifiers': {},
+    #   'titles': {},
+    #   'study_designs': {},
+    #   'phase': ''
+    # }
+    # for identifier in version['studyIdentifiers']:
+    #   result['identifiers'][identifier['studyIdentifierScope']['organizationType']['decode']] = identifier
+    # for title in version['titles']:
+    #   result['titles'][title['type']['decode']] = title['text']
+    # for design in version['studyDesigns']:
+    #   result['study_designs'][design['id']] = {'id': design['id'], 'name': design['name'], 'label': design['label']}
+    # result['phase'] = version['studyPhase']
+    return result
