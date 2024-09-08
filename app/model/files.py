@@ -2,6 +2,7 @@ import os
 import json
 import csv
 import shutil
+import yaml
 from pathlib import Path
 from uuid import uuid4
 from d4kms_generic import application_logger
@@ -21,7 +22,8 @@ class Files:
       "errors": {'method': self._save_csv_file, 'use_original': False, 'filename': 'errors', 'extension': 'csv'},
       "protocol": {'method': self._save_pdf_file, 'use_original': False, 'filename': 'protocol', 'extension': 'pdf'},
       "highlight": {'method': self._save_html_file, 'use_original': False, 'filename': 'highlight', 'extension': 'html'},
-      "image": {'method': self._save_image_file, 'use_original': True, 'filename': '', 'extension': ''}
+      "image": {'method': self._save_image_file, 'use_original': True, 'filename': '', 'extension': ''},
+      "extra": {'method': self._save_yaml_file, 'use_original': False, 'filename': 'extra', 'extension': 'yaml'}
     }
     self.uuid = uuid
     se = ServiceEnvironment()
@@ -156,6 +158,15 @@ class Files:
       full_path = self._file_path(filename)
       with open(full_path, 'w', encoding='utf-8') as f:
         f.write(json.dumps(json.loads(contents), indent=2))
+      return full_path
+    except Exception as e:
+      application_logger.exception(f"Exception saving results file", e)
+
+  def _save_yaml_file(self, contents, filename):
+    try:
+      full_path = self._file_path(filename)
+      with open(full_path, 'w') as f:
+        yaml.dump(contents, f, default_flow_style=False)
       return full_path
     except Exception as e:
       application_logger.exception(f"Exception saving results file", e)

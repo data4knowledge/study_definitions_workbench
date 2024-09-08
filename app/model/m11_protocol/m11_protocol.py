@@ -47,6 +47,7 @@ class M11Protocol():
     self._system_name = system_name
     self._system_version = system_version
     self.sections = []
+    self.sponosr_confidentiality = None
     self.acronym = None
     self.full_title = None
     self.sponsor_protocol_identifier = None
@@ -83,6 +84,11 @@ class M11Protocol():
       application_logger.exception(f"Exception raised parsing M11 content. See logs for more details", e)
       return None
 
+  def extra(self):
+    return {
+      'sponsor_confidentiality': self.sponosr_confidentiality
+    }
+  
   def _decode_ich_header(self):
     section = self._raw_docx.target_document.section_by_ordinal(1)
     for header in self.ICH_HEADERS:
@@ -105,6 +111,7 @@ class M11Protocol():
     tables = section.tables()
     table = tables[0]
     table.replace_class('ich-m11-table', 'ich-m11-title-page-table')
+    self.sponosr_confidentiality = self._table_get_row(table, 'Sponsor Confidentiality')
     self.full_title = self._table_get_row(table, 'Full Title')
     self.acronym = self._table_get_row(table, 'Acronym')
     self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')

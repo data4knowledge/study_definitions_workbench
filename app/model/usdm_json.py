@@ -1,4 +1,5 @@
 import json
+import yaml
 import warnings
 from app.model.file_import import FileImport
 from app.model.files import Files
@@ -20,9 +21,8 @@ class USDMJson():
     self.type = file_import.type
     self.m11 = True if self.type == "DOCX" or self.type == "FHIR V1" else False
     self._files = Files(file_import.uuid)
-    fullpath, filename = self._files.path('usdm')
-    data = open(fullpath)
-    self._data = json.load(data)
+    self._data = self._get_usdm()
+    self._extra = self._get_extra()
 
   def fhir(self, version='1'):
     data = self.fhir_data(version)
@@ -46,7 +46,7 @@ class USDMJson():
     usdm.from_json(self._data)
     study = usdm.wrapper().study
     fhir = ToFHIRV2(study)
-    return fhir.to_fhir(self.uuid)
+    return fhir.to_fhir(self.uuid, self._extra)
 
   def pdf(self):
     usdm = USDMDb()
@@ -414,7 +414,7 @@ class USDMJson():
     return result
 
   def _min_max(self, item) -> dict:
-    print(f"ITEM: {item}")
+    #print(f"ITEM: {item}")
     return {'min': int(item['minValue']), 'max': int(item['maxValue']), 'unit': item['unit']['decode']} if item else {'min': 100, 'max': 0, 'unit': 'Year'}
 
   def _population_recruitment(self, study_design: dict) -> dict:
@@ -422,3 +422,14 @@ class USDMJson():
     enroll = population['plannedEnrollmentNumber']
     complete = population['plannedCompletionNumber']
     return {'enroll': int(enroll['maxValue']), 'complete': int(complete['maxValue'])} if enroll and complete else {'enroll': 0, 'complete': '0'}
+
+  def _get_usdm(self):
+    fullpath, filename = self._files.path('usdm')
+    data = open(fullpath)
+    return json.load(data)
+
+  def _get_extra(self):
+    fullpath, filename = self._files.path('extra')
+    data = open(fullpath)
+    return yaml.load(data)
+  

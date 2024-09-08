@@ -16,7 +16,7 @@ class ToFHIRV2(ToFHIR):
   class LogicError(Exception):
     pass
 
-  def to_fhir(self, uuid: uuid4):
+  def to_fhir(self) -> None:
     try:
       research_study = self._research_study()
       sections = []
@@ -28,7 +28,7 @@ class ToFHIRV2(ToFHIR):
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
       composition = Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author])
-      identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{uuid}')
+      identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
       bundle_entry_1 = BundleEntry(resource=composition, fullUrl="https://www.example.com/Composition/1234")
       bundle_entry_2 = BundleEntry(resource=research_study, fullUrl="https://www.example.com/Composition/1234")
       bundle = Bundle(id=None, entry=[bundle_entry_1, bundle_entry_2], type="document", identifier=identifier, timestamp=date)

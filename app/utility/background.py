@@ -43,6 +43,7 @@ def process_word(uuid, user: User, session: Session) -> None:
     file_import.update_status('Saving', session)
     usdm_json = m11.to_usdm()
     files.save('usdm', usdm_json)
+    files.save('extra', {'extensions': m11.extra()})
     parameters = _study_parameters(usdm_json)
     #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)

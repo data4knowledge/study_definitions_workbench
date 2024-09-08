@@ -12,7 +12,7 @@ class ToFHIRV1(ToFHIR):
   class LogicError(Exception):
     pass
 
-  def to_fhir(self, uuid: uuid4):
+  def to_fhir(self):
     try:
       sections = []
       root = self.protocol_document_version.contents[0]
@@ -23,7 +23,7 @@ class ToFHIRV1(ToFHIR):
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
       composition = Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author])
-      identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{uuid}')
+      identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
       bundle_entry = BundleEntry(resource=composition, fullUrl="https://www.example.com/Composition/1234")
       bundle = Bundle(id=None, entry=[bundle_entry], type="document", identifier=identifier, timestamp=date)
       return bundle.json()

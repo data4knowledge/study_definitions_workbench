@@ -6,14 +6,17 @@ from usdm_db.document.utility import get_soup
 from fhir.resources.composition import CompositionSection
 from fhir.resources.narrative import Narrative
 from fhir.resources.codeableconcept import CodeableConcept
+from uuid import uuid4
 
 class ToFHIR():
 
   class LogicError(Exception):
     pass
 
-  def __init__(self, study: Study):
+  def __init__(self, study: Study, uuid: uuid4, extra: dict={}):
     self.study = study
+    self._uuid = uuid
+    self.extra = extra
     self._errors_and_logging = ErrorsAndLogging()
     self._cross_ref = CrossReference(study, self._errors_and_logging)
     self.study_version = study.versions[0]
