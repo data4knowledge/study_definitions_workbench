@@ -5,9 +5,10 @@ from fhir.resources.composition import Composition
 from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.reference import Reference
 from uuid import uuid4
+
 import datetime
 
-class ToFHIRV1(ToFHIR):
+class ToFHIRV2(ToFHIR):
 
   class LogicError(Exception):
     pass
@@ -20,7 +21,6 @@ class ToFHIRV1(ToFHIR):
         content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
         sections.append(self._content_to_section(content))
       type_code = CodeableConcept(text=f"EvidenceReport")
-      #date = datetime.datetime.now().isoformat()
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
       composition = Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author])
