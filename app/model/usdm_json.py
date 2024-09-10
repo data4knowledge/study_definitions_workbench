@@ -431,5 +431,5 @@ class USDMJson():
   def _get_extra(self):
     fullpath, filename = self._files.path('extra')
     data = open(fullpath)
-    return yaml.load(data)
+    return yaml.load(data, Loader=yaml.FullLoader)
   
