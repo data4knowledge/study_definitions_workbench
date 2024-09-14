@@ -8,6 +8,7 @@ from fhir.resources.reference import Reference
 from fhir.resources.researchstudy import ResearchStudy
 from fhir.resources.extension import Extension
 from fhir.resources.fhirtypes import ResearchStudyLabelType
+from fhir.resources.researchstudy import ResearchStudyAssociatedParty
 from usdm_model.code import Code as USDMCode
 from usdm_model.study_title import StudyTitle as USDMStudyTitle
 from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
@@ -60,7 +61,7 @@ class ToFHIRV2(ToFHIR):
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
       result.identifier.append({'type': identifier_code, 'value': identifier.studyIdentifier})
     # Original Protocol
-    # TBD
+    x = self._extensions['original_protocol']
     # Version Number
     result.version = version.versionIdentifier
     # Version Date
@@ -70,13 +71,10 @@ class ToFHIRV2(ToFHIR):
     # Amendment Identifier
     result.identifier.append({'type': 'Amendment Identifier', 'value': self._extensions['amendment_identifier']})    
     # Amendment Scope
-    # TBD
     x = self._extensions['amendment_scope']
     # Compound Codes
-    # TBD
     x = self._extensions['compound_codes']
     # Compund Names
-    # TBD
     x = self._extensions['compound_names']
     # Trial Phase
     phase = self._phase()
@@ -91,12 +89,18 @@ class ToFHIRV2(ToFHIR):
     x = self._extensions['sponsor_name_and_address']
     # result.associatedParty.append()
     # Manufacturer Name and Address
+    x = self._extensions['manufacturer_name_and_address']
     # Regulatory Agency Identifiers
-    #  See above in identifiers
+    x = self._extensions['regulatory_agency_identifiers']
     # Sponsor Approval
+    x = self._extensions['sponsor_approval_date']
     # Sponsor Signatory
+    result.associatedParty.append(self._associated_party(self._extensions['sponsor_signatory'], 'sponsor-signatory', 'sponsor signatory'))
     # Medical Expert Contact
+    result.associatedParty.append(self._associated_party(self._extensions['medical_expert_contact'], 'medical-expert', 'medical expert'))
     # SAE Reporting Method
+    rm = Extension(url="http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sae-reporting-method", valueString=self._extensions['sae_reporting_method'])
+    result.extension.append(rm)
     print(f"RESEARCH STUDY: {result}")
     return result
   
@@ -116,5 +120,10 @@ class ToFHIRV2(ToFHIR):
         return date
     return None
     
-  def _coding_from_code(code: USDMCode):
+  def _coding_from_code(self, code: USDMCode):
     return Coding(system=code.codeSystem, version=code.codeSystemVersion, code=code.code, display=code.decode)
+  
+  def _associated_party(self, value: str, role_code: str, role_display: str):
+    role_code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=role_code, display=role_display)
+    role = CodeableConcept(coding=[role_code])
+    return ResearchStudyAssociatedParty(role=role, party={'display': value})
