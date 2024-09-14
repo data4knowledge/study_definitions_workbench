@@ -88,6 +88,7 @@ class ToFHIRV2(ToFHIR):
       type = CodeableConcept(coding=[self._coding_from_code(title.type)]) 
       result.label.append(ResearchStudyLabelType(type=type, value=title.text))    
     # Sponsor Name and Address
+    x = self._extensions['sponsor_name_and_address']
     # result.associatedParty.append()
     # Manufacturer Name and Address
     # Regulatory Agency Identifiers

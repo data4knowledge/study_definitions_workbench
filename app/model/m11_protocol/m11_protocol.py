@@ -90,7 +90,8 @@ class M11Protocol():
       'compound_codes': self.compound_codes,
       'compound_names': self.compund_names,
       'amendment_identifier': self.amendment_identifier,
-      'amendment_scope': self.amendment_scope
+      'amendment_scope': self.amendment_scope,
+      'sponsor_name_and_address': self.sponsor_name_and_address
     }
   
   def _decode_ich_header(self):
