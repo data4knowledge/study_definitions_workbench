@@ -37,16 +37,16 @@ class USDMJson():
     usdm = USDMDb()
     usdm.from_json(self._data)
     study = usdm.wrapper().study
-    fhir = ToFHIRV1(study)
-    return fhir.to_fhir(self.uuid)
+    fhir = ToFHIRV1(study, self.uuid)
+    return fhir.to_fhir()
 
   def fhir_v2_data(self):
     #print(f"FHIR: VER 2 DATA")
     usdm = USDMDb()
     usdm.from_json(self._data)
     study = usdm.wrapper().study
-    fhir = ToFHIRV2(study)
-    return fhir.to_fhir(self.uuid, self._extra)
+    fhir = ToFHIRV2(study, self.uuid, self._extra)
+    return fhir.to_fhir()
 
   def pdf(self):
     usdm = USDMDb()
