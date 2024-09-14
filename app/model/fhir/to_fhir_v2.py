@@ -6,7 +6,11 @@ from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.coding import Coding
 from fhir.resources.reference import Reference
 from fhir.resources.researchstudy import ResearchStudy
-from usdm_model.study_version import StudyVersion
+from fhir.resources.extension import Extension
+from fhir.resources.fhirtypes import ResearchStudyLabelType
+from usdm_model.code import Code as USDMCode
+from usdm_model.study_title import StudyTitle as USDMStudyTitle
+from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
 from uuid import uuid4
 
 import datetime
@@ -39,29 +43,77 @@ class ToFHIRV2(ToFHIR):
 
   def _research_study(self) -> ResearchStudy:
     version = self.study_version
-    result = ResearchStudy(status='draft', identifier=[])
-    result.title = self.get_title('Official Study Title').text
-    phase = self.phase()
-    phase_code = Coding(system=phase.codeSystem, version=phase.codeSystemVersion, code=phase.code, display=phase.decode)
-    result.phase = CodeableConcept(coding=[phase_code], text=phase.decode)
-    result.version = version.versionIdentifier
+    result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[])
+
+    # Sponsor Confidentiality Statememt
+    cs = Extension(url="http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", valueString=self._extensions['sponsor_confidentiality'])
+    result.extension.append(cs)
+    # Full Title
+    result.title = self._get_title('Official Study Title').text
+    # Trial Acronym
+    acronym = self._get_title('Study Acronym')
+    if acronym:
+      type = CodeableConcept(coding=[self._coding_from_code(acronym.type)]) 
+      result.label.append(ResearchStudyLabelType(type=type, value=acronym.text))
+    # Sponsor Protocol Identifier
     for identifier in version.studyIdentifiers:
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
       result.identifier.append({'type': identifier_code, 'value': identifier.studyIdentifier})
+    # Original Protocol
+    # TBD
+    # Version Number
+    result.version = version.versionIdentifier
+    # Version Date
+    approval_date = self._document_approval_date()
+    if approval_date:
+      result.date = approval_date.dateValue
+    # Amendment Identifier
+    result.identifier.append({'type': 'Amendment Identifier', 'value': self._extensions['amendment_identifier']})    
+    # Amendment Scope
+    # TBD
+    x = self._extensions['amendment_scope']
+    # Compound Codes
+    # TBD
+    x = self._extensions['compound_codes']
+    # Compund Names
+    # TBD
+    x = self._extensions['compound_names']
+    # Trial Phase
+    phase = self._phase()
+    phase_code = Coding(system=phase.codeSystem, version=phase.codeSystemVersion, code=phase.code, display=phase.decode)
+    result.phase = CodeableConcept(coding=[phase_code], text=phase.decode)
+    # Short Title
+    title = self._get_title('Brief Study Title')
+    if title:
+      type = CodeableConcept(coding=[self._coding_from_code(title.type)]) 
+      result.label.append(ResearchStudyLabelType(type=type, value=title.text))    
+    # Sponsor Name and Address
+    # result.associatedParty.append()
+    # Manufacturer Name and Address
+    # Regulatory Agency Identifiers
+    #  See above in identifiers
+    # Sponsor Approval
+    # Sponsor Signatory
+    # Medical Expert Contact
+    # SAE Reporting Method
     print(f"RESEARCH STUDY: {result}")
     return result
   
-  def get_title(self, title_type):
-    for title in self.study_version.titles:
-      if title.type.decode == title_type:
-        return title
-    return None
-
-  def sponsor_identifier(self):
+  def _sponsor_identifier(self):
     for identifier in self.study_version.studyIdentifiers:
       if identifier.scope.organizationType.code == 'C70793':
         return identifier
     return None
 
-  def phase(self):
+  def _phase(self):
     return self.study_version.studyPhase.standardCode
+
+  def _document_approval_date(self) -> USDMGovernanceDate:
+    dates = self.study_version.dateValues
+    for date in dates:
+      if date.type.code == 'C99903x1':
+        return date
+    return None
+    
+  def _coding_from_code(code: USDMCode):
+    return Coding(system=code.codeSystem, version=code.codeSystemVersion, code=code.code, display=code.decode)

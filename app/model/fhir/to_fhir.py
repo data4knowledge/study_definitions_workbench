@@ -6,6 +6,9 @@ from usdm_db.document.utility import get_soup
 from fhir.resources.composition import CompositionSection
 from fhir.resources.narrative import Narrative
 from fhir.resources.codeableconcept import CodeableConcept
+from usdm_model.code import Code as USDMCode
+from usdm_model.study_title import StudyTitle as USDMStudyTitle
+from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
 from uuid import uuid4
 
 class ToFHIR():
@@ -16,13 +19,14 @@ class ToFHIR():
   def __init__(self, study: Study, uuid: uuid4, extra: dict={}):
     self.study = study
     self._uuid = uuid
-    self.extra = extra
+    self._extensions = extra['extensions']
+    print(f"EXTRA: {self._extensions}")
     self._errors_and_logging = ErrorsAndLogging()
     self._cross_ref = CrossReference(study, self._errors_and_logging)
     self.study_version = study.versions[0]
     self.study_design = self.study_version.studyDesigns[0]
     self.protocol_document_version = self.study.documentedBy.versions[0]
-    self.doc_title = self._get_title()
+    self.doc_title = self._get_official_title()
 
   def _content_to_section(self, content: NarrativeContent) -> CompositionSection:
     div = self._translate_references(content.text)
@@ -100,16 +104,15 @@ class ToFHIR():
     return text
 
   def _remove_line_feeds(self, div: str) -> str:
-    #print(f"LB: {len(div)}")
-    #print(f"DIV: {div}")
     text = div.replace('\n', '')
-    #print(f"LA: {len(text)}")
     return text
 
-  def _get_title(self):
-    study_version = self.study.versions[0]
-    title_type = 'Official Study Title'
-    for title in study_version.titles:
+  def _get_official_title(self) -> USDMStudyTitle:
+    title = self._get_title('Official Study Title')
+    return title.text if title else ''  
+  
+  def _get_title(self, title_type) -> USDMStudyTitle:
+    for title in self.study_version.titles:
       if title.type.decode == title_type:
-        return title.text
+        return title
     return None

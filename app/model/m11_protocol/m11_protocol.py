@@ -86,7 +86,11 @@ class M11Protocol():
 
   def extra(self):
     return {
-      'sponsor_confidentiality': self.sponosr_confidentiality
+      'sponsor_confidentiality': self.sponosr_confidentiality,
+      'compound_codes': self.compound_codes,
+      'compound_names': self.compund_names,
+      'amendment_identifier': self.amendment_identifier,
+      'amendment_scope': self.amendment_scope
     }
   
   def _decode_ich_header(self):
@@ -213,7 +217,7 @@ class M11Protocol():
       if row.cells[0].is_text():
         if row.cells[0].text().upper().startswith(key.upper()):
           return row.cells[1].text().strip()
-    return None
+    return f"'{key}' not found"
 
   def _sponsor_name_and_address(self):
     name = '[Sponsor Name]'
