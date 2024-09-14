@@ -374,7 +374,8 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if user.email == "daveih1664dk@gmail.com":
     database_managr = DBM(session)
-    database_managr.clear_all()    
+    database_managr.clear_all()
+    endpoint, validation = Endpoint.create('LOCAL TEST', 'http://localhost:8010/m11', "FHIR", user.id, session)
     application_logger.info(f"User '{user.id}', '{user.email} cleared the database")
   else:
     # Error here

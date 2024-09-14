@@ -65,6 +65,10 @@ class M11Protocol():
     self.sponsor_address = None
     self.regulatory_agency_identifiers = None
     self.sponsor_approval_date = None
+    self.manufacturer_name_and_address = None
+    self.sponsor_signatory = None
+    self.medical_expert_contact = None
+    self.sae_reporting_method = None
     self._decode_ich_header()
     self._decode_title_page()
     self._decode_trial_design_summary()
@@ -91,7 +95,14 @@ class M11Protocol():
       'compound_names': self.compund_names,
       'amendment_identifier': self.amendment_identifier,
       'amendment_scope': self.amendment_scope,
-      'sponsor_name_and_address': self.sponsor_name_and_address
+      'sponsor_name_and_address': self.sponsor_name_and_address,
+      'original_protocol': self.original_protocol,
+      'regulatory_agency_identifiers': self.regulatory_agency_identifiers,
+      'sponsor_approval_date': self.sponsor_approval_date,
+      'manufacturer_name_and_address': self.manufacturer_name_and_address,
+      'sponsor_signatory': self.sponsor_signatory,
+      'medical_expert_contact': self.medical_expert_contact,
+      'sae_reporting_method': self.sae_reporting_method
     }
   
   def _decode_ich_header(self):
@@ -133,6 +144,10 @@ class M11Protocol():
     self.sponsor_name, self.sponsor_address = self._sponsor_name_and_address()
     self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
     self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
+    self.manufacturer_name_and_address = self._table_get_row(table, 'Manufacturer')
+    self.sponsor_signatory = self._table_get_row(table, 'Sponsor Signatory')
+    self.medical_expert_contact = self._table_get_row(table, 'Medical Expert')
+    self.sae_reporting_method = self._table_get_row(table, 'SAE Reporting')
 
   def _sections(self, parent, sections, index, level, doc_version) -> int:
     process = True
