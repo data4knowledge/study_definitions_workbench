@@ -9,6 +9,7 @@ from fhir.resources.researchstudy import ResearchStudy
 from fhir.resources.extension import Extension
 from fhir.resources.fhirtypes import ResearchStudyLabelType
 from fhir.resources.researchstudy import ResearchStudyAssociatedParty
+from fhir.resources.researchstudy import ResearchStudyProgressStatus
 from usdm_model.code import Code as USDMCode
 from usdm_model.study_title import StudyTitle as USDMStudyTitle
 from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
@@ -44,7 +45,7 @@ class ToFHIRV2(ToFHIR):
 
   def _research_study(self) -> ResearchStudy:
     version = self.study_version
-    result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[])
+    result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[])
 
     # Sponsor Confidentiality Statememt
     cs = Extension(url="http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", valueString=self._extensions['sponsor_confidentiality'])
@@ -93,7 +94,7 @@ class ToFHIRV2(ToFHIR):
     # Regulatory Agency Identifiers
     x = self._extensions['regulatory_agency_identifiers']
     # Sponsor Approval
-    x = self._extensions['sponsor_approval_date']
+    result.progressStatus.append(self._progress_status(self._extensions['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date'))
     # Sponsor Signatory
     result.associatedParty.append(self._associated_party(self._extensions['sponsor_signatory'], 'sponsor-signatory', 'sponsor signatory'))
     # Medical Expert Contact
@@ -101,7 +102,7 @@ class ToFHIRV2(ToFHIR):
     # SAE Reporting Method
     rm = Extension(url="http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sae-reporting-method", valueString=self._extensions['sae_reporting_method'])
     result.extension.append(rm)
-    print(f"RESEARCH STUDY: {result}")
+    print(f"RESEARCH STUDY: {result.to_json()}")
     return result
   
   def _sponsor_identifier(self):
@@ -124,6 +125,11 @@ class ToFHIRV2(ToFHIR):
     return Coding(system=code.codeSystem, version=code.codeSystemVersion, code=code.code, display=code.decode)
   
   def _associated_party(self, value: str, role_code: str, role_display: str):
-    role_code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=role_code, display=role_display)
-    role = CodeableConcept(coding=[role_code])
+    code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=role_code, display=role_display)
+    role = CodeableConcept(coding=[code])
     return ResearchStudyAssociatedParty(role=role, party={'display': value})
+
+  def _progress_status(self, value: str, state_code: str, state_display: str):
+    code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=state_code, display=state_display)
+    state = CodeableConcept(coding=[code])
+    return ResearchStudyProgressStatus(state=state, period={'start': value})

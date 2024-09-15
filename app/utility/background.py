@@ -33,13 +33,14 @@ def process_excel(uuid, user: User, session: Session) -> None:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Excel file", e)
 
-def process_word(uuid, user: User, session: Session) -> None:
+async def process_word(uuid, user: User, session: Session) -> None:
   try:
     file_import = None
     files = Files(uuid)
     full_path, filename = files.path('docx')
     file_import = FileImport.create(full_path, filename, 'Processing', 'DOCX', uuid, user.id, session)
     m11 = M11Protocol(full_path, SYSTEM_NAME, VERSION)
+    await m11.process()
     file_import.update_status('Saving', session)
     usdm_json = m11.to_usdm()
     files.save('usdm', usdm_json)

@@ -1,4 +1,5 @@
-import re  
+import re
+#import pyap
 from app.model.raw_docx.raw_docx import RawDocx
 from app.model.raw_docx.raw_table import RawTable
 from usdm_model.wrapper import Wrapper
@@ -19,6 +20,7 @@ from usdm_excel.cdisc_ct_library import CDISCCTLibrary
 from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
 from d4kms_generic import application_logger
+from app.utility.address_service import AddressService
 
 class M11Protocol():
   
@@ -44,6 +46,7 @@ class M11Protocol():
     self._raw_docx = RawDocx(filepath)
     self._id_manager = IdManager(application_logger)
     self._cdisc_ct_manager = CDISCCTLibrary(application_logger)
+    self._address_service = AddressService()
     self._system_name = system_name
     self._system_version = system_version
     self.sections = []
@@ -69,8 +72,10 @@ class M11Protocol():
     self.sponsor_signatory = None
     self.medical_expert_contact = None
     self.sae_reporting_method = None
+
+  async def process(self):
     self._decode_ich_header()
-    self._decode_title_page()
+    await self._decode_title_page()
     self._decode_trial_design_summary()
     self._build_sections()
     #print(f"Titles {self.full_title}, {self.short_title}")
@@ -122,7 +127,7 @@ class M11Protocol():
       for item in items:
         item.add_span(design_item[0], design_item[1])
 
-  def _decode_title_page(self):
+  async def _decode_title_page(self):
     section = self._raw_docx.target_document.section_by_ordinal(1)
     tables = section.tables()
     table = tables[0]
@@ -141,7 +146,7 @@ class M11Protocol():
     self.trial_phase = self._phase()
     self.short_title = self._table_get_row(table, 'Short Title')
     self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
-    self.sponsor_name, self.sponsor_address = self._sponsor_name_and_address()
+    self.sponsor_name, self.sponsor_address = await self._sponsor_name_and_address()
     self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
     self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
     self.manufacturer_name_and_address = self._table_get_row(table, 'Manufacturer')
@@ -235,7 +240,7 @@ class M11Protocol():
           return row.cells[1].text().strip()
     return f"'{key}' not found"
 
-  def _sponsor_name_and_address(self):
+  async def _sponsor_name_and_address(self):
     name = '[Sponsor Name]'
     address = '[Sponsor Address]'
     parts = self.sponsor_name_and_address.split('\n')
@@ -243,7 +248,20 @@ class M11Protocol():
       name = parts[0].strip()
       application_logger.info(f"Sponsor name set to '{name}'")
     if len(parts) > 1:
+      application_logger.info(f"Processing address {self.sponsor_name_and_address}")
+      tmp_address = (' ').join([x.strip() for x in parts[1:]])
+      results = await self._address_service.parser(tmp_address)
+      application_logger.info(f"Address service result '{tmp_address}' returned {results}")
+      params = {'line': '', 'city': '', 'district': '', 'state': '', 'postalCode': '', 'country': None}
+      for result in results:
+        if result['label'] == 'country':
+          params['country'] = self._iso3166_decode(result['value'])
+        elif result['label'] == 'postcode':
+          params['postalCode'] = result['value']        
+        elif result['label'] in ['city', 'state']:
+          params[result['label']] = result['value']        
       address = (',').join([x.strip() for x in parts[1:]])
+    application_logger.info(f"Name and ddress result '{name}', '{address}'")
     return name, address
 
   def _study_name(self):
@@ -286,3 +304,10 @@ class M11Protocol():
     cdisc_phase_code = self._cdisc_ct_code('C48660', '[Trial Phase] Not Applicable')
     application_logger.warning(f"Trial phase '{phase}' not decoded")
     return self._model_instance(AliasCode, {'standardCode': cdisc_phase_code})
+
+  def _iso3166_decode(self, decode):
+    entry = next((item for item in self.db if item['name'] == decode), None)
+    code = entry['alpha-3'] if entry else 'DNK'
+    decode = decode if entry else 'Denmark'
+    return self._model_instance(Code, {'code': code, 'system': 'ISO 3166 1 alpha3', 'version': '2020-08', 'decode': decode})
+  
