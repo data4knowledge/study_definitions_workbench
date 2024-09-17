@@ -17,6 +17,8 @@ from usdm_model.alias_code import AliasCode
 from usdm_model.narrative_content import NarrativeContent
 from usdm_excel.id_manager import IdManager
 from usdm_excel.cdisc_ct_library import CDISCCTLibrary
+from usdm_excel.iso_3166 import ISO3166
+from usdm_excel.globals import Globals
 from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
 from d4kms_generic import application_logger
@@ -43,9 +45,12 @@ class M11Protocol():
   ]
 
   def __init__(self, filepath, system_name, system_version):
+    self._globals = Globals()
+    self._globals.create()
     self._raw_docx = RawDocx(filepath)
-    self._id_manager = IdManager(application_logger)
-    self._cdisc_ct_manager = CDISCCTLibrary(application_logger)
+    self._id_manager = self._globals.id_manager
+    self._cdisc_ct_manager = self._globals.cdisc_ct_library
+    self._iso = ISO3166(self._globals)
     self._address_service = AddressService()
     self._system_name = system_name
     self._system_version = system_version
@@ -186,7 +191,6 @@ class M11Protocol():
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
     protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
     intervention_model_code = self._cdisc_ct_code('C82639', 'Parallel Study')
-    country_code = self._iso_country_code('DNK', 'Denmark')
     sponsor_code = self._cdisc_ct_code("C70793", 'Clinical Study Sponsor')
     study_title = self._model_instance(StudyTitle, {'text': title, 'type': sponsor_title_code})
     protocl_document_version = self._model_instance(StudyProtocolDocumentVersion, {'protocolVersion': '1', 'protocolStatus': protocl_status_code})
@@ -194,7 +198,9 @@ class M11Protocol():
     study_design = self._model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
       'rationale': 'XXX', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
       'epochs': [], 'population': None})
-    address = self._model_instance(Address, {'line': 'Den Lille Havfrue', 'city': 'Copenhagen', 'district': '', 'state': '', 'postalCode': '12345', 'country': country_code})
+    sponsor_address = self.sponsor_address
+    print(f"ADDRESS: {sponsor_address}")
+    address = self._model_instance(Address, sponsor_address)
     organization = self._model_instance(Organization, {'name': self.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'studyIdentifier': self.sponsor_protocol_identifier, 'studyIdentifierScope': organization})
     study_version = self._model_instance(StudyVersion, {'versionIdentifier': '1', 'rationale': 'XXX', 'titles': [study_title], 'studyDesigns': [study_design], 
@@ -238,7 +244,8 @@ class M11Protocol():
       if row.cells[0].is_text():
         if row.cells[0].text().upper().startswith(key.upper()):
           return row.cells[1].text().strip()
-    return f"'{key}' not found"
+    application_logger.info(f"Table row '{key}' not found")
+    return ''
 
   async def _sponsor_name_and_address(self):
     name = '[Sponsor Name]'
@@ -260,9 +267,8 @@ class M11Protocol():
           params['postalCode'] = result['value']        
         elif result['label'] in ['city', 'state']:
           params[result['label']] = result['value']        
-      address = (',').join([x.strip() for x in parts[1:]])
-    application_logger.info(f"Name and ddress result '{name}', '{address}'")
-    return name, address
+    application_logger.info(f"Name and address result '{name}', '{params}'")
+    return name, params
 
   def _study_name(self):
     items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
@@ -306,8 +312,8 @@ class M11Protocol():
     return self._model_instance(AliasCode, {'standardCode': cdisc_phase_code})
 
   def _iso3166_decode(self, decode):
-    entry = next((item for item in self.db if item['name'] == decode), None)
+    entry = next((item for item in self._iso.db if item['name'].upper() == decode.upper()), None)
     code = entry['alpha-3'] if entry else 'DNK'
-    decode = decode if entry else 'Denmark'
-    return self._model_instance(Code, {'code': code, 'system': 'ISO 3166 1 alpha3', 'version': '2020-08', 'decode': decode})
+    decode = entry['name']  if entry else 'Denmark'
+    return self._model_instance(Code, {'code': code, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08', 'decode': decode})
   

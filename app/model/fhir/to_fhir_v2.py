@@ -48,8 +48,9 @@ class ToFHIRV2(ToFHIR):
     result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[])
 
     # Sponsor Confidentiality Statememt
-    cs = Extension(url="http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", valueString=self._extensions['sponsor_confidentiality'])
-    result.extension.append(cs)
+    ext = self._extension("research-study-sponsor-confidentiality-statement", self._extensions['sponsor_confidentiality'])
+    if ext:
+      result.extension.append(ext)
     # Full Title
     result.title = self._get_title('Official Study Title').text
     # Trial Acronym
@@ -100,8 +101,9 @@ class ToFHIRV2(ToFHIR):
     # Medical Expert Contact
     result.associatedParty.append(self._associated_party(self._extensions['medical_expert_contact'], 'medical-expert', 'medical expert'))
     # SAE Reporting Method
-    rm = Extension(url="http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sae-reporting-method", valueString=self._extensions['sae_reporting_method'])
-    result.extension.append(rm)
+    ext = self._extension("research-study-sae-reporting-method", self._extensions['sae_reporting_method'])
+    if ext:
+      result.extension.append(ext)
     print(f"RESEARCH STUDY: {result.to_json()}")
     return result
   
@@ -133,3 +135,6 @@ class ToFHIRV2(ToFHIR):
     code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=state_code, display=state_display)
     state = CodeableConcept(coding=[code])
     return ResearchStudyProgressStatus(state=state, period={'start': value})
+  
+  def _extension(self, key: str, value: str):
+    return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueString=value) if value else None

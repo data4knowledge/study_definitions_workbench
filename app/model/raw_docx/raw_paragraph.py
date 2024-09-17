@@ -21,7 +21,7 @@ class RawParagraph():
     self.klasses.append(klass)
 
   def add_span(self, text: str, klass: str) -> None:
-    print(f"SPAN 1: {self.text}")
+    #print(f"SPAN 1: {self.text}")
     new_str = f'<span class="{klass}">{text}</span>'
     self.text = new_str + self.text[len(text):]
-    print(f"SPAN 2: {self.text}")
+    #print(f"SPAN 2: {self.text}")

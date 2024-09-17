@@ -1,4 +1,5 @@
 import json
+import asyncio
 from d4kms_generic import application_logger
 from usdm_db import USDMDb
 from usdm_db import USDMDb, Wrapper
@@ -8,6 +9,7 @@ from app.model.study import Study
 from app.model.user import User
 from app.model.m11_protocol.m11_protocol import M11Protocol
 from app.model.fhir.from_fhir_v1 import FromFHIRV1
+from app.model.connection_manager import connection_manager
 from app import VERSION, SYSTEM_NAME
 from sqlalchemy.orm import Session
 from app.model.object_path import ObjectPath
@@ -49,10 +51,13 @@ async def process_word(uuid, user: User, session: Session) -> None:
     #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
+    await connection_manager.success(f"Import of M11 document completed sucessfully", str(user.id))
   except Exception as e:
     if file_import:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Word file", e)
+    await asyncio.sleep(1) # Need something just in case background task does not block
+    await connection_manager.error(f"Error encountered importing M11 document", str(user.id))
 
 def process_fhir_v1(uuid, user: User, session: Session) -> None:
   try:
