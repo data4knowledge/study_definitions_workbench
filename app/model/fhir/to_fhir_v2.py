@@ -10,6 +10,7 @@ from fhir.resources.extension import Extension
 from fhir.resources.researchstudy import ResearchStudyAssociatedParty
 from fhir.resources.researchstudy import ResearchStudyProgressStatus
 from fhir.resources.organization import Organization
+from fhir.resources.extendedcontactdetail import ExtendedContactDetail
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
 from usdm_model.code import Code as USDMCode
 from usdm_model.study_title import StudyTitle as USDMStudyTitle
@@ -110,7 +111,7 @@ class ToFHIRV2(ToFHIR):
     org = self._organization_from_organization(sponsor)
     if org:
       self._entries.append({'item': self._organization_from_organization(sponsor), 'url': 'https://www.example.com/Composition/1234'})
-      item = self._associated_party_reference(f"Organization/{org.identifier}", 'sponsor', 'sponsor')
+      item = self._associated_party_reference(f"Organization/{org.id}", 'sponsor', 'sponsor')
       if item:
         result.associatedParty.append(item)
 
@@ -168,12 +169,20 @@ class ToFHIRV2(ToFHIR):
 
   def _organization_from_organization(self, organization: USDMOrganization):  
     address = self._address_from_address(organization.legalAddress)
-    return Organization(id=organization.name, name=organization.label, contact=address)
+    return Organization(id=str(uuid4()), name=organization.label, contact=[{'address': address}])
 
   def _address_from_address(self, address: USDMAddress):  
     x = dict(address)
-    x['line'] = [x['line']]
-    return AddressType(x)
+    x.pop('instanceType')
+    y = {}
+    for k, v in x.items():
+      if v:
+        y[k] = v
+    if 'line' in y:
+      y['line'] = [y['line']]
+    result = AddressType(y)
+    print(f"ADDRESS: {result}")
+    return result
 
   def _associated_party(self, value: str, role_code: str, role_display: str):
     if value:
