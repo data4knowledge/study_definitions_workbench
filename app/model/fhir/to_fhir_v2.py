@@ -72,7 +72,7 @@ class ToFHIRV2(ToFHIR):
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
       result.identifier.append({'type': identifier_code, 'value': identifier.studyIdentifier})
     
-    # Original Protocol - No implementation currently
+    # Original Protocol - No implementation details currently
     x = self._extensions['original_protocol']
     
     # Version Number
@@ -89,10 +89,10 @@ class ToFHIRV2(ToFHIR):
     # Amendment Scope - Part of Amendment
     x = self._extensions['amendment_scope']
     
-    # Compound Codes - No implementation currently
+    # Compound Codes - No implementation details currently
     x = self._extensions['compound_codes']
     
-    # Compound Names - No implementation currently
+    # Compound Names - No implementation details currently
     x = self._extensions['compound_names']
     
     # Trial Phase
@@ -118,7 +118,7 @@ class ToFHIRV2(ToFHIR):
     # Manufacturer Name and Address
     x = self._extensions['manufacturer_name_and_address']
     
-    # Regulatory Agency Identifiers
+    # Regulatory Agency Identifiers, see above
     x = self._extensions['regulatory_agency_identifiers']
     
     # Sponsor Approval
