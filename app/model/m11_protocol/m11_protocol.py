@@ -1,5 +1,5 @@
 import re
-#import pyap
+import dateutil.parser as parser
 from app.model.raw_docx.raw_docx import RawDocx
 from app.model.raw_docx.raw_table import RawTable
 from usdm_model.wrapper import Wrapper
@@ -153,7 +153,7 @@ class M11Protocol():
     self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
     self.sponsor_name, self.sponsor_address = await self._sponsor_name_and_address()
     self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
-    self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
+    self.sponsor_approval_date = self._sponsor_approval_date(table)
     self.manufacturer_name_and_address = self._table_get_row(table, 'Manufacturer')
     self.sponsor_signatory = self._table_get_row(table, 'Sponsor Signatory')
     self.medical_expert_contact = self._table_get_row(table, 'Medical Expert')
@@ -270,6 +270,18 @@ class M11Protocol():
     application_logger.info(f"Name and address result '{name}', '{params}'")
     return name, params
 
+  def _sponsor_approval_date(self, table):
+    try:
+      date_text = self._table_get_row(table, 'Sponsor Approval Date')
+      if date_text:
+        date = parser.parse(date_text)
+        return date.isoformat()
+      else:
+        return ''
+    except Exception as e:
+      application_logger.exception("Exception raised during approval date processing", e)
+      return ''
+     
   def _study_name(self):
     items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
     for item in items:
