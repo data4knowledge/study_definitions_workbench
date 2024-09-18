@@ -1,26 +1,10 @@
 import re
 import dateutil.parser as parser
 from app.model.raw_docx.raw_docx import RawDocx
-from app.model.raw_docx.raw_table import RawTable
-# from usdm_model.wrapper import Wrapper
-# from usdm_model.study import Study
-# from usdm_model.study_design import StudyDesign
-# from usdm_model.study_version import StudyVersion
-# from usdm_model.study_title import StudyTitle
-# from usdm_model.study_protocol_document import StudyProtocolDocument
-# #from usdm_model.study_protocol_document_version import StudyProtocolDocumentVersion
+#from app.model.raw_docx.raw_table import RawTable
 from usdm_model.code import Code
-# from usdm_model.study_identifier import StudyIdentifier
-# from usdm_model.organization import Organization
-# from usdm_model.address import Address
-# from usdm_model.alias_code import AliasCode
-# from usdm_model.narrative_content import NarrativeContent
-# from usdm_excel.id_manager import IdManager
-# from usdm_excel.cdisc_ct_library import CDISCCTLibrary
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
-#from uuid import uuid4
-#from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
 from d4kms_generic import application_logger
 from app.utility.address_service import AddressService
 from app.model.m11_protocol.m11_utility import *
@@ -63,27 +47,27 @@ class M11TitlePage():
     tables = section.tables()
     table = tables[0]
     table.replace_class('ich-m11-table', 'ich-m11-title-page-table')
-    self.sponosr_confidentiality = self._table_get_row(table, 'Sponsor Confidentiality')
-    self.full_title = self._table_get_row(table, 'Full Title')
-    self.acronym = self._table_get_row(table, 'Acronym')
-    self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')
-    self.original_protocol = self._table_get_row(table, 'Original Protocol')
-    self.version_number = self._table_get_row(table, 'Version Number')
-    self.amendment_identifier = self._table_get_row(table, 'Amendment Identifier')
-    self.amendment_scope = self._table_get_row(table, 'Amendment Scope')
-    self.compound_codes = self._table_get_row(table, 'Compound Code(s)')
-    self.compound_names = self._table_get_row(table, 'Compound Name(s)')
-    self.trial_phase_raw = self._table_get_row(table, 'Trial Phase')
+    self.sponosr_confidentiality = table_get_row(table, 'Sponsor Confidentiality')
+    self.full_title = table_get_row(table, 'Full Title')
+    self.acronym = table_get_row(table, 'Acronym')
+    self.sponsor_protocol_identifier = table_get_row(table, 'Sponsor Protocol Identifier')
+    self.original_protocol = table_get_row(table, 'Original Protocol')
+    self.version_number = table_get_row(table, 'Version Number')
+    self.amendment_identifier = table_get_row(table, 'Amendment Identifier')
+    self.amendment_scope = table_get_row(table, 'Amendment Scope')
+    self.compound_codes = table_get_row(table, 'Compound Code(s)')
+    self.compound_names = table_get_row(table, 'Compound Name(s)')
+    self.trial_phase_raw = table_get_row(table, 'Trial Phase')
     self.trial_phase = self._get_phase()
-    self.short_title = self._table_get_row(table, 'Short Title')
-    self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
+    self.short_title = table_get_row(table, 'Short Title')
+    self.sponsor_name_and_address = table_get_row(table, 'Sponsor Name and Address')
     self.sponsor_name, self.sponsor_address = await self._get_sponsor_name_and_address()
-    self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
+    self.regulatory_agency_identifiers = table_get_row(table, 'Regulatory Agency Identifier Number(s)')
     self.sponsor_approval_date = self._get_sponsor_approval_date(table)
-    self.manufacturer_name_and_address = self._table_get_row(table, 'Manufacturer')
-    self.sponsor_signatory = self._table_get_row(table, 'Sponsor Signatory')
-    self.medical_expert_contact = self._table_get_row(table, 'Medical Expert')
-    self.sae_reporting_method = self._table_get_row(table, 'SAE Reporting')
+    self.manufacturer_name_and_address = table_get_row(table, 'Manufacturer')
+    self.sponsor_signatory = table_get_row(table, 'Sponsor Signatory')
+    self.medical_expert_contact = table_get_row(table, 'Medical Expert')
+    self.sae_reporting_method = table_get_row(table, 'SAE Reporting')
     self.study_name = self._get_study_name()
 
   def extra(self):
@@ -102,14 +86,6 @@ class M11TitlePage():
       'medical_expert_contact': self.medical_expert_contact,
       'sae_reporting_method': self.sae_reporting_method
     }
-
-  def _table_get_row(self, table: RawTable, key: str) -> str:
-    for row in table.rows:
-      if row.cells[0].is_text():
-        if row.cells[0].text().upper().startswith(key.upper()):
-          return row.cells[1].text().strip()
-    application_logger.info(f"Table row '{key}' not found")
-    return ''
 
   def _get_study_name(self):
     items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
@@ -144,7 +120,7 @@ class M11TitlePage():
 
   def _get_sponsor_approval_date(self, table):
     try:
-      date_text = self._table_get_row(table, 'Sponsor Approval Date')
+      date_text = table_get_row(table, 'Sponsor Approval Date')
       if date_text:
         date = parser.parse(date_text)
         return date.isoformat()

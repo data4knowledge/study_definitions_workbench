@@ -35,18 +35,30 @@ class RawSection():
       text.append(result)
     return ('\n').join(text)
 
-  def tables(self):
+  def paragraphs(self) -> list[RawParagraph]:
+    return [x for x in self.items if isinstance(x, RawParagraph)]
+
+  def tables(self) -> list[RawTable]:
     return [x for x in self.items if isinstance(x, RawTable)]
 
-  def lists(self):
+  def lists(self) -> list[RawList]:
     return [x for x in self.items if isinstance(x, RawList)]
 
-  def find(self, text):
+  def find(self, text) -> list[RawParagraph]:
     return [x for x in self.items if isinstance(x, RawParagraph) and x.find(text)]
 
-  def find_at_start(self, text):
+  def find_at_start(self, text) -> list[RawParagraph]:
     return [x for x in self.items if isinstance(x, RawParagraph) and x.find_at_start(text)]
 
+  def has_lists(self) -> bool:
+    return len(self.lists()) > 0
+
+  def has_content(self) -> bool:
+    return not self.is_empty()
+
+  def is_empty(self) -> bool:
+    return len(self.items) == 0
+  
   def _format_heading(self):
     if self.number and self.title:
       return f'<h{self.level}>{self.number} {self.title}</h{self.level}>'

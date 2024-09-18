@@ -1,8 +1,18 @@
+from app.model.raw_docx.raw_table import RawTable
 from usdm_model.code import Code
 from usdm_model.alias_code import AliasCode
 from usdm_excel.id_manager import IdManager
 from usdm_excel.cdisc_ct_library import CDISCCTLibrary
 from usdm_excel.iso_3166 import ISO3166
+from d4kms_generic import application_logger
+
+def table_get_row(table: RawTable, key: str) -> str:
+  for row in table.rows:
+    if row.cells[0].is_text():
+      if row.cells[0].text().upper().startswith(key.upper()):
+        return row.cells[1].text().strip()
+  application_logger.info(f"Table row '{key}' not found")
+  return ''
 
 def model_instance(cls, params: dict, id_manager: IdManager) -> object:
   params['id'] = params['id'] if 'id' in params else id_manager.build_id(cls)

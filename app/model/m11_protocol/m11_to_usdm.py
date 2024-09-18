@@ -7,22 +7,17 @@ from usdm_model.study_protocol_document import StudyProtocolDocument
 from usdm_model.study_protocol_document_version import StudyProtocolDocumentVersion
 from usdm_model.population_definition import StudyDesignPopulation
 from usdm_model.eligibility_criterion import EligibilityCriterion
-#from usdm_model.code import Code
 from usdm_model.study_identifier import StudyIdentifier
 from usdm_model.organization import Organization
 from usdm_model.address import Address
-#from usdm_model.alias_code import AliasCode
 from usdm_model.narrative_content import NarrativeContent
-#from usdm_excel.id_manager import IdManager
-#from usdm_excel.cdisc_ct_library import CDISCCTLibrary
-#from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
 from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
 from d4kms_generic import application_logger
-#from app.utility.address_service import AddressService
 from app.model.m11_protocol.m11_title_page import M11TitlePage
 from app.model.m11_protocol.m11_inclusion_exclusion import M11InclusionExclusion
+from app.model.m11_protocol.m11_estimands import M11IEstimands
 from app.model.m11_protocol.m11_sections import M11Sections
 from app.model.m11_protocol.m11_utility import *
 
@@ -31,10 +26,11 @@ class M11ToUSDM():
   DIV_OPEN_NS = '<div xmlns="http://www.w3.org/1999/xhtml">'
   DIV_CLOSE = '</div>'
 
-  def __init__(self, title_page: M11TitlePage, inclusion_exclusion: M11InclusionExclusion, sections: M11Sections, globals: Globals, system_name, system_version):
+  def __init__(self, title_page: M11TitlePage, inclusion_exclusion: M11InclusionExclusion, estimands: M11IEstimands, sections: M11Sections, globals: Globals, system_name, system_version):
     self._globals = globals
     self._title_page = title_page
     self._inclusion_exclusion = inclusion_exclusion
+    self._estimands = estimands
     self._sections = sections
     self._id_manager = self._globals.id_manager
     self._cdisc_ct_library = self._globals.cdisc_ct_library
