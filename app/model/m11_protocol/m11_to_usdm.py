@@ -47,20 +47,20 @@ class M11ToUSDM():
       doc_version = self._document_version(study)
       root = model_instance(NarrativeContent, {'name': 'ROOT', 'sectionNumber': '0', 'sectionTitle': 'Root', 'text': '', 'childIds': [], 'previousId': None, 'nextId': None}, self._id_manager)
       doc_version.contents.append(root)
-      local_index = self._section_to_narrative(root, self._sections, 0, 1, doc_version)
+      local_index = self._section_to_narrative(root, 0, 1, doc_version)
       self._double_link(doc_version.contents, 'previousId', 'nextId')
       return Wrapper(study=study, usdmVersion=usdm_version, systemName=self._system_name, systemVersion=self._system_version).to_json()
     except Exception as e:
       application_logger.exception(f"Exception raised parsing M11 content. See logs for more details", e)
       return None
 
-  def _section_to_narrative(self, parent, sections, index, level, doc_version) -> int:
+  def _section_to_narrative(self, parent, index, level, doc_version) -> int:
     process = True
     previous = None
     local_index = index
     loop = 0
     while process:
-      section = sections[local_index]
+      section = self._sections.sections[local_index]
       if section.level == level:
         sn = section.number if section.number else ''
         st = section.title if section.title else ''
@@ -72,22 +72,22 @@ class M11ToUSDM():
         local_index += 1
       elif section.level > level: 
         if previous:
-          local_index = self._section_to_narrative(previous, sections, local_index, level + 1, doc_version)
+          local_index = self._section_to_narrative(previous, local_index, level + 1, doc_version)
         else:
           application_logger.error(f"No previous set processing sections")
           local_index += 1
       elif section.level < level: 
         return local_index
-      if local_index >= len(sections):
+      if local_index >= len(self._sections.sections):
         process = False
     return local_index
     
-  def _study(self, title):
+  def _study(self):
     sponsor_title_code = cdisc_ct_code('C99905x2', 'Official Study Title', self._cdisc_ct_library, self._id_manager)
     protocl_status_code = cdisc_ct_code('C85255', 'Draft', self._cdisc_ct_library, self._id_manager)
     intervention_model_code = cdisc_ct_code('C82639', 'Parallel Study', self._cdisc_ct_library, self._id_manager)
     sponsor_code = cdisc_ct_code("C70793", 'Clinical Study Sponsor', self._cdisc_ct_library, self._id_manager)
-    study_title = model_instance(StudyTitle, {'text': title, 'type': sponsor_title_code}, self._id_manager)
+    study_title = model_instance(StudyTitle, {'text': self._title_page.full_title, 'type': sponsor_title_code}, self._id_manager)
     protocl_document_version = model_instance(StudyProtocolDocumentVersion, {'protocolVersion': '1', 'protocolStatus': protocl_status_code}, self._id_manager)
     protocl_document = model_instance(StudyProtocolDocument, {'name': 'PROTOCOL V1', 'label': '', 'description': '', 'versions': [protocl_document_version]}, self._id_manager)
     population = self._population()
@@ -109,10 +109,10 @@ class M11ToUSDM():
     inc = cdisc_ct_code('C25532', 'INCLUSION', self._cdisc_ct_library, self._id_manager)
     exc = cdisc_ct_code('C25370', 'EXCLUSION', self._cdisc_ct_library, self._id_manager)
     for index, text in enumerate(self._inclusion_exclusion.inclusion):
-      params = {'name': f'INC{index+1}', 'label': f'Inclusion {index+1} ', 'description': '', 'text': text, 'category': inc}
+      params = {'name': f'INC{index+1}', 'label': f'Inclusion {index+1} ', 'description': '', 'text': text, 'category': inc, 'identifier': f'{index + 1}'}
       results.append(model_instance(EligibilityCriterion, params, self._id_manager))
     for index, text in enumerate(self._inclusion_exclusion.exclusion):
-      params = {'name': f'EXC{index+1}', 'label': f'Exclusion {index+1} ', 'description': '', 'text': text, 'category': exc}
+      params = {'name': f'EXC{index+1}', 'label': f'Exclusion {index+1} ', 'description': '', 'text': text, 'category': exc, 'identifier': f'{index + 1}'}
       results.append(model_instance(EligibilityCriterion, params, self._id_manager))
     params = {'name': 'STUDY POP', 'label': 'Study Population', 'description': '', 'includesHealthySubjects': True, 'criteria': results}
     return model_instance(StudyDesignPopulation, params, self._id_manager)

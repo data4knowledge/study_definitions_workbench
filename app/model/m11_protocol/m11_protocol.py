@@ -52,7 +52,7 @@ class M11Protocol():
     self._sections.process()
 
   def to_usdm(self) -> Wrapper:
-    usdm = M11ToUSDM(self._title_page, self._inclusion_exclusion, self._globals, self._system_name, self._system_version)
+    usdm = M11ToUSDM(self._title_page, self._inclusion_exclusion, self._sections, self._globals, self._system_name, self._system_version)
     return usdm.export()
 
   def extra(self):
