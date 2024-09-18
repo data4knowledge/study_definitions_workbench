@@ -27,33 +27,13 @@ from app.model.m11_protocol.m11_utility import *
 
 class M11TitlePage():
   
-  # DIV_OPEN_NS = '<div xmlns="http://www.w3.org/1999/xhtml">'
-  # DIV_CLOSE = '</div>'
-  # ICH_HEADERS = [
-  #   ('INTERNATIONAL COUNCIL FOR HARMONISATION OF TECHNICAL REQUIREMENTS FOR PHARMACEUTICALS FOR HUMAN USE', 'ich-m11-header-1'),
-  #   ('ICH HARMONISED GUIDELINE', 'ich-m11-header-2'),
-  #   ('Clinical electronic Structured Harmonised Protocol', 'ich-m11-header-3'),
-  #   ('(CeSHarP)', 'ich-m11-header-4'),
-  #   ('Example', 'ich-m11-header-4')
-  # ]
-  # DESIGN_ITEMS = [
-  #   ('Number of Arms', 'ich-m11-overall-design-title'),
-  #   ('Trial Blind Schema', 'ich-m11-overall-design-title'),
-  #   ('Number of Participants', 'ich-m11-overall-design-title'),
-  #   ('Duration', 'ich-m11-overall-design-title'),
-  #   ('Committees', 'ich-m11-overall-design-title'),
-  #   ('Blinded Roles', 'ich-m11-overall-design-title')
-  # ]
-
-  def __init__(self, raw_docx: RawDocx, system_name: str, system_version: str, globals: Globals):
+  def __init__(self, raw_docx: RawDocx, globals: Globals):
     self._globals = globals
     self._raw_docx = raw_docx
     self._id_manager = self._globals.id_manager
     self._cdisc_ct_library = self._globals.cdisc_ct_library
     self._iso = ISO3166(self._globals)
     self._address_service = AddressService()
-    self._system_name = system_name
-    self._system_version = system_version
     self._sections = []
     self.sponosr_confidentiality = None
     self.acronym = None

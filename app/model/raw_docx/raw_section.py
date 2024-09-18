@@ -38,6 +38,9 @@ class RawSection():
   def tables(self):
     return [x for x in self.items if isinstance(x, RawTable)]
 
+  def lists(self):
+    return [x for x in self.items if isinstance(x, RawList)]
+
   def find(self, text):
     return [x for x in self.items if isinstance(x, RawParagraph) and x.find(text)]
 
