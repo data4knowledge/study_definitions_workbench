@@ -26,6 +26,7 @@ def process_excel(uuid, user: User, session: Session) -> None:
     files.save('errors', errors)
     usdm_json = db.to_json()
     files.save('usdm', usdm_json)
+    files.save('extra', {'extensions': {}})
     parameters = _study_parameters(usdm_json)
     #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
