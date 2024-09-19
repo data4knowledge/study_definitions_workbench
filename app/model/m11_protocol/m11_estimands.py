@@ -40,6 +40,7 @@ class M11IEstimands():
                 if endpoint:
                   objective['endpoints'].append(endpoint)
               objectives.append(objective)
+            section_number += 1
           else:
             sections = False  
     else:
