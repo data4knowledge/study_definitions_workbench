@@ -8,7 +8,9 @@ class RawTableCell():
   def __init__(self, h_span: int=1, v_span: int=1, first: bool=True):
     self.h_span = h_span
     self.v_span = v_span
-    self.merged = h_span != 1 or v_span != 1
+    self.h_merged = h_span > 1
+    self.v_merged = v_span > 1 
+    self.merged = self.h_merged or self.v_merged
     self.first = first
     self.items = []
   
@@ -34,10 +36,13 @@ class RawTableCell():
     return self.items[-1] if isinstance(self.items[-1], RawList) else None
 
   def to_html(self):
+    if not self.first:
+      return ''
     lines = []
-    lines.append("<td>")
+    colspan = f' colspan="{self.h_span}"' if self.h_merged else ''
+    lines.append(f'<td {colspan}>')
     for item in self.items:
       lines.append(item.to_html())
-    lines.append("</td>")
-    return ("\n").join(lines)
+    lines.append('</td>')
+    return ('\n').join(lines)
 

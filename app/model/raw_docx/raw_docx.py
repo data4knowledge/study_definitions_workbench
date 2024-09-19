@@ -115,8 +115,8 @@ class RawDocx():
         v_span = cell._tc.bottom - cell._tc.top
         first = r_index == cell._tc.top and c_index == cell._tc.left
         target_cell = RawTableCell(h_span, v_span, first)
-        if target_cell.merged and target_cell.first:
-          print(f"MERGED: {cell.text}, [{h_span}, {v_span}], {first}")
+        # if target_cell.merged and target_cell.first:
+        #   print(f"MERGED: {cell.text}, [{h_span}, {v_span}], {first}")
         target_row.add(target_cell)
         for block_item in self._iter_block_items(cell):
           #print(f"CELL BLOCK: {type(block_item)}")
