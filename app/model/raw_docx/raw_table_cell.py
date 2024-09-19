@@ -5,7 +5,11 @@ from d4kms_generic import application_logger
 
 class RawTableCell():
   
-  def __init__(self):
+  def __init__(self, h_span: int=1, v_span: int=1, first: bool=True):
+    self.h_span = h_span
+    self.v_span = v_span
+    self.merged = h_span != 1 or v_span != 1
+    self.first = first
     self.items = []
   
   def add(self, item: RawParagraph | RawList | RawTable) -> None:
