@@ -23,7 +23,7 @@ class M11Protocol():
     self._title_page = M11TitlePage(self._raw_docx, self._globals)
     self._inclusion_exclusion = M11InclusionExclusion(self._raw_docx, self._globals)
     self._estimands = M11IEstimands(self._raw_docx, self._globals)
-    self._amendments = M11IAmendment(self._raw_docx, self._globals)
+    self._amendment = M11IAmendment(self._raw_docx, self._globals)
     self._sections = M11Sections(self._raw_docx, self._globals)
     self._styles = M11Styles(self._raw_docx, self._globals)
 
@@ -32,11 +32,11 @@ class M11Protocol():
     await self._title_page.process()
     self._inclusion_exclusion.process()
     self._estimands.process()
-    self._amendments.process()
+    self._amendment.process()
     self._sections.process()
 
   def to_usdm(self) -> Wrapper:
-    usdm = M11ToUSDM(self._title_page, self._inclusion_exclusion, self._estimands, self._sections, self._globals, self._system_name, self._system_version)
+    usdm = M11ToUSDM(self._title_page, self._inclusion_exclusion, self._estimands, self._amendment, self._sections, self._globals, self._system_name, self._system_version)
     return usdm.export()
 
   def extra(self):

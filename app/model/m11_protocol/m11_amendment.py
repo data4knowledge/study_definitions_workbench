@@ -29,8 +29,10 @@ class M11IAmendment():
       self._enrollment(table)
       self._reasons(table)
       self.summary = table_get_row_html(table, 'Amendment Summary')
-      self.safety_impact = table_get_row(table, 'Is this amendment likely to have a substantial impact on the safety')
-      self.robustness_impact = table_get_row(table, 'Is this amendment likely to have a substantial impact on the reliability')
+      self.safety_impact = False
+      x = table_get_row(table, 'Is this amendment likely to have a substantial impact on the safety')
+      self.robustness_impact = False
+      x = table_get_row(table, 'Is this amendment likely to have a substantial impact on the reliability')
     table = self._changes_table()
     if table:
       self.changes = self._changes(table)

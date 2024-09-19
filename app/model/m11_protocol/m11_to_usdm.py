@@ -107,7 +107,7 @@ class M11ToUSDM():
       'documentVersionId': protocl_document_version.id, 
       'studyIdentifiers': [identifier], 
       'studyPhase': self._title_page.trial_phase, 
-      'amendments': self._get_amendments
+      'amendments': self._get_amendments()
     }
     study_version = model_instance(StudyVersion, params, self._id_manager) 
     study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}, self._id_manager) 
