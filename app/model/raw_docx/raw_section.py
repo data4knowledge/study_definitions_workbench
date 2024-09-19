@@ -61,7 +61,14 @@ class RawSection():
   
   def next(self, index: int):
     return self.items[index + 1] if (index + 1) < len(self.items) else None
-  
+
+  def next_table(self, start_index: int) -> RawTable:
+    for index, item in enumerate(self.items):
+      if index > start_index:
+        if isinstance(self.items[index], RawTable):
+          return item
+    return None
+
   def _format_heading(self):
     if self.number and self.title:
       return f'<h{self.level}>{self.number} {self.title}</h{self.level}>'

@@ -16,10 +16,13 @@ class RawTable():
   def add(self, item):
     self.rows.append(item) 
 
+  def row(self, index: int):
+    return self.rows[index] if (index) < len(self.rows) else None
+
   def find_row(self, text: str) -> str:
     for row in self.rows:
       if row.cells[0].is_text():
-        if row.cells[0].text().upper().startswith(text.upper()):
+        if text.upper() in row.cells[0].text().upper():
           return row
     return None
 

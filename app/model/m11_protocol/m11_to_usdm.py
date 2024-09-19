@@ -131,10 +131,12 @@ class M11ToUSDM():
     for item in [self._amendment.primary_reason, self._amendment.secondary_reason]:
       params = {'code': item['code'] , 'otherReason': item['other_reason']}
       reason.append(model_instance(StudyAmendmentReason, params, self._id_manager))
+    impact = self._amendment.safety_impact or self._amendment.robustness_impact
+    #print(f"IMPACT: {impact}")
     params = {
       'number': '1', 
       'summary': self._amendment.summary, 
-      'substantialImpact': self._amendment.safety_impact or self._amendment.robustness_impact, 
+      'substantialImpact': impact, 
       'primaryReason': reason[0], 
       'secondaryReasons': [reason[1]], 
       'enrollments': [self._amendment.enrollment]

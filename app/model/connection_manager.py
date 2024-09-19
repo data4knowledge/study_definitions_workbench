@@ -16,7 +16,7 @@ class ConnectionManager:
   async def success(self, message: str, user_id: str):
     websocket = self._get_connection(user_id)
     if websocket:
-      print(f"SUCCESS:")
+      #print(f"SUCCESS:")
       text = f"""
         <div id="alert_ws_div" hx-swap-oob="true">
           <div class="alert alert-dismissible alert-success mt-3">

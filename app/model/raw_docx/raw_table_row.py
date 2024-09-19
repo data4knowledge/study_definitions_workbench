@@ -12,14 +12,16 @@ class RawTableRow():
   def find_cell(self, text: str) -> RawTableCell:
     for cell in self.cells:
       if cell.is_text():
-        if cell.text().upper().startswith(text.upper()):
+        #if cell.text().upper().startswith(text.upper()):
+        if text.upper() in cell.text().upper():
           return cell
     return None
 
   def find_cell_next_to(self, text: str) -> RawTableCell:
     for index, cell in enumerate(self.cells):
       if cell.is_text():
-        if cell.text().upper().startswith(text.upper()):
+        #if cell.text().upper().startswith(text.upper()):
+        if text.upper() in cell.text().upper():
           return self.next_cell(index)
     return None
 
