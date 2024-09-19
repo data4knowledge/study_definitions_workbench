@@ -1,4 +1,7 @@
+import re
 from usdm_excel.globals import Globals
+from usdm_model.geographic_scope import SubjectEnrollment
+from usdm_model.quantity import Quantity
 from app.model.raw_docx.raw_docx import RawDocx
 from app.model.raw_docx.raw_table import RawTable
 from app.model.raw_docx.raw_paragraph import RawParagraph
@@ -13,9 +16,9 @@ class M11IAmendment():
     self._id_manager = self._globals.id_manager
     self._cdisc_ct_library = self._globals.cdisc_ct_library
     self.enrollment = None
-    self.primary_reason = None
-    self.secondary_reason = None
-    self.summary = None
+    self.primary_reason = {'code': None, 'other_reason': ''}
+    self.secondary_reason = {'code': None, 'other_reason': ''}
+    self.summary = ''
     self.safety_impact = None
     self.robustness_impact = None
     self.changes = []
@@ -23,7 +26,7 @@ class M11IAmendment():
   def process(self):
     table = self._amendment_table()
     if table:
-      self.enrollment = table_get_row(table, 'Enrolled at time ')
+      self._enrollment(table)
       self._reasons(table)
       self.summary = table_get_row_html(table, 'Amendment Summary')
       self.safety_impact = table_get_row(table, 'Is this amendment likely to have a substantial impact on the safety')
@@ -87,14 +90,33 @@ class M11IAmendment():
     ]
     cell = row.find_cell(key)
     if cell:
+      reason = cell.text()
       parts = cell.text().split(' ')
       if len(parts) > 2:
         reason_text = parts[1]
         for reason in reason_map:
           if reason_text in reason['decode']:
-            code = cdisc_ct_code(reason['code'], reason['decode'], self._cdisc_ct_library, self._id_manager)
             application_logger.info(f"Amednment reason '{reason_text}' decoded as '{reason['code']}', '{reason['decode']}'")
-            return code
+            code = cdisc_ct_code(reason['code'], reason['decode'], self._cdisc_ct_library, self._id_manager)
+            return {'code': code, 'other_reason': ''}
+      application_logger.warning(f"Unable to decode amendment reason '{reason}'")      
+      code = cdisc_ct_code('C17649', 'Other', self._cdisc_ct_library, self._id_manager)
+      return {'code': code, 'other_reason': reason}
     code = cdisc_ct_code('C17649', 'Other', self._cdisc_ct_library, self._id_manager)
     application_logger.warning(f"Amendment reason '{key}' not decoded")
-    return code
+    return {'code': code, 'other_reason': 'No reason text found'}
+
+  def _enrollment(self, table):
+    text = table_get_row(table, 'Enrolled at time ')  
+    number = re.findall('[0-9]+', text)
+    enrollment = int(number[0]) if number else 0
+    global_code = cdisc_ct_code('C68846', 'Global', self._cdisc_ct_library, self._id_manager)
+    percent_code = cdisc_ct_code('C25613', 'Percentage', self._cdisc_ct_library, self._id_manager)
+    unit_code = percent_code if '%' in text else None
+    quantity = model_instance(Quantity, {'value': enrollment, 'unit': unit_code}, self._id_manager)
+    params = {
+      'type': global_code,
+      'code': None,
+      'quantity': quantity
+    }
+    self.enrollment = model_instance(SubjectEnrollment, params, self._id_manager)

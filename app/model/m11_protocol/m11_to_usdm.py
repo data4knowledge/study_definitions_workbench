@@ -11,6 +11,8 @@ from usdm_model.study_identifier import StudyIdentifier
 from usdm_model.organization import Organization
 from usdm_model.address import Address
 from usdm_model.narrative_content import NarrativeContent
+from usdm_model.study_amendment import StudyAmendment
+from usdm_model.study_amendment_reason import StudyAmendmentReason
 from usdm_excel.globals import Globals
 from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
@@ -18,6 +20,7 @@ from d4kms_generic import application_logger
 from app.model.m11_protocol.m11_title_page import M11TitlePage
 from app.model.m11_protocol.m11_inclusion_exclusion import M11InclusionExclusion
 from app.model.m11_protocol.m11_estimands import M11IEstimands
+from app.model.m11_protocol.m11_amendment import M11IAmendment
 from app.model.m11_protocol.m11_sections import M11Sections
 from app.model.m11_protocol.m11_utility import *
 
@@ -26,11 +29,12 @@ class M11ToUSDM():
   DIV_OPEN_NS = '<div xmlns="http://www.w3.org/1999/xhtml">'
   DIV_CLOSE = '</div>'
 
-  def __init__(self, title_page: M11TitlePage, inclusion_exclusion: M11InclusionExclusion, estimands: M11IEstimands, sections: M11Sections, globals: Globals, system_name, system_version):
+  def __init__(self, title_page: M11TitlePage, inclusion_exclusion: M11InclusionExclusion, estimands: M11IEstimands, amendment: M11IAmendment, sections: M11Sections, globals: Globals, system_name, system_version):
     self._globals = globals
     self._title_page = title_page
     self._inclusion_exclusion = inclusion_exclusion
     self._estimands = estimands
+    self._amendment = amendment
     self._sections = sections
     self._id_manager = self._globals.id_manager
     self._cdisc_ct_library = self._globals.cdisc_ct_library
@@ -95,8 +99,17 @@ class M11ToUSDM():
     address = model_instance(Address, sponsor_address, self._id_manager)
     organization = model_instance(Organization, {'name': self._title_page.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}, self._id_manager) 
     identifier = model_instance(StudyIdentifier, {'studyIdentifier': self._title_page.sponsor_protocol_identifier, 'studyIdentifierScope': organization}, self._id_manager)
-    study_version = model_instance(StudyVersion, {'versionIdentifier': '1', 'rationale': 'XXX', 'titles': [study_title], 'studyDesigns': [study_design], 
-                                                     'documentVersionId': protocl_document_version.id, 'studyIdentifiers': [identifier], 'studyPhase': self._title_page.trial_phase}, self._id_manager) 
+    params = {
+      'versionIdentifier': '1', 
+      'rationale': 'XXX', 
+      'titles': [study_title], 
+      'studyDesigns': [study_design], 
+      'documentVersionId': protocl_document_version.id, 
+      'studyIdentifiers': [identifier], 
+      'studyPhase': self._title_page.trial_phase, 
+      'amendments': self._get_amendments
+    }
+    study_version = model_instance(StudyVersion, params, self._id_manager) 
     study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}, self._id_manager) 
     return study
 
@@ -112,6 +125,21 @@ class M11ToUSDM():
       results.append(model_instance(EligibilityCriterion, params, self._id_manager))
     params = {'name': 'STUDY POP', 'label': 'Study Population', 'description': '', 'includesHealthySubjects': True, 'criteria': results}
     return model_instance(StudyDesignPopulation, params, self._id_manager)
+
+  def _get_amendments(self):
+    reason = []
+    for item in [self._amendment.primary_reason, self._amendment.secondary_reason]:
+      params = {'code': item['code'] , 'otherReason': item['other_reason']}
+      reason.append(model_instance(StudyAmendmentReason, params, self._id_manager))
+    params = {
+      'number': '1', 
+      'summary': self._amendment.summary, 
+      'substantialImpact': self._amendment.safety_impact or self._amendment.robustness_impact, 
+      'primaryReason': reason[0], 
+      'secondaryReasons': [reason[1]], 
+      'enrollments': [self._amendment.enrollment]
+    }
+    return [model_instance(StudyAmendment, params, self._id_manager)]
 
   def _document_version(self, study: Study) -> StudyProtocolDocumentVersion:
     return study.documentedBy.versions[0]
