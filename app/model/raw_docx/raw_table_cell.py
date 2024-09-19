@@ -1,10 +1,10 @@
+#from d4kms_generic import application_logger
+from app.model.raw_docx.raw_paragraph import RawParagraph
 from app.model.raw_docx.raw_list import RawList
 from app.model.raw_docx.raw_table import RawTable
-from app.model.raw_docx.raw_paragraph import RawParagraph
-from d4kms_generic import application_logger
 
 class RawTableCell():
-  
+
   def __init__(self, h_span: int=1, v_span: int=1, first: bool=True):
     self.h_span = h_span
     self.v_span = v_span
@@ -45,4 +45,3 @@ class RawTableCell():
       lines.append(item.to_html())
     lines.append('</td>')
     return ('\n').join(lines)
-

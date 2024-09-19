@@ -4,11 +4,25 @@ from d4kms_generic import application_logger
 class RawTableRow():
   
   def __init__(self):
-    self.cells = []
+    self.cells: list[RawTableCell] = []
   
   def add(self, cell: RawTableCell):
     self.cells.append(cell) 
   
+  def find_cell(self, text: str) -> RawTableCell:
+    for cell in self.cells:
+      if cell.is_text():
+        if cell.text().upper().startswith(text.upper()):
+          return cell
+    return None
+
+  def find_cell_next_to(self, text: str) -> RawTableCell:
+    for index, cell in enumerate(self.cells):
+      if cell.is_text():
+        if cell.text().upper().startswith(text.upper()):
+          return self._next_cell(index)
+    return None
+
   def to_html(self):
     lines = []
     lines.append("<tr>")
@@ -17,3 +31,8 @@ class RawTableRow():
     lines.append("</tr>")
     return ("\n").join(lines)
 
+  def _next_cell(self, start_index: int) -> RawTableCell:
+    for index, cell in enumerate(self.cells):
+      if index > start_index and cell.first:
+        return cell
+    return None

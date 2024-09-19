@@ -59,6 +59,9 @@ class RawSection():
   def is_empty(self) -> bool:
     return len(self.items) == 0
   
+  def next(self, index: int):
+    return self.items[index + 1] if (index + 1) < len(self.items) else None
+  
   def _format_heading(self):
     if self.number and self.title:
       return f'<h{self.level}>{self.number} {self.title}</h{self.level}>'
