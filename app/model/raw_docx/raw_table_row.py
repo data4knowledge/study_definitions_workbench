@@ -20,7 +20,7 @@ class RawTableRow():
     for index, cell in enumerate(self.cells):
       if cell.is_text():
         if cell.text().upper().startswith(text.upper()):
-          return self._next_cell(index)
+          return self.next_cell(index)
     return None
 
   def to_html(self):
@@ -31,7 +31,7 @@ class RawTableRow():
     lines.append("</tr>")
     return ("\n").join(lines)
 
-  def _next_cell(self, start_index: int) -> RawTableCell:
+  def next_cell(self, start_index: int) -> RawTableCell:
     for index, cell in enumerate(self.cells):
       if index > start_index and cell.first:
         return cell

@@ -25,7 +25,7 @@ class M11IAmendment():
     if table:
       self.enrollment = table_get_row(table, 'Enrolled at time ')
       self._reasons(table)
-      self.summary = table_get_row(table, 'Amendment Summary')
+      self.summary = table_get_row_html(table, 'Amendment Summary')
       self.safety_impact = table_get_row(table, 'Is this amendment likely to have a substantial impact on the safety')
       self.robustness_impact = table_get_row(table, 'Is this amendment likely to have a substantial impact on the reliability')
     table = self._changes_table()
@@ -35,8 +35,8 @@ class M11IAmendment():
   def _reasons(self, table):
     row = table.find_row('Amendment Summary')
     if row:
-      self.primary_reason = self._find_reason('primary')
-      self.secondary_reason = self._find_reason('secondary')
+      self.primary_reason = self._find_reason(row, 'primary')
+      self.secondary_reason = self._find_reason(row, 'secondary')
 
   def _changes(self, table):
     for index, row in enumerate(table.rows):
@@ -49,7 +49,8 @@ class M11IAmendment():
     section = self._raw_docx.target_document.section_by_ordinal(1)
     tables = section.tables()
     for table in tables:
-      row_three = tables.rows[2]
+      print(f"TABLE: {table}")
+      row_three = table.rows[2]
       if 'Amendment Summary' in row_three.cells[0].text():
         amendment_table = table
         break
@@ -95,5 +96,5 @@ class M11IAmendment():
             application_logger.info(f"Amednment reason '{reason_text}' decoded as '{reason['code']}', '{reason['decode']}'")
             return code
     code = cdisc_ct_code('C17649', 'Other', self._cdisc_ct_library, self._id_manager)
-    application_logger.warning(f"Amendment reason '{reason_text}' not decoded")
+    application_logger.warning(f"Amendment reason '{key}' not decoded")
     return code

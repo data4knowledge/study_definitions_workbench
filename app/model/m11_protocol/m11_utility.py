@@ -10,8 +10,16 @@ def table_get_row(table: RawTable, key: str) -> str:
   for row in table.rows:
     if row.cells[0].is_text():
       if row.cells[0].text().upper().startswith(key.upper()):
-        return row.cells[1].text().strip()
-  application_logger.info(f"Table row '{key}' not found")
+        cell = row.next_cell(0)
+        return cell.text() if cell else ''        
+  return ''
+
+def table_get_row_html(table: RawTable, key: str) -> str:
+  for row in table.rows:
+    if row.cells[0].is_text():
+      if row.cells[0].text().upper().startswith(key.upper()):
+        cell = row.next_cell(0)
+        return cell.to_html() if cell else ''        
   return ''
 
 def model_instance(cls, params: dict, id_manager: IdManager) -> object:
