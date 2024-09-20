@@ -18,16 +18,20 @@ def get_study_name(filepath):
   study = read_json(filepath)
   return study['study']['name']
 
-def list_and_copy(path=Path('.')):
+def list_and_copy(path):
+  key_file = 'usdm.json'
+  to_be_copied = ['usdm.json', 'extra.yaml']
   for entry in path.iterdir():
     if entry.is_file():
-      if str(entry).endswith('usdm.json'):
-        name = get_study_name(entry)
-        dir = Path(f'data/{name}')
+      if entry.name == key_file:
+        dir_name = get_study_name(entry)
+        dir = Path(f'data/{dir_name}')
         make_dir(dir)
-        dest = Path(f'data/{name}/usdm.json')
-        shutil.copyfile(entry, dest)
-        print(f'File {entry} copied to {dest}')
+        for file_name in to_be_copied:
+          src = Path(f'{path}/{file_name}')
+          dest = Path(f'data/{dir_name}/{file_name}')
+          shutil.copyfile(src, dest)
+          print(f'File {src} copied to {dest}')
     elif entry.is_dir():
       list_and_copy(entry)
  
