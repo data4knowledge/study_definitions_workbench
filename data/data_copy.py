@@ -20,7 +20,7 @@ def get_study_name(filepath):
 
 def list_and_copy(path):
   key_file = 'usdm.json'
-  to_be_copied = ['usdm.json', 'extra.yaml']
+  to_be_copied = ['usdm.json', 'extra.yaml', 'fhir_v2.json']
   for entry in path.iterdir():
     if entry.is_file():
       if entry.name == key_file:
@@ -30,8 +30,11 @@ def list_and_copy(path):
         for file_name in to_be_copied:
           src = Path(f'{path}/{file_name}')
           dest = Path(f'data/{dir_name}/{file_name}')
-          shutil.copyfile(src, dest)
-          print(f'File {src} copied to {dest}')
+          try:
+            shutil.copyfile(src, dest)
+            print(f'File {src} copied to {dest}')
+          except Exception as e:
+            print(f"Exception raised copying file {e}")
     elif entry.is_dir():
       list_and_copy(entry)
  
