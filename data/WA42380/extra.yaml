@@ -12,9 +12,17 @@ amendment:
   safety_impact: false
   safety_impact_reason: ''
 miscellaneous:
-  medical_expert_contact: ''
+  medical_expert_contact: '<p>SAE Reporting Method: Report Serious Adverse Events
+    to the sponsor electronically. Refer to Section 9.4 for detailed reporting instructions.</p>
+
+    <p></p>'
   sae_reporting_method: ''
-  sponsor_signatory: ''
+  sponsor_signatory: '<p>Sponsor Signatory:</p>
+
+    <p>{This protocol was approved via electronic signature as described on the approval
+    page appended to the document.}</p>
+
+    <p></p>'
 title_page:
   amendment_details: ''
   amendment_identifier: '3'
