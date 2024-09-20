@@ -174,7 +174,7 @@ class ToFHIRV2(ToFHIR):
     return Coding(system=code.codeSystem, version=code.codeSystemVersion, code=code.code, display=code.decode)
 
   def _codeable_concept(self, code: Coding):
-    return CodeableConcept(coding=code)
+    return CodeableConcept(coding=[code])
   
   def _organization_from_organization(self, organization: USDMOrganization):  
     address = self._address_from_address(organization.legalAddress)
@@ -217,13 +217,13 @@ class ToFHIRV2(ToFHIR):
   def _amendment_ext(self, version: USDMStudyVersion):
     source = version.amendments[0]
     amendment = Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/studyAmendment", extension=[])
-    amendment.extension.append(self._extension('amendmentNumber', value=self._title_page['amendment_number']))
+    amendment.extension.append(self._extension('amendmentNumber', value=self._title_page['amendment_identifier']))
     amendment.extension.append(self._extension('scope', value=self._title_page['amendment_scope']))
     amendment.extension.append(self._extension('details', value=self._title_page['amendment_details']))
     amendment.extension.append(self._extension_boolean('substantialImpactSafety', value=self._amendment['safety_impact']))
     amendment.extension.append(self._extension('substantialImpactSafety', value=self._amendment['safety_impact_reason']))
     amendment.extension.append(self._extension_boolean('substantialImpactSafety', value=self._amendment['robustness_impact']))
-    amendment.extension.append(self._extension('substantialImpactSafety', value=self._amendment['robustmess_impact_reason']))
+    amendment.extension.append(self._extension('substantialImpactSafety', value=self._amendment['robustness_impact_reason']))
     primary = self._codeable_concept(self._coding_from_code(source.primaryReason.code))
     secondary = self._codeable_concept(self._coding_from_code(source.secondaryReasons[0].code))
     amendment.extension.append(self._extension_codeable('primaryReason', value=primary))
