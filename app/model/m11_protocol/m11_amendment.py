@@ -63,10 +63,11 @@ class M11IAmendment():
     impact = False
     reason = ''
     row = table.find_row(text)
-    cell = row.cells[1]
-    impact = cell.text().upper().startswith('YES')
-    if impact:
-      reason = cell.to_html()
+    if row:
+      cell = row.cells[1]
+      impact = cell.text().upper().startswith('YES')
+      if impact:
+        reason = cell.to_html()
     return impact, reason
 
   def _reasons(self, table: RawTable):
