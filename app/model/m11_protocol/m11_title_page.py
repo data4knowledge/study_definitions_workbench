@@ -27,6 +27,7 @@ class M11TitlePage():
     self.version_number = None
     self.amendment_identifier = None
     self.amendment_scope = None
+    self.amendment_details = None
     self.compound_codes = None
     self.compound_names = None
     self.trial_phase_raw = None
@@ -55,6 +56,7 @@ class M11TitlePage():
     self.version_number = table_get_row(table, 'Version Number')
     self.amendment_identifier = table_get_row(table, 'Amendment Identifier')
     self.amendment_scope = table_get_row(table, 'Amendment Scope')
+    self.amendment_details = table_get_row(table, 'Amendment Details')
     self.compound_codes = table_get_row(table, 'Compound Code(s)')
     self.compound_names = table_get_row(table, 'Compound Name(s)')
     self.trial_phase_raw = table_get_row(table, 'Trial Phase')
@@ -77,6 +79,7 @@ class M11TitlePage():
       'compound_names': self.compound_names,
       'amendment_identifier': self.amendment_identifier,
       'amendment_scope': self.amendment_scope,
+      'amendment_details': self.amendment_details,
       'sponsor_name_and_address': self.sponsor_name_and_address,
       'original_protocol': self.original_protocol,
       'regulatory_agency_identifiers': self.regulatory_agency_identifiers,

@@ -19,8 +19,11 @@ class ToFHIR():
   def __init__(self, study: Study, uuid: uuid4, extra: dict={}):
     self.study = study
     self._uuid = uuid
-    self._extensions = extra['extensions']
-    print(f"EXTRA: {self._extensions}")
+    self._title_page = extra['title_page']
+    self._miscellaneous = extra['miscellaneous']
+    self._amendment = extra['amendment']
+    #print(f"EXTRA: {self._title_page}")
+    #print(f"EXTRA: {self._miscellaneous}")
     self._errors_and_logging = ErrorsAndLogging()
     self._cross_ref = CrossReference(study, self._errors_and_logging)
     self.study_version = study.versions[0]

@@ -4,6 +4,7 @@ from usdm_model.geographic_scope import SubjectEnrollment
 from usdm_model.quantity import Quantity
 from app.model.raw_docx.raw_docx import RawDocx
 from app.model.raw_docx.raw_table import RawTable
+from app.model.raw_docx.raw_section import RawSection
 from app.model.raw_docx.raw_paragraph import RawParagraph
 from d4kms_generic import application_logger
 from app.model.m11_protocol.m11_utility import *
@@ -19,57 +20,82 @@ class M11IAmendment():
     self._cdisc_ct_library = self._globals.cdisc_ct_library
     other_code = cdisc_ct_code('C17649', 'Other', self._cdisc_ct_library, self._id_manager)
     self.enrollment = self._build_enrollment(0, '')
+    self.amendment_details = ''
     self.primary_reason = {'code': other_code, 'other_reason': self.OTHER_REASON}
     self.secondary_reason = {'code': other_code, 'other_reason': self.OTHER_REASON}
     self.summary = ''
     self.safety_impact = False
+    self.safety_impact_reason = ''
     self.robustness_impact = False
+    self.robustness_impact_reason = ''
     self.changes = []
 
   def process(self):
-    table = self._amendment_table()
+    section = self._raw_docx.target_document.section_by_ordinal(1)
+    amend_item, amend_index = section.find_first_at_start('Amendment Details')
+    table, table_index = self._amendment_table(section)
+    if amend_item and table:
+      self.amendment_details = section.to_html_between(amend_index, table_index)
     if table:
       self._enrollment(table)
       self._reasons(table)
       self.summary = table_get_row_html(table, 'Amendment Summary')
       if self.summary:
         application_logger.info(f"Amendment summary found")
-      self.safety_impact = False
-      x = table_get_row(table, 'Is this amendment likely to have a substantial impact on the safety')
-      self.robustness_impact = False
-      x = table_get_row(table, 'Is this amendment likely to have a substantial impact on the reliability')
+      self.safety_impact, self.safety_impact_reason = self._impact(table, 'Is this amendment likely to have a substantial impact on the safety')
+      self.robustness_impact, self.robustness_impact_reason = self._impact(table, 'Is this amendment likely to have a substantial impact on the reliability')
+      application_logger.info(f"Safety impact: {self.safety_impact}, {self.safety_impact_reason}")
+      application_logger.info(f"Robustness impact: {self.robustness_impact}, {self.robustness_impact}")
     table = self._changes_table()
     if table:
       self.changes = self._changes(table)
 
-  def _reasons(self, table):
+  def extra(self):
+    return {
+      'amendment_details': self.amendment_details,
+      'safety_impact': self.safety_impact,
+      'safety_impact_reason': self.safety_impact_reason,
+      'robustness_impact': self.robustness_impact,
+      'robustness_impact_reason': self.robustness_impact_reason
+    }
+  
+  def _impact(self, table, text):
+    impact = False
+    reason = ''
+    row = table.find_row(text)
+    cell = row.cells[1]
+    impact = cell.text().upper().startswith('YES')
+    if impact:
+      reason = cell.to_html()
+    return impact, reason
+
+  def _reasons(self, table: RawTable):
     row = table.find_row('Reason(s) for Amendment:')
     if row:
       self.primary_reason = self._find_reason(row, 'primary')
       self.secondary_reason = self._find_reason(row, 'secondary')
 
-  def _changes(self, table):
+  def _changes(self, table: RawTable):
     for index, row in enumerate(table.rows):
       if index == 0:
         continue
       self.changes.append({'description': row.cells[0].text(), 'rationale': row.cells[1].text(), 'section': row.cells[2].text()})
 
-  def _amendment_table(self):
-    section = self._raw_docx.target_document.section_by_ordinal(1)
+  def _amendment_table(self, section: RawSection):
     for index, item in enumerate(section.items):
       if isinstance(item, RawParagraph):
         if text_within('The table below describes the current amendment', item.text):
-          table = section.next_table(index)
+          table = section.next_table(index + 1)
           application_logger.info(f"Amendment table {'' if table else 'not '}found")
-          return table
-    return None
+          return table, index
+    return None, -1
 
   def _changes_table(self):
     section = self._raw_docx.target_document.section_by_ordinal(1)
     for index, item in enumerate(section.items):
       if isinstance(item, RawParagraph):
         if text_within('Overview of Changes in the Current Amendment', item.text):
-          table = section.next_table(index)
+          table = section.next_table(index + 1)
           application_logger.info(f"Changes table {'' if table else 'not '}found")
           return table
     return None

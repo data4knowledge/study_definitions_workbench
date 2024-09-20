@@ -8,6 +8,7 @@ from app.model.m11_protocol.m11_to_usdm import M11ToUSDM
 from app.model.m11_protocol.m11_styles import M11Styles
 from app.model.m11_protocol.m11_estimands import M11IEstimands
 from app.model.m11_protocol.m11_amendment import M11IAmendment
+from app.model.m11_protocol.m11_miscellaneous import M11Miscellaneous
 from app.model.m11_protocol.m11_utility import *
 
 class M11Protocol():
@@ -24,15 +25,17 @@ class M11Protocol():
     self._inclusion_exclusion = M11InclusionExclusion(self._raw_docx, self._globals)
     self._estimands = M11IEstimands(self._raw_docx, self._globals)
     self._amendment = M11IAmendment(self._raw_docx, self._globals)
+    self._miscellaneous = M11Miscellaneous(self._raw_docx, self._globals)
     self._sections = M11Sections(self._raw_docx, self._globals)
     self._styles = M11Styles(self._raw_docx, self._globals)
 
   async def process(self):
     self._styles.process()
     await self._title_page.process()
+    self._miscellaneous.process()
+    self._amendment.process()
     self._inclusion_exclusion.process()
     self._estimands.process()
-    self._amendment.process()
     self._sections.process()
 
   def to_usdm(self) -> Wrapper:
@@ -40,5 +43,9 @@ class M11Protocol():
     return usdm.export()
 
   def extra(self):
-    return self._title_page.extra()
+    return {
+      'title_page': self._title_page.extra(), 
+      'miscellaneous': self._miscellaneous.extra(), 
+      'amendment': self._amendment.extra()
+    }
   

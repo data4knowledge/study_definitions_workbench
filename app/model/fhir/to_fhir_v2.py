@@ -17,6 +17,7 @@ from usdm_model.study_title import StudyTitle as USDMStudyTitle
 from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
 from usdm_model.organization import Organization as USDMOrganization
 from usdm_model.address import Address as USDMAddress
+from usdm_model.study_version import StudyVersion as USDMStudyVersion
 from uuid import uuid4
 
 import datetime
@@ -54,7 +55,7 @@ class ToFHIRV2(ToFHIR):
     result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[])
 
     # Sponsor Confidentiality Statememt
-    ext = self._extension("research-study-sponsor-confidentiality-statement", self._extensions['sponsor_confidentiality'])
+    ext = self._extension("research-study-sponsor-confidentiality-statement", self._title_page['sponsor_confidentiality'])
     if ext:
       result.extension.append(ext)
     
@@ -73,7 +74,7 @@ class ToFHIRV2(ToFHIR):
       result.identifier.append({'type': identifier_code, 'value': identifier.studyIdentifier})
     
     # Original Protocol - No implementation details currently
-    x = self._extensions['original_protocol']
+    x = self._title_page['original_protocol']
     
     # Version Number
     result.version = version.versionIdentifier
@@ -84,16 +85,16 @@ class ToFHIRV2(ToFHIR):
       result.date = approval_date.dateValue
     
     # Amendment Identifier
-    result.identifier.append({'type': 'Amendment Identifier', 'value': self._extensions['amendment_identifier']})    
+    result.identifier.append({'type': 'Amendment Identifier', 'value': self._title_page['amendment_identifier']})    
     
     # Amendment Scope - Part of Amendment
-    x = self._extensions['amendment_scope']
+    x = self._title_page['amendment_scope']
     
     # Compound Codes - No implementation details currently
-    x = self._extensions['compound_codes']
+    x = self._title_page['compound_codes']
     
     # Compound Names - No implementation details currently
-    x = self._extensions['compound_names']
+    x = self._title_page['compound_names']
     
     # Trial Phase
     phase = self._phase()
@@ -116,29 +117,34 @@ class ToFHIRV2(ToFHIR):
         result.associatedParty.append(item)
 
     # Manufacturer Name and Address
-    x = self._extensions['manufacturer_name_and_address']
+    x = self._title_page['manufacturer_name_and_address']
     
     # Regulatory Agency Identifiers, see above
-    x = self._extensions['regulatory_agency_identifiers']
+    x = self._title_page['regulatory_agency_identifiers']
     
     # Sponsor Approval
-    result.progressStatus.append(self._progress_status(self._extensions['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date'))
+    result.progressStatus.append(self._progress_status(self._title_page['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date'))
     
     # Sponsor Signatory
-    item = self._associated_party(self._extensions['sponsor_signatory'], 'sponsor-signatory', 'sponsor signatory')
+    item = self._associated_party(self._title_page['sponsor_signatory'], 'sponsor-signatory', 'sponsor signatory')
     if item:
       result.associatedParty.append(item)
     
     # Medical Expert Contact
-    item = self._associated_party(self._extensions['medical_expert_contact'], 'medical-expert', 'medical expert')
+    item = self._associated_party(self._title_page['medical_expert_contact'], 'medical-expert', 'medical expert')
     if item:
       result.associatedParty.append(item)
     
     # SAE Reporting Method
-    ext = self._extension("research-study-sae-reporting-method", self._extensions['sae_reporting_method'])
+    ext = self._extension("research-study-sae-reporting-method", self._title_page['sae_reporting_method'])
     if ext:
       result.extension.append(ext)
     
+    # Amendment
+    ext = self._amendment_ext(version)
+    if ext:
+      result.extension.append(ext)
+
     print(f"RESEARCH STUDY: {result}")
     return result
   
@@ -167,6 +173,9 @@ class ToFHIRV2(ToFHIR):
   def _coding_from_code(self, code: USDMCode):
     return Coding(system=code.codeSystem, version=code.codeSystemVersion, code=code.code, display=code.decode)
 
+  def _codeable_concept(self, code: Coding):
+    return CodeableConcept(coding=code)
+  
   def _organization_from_organization(self, organization: USDMOrganization):  
     address = self._address_from_address(organization.legalAddress)
     return Organization(id=str(uuid4()), name=organization.label, contact=[{'address': address}])
@@ -204,6 +213,28 @@ class ToFHIRV2(ToFHIR):
     code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=state_code, display=state_display)
     state = CodeableConcept(coding=[code])
     return ResearchStudyProgressStatus(state=state, period={'start': value})
+
+  def _amendment_ext(self, version: USDMStudyVersion):
+    source = version.amendments[0]
+    amendment = Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/studyAmendment", extension=[])
+    amendment.extension.append(self._extension('amendmentNumber', value=self._title_page['amendment_number']))
+    amendment.extension.append(self._extension('scope', value=self._title_page['amendment_scope']))
+    amendment.extension.append(self._extension('details', value=self._title_page['amendment_details']))
+    amendment.extension.append(self._extension_boolean('substantialImpactSafety', value=self._amendment['safety_impact']))
+    amendment.extension.append(self._extension('substantialImpactSafety', value=self._amendment['safety_impact_reason']))
+    amendment.extension.append(self._extension_boolean('substantialImpactSafety', value=self._amendment['robustness_impact']))
+    amendment.extension.append(self._extension('substantialImpactSafety', value=self._amendment['robustmess_impact_reason']))
+    primary = self._codeable_concept(self._coding_from_code(source.primaryReason.code))
+    secondary = self._codeable_concept(self._coding_from_code(source.secondaryReasons[0].code))
+    amendment.extension.append(self._extension_codeable('primaryReason', value=primary))
+    amendment.extension.append(self._extension_codeable('secondaryReason', value=secondary))
+    return amendment
   
   def _extension(self, key: str, value: str):
     return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueString=value) if value else None
+
+  def _extension_boolean(self, key: str, value: str):
+    return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueBoolean=value) if value else None
+
+  def _extension_codeable(self, key: str, value: CodeableConcept):
+    return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueCodeableConcept=value) if value else None
