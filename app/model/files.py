@@ -19,6 +19,7 @@ class Files:
       "docx": {'method': self._save_word_file, 'use_original': True, 'filename': 'doc', 'extension': 'docx'},
       "usdm": {'method': self._save_json_file, 'use_original': False, 'filename': 'usdm', 'extension': 'json'},
       "fhir": {'method': self._save_json_file, 'use_original': False, 'filename': 'fhir', 'extension': 'json'},
+      "fhir_v2": {'method': self._save_json_file, 'use_original': False, 'filename': 'fhir_v2', 'extension': 'json'},
       "errors": {'method': self._save_csv_file, 'use_original': False, 'filename': 'errors', 'extension': 'csv'},
       "protocol": {'method': self._save_pdf_file, 'use_original': False, 'filename': 'protocol', 'extension': 'pdf'},
       "highlight": {'method': self._save_html_file, 'use_original': False, 'filename': 'highlight', 'extension': 'html'},
