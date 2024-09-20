@@ -1,4 +1,15 @@
-extensions:
+amendment:
+  amendment_details: ''
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: ''
+  sae_reporting_method: ''
+  sponsor_signatory: ''
+title_page:
+  amendment_details: ''
   amendment_identifier: Unavailable
   amendment_scope: Unavailable
   compound_codes: ''

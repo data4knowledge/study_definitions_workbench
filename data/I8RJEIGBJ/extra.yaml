@@ -1,0 +1,54 @@
+amendment:
+  amendment_details: '<p>Amendment Details:  This protocol has not been amended previously.</p>
+
+    <p>Overall Rationale for the Amendment:</p>
+
+    <p>The overall rationale (one primary driver) for the changes implemented in the
+    protocol amendment should be provided. In addition, provide a high-level description
+    of the change(s) and a brief scientific rationale for specific items outlined
+    in the table provided (eg, changes to individual inclusion/exclusion criteria).
+    See Appendix 9, Protocol Amendment History for examples of format and green text
+    for sample content.</p>
+
+    <p>Updates to address safety concern & align with product guidelines.</p>'
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: ''
+  sae_reporting_method: ''
+  sponsor_signatory: ''
+title_page:
+  amendment_details: ''
+  amendment_identifier: 'I8R-JE-IGBJ(a)
+
+    '
+  amendment_scope: 'Global
+
+    '
+  compound_codes: 'LY900018
+
+    '
+  compound_names: 'Glucagon
+
+    '
+  manufacturer_name_and_address: 'On file with sponsor.
+
+    '
+  medical_expert_contact: ''
+  original_protocol: 'No
+
+    '
+  regulatory_agency_identifiers: 'NCT03421379
+
+    '
+  sae_reporting_method: ''
+  sponsor_approval_date: '2017-10-26T00:00:00'
+  sponsor_confidentiality: ''
+  sponsor_name_and_address: 'Eli Lilly Japan K.K
+
+    Japan
+
+    '
+  sponsor_signatory: ''

@@ -1,0 +1,35 @@
+amendment:
+  amendment_details: '<p>Amendment Details</p>
+
+    <p>This is the first protocol amendment.</p>
+
+    <p>Current Amendment</p>'
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: ''
+  sae_reporting_method: ''
+  sponsor_signatory: ''
+title_page:
+  amendment_details: ''
+  amendment_identifier: '1.1'
+  amendment_scope: 'Local US
+
+    '
+  compound_codes: ASP8062
+  compound_names: ''
+  manufacturer_name_and_address: ''
+  medical_expert_contact: ''
+  original_protocol: 'No'
+  regulatory_agency_identifiers: IND 146215
+  sae_reporting_method: ''
+  sponsor_approval_date: '2020-07-30T00:00:00'
+  sponsor_confidentiality: ''
+  sponsor_name_and_address: 'Astellas Pharma
+
+    Global Development Inc.
+
+    1 Astellas Way Northbrook, IL 60062, US'
+  sponsor_signatory: ''

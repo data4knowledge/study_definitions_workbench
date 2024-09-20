@@ -1,0 +1,66 @@
+amendment:
+  amendment_details: '<p>Amendment Details</p>
+
+    <p>This protocol has been amended previously. Details of prior amendments are
+    presented in Prior Protocol Amendment(s).</p>
+
+    <p></p>
+
+    <p>Current Amendment</p>'
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: ''
+  sae_reporting_method: ''
+  sponsor_signatory: ''
+title_page:
+  amendment_details: ''
+  amendment_identifier: '3'
+  amendment_scope: Global
+  compound_codes: 'Tocilizumab (RO4877533)
+
+    '
+  compound_names: ''
+  manufacturer_name_and_address: ''
+  medical_expert_contact: ''
+  original_protocol: 'No'
+  regulatory_agency_identifiers: 'EU CT Number: 2020-001154-22
+
+    IND Number: 148225
+
+    NCT Number: NCT04320615
+
+    '
+  sae_reporting_method: ''
+  sponsor_approval_date: ''
+  sponsor_confidentiality: 'This clinical study is being sponsored globally by F.
+    Hoffmann-La Roche Ltd of Basel,
+
+    Switzerland. However, it may be implemented in individual countries by Roche''s
+    local affiliates,
+
+    including Genentech, Inc. in the United States. The information contained in this
+    document, especially
+
+    any unpublished data, is the property of F. Hoffmann-La Roche Ltd (or under its
+    control) and therefore
+
+    is provided to you in confidence as an investigator, potential investigator, or
+    consultant, for review by
+
+    you, your staff, and an applicable Ethics Committee or Institutional Review Board.
+    It is understood that
+
+    this information will not be disclosed to others without written authorization
+    from Roche except to the
+
+    extent necessary to obtain informed consent from persons to whom the drug may
+    be administered.
+
+    '
+  sponsor_name_and_address: 'F. Hoffmann-La Roche Ltd
+
+    '
+  sponsor_signatory: ''
