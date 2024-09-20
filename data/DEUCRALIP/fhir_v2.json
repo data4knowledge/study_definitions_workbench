@@ -5,13 +5,13 @@
     "value": "urn:uuid:62d92a20-e97d-4ecf-9e53-599cf37ed52c"
   },
   "type": "document",
-  "timestamp": "2024-09-20T17:33:38.452375+00:00",
+  "timestamp": "2024-09-20T17:46:21.048672+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234",
       "resource": {
         "resourceType": "Organization",
-        "id": "25e20354-cfd4-4ff8-ba68-cfeafdeb6326",
+        "id": "462d1fea-887c-473f-beec-4e606034036b",
         "contact": [
           {
             "address": {
@@ -38,11 +38,6 @@
                 "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/scope",
                 "valueString": "Global"
               },
-              null,
-              null,
-              null,
-              null,
-              null,
               {
                 "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/primaryReason",
                 "valueCodeableConcept": {
@@ -111,7 +106,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/b33f6287-759e-4c6c-84dd-ba1b6c8d93cb"
+              "reference": "Organization/54008709-88d4-4209-9928-f575485f529f"
             }
           }
         ],
@@ -141,7 +136,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-20T17:33:38.452375+00:00",
+        "date": "2024-09-20T17:46:21.048672+00:00",
         "author": [
           {
             "display": "USDM"
