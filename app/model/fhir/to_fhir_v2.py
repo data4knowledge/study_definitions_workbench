@@ -123,7 +123,9 @@ class ToFHIRV2(ToFHIR):
     x = self._title_page['regulatory_agency_identifiers']
     
     # Sponsor Approval
-    result.progressStatus.append(self._progress_status(self._title_page['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date'))
+    status = self._progress_status(self._title_page['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date')
+    if status:
+      result.progressStatus.append(status)
     
     # Sponsor Signatory
     item = self._associated_party(self._title_page['sponsor_signatory'], 'sponsor-signatory', 'sponsor signatory')
@@ -210,9 +212,13 @@ class ToFHIRV2(ToFHIR):
       return None
 
   def _progress_status(self, value: str, state_code: str, state_display: str):
-    code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=state_code, display=state_display)
-    state = CodeableConcept(coding=[code])
-    return ResearchStudyProgressStatus(state=state, period={'start': value})
+    print(f"DATE: {value}")
+    if value:
+      code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=state_code, display=state_display)
+      state = CodeableConcept(coding=[code])
+      return ResearchStudyProgressStatus(state=state, period={'start': value})
+    else:
+      return None
 
   def _amendment_ext(self, version: USDMStudyVersion):
     source = version.amendments[0]
@@ -238,6 +244,7 @@ class ToFHIRV2(ToFHIR):
     ext = self._extension('substantialImpactSafety', value=self._amendment['robustness_impact_reason'])
     if ext:
       amendment.extension.append(ext)
+
     primary = self._codeable_concept(self._coding_from_code(source.primaryReason.code))
     ext = self._extension_codeable('primaryReason', value=primary)
     if ext:
