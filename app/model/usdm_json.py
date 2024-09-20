@@ -46,7 +46,9 @@ class USDMJson():
     usdm.from_json(self._data)
     study = usdm.wrapper().study
     fhir = ToFHIRV2(study, self.uuid, self._extra)
-    return fhir.to_fhir()
+    data = fhir.to_fhir()
+    self._files.save('fhir_v2', data)
+    return data
 
   def pdf(self):
     usdm = USDMDb()
