@@ -217,17 +217,35 @@ class ToFHIRV2(ToFHIR):
   def _amendment_ext(self, version: USDMStudyVersion):
     source = version.amendments[0]
     amendment = Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/studyAmendment", extension=[])
-    amendment.extension.append(self._extension('amendmentNumber', value=self._title_page['amendment_identifier']))
-    amendment.extension.append(self._extension('scope', value=self._title_page['amendment_scope']))
-    amendment.extension.append(self._extension('details', value=self._title_page['amendment_details']))
-    amendment.extension.append(self._extension_boolean('substantialImpactSafety', value=self._amendment['safety_impact']))
-    amendment.extension.append(self._extension('substantialImpactSafety', value=self._amendment['safety_impact_reason']))
-    amendment.extension.append(self._extension_boolean('substantialImpactSafety', value=self._amendment['robustness_impact']))
-    amendment.extension.append(self._extension('substantialImpactSafety', value=self._amendment['robustness_impact_reason']))
+    ext = self._extension('amendmentNumber', value=self._title_page['amendment_identifier'])
+    if ext:
+      amendment.extension.append(ext)
+    ext = self._extension('scope', value=self._title_page['amendment_scope'])
+    if ext:
+      amendment.extension.append(ext)
+    ext = self._extension('details', value=self._title_page['amendment_details'])
+    if ext:
+      amendment.extension.append(ext)
+    ext = self._extension_boolean('substantialImpactSafety', value=self._amendment['safety_impact'])
+    if ext:
+      amendment.extension.append(ext)
+    ext = self._extension('substantialImpactSafety', value=self._amendment['safety_impact_reason'])
+    if ext:
+      amendment.extension.append(ext)
+    ext = self._extension_boolean('substantialImpactSafety', value=self._amendment['robustness_impact'])
+    if ext:
+      amendment.extension.append(ext)
+    ext = self._extension('substantialImpactSafety', value=self._amendment['robustness_impact_reason'])
+    if ext:
+      amendment.extension.append(ext)
     primary = self._codeable_concept(self._coding_from_code(source.primaryReason.code))
-    secondary = self._codeable_concept(self._coding_from_code(source.secondaryReasons[0].code))
-    amendment.extension.append(self._extension_codeable('primaryReason', value=primary))
-    amendment.extension.append(self._extension_codeable('secondaryReason', value=secondary))
+    ext = self._extension_codeable('primaryReason', value=primary)
+    if ext:
+      amendment.extension.append(ext)
+      secondary = self._codeable_concept(self._coding_from_code(source.secondaryReasons[0].code))
+      ext = self._extension_codeable('secondaryReason', value=secondary)
+      if ext:
+        amendment.extension.append(ext)
     return amendment
   
   def _extension(self, key: str, value: str):
