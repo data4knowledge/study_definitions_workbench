@@ -19,7 +19,7 @@ class M11Miscellaneous():
     self.medical_expert_contact = ''
     self.sae_reporting_method = ''
 
-  async def process(self):
+  def process(self):
     section = self._raw_docx.target_document.section_by_ordinal(1)
     sig_item, sig_index = section.find_first_at_start('Sponsor Signatory')
     expert_item, expert_index  = section.find_first_at_start('Medical Expert')

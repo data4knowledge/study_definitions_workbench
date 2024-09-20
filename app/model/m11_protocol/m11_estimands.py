@@ -11,11 +11,10 @@ class M11IEstimands():
     self._raw_docx = raw_docx
     self._id_manager = self._globals.id_manager
     self._cdisc_ct_library = self._globals.cdisc_ct_library
-    self.estimands = []
     self.objectives = []
 
   def process(self):
-    self._primary_objectives()
+    self.objectives = self._primary_objectives()
 
   def _primary_objectives(self):
     objectives = []
@@ -37,7 +36,7 @@ class M11IEstimands():
                 'population': '', 
                 'treatment': '', 
                 'endpoint': '', 
-                'population-summary': '', 
+                'population_summary': '', 
                 'i_event': '', 
                 'strategy': ''
               }
@@ -48,21 +47,23 @@ class M11IEstimands():
                   'population': 'Population',
                   'treatment': 'Treatment', 
                   'endpoint': 'Endpoint', 
-                  'population-summary': 'Population-Level Summary', 
+                  'population_summary': 'Population-Level Summary', 
                 }
-                for key, text in keys.item():
-                  item = table_get_row(table, 'Population')
+                for key, text in keys.items():
+                  item = table_get_row(table, text)
                   if item:
                     objective[key] = item
+                    application_logger.info(f"Found estimands {key} -> {item}")
                 item, index = table.find_row('Intercurrent Event')
                 if item:
                   item, index = table.next(index)
-                  objective['i_event'] = item.cell[0].to_html()
-                  objective['strategy'] = item.cell[1].to_html()              
+                  objective['i_event'] = item.cells[0].to_html()
+                  objective['strategy'] = item.cells[1].to_html()              
+                  application_logger.info(f"Found estimands event and strategy")
               objectives.append(objective)
             section_number += 1
           else:
             sections = False  
     else:
       application_logger.error('Invalid M11 document. Section 3.1 is not present.')
-
+    return objectives

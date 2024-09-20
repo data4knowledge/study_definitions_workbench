@@ -13,6 +13,12 @@ from usdm_model.address import Address
 from usdm_model.narrative_content import NarrativeContent
 from usdm_model.study_amendment import StudyAmendment
 from usdm_model.study_amendment_reason import StudyAmendmentReason
+from usdm_model.endpoint import Endpoint
+from usdm_model.objective import Objective
+from usdm_model.analysis_population import AnalysisPopulation
+from usdm_model.intercurrent_event import IntercurrentEvent
+from usdm_model.study_intervention import StudyIntervention
+from usdm_model.estimand import Estimand
 from usdm_excel.globals import Globals
 from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
@@ -91,9 +97,10 @@ class M11ToUSDM():
     protocl_document_version = model_instance(StudyProtocolDocumentVersion, {'protocolVersion': '1', 'protocolStatus': protocl_status_code}, self._id_manager)
     protocl_document = model_instance(StudyProtocolDocument, {'name': 'PROTOCOL V1', 'label': '', 'description': '', 'versions': [protocl_document_version]}, self._id_manager)
     population = self._population()
+    objectives, estimands = self._objectives()
     study_design = model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
       'rationale': 'XXX', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
-      'epochs': [], 'population': population}, self._id_manager)
+      'epochs': [], 'population': population, 'objectives': objectives, 'estimands': estimands}, self._id_manager)
     sponsor_address = self._title_page.sponsor_address
     #print(f"ADDRESS: {sponsor_address}")
     address = model_instance(Address, sponsor_address, self._id_manager)
@@ -113,6 +120,35 @@ class M11ToUSDM():
     study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}, self._id_manager) 
     return study
 
+  def _objectives(self):
+    print(f"OBJECTIVES")
+    objs = []
+    ests = []
+    primary_o = cdisc_ct_code('C85826', 'Primary Objective', self._cdisc_ct_library, self._id_manager)
+    primary_ep = cdisc_ct_code('C94496', 'Primary Endpoint', self._cdisc_ct_library, self._id_manager)
+
+    int_role = cdisc_ct_code('C41161', 'Experimental Intervention', self._cdisc_ct_library, self._id_manager)
+    int_type = cdisc_ct_code('C1909', 'Pharmacologic Substance', self._cdisc_ct_library, self._id_manager)
+    int_designation = cdisc_ct_code('C99909x1', 'IMP', self._cdisc_ct_library, self._id_manager)
+
+    for index, objective in enumerate(self._estimands.objectives):
+      print(f"NEXT OBJECTIVE")
+      params = {'name': f"Endpoint {index + 1}", 'text': objective['endpoint'], 'level': primary_ep, 'purpose': ''}
+      ep = model_instance(Endpoint, params, self._id_manager)
+      params = {'name': f"Objective {index + 1}", 'text': objective['objective'], 'level': primary_o, 'endpoints': [ep]}
+      obj = model_instance(Objective, params, self._id_manager)
+      objs.append(obj)
+      params = {'name': f"Event {index + 1}", 'description': objective['i_event'], 'strategy': objective['strategy']}
+      ie = model_instance(IntercurrentEvent, params, self._id_manager)
+      params = {'name': f"Analysis Population {index + 1}", 'description': objective['population_summary'], 'text': objective['population']}
+      ap = model_instance(AnalysisPopulation, params, self._id_manager)
+      params = {'name': f"Study Intervention {index + 1}", 'text': objective['treatment'], 'role': int_role, 'type': int_type, 'productDesignation': int_designation}
+      int = model_instance(StudyIntervention, params, self._id_manager)
+      params = {'name': f"Estimand {index + 1}", 'interventionId': int.id, 'intercurrentEvents': [ie], 'analysisPopulation': ap, 'variableOfInterestId': ep.id, 'summaryMeasure': '-'}
+      est = model_instance(Estimand, params, self._id_manager)
+      ests.append(est)
+    return objs, ests
+  
   def _population(self):
     results = []
     inc = cdisc_ct_code('C25532', 'INCLUSION', self._cdisc_ct_library, self._id_manager)
