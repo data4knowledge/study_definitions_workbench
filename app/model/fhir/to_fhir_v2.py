@@ -178,7 +178,8 @@ class ToFHIRV2(ToFHIR):
   def _codeable_concept(self, code: Coding):
     return CodeableConcept(coding=[code])
   
-  def _organization_from_organization(self, organization: USDMOrganization):  
+  def _organization_from_organization(self, organization: USDMOrganization):
+    print(f"ORG: {organization}")
     address = self._address_from_address(organization.legalAddress)
     return Organization(id=str(uuid4()), name=organization.label, contact=[{'address': address}])
 
@@ -191,6 +192,8 @@ class ToFHIRV2(ToFHIR):
         y[k] = v
     if 'line' in y:
       y['line'] = [y['line']]
+    if 'country' in y:
+      y['country'] = address.country.decode
     result = AddressType(y)
     print(f"ADDRESS: {result}")
     return result
