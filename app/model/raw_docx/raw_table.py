@@ -19,12 +19,15 @@ class RawTable():
   def row(self, index: int):
     return self.rows[index] if (index) < len(self.rows) else None
 
+  def next(self, index: int):
+    return self.rows[index + 1] if (index + 1) < len(self.rows) else None
+
   def find_row(self, text: str) -> str:
-    for row in self.rows:
+    for index, row in enumerate(self.rows):
       if row.cells[0].is_text():
         if text.upper() in row.cells[0].text().upper():
-          return row
-    return None
+          return row, index
+    return None, -1
 
   def to_html(self):
     lines = []

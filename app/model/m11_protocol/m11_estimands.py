@@ -32,13 +32,33 @@ class M11IEstimands():
           if sub_section:
             paras = sub_section.paragraphs()
             if paras:
-              objective = {'objective': sub_section.paragraphs()[0].to_html(), 'endpoints': []}
+              objective = {
+                'objective': sub_section.paragraphs()[0].to_html(), 
+                'population': '', 
+                'treatment': '', 
+                'endpoint': '', 
+                'population-summary': '', 
+                'i_event': '', 
+                'strategy': ''
+              }
               tables = sub_section.tables()
               if tables:
                 table = tables[0]
-                endpoint = table_get_row(table, 'Endpoint')
-                if endpoint:
-                  objective['endpoints'].append(endpoint)
+                keys = {
+                  'population': 'Population',
+                  'treatment': 'Treatment', 
+                  'endpoint': 'Endpoint', 
+                  'population-summary': 'Population-Level Summary', 
+                }
+                for key, text in keys.item():
+                  item = table_get_row(table, 'Population')
+                  if item:
+                    objective[key] = item
+                item, index = table.find_row('Intercurrent Event')
+                if item:
+                  item, index = table.next(index)
+                  objective['i_event'] = item.cell[0].to_html()
+                  objective['strategy'] = item.cell[1].to_html()              
               objectives.append(objective)
             section_number += 1
           else:

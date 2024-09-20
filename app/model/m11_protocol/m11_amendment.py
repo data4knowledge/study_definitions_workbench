@@ -62,7 +62,7 @@ class M11IAmendment():
   def _impact(self, table, text):
     impact = False
     reason = ''
-    row = table.find_row(text)
+    row, index = table.find_row(text)
     if row:
       cell = row.cells[1]
       impact = cell.text().upper().startswith('YES')
@@ -71,7 +71,7 @@ class M11IAmendment():
     return impact, reason
 
   def _reasons(self, table: RawTable):
-    row = table.find_row('Reason(s) for Amendment:')
+    row, index = table.find_row('Reason(s) for Amendment:')
     if row:
       self.primary_reason = self._find_reason(row, 'primary')
       self.secondary_reason = self._find_reason(row, 'secondary')
