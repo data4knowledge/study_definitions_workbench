@@ -1,0 +1,34 @@
+<div id="data_div">
+
+  {% with pagination=pagination %}
+    {% include "shared/partials/table_header.html" %}
+  {% endwith %}  
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Transmitted At</th>
+          <th scope="col">Study</th>
+          <th scope="col">Version</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data['items']: %}
+          <tr>
+            <td>{{item['created']}}</td> 
+            <td>{{item['study']}}</td>
+            <td>{{item['version']}}</td>
+            <td>{{item['status']}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% with pagination=pagination %}
+    {% include "shared/partials/table_footer.html" %}
+  {% endwith %}  
+
+</div>  

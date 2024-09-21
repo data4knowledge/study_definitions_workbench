@@ -182,16 +182,32 @@ async def import_fhir(request: Request, background_tasks: BackgroundTasks, sessi
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
+  # data = FileImport.page(page, size, user.id, session)
+  # pagination = Pagination(data, "/import/status")
+  data = {'page': page, 'size': size, 'filter': filter} 
+  return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/import/status/data', dependencies=[Depends(protect_endpoint)])
+async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
   data = FileImport.page(page, size, user.id, session)
-  pagination = Pagination(data, "/import/status") 
-  return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+  pagination = Pagination(data, "/import/status/data") 
+  return templates.TemplateResponse("import/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
+  # data = Transmission.page(page, size, user.id, session)
+  # pagination = Pagination(data, "/transmissions/status")
+  data = {'page': page, 'size': size, 'filter': filter} 
+  return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/transmissions/status/data', dependencies=[Depends(protect_endpoint)])
+async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
   data = Transmission.page(page, size, user.id, session)
-  pagination = Pagination(data, "/transmission/status")
-  return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+  pagination = Pagination(data, "/transmissions/status/data")
+  return templates.TemplateResponse("transmissions/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
