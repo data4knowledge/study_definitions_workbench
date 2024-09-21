@@ -37,7 +37,7 @@ class USDMJson():
     usdm = USDMDb()
     usdm.from_json(self._data)
     study = usdm.wrapper().study
-    fhir = ToFHIRV1(study, self.uuid)
+    fhir = ToFHIRV1(study, self.uuid, self._extra)
     return fhir.to_fhir()
 
   def fhir_v2_data(self):
