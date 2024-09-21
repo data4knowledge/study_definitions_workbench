@@ -26,7 +26,7 @@ def process_excel(uuid, user: User, session: Session) -> None:
     files.save('errors', errors)
     usdm_json = db.to_json()
     files.save('usdm', usdm_json)
-    files.save('extra', {'title_page': {}, 'miscellaneous': {}, 'amendment': {}})
+    files.save('extra', _blank_extra())
     parameters = _study_parameters(usdm_json)
     #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
@@ -135,3 +135,35 @@ def _sponsor(wrapper: Wrapper):
     if identifier.studyIdentifierScope.organizationType.code == 'C70793':
       return identifier.studyIdentifierScope.name
   return ''
+
+def _blank_extra():
+  return {
+    'amendment': {
+      'amendment_details': '',
+      'robustness_impact': False,
+      'robustness_impact_reason': '',
+      'safety_impact': False,
+      'safety_impact_reason': ''
+    },
+    'miscellaneous': {
+      'medical_expert_contact': '',
+      'sae_reporting_method': '',
+      'sponsor_signatory': ''
+    },
+    'title_page': {
+      'amendment_details': '',
+      'amendment_identifier': '',
+      'amendment_scope': '',
+      'compound_codes': '',
+      'compound_names': '',
+      'manufacturer_name_and_address': '',
+      'medical_expert_contact': '',
+      'original_protocol': '',
+      'regulatory_agency_identifiers': '',
+      'sae_reporting_method': '',
+      'sponsor_approval_date': '',
+      'sponsor_confidentiality': '',
+      'sponsor_name_and_address': '',
+      'sponsor_signatory': ''
+    }
+  }

@@ -181,7 +181,8 @@ class ToFHIRV2(ToFHIR):
   def _organization_from_organization(self, organization: USDMOrganization):
     print(f"ORG: {organization}")
     address = self._address_from_address(organization.legalAddress)
-    return Organization(id=str(uuid4()), name=organization.label, contact=[{'address': address}])
+    name = organization.label if organization.label else organization.name
+    return Organization(id=str(uuid4()), name=name, contact=[{'address': address}])
 
   def _address_from_address(self, address: USDMAddress):  
     x = dict(address)
