@@ -30,8 +30,9 @@ class Service():
 
   async def post(self, url, data={}, timeout=None):
     try:
+      headers = {"Content-Type":"application/json"}
       timeout = timeout if timeout else self.DEFAULT_TIMEOUT
-      response = await self._client.post(self._full_url(url), json=data, timeout=timeout)       
+      response = await self._client.post(self._full_url(url), data=data, timeout=timeout, headers=headers)       
       return json.loads(response.text) if response.status_code in [200, 201] else self._bad_response(response)
     except httpx.HTTPError as e:
       return self._exception("POST", e)
