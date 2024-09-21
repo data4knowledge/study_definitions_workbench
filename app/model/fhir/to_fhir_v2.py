@@ -40,6 +40,7 @@ class ToFHIRV2(ToFHIR):
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
       self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234'})
+      #self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=[], date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234'})
       identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
       entries = []
       for entry in self._entries:
@@ -147,7 +148,7 @@ class ToFHIRV2(ToFHIR):
     if ext:
       result.extension.append(ext)
 
-    print(f"RESEARCH STUDY: {result}")
+    #print(f"RESEARCH STUDY: {result}")
     return result
   
   def _sponsor_identifier(self):
