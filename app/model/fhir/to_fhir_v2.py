@@ -180,7 +180,7 @@ class ToFHIRV2(ToFHIR):
     return CodeableConcept(coding=[code])
   
   def _organization_from_organization(self, organization: USDMOrganization):
-    print(f"ORG: {organization}")
+    #print(f"ORG: {organization}")
     address = self._address_from_address(organization.legalAddress)
     name = organization.label if organization.label else organization.name
     return Organization(id=str(uuid4()), name=name, contact=[{'address': address}])
@@ -197,7 +197,7 @@ class ToFHIRV2(ToFHIR):
     if 'country' in y:
       y['country'] = address.country.decode
     result = AddressType(y)
-    print(f"ADDRESS: {result}")
+    #print(f"ADDRESS: {result}")
     return result
 
   def _associated_party(self, value: str, role_code: str, role_display: str):
@@ -217,7 +217,7 @@ class ToFHIRV2(ToFHIR):
       return None
 
   def _progress_status(self, value: str, state_code: str, state_display: str):
-    print(f"DATE: {value}")
+    #print(f"DATE: {value}")
     if value:
       code = Coding(system='http://hl7.org/fhir/research-study-party-role', code=state_code, display=state_display)
       state = CodeableConcept(coding=[code])
