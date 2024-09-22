@@ -19,6 +19,9 @@ from usdm_model.analysis_population import AnalysisPopulation
 from usdm_model.intercurrent_event import IntercurrentEvent
 from usdm_model.study_intervention import StudyIntervention
 from usdm_model.estimand import Estimand
+from usdm_model.governance_date import GovernanceDate
+from usdm_model.geographic_scope import GeographicScope
+
 from usdm_excel.globals import Globals
 from uuid import uuid4
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
@@ -89,6 +92,10 @@ class M11ToUSDM():
     return local_index
     
   def _study(self):
+    sponsor_approval_date_code = cdisc_ct_code('C132352', 'Sponsor Approval Date', self._cdisc_ct_library, self._id_manager)
+    global_code = cdisc_ct_code('C68846', 'Global', self._cdisc_ct_library, self._id_manager)
+    global_scope = model_instance(GeographicScope, {'type': global_code}, self._id_manager)
+    approval_date = model_instance(GovernanceDate, {'name': 'Approval Date', 'type': sponsor_approval_date_code, 'dateValue': self._title_page.sponsor_approval_date, 'geographicScopes': [global_scope]}, self._id_manager)
     sponsor_title_code = cdisc_ct_code('C99905x2', 'Official Study Title', self._cdisc_ct_library, self._id_manager)
     protocl_status_code = cdisc_ct_code('C85255', 'Draft', self._cdisc_ct_library, self._id_manager)
     intervention_model_code = cdisc_ct_code('C82639', 'Parallel Study', self._cdisc_ct_library, self._id_manager)
@@ -110,6 +117,7 @@ class M11ToUSDM():
       'versionIdentifier': '1', 
       'rationale': 'XXX', 
       'titles': [study_title], 
+      'dateValues': [approval_date],
       'studyDesigns': [study_design], 
       'documentVersionId': protocl_document_version.id, 
       'studyIdentifiers': [identifier], 

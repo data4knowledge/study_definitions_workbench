@@ -72,6 +72,7 @@ class ToFHIRV2(ToFHIR):
       result.label.append(ResearchStudyLabelType(type=type, value=acronym.text))
     
     # Sponsor Protocol Identifier
+    # expected ResearchStudy.identifier with system https://example.org/sponsor-identifier
     for identifier in version.studyIdentifiers:
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
       print(f"IDENTIFIER: {identifier} = {identifier_code}")
@@ -173,7 +174,7 @@ class ToFHIRV2(ToFHIR):
   def _document_approval_date(self) -> USDMGovernanceDate:
     dates = self.study_version.dateValues
     for date in dates:
-      if date.type.code == 'C99903x1':
+      if date.type.code == 'C132352':
         return date
     return None
     

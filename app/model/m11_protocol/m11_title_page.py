@@ -126,12 +126,12 @@ class M11TitlePage():
       date_text = table_get_row(table, 'Sponsor Approval Date')
       if date_text:
         date = parser.parse(date_text)
-        return date.isoformat()
+        return date
       else:
-        return ''
+        return None
     except Exception as e:
       application_logger.exception("Exception raised during approval date processing", e)
-      return ''
+      return None
      
   def _get_phase(self):
     phase_map = [
