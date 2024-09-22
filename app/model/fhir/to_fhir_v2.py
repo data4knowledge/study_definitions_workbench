@@ -93,7 +93,6 @@ class ToFHIRV2(ToFHIR):
     result.identifier.append({'type': identifier_code, 'system': 'https://example.org/amendment-identifier', 'value': self._title_page['amendment_identifier']})    
     
     # Amendment Scope - Part of Amendment
-    x = self._title_page['amendment_scope']
     
     # Compound Codes - No implementation details currently
     x = self._title_page['compound_codes']
@@ -231,7 +230,7 @@ class ToFHIRV2(ToFHIR):
 
   def _amendment_ext(self, version: USDMStudyVersion):
     source = version.amendments[0]
-    amendment = Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/studyAmendment", extension=[])
+    amendment = Extension(url=f"http://example.org/fhir/extension/studyAmendment", extension=[])
     ext = self._extension('amendmentNumber', value=self._title_page['amendment_identifier'])
     if ext:
       amendment.extension.append(ext)

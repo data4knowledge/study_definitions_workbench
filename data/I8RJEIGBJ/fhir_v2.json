@@ -5,7 +5,7 @@
     "value": "urn:uuid:dca97469-cc41-48e8-b127-5d52ec466b3c"
   },
   "type": "document",
-  "timestamp": "2024-09-22T16:08:01.883997+00:00",
+  "timestamp": "2024-09-22T16:17:34.804235+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-22T16:08:01.883997+00:00",
+        "date": "2024-09-22T16:17:34.804235+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "3871e560-d749-4d29-bf92-f6668c21a4d4",
+        "id": "9bf533db-e4ee-4903-aacc-c4be9e6c6ee3",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1634,7 +1634,7 @@
                 }
               }
             ],
-            "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/studyAmendment"
+            "url": "http://example.org/fhir/extension/studyAmendment"
           }
         ],
         "identifier": [
@@ -1680,7 +1680,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/3102651d-84b5-490d-be06-52d6e4cdd5c6"
+              "reference": "Organization/64d030f2-cf73-4260-9d7b-b967b15b9b8c"
             }
           }
         ],
