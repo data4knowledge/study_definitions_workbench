@@ -160,13 +160,16 @@ class M11ToUSDM():
     return objs, ests
   
   def _population(self):
+    print(f"POPULATION")
     results = []
     inc = cdisc_ct_code('C25532', 'INCLUSION', self._cdisc_ct_library, self._id_manager)
     exc = cdisc_ct_code('C25370', 'EXCLUSION', self._cdisc_ct_library, self._id_manager)
     for index, text in enumerate(self._inclusion_exclusion.inclusion):
+      print(f"INC: {text}")
       params = {'name': f'INC{index+1}', 'label': f'Inclusion {index+1} ', 'description': '', 'text': text, 'category': inc, 'identifier': f'{index + 1}'}
       results.append(model_instance(EligibilityCriterion, params, self._id_manager))
     for index, text in enumerate(self._inclusion_exclusion.exclusion):
+      print(f"EXC: {text}")
       params = {'name': f'EXC{index+1}', 'label': f'Exclusion {index+1} ', 'description': '', 'text': text, 'category': exc, 'identifier': f'{index + 1}'}
       results.append(model_instance(EligibilityCriterion, params, self._id_manager))
     params = {'name': 'STUDY POP', 'label': 'Study Population', 'description': '', 'includesHealthySubjects': True, 'criteria': results}

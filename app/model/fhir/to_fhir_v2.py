@@ -12,12 +12,15 @@ from fhir.resources.researchstudy import ResearchStudyProgressStatus
 from fhir.resources.organization import Organization
 from fhir.resources.extendedcontactdetail import ExtendedContactDetail
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
+from fhir.resources.group import Group
+from fhir.resources.backboneelement import BackboneElement
 from usdm_model.code import Code as USDMCode
 from usdm_model.study_title import StudyTitle as USDMStudyTitle
 from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
 from usdm_model.organization import Organization as USDMOrganization
 from usdm_model.address import Address as USDMAddress
 from usdm_model.study_version import StudyVersion as USDMStudyVersion
+from usdm_model.eligibility_criterion import EligibilityCriterion
 from uuid import uuid4
 
 import datetime
@@ -43,6 +46,7 @@ class ToFHIRV2(ToFHIR):
       self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234B'})
       #self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=[], date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234C'})
       self._entries.append({'item': self._research_study(), 'url': 'https://www.example.com/Composition/1234A'})
+      self._entries.append({'item': self._inclusion_exclusion_critieria(), 'url': 'https://www.example.com/Composition/1234X1'})
       identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
       entries = []
       for entry in self._entries:
@@ -52,6 +56,44 @@ class ToFHIRV2(ToFHIR):
     except Exception as e:
       self._errors_and_logging.exception(f"Exception raised generating FHIR content. See logs for more details", e)
       return None
+
+  def _inclusion_exclusion_critieria(self):
+    version = self.study_version
+    design = version.studyDesigns[0]
+    all_of = self._fhir_extension('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod', 'all-of')
+    group = Group(characteristic=[], type='person', membership='definitional', extension=[all_of])
+    for index, criterion in enumerate(design.population.criteria):
+      self._criterion(criterion, group.characteristic)
+    return group
+
+  def _criterion(self, criterion: EligibilityCriterion, collection: list):
+    code = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
+    value = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
+    ext = self._fhir_extension('http://hl7.org/fhir/StructureDefinition/rendering-markdown', criterion.text)
+    if ext:
+      outer = self._fhir_extension_plus('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
+      exclude = True if criterion.category.code == 'C25370' else False
+      collection.append({'extension': outer, 'code': code, 'value': value, 'exclude': exclude})
+        # <characteristic>
+        #   <extension url="http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description">
+        #     <valueString value="have had a diagnosis of either:&#xA;. a. T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year&#xA;.. i. multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or&#xA;.. ii. continuous subcutaneous insulin infusion (CSII) Or&#xA;. b. T2DM based on the WHO diagnostic criteria, and have received the following daily insulin therapy with or without oral anti-hyperglycemic medications (OAMs) for at least 1 year&#xA;.. i. insulin: long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) alone, or in combination with rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine) or CSII&#xA;.. ii. OAM: up to 3 of the following OAMs in accordance with local regulations: metformin, dipeptidyl peptidase-4 inhibitor, sodium glucose cotransporter 2 inhibitor, sulfonylurea (should not be more than half of maximum approved doses), glinides, alpha-glucosidase inhibitor, or thiazolidine">
+        #       <extension url="http://hl7.org/fhir/StructureDefinition/rendering-markdown">
+        #         <valueMarkdown value="have had a diagnosis of either:                 &lt;ol type=&quot;a&quot;&gt;                     &lt;li&gt;T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year                         &lt;ol type=&quot;i&quot;&gt;                             &lt;li&gt;multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or&lt;/li&gt;                             &lt;li&gt;continuous subcutaneous insulin infusion (CSII)&lt;/li&gt;                         &lt;/ol&gt;                     &lt;/li&gt;                     &lt;span&gt;Or&lt;/span&gt;                     &lt;li&gt;T2DM based on the WHO diagnostic criteria, and have received the following daily insulin therapy with or without oral anti-hyperglycemic medications (OAMs) for at least 1 year                         &lt;ol type=&quot;i&quot;&gt;                             &lt;li&gt;insulin: long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) alone, or in combination with rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine) or CSII&lt;/li&gt;                             &lt;li&gt;OAM: up to 3 of the following OAMs in accordance with local regulations: metformin, dipeptidyl peptidase-4 inhibitor, sodium glucose cotransporter 2 inhibitor, sulfonylurea (should not be more than half of maximum approved doses), glinides, alpha-glucosidase inhibitor, or thiazolidine&lt;/li&gt;                         &lt;/ol&gt;                     &lt;/li&gt;                 &lt;/ol&gt;" />
+        #       </extension>
+        #     </valueString>
+        #   </extension>
+        #   <code>
+        #     <extension url="http://hl7.org/fhir/StructureDefinition/data-absent-reason">
+        #       <valueCode value="not-applicable" />
+        #     </extension>
+        #   </code>
+        #   <valueCodeableConcept>
+        #     <extension url="http://hl7.org/fhir/StructureDefinition/data-absent-reason">
+        #       <valueCode value="not-applicable" />
+        #     </extension>
+        #   </valueCodeableConcept>
+        #   <exclude value="false" />
+        # </characteristic>
 
   def _research_study(self) -> ResearchStudy:
     version = self.study_version
@@ -74,7 +116,7 @@ class ToFHIRV2(ToFHIR):
     # Sponsor Protocol Identifier
     for identifier in version.studyIdentifiers:
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
-      print(f"IDENTIFIER: {identifier} = {identifier_code}")
+      #print(f"IDENTIFIER: {identifier} = {identifier_code}")
       result.identifier.append({'type': identifier_code, 'system': 'https://example.org/sponsor-identifier', 'value': identifier.studyIdentifier})
     
     # Original Protocol - No implementation details currently
@@ -263,6 +305,12 @@ class ToFHIRV2(ToFHIR):
         amendment.extension.append(ext)
     return amendment
   
+  def _fhir_extension(self, url, value):
+    return Extension(url=url, valueString=value) if value else None
+
+  def _fhir_extension_plus(self, url, value, ext):
+    return Extension(url=url, valueString=value, extension=[ext]) if value else None
+
   def _extension(self, key: str, value: str):
     return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueString=value) if value else None
 

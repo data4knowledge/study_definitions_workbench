@@ -20,7 +20,6 @@ async def fhir_transmit(version_id: int, endpoint_id: int, version: str, user: U
     endpoint = Endpoint.find(endpoint_id, session)
     application_logger.info(f"Sending FHIR message, endpoint '{endpoint}'")
     server = FHIRService(endpoint.endpoint)
-    #application_logger.info(f"TX: {data}")
     response = await server.post('Bundle', data, 20.0)
     tx.update_status(status=f'Complete. {response['id']}', session=session)
     application_logger.info(f"Sending FHIR message response: {response['id']}")
