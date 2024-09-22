@@ -141,7 +141,7 @@ class ToFHIR():
       return CompositionSection(title=f"{title}", code=code, text=narrative, section=[]) 
 
   def _clean_tags(self, content):
-    print(f"Cleaning")
+    #print(f"Cleaning")
     before = content
     soup = get_soup(content, self._errors_and_logging)
     # 'ol' tag with 'type' attribute
@@ -172,6 +172,6 @@ class ToFHIR():
       except Exception as e:
         self._errors_and_logging.exception(f"Exception raised cleaning 'img' tags", e)
     after = str(soup) 
-    if before != after:
-      print(f"Cleaning modified")
+    # if before != after:
+    #   print(f"Cleaning modified")
     return after

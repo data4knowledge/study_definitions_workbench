@@ -54,6 +54,7 @@ class M11TitlePage():
     self.sponsor_protocol_identifier = table_get_row(table, 'Sponsor Protocol Identifier')
     self.original_protocol = table_get_row(table, 'Original Protocol')
     self.version_number = table_get_row(table, 'Version Number')
+    self.version_date = self._get_protocol_date(table)
     self.amendment_identifier = table_get_row(table, 'Amendment Identifier')
     self.amendment_scope = table_get_row(table, 'Amendment Scope')
     self.amendment_details = table_get_row(table, 'Amendment Details')
@@ -83,11 +84,11 @@ class M11TitlePage():
       'sponsor_name_and_address': self.sponsor_name_and_address,
       'original_protocol': self.original_protocol,
       'regulatory_agency_identifiers': self.regulatory_agency_identifiers,
-      'sponsor_approval_date': self.sponsor_approval_date,
       'manufacturer_name_and_address': self.manufacturer_name_and_address,
       'sponsor_signatory': self.sponsor_signatory,
       'medical_expert_contact': self.medical_expert_contact,
-      'sae_reporting_method': self.sae_reporting_method
+      'sae_reporting_method': self.sae_reporting_method,
+      'sponsor_approval_date': self.sponsor_approval_date
     }
 
   def _get_study_name(self):
@@ -122,15 +123,21 @@ class M11TitlePage():
     return name, params
 
   def _get_sponsor_approval_date(self, table):
+    return self._get_date(table, 'Sponsor Approval Date')
+
+  def _get_protocol_date(self, table):
+    return self._get_date(table, 'Version Date')
+
+  def _get_date(self, table, text):
     try:
-      date_text = table_get_row(table, 'Sponsor Approval Date')
+      date_text = table_get_row(table, text)
       if date_text:
         date = parser.parse(date_text)
         return date
       else:
         return None
     except Exception as e:
-      application_logger.exception("Exception raised during approval date processing", e)
+      application_logger.exception(f"Exception raised during date processing for '{text}'", e)
       return None
      
   def _get_phase(self):

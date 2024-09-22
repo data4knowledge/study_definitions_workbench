@@ -84,7 +84,7 @@ class ToFHIRV2(ToFHIR):
     result.version = version.versionIdentifier
     
     # Version Date
-    approval_date = self._document_approval_date()
+    approval_date = self._document_date()
     if approval_date:
       result.date = approval_date.dateValue
     
@@ -169,10 +169,10 @@ class ToFHIRV2(ToFHIR):
   def _phase(self):
     return self.study_version.studyPhase.standardCode
 
-  def _document_approval_date(self) -> USDMGovernanceDate:
+  def _document_date(self) -> USDMGovernanceDate:
     dates = self.study_version.dateValues
     for date in dates:
-      if date.type.code == 'C132352':
+      if date.type.code == 'C99903x1':
         return date
     return None
     
