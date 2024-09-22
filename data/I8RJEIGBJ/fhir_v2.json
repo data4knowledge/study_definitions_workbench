@@ -5,7 +5,7 @@
     "value": "urn:uuid:dca97469-cc41-48e8-b127-5d52ec466b3c"
   },
   "type": "document",
-  "timestamp": "2024-09-22T16:05:21.587149+00:00",
+  "timestamp": "2024-09-22T16:08:01.883997+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-22T16:05:21.587149+00:00",
+        "date": "2024-09-22T16:08:01.883997+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "f93f5c83-2246-4ed2-8b35-7a8bb8567050",
+        "id": "3871e560-d749-4d29-bf92-f6668c21a4d4",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1642,6 +1642,7 @@
             "type": {
               "text": "Clinical Study Sponsor"
             },
+            "system": "https://example.org/sponsor-identifier",
             "value": "I8R-JE-IGBJ\n"
           },
           {
@@ -1679,7 +1680,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/19eb119c-8c57-462e-971f-4c61e6b999e1"
+              "reference": "Organization/3102651d-84b5-490d-be06-52d6e4cdd5c6"
             }
           }
         ],

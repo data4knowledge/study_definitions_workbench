@@ -75,7 +75,7 @@ class ToFHIRV2(ToFHIR):
     for identifier in version.studyIdentifiers:
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
       print(f"IDENTIFIER: {identifier} = {identifier_code}")
-      result.identifier.append({'type': identifier_code, 'value': identifier.studyIdentifier})
+      result.identifier.append({'type': identifier_code, 'system': 'https://example.org/sponsor-identifier', 'value': identifier.studyIdentifier})
     
     # Original Protocol - No implementation details currently
     x = self._title_page['original_protocol']
