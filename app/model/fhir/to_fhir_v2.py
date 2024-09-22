@@ -72,7 +72,6 @@ class ToFHIRV2(ToFHIR):
       result.label.append(ResearchStudyLabelType(type=type, value=acronym.text))
     
     # Sponsor Protocol Identifier
-    # expected ResearchStudy.identifier with system https://example.org/sponsor-identifier
     for identifier in version.studyIdentifiers:
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
       print(f"IDENTIFIER: {identifier} = {identifier_code}")
@@ -91,7 +90,7 @@ class ToFHIRV2(ToFHIR):
     
     # Amendment Identifier
     identifier_code = CodeableConcept(text=f"{'Amendment Identifier'}")
-    result.identifier.append({'type': identifier_code, 'value': self._title_page['amendment_identifier']})    
+    result.identifier.append({'type': identifier_code, 'system': 'https://example.org/amendment-identifier', 'value': self._title_page['amendment_identifier']})    
     
     # Amendment Scope - Part of Amendment
     x = self._title_page['amendment_scope']
