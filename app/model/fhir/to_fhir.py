@@ -44,13 +44,17 @@ class ToFHIR():
     title = content.sectionTitle if content.sectionTitle else '&nbsp;'
     #section = CompositionSection(title=f"{title}", code=code, text=narrative, section=[])
     section = self._composition_section(f"{title}", code, narrative)
-    if not narrative:
-      print(f"EMPTY: {code.text}, {title}, {narrative}, {div}")
-    for id in content.childIds:
-      content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
-      child = self._content_to_section(content)
-      section.section.append(child)
-    return section
+    #if not narrative:
+    #  print(f"EMPTY: {code.text}, {title}, {narrative}, {div}")
+    if self._composition_section_no_text(section) and not content.childIds:
+      return None
+    else:
+      for id in content.childIds:
+        content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
+        child = self._content_to_section(content)
+        if child:
+          section.section.append(child)
+      return section
 
   def _format_section_title(self, title: str) -> str:
     return title.lower().strip().replace(' ', '-')
@@ -123,6 +127,9 @@ class ToFHIR():
       if title.type.decode == title_type:
         return title
     return None
+
+  def _composition_section_no_text(self, section):
+    return section.text is None
 
   def _composition_section(self, title, code, narrative):
     #print(f"NARRATIVE: {narrative.div[0:50]}")

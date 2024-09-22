@@ -18,7 +18,9 @@ class ToFHIRV1(ToFHIR):
       root = self.protocol_document_version.contents[0]
       for id in root.childIds:
         content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
-        sections.append(self._content_to_section(content))
+        section = self._content_to_section(content)
+        if section:
+          sections.append(section)
       type_code = CodeableConcept(text=f"EvidenceReport")
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
