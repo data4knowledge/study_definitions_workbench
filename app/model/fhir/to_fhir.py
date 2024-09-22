@@ -13,6 +13,8 @@ from uuid import uuid4
 
 class ToFHIR():
 
+  EMPTY_DIV = '<div xmlns="http://www.w3.org/1999/xhtml"></div>'
+
   class LogicError(Exception):
     pass
 
@@ -39,9 +41,11 @@ class ToFHIR():
     narrative = Narrative(status='generated', div=text)
     title = self._format_section_title(content.sectionTitle)
     code = CodeableConcept(text=f"section{content.sectionNumber}-{title}")
-    #print(f"COMPOSITION: {code.text}, {title}, {narrative}, {div}")
     title = content.sectionTitle if content.sectionTitle else '&nbsp;'
-    section = CompositionSection(title=f"{title}", code=code, text=narrative, section=[])
+    #section = CompositionSection(title=f"{title}", code=code, text=narrative, section=[])
+    section = self._composition_section(f"{title}", code, narrative)
+    if not narrative:
+      print(f"EMPTY: {code.text}, {title}, {narrative}, {div}")
     for id in content.childIds:
       content = next((x for x in self.protocol_document_version.contents if x.id == id), None)
       child = self._content_to_section(content)
@@ -119,3 +123,48 @@ class ToFHIR():
       if title.type.decode == title_type:
         return title
     return None
+
+  def _composition_section(self, title, code, narrative):
+    #print(f"NARRATIVE: {narrative.div[0:50]}")
+    narrative.div = self._clean_tags(narrative.div)
+    if narrative.div == self.EMPTY_DIV:
+      #print("EMPTY")
+      return CompositionSection(title=f"{title}", code=code, section=[]) 
+    else:
+      return CompositionSection(title=f"{title}", code=code, text=narrative, section=[]) 
+
+  def _clean_tags(self, content):
+    print(f"Cleaning")
+    before = content
+    soup = get_soup(content, self._errors_and_logging)
+    # 'ol' tag with 'type' attribute
+    for ref in soup('ol'):
+      try:
+        attributes = ref.attrs
+        if 'type' in attributes:
+          ref.attrs = {}
+      except Exception as e:
+        self._errors_and_logging.exception(f"Exception raised cleaning 'ol' tags", e)
+    # Styles
+    for ref in soup('style'):
+      try:
+        ref.extract()
+      except Exception as e:
+        self._errors_and_logging.exception(f"Exception raised cleaning 'script' tags", e)
+    # Images
+    for ref in soup('img'):
+      try:
+        ref.extract()
+      except Exception as e:
+        self._errors_and_logging.exception(f"Exception raised cleaning 'img' tags", e)
+    # Empty 'p' tags
+    for ref in soup('p'):
+      try:
+        if len(ref.get_text(strip=True)) == 0:
+          ref.extract()
+      except Exception as e:
+        self._errors_and_logging.exception(f"Exception raised cleaning 'img' tags", e)
+    after = str(soup) 
+    if before != after:
+      print(f"Cleaning modified")
+    return after

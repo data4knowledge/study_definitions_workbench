@@ -30,7 +30,7 @@ class ToFHIRV2(ToFHIR):
   def to_fhir(self) -> None:
     try:
       self._entries = []
-      self._entries.append({'item': self._research_study(), 'url': 'https://www.example.com/Composition/1234'})
+      self._entries.append({'item': self._research_study(), 'url': 'https://www.example.com/Composition/1234A'})
       sections = []
       root = self.protocol_document_version.contents[0]
       for id in root.childIds:
@@ -39,8 +39,8 @@ class ToFHIRV2(ToFHIR):
       type_code = CodeableConcept(text=f"EvidenceReport")
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
-      self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234'})
-      #self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=[], date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234'})
+      self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234B'})
+      #self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=[], date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234C'})
       identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
       entries = []
       for entry in self._entries:
@@ -72,6 +72,7 @@ class ToFHIRV2(ToFHIR):
     # Sponsor Protocol Identifier
     for identifier in version.studyIdentifiers:
       identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
+      print(f"IDENTIFIER: {identifier} = {identifier_code}")
       result.identifier.append({'type': identifier_code, 'value': identifier.studyIdentifier})
     
     # Original Protocol - No implementation details currently
@@ -86,7 +87,8 @@ class ToFHIRV2(ToFHIR):
       result.date = approval_date.dateValue
     
     # Amendment Identifier
-    result.identifier.append({'type': 'Amendment Identifier', 'value': self._title_page['amendment_identifier']})    
+    identifier_code = CodeableConcept(text=f"{'Amendment Identifier'}")
+    result.identifier.append({'type': identifier_code, 'value': self._title_page['amendment_identifier']})    
     
     # Amendment Scope - Part of Amendment
     x = self._title_page['amendment_scope']
@@ -112,7 +114,7 @@ class ToFHIRV2(ToFHIR):
     sponsor = self._sponsor()
     org = self._organization_from_organization(sponsor)
     if org:
-      self._entries.append({'item': self._organization_from_organization(sponsor), 'url': 'https://www.example.com/Composition/1234'})
+      self._entries.append({'item': self._organization_from_organization(sponsor), 'url': 'https://www.example.com/Composition/1234D'})
       item = self._associated_party_reference(f"Organization/{org.id}", 'sponsor', 'sponsor')
       if item:
         result.associatedParty.append(item)
