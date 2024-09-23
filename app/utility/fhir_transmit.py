@@ -10,6 +10,7 @@ from app.model.database_manager import DatabaseManager as DBM
 from app.utility.fhir_service import FHIRService
 
 async def fhir_transmit(version_id: int, endpoint_id: int, version: str, user: User, session: Session):
+  ERROR_LEN = 100
   try:
     application_logger.info(f"Sending FHIR message from version id '{version_id}' to endpoint id '{endpoint_id}'")
     usdm = USDMJson(version_id, session)
@@ -20,10 +21,18 @@ async def fhir_transmit(version_id: int, endpoint_id: int, version: str, user: U
     endpoint = Endpoint.find(endpoint_id, session)
     application_logger.info(f"Sending FHIR message, endpoint '{endpoint}'")
     server = FHIRService(endpoint.endpoint)
-    response = await server.post('Bundle', data, 20.0)
-    tx.update_status(status=f'Complete. {response['id']}', session=session)
-    application_logger.info(f"Sending FHIR message response: {response['id']}")
-    await connection_manager.success(f"Sending of FHIR message completed: {response['id']}", str(user.id))
+    response = await server.post('Bundle', data, 30.0)
+    if response['success']:
+      message = f"Succesful transmission of FHIR message: {response['data']['id']}"
+    else:
+      error_text = f"{response['message'][0:ERROR_LEN]} ..." if len(response['message']) > ERROR_LEN else response['message']
+      message = f"Unsuccesful transmission of FHIR message: {error_text}"
+    tx.update_status(status=message, session=session)
+    application_logger.info(message)
+    if response['success']:
+      await connection_manager.success(message, str(user.id))
+    else:
+      await connection_manager.error(message, str(user.id))      
   except Exception as e:
     application_logger.exception("Exception transmititng FHIR message from version '{version_id}' to endpoint: {endpoint_id}", e)
     await asyncio.sleep(1) # Need something just in case background task does not block
