@@ -71,7 +71,7 @@ class ToFHIRV2(ToFHIR):
     value = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
     ext = self._extension_markdown(criterion.text)
     if ext:
-      outer = self._fhir_extension_plus('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
+      outer = self._fhir_extension_markdown_wrapper('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
       exclude = True if criterion.category.code == 'C25370' else False
       collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
         # <characteristic>
@@ -308,8 +308,9 @@ class ToFHIRV2(ToFHIR):
   def _fhir_extension(self, url, value):
     return Extension(url=url, valueString=value) if value else None
 
-  def _fhir_extension_plus(self, url, value, ext):
-    return Extension(url=url, valueString=value, extension=[ext]) if value else None
+  def _fhir_extension_markdown_wrapper(self, url, value, ext):
+    #return Extension(url=url, valueString=value, extension=[ext]) if value else None
+    return Extension(url=url, extension=[ext]) if value else None
 
   def _extension(self, key: str, value: str):
     return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueString=value) if value else None
