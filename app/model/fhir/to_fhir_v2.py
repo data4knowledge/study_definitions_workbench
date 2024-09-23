@@ -243,13 +243,13 @@ class ToFHIRV2(ToFHIR):
       #     </coding>
       #   </type>
       #   <description value="To demonstrate that 3 mg LY900018 is non-inferior to 1 mg IMG for the proportion of patients achieving treatment success from insulin-induced hypoglycemia using a non-inferiority margin of 10%" />
-      item = {'type': self._coding_from_code(objective['type']), 'description': objective['objective'].description, 'extension': [ext]}
+      item = {'type': {'coding': self._coding_from_code(objective['type'])}, 'description': objective['objective'].description, 'extension': [ext]}
       # </objective>
       research_study.objective.append(item)
 
   def _treatment(self, research_study: ResearchStudy, treatment: USDMStudyIntervention):
     id = treatment.id
-    item = {'linkId': self._fix_id(id), 'name': 'Treatment Group', 'intendedExposure': {'display': treatment.description}, 'observedGroup': 'Not Availabe'}
+    item = {'linkId': self._fix_id(id), 'name': 'Treatment Group', 'intendedExposure': {'display': treatment.description}, 'observedGroup': {'display': 'Not Availabe'}}
     research_study.comparisonGroup.append(item)
     return id
   

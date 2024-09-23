@@ -5,7 +5,7 @@
     "value": "urn:uuid:f0a07337-84ff-4846-ab24-5accf9d585d0"
   },
   "type": "document",
-  "timestamp": "2024-09-23T19:01:09.286742+00:00",
+  "timestamp": "2024-09-23T19:09:02.766392+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-23T19:01:09.286742+00:00",
+        "date": "2024-09-23T19:09:02.766392+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "9699e216-7b24-4d58-a2ae-390bd853d288",
+        "id": "b11bee4b-d4f5-44e4-a219-6aefaea9f2f2",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1680,7 +1680,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/8bf225cf-2c35-48e7-96a2-1d29bff19ade"
+              "reference": "Organization/bfcb2998-b6b7-484e-af00-6338699a8c77"
             }
           }
         ],
@@ -1707,16 +1707,20 @@
             "intendedExposure": {
               "display": null
             },
-            "observedGroup": "Not Availabe"
+            "observedGroup": {
+              "display": "Not Availabe"
+            }
           }
         ],
         "objective": [
           {
             "type": {
-              "system": "http://www.cdisc.org",
-              "version": "2023-12-15",
-              "code": "C85826",
-              "display": "Primary Objective"
+              "coding": {
+                "system": "http://www.cdisc.org",
+                "version": "2023-12-15",
+                "code": "C85826",
+                "display": "Primary Objective"
+              }
             },
             "description": null,
             "extension": [
