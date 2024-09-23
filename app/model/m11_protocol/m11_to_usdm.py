@@ -106,12 +106,12 @@ class M11ToUSDM():
     protocl_document_version = model_instance(StudyProtocolDocumentVersion, {'protocolVersion': '1', 'protocolStatus': protocl_status_code}, self._id_manager)
     protocl_document = model_instance(StudyProtocolDocument, {'name': 'PROTOCOL V1', 'label': '', 'description': '', 'versions': [protocl_document_version]}, self._id_manager)
     population = self._population()
-    objectives, estimands = self._objectives()
+    objectives, estimands, interventions = self._objectives()
     study_design = model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
       'rationale': 'XXX', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
-      'epochs': [], 'population': population, 'objectives': objectives, 'estimands': estimands}, self._id_manager)
+      'epochs': [], 'population': population, 'objectives': objectives, 'estimands': estimands, 'studyInterventions': interventions}, self._id_manager)
     sponsor_address = self._title_page.sponsor_address
-    #print(f"ADDRESS: {sponsor_address}")
+    print(f"INTERVENTIONS: {interventions}")
     address = model_instance(Address, sponsor_address, self._id_manager)
     organization = model_instance(Organization, {'name': self._title_page.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}, self._id_manager) 
     identifier = model_instance(StudyIdentifier, {'studyIdentifier': self._title_page.sponsor_protocol_identifier, 'studyIdentifierScope': organization}, self._id_manager)
@@ -131,7 +131,7 @@ class M11ToUSDM():
     return study
 
   def _objectives(self):
-    print(f"OBJECTIVES")
+    #print(f"OBJECTIVES")
     objs = []
     ests = []
     primary_o = cdisc_ct_code('C85826', 'Primary Objective', self._cdisc_ct_library, self._id_manager)
@@ -150,14 +150,14 @@ class M11ToUSDM():
       objs.append(obj)
       params = {'name': f"Event {index + 1}", 'description': objective['i_event'], 'strategy': objective['strategy']}
       ie = model_instance(IntercurrentEvent, params, self._id_manager)
-      params = {'name': f"Analysis Population {index + 1}", 'description': objective['population_summary'], 'text': objective['population']}
+      params = {'name': f"Analysis Population {index + 1}", 'text': objective['population'], 'text': objective['population']}
       ap = model_instance(AnalysisPopulation, params, self._id_manager)
       params = {'name': f"Study Intervention {index + 1}", 'text': objective['treatment'], 'role': int_role, 'type': int_type, 'productDesignation': int_designation}
-      int = model_instance(StudyIntervention, params, self._id_manager)
-      params = {'name': f"Estimand {index + 1}", 'interventionId': int.id, 'intercurrentEvents': [ie], 'analysisPopulation': ap, 'variableOfInterestId': ep.id, 'summaryMeasure': '-'}
+      treatment = model_instance(StudyIntervention, params, self._id_manager)
+      params = {'name': f"Estimand {index + 1}", 'intercurrentEvents': [ie], 'analysisPopulation': ap, 'variableOfInterestId': ep.id, 'interventionId': treatment.id, 'summaryMeasure': objective['population_summary']}
       est = model_instance(Estimand, params, self._id_manager)
       ests.append(est)
-    return objs, ests
+    return objs, ests, [treatment]
   
   def _population(self):
     print(f"POPULATION")

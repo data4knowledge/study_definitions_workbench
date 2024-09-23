@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "identifier": {
     "system": "urn:ietf:rfc:3986",
-    "value": "urn:uuid:03c33140-3624-4c09-b73b-26ef14b93555"
+    "value": "urn:uuid:f0a07337-84ff-4846-ab24-5accf9d585d0"
   },
   "type": "document",
-  "timestamp": "2024-09-23T11:03:36.083123+00:00",
+  "timestamp": "2024-09-23T18:38:03.338715+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-23T11:03:36.083123+00:00",
+        "date": "2024-09-23T18:38:03.338715+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "7d0d9a0a-719a-4700-bb33-7dc95a73155b",
+        "id": "93a9e436-734b-4e38-8bbc-d87b26121672",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1680,7 +1680,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/a8ba51ae-b5c9-424e-a617-ec1fe9566a5d"
+              "reference": "Organization/e8f59cb2-309a-4726-82e7-4bd7183045b0"
             }
           }
         ],
@@ -1698,6 +1698,58 @@
             "period": {
               "start": "2017-10-26T00:00:00"
             }
+          }
+        ],
+        "comparisonGroup": [
+          {
+            "linkId": "StudyIntervention_1",
+            "name": "Treatment Group",
+            "intendedExposure": {
+              "display": null
+            },
+            "observedGroup": "Not Availabe"
+          }
+        ],
+        "objective": [
+          {
+            "type": {
+              "system": "http://www.cdisc.org",
+              "version": "2023-12-15",
+              "code": "C85826",
+              "display": "Primary Objective"
+            },
+            "description": null,
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "populationLevelSummary",
+                    "valueId": "Estimand-1"
+                  },
+                  {
+                    "url": "endpoint-outcomeMeasure",
+                    "valueId": "Endpoint-1"
+                  },
+                  {
+                    "url": "populationLevelSummary",
+                    "valueString": "Difference in the proportion of patients achieving treatment success defined as either an increase in PG to >70 mg/dL or an increase of >20 mg/dL from nadir within 30 minutes after administration of glucagon. (Added for Testing Purposes)"
+                  }
+                ],
+                "url": "http://example.org/fhir/extension/estimand"
+              }
+            ]
+          }
+        ],
+        "outcomeMeasure": [
+          {
+            "extension": [
+              {
+                "url": "http://example.org/fhir/extension/linkId",
+                "valueId": "OutcomeMeasureLinkId"
+              }
+            ],
+            "name": "Endpoint",
+            "description": "The proportion of patients achieving treatment success defined as either an increase in PG to >70 mg/dL or an increase of >20 mg/dL from nadir within 30 minutes after administration of glucagon. The nadir is defined as the minimum PG value at the time of or within 10 minutes following glucagon administration."
           }
         ]
       }

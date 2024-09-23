@@ -13,13 +13,16 @@ from fhir.resources.organization import Organization
 from fhir.resources.extendedcontactdetail import ExtendedContactDetail
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
 from fhir.resources.group import Group
-from fhir.resources.backboneelement import BackboneElement
 from usdm_model.code import Code as USDMCode
 from usdm_model.study_title import StudyTitle as USDMStudyTitle
+from usdm_model.endpoint import Endpoint as USDMEndpoint
+from usdm_model.estimand import Estimand as USDMEstimand
+from usdm_model.study_intervention import StudyIntervention as USDMStudyIntervention
 from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
 from usdm_model.organization import Organization as USDMOrganization
 from usdm_model.address import Address as USDMAddress
 from usdm_model.study_version import StudyVersion as USDMStudyVersion
+from usdm_model.study_design import StudyDesign as USDMStudyDesign
 from usdm_model.eligibility_criterion import EligibilityCriterion
 from uuid import uuid4
 
@@ -44,7 +47,6 @@ class ToFHIRV2(ToFHIR):
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
       self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234B'})
-      #self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=[], date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234C'})
       self._entries.append({'item': self._research_study(), 'url': 'https://www.example.com/Composition/1234A'})
       self._entries.append({'item': self._inclusion_exclusion_critieria(), 'url': 'https://www.example.com/Composition/1234X1'})
       identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
@@ -57,6 +59,7 @@ class ToFHIRV2(ToFHIR):
       self._errors_and_logging.exception(f"Exception raised generating FHIR content. See logs for more details", e)
       return None
 
+  
   def _inclusion_exclusion_critieria(self):
     version = self.study_version
     design = version.studyDesigns[0]
@@ -74,30 +77,10 @@ class ToFHIRV2(ToFHIR):
       outer = self._fhir_extension_markdown_wrapper('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
       exclude = True if criterion.category.code == 'C25370' else False
       collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
-        # <characteristic>
-        #   <extension url="http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description">
-        #     <valueString value="have had a diagnosis of either:&#xA;. a. T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year&#xA;.. i. multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or&#xA;.. ii. continuous subcutaneous insulin infusion (CSII) Or&#xA;. b. T2DM based on the WHO diagnostic criteria, and have received the following daily insulin therapy with or without oral anti-hyperglycemic medications (OAMs) for at least 1 year&#xA;.. i. insulin: long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) alone, or in combination with rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine) or CSII&#xA;.. ii. OAM: up to 3 of the following OAMs in accordance with local regulations: metformin, dipeptidyl peptidase-4 inhibitor, sodium glucose cotransporter 2 inhibitor, sulfonylurea (should not be more than half of maximum approved doses), glinides, alpha-glucosidase inhibitor, or thiazolidine">
-        #       <extension url="http://hl7.org/fhir/StructureDefinition/rendering-markdown">
-        #         <valueMarkdown value="have had a diagnosis of either:                 &lt;ol type=&quot;a&quot;&gt;                     &lt;li&gt;T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year                         &lt;ol type=&quot;i&quot;&gt;                             &lt;li&gt;multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or&lt;/li&gt;                             &lt;li&gt;continuous subcutaneous insulin infusion (CSII)&lt;/li&gt;                         &lt;/ol&gt;                     &lt;/li&gt;                     &lt;span&gt;Or&lt;/span&gt;                     &lt;li&gt;T2DM based on the WHO diagnostic criteria, and have received the following daily insulin therapy with or without oral anti-hyperglycemic medications (OAMs) for at least 1 year                         &lt;ol type=&quot;i&quot;&gt;                             &lt;li&gt;insulin: long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) alone, or in combination with rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine) or CSII&lt;/li&gt;                             &lt;li&gt;OAM: up to 3 of the following OAMs in accordance with local regulations: metformin, dipeptidyl peptidase-4 inhibitor, sodium glucose cotransporter 2 inhibitor, sulfonylurea (should not be more than half of maximum approved doses), glinides, alpha-glucosidase inhibitor, or thiazolidine&lt;/li&gt;                         &lt;/ol&gt;                     &lt;/li&gt;                 &lt;/ol&gt;" />
-        #       </extension>
-        #     </valueString>
-        #   </extension>
-        #   <code>
-        #     <extension url="http://hl7.org/fhir/StructureDefinition/data-absent-reason">
-        #       <valueCode value="not-applicable" />
-        #     </extension>
-        #   </code>
-        #   <valueCodeableConcept>
-        #     <extension url="http://hl7.org/fhir/StructureDefinition/data-absent-reason">
-        #       <valueCode value="not-applicable" />
-        #     </extension>
-        #   </valueCodeableConcept>
-        #   <exclude value="false" />
-        # </characteristic>
 
   def _research_study(self) -> ResearchStudy:
     version = self.study_version
-    result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[])
+    result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[], objective=[], comparisonGroup=[], outcomeMeasure=[])
 
     # Sponsor Confidentiality Statememt
     ext = self._extension("research-study-sponsor-confidentiality-statement", self._title_page['sponsor_confidentiality'])
@@ -193,8 +176,88 @@ class ToFHIRV2(ToFHIR):
     if ext:
       result.extension.append(ext)
 
+    # Objectives
+    self._estimands(result)
+
     #print(f"RESEARCH STUDY: {result}")
     return result
+  
+  def _estimands(self, research_study: ResearchStudy):
+    version = self.study_version
+    design = version.studyDesigns[0]
+    for objective in self._primary_objectives():
+
+      # <extension url="http://example.org/fhir/extension/estimand">
+      ext = self._extension_wrapper('http://example.org/fhir/extension/estimand')
+
+      #   <extension url="population-comparisonGroup">
+      #     <valueId value="ComparisonGroupLinkId" />
+      #   </extension>
+      id = self._treatment(research_study, objective['treatment'])
+      pls_ext = self._extension_id('populationLevelSummary', objective['summary'].id)
+      if pls_ext:
+        ext.extension.append(pls_ext)
+
+      #   <extension url="endpoint-outcomeMeasure">
+      #     <valueId value="OutcomeMeasureLinkId" />
+      #   </extension>
+      id = self._endpoint(research_study, objective['endpoint'])
+      pls_ext = self._extension_id('endpoint-outcomeMeasure', id)
+      if pls_ext:
+        ext.extension.append(pls_ext)
+
+      #   <extension url="populationLevelSummary">
+      #     <valueCodeableConcept>
+      #       <text value="Not Available" />
+      #     </valueCodeableConcept>
+      #   </extension>
+      pls_ext = self._extension_codeable_text('populationLevelSummary', objective['summary'].summaryMeasure)
+      if pls_ext:
+        ext.extension.append(pls_ext)
+
+      # <extension url="intercurrentEvent">
+      #   <extension url="event">
+      #     <valueCodeableConcept>
+      #       <text value="NA" />
+      #     </valueCodeableConcept>
+      #   </extension>
+      #   <extension url="strategy">
+      #     <valueCodeableConcept>
+      #       <text value="Not Available" />
+      #     </valueCodeableConcept>
+      #   </extension>
+      # </extension>
+      for ice in objective['events']:
+        event_ext = self._extension_codeable_text('event', ice.description)
+        strategy_ext = self._extension_codeable_text('event', ice.strategy)
+        ice_ext = self._extension_wrapper('intercurrentEvent')
+        if ice_ext:
+          ice_ext.extension.append(event_ext)
+          ice_ext.extension.append(strategy_ext)
+
+      #   <type>
+      #     <coding>
+      #       <system value="http://hl7.org/fhir/research-study-classifiers" />
+      #       <code value="primary" />
+      #       <display value="Primary" />
+      #     </coding>
+      #   </type>
+      #   <description value="To demonstrate that 3 mg LY900018 is non-inferior to 1 mg IMG for the proportion of patients achieving treatment success from insulin-induced hypoglycemia using a non-inferiority margin of 10%" />
+      item = {'type': self._coding_from_code(objective['type']), 'description': objective['objective'].description, 'extension': [ext]}
+      # </objective>
+      research_study.objective.append(item)
+
+  def _treatment(self, research_study: ResearchStudy, treatment: USDMStudyIntervention):
+    id = treatment.id
+    item = {'linkId': id, 'name': 'Treatment Group', 'intendedExposure': {'display': treatment.description}, 'observedGroup': 'Not Availabe'}
+    research_study.comparisonGroup.append(item)
+    return id
+  
+  def _endpoint(self, research_study: ResearchStudy, endpoint: USDMEndpoint):
+    id = endpoint.id
+    item = {'extension': [{'url': 'http://example.org/fhir/extension/linkId', 'valueId':'OutcomeMeasureLinkId'}], 'name': 'Endpoint', 'description': endpoint.text}
+    research_study.outcomeMeasure.append(item)
+    return id
   
   def _sponsor_identifier(self):
     for identifier in self.study_version.studyIdentifiers:
@@ -217,7 +280,38 @@ class ToFHIRV2(ToFHIR):
       if date.type.code == 'C99903x1':
         return date
     return None
-    
+  
+  def _primary_objectives(self) -> list:
+    return self._objective('C85826')
+  
+  def _objective(self, type_code) -> list:
+    results = []
+    version = self.study_version
+    design = version.studyDesigns[0]
+    for objective in design.objectives:
+      if objective.level.code == type_code:
+        endpoint = objective.endpoints[0] # Assuming only one for estimands?
+        result = {'objective': objective, 'type': objective.level, 'endpoint': objective.endpoints[0]}
+        estimand = self._estimand_for(design, endpoint)
+        if estimand:
+          result['population'] = estimand.analysisPopulation
+          #print(f"ESTIMAND ID: {estimand.interventionId}")
+          intervention = self._intervention(design, estimand.interventionId)
+          result['treatment'] = intervention if intervention else None
+          result['summary'] = estimand
+          result['events'] = []
+          for event in estimand.intercurrentEvents:
+            result['events'].append(event)
+        #print(f"OBJECIVE: {result}")
+        results.append(result)
+    return results
+
+  def _intervention(self, design: USDMStudyDesign, id: str) -> USDMStudyIntervention:
+    return next((x for x in design.studyInterventions if x.id == id), None)
+  
+  def _estimand_for(self, design: USDMStudyDesign, endpoint: USDMEndpoint):
+    return next((x for x in design.estimands if x.variableOfInterestId == endpoint.id), None)
+
   def _coding_from_code(self, code: USDMCode):
     return Coding(system=code.codeSystem, version=code.codeSystemVersion, code=code.code, display=code.decode)
 
@@ -312,6 +406,9 @@ class ToFHIRV2(ToFHIR):
     #return Extension(url=url, valueString=value, extension=[ext]) if value else None
     return Extension(url=url, extension=[ext]) if value else None
 
+  def _extension_wrapper(self, url):
+    return Extension(url=url, extension=[])
+
   def _extension(self, key: str, value: str):
     return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueString=value) if value else None
 
@@ -321,6 +418,13 @@ class ToFHIRV2(ToFHIR):
   def _extension_codeable(self, key: str, value: CodeableConcept):
     return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueCodeableConcept=value) if value else None
 
+  def _extension_codeable_text(self, url: str, value: str):
+    return Extension(url=url, valueString=value) if value else None
+
   def _extension_markdown(self, value):
     return Extension(url=f"http://hl7.org/fhir/StructureDefinition/rendering-markdown", valueMarkdown=value) if value else None
+
+  def _extension_id(self, url: str, value: str):
+    value = value.replace('_', '-')
+    return Extension(url=url, valueId=value) if value else None
 
