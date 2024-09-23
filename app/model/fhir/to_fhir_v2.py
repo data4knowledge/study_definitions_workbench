@@ -141,7 +141,7 @@ class ToFHIRV2(ToFHIR):
     org = self._organization_from_organization(sponsor)
     if org:
       self._entries.append({'item': self._organization_from_organization(sponsor), 'url': 'https://www.example.com/Composition/1234D'})
-      item = self._associated_party_reference(f"Organization/{org.id}", 'sponsor', 'sponsor')
+      item = self._associated_party_reference(f"Organization/{self._fix_id(org.id)}", 'sponsor', 'sponsor')
       if item:
         result.associatedParty.append(item)
 
@@ -194,7 +194,7 @@ class ToFHIRV2(ToFHIR):
       #     <valueId value="ComparisonGroupLinkId" />
       #   </extension>
       id = self._treatment(research_study, objective['treatment'])
-      pls_ext = self._extension_id('populationLevelSummary', objective['summary'].id)
+      pls_ext = self._extension_id('populationLevelSummary', self._fix_id(objective['summary'].id))
       if pls_ext:
         ext.extension.append(pls_ext)
 
@@ -249,13 +249,13 @@ class ToFHIRV2(ToFHIR):
 
   def _treatment(self, research_study: ResearchStudy, treatment: USDMStudyIntervention):
     id = treatment.id
-    item = {'linkId': id, 'name': 'Treatment Group', 'intendedExposure': {'display': treatment.description}, 'observedGroup': 'Not Availabe'}
+    item = {'linkId': self._fix_id(id), 'name': 'Treatment Group', 'intendedExposure': {'display': treatment.description}, 'observedGroup': 'Not Availabe'}
     research_study.comparisonGroup.append(item)
     return id
   
   def _endpoint(self, research_study: ResearchStudy, endpoint: USDMEndpoint):
     id = endpoint.id
-    item = {'extension': [{'url': 'http://example.org/fhir/extension/linkId', 'valueId':'OutcomeMeasureLinkId'}], 'name': 'Endpoint', 'description': endpoint.text}
+    item = {'extension': [{'url': 'http://example.org/fhir/extension/linkId', 'valueId': self._fix_id(id)}], 'name': 'Endpoint', 'description': endpoint.text}
     research_study.outcomeMeasure.append(item)
     return id
   
@@ -425,6 +425,8 @@ class ToFHIRV2(ToFHIR):
     return Extension(url=f"http://hl7.org/fhir/StructureDefinition/rendering-markdown", valueMarkdown=value) if value else None
 
   def _extension_id(self, url: str, value: str):
-    value = value.replace('_', '-')
+    value = self._fix_id(value)
     return Extension(url=url, valueId=value) if value else None
 
+  def _fix_id(self, value: str) -> str:
+    return value.replace('_', '-')

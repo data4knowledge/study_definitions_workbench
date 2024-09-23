@@ -5,7 +5,7 @@
     "value": "urn:uuid:f0a07337-84ff-4846-ab24-5accf9d585d0"
   },
   "type": "document",
-  "timestamp": "2024-09-23T18:38:03.338715+00:00",
+  "timestamp": "2024-09-23T19:01:09.286742+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-23T18:38:03.338715+00:00",
+        "date": "2024-09-23T19:01:09.286742+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "93a9e436-734b-4e38-8bbc-d87b26121672",
+        "id": "9699e216-7b24-4d58-a2ae-390bd853d288",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1680,7 +1680,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/e8f59cb2-309a-4726-82e7-4bd7183045b0"
+              "reference": "Organization/8bf225cf-2c35-48e7-96a2-1d29bff19ade"
             }
           }
         ],
@@ -1702,7 +1702,7 @@
         ],
         "comparisonGroup": [
           {
-            "linkId": "StudyIntervention_1",
+            "linkId": "StudyIntervention-1",
             "name": "Treatment Group",
             "intendedExposure": {
               "display": null
@@ -1745,7 +1745,7 @@
             "extension": [
               {
                 "url": "http://example.org/fhir/extension/linkId",
-                "valueId": "OutcomeMeasureLinkId"
+                "valueId": "Endpoint-1"
               }
             ],
             "name": "Endpoint",
