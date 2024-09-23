@@ -69,11 +69,11 @@ class ToFHIRV2(ToFHIR):
   def _criterion(self, criterion: EligibilityCriterion, collection: list):
     code = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
     value = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
-    ext = self._fhir_extension('http://hl7.org/fhir/StructureDefinition/rendering-markdown', criterion.text)
+    ext = self._extension_markdown(criterion.text)
     if ext:
       outer = self._fhir_extension_plus('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
       exclude = True if criterion.category.code == 'C25370' else False
-      collection.append({'extension': outer, 'code': code, 'value': value, 'exclude': exclude})
+      collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
         # <characteristic>
         #   <extension url="http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description">
         #     <valueString value="have had a diagnosis of either:&#xA;. a. T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year&#xA;.. i. multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or&#xA;.. ii. continuous subcutaneous insulin infusion (CSII) Or&#xA;. b. T2DM based on the WHO diagnostic criteria, and have received the following daily insulin therapy with or without oral anti-hyperglycemic medications (OAMs) for at least 1 year&#xA;.. i. insulin: long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) alone, or in combination with rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine) or CSII&#xA;.. ii. OAM: up to 3 of the following OAMs in accordance with local regulations: metformin, dipeptidyl peptidase-4 inhibitor, sodium glucose cotransporter 2 inhibitor, sulfonylurea (should not be more than half of maximum approved doses), glinides, alpha-glucosidase inhibitor, or thiazolidine">
@@ -319,3 +319,7 @@ class ToFHIRV2(ToFHIR):
 
   def _extension_codeable(self, key: str, value: CodeableConcept):
     return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueCodeableConcept=value) if value else None
+
+  def _extension_markdown(self, value):
+    return Extension(url=f"http://hl7.org/fhir/StructureDefinition/rendering-markdown", valueMarkdown=value) if value else None
+
