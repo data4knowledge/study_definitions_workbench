@@ -5,7 +5,7 @@
     "value": "urn:uuid:03c33140-3624-4c09-b73b-26ef14b93555"
   },
   "type": "document",
-  "timestamp": "2024-09-22T19:48:20.991554+00:00",
+  "timestamp": "2024-09-23T09:50:59.332821+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-22T19:48:20.991554+00:00",
+        "date": "2024-09-23T09:50:59.332821+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "3123839e-4979-43e5-8fb0-2b3d886142e5",
+        "id": "8cf06c9c-6580-4f14-b62b-77ae74cad194",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1680,7 +1680,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/37de298e-79b8-42b6-bf76-6d930c1c9281"
+              "reference": "Organization/cbd23787-5cdf-4e79-a57c-f787d172ac8e"
             }
           }
         ],
@@ -1734,7 +1734,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1763,7 +1763,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1792,7 +1792,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1821,7 +1821,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1850,7 +1850,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1879,7 +1879,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1908,7 +1908,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1937,7 +1937,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1966,7 +1966,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1995,7 +1995,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2024,7 +2024,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2053,7 +2053,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2082,7 +2082,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2111,7 +2111,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2140,7 +2140,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2169,7 +2169,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2198,7 +2198,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2227,7 +2227,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2256,7 +2256,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2285,7 +2285,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2314,7 +2314,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2343,7 +2343,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2372,7 +2372,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2401,7 +2401,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2430,7 +2430,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2459,7 +2459,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2488,7 +2488,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -2517,7 +2517,7 @@
                 }
               ]
             },
-            "value": {
+            "valueCodeableConcept": {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
