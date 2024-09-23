@@ -5,7 +5,7 @@
     "value": "urn:uuid:03c33140-3624-4c09-b73b-26ef14b93555"
   },
   "type": "document",
-  "timestamp": "2024-09-23T09:50:59.332821+00:00",
+  "timestamp": "2024-09-23T10:41:50.090461+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-23T09:50:59.332821+00:00",
+        "date": "2024-09-23T10:41:50.090461+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "8cf06c9c-6580-4f14-b62b-77ae74cad194",
+        "id": "33850b19-14dd-47ce-b8b1-6525e107a843",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1680,7 +1680,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/cbd23787-5cdf-4e79-a57c-f787d172ac8e"
+              "reference": "Organization/eb8ad149-d87c-441f-8e9e-ccb797a3bd3b"
             }
           }
         ],
@@ -1720,7 +1720,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have had a diagnosis of either: "
+                  "valueMarkdown": "have had a diagnosis of either: "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1749,7 +1749,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "<ul>\n<li>T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year </li>\n<li><ul>\n<li>multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or </li>\n<li>continuous subcutaneous insulin infusion (CSII) </li>\n</ul></li>\n</ul>"
+                  "valueMarkdown": "<ul>\n<li>T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year </li>\n<li><ul>\n<li>multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or </li>\n<li>continuous subcutaneous insulin infusion (CSII) </li>\n</ul></li>\n</ul>"
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1778,7 +1778,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "are investigative site personnel directly affiliated with this study and their immediate families. Immediate family is defined as a spouse, biological or legal guardian, child, or sibling "
+                  "valueMarkdown": "are investigative site personnel directly affiliated with this study and their immediate families. Immediate family is defined as a spouse, biological or legal guardian, child, or sibling "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1807,7 +1807,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "are Lilly employees "
+                  "valueMarkdown": "are Lilly employees "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1836,7 +1836,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "are currently enrolled in a clinical trial involving an investigational product or any other type of medical research judged not to be scientifically or medically compatible with this study "
+                  "valueMarkdown": "are currently enrolled in a clinical trial involving an investigational product or any other type of medical research judged not to be scientifically or medically compatible with this study "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1865,7 +1865,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have participated, within the last 4 months, in a clinical trial involving an investigational product. If the previous investigational product has a long half-life, 4 months or 5 half-lives (whichever is longer) should have passed from the last dose of investigational product "
+                  "valueMarkdown": "have participated, within the last 4 months, in a clinical trial involving an investigational product. If the previous investigational product has a long half-life, 4 months or 5 half-lives (whichever is longer) should have passed from the last dose of investigational product "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1894,7 +1894,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have previously completed or withdrawn from this study or any other study investigating LY900018, and have previously received LY900018 "
+                  "valueMarkdown": "have previously completed or withdrawn from this study or any other study investigating LY900018, and have previously received LY900018 "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1923,7 +1923,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have known allergies or sensitivity to LY900018, glucagon, related compounds, or any components of the formulation, or history of significant atopy "
+                  "valueMarkdown": "have known allergies or sensitivity to LY900018, glucagon, related compounds, or any components of the formulation, or history of significant atopy "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1952,7 +1952,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have an abnormality in the 12-lead ECG that, in the opinion of the investigator, increases the risks associated with participating in the study"
+                  "valueMarkdown": "have an abnormality in the 12-lead ECG that, in the opinion of the investigator, increases the risks associated with participating in the study"
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -1981,7 +1981,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "any significant changes in insulin regimen and/or unstable blood glucose control within the past 3 months prior to screening as assessed by the investigator "
+                  "valueMarkdown": "any significant changes in insulin regimen and/or unstable blood glucose control within the past 3 months prior to screening as assessed by the investigator "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2010,7 +2010,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have received a total daily dose of insulin >1.2 U/kg at the time of screening "
+                  "valueMarkdown": "have received a total daily dose of insulin >1.2 U/kg at the time of screening "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2039,7 +2039,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have poorly controlled hypertension (ie, supine systolic BP >165 mm Hg or supine diastolic BP >95 mm Hg) at screening, or a change in antihypertensive medications within 30 days prior to screening "
+                  "valueMarkdown": "have poorly controlled hypertension (ie, supine systolic BP >165 mm Hg or supine diastolic BP >95 mm Hg) at screening, or a change in antihypertensive medications within 30 days prior to screening "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2068,7 +2068,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have a history of pheochromocytoma (ie, adrenal gland tumor) or insulinoma "
+                  "valueMarkdown": "have a history of pheochromocytoma (ie, adrenal gland tumor) or insulinoma "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2097,7 +2097,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have a history of an episode of severe hypoglycemia (as defined by an episode that required third party assistance for treatment) in the 1 month prior to screening or have a history of loss of consciousness within the last 2 years induced other than by hypoglycemia "
+                  "valueMarkdown": "have a history of an episode of severe hypoglycemia (as defined by an episode that required third party assistance for treatment) in the 1 month prior to screening or have a history of loss of consciousness within the last 2 years induced other than by hypoglycemia "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2126,7 +2126,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have a history of epilepsy or seizure disorder "
+                  "valueMarkdown": "have a history of epilepsy or seizure disorder "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2155,7 +2155,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have a history or presence of cardiovascular, respiratory, hepatic, renal, gastrointestinal, endocrine (apart from T1DM or T2DM), hematological, or neurological disorders capable of significantly altering the absorption, metabolism, or elimination of drugs; of constituting a risk when taking the investigational product; or of interfering with the interpretation of data "
+                  "valueMarkdown": "have a history or presence of cardiovascular, respiratory, hepatic, renal, gastrointestinal, endocrine (apart from T1DM or T2DM), hematological, or neurological disorders capable of significantly altering the absorption, metabolism, or elimination of drugs; of constituting a risk when taking the investigational product; or of interfering with the interpretation of data "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2184,7 +2184,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have known or ongoing psychiatric disorders that, in the opinion of the investigator, may preclude the patient from following and completing the protocol "
+                  "valueMarkdown": "have known or ongoing psychiatric disorders that, in the opinion of the investigator, may preclude the patient from following and completing the protocol "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2213,7 +2213,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "regularly use known drugs of abuse and/or show positive findings on urinary drug screening "
+                  "valueMarkdown": "regularly use known drugs of abuse and/or show positive findings on urinary drug screening "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2242,7 +2242,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "show evidence of human immunodeficiency virus (HIV) infection and/or positive HIV antibodies and/or antigen "
+                  "valueMarkdown": "show evidence of human immunodeficiency virus (HIV) infection and/or positive HIV antibodies and/or antigen "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2271,7 +2271,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "show evidence of hepatitis C and/or positive hepatitis C antibody"
+                  "valueMarkdown": "show evidence of hepatitis C and/or positive hepatitis C antibody"
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2300,7 +2300,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": " show evidence of hepatitis B and/or positive hepatitis B surface antigen "
+                  "valueMarkdown": " show evidence of hepatitis B and/or positive hepatitis B surface antigen "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2329,7 +2329,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "show evidence of syphilis and/or are positive for syphilis test "
+                  "valueMarkdown": "show evidence of syphilis and/or are positive for syphilis test "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2358,7 +2358,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "are women who are lactating "
+                  "valueMarkdown": "are women who are lactating "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2387,7 +2387,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "use of daily systemic beta-blocker, indomethacin, warfarin, anticholinergic drugs "
+                  "valueMarkdown": "use of daily systemic beta-blocker, indomethacin, warfarin, anticholinergic drugs "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2416,7 +2416,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have donated 400 mL or more blood in the last 12 weeks (males) or in the last 16 weeks (females), or any blood donation (including apheresis) within the last 4 weeks, or total volume of blood donation within 12 months is 1200 mL (males)/800 mL (females) or more at screening"
+                  "valueMarkdown": "have donated 400 mL or more blood in the last 12 weeks (males) or in the last 16 weeks (females), or any blood donation (including apheresis) within the last 4 weeks, or total volume of blood donation within 12 months is 1200 mL (males)/800 mL (females) or more at screening"
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2445,7 +2445,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have an average weekly alcohol intake that exceeds 21 units per week (males up to age 65) and 14 units per week (males over 65 and females), or are unwilling to stop alcohol consumption from Day -2 to discharge from CRU in each period (1 unit = 12 oz or 360 mL of beer; 5 oz or 150 mL of wine; 1.5 oz or 45 mL of distilled spirits) "
+                  "valueMarkdown": "have an average weekly alcohol intake that exceeds 21 units per week (males up to age 65) and 14 units per week (males over 65 and females), or are unwilling to stop alcohol consumption from Day -2 to discharge from CRU in each period (1 unit = 12 oz or 360 mL of beer; 5 oz or 150 mL of wine; 1.5 oz or 45 mL of distilled spirits) "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2474,7 +2474,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "in the opinion of the investigator or sponsor, are unsuitable for inclusion in the study "
+                  "valueMarkdown": "in the opinion of the investigator or sponsor, are unsuitable for inclusion in the study "
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
@@ -2503,7 +2503,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
-                  "valueString": "have pre-proliferative and proliferative retinopathy or maculopathy requiring treatment or not clinically stable in the last 6 months, or patients with active changes in subjective eye symptoms as determined by the investigator if an eye exam has not been performed in the last 6 months. Note: If an eye examination has been performed no more than 6 months before screening, it will not have to be repeated; however, the investigator will need to confirm via interview that there is no change in subjective symptoms."
+                  "valueMarkdown": "have pre-proliferative and proliferative retinopathy or maculopathy requiring treatment or not clinically stable in the last 6 months, or patients with active changes in subjective eye symptoms as determined by the investigator if an eye exam has not been performed in the last 6 months. Note: If an eye examination has been performed no more than 6 months before screening, it will not have to be repeated; however, the investigator will need to confirm via interview that there is no change in subjective symptoms."
                 }
               ],
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
