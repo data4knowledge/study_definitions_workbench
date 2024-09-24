@@ -96,8 +96,17 @@ class M11ToUSDM():
     protocol_date_code = cdisc_ct_code('C99903x1', 'Protocol Effective Date', self._cdisc_ct_library, self._id_manager)
     global_code = cdisc_ct_code('C68846', 'Global', self._cdisc_ct_library, self._id_manager)
     global_scope = model_instance(GeographicScope, {'type': global_code}, self._id_manager)
-    approval_date = model_instance(GovernanceDate, {'name': 'Approval Date', 'type': sponsor_approval_date_code, 'dateValue': self._title_page.sponsor_approval_date, 'geographicScopes': [global_scope]}, self._id_manager)
-    protocol_date = model_instance(GovernanceDate, {'name': 'Protocol Date', 'type': protocol_date_code, 'dateValue': self._title_page.version_date, 'geographicScopes': [global_scope]}, self._id_manager)
+    dates = []
+    try: 
+      approval_date = model_instance(GovernanceDate, {'name': 'Approval Date', 'type': sponsor_approval_date_code, 'dateValue': self._title_page.sponsor_approval_date, 'geographicScopes': [global_scope]}, self._id_manager)
+      dates.append(approval_date)
+    except:
+      application_logger.info(f"No document approval date set, source = '{self._title_page.sponsor_approval_date}'")
+    try:  
+      protocol_date = model_instance(GovernanceDate, {'name': 'Protocol Date', 'type': protocol_date_code, 'dateValue': self._title_page.version_date, 'geographicScopes': [global_scope]}, self._id_manager)
+      dates.append(approval_date)
+    except:
+      application_logger.info(f"No document version date set, source = '{self._title_page.version_date}'")
     sponsor_title_code = cdisc_ct_code('C99905x2', 'Official Study Title', self._cdisc_ct_library, self._id_manager)
     protocl_status_code = cdisc_ct_code('C85255', 'Draft', self._cdisc_ct_library, self._id_manager)
     intervention_model_code = cdisc_ct_code('C82639', 'Parallel Study', self._cdisc_ct_library, self._id_manager)
@@ -119,7 +128,7 @@ class M11ToUSDM():
       'versionIdentifier': '1', 
       'rationale': 'XXX', 
       'titles': [study_title], 
-      'dateValues': [approval_date, protocol_date],
+      'dateValues': dates,
       'studyDesigns': [study_design], 
       'documentVersionId': protocl_document_version.id, 
       'studyIdentifiers': [identifier], 
@@ -134,6 +143,7 @@ class M11ToUSDM():
     #print(f"OBJECTIVES")
     objs = []
     ests = []
+    treatments = []
     primary_o = cdisc_ct_code('C85826', 'Primary Objective', self._cdisc_ct_library, self._id_manager)
     primary_ep = cdisc_ct_code('C94496', 'Primary Endpoint', self._cdisc_ct_library, self._id_manager)
 
@@ -154,10 +164,11 @@ class M11ToUSDM():
       ap = model_instance(AnalysisPopulation, params, self._id_manager)
       params = {'name': f"Study Intervention {index + 1}", 'text': objective['treatment'], 'role': int_role, 'type': int_type, 'productDesignation': int_designation}
       treatment = model_instance(StudyIntervention, params, self._id_manager)
+      treatments.append(treatment)
       params = {'name': f"Estimand {index + 1}", 'intercurrentEvents': [ie], 'analysisPopulation': ap, 'variableOfInterestId': ep.id, 'interventionId': treatment.id, 'summaryMeasure': objective['population_summary']}
       est = model_instance(Estimand, params, self._id_manager)
       ests.append(est)
-    return objs, ests, [treatment]
+    return objs, ests, treatments
   
   def _population(self):
     print(f"POPULATION")
