@@ -1,3 +1,6 @@
+import threading
+import asyncio
+import time
 from typing import Annotated
 from fastapi import Form, Depends, FastAPI, Request, BackgroundTasks, Response, status, Form, File, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse, FileResponse
@@ -24,6 +27,7 @@ from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
 from app.utility.fhir_version import check_fhir_version, fhir_version_description
+from app.utility.fhir_transmit import run_fhir_transmit
 from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 
@@ -78,6 +82,21 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
   except WebSocketDisconnect:
       connection_manager.disconnect(user_id)
 
+@app.get("/background", dependencies=[Depends(protect_endpoint)])
+def background(request: Request, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+
+  t = threading.Thread(target=asyncio.run, args=(do_work(user),))
+  t.start()
+
+  # t = threading.Thread(target=do_work, args=(user,)) 
+  # t.start()
+  return RedirectResponse(f'/index')
+
+async def do_work(user):
+  time.sleep(3)
+  await connection_manager.success("Thread complete", str(user.id))
+
 @app.get("/")
 def home(request: Request):
   response = templates.TemplateResponse('home/home.html', {'request': request, "version": VERSION})
@@ -107,7 +126,7 @@ def index(request: Request, session: Session = Depends(get_db)):
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}}
-  print(f"USER SHOW: {data}")
+  #print(f"USER SHOW: {data}")
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
@@ -165,19 +184,19 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
     return templates.TemplateResponse('errors/error.html', {"request": request, 'data': {'error': message}})
     
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
-async def import_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_m11(request, background_tasks, templates, user, session)
+  return await process_m11(request, templates, user)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
-async def import_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_xl(request, background_tasks, templates, user, session)
+  return await process_xl(request, templates, user)
 
 @app.post('/import/fhir', dependencies=[Depends(protect_endpoint)])
-async def import_fhir(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_fhir(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_fhir(request, background_tasks, templates, user, session)
+  return await process_fhir(request, templates, user)
 
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
@@ -349,11 +368,11 @@ async def export_fhir(request: Request, id: int, version: str, session: Session 
     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version export requested. Version requested was '{version}'."}})
 
 @app.get('/versions/{id}/transmit/{endpoint_id}', dependencies=[Depends(protect_endpoint)])
-async def version_transmit(request: Request, id: int, endpoint_id: int, version: str, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def version_transmit(request: Request, id: int, endpoint_id: int, version: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   valid, description = check_fhir_version(version)
   if valid:
-    background_tasks.add_task(fhir_transmit, id, endpoint_id, version, user, session)
+    run_fhir_transmit(id, endpoint_id, version, user)
     return RedirectResponse(f'/versions/{id}/summary')
   else:
     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."}})

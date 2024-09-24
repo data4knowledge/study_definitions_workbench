@@ -1,5 +1,7 @@
 import json
+import threading
 import asyncio
+from app.model.database import SessionLocal
 from d4kms_generic import application_logger
 from usdm_db import USDMDb
 from usdm_db import USDMDb, Wrapper
@@ -14,8 +16,10 @@ from app import VERSION, SYSTEM_NAME
 from sqlalchemy.orm import Session
 from app.model.object_path import ObjectPath
 
-def process_excel(uuid, user: User, session: Session) -> None:
+async def process_excel(uuid, user: User) -> None:
   try:
+    session = SessionLocal()
+    # print("Background running")
     file_import = None
     files = Files(uuid)
     full_path, filename = files.path('xlsx')
@@ -28,18 +32,21 @@ def process_excel(uuid, user: User, session: Session) -> None:
     files.save('usdm', usdm_json)
     files.save('extra', _blank_extra())
     parameters = _study_parameters(usdm_json)
-    #print(f"PARAMETERS: {parameters}")
+    print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
-    #connection_manager.success(f"Import of Excel workbook completed sucessfully", str(user.id))
+    session.close()
+    await connection_manager.success(f"Import of Excel workbook completed sucessfully", str(user.id))
   except Exception as e:
     if file_import:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Excel file", e)
-    #connection_manager.error(f"Error encountered importing Excel workbook", str(user.id))
+    session.close()
+    await connection_manager.error(f"Error encountered importing Excel workbook", str(user.id))
 
-async def process_word(uuid, user: User, session: Session) -> None:
+async def process_word(uuid, user: User) -> None:
   try:
+    session = SessionLocal()
     file_import = None
     files = Files(uuid)
     full_path, filename = files.path('docx')
@@ -53,16 +60,18 @@ async def process_word(uuid, user: User, session: Session) -> None:
     parameters = _study_parameters(usdm_json)
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
+    session.close()
     await connection_manager.success(f"Import of M11 document completed sucessfully", str(user.id))
   except Exception as e:
     if file_import:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Word file", e)
-    await asyncio.sleep(1) # Need something just in case background task does not block
+    session.close()
     await connection_manager.error(f"Error encountered importing M11 document", str(user.id))
 
-def process_fhir_v1(uuid, user: User, session: Session) -> None:
+async def process_fhir_v1(uuid, user: User) -> None:
   try:
+    session = SessionLocal()
     file_import = None
     files = Files(uuid)
     full_path, filename = files.path('fhir')
@@ -76,10 +85,18 @@ def process_fhir_v1(uuid, user: User, session: Session) -> None:
     print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
+    session.close()
+    await connection_manager.success(f"Import of FHIR message completed succesfully", str(user.id))
   except Exception as e:
     if file_import:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing FHIR V1 file", e)
+    session.close()
+    await connection_manager.error(f"Error encountered importing FHIR message", str(user.id))
+
+def run_background_task(name, uuid, user: User) -> None:
+  t = threading.Thread(target=asyncio.run, args=(name(uuid, user),))
+  t.start()
 
 def _study_parameters(json_str: str) -> dict:
   try:

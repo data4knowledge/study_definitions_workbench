@@ -3,16 +3,17 @@ from fastapi import File
 from app.model.files import Files
 #from app.model.file_import import FileImport
 from d4kms_generic import application_logger
-from app.utility.background import process_excel, process_word, process_fhir_v1
+from app.utility.background import process_excel, process_word, process_fhir_v1, run_background_task
 
-async def process_xl(request, background_tasks, templates, user, session):
+async def process_xl(request, templates, user):
   try:
     form = await request.form()
     import_file, image_files, messages = await get_xl_files(form)
     if import_file:
       uuid = save_xl_files(import_file, image_files)
       if uuid:
-        background_tasks.add_task(process_excel, uuid, user, session)
+        #background_tasks.add_task(process_excel, uuid, user, session)
+        run_background_task(process_excel, uuid, user)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
@@ -53,14 +54,15 @@ def save_xl_files(import_file: dict, image_files: dict):
     saved_full_path, saved_filename = _save_file(files, image_file, "image")
   return uuid
 
-async def process_m11(request, background_tasks, templates, user, session):
+async def process_m11(request, templates, user):
   try:
     form = await request.form()
     import_file, messages = await get_m11_files(form)
     if import_file:
       uuid = save_m11_files(import_file)
       if uuid:
-        background_tasks.add_task(process_word, uuid, user, session)
+        #background_tasks.add_task(process_word, uuid, user, session)
+        run_background_task(process_word, uuid, user)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
@@ -91,14 +93,15 @@ async def get_m11_files(form: File):
 def save_m11_files(import_file: dict):
   return _save_files(import_file, "docx")
 
-async def process_fhir(request, background_tasks, templates, user, session):
+async def process_fhir(request, templates, user):
   try:
     form = await request.form()
     import_file, messages = await get_fhir_files(form)
     if import_file:
       uuid = save_fhir_files(import_file)
       if uuid:
-        background_tasks.add_task(process_fhir_v1, uuid, user, session)
+        #background_tasks.add_task(process_fhir_v1, uuid, user, session)
+        run_background_task(process_fhir_v1, uuid, user)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
