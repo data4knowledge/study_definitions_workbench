@@ -31,10 +31,12 @@ def process_excel(uuid, user: User, session: Session) -> None:
     #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
+    #connection_manager.success(f"Import of Excel workbook completed sucessfully", str(user.id))
   except Exception as e:
     if file_import:
       file_import.update_status('Exception', session)
     application_logger.exception(f"Exception '{e}' raised processing Excel file", e)
+    #connection_manager.error(f"Error encountered importing Excel workbook", str(user.id))
 
 async def process_word(uuid, user: User, session: Session) -> None:
   try:
@@ -49,7 +51,6 @@ async def process_word(uuid, user: User, session: Session) -> None:
     files.save('usdm', usdm_json)
     files.save('extra', m11.extra())
     parameters = _study_parameters(usdm_json)
-    #print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
     await connection_manager.success(f"Import of M11 document completed sucessfully", str(user.id))
