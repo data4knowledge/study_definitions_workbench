@@ -82,21 +82,6 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
   except WebSocketDisconnect:
       connection_manager.disconnect(user_id)
 
-@app.get("/background", dependencies=[Depends(protect_endpoint)])
-def background(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-
-  t = threading.Thread(target=asyncio.run, args=(do_work(user),))
-  t.start()
-
-  # t = threading.Thread(target=do_work, args=(user,)) 
-  # t.start()
-  return RedirectResponse(f'/index')
-
-async def do_work(user):
-  time.sleep(3)
-  await connection_manager.success("Thread complete", str(user.id))
-
 @app.get("/")
 def home(request: Request):
   response = templates.TemplateResponse('home/home.html', {'request': request, "version": VERSION})
