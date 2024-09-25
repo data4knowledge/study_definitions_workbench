@@ -47,8 +47,10 @@ class ToFHIRV2(ToFHIR):
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
       author = Reference(display="USDM")
       self._entries.append({'item': Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author]), 'url': 'https://www.example.com/Composition/1234B'})
-      self._entries.append({'item': self._research_study(), 'url': 'https://www.example.com/Composition/1234A'})
-      self._entries.append({'item': self._inclusion_exclusion_critieria(), 'url': 'https://www.example.com/Composition/1234X1'})
+      ie = self._inclusion_exclusion_critieria()
+      rs = self._research_study(ie.id)
+      self._entries.append({'item': rs, 'url': 'https://www.example.com/Composition/1234A'})
+      self._entries.append({'item': ie, 'url': 'https://www.example.com/Composition/1234X1'})
       identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
       entries = []
       for entry in self._entries:
@@ -59,12 +61,11 @@ class ToFHIRV2(ToFHIR):
       self._errors_and_logging.exception(f"Exception raised generating FHIR content. See logs for more details", e)
       return None
 
-  
   def _inclusion_exclusion_critieria(self):
     version = self.study_version
     design = version.studyDesigns[0]
     all_of = self._fhir_extension('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod', 'all-of')
-    group = Group(characteristic=[], type='person', membership='definitional', extension=[all_of])
+    group = Group(id=str(uuid4()), characteristic=[], type='person', membership='definitional', extension=[all_of])
     for index, criterion in enumerate(design.population.criteria):
       self._criterion(criterion, group.characteristic)
     return group
@@ -78,7 +79,7 @@ class ToFHIRV2(ToFHIR):
       exclude = True if criterion.category.code == 'C25370' else False
       collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
 
-  def _research_study(self) -> ResearchStudy:
+  def _research_study(self, group_id: str) -> ResearchStudy:
     version = self.study_version
     result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[], objective=[], comparisonGroup=[], outcomeMeasure=[])
 
@@ -179,9 +180,15 @@ class ToFHIRV2(ToFHIR):
     # Objectives
     self._estimands(result)
 
+    # Recruitment
+    self._recruitment(result, group_id)
+
     #print(f"RESEARCH STUDY: {result}")
     return result
   
+  def _recruitment(self, research_study: ResearchStudy, group_id):
+    research_study.recruitment = {'eligibility': {'reference': f'Group/{group_id}'}}
+
   def _estimands(self, research_study: ResearchStudy):
     version = self.study_version
     design = version.studyDesigns[0]
