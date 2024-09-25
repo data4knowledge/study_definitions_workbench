@@ -5,7 +5,7 @@
     "value": "urn:uuid:1f3164f6-bead-45ce-8b34-74c28ee5f914"
   },
   "type": "document",
-  "timestamp": "2024-09-25T20:18:10.008791+00:00",
+  "timestamp": "2024-09-25T20:26:54.412692+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-25T20:18:10.008791+00:00",
+        "date": "2024-09-25T20:26:54.412692+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "c03fc10d-663b-4d24-a492-678744614d6d",
+        "id": "eb16fb7e-6147-47f4-853d-b7e6861d07c8",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1679,7 +1679,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/c03fc10d-663b-4d24-a492-678744614d6d"
+              "reference": "Organization/eb16fb7e-6147-47f4-853d-b7e6861d07c8"
             }
           }
         ],
@@ -1701,7 +1701,7 @@
         ],
         "recruitment": {
           "eligibility": {
-            "reference": "Group/f9678a20-21d6-4b07-a523-192a47a164a3"
+            "reference": "Group/d8cd3ff9-c060-4f2f-b589-cb1dd258faf8"
           }
         },
         "comparisonGroup": [
@@ -1766,7 +1766,7 @@
       "fullUrl": "https://www.example.com/Composition/1234X1",
       "resource": {
         "resourceType": "Group",
-        "id": "f9678a20-21d6-4b07-a523-192a47a164a3",
+        "id": "d8cd3ff9-c060-4f2f-b589-cb1dd258faf8",
         "extension": [
           {
             "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod",
@@ -1802,7 +1802,7 @@
           {
             "extension": {
               "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
-              "valueString": "<ul>\n<li>T1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year </li>\n<li><ul>\n<li>multiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or </li>\n<li>continuous subcutaneous insulin infusion (CSII) </li>\n</ul></li>\n</ul>"
+              "valueString": "\nT1DM based on the World Health Organization (WHO) diagnostic criteria, and have been on the following daily insulin therapy for at least 1 year \n\nmultiple daily injection of long-acting insulin analog (either insulin glargine [U-100 or U-300] or insulin degludec [U-100]) and rapid-acting insulin analog (insulin lispro, insulin aspart, or insulin glulisine), or \ncontinuous subcutaneous insulin infusion (CSII) \n\n"
             },
             "code": {
               "extension": [

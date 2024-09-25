@@ -1,3 +1,5 @@
+import warnings
+from bs4 import BeautifulSoup   
 from app.model.fhir.to_fhir import ToFHIR
 from fhir.resources.bundle import Bundle, BundleEntry
 from fhir.resources.identifier import Identifier
@@ -26,6 +28,7 @@ from usdm_model.study_version import StudyVersion as USDMStudyVersion
 from usdm_model.study_design import StudyDesign as USDMStudyDesign
 from usdm_model.eligibility_criterion import EligibilityCriterion
 from uuid import uuid4
+from d4kms_generic import application_logger
 
 import datetime
 
@@ -79,7 +82,11 @@ class ToFHIRV2(ToFHIR):
     #   outer = self._extension_markdown_wrapper_2('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
     #   exclude = True if criterion.category.code == 'C25370' else False
     #   collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
-    outer = self._extension_markdown_wrapper_2('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', criterion.text, None)
+
+    soup = self._get_soup(criterion.text)
+    cleaned_text = soup.get_text()
+
+    outer = self._extension_markdown_wrapper_2('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', cleaned_text, None)
     exclude = True if criterion.category.code == 'C25370' else False
     collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
   
@@ -401,3 +408,15 @@ class ToFHIRV2(ToFHIR):
 
   def _fix_id(self, value: str) -> str:
     return value.replace('_', '-')
+  
+  def _get_soup(self, text):
+    soup = None
+    try:
+      with warnings.catch_warnings(record=True) as warning_list:
+        soup =  BeautifulSoup(text, 'html.parser')
+      if warning_list:
+        for item in warning_list:
+          application_logger.debug(f"Warning raised within Soup package, processing '{text}'\nMessage returned '{item.message}'")
+    except Exception as e:
+      application_logger.exception(f"Eerror raised while Beautiful Soup parsing '{text}'", e)
+    return soup
