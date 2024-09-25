@@ -54,8 +54,8 @@ class Service():
     return self._response(False, response.status_code, {} ,message)
     
   def _exception(self, operation, e):
-    application_logger.exception(message, e)
     message = f"HTTPX '{operation}' operation raised exception {e.__class__.__name__}"
+    application_logger.exception(message, e)
     return self._response(False, '', {}, message)
 
   def _response(self, success: bool, status: str, data: dict, message: str=''):

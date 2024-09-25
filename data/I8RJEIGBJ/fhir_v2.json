@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "identifier": {
     "system": "urn:ietf:rfc:3986",
-    "value": "urn:uuid:f0a07337-84ff-4846-ab24-5accf9d585d0"
+    "value": "urn:uuid:1f3164f6-bead-45ce-8b34-74c28ee5f914"
   },
   "type": "document",
-  "timestamp": "2024-09-23T19:09:02.766392+00:00",
+  "timestamp": "2024-09-25T09:22:09.253245+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-23T19:09:02.766392+00:00",
+        "date": "2024-09-25T09:22:09.253245+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "b11bee4b-d4f5-44e4-a219-6aefaea9f2f2",
+        "id": "641ef76e-68e6-452f-b37f-77799baa4fd9",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1655,7 +1655,6 @@
         ],
         "version": "1",
         "title": "A Phase 3 Study of Nasal Glucagon (LY900018) Compared to Intramuscular Glucagon for Treatment of Insulin-induced Hypoglycemia in Japanese Patients with Diabetes Mellitus",
-        "date": "2017-12-05",
         "status": "draft",
         "phase": {
           "coding": [
@@ -1680,7 +1679,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/bfcb2998-b6b7-484e-af00-6338699a8c77"
+              "reference": "Organization/641ef76e-68e6-452f-b37f-77799baa4fd9"
             }
           }
         ],

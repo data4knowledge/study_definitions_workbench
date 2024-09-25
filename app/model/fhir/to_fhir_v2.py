@@ -140,7 +140,7 @@ class ToFHIRV2(ToFHIR):
     sponsor = self._sponsor()
     org = self._organization_from_organization(sponsor)
     if org:
-      self._entries.append({'item': self._organization_from_organization(sponsor), 'url': 'https://www.example.com/Composition/1234D'})
+      self._entries.append({'item': org, 'url': 'https://www.example.com/Composition/1234D'})
       item = self._associated_party_reference(f"Organization/{self._fix_id(org.id)}", 'sponsor', 'sponsor')
       if item:
         result.associatedParty.append(item)
@@ -186,47 +186,18 @@ class ToFHIRV2(ToFHIR):
     version = self.study_version
     design = version.studyDesigns[0]
     for objective in self._primary_objectives():
-
-      # <extension url="http://example.org/fhir/extension/estimand">
       ext = self._extension_wrapper('http://example.org/fhir/extension/estimand')
-
-      #   <extension url="population-comparisonGroup">
-      #     <valueId value="ComparisonGroupLinkId" />
-      #   </extension>
       id = self._treatment(research_study, objective['treatment'])
       pls_ext = self._extension_id('populationLevelSummary', self._fix_id(objective['summary'].id))
       if pls_ext:
         ext.extension.append(pls_ext)
-
-      #   <extension url="endpoint-outcomeMeasure">
-      #     <valueId value="OutcomeMeasureLinkId" />
-      #   </extension>
       id = self._endpoint(research_study, objective['endpoint'])
       pls_ext = self._extension_id('endpoint-outcomeMeasure', id)
       if pls_ext:
         ext.extension.append(pls_ext)
-
-      #   <extension url="populationLevelSummary">
-      #     <valueCodeableConcept>
-      #       <text value="Not Available" />
-      #     </valueCodeableConcept>
-      #   </extension>
       pls_ext = self._extension_codeable_text('populationLevelSummary', objective['summary'].summaryMeasure)
       if pls_ext:
         ext.extension.append(pls_ext)
-
-      # <extension url="intercurrentEvent">
-      #   <extension url="event">
-      #     <valueCodeableConcept>
-      #       <text value="NA" />
-      #     </valueCodeableConcept>
-      #   </extension>
-      #   <extension url="strategy">
-      #     <valueCodeableConcept>
-      #       <text value="Not Available" />
-      #     </valueCodeableConcept>
-      #   </extension>
-      # </extension>
       for ice in objective['events']:
         event_ext = self._extension_codeable_text('event', ice.description)
         strategy_ext = self._extension_codeable_text('event', ice.strategy)
@@ -234,17 +205,7 @@ class ToFHIRV2(ToFHIR):
         if ice_ext:
           ice_ext.extension.append(event_ext)
           ice_ext.extension.append(strategy_ext)
-
-      #   <type>
-      #     <coding>
-      #       <system value="http://hl7.org/fhir/research-study-classifiers" />
-      #       <code value="primary" />
-      #       <display value="Primary" />
-      #     </coding>
-      #   </type>
-      #   <description value="To demonstrate that 3 mg LY900018 is non-inferior to 1 mg IMG for the proportion of patients achieving treatment success from insulin-induced hypoglycemia using a non-inferiority margin of 10%" />
       item = {'type': {'coding': self._coding_from_code(objective['type'])}, 'description': objective['objective'].description, 'extension': [ext]}
-      # </objective>
       research_study.objective.append(item)
 
   def _treatment(self, research_study: ResearchStudy, treatment: USDMStudyIntervention):
