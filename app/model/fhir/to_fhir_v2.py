@@ -12,6 +12,7 @@ from fhir.resources.researchstudy import ResearchStudyProgressStatus
 from fhir.resources.organization import Organization
 from fhir.resources.extendedcontactdetail import ExtendedContactDetail
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
+from fhir.resources.fhirprimitiveextension import FHIRPrimitiveExtension
 from fhir.resources.group import Group
 from usdm_model.code import Code as USDMCode
 from usdm_model.study_title import StudyTitle as USDMStudyTitle
@@ -73,12 +74,15 @@ class ToFHIRV2(ToFHIR):
   def _criterion(self, criterion: EligibilityCriterion, collection: list):
     code = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
     value = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
-    ext = self._extension_markdown('http://hl7.org/fhir/StructureDefinition/rendering-markdown', criterion.text)
-    if ext:
-      outer = self._extension_markdown_wrapper('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
-      exclude = True if criterion.category.code == 'C25370' else False
-      collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
-
+    # ext = self._extension_markdown('http://hl7.org/fhir/StructureDefinition/rendering-markdown', criterion.text)
+    # if ext:
+    #   outer = self._extension_markdown_wrapper_2('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
+    #   exclude = True if criterion.category.code == 'C25370' else False
+    #   collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
+    outer = self._extension_markdown_wrapper_2('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', criterion.text, None)
+    exclude = True if criterion.category.code == 'C25370' else False
+    collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
+  
   def _research_study(self, group_id: str) -> ResearchStudy:
     version = self.study_version
     result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[], objective=[], comparisonGroup=[], outcomeMeasure=[])
@@ -384,6 +388,9 @@ class ToFHIRV2(ToFHIR):
 
   def _extension_markdown_wrapper(self, url, value, ext):
     return Extension(url=url, extension=[ext]) if value else None
+
+  def _extension_markdown_wrapper_2(self, url, value, ext):
+      return Extension(url=url, valueString=value)
 
   def _extension_markdown(self, url, value):
     return Extension(url=url, valueMarkdown=value) if value else None
