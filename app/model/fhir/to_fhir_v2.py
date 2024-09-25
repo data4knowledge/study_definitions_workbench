@@ -64,7 +64,7 @@ class ToFHIRV2(ToFHIR):
   def _inclusion_exclusion_critieria(self):
     version = self.study_version
     design = version.studyDesigns[0]
-    all_of = self._fhir_extension('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod', 'all-of')
+    all_of = self._extension_string('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod', 'all-of')
     group = Group(id=str(uuid4()), characteristic=[], type='person', membership='definitional', extension=[all_of])
     for index, criterion in enumerate(design.population.criteria):
       self._criterion(criterion, group.characteristic)
@@ -73,9 +73,9 @@ class ToFHIRV2(ToFHIR):
   def _criterion(self, criterion: EligibilityCriterion, collection: list):
     code = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
     value = CodeableConcept(extension=[{'url': "http://hl7.org/fhir/StructureDefinition/data-absent-reason", 'valueCode': "not-applicable" }])
-    ext = self._extension_markdown(criterion.text)
+    ext = self._extension_markdown('http://hl7.org/fhir/StructureDefinition/rendering-markdown', criterion.text)
     if ext:
-      outer = self._fhir_extension_markdown_wrapper('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
+      outer = self._extension_markdown_wrapper('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description', 'Not filled', ext)
       exclude = True if criterion.category.code == 'C25370' else False
       collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
 
@@ -84,7 +84,7 @@ class ToFHIRV2(ToFHIR):
     result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[], objective=[], comparisonGroup=[], outcomeMeasure=[])
 
     # Sponsor Confidentiality Statememt
-    ext = self._extension("research-study-sponsor-confidentiality-statement", self._title_page['sponsor_confidentiality'])
+    ext = self._extension_string("http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", self._title_page['sponsor_confidentiality'])
     if ext:
       result.extension.append(ext)
     
@@ -168,7 +168,7 @@ class ToFHIRV2(ToFHIR):
       result.associatedParty.append(item)
     
     # SAE Reporting Method
-    ext = self._extension("research-study-sae-reporting-method", self._title_page['sae_reporting_method'])
+    ext = self._extension_string("http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sae-reporting-method", self._title_page['sae_reporting_method'])
     if ext:
       result.extension.append(ext)
     
@@ -335,62 +335,58 @@ class ToFHIRV2(ToFHIR):
   def _amendment_ext(self, version: USDMStudyVersion):
     source = version.amendments[0]
     amendment = Extension(url=f"http://example.org/fhir/extension/studyAmendment", extension=[])
-    ext = self._extension('amendmentNumber', value=self._title_page['amendment_identifier'])
+    ext = self._extension_string('amendmentNumber', value=self._title_page['amendment_identifier'])
     if ext:
       amendment.extension.append(ext)
-    ext = self._extension('scope', value=self._title_page['amendment_scope'])
+    ext = self._extension_string('scope', value=self._title_page['amendment_scope'])
     if ext:
       amendment.extension.append(ext)
-    ext = self._extension('details', value=self._title_page['amendment_details'])
+    ext = self._extension_string('details', value=self._title_page['amendment_details'])
     if ext:
       amendment.extension.append(ext)
     ext = self._extension_boolean('substantialImpactSafety', value=self._amendment['safety_impact'])
     if ext:
       amendment.extension.append(ext)
-    ext = self._extension('substantialImpactSafety', value=self._amendment['safety_impact_reason'])
+    ext = self._extension_string('substantialImpactSafety', value=self._amendment['safety_impact_reason'])
     if ext:
       amendment.extension.append(ext)
     ext = self._extension_boolean('substantialImpactSafety', value=self._amendment['robustness_impact'])
     if ext:
       amendment.extension.append(ext)
-    ext = self._extension('substantialImpactSafety', value=self._amendment['robustness_impact_reason'])
+    ext = self._extension_string('substantialImpactSafety', value=self._amendment['robustness_impact_reason'])
     if ext:
       amendment.extension.append(ext)
 
     primary = self._codeable_concept(self._coding_from_code(source.primaryReason.code))
-    ext = self._extension_codeable('primaryReason', value=primary)
+    ext = self._extension_codeable('http://hl7.org/fhir/uv/ebm/StructureDefinition/primaryReason', value=primary)
     if ext:
       amendment.extension.append(ext)
       secondary = self._codeable_concept(self._coding_from_code(source.secondaryReasons[0].code))
-      ext = self._extension_codeable('secondaryReason', value=secondary)
+      ext = self._extension_codeable('http://hl7.org/fhir/uv/ebm/StructureDefinition/secondaryReason', value=secondary)
       if ext:
         amendment.extension.append(ext)
     return amendment
   
-  def _fhir_extension(self, url, value):
-    return Extension(url=url, valueString=value) if value else None
-
-  def _fhir_extension_markdown_wrapper(self, url, value, ext):
-    #return Extension(url=url, valueString=value, extension=[ext]) if value else None
-    return Extension(url=url, extension=[ext]) if value else None
-
   def _extension_wrapper(self, url):
     return Extension(url=url, extension=[])
 
-  def _extension(self, key: str, value: str):
-    return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueString=value) if value else None
+  def _extension_string(self, url: str, value: str):
+    return Extension(url=url, valueString=value) if value else None
 
-  def _extension_boolean(self, key: str, value: str):
-    return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueBoolean=value) if value else None
+  def _extension_boolean(self, url: str, value: str):
+    return Extension(url=url, valueBoolean=value) if value else None
 
-  def _extension_codeable(self, key: str, value: CodeableConcept):
-    return Extension(url=f"http://hl7.org/fhir/uv/ebm/StructureDefinition/{key}", valueCodeableConcept=value) if value else None
+  def _extension_codeable(self, url: str, value: CodeableConcept):
+    return Extension(url=url, valueCodeableConcept=value) if value else None
 
   def _extension_codeable_text(self, url: str, value: str):
     return Extension(url=url, valueString=value) if value else None
 
-  def _extension_markdown(self, value):
-    return Extension(url=f"http://hl7.org/fhir/StructureDefinition/rendering-markdown", valueMarkdown=value) if value else None
+  def _extension_markdown_wrapper(self, url, value, ext):
+    return Extension(url=url, extension=[ext]) if value else None
+
+  def _extension_markdown(self, url, value):
+    return Extension(url=url, valueMarkdown=value) if value else None
 
   def _extension_id(self, url: str, value: str):
     value = self._fix_id(value)

@@ -5,7 +5,7 @@
     "value": "urn:uuid:1f3164f6-bead-45ce-8b34-74c28ee5f914"
   },
   "type": "document",
-  "timestamp": "2024-09-25T10:18:12.279186+00:00",
+  "timestamp": "2024-09-25T10:35:32.696194+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-09-25T10:18:12.279186+00:00",
+        "date": "2024-09-25T10:35:32.696194+00:00",
         "author": [
           {
             "display": "USDM"
@@ -1580,7 +1580,7 @@
       "fullUrl": "https://www.example.com/Composition/1234D",
       "resource": {
         "resourceType": "Organization",
-        "id": "761fdece-afbf-4863-a74f-b2f9aeefebff",
+        "id": "0a724c65-e8fa-46ca-ac38-4f25c619ef85",
         "name": "Eli Lilly Japan K.K",
         "contact": [
           {
@@ -1600,11 +1600,11 @@
           {
             "extension": [
               {
-                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/amendmentNumber",
+                "url": "amendmentNumber",
                 "valueString": "I8R-JE-IGBJ(a)\n"
               },
               {
-                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/scope",
+                "url": "scope",
                 "valueString": "Global\n"
               },
               {
@@ -1679,7 +1679,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/761fdece-afbf-4863-a74f-b2f9aeefebff"
+              "reference": "Organization/0a724c65-e8fa-46ca-ac38-4f25c619ef85"
             }
           }
         ],
@@ -1701,7 +1701,7 @@
         ],
         "recruitment": {
           "eligibility": {
-            "reference": "Group/ed967117-7ec0-41d5-8778-51b9759124d1"
+            "reference": "Group/b1455b9e-2910-4e7f-a9cf-fdfebecfff8e"
           }
         },
         "comparisonGroup": [
@@ -1766,7 +1766,7 @@
       "fullUrl": "https://www.example.com/Composition/1234X1",
       "resource": {
         "resourceType": "Group",
-        "id": "ed967117-7ec0-41d5-8778-51b9759124d1",
+        "id": "b1455b9e-2910-4e7f-a9cf-fdfebecfff8e",
         "extension": [
           {
             "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod",
