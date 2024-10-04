@@ -11,7 +11,7 @@ class M11HTML():
     tables = self._soup(['table'])
     if tables:
       table = tables[0]
-      print(f"TABLE: {table}")
+      # print(f"TABLE: {table}")
       self.full_title = self._table_get_row(table, 'Full Title')
       self.acronym = self._table_get_row(table, 'Acronym')
       self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')
@@ -30,7 +30,7 @@ class M11HTML():
       self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
   
   def _table_get_row(self, table, key: str) -> str:
-    print(f"TGR: {type(table)}")
+    # print(f"TGR: {type(table)}")
     soup = self._soup(str(table))
     for row in soup(['tr']):
       cells = row.find('td')

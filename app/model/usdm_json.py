@@ -165,7 +165,7 @@ class USDMJson():
         'text': section['text'] if section else '[Trial Interventions]'
       }
       for intervention in design['studyInterventions']:
-        print(f"R1:")
+        #print(f"R1:")
         record = {}
         record['arm'] = self._arm_from_intervention(design, intervention['id'])
         record['intervention'] = intervention
@@ -270,7 +270,7 @@ class USDMJson():
         process = True
         top_level = self._get_level(section)
         while process:
-          print(f"SECTION: {section}")
+          # print(f"SECTION: {section}")
           heading, level = self._format_heading(section)
           text.append(heading)
           text.append(section['text'])

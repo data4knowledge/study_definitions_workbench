@@ -82,9 +82,9 @@ class FromFHIRV1():
       
   def _study(self, protocol_document: StudyProtocolDocument):
     protocol_document_version = protocol_document.versions[0]
-    print(f"PDV: {protocol_document_version}")
+    #print(f"PDV: {protocol_document_version}")
     sections = protocol_document_version.contents
-    print(f"SECTION: {protocol_document_version}")
+    #print(f"SECTION: {protocol_document_version}")
     title_page = FHIRTitlePage(sections[1].text)
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
     study_title = self._model_instance(StudyTitle, {'text': title_page.full_title, 'type': sponsor_title_code})

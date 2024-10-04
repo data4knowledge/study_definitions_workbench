@@ -1,3 +1,7 @@
+**Release 0.15.0, 2024-10-06**
+
+- Add single user option
+
 **Release 0.14.0, 2024-10-04**
 
 - Improve Tx functionality (background)
