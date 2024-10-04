@@ -16,7 +16,8 @@ class User(Base):
   __tablename__ = "user"
 
   id = Column(Integer, primary_key=True)
-  email = Column(String, unique=True, nullable=False, index=True)
+  identifier = Column(String, unique=True, nullable=False, index=True)
+  email = Column(String, index=True)
   display_name = Column(String, nullable=False)
   is_active = Column(Boolean, nullable=False, default=True)
   imports = relationship('FileImport', backref='user')
