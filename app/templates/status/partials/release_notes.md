@@ -1,8 +1,9 @@
-**Release 0.14.0, 2024-09-10**
+**Release 0.14.0, 2024-10-04**
 
 - Improve Tx functionality (background)
 - Add in ability to generate v2 FHIR message (Atlanta connectathon)
-- Add in FHIR Receive (XML or JSON) (Transmit is always JSON for the moment)
+
+Release was that used in Atlanta for the HL7 Connectathon. 
 
 **Release 0.13.0, 2024-08-30**
 
