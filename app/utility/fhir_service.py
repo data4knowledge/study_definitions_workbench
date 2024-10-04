@@ -1,5 +1,5 @@
-#from app.utility.service import Service
-from d4kms_generic.service import Service
+from app.utility.service import Service
+#from d4kms_generic.service import Service
 
 class FHIRService(Service):
 
@@ -12,5 +12,5 @@ class FHIRService(Service):
   def get(self, url):
     return super().get(url)
 
-  def post(self, url, data={}, timeout=None):
+  def post(self, url, data='', timeout=None):
     return super().post(url, data, timeout)

@@ -1,0 +1,36 @@
+<div id="data_div">
+
+  {% with pagination=pagination %}
+    {% include "shared/partials/table_header.html" %}
+  {% endwith %}  
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">UUID</th>
+          <th scope="col">Type</th>
+          <th scope="col">Imported At</th>
+          <th scope="col">File Path</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data['items']: %}
+          <tr>
+            <td>{{item['uuid']}}</td> 
+            <td>{{item['type']}}</td> 
+            <td>{{item['created']}}</td> 
+            <td>{{item['filepath']}}</td>
+            <td>{{item['status']}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% with pagination=pagination %}
+    {% include "shared/partials/table_footer.html" %}
+  {% endwith %}  
+
+</div>  

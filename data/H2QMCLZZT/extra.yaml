@@ -1,0 +1,53 @@
+amendment:
+  amendment_details: '<p>Amendment Details:</p>
+
+    <p>This protocol has been amended previously. Details of prior amendments are
+    presented in Prior Protocol Amendment(s).}</p>'
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: '<p>SAE Reporting Method: Report Serious Adverse Events
+    to the sponsor via provided forms. Refer to Section 9.4 for detailed reporting
+    instructions.</p>
+
+    <p></p>'
+  sae_reporting_method: ''
+  sponsor_signatory: '<p>Sponsor Signatory:   Signature block and date on file at
+    Eli Lilly and Company</p>'
+title_page:
+  amendment_details: ''
+  amendment_identifier: 'H2Q-MC-LXXT(c)
+
+    '
+  amendment_scope: 'Global
+
+    '
+  compound_codes: 'LY246708
+
+    '
+  compound_names: 'Xanomeline
+
+    '
+  manufacturer_name_and_address: ''
+  medical_expert_contact: ''
+  original_protocol: 'No
+
+    '
+  regulatory_agency_identifiers: 'NCTA12313212
+
+
+
+    '
+  sae_reporting_method: ''
+  sponsor_approval_date: ''
+  sponsor_confidentiality: ''
+  sponsor_name_and_address: 'Eli Lilly and Company
+
+    Lilly Corporate Center
+
+    Indianapolis, IN 46285
+
+    '
+  sponsor_signatory: ''

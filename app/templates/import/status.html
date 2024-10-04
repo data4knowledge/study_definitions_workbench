@@ -4,9 +4,6 @@
   {% with request=request, user=user %}
     {% include "shared/partials/user.html" %}
   {% endwith %}    
-{% endblock %}
-{% block ws_content %}
-  <div id="alert_ws_div" hx-ws="connect:/alerts/{{user.id}}"></div>
 {% endblock %}  
 
 {% block main_content %}
@@ -16,40 +13,11 @@
         <div class="card-body">
           <h4 class="card-title">Import Status</h4>
           <h6 class="card-subtitle mb-2 text-muted">Status of the imports perfomed by you</h6>
-
-          {% with pagination=pagination %}
-            {% include "shared/partials/table_header.html" %}
-          {% endwith %}  
-        
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">UUID</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Imported At</th>
-                  <th scope="col">File Path</th>
-                  <th scope="col">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in data['items']: %}
-                  <tr>
-                    <td>{{item['uuid']}}</td> 
-                    <td>{{item['type']}}</td> 
-                    <td>{{item['created']}}</td> 
-                    <td>{{item['filepath']}}</td>
-                    <td>{{item['status']}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+          <div id="data_div" class="container" hx-get="/import/status/data?page={{data['page']}}&size={{data['size']}}&filter={{data['filter']}}" hx-trigger="load" hx-target="#data_div" hx-swap="outerHTML">
+            {% with %}
+              {% include "shared/partials/spinner.html" %}
+            {% endwith %}            
           </div>
-        
-          {% with pagination=pagination %}
-            {% include "shared/partials/table_footer.html" %}
-          {% endwith %}  
-
         </div>
       </div>
     </div>

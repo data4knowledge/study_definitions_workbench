@@ -1,7 +1,29 @@
 {% extends "shared/_main_layout.html" %}
 
-{% block error_content %}
-  {% with request=request, user=user %}
-    {% include "errors/partials/error.html" %}
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
   {% endwith %}    
+{% endblock %}
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}  
+
+{% block main_content %}
+  <div class="container-fluid">
+    <div class="col mt-3">
+      <div class="card card-body border-danger rounded-3">
+        <h6 class="card-subtitle text-danger">Fatal Error</h6>
+        <p class="card-text text-muted lh-1"><small>A fatal error occured processing your request. The error has been logged.</small></p>
+        <p>The reported error was: {{data['error']}}</p>
+        <div class="container-fluid">
+          <a href="/index" class="btn btn-sm btn-outline-primary rounded-5">
+            <i class="bi bi-house me-1"></i>Home
+          </a>  
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

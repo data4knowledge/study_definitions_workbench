@@ -15,9 +15,6 @@
     {% include "shared/partials/import_menu.html" %}
   {% endwith %} 
 {% endblock %}
-{% block ws_content %}
-  <div id="alert_ws_div" hx-ws="connect:/alerts/{{user.id}}"></div>
-{% endblock %}  
 
 {% block main_content %}
   <div class="container-fluid">
@@ -71,7 +68,7 @@
                 </a>  
                 <a href="/versions/{{item['latest_version_id']}}/protocol" class="btn btn-sm btn-outline-primary rounded-5">
                   <i class="bi bi-file-text"></i>
-                  View Protocol Document
+                  View Protocol
                 </a>  
               </div>
             </div>

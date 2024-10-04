@@ -1,0 +1,43 @@
+amendment:
+  amendment_details: '<p>Amendment Details</p>
+
+    <p>This protocol has been amended previously. Details of prior amendments are
+    presented in Prior Protocol Amendment(s).</p>
+
+    <p>Current Amendment</p>'
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: '<p>SAE Reporting Method: Report Serious Adverse Events
+    to the sponsor.  Refer to Section 9.4 for detailed reporting instructions.</p>
+
+    <p></p>'
+  sae_reporting_method: ''
+  sponsor_signatory: '<p>Sponsor Signatory:</p>
+
+    <p>Prof. Dr Joerg Wenzel on file or INSERT IMAGE HERE</p>'
+title_page:
+  amendment_details: ''
+  amendment_identifier: '3'
+  amendment_scope: Global
+  compound_codes: L04AA56
+  compound_names: 'Deucravacitinib
+
+    SOTYKTU'
+  manufacturer_name_and_address: ''
+  medical_expert_contact: ''
+  original_protocol: 'No'
+  regulatory_agency_identifiers: 'EU CT 2022-502991-21-00
+
+    '
+  sae_reporting_method: ''
+  sponsor_approval_date: '2023-11-07T00:00:00'
+  sponsor_confidentiality: ''
+  sponsor_name_and_address: "Rheinische Friedrich-Wilhelms-Universit\xE4t Bonn\nrepresented\
+    \ by the Faculty of Medicine of the University of Bonn represented by the Dean\
+    \ of the Faculty of Medicine Venusberg-Campus 1, D-53127 Bonn\nProf. Dr. med.\
+    \ Joerg Wenzel Department of Dermatology and Allergology University Hospital of\
+    \ Bonn Venusberg- Campus 1, D-53127 Bonn"
+  sponsor_signatory: ''

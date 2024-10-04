@@ -1,5 +1,8 @@
+import threading
+import asyncio
+import time
 from typing import Annotated
-from fastapi import Form, Depends, FastAPI, Request, BackgroundTasks, HTTPException, status, Form, File, WebSocket, WebSocketDisconnect
+from fastapi import Form, Depends, FastAPI, Request, BackgroundTasks, Response, status, Form, File, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -18,12 +21,13 @@ from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
-from app.utility.transmit import transmit
+from app.utility.fhir_transmit import fhir_transmit
 from app.utility.template_methods import server_environment
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
-from app.utility.fhir_version import check_fhir_version
+from app.utility.fhir_version import check_fhir_version, fhir_version_description
+from app.utility.fhir_transmit import run_fhir_transmit
 from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 
@@ -59,6 +63,7 @@ authorisation = Auth0Service(app)
 authorisation.register()
 
 templates.env.globals['server_environment'] = server_environment
+templates.env.globals['fhir_version_description'] = fhir_version_description
 
 def protect_endpoint(request: Request) -> None:
   authorisation.protect_route(request, "/login")
@@ -106,7 +111,7 @@ def index(request: Request, session: Session = Depends(get_db)):
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}}
-  print(f"USER SHOW: {data}")
+  #print(f"USER SHOW: {data}")
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
@@ -164,33 +169,49 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
     return templates.TemplateResponse('errors/error.html', {"request": request, 'data': {'error': message}})
     
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
-async def import_m11(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_m11(request, background_tasks, templates, user, session)
+  return await process_m11(request, templates, user)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
-async def import_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_xl(request, background_tasks, templates, user, session)
+  return await process_xl(request, templates, user)
 
 @app.post('/import/fhir', dependencies=[Depends(protect_endpoint)])
-async def import_xl(request: Request, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def import_fhir(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_fhir(request, background_tasks, templates, user, session)
+  return await process_fhir(request, templates, user)
 
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
+  # data = FileImport.page(page, size, user.id, session)
+  # pagination = Pagination(data, "/import/status")
+  data = {'page': page, 'size': size, 'filter': filter} 
+  return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/import/status/data', dependencies=[Depends(protect_endpoint)])
+async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
   data = FileImport.page(page, size, user.id, session)
-  pagination = Pagination(data, "/import/status") 
-  return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+  pagination = Pagination(data, "/import/status/data") 
+  return templates.TemplateResponse("import/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
+  # data = Transmission.page(page, size, user.id, session)
+  # pagination = Pagination(data, "/transmissions/status")
+  data = {'page': page, 'size': size, 'filter': filter} 
+  return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'data': data})
+
+@app.get('/transmissions/status/data', dependencies=[Depends(protect_endpoint)])
+async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
   data = Transmission.page(page, size, user.id, session)
-  pagination = Pagination(data, "/transmission/status")
-  return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+  pagination = Pagination(data, "/transmissions/status/data")
+  return templates.TemplateResponse("transmissions/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
@@ -318,19 +339,28 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   return templates.TemplateResponse("study_designs/partials/analysis_objective.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{id}/export/fhir', dependencies=[Depends(protect_endpoint)])
-async def export_fhir(request: Request, id: int, session: Session = Depends(get_db)):
+async def export_fhir(request: Request, id: int, version: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
-  full_path, filename, media_type = usdm.fhir()
-  if full_path == None:
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'data': {'error': f"The study with id '{id}' was not found"}})
+  valid, description = check_fhir_version(version)
+  if valid:
+    full_path, filename, media_type = usdm.fhir(version.upper())
+    if full_path == None:
+      return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"The study with id '{id}' was not found."}})
+    else:
+      return FileResponse(path=full_path, filename=filename, media_type=media_type)
   else:
-    return FileResponse(path=full_path, filename=filename, media_type=media_type)
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version export requested. Version requested was '{version}'."}})
 
 @app.get('/versions/{id}/transmit/{endpoint_id}', dependencies=[Depends(protect_endpoint)])
-async def version_transmit(request: Request, id: int, endpoint_id: int, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+async def version_transmit(request: Request, id: int, endpoint_id: int, version: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  background_tasks.add_task(transmit, id, endpoint_id, user, session)
-  return RedirectResponse(f'/versions/{id}/summary')
+  valid, description = check_fhir_version(version)
+  if valid:
+    run_fhir_transmit(id, endpoint_id, version, user)
+    return RedirectResponse(f'/versions/{id}/summary')
+  else:
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."}})
 
 @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
 async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
@@ -364,7 +394,10 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if user.email == "daveih1664dk@gmail.com":
     database_managr = DBM(session)
-    database_managr.clear_all()    
+    database_managr.clear_all()
+    endpoint, validation = Endpoint.create('LOCAL TEST', 'http://localhost:8010/m11', "FHIR", user.id, session)
+    endpoint, validation = Endpoint.create('Hugh Server', 'https://fs-01.azurewebsites.net', "FHIR", user.id, session)
+    endpoint, validation = Endpoint.create('HAPI Server', 'https://hapi.fhir.org/baseR5', "FHIR", user.id, session)
     application_logger.info(f"User '{user.id}', '{user.email} cleared the database")
   else:
     # Error here

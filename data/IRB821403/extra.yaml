@@ -1,0 +1,37 @@
+amendment:
+  amendment_details: ''
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: '<p>SAE Reporting Method: Report Serious Adverse Events
+    to the sponsor Merck & Co. Refer to Section 9.4 for detailed reporting instructions.</p>
+
+    <p></p>'
+  sae_reporting_method: ''
+  sponsor_signatory: '<p>Sponsor Signatory:</p>
+
+    <p>This protocol was approved via University of Pennsylvania process as described
+    on the approval page appended to the document.</p>'
+title_page:
+  amendment_details: ''
+  amendment_identifier: Unavailable
+  amendment_scope: Unavailable
+  compound_codes: ''
+  compound_names: 'Pembroluzumab
+
+    RADVAXTm'
+  manufacturer_name_and_address: ''
+  medical_expert_contact: ''
+  original_protocol: 'Yes'
+  regulatory_agency_identifiers: 'UPCC# 40914
+
+    IRB# 821403'
+  sae_reporting_method: ''
+  sponsor_approval_date: '2015-02-03T00:00:00'
+  sponsor_confidentiality: ''
+  sponsor_name_and_address: 'University of Pennsylvania
+
+    Address on File.'
+  sponsor_signatory: ''

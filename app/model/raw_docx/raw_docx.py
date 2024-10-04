@@ -106,12 +106,17 @@ class RawDocx():
     target_table = RawTable()
     #print(f"TABLE: {type(target)}")
     target.add(target_table)
-    for row in table.rows:
+    for r_index, row in enumerate(table.rows):
       target_row = RawTableRow()
       target_table.add(target_row)
       cells = row.cells
-      for cell in cells:
-        target_cell = RawTableCell()
+      for c_index, cell in enumerate(cells):
+        h_span = cell._tc.right - cell._tc.left
+        v_span = cell._tc.bottom - cell._tc.top
+        first = r_index == cell._tc.top and c_index == cell._tc.left
+        target_cell = RawTableCell(h_span, v_span, first)
+        # if target_cell.merged and target_cell.first:
+        #   print(f"MERGED: {cell.text}, [{h_span}, {v_span}], {first}")
         target_row.add(target_cell)
         for block_item in self._iter_block_items(cell):
           #print(f"CELL BLOCK: {type(block_item)}")
