@@ -3,6 +3,7 @@ ENV MNT_PATH="/mount"
 ENV DATABASE_PATH=/mount/database
 ENV DATABASE_NAME=/database.db
 ENV DATAFILE_PATH=/mount/datafiles
+ENV ADDRESS_SERVER_URL="https://d4k-address.fly.dev"
 EXPOSE 8000
 WORKDIR /code
 COPY ./requirements.txt /code/requirements.txt
