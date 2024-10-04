@@ -22,7 +22,8 @@ from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
 from app.utility.fhir_transmit import fhir_transmit
-from app.utility.template_methods import server_environment
+from app.utility.template_methods import server_name, single_multiple
+from app.utility.environment import single_user
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
@@ -62,14 +63,22 @@ application_logger.info(f"Static dir set to '{static_path}'")
 authorisation = Auth0Service(app)
 authorisation.register()
 
-templates.env.globals['server_environment'] = server_environment
+templates.env.globals['server_name'] = server_name
+templates.env.globals['single_multiple'] = single_multiple
 templates.env.globals['fhir_version_description'] = fhir_version_description
 
+single = single_user()
+
 def protect_endpoint(request: Request) -> None:
-  authorisation.protect_route(request, "/login")
+  if single:
+    request.session['userinfo'] = {'email': '', 'sub': 'SUE|1234567890', 'nickname': 'Single User'}
+    return None
+  else:
+    authorisation.protect_route(request, "/login")
 
 def user_details(request: Request, db):
   user_info = request.session['userinfo']
+  print(f"USER_INFO: {user_info}")
   user, present_in_db = User.check(user_info, db)
   return user, present_in_db
 
@@ -89,14 +98,17 @@ def home(request: Request):
 
 @app.get("/login")
 async def login(request: Request):
-  if not 'id_token' in request.session:  # it could be userinfo instead of id_token
-    return await authorisation.login(request, "callback")
-  return RedirectResponse("/index")
+  if single:
+    return RedirectResponse("/index")
+  else:
+    if not 'id_token' in request.session:  # it could be userinfo instead of id_token
+      return await authorisation.login(request, "callback")
+    return RedirectResponse("/index")
 
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  #print(f"INDEX DATA: {user}, {present_in_db}")
+  print(f"INDEX DATA: {user}, {present_in_db}")
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
     #print(f"INDEX DATA: {data}")

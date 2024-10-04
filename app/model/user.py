@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from d4kms_generic.logger import application_logger
 
 class UserBase(BaseModel):
+  identifier: str
   email: str
   display_name: str
   is_active: bool
@@ -20,10 +21,10 @@ class User(UserBase):
     from_attributes = True
 
   @classmethod
-  def create(cls, email: str, display_name: str, session: Session) -> 'User':
-    valid, validation = cls._is_valid(email=email, display_name=display_name)
+  def create(cls, identifier: str, email: str, display_name: str, session: Session) -> 'User':
+    valid, validation = cls._is_valid(identifier=identifier, email=email, display_name=display_name)
     if valid:
-      db_item = UserDB(email=email, display_name=display_name)
+      db_item = UserDB(identifier=identifier, email=email, display_name=display_name)
       session.add(db_item)
       session.commit()
       session.refresh(db_item)
@@ -46,6 +47,11 @@ class User(UserBase):
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
+  def find_by_identifier(cls, identifier: str, session: Session):
+    db_item = session.query(UserDB).filter(UserDB.identifier == identifier).first()
+    return cls(**db_item.__dict__) if db_item else None
+
+  @classmethod
   def endpoints_page(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
     page = page if page >= 1 else 1
     size = size if size > 0 else 10
@@ -62,13 +68,13 @@ class User(UserBase):
   @classmethod
   def check(cls, info: dict, session: Session):
     present_in_db = True
-    validation = cls.valid()
-    user = cls.find_by_email(info['email'], session)
+    #validation = cls.valid()
+    user = cls.find_by_identifier(info['sub'], session)
     if not user:
-      print(f"USER: Not in DB")
+      #print(f"USER: Not in DB")
       present_in_db = False
       clean_display_name = re.sub(r'[^a-zA-Z0-9]', '', info['nickname'])
-      user, validation = cls.create(info['email'], clean_display_name, session)
+      user, validation = cls.create(info['sub'], info['email'], clean_display_name, session)
     return user, present_in_db
   
   @classmethod
@@ -84,7 +90,7 @@ class User(UserBase):
 
   def update_display_name(self, display_name: str, session: Session) -> 'User':
     db_item = session.query(UserDB).filter(UserDB.id == self.id).first()
-    valid, validation = self.__class__._is_valid(db_item.email, display_name)
+    valid, validation = self.__class__._is_valid(db_item.identifier, db_item.email, display_name)
     if valid:
       db_item.display_name = display_name
       session.commit()
@@ -95,14 +101,15 @@ class User(UserBase):
   
   @classmethod
   def valid(cls):
-    return {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}}
+    return {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}
 
   @staticmethod
-  def _is_valid(email: str, display_name: str) -> tuple['UserDB', dict]:
+  def _is_valid(identifier: str, email: str, display_name: str) -> tuple['UserDB', dict]:
     dn_validation = bool(re.match('[a-zA-Z0-9 ]+$', display_name))
     validation = {
       'display_name': {'valid': dn_validation, 'message': 'A display name should only contain alphanumeric characters or spaces' if not dn_validation else None},
-      'email': {'valid': True, 'message': ''}
+      'email': {'valid': True, 'message': ''},
+      'identifier': {'valid': True, 'message': ''}
     }
     valid = all(value['valid'] == True for value in validation.values())
     return valid, validation
