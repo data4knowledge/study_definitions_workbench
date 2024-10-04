@@ -78,8 +78,8 @@ def protect_endpoint(request: Request) -> None:
 
 def user_details(request: Request, db):
   user_info = request.session['userinfo']
-  print(f"USER_INFO: {user_info}")
   user, present_in_db = User.check(user_info, db)
+  application_logger.info(f"User details {user}")
   return user, present_in_db
 
 @app.websocket("/alerts/{user_id}")
@@ -108,7 +108,6 @@ async def login(request: Request):
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  print(f"INDEX DATA: {user}, {present_in_db}")
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
     #print(f"INDEX DATA: {data}")

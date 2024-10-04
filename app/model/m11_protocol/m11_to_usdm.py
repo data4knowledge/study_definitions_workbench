@@ -120,7 +120,7 @@ class M11ToUSDM():
       'rationale': 'XXX', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
       'epochs': [], 'population': population, 'objectives': objectives, 'estimands': estimands, 'studyInterventions': interventions}, self._id_manager)
     sponsor_address = self._title_page.sponsor_address
-    print(f"INTERVENTIONS: {interventions}")
+    #print(f"INTERVENTIONS: {interventions}")
     address = model_instance(Address, sponsor_address, self._id_manager)
     organization = model_instance(Organization, {'name': self._title_page.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}, self._id_manager) 
     identifier = model_instance(StudyIdentifier, {'studyIdentifier': self._title_page.sponsor_protocol_identifier, 'studyIdentifierScope': organization}, self._id_manager)
@@ -152,7 +152,7 @@ class M11ToUSDM():
     int_designation = cdisc_ct_code('C99909x1', 'IMP', self._cdisc_ct_library, self._id_manager)
 
     for index, objective in enumerate(self._estimands.objectives):
-      print(f"NEXT OBJECTIVE")
+      #print(f"NEXT OBJECTIVE")
       params = {'name': f"Endpoint {index + 1}", 'text': objective['endpoint'], 'level': primary_ep, 'purpose': ''}
       ep = model_instance(Endpoint, params, self._id_manager)
       params = {'name': f"Objective {index + 1}", 'text': objective['objective'], 'level': primary_o, 'endpoints': [ep]}
@@ -171,16 +171,16 @@ class M11ToUSDM():
     return objs, ests, treatments
   
   def _population(self):
-    print(f"POPULATION")
+    #print(f"POPULATION")
     results = []
     inc = cdisc_ct_code('C25532', 'INCLUSION', self._cdisc_ct_library, self._id_manager)
     exc = cdisc_ct_code('C25370', 'EXCLUSION', self._cdisc_ct_library, self._id_manager)
     for index, text in enumerate(self._inclusion_exclusion.inclusion):
-      print(f"INC: {text}")
+      #print(f"INC: {text}")
       params = {'name': f'INC{index+1}', 'label': f'Inclusion {index+1} ', 'description': '', 'text': text, 'category': inc, 'identifier': f'{index + 1}'}
       results.append(model_instance(EligibilityCriterion, params, self._id_manager))
     for index, text in enumerate(self._inclusion_exclusion.exclusion):
-      print(f"EXC: {text}")
+      #print(f"EXC: {text}")
       params = {'name': f'EXC{index+1}', 'label': f'Exclusion {index+1} ', 'description': '', 'text': text, 'category': exc, 'identifier': f'{index + 1}'}
       results.append(model_instance(EligibilityCriterion, params, self._id_manager))
     params = {'name': 'STUDY POP', 'label': 'Study Population', 'description': '', 'includesHealthySubjects': True, 'criteria': results}

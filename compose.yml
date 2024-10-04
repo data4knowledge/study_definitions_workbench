@@ -1,6 +1,6 @@
 services:
   myapp:
-    image: sdw:latest
+    image: data4knowledge/sdw:latest
     ports:
       - "8000:8000"
     environment:
@@ -9,6 +9,7 @@ services:
       AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
       AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
       ROOT_URL: ${ROOT_URL}
+      SINGLE_USER: ${SINGLE_USER}
     volumes:
       - sdw_data:/mount
 volumes:

@@ -1,4 +1,5 @@
 from d4kms_generic.service_environment import ServiceEnvironment
+from d4kms_generic.logger import application_logger
 
 def root_url() -> str:
   se = ServiceEnvironment()
@@ -6,4 +7,6 @@ def root_url() -> str:
 
 def single_user() -> bool:
   se = ServiceEnvironment()
-  return bool(se.get('SINGLE_USER'))
+  single = se.get('SINGLE_USER')
+  application_logger.info(f"Single user mode '{single}'")
+  return bool(single)

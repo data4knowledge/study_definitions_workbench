@@ -43,7 +43,19 @@ Note the separate ```.toml``` configuration files
 
 # Docker
 
+Build & run using compose
+
 ```
+docker build . -t data4knowledge/sdw:latest 
+docker compose up   
+```
+
+Build and run using vanilla docker
+
+```
+docker build . -t data4knowledge/sdw:latest 
 docker volume create sdw_data
-docker run -d --name sdw --mount source=sdw_data,target=/mount -p 80:80 sdw
+docker run -d  --mount source=sdw_data,target=/mount -p 8000:8000 data4knowledge/sdw:latest
 ```
+
+Or can also use Docker desktop
