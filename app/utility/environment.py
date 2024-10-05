@@ -9,4 +9,4 @@ def single_user() -> bool:
   se = ServiceEnvironment()
   single = se.get('SINGLE_USER')
   application_logger.info(f"Single user mode '{single}'")
-  return bool(single)
+  return single.upper() in ['TRUE', 'Y', 'YES']

@@ -68,6 +68,7 @@ templates.env.globals['single_multiple'] = single_multiple
 templates.env.globals['fhir_version_description'] = fhir_version_description
 
 single = single_user()
+application_logger.info(f'Single user mode: {single}')
 
 def protect_endpoint(request: Request) -> None:
   if single:
