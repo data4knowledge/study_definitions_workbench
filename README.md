@@ -32,8 +32,10 @@ The following other environment varaibles are also required:
 
 ```
 fly volumes create <name>
-fly secrets set DATABASE_URL=sqlite:////mnt/<name>/production.db
-fly secrets set DATAFILE_URL=/mnt/<name> 
+fly secrets set MNT_PATH="/mnt/<name>"
+fly secrets set DATABASE_PATH="/mnt/<name>/database"
+fly secrets set DATABASE_NAME="production.db"
+fly secrets set DATAFILE_PATH="/mnt/<name>/datafiles"
 ```
 
 Run on one machine at the moment, sharing of file store is an issue as well as database
