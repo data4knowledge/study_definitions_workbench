@@ -93,7 +93,7 @@ The image can also be run. obviously, using Docker desktop. Set the environment 
 
 ## Environment Variables with Docker Image
 
-For all of these the following environment variables need to be set. The remainder are set within the docker file itself
+The following environment variables need to be set (The remainder are set within the docker file itself):
 
 - AUTH0_SESSION_SECRET
 - AUTH0_DOMAIN
@@ -102,3 +102,5 @@ For all of these the following environment variables need to be set. The remaind
 - AUTH0_AUDIENCE
 - ROOT_URL
 - SINGLE_USER
+
+For a single user environment the AUTH0 variables can be empty.
