@@ -7,7 +7,7 @@ The swiss army knife for USDM study definitions
 The following variables are required for authentication and the server. Note that for a single user version the Auth0 variables can be blank:
 
 | Variable | Description |
-| --- | --- |
+| :--- | :--- |
 | AUTH0_SESSION_SECRET | Session Secret |
 | AUTH0_DOMAIN  | Auth0 domain |
 | AUTH0_CLIENT_ID | Auth0 client id |
@@ -18,7 +18,7 @@ The following variables are required for authentication and the server. Note tha
 The following other environment varaibles are also required:
 
 | Variable | Description |
-| --- | --- |
+| :--- | :--- |
 | MNT_PATH | The root mount path |
 | DATABASE_PATH | The path where the DB will reside |
 | DATABASE_NAME | The name of the database file, 'production.db' for example |
