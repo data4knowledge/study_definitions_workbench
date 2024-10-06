@@ -50,7 +50,7 @@ Note the separate ```.toml``` configuration files
 
 # Docker
 
-## Build & run using compose
+## Build & Run using Compose
 
 ```
 docker build . -t data4knowledge/sdw:latest 
@@ -59,7 +59,7 @@ docker compose up
 
 Set the environment variables using a ```.env``` file.
 
-## Build and run using vanilla docker
+## Build and Run using Docker
 
 ```
 docker build . -t data4knowledge/sdw:latest 
@@ -69,7 +69,7 @@ docker run -d  --mount source=sdw_data,target=/mount -p 8000:8000 data4knowledge
 
 Set the environment variables using a ```.env``` file.
 
-## Docker Desktop
+## Run using Docker Desktop
 
 The image can also be run. obviously, using Docker desktop. Set the environment variables using the launch interface.
 
