@@ -1,6 +1,12 @@
+**Release 0.16.0, 2024-10-06**
+
+- Tweak to release notes
+- Align Docker and Fly deployments
+
 **Release 0.15.0, 2024-10-06**
 
 - Add single user option
+- Initial docker version
 
 **Release 0.14.0, 2024-10-04**
 
