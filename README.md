@@ -2,7 +2,7 @@
 
 The swiss army knife for USDM study definitions
 
-# Environment Variables
+# Environment Variables -
 
 The following variables are required for authentication and the server. Note that for a single user version the Auth0 variables can be blank:
 
@@ -28,27 +28,43 @@ The following other environment varaibles are also required:
 
 # Fly Deployment
 
-## Creating a volume
+## Deployment
+
+Deploy to fly.io using the following:
 
 ```
-fly volumes create <name>
+fly launch --no-deploy -c <fly_production.toml | fly_staging.toml> --ha=false
+fly secrets set -a <d4k-sdw | d4k-sdw-staging>  ..... all the secrets, space separated, on one line ....
+fly deploy -a <d4k-sdw | d4k-sdw-staging> -c <fly_production.toml | fly_staging.toml>
+````
+
+Notes:
+- Note the option for production or staging applications.
+- Run on one machine at the moment, sharing of file store is an issue as well as database. The ```-ha``` flag forces the use of a single machine. 
+- The ```-c``` flag forces the use of the correct configuration file.
+
+Volumes:
+- A volumne is created as part of the deploy (from this bit in the ```.toml``` file)
+
+```
+[[mounts]]
+  source = '<name>'
+  destination = '/mnt/<name>'
+```
+
+Using either 'sdw_data' or 'sdw_data_staging' for the names. This gives environment varaibles:
+
+```
 fly secrets set MNT_PATH="/mnt/<name>"
 fly secrets set DATABASE_PATH="/mnt/<name>/database"
 fly secrets set DATABASE_NAME="production.db"
 fly secrets set DATAFILE_PATH="/mnt/<name>/datafiles"
 ```
 
-Run on one machine at the moment, sharing of file store is an issue as well as database
-
-```
-fly machine destroy e7843d41a59078 --force
-fly deploy --ha=false
-```
-
 ## Separate Applications
 
 With ```fly```command line utility use ```-a <app name>``` to address the production and staging applications
-Note the separate ```.toml``` configuration files
+Note the separate ```.toml``` configuration files. Be careful when launching, they need to address the ```.toml``` files voa the ```-c``` flag
 
 # Docker
 
