@@ -4,20 +4,27 @@ The swiss army knife for USDM study definitions
 
 # Environment Variables
 
-In additon to the ones required by the d4kms package 
+The following variables are required for authentication and the server. Note that for a single user version the Auth0 variables can be blank:
 
-```
-AUTH0_SESSION_SECRET=<session secret key>
-AUTH0_DOMAIN=<from the Auth0 configuation>
-AUTH0_CLIENT_ID=<from the Auth0 configuation>
-AUTH0_CLIENT_SECRET=<from the Auth0 configuation>
-AUTH0_AUDIENCE=<from the Auth0 configuation>
-ROOT_URL=<base URL for the app>
-```
+|:---|:---|
+| Variable | Description |
+| AUTH0_SESSION_SECRET | Session Secret |
+| AUTH0_DOMAIN  | Auth0 domain |
+| AUTH0_CLIENT_ID | Auth0 client id |
+| AUTH0_CLIENT_SECRET | Auth0 client secret |
+| AUTH0_AUDIENCE | Auth0 audience key |
+| ROOT_URL | Set to the root URL of the server |
 
-the following variables are required for local development
+The following other environment varaibles are also required:
 
-```DATABASE_URL = "sqlite:///./database.db"```
+|---|---|---|
+|: Variable | Description |
+| MNT_PATH | The root mount path |
+| DATABASE_PATH | The path where the DB will reside |
+| DATABASE_NAME | The name of the database file, 'production.db' for example |
+| DATAFILE_PATH | The path where the datafiles will reside |
+| ADDRESS_SERVER_URL | URL for the address server |
+| SINGLE_USER | 'True' for single user environment, 'False' otherwise |
 
 # Fly Deployment
 
@@ -43,14 +50,16 @@ Note the separate ```.toml``` configuration files
 
 # Docker
 
-Build & run using compose
+## Build & run using compose
 
 ```
 docker build . -t data4knowledge/sdw:latest 
 docker compose up   
 ```
 
-Build and run using vanilla docker
+Set the environment variables using a ```.env``` file.
+
+## Build and run using vanilla docker
 
 ```
 docker build . -t data4knowledge/sdw:latest 
@@ -58,4 +67,20 @@ docker volume create sdw_data
 docker run -d  --mount source=sdw_data,target=/mount -p 8000:8000 data4knowledge/sdw:latest
 ```
 
-Or can also use Docker desktop
+Set the environment variables using a ```.env``` file.
+
+## Docker Desktop
+
+The image can also be run. obviously, using Docker desktop. Set the environment variables using the launch interface.
+
+## Environment Variables with Docker Image
+
+For all of these the following environment variables need to be set. The remainder are set within the docker file itself
+
+- AUTH0_SESSION_SECRET
+- AUTH0_DOMAIN
+- AUTH0_CLIENT_ID
+- AUTH0_CLIENT_SECRET
+- AUTH0_AUDIENCE
+- ROOT_URL
+- SINGLE_USER
