@@ -54,7 +54,7 @@ Volumes:
 
 Using either 'sdw_data' or 'sdw_data_staging' for the names. This gives environment varaibles:
 
-```
+````
 fly secrets set MNT_PATH="/mnt/<name>"
 fly secrets set DATABASE_PATH="/mnt/<name>/database"
 fly secrets set DATABASE_NAME="production.db"
@@ -90,6 +90,14 @@ Set the environment variables using a ```.env``` file.
 ## Run using Docker Desktop
 
 The image can also be run. obviously, using Docker desktop. Set the environment variables using the launch interface.
+
+## Multi Platform Builds
+
+````
+docker buildx create --name mybuilder --use
+docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:<tag>> . --push
+docker manifest inspect data4knowledge/sdw:<tag>  
+```
 
 ## Environment Variables with Docker Image
 
