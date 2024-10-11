@@ -1,3 +1,5 @@
+import traceback
+
 import os
 import re
 import docx
@@ -111,8 +113,22 @@ class RawDocx():
       target_table.add(target_row)
       cells = row.cells
       for c_index, cell in enumerate(cells):
-        h_span = cell._tc.right - cell._tc.left
-        v_span = cell._tc.bottom - cell._tc.top
+        if cell._tc:
+          x = cell._tc
+          r = x.right
+          l = x.left
+          t = x.top
+          try:
+            # Bottom method seems to have a bug.
+            # See https://github.com/python-openxml/python-docx/issues/1433
+            b = x.bottom
+          except Exception as e:
+            b = t + 1
+          h_span = r - l
+          v_span = b - t
+        else:
+          h_span = 1
+          v_span = 1
         first = r_index == cell._tc.top and c_index == cell._tc.left
         target_cell = RawTableCell(h_span, v_span, first)
         # if target_cell.merged and target_cell.first:
