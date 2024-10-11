@@ -172,3 +172,4 @@ mount/datafiles/*/
 # Python test programs, prefix with 'test_'
 test_*.py
 .production_staging_env
+.env_prism
