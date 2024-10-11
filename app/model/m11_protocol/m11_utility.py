@@ -15,7 +15,10 @@ def table_get_row(table: RawTable, key: str) -> str:
       #if row.cells[0].text().upper().startswith(key.upper()):
       if text_within(key, row.cells[0].text()):
         cell = row.next_cell(0)
-        return cell.text() if cell else ''        
+        result = cell.text() if cell else ''
+        application_logger.debug(f"Table find for '{key}' = '{result}'")
+        return result
+  application_logger.debug(f"Table find for '{key}' failed")
   return ''
 
 def table_get_row_html(table: RawTable, key: str) -> str:
