@@ -1,0 +1,11 @@
+<div id="debug_level_div">
+  {% if data['debug']['level'] == 'INFO' %}
+    <button type="submit" hx-patch="/debug?level=DEBUG" hx-target="#debug_level_div" hx-swap="outerHTML" class="btn btn-outline-danger rounded-5 mt-3">
+      <i class="bi bi-bug me-1"></i>Set Debug Level
+    </button>
+  {% else %}
+    <button type="submit" hx-patch="/debug?level=INFO" hx-target="#debug_level_div" hx-swap="outerHTML" class="btn btn-outline-primary rounded-5 mt-3">
+      <i class="bi bi-bug me-1"></i>Set Info Level
+    </button>
+  {% endif %}
+</div>

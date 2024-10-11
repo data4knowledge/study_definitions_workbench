@@ -115,15 +115,15 @@ def index(request: Request, session: Session = Depends(get_db)):
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
-    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}}
+    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
     #print(f"INDEX DATA: {data}")
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}}
-  #print(f"USER SHOW: {data}")
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
+  print(f"DATA SHOW: {data}")
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
@@ -430,9 +430,21 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
     response = templates.TemplateResponse('database/debug.html', {'request': request, 'user': user, 'data': data})
     return response
   else:
-    # Error here
-    application_logger.warning(f"User '{user.id}', '{user.email} attempted to debug the database!")
-    return RedirectResponse("/index")
+    await connection_manager.error(f"Operation request denied", str(user.id))
+    application_logger.error(f"User '{user.id}', '{user.email} attempted to debug the database!")
+    return RedirectResponse(f"/users/{user.id}/show", status_code=303)
+
+@app.patch("/debug", dependencies=[Depends(protect_endpoint)])
+async def debug_level(request: Request, level: str='INFO', session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  if user.email == "daveih1664dk@gmail.com" and level.upper() in ['DEBUG', 'INFO']:
+    level = application_logger.DEBUG if level.upper() == 'DEBUG' else application_logger.INFO
+    application_logger.set_level(level)
+    return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
+  else:
+    await connection_manager.error(f"Operation request denied", str(user.id))
+    application_logger.error(f"User '{user.id}', '{user.email} attempted to change debug level!")
+    return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
 
 @app.get("/logout")
 def logout(request: Request):
