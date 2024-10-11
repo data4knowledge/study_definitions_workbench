@@ -103,6 +103,7 @@ class M11TitlePage():
   async def _get_sponsor_name_and_address(self):
     name = '[Sponsor Name]'
     parts = self.sponsor_name_and_address.split('\n')
+    params = {'line': '', 'city': '', 'district': '', 'state': '', 'postalCode': '', 'country': None}
     if len(parts) > 0:
       name = parts[0].strip()
       application_logger.info(f"Sponsor name set to '{name}'")
@@ -111,7 +112,6 @@ class M11TitlePage():
       tmp_address = (' ').join([x.strip() for x in parts[1:]])
       results = await self._address_service.parser(tmp_address)
       application_logger.info(f"Address service result '{tmp_address}' returned {results}")
-      params = {'line': '', 'city': '', 'district': '', 'state': '', 'postalCode': '', 'country': None}
       for result in results:
         if result['label'] == 'country':
           params['country'] = iso3166_decode(result['value'], self._iso, self._id_manager)
