@@ -102,7 +102,7 @@ class Files:
       if len(files) == 1:
         filename = files[0]
       else:
-        application_logger.error(f"Found multiple files for type '{type}' when forming path")
+        application_logger.error(f"Found multiple files for type '{type}' when forming path. Files = {files}")
         raise self.LogicError
     else:
       filename = self._form_filename(type)
