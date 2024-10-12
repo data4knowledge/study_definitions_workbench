@@ -44,34 +44,33 @@ class M11TitlePage():
     self.sae_reporting_method = None
 
   async def process(self):
-    section = self._raw_docx.target_document.section_by_ordinal(1)
-    tables = section.tables()
-    table = tables[0]
-    table.replace_class('ich-m11-table', 'ich-m11-title-page-table')
-    self.sponosr_confidentiality = table_get_row(table, 'Sponsor Confidentiality')
-    self.full_title = table_get_row(table, 'Full Title')
-    self.acronym = table_get_row(table, 'Acronym')
-    self.sponsor_protocol_identifier = table_get_row(table, 'Sponsor Protocol Identifier')
-    self.original_protocol = table_get_row(table, 'Original Protocol')
-    self.version_number = table_get_row(table, 'Version Number')
-    self.version_date = self._get_protocol_date(table)
-    self.amendment_identifier = table_get_row(table, 'Amendment Identifier')
-    self.amendment_scope = table_get_row(table, 'Amendment Scope')
-    self.amendment_details = table_get_row(table, 'Amendment Details')
-    self.compound_codes = table_get_row(table, 'Compound Code(s)')
-    self.compound_names = table_get_row(table, 'Compound Name(s)')
-    self.trial_phase_raw = table_get_row(table, 'Trial Phase')
-    self.trial_phase = self._get_phase()
-    self.short_title = table_get_row(table, 'Short Title')
-    self.sponsor_name_and_address = table_get_row(table, 'Sponsor Name and Address')
-    self.sponsor_name, self.sponsor_address = await self._get_sponsor_name_and_address()
-    self.regulatory_agency_identifiers = table_get_row(table, 'Regulatory Agency Identifier Number(s)')
-    self.sponsor_approval_date = self._get_sponsor_approval_date(table)
-    self.manufacturer_name_and_address = table_get_row(table, 'Manufacturer')
-    self.sponsor_signatory = table_get_row(table, 'Sponsor Signatory')
-    self.medical_expert_contact = table_get_row(table, 'Medical Expert')
-    self.sae_reporting_method = table_get_row(table, 'SAE Reporting')
-    self.study_name = self._get_study_name()
+    table = self._title_table()
+    if table:
+      table.replace_class('ich-m11-table', 'ich-m11-title-page-table')
+      self.sponosr_confidentiality = table_get_row(table, 'Sponsor Confidentiality')
+      self.full_title = table_get_row(table, 'Full Title')
+      self.acronym = table_get_row(table, 'Acronym')
+      self.sponsor_protocol_identifier = table_get_row(table, 'Sponsor Protocol Identifier')
+      self.original_protocol = table_get_row(table, 'Original Protocol')
+      self.version_number = table_get_row(table, 'Version Number')
+      self.version_date = self._get_protocol_date(table)
+      self.amendment_identifier = table_get_row(table, 'Amendment Identifier')
+      self.amendment_scope = table_get_row(table, 'Amendment Scope')
+      self.amendment_details = table_get_row(table, 'Amendment Details')
+      self.compound_codes = table_get_row(table, 'Compound Code(s)')
+      self.compound_names = table_get_row(table, 'Compound Name(s)')
+      self.trial_phase_raw = table_get_row(table, 'Trial Phase')
+      self.trial_phase = self._get_phase()
+      self.short_title = table_get_row(table, 'Short Title')
+      self.sponsor_name_and_address = table_get_row(table, 'Sponsor Name and Address')
+      self.sponsor_name, self.sponsor_address = await self._get_sponsor_name_and_address()
+      self.regulatory_agency_identifiers = table_get_row(table, 'Regulatory Agency Identifier Number(s)')
+      self.sponsor_approval_date = self._get_sponsor_approval_date(table)
+      self.manufacturer_name_and_address = table_get_row(table, 'Manufacturer')
+      self.sponsor_signatory = table_get_row(table, 'Sponsor Signatory')
+      self.medical_expert_contact = table_get_row(table, 'Medical Expert')
+      self.sae_reporting_method = table_get_row(table, 'SAE Reporting')
+      self.study_name = self._get_study_name()
 
   def extra(self):
     return {
@@ -171,3 +170,13 @@ class M11TitlePage():
     cdisc_phase_code = cdisc_ct_code('C48660', '[Trial Phase] Not Applicable', self._cdisc_ct_library, self._id_manager)
     application_logger.warning(f"Trial phase '{phase}' not decoded")
     return alias_code(cdisc_phase_code, self._id_manager)
+
+  def _title_table(self):
+    section = self._raw_docx.target_document.section_by_ordinal(1)
+    for table in section.tables():
+      title = table_get_row(table, 'Full Title')
+      if title:
+        application_logger.debug(f"Found M11 title page table")
+        return table
+    application_logger.warning(f"Cannot locate M11 title page table!")
+    return None

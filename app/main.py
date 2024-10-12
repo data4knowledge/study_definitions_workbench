@@ -50,6 +50,7 @@ async def exception_callback(request: Request, exc: Exception):
 async def exception_callback(request: Request, exc: FindException):
   return templates.TemplateResponse("errors/error.html", {'request': request, 'data': {'error': exc.msg}})
 
+application_logger.set_level(application_logger.DEBUG)
 application_logger.info(f"Starting {SYSTEM_NAME}")
 
 dir_path = os.path.dirname(os.path.realpath(__file__))

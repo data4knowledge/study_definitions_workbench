@@ -31,18 +31,26 @@ class M11Styles():
 
   def _decode_ich_header(self):
     section = self._raw_docx.target_document.section_by_ordinal(1)
-    for header in self.ICH_HEADERS:
-      items = section.find(header[0])
-      for item in items:
-        item.add_class(header[1])
+    if section:
+      for header in self.ICH_HEADERS:
+        items = section.find(header[0])
+        for item in items:
+          item.add_class(header[1])
+    else:
+      application_logger.error(f"Failed to find first  (header) section in M11 document")
 
   def _decode_trial_design_summary(self):
     section = self._raw_docx.target_document.section_by_number('1.1.2')
-    tables = section.tables()
-    table = tables[0]
-    table.replace_class('ich-m11-table', 'ich-m11-overall-design-table')
-    for design_item in self.DESIGN_ITEMS:
-      items = section.find_at_start(design_item[0])
-      for item in items:
-        item.add_span(design_item[0], design_item[1])
-  
+    if section:
+      tables = section.tables()
+      if tables:
+        table = tables[0]
+        table.replace_class('ich-m11-table', 'ich-m11-overall-design-table')
+        for design_item in self.DESIGN_ITEMS:
+          items = section.find_at_start(design_item[0])
+          for item in items:
+            item.add_span(design_item[0], design_item[1])
+      else:
+        application_logger.error(f"Failed to find any tables in section 1.1.2 in M11 document")
+    else:
+      application_logger.error(f"Failed to find section 1.1.2 in M11 document")

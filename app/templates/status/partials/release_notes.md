@@ -1,6 +1,8 @@
 **Release 0.17.0, 2024-??-??**
 
-- TBD
+- Bug fixes
+- Add ability to set logging level from UI
+- Improve M11 error checking
 
 **Release 0.16.0, 2024-10-06**
 

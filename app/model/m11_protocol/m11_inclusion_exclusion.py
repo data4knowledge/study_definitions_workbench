@@ -16,10 +16,23 @@ class M11InclusionExclusion():
 
   def process(self):
     section = self._raw_docx.target_document.section_by_number('5.2')
-    lists = section.lists()
-    for item in lists[0].items:
-      self.inclusion.append(item.to_html())
+    if section:
+      lists = section.lists()
+      if lists:
+        for item in lists[0].items:
+          self.inclusion.append(item.to_html())
+      else:
+        application_logger.error(f"Failed to find a list in section 5.2 in M11 document")
+    else:
+      application_logger.error(f"Failed to find section 5.2 in M11 document")
+
     section = self._raw_docx.target_document.section_by_number('5.3')
-    lists = section.lists()
-    for item in lists[0].items:
-      self.exclusion.append(item.to_html())
+    if section:
+      lists = section.lists()
+      if lists:
+        for item in lists[0].items:
+          self.exclusion.append(item.to_html())
+      else:
+        application_logger.error(f"Failed to find a list in section 5.3 in M11 document")
+    else:
+      application_logger.error(f"Failed to find section 5.3 in M11 document")
