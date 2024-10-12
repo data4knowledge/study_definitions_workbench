@@ -120,6 +120,14 @@ def index(request: Request, session: Session = Depends(get_db)):
     #print(f"INDEX DATA: {data}")
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
+@app.patch("/studies/{id}/select", dependencies=[Depends(protect_endpoint)])
+def user_show(request: Request, id: int, action: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  selected = True if action.upper() == 'SELECT' else False
+  data = {'study': Study.summary(id, session), 'selected': selected}
+  print(f"DATA: {data}")
+  return templates.TemplateResponse("studies/partials/select.html", {'request': request, 'user': user, 'data': data})
+
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)

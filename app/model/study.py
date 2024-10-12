@@ -75,6 +75,11 @@ class Study(StudyBase):
     return study, present_in_db
 
   @classmethod
+  def summary(cls, id: int, session: Session) -> dict:
+    db_item = session.query(StudyDB).filter(StudyDB.id == id).first()
+    return cls._summary(db_item, session)
+
+  @classmethod
   def page(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
     page = page if page >= 1 else 1
     size = size if size > 0 else 10
@@ -83,12 +88,7 @@ class Study(StudyBase):
     data = session.query(StudyDB).filter(StudyDB.user_id == user_id).offset(skip).limit(size).all()
     results = []
     for db_item in data:
-      record = db_item.__dict__
-      record['versions'] = Version.version_count(db_item.id, session)
-      latest_version = Version.find_latest_version(record['id'], session)
-      record['latest_version_id'] = latest_version.id
-      record['import_type'] = FileImport.find(latest_version.import_id, session).type
-      results.append(record)
+      results.append(cls._summary(db_item, session))
     result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
     return result
 
@@ -102,6 +102,15 @@ class Study(StudyBase):
       results[-1].pop('_sa_instance_state')
     result = {'items': results, 'count': count }
     return result
+
+  @staticmethod
+  def _summary(item: StudyDB, session: Session) -> dict:
+    record = item.__dict__
+    record['versions'] = Version.version_count(item.id, session)
+    latest_version = Version.find_latest_version(item.id, session)
+    record['latest_version_id'] = latest_version.id
+    record['import_type'] = FileImport.find(latest_version.import_id, session).type
+    return record
 
   @staticmethod
   def _set_study_name(file_import: FileImport) -> str:

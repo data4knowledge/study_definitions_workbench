@@ -1,0 +1,47 @@
+
+{% set study = data['study'] %}
+{% set selected = data['selected'] %}
+{% set id = "card_" ~ study['id'] ~ "_div" %}
+{% set action = 'DESELECT' if selected else 'SELECT' %}
+{% set border = ' border-primary' if selected else '' %}
+<div id="{{id}}" class="card card-body rounded-3 h-100{{border}}" hx-patch="studies/{{study['id']}}/select?action={{action}}" hx-target="#{{id}}" hx-swap="outerHTML">
+  <div class="row">
+    <h6 class="card-subtitle">{{study['sponsor']}}: {{study['sponsor_identifier']}}</h6>
+  </div>
+  <div class="row mt-2">
+    <div class="container">
+      <p class="card-text text-muted lh-1"><small>{{study['title']}}</small></p>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="container">
+      {% if study['versions'] == 1 %}
+        {% set vtext = "1 version" %}
+      {% else %}
+        {% set vtext = study['versions'] ~ " versions" %}
+      {% endif %}            
+      <span class="badge rounded-pill bg-info">{{study['phase']}}</span>
+      <span class="badge rounded-pill bg-info">{{vtext}}</span>  
+      {% if study['import_type'] == "DOCX" %}
+        <span class="badge rounded-pill bg-primary">M11 Document</span>
+      {% elif study['import_type'] == "XLSX" %}
+        <span class="badge rounded-pill bg-success">USDM Excel</span>
+      {% else %}
+        <span class="badge rounded-pill fhir">FHIR</span>
+      {% endif %}            
+      
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="container">
+      <a href="/versions/{{study['latest_version_id']}}/summary" class="btn btn-sm btn-outline-primary rounded-5">
+        <i class="bi bi-gear"></i>
+        View Details
+      </a>  
+      <a href="/versions/{{study['latest_version_id']}}/protocol" class="btn btn-sm btn-outline-primary rounded-5">
+        <i class="bi bi-file-text"></i>
+        View Protocol
+      </a>  
+    </div>
+  </div>
+</div>
