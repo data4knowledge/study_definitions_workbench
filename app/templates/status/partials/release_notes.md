@@ -1,8 +1,10 @@
-**Release 0.17.0, 2024-??-??**
+**Release 0.17.0, 2024-10-13**
 
 - Bug fixes
 - Add ability to set logging level from UI
-- Improve M11 error checking
+- Improve M11 document handling and error checking
+- Add ability to view multiple studies side by side
+- Add ability to delete a study from the database
 
 **Release 0.16.0, 2024-10-06**
 

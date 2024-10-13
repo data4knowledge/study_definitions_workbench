@@ -104,15 +104,32 @@ class M11ToUSDM():
       application_logger.info(f"No document approval date set, source = '{self._title_page.sponsor_approval_date}'")
     try:  
       protocol_date = model_instance(GovernanceDate, {'name': 'Protocol Date', 'type': protocol_date_code, 'dateValue': self._title_page.version_date, 'geographicScopes': [global_scope]}, self._id_manager)
-      dates.append(approval_date)
+      dates.append(protocol_date)
     except:
       application_logger.info(f"No document version date set, source = '{self._title_page.version_date}'")
     sponsor_title_code = cdisc_ct_code('C99905x2', 'Official Study Title', self._cdisc_ct_library, self._id_manager)
+    sponsor_short_title_code = cdisc_ct_code('C99905x1', 'Brief Study Title', self._cdisc_ct_library, self._id_manager)
+    acronym_code = cdisc_ct_code('C94108', 'Study Acronym', self._cdisc_ct_library, self._id_manager)
     protocl_status_code = cdisc_ct_code('C85255', 'Draft', self._cdisc_ct_library, self._id_manager)
     intervention_model_code = cdisc_ct_code('C82639', 'Parallel Study', self._cdisc_ct_library, self._id_manager)
     sponsor_code = cdisc_ct_code("C70793", 'Clinical Study Sponsor', self._cdisc_ct_library, self._id_manager)
-    study_title = model_instance(StudyTitle, {'text': self._title_page.full_title, 'type': sponsor_title_code}, self._id_manager)
-    protocl_document_version = model_instance(StudyProtocolDocumentVersion, {'protocolVersion': '1', 'protocolStatus': protocl_status_code}, self._id_manager)
+    titles = []
+    try:
+      title = model_instance(StudyTitle, {'text': self._title_page.full_title, 'type': sponsor_title_code}, self._id_manager)
+      titles.append(title)
+    except:
+      application_logger.info(f"No study title set, source = '{self._title_page.full_title}'")
+    try:
+      title = model_instance(StudyTitle, {'text': self._title_page.acronym, 'type': acronym_code}, self._id_manager) 
+      titles.append(title)
+    except:
+      application_logger.info(f"No study acronym set, source = '{self._title_page.acronym}'")
+    try:
+      title = model_instance(StudyTitle, {'text': self._title_page.short_title, 'type': sponsor_short_title_code}, self._id_manager) 
+      titles.append(title)
+    except:
+      application_logger.info(f"No study acronym set, source = '{self._title_page.acronym}'")
+    protocl_document_version = model_instance(StudyProtocolDocumentVersion, {'protocolVersion': self._title_page.version_number, 'protocolStatus': protocl_status_code}, self._id_manager)
     protocl_document = model_instance(StudyProtocolDocument, {'name': 'PROTOCOL V1', 'label': '', 'description': '', 'versions': [protocl_document_version]}, self._id_manager)
     population = self._population()
     objectives, estimands, interventions = self._objectives()
@@ -125,9 +142,9 @@ class M11ToUSDM():
     organization = model_instance(Organization, {'name': self._title_page.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}, self._id_manager) 
     identifier = model_instance(StudyIdentifier, {'studyIdentifier': self._title_page.sponsor_protocol_identifier, 'studyIdentifierScope': organization}, self._id_manager)
     params = {
-      'versionIdentifier': '1', 
+      'versionIdentifier': self._title_page.version_number, 
       'rationale': 'XXX', 
-      'titles': [study_title], 
+      'titles': titles, 
       'dateValues': dates,
       'studyDesigns': [study_design], 
       'documentVersionId': protocl_document_version.id, 
@@ -135,6 +152,7 @@ class M11ToUSDM():
       'studyPhase': self._title_page.trial_phase, 
       'amendments': self._get_amendments()
     }
+    application_logger.debug(f"Study Version params {params}")
     study_version = model_instance(StudyVersion, params, self._id_manager) 
     study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}, self._id_manager) 
     return study

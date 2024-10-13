@@ -1,6 +1,4 @@
-import threading
-import asyncio
-import time
+
 from typing import Annotated
 from fastapi import Form, Depends, FastAPI, Request, BackgroundTasks, Response, status, Form, File, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse, FileResponse
@@ -22,7 +20,7 @@ from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
 from app.utility.fhir_transmit import fhir_transmit
-from app.utility.template_methods import server_name, single_multiple
+from app.utility.template_methods import *
 from app.utility.environment import single_user
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
@@ -31,6 +29,8 @@ from app.utility.fhir_version import check_fhir_version, fhir_version_descriptio
 from app.utility.fhir_transmit import run_fhir_transmit
 from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
+from usdm_model.wrapper import Wrapper
+from app.model.usdm.m11.title_page import USDMM11TitlePage
 
 Files.clean_and_tidy()
 Files.check()
@@ -67,6 +67,7 @@ authorisation.register()
 templates.env.globals['server_name'] = server_name
 templates.env.globals['single_multiple'] = single_multiple
 templates.env.globals['fhir_version_description'] = fhir_version_description
+templates.env.globals['title_page_study_list_headings'] = title_page_study_list_headings
 
 single = single_user()
 application_logger.info(f'Single user mode: {single}')
@@ -121,12 +122,46 @@ def index(request: Request, session: Session = Depends(get_db)):
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
 
 @app.patch("/studies/{id}/select", dependencies=[Depends(protect_endpoint)])
-def user_show(request: Request, id: int, action: str, session: Session = Depends(get_db)):
+def study_select(request: Request, id: int, action: str, list_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   selected = True if action.upper() == 'SELECT' else False
-  data = {'study': Study.summary(id, session), 'selected': selected}
-  print(f"DATA: {data}")
+  parts = list_studies.split(',') if list_studies else []
+  parts.append(str(id)) if selected else parts.remove(str(id))
+  data = {'study': Study.summary(id, session), 'selected': selected, 'selected_list': (',').join(parts)}
+  #print(f"DATA: {data}")
   return templates.TemplateResponse("studies/partials/select.html", {'request': request, 'user': user, 'data': data})
+
+@app.post("/studies/delete", dependencies=[Depends(protect_endpoint)])
+def study_delete(request: Request, delete_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  parts = delete_studies.split(',') if delete_studies else []
+  for id in parts:
+    study = Study.find(id, session)
+    imports = study.file_imports(session)
+    for im in imports:
+      print(f"IM: {im}, id={im[0]}, uuid={im[1]}")
+      files = Files(im[1])
+      files.delete()
+      x = FileImport.find(im[0], session)
+      x.delete(session)
+    study.delete(session)
+    #print(f"STUDY DELETE: {imports}")
+  return RedirectResponse("/index", status_code=303)
+
+@app.get("/studies/list", dependencies=[Depends(protect_endpoint)])
+def study_list(request: Request, list_studies: str=None, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  #print(f"STUDIES: {list_studies}")
+  parts = list_studies.split(',') if list_studies else []
+  data = []
+  for id in parts:
+    version = Version.find_latest_version(id, session)
+    usdm = USDMJson(version.id, session)
+    m11 = USDMM11TitlePage(usdm.wrapper(), usdm.extra())
+    data.append(m11.__dict__)
+  data = restructure_study_list(data)
+  #print(f"STUDY LIST: {data}")
+  return templates.TemplateResponse("studies/list.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):

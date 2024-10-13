@@ -26,7 +26,37 @@
         </div>
       </div>
     {% else %}
-      {% for item in data['items'] %}
+      <div class="col mt-3">
+        <div class="card card-body rounded-3">
+          <h6 class="card-subtitle">Selected Study Operations</h6>
+          <p class="card-text text-muted lh-1 mb-0"><small>Select and deselect studies by clicking on them. Then use the buttons to act on the slected studies.</small></p>
+          <div class="d-flex flex-row">
+              <!-- <form action="/studies/delete" method="post" class="mt-0 pt-0 me-1">
+                <button type="submit" class="btn btn-outline-danger rounded-5 mt-3">
+                  <i class="bi bi-trash me-1"></i>Delete selected studies
+                </button>
+                <div id="delete_selected_study_div"><input type="hidden" name="delete_studies" id="studies" value=""></div>
+              </form> -->
+              <div id="delete_studies_form_div">
+                {% with data = {'action': '/studies/delete', 'method': 'post', 'icon': '"bi bi-trash', 'label': 'Delete selected studies', 'name': 'delete_studies', 'value': '', 'delete': True} %}
+                  {% include "studies/partials/form.html" %}
+                {% endwith %} 
+              </div>
+              <div id="list_studies_form_div">
+                {% with data = {'action': '/studies/list', 'method': 'get', 'icon': 'bi bi-layout-three-columns', 'label': 'List selected studies', 'name': 'list_studies', 'value': '', 'delete': False} %}
+                  {% include "studies/partials/form.html" %}
+                {% endwith %} 
+              </div>
+              <!-- <form action="/studies/list" method="post" class="m-0 p-0">
+                <button type="submit" formmethod="get" class="btn btn-outline-primary rounded-5 mt-3">
+                  <i class="bi bi-layout-three-columns me-1"></i>List selected studies
+                </button>
+                <div id="list_selected_study_div"><input type="hidden" name="list_studies" id="studies" value=""></div>
+              </form> -->
+          </div>
+        </div>
+      </div>
+        {% for item in data['items'] %}
         {% if loop.index0 % 4 == 0 %}
           <div class="mt-3 row row-cols-4">
         {% endif %}

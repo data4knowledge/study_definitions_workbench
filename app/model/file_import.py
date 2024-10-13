@@ -30,7 +30,9 @@ class FileImport(FileImportBase):
 
   @classmethod
   def find(cls, id: int, session: Session) -> Optional['FileImport']:
+    print(f"DB_ITEM: Start")
     db_item = session.query(FileImportDB).filter(FileImportDB.id == id).first()
+    print(f"DB_ITEM: {db_item}")
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod
@@ -71,6 +73,16 @@ class FileImport(FileImportBase):
     result = {'items': results, 'count': count }
     return result
 
+  def delete(self, session: Session) -> int:
+    try:
+      record = session.query(FileImportDB).filter(FileImportDB.id == self.id).first()
+      session.delete(record)
+      session.commit()
+      return 1
+    except Exception as e:
+      application_logger.exception(f"Failed to delete file import record", e)
+      return 0
+    
   def update_status(self, status: str, session: Session) -> 'FileImport':
     #print(f"update_status: {status}")
     db_item = session.query(FileImportDB).filter(FileImportDB.id == self.id).first()

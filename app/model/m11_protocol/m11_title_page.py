@@ -57,8 +57,8 @@ class M11TitlePage():
       self.amendment_identifier = table_get_row(table, 'Amendment Identifier')
       self.amendment_scope = table_get_row(table, 'Amendment Scope')
       self.amendment_details = table_get_row(table, 'Amendment Details')
-      self.compound_codes = table_get_row(table, 'Compound Code(s)')
-      self.compound_names = table_get_row(table, 'Compound Name(s)')
+      self.compound_codes = table_get_row(table, 'Compound Code')
+      self.compound_names = table_get_row(table, 'Compound Name')
       self.trial_phase_raw = table_get_row(table, 'Trial Phase')
       self.trial_phase = self._get_phase()
       self.short_title = table_get_row(table, 'Short Title')
@@ -122,7 +122,7 @@ class M11TitlePage():
     return name, params
 
   def _get_sponsor_approval_date(self, table):
-    return self._get_date(table, 'Sponsor Approval Date')
+    return self._get_date(table, 'Sponsor Approval')
 
   def _get_protocol_date(self, table):
     return self._get_date(table, 'Version Date')

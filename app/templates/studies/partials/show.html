@@ -4,7 +4,7 @@
 {% set id = "card_" ~ study['id'] ~ "_div" %}
 {% set action = 'DESELECT' if selected else 'SELECT' %}
 {% set border = ' border-primary' if selected else '' %}
-<div id="{{id}}" class="card card-body rounded-3 h-100{{border}}" hx-patch="studies/{{study['id']}}/select?action={{action}}" hx-target="#{{id}}" hx-swap="outerHTML">
+<div id="{{id}}" class="card card-body rounded-3 h-100{{border}}" hx-patch="studies/{{study['id']}}/select?action={{action}}" hx-include="[name='list_studies']" hx-target="#{{id}}" hx-swap="outerHTML">
   <div class="row">
     <h6 class="card-subtitle">{{study['sponsor']}}: {{study['sponsor_identifier']}}</h6>
   </div>

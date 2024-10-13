@@ -37,7 +37,7 @@ class Study(Base):
   sponsor_identifier = Column(String, index=True, nullable=True)
   nct_identifier = Column(String, index=True, nullable=True)
   user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
-  versions = relationship('Version', backref='study')
+  versions = relationship('Version', backref='study', cascade='all, delete')
 
 class Version(Base):
     
@@ -60,7 +60,7 @@ class FileImport(Base):
   filename = Column(String, nullable=False)
   status = Column(String, nullable=False)
   user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
-  version = relationship('Version', backref='file_import', uselist=False)
+  version = relationship('Version', backref='file_import', uselist=False, cascade='all, delete')
 
 class TransmissionTable(Base):
     
@@ -81,4 +81,3 @@ class Endpoint(Base):
   type = Column(String, nullable=False)
   name = Column(String, nullable=False)
   endpoint = Column(String, unique=True, nullable=False)
-  #users = relationship('User', secondary='user_endpoint', backref='endpoint')

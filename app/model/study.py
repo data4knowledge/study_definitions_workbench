@@ -1,4 +1,5 @@
 import re
+from sqlalchemy import text
 from typing import Optional
 from pydantic import BaseModel
 from app.model.database_tables import Study as StudyDB, Version as VersionDB
@@ -6,6 +7,7 @@ from app.model.version import Version
 from app.model.user import User
 from app.model.file_import import FileImport
 from sqlalchemy.orm import Session
+from d4kms_generic import application_logger
 
 class StudyBase(BaseModel):
   name: str
@@ -102,6 +104,27 @@ class Study(StudyBase):
       results[-1].pop('_sa_instance_state')
     result = {'items': results, 'count': count }
     return result
+
+  def delete(self, session: Session) -> int:
+    try:
+      record = session.query(StudyDB).filter(StudyDB.id == self.id).first()
+      session.delete(record)
+      session.commit()
+      return 1
+    except Exception as e:
+      application_logger.exception(f"Failed to delete study record", e)
+      return 0
+
+  def file_imports(self, session: Session) -> dict:
+    query = f"""
+      SELECT i.* 
+      FROM import i 
+      JOIN version v ON i.id = v.import_id
+      JOIN study s ON v.study_id = s.id
+      WHERE s.id = {self.id}
+    """
+    results = session.execute(text(query))
+    return results
 
   @staticmethod
   def _summary(item: StudyDB, session: Session) -> dict:

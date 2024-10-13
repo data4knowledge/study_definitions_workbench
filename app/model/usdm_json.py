@@ -9,7 +9,7 @@ from app.model.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
 from usdm_db import USDMDb
-from usdm_model import StudyDesign, Estimand
+from usdm_model.wrapper import Wrapper
 
 class USDMJson():
 
@@ -56,6 +56,14 @@ class USDMJson():
     data = usdm.to_pdf()
     fullpath, filename = self._files.save("protocol", data)
     return fullpath, filename, 'text/plain' 
+
+  def wrapper(self) -> Wrapper:
+    usdm = USDMDb()
+    usdm.from_json(self._data)
+    return usdm.wrapper()
+
+  def extra(self) -> dict:
+    return self._extra
 
   def study_version(self):
     version = self._data['study']['versions'][0]
