@@ -11,10 +11,17 @@
     <tbody>
       {% for item in data %}
         {% set is_folder = True if item['type'] == 'Folder' else False %}
-        <tr onclick="toggleSelect(this)">
+        {% set x = item['uid'] %}
+        {% if is_folder %}
+          <tr>
+        {% else %}
+          <tr onclick="toggleSelect(this, '{{x}}');">
+        {% endif %}  
           <td>
             {% if is_folder %}
-              <i class="bi bi-folder"></i>
+              <button type="button" class="btn btn-xs btn-outline-primary rounded-2" onclick="return confirm('Not implemented yet')">
+                <i class="bi bi-folder"></i>
+              </button>
             {% else %}
               <i class="bi bi-file"></i>
             {% endif %}
@@ -32,10 +39,29 @@
       {% endfor %}
     </tbody>
   </table>
+  <form id='form' hx-post='{{url}}' hx-target="#form_list_div" hx-swap="outerHTML">
+    <input type="hidden" id="file_list_input">
+    <button class="btn btn-outline-primary rounded-5">
+      <i class="bi bi-upload pe-2"></i>Upload File(s)
+    </button>
+  </form> 
 </div>
 
 <script>
-  function toggleSelect(x) {
+
+  var input = document.getElementById('file_list_input');
+  input.value = JSON.stringify([]);
+
+  function toggleSelect(x, value) {
+    var files = JSON.parse(input.value);
     x.classList.toggle("table-success");
+    if (files.includes(value)) {
+      files = files.filter(e => e !== value); 
+    } else {
+      files.push(value);
+    }
+    input.value = JSON.stringify(files);
+    console.log(files);
   }
+
 </script>
