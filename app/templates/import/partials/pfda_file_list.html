@@ -1,3 +1,41 @@
 <div class="mt-3" id="file_list_div">
-  <p>{{data}}</p>
+  <table class="table responsive table-striped mt-1">
+    <thead>
+      <tr>
+        <td></td>
+        <td>Name</td>
+        <td>Created At</td>
+        <td>File Size</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+        {% set is_folder = True if item['type'] == 'Folder' else False %}
+        <tr onclick="toggleSelect(this)">
+          <td>
+            {% if is_folder %}
+              <i class="bi bi-folder"></i>
+            {% else %}
+              <i class="bi bi-file"></i>
+            {% endif %}
+          </td>  
+          <td>
+            <p class="card-text">{{ item['name']}}</p>
+          </td>  
+          <td>
+            <p class="card-text">{{ item['created_at']}}</p>
+          </td>  
+          <td>
+            <p class="card-text">{{ item['file_size']}}</p>
+          </td>  
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+
+<script>
+  function toggleSelect(x) {
+    x.classList.toggle("table-success");
+  }
+</script>
