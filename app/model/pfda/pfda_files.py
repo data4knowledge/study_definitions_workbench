@@ -22,8 +22,10 @@ class PFDAFiles:
 
   def read(self, full_path):
     print(f"FULL_PATH: {full_path}")
+    head_tail = os.path.split(full_path)
+    stem, extension = self._stem_and_extension(head_tail[1])
     with open(full_path, "r") as stream:
-      return stream.read()
+      return stem, extension, stream.read()
 
   def path(self):
     return self._dir_path()
