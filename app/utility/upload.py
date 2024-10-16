@@ -95,16 +95,16 @@ async def get_m11_files(form: FormData):
 async def get_m11_files_pfda(form: FormData):
   messages = []
   import_file = None
-  print(f"ITEMS: {form.items()}")
-  print(f"ITEMS: {form.getlist('file_list_input')}")
-  #print(f"FILES: {json.loads(form[1])}")
+  #print(f"ITEMS: {form.items()}")
+  #print(f"ITEMS: {form.getlist('file_list_input')}")
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
-    print(f"FILE: {uid}")
+    #print(f"FILE: {uid}")
     pfda = PFDA()
     file_root, file_extension, contents = pfda.download(uid)
-    filename = f"{file_root}{file_extension}"
-    if file_extension == '.docx':
+    #print(f"FILE: {file_root}, {file_extension}")
+    filename = f"{file_root}.{file_extension}"
+    if file_extension == 'docx':
       messages.append(f"Word file '{filename}' accepted")
       import_file = {'filename': filename, 'contents': contents}
       application_logger.info(f"Processing upload file '{file_root}'")

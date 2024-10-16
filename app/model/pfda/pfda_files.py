@@ -24,7 +24,7 @@ class PFDAFiles:
     print(f"FULL_PATH: {full_path}")
     head_tail = os.path.split(full_path)
     stem, extension = self._stem_and_extension(head_tail[1])
-    with open(full_path, "r") as stream:
+    with open(full_path, "rb") as stream:
       return stem, extension, stream.read()
 
   def path(self):
@@ -53,6 +53,8 @@ class PFDAFiles:
     try:
       os.mkdir(os.path.join(self.dir, self.DOWNLOAD_DIR))
       return True
+    except FileExistsError as e:
+      pass # Expected error
     except Exception as e:
       application_logger.exception(f"Exception creating dir '{self.DOWNLOAD_DIR}' in '{self.dir}'", e)
       return False
