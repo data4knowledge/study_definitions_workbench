@@ -240,6 +240,11 @@ async def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   return await process_m11(request, templates, user)
 
+@app.post('/import/m11/pfda', dependencies=[Depends(protect_endpoint)])
+async def import_m11_pfda(request: Request, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  return await process_m11(request, templates, user, source='pfda')
+
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
 async def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)

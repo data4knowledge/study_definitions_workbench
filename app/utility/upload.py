@@ -17,13 +17,13 @@ async def process_xl(request, templates, user):
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
-        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
+        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': import_file['filename'], 'messages': messages, 'type': 'Excel'})  
     else:
       messages.append("No Excel file detected, file upload ignored")
-      return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages})  
+      return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages, 'type': 'Excel'})  
   except Exception as e:
     application_logger.exception("Exception uploading files", e)
-    return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
+    return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information'], 'type': 'Excel'})  
 
 async def get_xl_files(form: File):
   image_files = []
@@ -54,25 +54,24 @@ def save_xl_files(import_file: dict, image_files: dict):
     saved_full_path, saved_filename = _save_file(files, image_file, "image")
   return uuid
 
-async def process_m11(request, templates, user):
+async def process_m11(request, templates, user, source='os'):
   try:
     form = await request.form()
-    import_file, messages = await get_m11_files(form)
+    import_file, messages = await get_m11_files(form) if source == 'os' else await get_m11_files_pfda(form)
     if import_file:
       uuid = save_m11_files(import_file)
       if uuid:
-        #background_tasks.add_task(process_word, uuid, user, session)
         run_background_task(process_word, uuid, user)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
-        messages.append("Failed to process the Excel file")
-        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
+        messages.append("Failed to process the Word file")
+        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': import_file['filename'], 'messages': messages, 'type': 'Word'})  
     else:
       messages.append("No Word file detected, file upload ignored")
-      return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages})  
+      return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages, 'type': 'Word'})  
   except Exception as e:
     application_logger.exception("Exception uploading files", e)
-    return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
+    return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information'], 'type': 'Word'})  
 
 async def get_m11_files(form: File):
   messages = []
@@ -90,6 +89,23 @@ async def get_m11_files(form: File):
       messages.append(f"File '{filename}' was ignored, not .docx file")
   return import_file, messages
 
+async def get_m11_files_pfda(form: File):
+  messages = []
+  import_file = None
+  files = form.getlist('file_list_input')
+  for v in files:
+    print(f"FILE: {v}")
+    # filename = v.filename
+    # contents = await v.read()
+    # file_root, file_extension = os.path.splitext(filename)
+    # if file_extension == '.docx':
+    #   messages.append(f"Word file '{filename}' accepted")
+    #   import_file = {'filename': filename, 'contents': contents}
+    #   application_logger.info(f"Processing upload file '{file_root}'")
+    # else:
+    #   messages.append(f"File '{filename}' was ignored, not .docx file")
+  return import_file, messages
+
 def save_m11_files(import_file: dict):
   return _save_files(import_file, "docx")
 
@@ -105,13 +121,13 @@ async def process_fhir(request, templates, user):
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
         messages.append("Failed to process the Excel file")
-        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
+        return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': import_file['filename'], 'messages': messages, 'type': 'JSON'})  
     else:
       messages.append("No Word file detected, file upload ignored")
-      return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages})  
+      return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': messages, 'type': 'JSON'})  
   except Exception as e:
     application_logger.exception("Exception uploading files", e)
-    return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information']})  
+    return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information'], 'type': 'JSON'})  
 
 async def get_fhir_files(form: File):
   messages = []

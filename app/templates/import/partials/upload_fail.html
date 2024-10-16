@@ -1,9 +1,9 @@
 <ul class="list-group">
   <div class="alert alert-danger" role="alert">
     {% if filename %}
-      Upload of Excel file '{{filename}}' failed! 
+      Upload of {{type}} file '{{filename}}' failed! 
     {% else %}
-      Upload of Excel file failed!
+      Upload of {{type}} file failed!
     {% endif %}
     <ul class="mt-3 list-group">
       {% for message in messages %}
