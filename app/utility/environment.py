@@ -10,3 +10,11 @@ def single_user() -> bool:
   single = se.get('SINGLE_USER')
   application_logger.info(f"Single user mode '{single}'")
   return single.upper() in ['TRUE', 'Y', 'YES']
+
+def file_picker() -> dict:
+  se = ServiceEnvironment()
+  picker = se.get('FILE_PICKER')
+  application_logger.info(f"File picker '{picker}'")
+  return {'os': picker.upper() == 'OS', 'pfda': picker.upper() == 'PFDA'} 
+
+  

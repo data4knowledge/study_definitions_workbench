@@ -7,11 +7,22 @@
 {% endblock %}
 
 {% block main_content %}
-  <div class="mt-3 row row-cols-2">
-    <div class="col">
-      {% with url="/import/m11", title="Import M11 Protocol", subtitle="Import for a M11 formatted '.docx' file", text="Select a single M11 file", disable=False %}
-        {% include "import/partials/file_select.html" %}
-      {% endwith %}
+  {{data}}
+  {% if data['pfda'] == True %}
+    <div class="mt-3 row row-cols-2">
+      <div class="col">
+        {% with url="/import/m11", title="Import M11 Protocol", subtitle="Import for a M11 formatted '.docx' file", text="Select a single M11 file", disable=False %}
+          {% include "import/partials/pfda_select.html" %}
+        {% endwith %}
+      </div>
     </div>
-  </div>
+  {% else %}
+    <div class="mt-3 row row-cols-2">
+      <div class="col">
+        {% with url="/import/m11", title="Import M11 Protocol", subtitle="Import for a M11 formatted '.docx' file", text="Select a single M11 file", disable=False %}
+          {% include "import/partials/file_select.html" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}

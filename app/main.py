@@ -19,9 +19,9 @@ from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
-from app.utility.fhir_transmit import fhir_transmit
+#from app.utility.fhir_transmit import fhir_transmit
 from app.utility.template_methods import *
-from app.utility.environment import single_user
+from app.utility.environment import single_user, file_picker
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
@@ -205,19 +205,23 @@ def about(request: Request, session: Session = Depends(get_db)):
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user})
+  data = file_picker()
+  return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user})
+  data = file_picker()
+  return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/fhir", dependencies=[Depends(protect_endpoint)])
 def import_fhir(request: Request, version: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   valid, description = check_fhir_version(version)
   if valid:
-    data = {'version': version, 'description': description}
+    data = file_picker()
+    data['version'] = version
+    data['description'] = description
     return templates.TemplateResponse("import/import_fhir.html", {'request': request, 'user': user, 'data': data})
   else:
     message = f"Invalid FHIR version '{version}'"
@@ -242,8 +246,6 @@ async def import_fhir(request: Request, session: Session = Depends(get_db)):
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  # data = FileImport.page(page, size, user.id, session)
-  # pagination = Pagination(data, "/import/status")
   data = {'page': page, 'size': size, 'filter': filter} 
   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'data': data})
 
