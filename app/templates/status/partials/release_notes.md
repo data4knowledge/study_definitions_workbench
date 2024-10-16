@@ -1,3 +1,7 @@
+**Release 0.18.0, 2024-10-xx**
+
+- Support for precisionFDA file picking
+
 **Release 0.17.0, 2024-10-13**
 
 - Bug fixes
