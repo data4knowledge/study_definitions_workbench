@@ -31,7 +31,7 @@ from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
-from app.model.pfda import PFDA
+from app.model.pfda.pfda import PFDA
 
 Files.clean_and_tidy()
 Files.check()

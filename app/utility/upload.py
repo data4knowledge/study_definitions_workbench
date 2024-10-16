@@ -1,7 +1,7 @@
 import os
 from fastapi import File
 from app.model.files import Files
-#from app.model.file_import import FileImport
+from app.model.pfda.pfda import PFDA
 from d4kms_generic import application_logger
 from app.utility.background import process_excel, process_word, process_fhir_v1, run_background_task
 
@@ -93,17 +93,17 @@ async def get_m11_files_pfda(form: File):
   messages = []
   import_file = None
   files = form.getlist('file_list_input')
-  for v in files:
-    print(f"FILE: {v}")
-    # filename = v.filename
-    # contents = await v.read()
-    # file_root, file_extension = os.path.splitext(filename)
-    # if file_extension == '.docx':
-    #   messages.append(f"Word file '{filename}' accepted")
-    #   import_file = {'filename': filename, 'contents': contents}
-    #   application_logger.info(f"Processing upload file '{file_root}'")
-    # else:
-    #   messages.append(f"File '{filename}' was ignored, not .docx file")
+  for uid in files:
+    print(f"FILE: {uid}")
+    pfda = PFDA()
+    file_root, file_extension, contents = pfda.download(uid)
+    filename = f"{file_root}{file_extension}"
+    if file_extension == '.docx':
+      messages.append(f"Word file '{filename}' accepted")
+      import_file = {'filename': filename, 'contents': contents}
+      application_logger.info(f"Processing upload file '{file_root}'")
+    else:
+      messages.append(f"File '{filename}' was ignored, not .docx file")
   return import_file, messages
 
 def save_m11_files(import_file: dict):
