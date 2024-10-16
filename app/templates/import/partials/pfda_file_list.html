@@ -39,7 +39,7 @@
       {% endfor %}
     </tbody>
   </table>
-  <form id='form' hx-post='{{url}}' hx-target="#form_list_div" hx-swap="outerHTML">
+  <form id='form' hx-post='{{url}}' hx-target="#file_list_div" hx-swap="outerHTML">
     <input type="hidden" id="file_list_input">
     <button class="btn btn-outline-primary rounded-5">
       <i class="bi bi-upload pe-2"></i>Upload File(s)
