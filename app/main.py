@@ -31,6 +31,7 @@ from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
+from app.model.pfda import PFDA
 
 Files.clean_and_tidy()
 Files.check()
@@ -201,6 +202,12 @@ def about(request: Request, session: Session = Depends(get_db)):
   rn = ReleaseNotes(os.path.join(templates_path, 'status', 'partials'))
   data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
+
+@app.get("/pfda", dependencies=[Depends(protect_endpoint)])
+def about(request: Request, dir: str = None, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  data = PFDA().dir(dir)
+  return templates.TemplateResponse("import/partials/pfda_file_list.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 def import_m11(request: Request, session: Session = Depends(get_db)):
