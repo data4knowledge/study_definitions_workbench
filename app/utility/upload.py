@@ -1,5 +1,7 @@
 import os
+import json
 from fastapi import File
+from starlette.datastructures import FormData
 from app.model.files import Files
 from app.model.pfda.pfda import PFDA
 from d4kms_generic import application_logger
@@ -57,6 +59,7 @@ def save_xl_files(import_file: dict, image_files: dict):
 async def process_m11(request, templates, user, source='os'):
   try:
     form = await request.form()
+    print(f"FORM: {type(form)}")
     import_file, messages = await get_m11_files(form) if source == 'os' else await get_m11_files_pfda(form)
     if import_file:
       uuid = save_m11_files(import_file)
@@ -73,7 +76,7 @@ async def process_m11(request, templates, user, source='os'):
     application_logger.exception("Exception uploading files", e)
     return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information'], 'type': 'Word'})  
 
-async def get_m11_files(form: File):
+async def get_m11_files(form: FormData):
   messages = []
   import_file = None
   files = form.getlist('files')
@@ -89,11 +92,14 @@ async def get_m11_files(form: File):
       messages.append(f"File '{filename}' was ignored, not .docx file")
   return import_file, messages
 
-async def get_m11_files_pfda(form: File):
+async def get_m11_files_pfda(form: FormData):
   messages = []
   import_file = None
-  files = form.getlist('file_list_input')
-  for uid in files:
+  print(f"ITEMS: {form.items()}")
+  print(f"ITEMS: {form.getlist('file_list_input')}")
+  #print(f"FILES: {json.loads(form[1])}")
+  data = form.getlist('file_list_input')
+  for uid in json.loads(data[0]):
     print(f"FILE: {uid}")
     pfda = PFDA()
     file_root, file_extension, contents = pfda.download(uid)

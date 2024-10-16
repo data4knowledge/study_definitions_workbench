@@ -9,14 +9,18 @@ class PFDA():
     self._files = PFDAFiles()
 
   def dir(self, dir):
-    result = subprocess.run(["pfda", "ls", '-json'], capture_output=True, text=True)
+    args = ["pfda", "ls", '-json']
+    result = subprocess.run(args, capture_output=True, text=True)
     application_logger.info(f"PFDA file list: {result.stdout}")
     listing = json.loads(result.stdout)
     return listing['files']
 
   def download(self, uid: str):
     target = self._files.path()
-    result = subprocess.run(["pfda", "download", uid, f'-output {target}', '-json', '-overwrite true'], capture_output=True, text=True)
+    args = ["pfda", "download", uid, f'-output', f'{target}', '-json', '-overwrite', 'true']
+    print(f"ARGS: {args}")
+    result = subprocess.run(args, capture_output=True, text=True)
+    print(f"RESULT: {result}")
     application_logger.info(f"PFDA download: {result.stdout}")
     files = json.loads(result.stdout)
     file_root, file_extension, contents = self._files.read(files['result'])
