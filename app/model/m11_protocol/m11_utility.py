@@ -49,3 +49,6 @@ def iso3166_decode(decode: str, iso_library: ISO3166, id_manager: IdManager) -> 
 
 def iso_country_code(code, decode, id_manager: IdManager) -> Code:
   return model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08'}, id_manager)
+
+def language_code(code: str, decode: str, id_manager: IdManager) -> Code:
+  return model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': 'ISO 639-1', 'codeSystemVersion': '2002'}, id_manager)

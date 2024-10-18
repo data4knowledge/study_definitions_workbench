@@ -3,14 +3,14 @@ from usdm_model.study import Study
 from usdm_model.study_design import StudyDesign
 from usdm_model.study_version import StudyVersion
 from usdm_model.study_title import StudyTitle
-from usdm_model.study_protocol_document import StudyProtocolDocument
-from usdm_model.study_protocol_document_version import StudyProtocolDocumentVersion
+from usdm_model.study_definition_document import StudyDefinitionDocument
+from usdm_model.study_definition_document_version import StudyDefinitionDocumentVersion
 from usdm_model.population_definition import StudyDesignPopulation
 from usdm_model.eligibility_criterion import EligibilityCriterion
-from usdm_model.study_identifier import StudyIdentifier
+from usdm_model.identifier import StudyIdentifier
 from usdm_model.organization import Organization
 from usdm_model.address import Address
-from usdm_model.narrative_content import NarrativeContent
+from usdm_model.narrative_content import NarrativeContent, NarrativeContentItem
 from usdm_model.study_amendment import StudyAmendment
 from usdm_model.study_amendment_reason import StudyAmendmentReason
 from usdm_model.endpoint import Endpoint
@@ -54,16 +54,17 @@ class M11ToUSDM():
     try:
       study = self._study()
       doc_version = self._document_version(study)
-      root = model_instance(NarrativeContent, {'name': 'ROOT', 'sectionNumber': '0', 'sectionTitle': 'Root', 'text': '', 'childIds': [], 'previousId': None, 'nextId': None}, self._id_manager)
-      doc_version.contents.append(root)
-      local_index = self._section_to_narrative(root, 0, 1, doc_version)
+      study_version = self._study_version(study)
+      # root = model_instance(NarrativeContent, {'name': 'ROOT', 'sectionNumber': '0', 'sectionTitle': 'Root', 'text': '', 'childIds': [], 'previousId': None, 'nextId': None}, self._id_manager)
+      # doc_version.contents.append(root)
+      local_index = self._section_to_narrative(None, 0, 1, doc_version, study_version)
       self._double_link(doc_version.contents, 'previousId', 'nextId')
       return Wrapper(study=study, usdmVersion=usdm_version, systemName=self._system_name, systemVersion=self._system_version).to_json()
     except Exception as e:
       application_logger.exception(f"Exception raised parsing M11 content. See logs for more details", e)
       return None
 
-  def _section_to_narrative(self, parent, index, level, doc_version) -> int:
+  def _section_to_narrative(self, parent, index, level, doc_version, study_version) -> int:
     process = True
     previous = None
     local_index = index
@@ -72,16 +73,22 @@ class M11ToUSDM():
       section = self._sections.sections[local_index]
       if section.level == level:
         sn = section.number if section.number else ''
+        dsn = True if sn else False
         st = section.title if section.title else ''
+        dst = True if st else False
         nc_text = f"{self.DIV_OPEN_NS}{section.to_html()}{self.DIV_CLOSE}"
-        nc = model_instance(NarrativeContent, {'name': f"NC-{sn}", 'sectionNumber': sn, 'sectionTitle': st, 'text': nc_text, 'childIds': [], 'previousId': None, 'nextId': None}, self._id_manager)
+        nci = model_instance(NarrativeContentItem, {'name': f"NCI-{sn}", 'text': nc_text}, self._id_manager)
+        #print(f"NCI: {nci}")
+        nc = model_instance(NarrativeContent, {'name': f"NC-{sn}", 'sectionNumber': sn, 'displaySectionNumber': dsn, 'sectionTitle': st, 'displaySectionTitle': dst, 'contentItemId': nci.id, 'childIds': [], 'previousId': None, 'nextId': None}, self._id_manager)
         doc_version.contents.append(nc)
-        parent.childIds.append(nc.id)
+        study_version.narrativeContentItems.append(nci)
+        if parent:
+          parent.childIds.append(nc.id)
         previous = nc
         local_index += 1
       elif section.level > level: 
         if previous:
-          local_index = self._section_to_narrative(previous, local_index, level + 1, doc_version)
+          local_index = self._section_to_narrative(previous, local_index, level + 1, doc_version, study_version)
         else:
           application_logger.error(f"No previous set processing sections")
           local_index += 1
@@ -110,7 +117,7 @@ class M11ToUSDM():
     sponsor_title_code = cdisc_ct_code('C99905x2', 'Official Study Title', self._cdisc_ct_library, self._id_manager)
     sponsor_short_title_code = cdisc_ct_code('C99905x1', 'Brief Study Title', self._cdisc_ct_library, self._id_manager)
     acronym_code = cdisc_ct_code('C94108', 'Study Acronym', self._cdisc_ct_library, self._id_manager)
-    protocl_status_code = cdisc_ct_code('C85255', 'Draft', self._cdisc_ct_library, self._id_manager)
+    protocol_status_code = cdisc_ct_code('C85255', 'Draft', self._cdisc_ct_library, self._id_manager)
     intervention_model_code = cdisc_ct_code('C82639', 'Parallel Study', self._cdisc_ct_library, self._id_manager)
     sponsor_code = cdisc_ct_code("C70793", 'Clinical Study Sponsor', self._cdisc_ct_library, self._id_manager)
     titles = []
@@ -129,8 +136,10 @@ class M11ToUSDM():
       titles.append(title)
     except:
       application_logger.info(f"No study acronym set, source = '{self._title_page.acronym}'")
-    protocl_document_version = model_instance(StudyProtocolDocumentVersion, {'protocolVersion': self._title_page.version_number, 'protocolStatus': protocl_status_code}, self._id_manager)
-    protocl_document = model_instance(StudyProtocolDocument, {'name': 'PROTOCOL V1', 'label': '', 'description': '', 'versions': [protocl_document_version]}, self._id_manager)
+    protocl_document_version = model_instance(StudyDefinitionDocumentVersion, {'version': self._title_page.version_number, 'status': protocol_status_code}, self._id_manager)
+    language = language_code('en', 'English', self._id_manager)
+    doc_type = cdisc_ct_code('C70817', 'Protocol', self._cdisc_ct_library, self._id_manager)
+    protocl_document = model_instance(StudyDefinitionDocument, {'name': 'PROTOCOL V1', 'label': 'M11 Protocol', 'description': 'M11 Protocol Document', 'language': language, 'type': doc_type, 'templateName': 'M11','versions': [protocl_document_version]}, self._id_manager)
     population = self._population()
     objectives, estimands, interventions = self._objectives()
     study_design = model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
@@ -139,8 +148,8 @@ class M11ToUSDM():
     sponsor_address = self._title_page.sponsor_address
     #print(f"INTERVENTIONS: {interventions}")
     address = model_instance(Address, sponsor_address, self._id_manager)
-    organization = model_instance(Organization, {'name': self._title_page.sponsor_name, 'organizationType': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}, self._id_manager) 
-    identifier = model_instance(StudyIdentifier, {'studyIdentifier': self._title_page.sponsor_protocol_identifier, 'studyIdentifierScope': organization}, self._id_manager)
+    organization = model_instance(Organization, {'name': self._title_page.sponsor_name, 'type': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}, self._id_manager) 
+    identifier = model_instance(StudyIdentifier, {'text': self._title_page.sponsor_protocol_identifier, 'scopeId': organization.id}, self._id_manager)
     params = {
       'versionIdentifier': self._title_page.version_number, 
       'rationale': 'XXX', 
@@ -154,7 +163,7 @@ class M11ToUSDM():
     }
     application_logger.debug(f"Study Version params {params}")
     study_version = model_instance(StudyVersion, params, self._id_manager) 
-    study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': protocl_document}, self._id_manager) 
+    study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': [protocl_document]}, self._id_manager) 
     return study
 
   def _objectives(self):
@@ -221,8 +230,11 @@ class M11ToUSDM():
     }
     return [model_instance(StudyAmendment, params, self._id_manager)]
 
-  def _document_version(self, study: Study) -> StudyProtocolDocumentVersion:
-    return study.documentedBy.versions[0]
+  def _document_version(self, study: Study) -> StudyDefinitionDocumentVersion:
+    return study.documentedBy[0].versions[0]
+
+  def _study_version(self, study: Study) -> StudyDefinitionDocumentVersion:
+    return study.versions[0]
   
   def _double_link(self, items, prev, next):
     for idx, item in enumerate(items):
