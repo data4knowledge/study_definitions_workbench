@@ -95,10 +95,11 @@ class USDMJson():
         section = self._section_by_number("1.1.2")
       if not section:
         section = self._section_by_title_contains("Overall Design")
+      text = self._section_item(section) if section else ''
       result = {
         'id': self.id,
         'm11': self.m11,
-        'text': section['text'] if section else '[Overall Parameters]',
+        'text': text if text else '[Overall Parameters]',
         'intervention_model': None,
         'population_type':  None,
         'population_condition': '[Population Condition]',
@@ -168,11 +169,12 @@ class USDMJson():
         section = self._section_by_title_contains("Trial Intervention")
       if not section:
         section = self._section_by_title_contains("Intervention")
+      text = self._section_item(section) if section else ''
       result = {
         'id': self.id,
         'm11': self.m11,
         'interventions': [],
-        'text': section['text'] if section else '[Trial Interventions]'
+        'text': text if text else '[Trial Interventions]'
       }
       for intervention in design['studyInterventions']:
         #print(f"R1:")
@@ -194,11 +196,12 @@ class USDMJson():
         section = self._section_by_number("3.1")
       if not section:
         section = self._section_by_title_contains("Primary Objective")
+      text = self._section_item(section) if section else ''
       result = {
         'id': self.id,
         'm11': self.m11,
         'estimands': [],
-        'text': section['text'] if section else '[Estimands]'
+        'text': text if text else '[Estimands]'
       }
       for estimand in design['estimands']:
         record = {}
@@ -256,9 +259,13 @@ class USDMJson():
     if document:
       narrative_content = self._find_narrative_content(document, id)
       narrative_content['heading'], narrative_content['level'] = self._format_heading(narrative_content)
-      narrative_content['text'] = next((x['text'] for x in version['narrativeContentItems'] if x['id'] == narrative_content['contentItemId']), '')
+      narrative_content['text'] = self._section_item(narrative_content)
       return narrative_content
     return None
+
+  def _section_item(self, narrative_content: dict) -> str:
+    version = self._data['study']['versions'][0]
+    return next((x['text'] for x in version['narrativeContentItems'] if x['id'] == narrative_content['contentItemId']), '')
 
   def _section_response(self, id: str, number: str, title: str, default: str) -> dict:
     design = self._study_design(id)
@@ -377,7 +384,8 @@ class USDMJson():
     return result
 
   def _image_in_section(self, section):
-    soup = self._get_soup(section['text'])
+    text = self._section_item(section) if section else ''
+    soup = self._get_soup(text)
     for ref in soup(['img']):
       return ref
     return ""
