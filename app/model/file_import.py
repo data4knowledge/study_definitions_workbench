@@ -30,9 +30,9 @@ class FileImport(FileImportBase):
 
   @classmethod
   def find(cls, id: int, session: Session) -> Optional['FileImport']:
-    print(f"DB_ITEM: Start")
+    #print(f"DB_ITEM: Start")
     db_item = session.query(FileImportDB).filter(FileImportDB.id == id).first()
-    print(f"DB_ITEM: {db_item}")
+    #print(f"DB_ITEM: {db_item}")
     return cls(**db_item.__dict__) if db_item else None
 
   @classmethod

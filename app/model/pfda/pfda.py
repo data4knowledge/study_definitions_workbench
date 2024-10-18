@@ -9,18 +9,26 @@ class PFDA():
     self._files = PFDAFiles()
 
   def dir(self, dir):
-    args = ["pfda", "ls", '-json']
-    result = subprocess.run(args, capture_output=True, text=True)
-    application_logger.info(f"PFDA file list: {result.stdout}")
-    listing = json.loads(result.stdout)
-    return listing['files']
+    try:
+      args = ["pfda", "ls", '-json']
+      result = subprocess.run(args, capture_output=True, text=True)
+      response = json.loads(result.stdout)
+      if 'error' in response:
+        application_logger.error(f"pFDA error: {response['error']}")
+        return False, [], response['error']
+      else:
+        application_logger.info(f"pFDA file list response: {response}")
+        return True, response['files'], ''
+    except Exception as e:
+      application_logger.exception(f"pFDA exception", e)
+      return False, [], f"Exception '{e}' raised, check the logs for more information"
 
   def download(self, uid: str):
     target = self._files.path()
     args = ["pfda", "download", uid, f'-output', f'{target}', '-json', '-overwrite', 'true']
-    print(f"ARGS: {args}")
+    #print(f"ARGS: {args}")
     result = subprocess.run(args, capture_output=True, text=True)
-    print(f"RESULT: {result}")
+    #print(f"RESULT: {result}")
     application_logger.info(f"PFDA download: {result.stdout}")
     files = json.loads(result.stdout)
     file_root, file_extension, contents = self._files.read(files['result'])

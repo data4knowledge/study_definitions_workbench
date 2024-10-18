@@ -206,8 +206,12 @@ def about(request: Request, session: Session = Depends(get_db)):
 @app.get("/pfda", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, dir: str = None, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = PFDA().dir(dir)
-  return templates.TemplateResponse("import/partials/pfda_file_list.html", {'request': request, 'user': user, 'data': data})
+  valid, data, message = PFDA().dir(dir)
+  if valid:
+    return templates.TemplateResponse("import/partials/pfda_file_list.html", {'request': request, 'user': user, 'data': data})
+  else:
+    application_logger.error(message)
+    return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': {'error': message}})
 
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 def import_m11(request: Request, session: Session = Depends(get_db)):
@@ -233,7 +237,7 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
   else:
     message = f"Invalid FHIR version '{version}'"
     application_logger.error(message)
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'data': {'error': message}})
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': message}})
     
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 async def import_m11(request: Request, session: Session = Depends(get_db)):
