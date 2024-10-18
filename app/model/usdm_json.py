@@ -252,9 +252,11 @@ class USDMJson():
 
   def section(self, id):
     document = self._document()
+    version = self._data['study']['versions'][0]
     if document:
       narrative_content = self._find_narrative_content(document, id)
       narrative_content['heading'], narrative_content['level'] = self._format_heading(narrative_content)
+      narrative_content['text'] = next((x['text'] for x in version['narrativeContentItems'] if x['id'] == narrative_content['contentItemId']), '')
       return narrative_content
     return None
 
