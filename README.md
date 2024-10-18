@@ -80,7 +80,7 @@ Set the environment variables using a ```.env``` file.
 ## Build and Run using Docker
 
 ```
-docker build . -t data4knowledge/sdw:latest 
+docker build . -t data4knowledge/sdw:latest -t data4knowledge/sdw:<version>
 docker volume create sdw_data
 docker run -d  --mount source=sdw_data,target=/mount -p 8000:8000 data4knowledge/sdw:latest
 ```

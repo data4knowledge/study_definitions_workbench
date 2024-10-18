@@ -174,3 +174,4 @@ test_*.py
 .production_staging_env
 .env_prism
 install_local_microservices.sh
+.env_local
