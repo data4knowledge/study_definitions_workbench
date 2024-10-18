@@ -136,10 +136,10 @@ class M11ToUSDM():
       titles.append(title)
     except:
       application_logger.info(f"No study acronym set, source = '{self._title_page.acronym}'")
-    protocl_document_version = model_instance(StudyDefinitionDocumentVersion, {'version': self._title_page.version_number, 'status': protocol_status_code}, self._id_manager)
+    protocol_document_version = model_instance(StudyDefinitionDocumentVersion, {'version': self._title_page.version_number, 'status': protocol_status_code}, self._id_manager)
     language = language_code('en', 'English', self._id_manager)
     doc_type = cdisc_ct_code('C70817', 'Protocol', self._cdisc_ct_library, self._id_manager)
-    protocl_document = model_instance(StudyDefinitionDocument, {'name': 'PROTOCOL V1', 'label': 'M11 Protocol', 'description': 'M11 Protocol Document', 'language': language, 'type': doc_type, 'templateName': 'M11','versions': [protocl_document_version]}, self._id_manager)
+    protocol_document = model_instance(StudyDefinitionDocument, {'name': 'PROTOCOL V1', 'label': 'M11 Protocol', 'description': 'M11 Protocol Document', 'language': language, 'type': doc_type, 'templateName': 'M11','versions': [protocol_document_version]}, self._id_manager)
     population = self._population()
     objectives, estimands, interventions = self._objectives()
     study_design = model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
@@ -156,14 +156,15 @@ class M11ToUSDM():
       'titles': titles, 
       'dateValues': dates,
       'studyDesigns': [study_design], 
-      'documentVersionId': protocl_document_version.id, 
+      'documentVersionIds': [protocol_document_version.id], 
       'studyIdentifiers': [identifier], 
-      'studyPhase': self._title_page.trial_phase, 
+      'studyPhase': self._title_page.trial_phase,
+      'organizations': [organization],
       'amendments': self._get_amendments()
     }
     application_logger.debug(f"Study Version params {params}")
     study_version = model_instance(StudyVersion, params, self._id_manager) 
-    study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': [protocl_document]}, self._id_manager) 
+    study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': [protocol_document]}, self._id_manager) 
     return study
 
   def _objectives(self):

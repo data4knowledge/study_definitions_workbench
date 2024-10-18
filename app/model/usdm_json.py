@@ -67,6 +67,7 @@ class USDMJson():
 
   def study_version(self):
     version = self._data['study']['versions'][0]
+    orgs = {x['id']: x for x in version['organizations']}
     result = {
       'id': self.id,
       'version_identifier': version['versionIdentifier'],
@@ -76,7 +77,8 @@ class USDMJson():
       'phase': ''
     }
     for identifier in version['studyIdentifiers']:
-      result['identifiers'][identifier['studyIdentifierScope']['organizationType']['decode']] = identifier
+      org = orgs[identifier['scopeId']]
+      result['identifiers'][org['type']['decode']] = org['name']
     for title in version['titles']:
       result['titles'][title['type']['decode']] = title['text']
     for design in version['studyDesigns']:
@@ -396,8 +398,8 @@ class USDMJson():
   
   def _document(self) -> dict:
     version = self._data['study']['versions'][0]
-    id = version['documentVersionId']
-    return next((x for x in self._data['study']['documentedBy']['versions'] if x['id'] == id), None)
+    id = version['documentVersionIds'][0]
+    return next((x for x in self._data['study']['documentedBy'][0]['versions'] if x['id'] == id), None)
 
   def _get_soup(self, text: str):
     try:

@@ -25,20 +25,22 @@ def sponsor_identifier(self: StudyVersion) -> StudyIdentifier:
   for x in self.studyIdentifiers:
     print(f"SPONSOR: {x}")
     if x.is_sponsor(self.organization_map()):
-      return x.studyIdentifier
-  return None
+      return x.text
+  return ''
 
 def sponsor_name(self: StudyVersion) -> str:
+  map = self.organization_map()
   for x in self.studyIdentifiers:
-    if x.is_sponsor(self.organization_map()):
-      return x.studyIdentifierScope.name
+    if x.is_sponsor(map):
+      return map[x.scopeId].name 
   return ''
 
 def nct_identifier(self: StudyVersion) -> StudyIdentifier:
-  for identifier in self.studyIdentifiers:
-    if identifier.studyIdentifierScope.name == 'ClinicalTrials.gov':
-      return identifier.studyIdentifier
-  return None
+  map = self.organization_map()
+  for x in self.studyIdentifiers:
+    if map[x.scopeId].name == 'ClinicalTrials.gov':
+      return x.text
+  return ''
 
 def protocol_date(self: StudyVersion) -> StudyIdentifier:
   for x in self.dateValues:
@@ -48,9 +50,9 @@ def protocol_date(self: StudyVersion) -> StudyIdentifier:
 
 def approval_date(self: StudyVersion) -> StudyIdentifier:
   for x in self.dateValues:
-    print(f"A: {x}")
+    #print(f"A: {x}")
     if x.type.decode == 'Sponsor Approval Date':
-      print(f"B: {x}")
+      #print(f"B: {x}")
       return x.dateValue
   return ''
 

@@ -111,13 +111,16 @@ class M11TitlePage():
       tmp_address = (' ').join([x.strip() for x in parts[1:]])
       results = await self._address_service.parser(tmp_address)
       application_logger.info(f"Address service result '{tmp_address}' returned {results}")
-      for result in results:
-        if result['label'] == 'country':
-          params['country'] = iso3166_decode(result['value'], self._iso, self._id_manager)
-        elif result['label'] == 'postcode':
-          params['postalCode'] = result['value']        
-        elif result['label'] in ['city', 'state']:
-          params[result['label']] = result['value']        
+      if 'error' in results:
+        application_logger.error(f"Error with address server: {results['error']}")
+      else:
+        for result in results:
+          if result['label'] == 'country':
+            params['country'] = iso3166_decode(result['value'], self._iso, self._id_manager)
+          elif result['label'] == 'postcode':
+            params['postalCode'] = result['value']        
+          elif result['label'] in ['city', 'state']:
+            params[result['label']] = result['value']        
     application_logger.info(f"Name and address result '{name}', '{params}'")
     return name, params
 
