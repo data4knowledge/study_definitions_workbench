@@ -23,7 +23,7 @@ def acronym(self: StudyVersion) -> str:
 
 def sponsor_identifier(self: StudyVersion) -> StudyIdentifier:
   for x in self.studyIdentifiers:
-    print(f"SPONSOR: {x}")
+    #print(f"SPONSOR: {x}")
     if x.is_sponsor(self.organization_map()):
       return x.text
   return ''

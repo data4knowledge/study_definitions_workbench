@@ -24,17 +24,16 @@ class ToFHIR():
     self._title_page = extra['title_page']
     self._miscellaneous = extra['miscellaneous']
     self._amendment = extra['amendment']
-    #print(f"EXTRA: {self._title_page}")
-    #print(f"EXTRA: {self._miscellaneous}")
     self._errors_and_logging = ErrorsAndLogging()
     self._cross_ref = CrossReference(study, self._errors_and_logging)
     self.study_version = study.versions[0]
     self.study_design = self.study_version.studyDesigns[0]
-    self.protocol_document_version = self.study.documentedBy.versions[0]
+    self.protocol_document_version = self.study.documentedBy[0].versions[0]
     self.doc_title = self._get_official_title()
 
   def _content_to_section(self, content: NarrativeContent) -> CompositionSection:
-    div = self._translate_references(content.text)
+    content_text = self._section_item(content)
+    div = self._translate_references(content_text)
     #text = self._add_section_heading(content, div)
     text = str(div)
     text = self._remove_line_feeds(text)
@@ -55,6 +54,9 @@ class ToFHIR():
         if child:
           section.section.append(child)
       return section
+
+  def _section_item(self, content: NarrativeContent) -> str:
+    return next((x.text for x in self.study_version.narrativeContentItems if x.id == content.contentItemId), '')
 
   def _format_section_title(self, title: str) -> str:
     return title.lower().strip().replace(' ', '-')

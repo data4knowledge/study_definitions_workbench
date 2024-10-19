@@ -1,7 +1,7 @@
 
 FHIR_VERSIONS = {
   '1': "Dallas 2024 connectathon",
-  '2': "Atlanta 2024 connectathon"
+#  '2': "Atlanta 2024 connectathon"
 }
 
 def check_fhir_version(version: str) -> tuple[bool, str]:

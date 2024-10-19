@@ -292,7 +292,7 @@ class USDMJson():
           # print(f"SECTION: {section}")
           heading, level = self._format_heading(section)
           text.append(heading)
-          text.append(section['text'])
+          text.append(self._section_item(section))
           section = self._find_narrative_content(document, section['nextId'])
           process = True if self._get_level(section) > top_level else False
     return ('').join(text) if section else default
