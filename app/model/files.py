@@ -100,7 +100,7 @@ class Files:
     exists = True
     if self.media_type[type]['use_original']:
       files = self._dir_files_by_extension(self.media_type[type]['extension'])
-      print(f"FILES: {files}")
+      #print(f"FILES: {files}")
       if len(files) == 1:
         filename = files[0]
         full_path = self._file_path(filename)

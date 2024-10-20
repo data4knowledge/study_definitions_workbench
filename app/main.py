@@ -140,7 +140,7 @@ def study_delete(request: Request, delete_studies: Annotated[str, Form()]=None, 
     study = Study.find(id, session)
     imports = study.file_imports(session)
     for im in imports:
-      print(f"IM: {im}, id={im[0]}, uuid={im[1]}")
+      #print(f"IM: {im}, id={im[0]}, uuid={im[1]}")
       files = Files(im[1])
       files.delete()
       x = FileImport.find(im[0], session)
@@ -278,12 +278,10 @@ async def import_status(request: Request, id: str, session: Session = Depends(ge
   data = FileImport.find(id, session)
   files = Files(data.uuid)
   fullpath, filename, exists = files.path('errors')
-  print(f"EXISTS: {exists}")
   if exists:
     return FileResponse(path=fullpath, filename=filename, media_type='text/plain')
   else:
-    data = {'error': 'Something went wrong downloading the errors file for the import'}
-    return templates.TemplateResponse("errors/error.html", {'request': request, 'user': user, 'data': data})
+    return templates.TemplateResponse("errors/error.html", {'request': request, 'user': user, 'data': {'error': 'Something went wrong downloading the errors file for the import'}})
 
 @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
@@ -432,10 +430,10 @@ async def export_fhir(request: Request, id: int, version: str, session: Session 
   valid, description = check_fhir_version(version)
   if valid:
     full_path, filename, media_type = usdm.fhir(version.upper())
-    if full_path == None:
-      return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"The study with id '{id}' was not found."}})
-    else:
+    if full_path:
       return FileResponse(path=full_path, filename=filename, media_type=media_type)
+    else:
+      return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"The study with id '{id}' was not found."}})
   else:
     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version export requested. Version requested was '{version}'."}})
 
@@ -451,23 +449,23 @@ async def version_transmit(request: Request, id: int, endpoint_id: int, version:
 
 @app.get('/versions/{id}/export/json', dependencies=[Depends(protect_endpoint)])
 async def export_json(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
   full_path, filename, media_type = usdm.json()
-  if full_path == None:
-    results = 'Not found'
-    return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
-  else:
+  if full_path:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
+  else:
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Error downloading the requested JSON file"}})
 
 @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
 async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
   full_path, filename, media_type = usdm.pdf()
-  if full_path == None:
-    results = 'Not found'
-    return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': results})
-  else:
+  if full_path:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
+  else:
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Error downloading the requested PDF file"}})
 
 @app.get("/versions/{id}/protocol", dependencies=[Depends(protect_endpoint)])
 async def protocol(request: Request, id: int, session: Session = Depends(get_db)):
