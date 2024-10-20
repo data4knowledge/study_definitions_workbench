@@ -50,6 +50,10 @@ class USDMJson():
     self._files.save('fhir_v2', data)
     return data
 
+  def json(self):
+    fullpath, filename = self._files.path('usdm')
+    return fullpath, filename, 'text/plain' 
+
   def pdf(self):
     usdm = USDMDb()
     usdm.from_json(self._data)

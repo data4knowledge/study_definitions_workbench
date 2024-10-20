@@ -436,6 +436,16 @@ async def version_transmit(request: Request, id: int, endpoint_id: int, version:
   else:
     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."}})
 
+@app.get('/versions/{id}/export/json', dependencies=[Depends(protect_endpoint)])
+async def export_json(request: Request, id: int, session: Session = Depends(get_db)):
+  usdm = USDMJson(id, session)
+  full_path, filename, media_type = usdm.json()
+  if full_path == None:
+    results = 'Not found'
+    return templates.TemplateResponse('errors/partials/errors.html', {"request": request, 'data': results})
+  else:
+    return FileResponse(path=full_path, filename=filename, media_type=media_type)
+
 @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
 async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
   usdm = USDMJson(id, session)
