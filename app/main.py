@@ -83,7 +83,7 @@ def protect_endpoint(request: Request) -> None:
 def user_details(request: Request, db):
   user_info = request.session['userinfo']
   user, present_in_db = User.check(user_info, db)
-  application_logger.info(f"User details {user}")
+  #application_logger.info(f"User details {user}")
   return user, present_in_db
 
 @app.websocket("/alerts/{user_id}")
