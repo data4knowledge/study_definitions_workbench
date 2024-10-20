@@ -51,14 +51,14 @@ class USDMJson():
     return data
 
   def json(self):
-    fullpath, filename = self._files.path('usdm')
+    fullpath, filename, exists = self._files.path('usdm')
     return fullpath, filename, 'text/plain' 
 
   def pdf(self):
     usdm = USDMDb()
     usdm.from_json(self._data)
     data = usdm.to_pdf()
-    fullpath, filename = self._files.save("protocol", data)
+    fullpath, filename, exists = self._files.save("protocol", data)
     return fullpath, filename, 'text/plain' 
 
   def wrapper(self) -> Wrapper:
@@ -450,12 +450,12 @@ class USDMJson():
     return {'enroll': int(enroll['maxValue']), 'complete': int(complete['maxValue'])} if enroll and complete else {'enroll': 0, 'complete': '0'}
 
   def _get_usdm(self):
-    fullpath, filename = self._files.path('usdm')
+    fullpath, filename, exists = self._files.path('usdm')
     data = open(fullpath)
     return json.load(data)
 
   def _get_extra(self):
-    fullpath, filename = self._files.path('extra')
+    fullpath, filename, exists = self._files.path('extra')
     data = open(fullpath)
     return yaml.load(data, Loader=yaml.FullLoader)
   

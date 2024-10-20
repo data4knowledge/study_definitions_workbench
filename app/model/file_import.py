@@ -1,8 +1,10 @@
-from typing import Optional
+import os
 import datetime
+from typing import Optional
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app.model.database_tables import FileImport as FileImportDB
+from d4kms_generic.logger import application_logger
 
 class FileImportBase(BaseModel):
   filepath: str
@@ -57,6 +59,8 @@ class FileImport(FileImportBase):
     data = session.query(FileImportDB).filter(FileImportDB.user_id == user_id).offset(skip).limit(size).all()
     results = []
     for db_item in data:
+      record = db_item.__dict__
+      record['filename'] = os.path.basename(record['filepath'])
       results.append(db_item.__dict__)
     result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
     return result

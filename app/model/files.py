@@ -97,16 +97,22 @@ class Files:
       return stream.read()
 
   def path(self, type):
+    exists = True
     if self.media_type[type]['use_original']:
       files = self._dir_files_by_extension(self.media_type[type]['extension'])
+      print(f"FILES: {files}")
       if len(files) == 1:
         filename = files[0]
+        full_path = self._file_path(filename)
       else:
         application_logger.error(f"Found multiple files for type '{type}' when forming path. Files = {files}")
         raise self.LogicError
     else:
       filename = self._form_filename(type)
-    return self._file_path(filename), filename
+      full_path = self._file_path(filename)
+      if not os.path.exists(full_path):
+        exists = False
+    return full_path, filename, exists
 
   def delete_all(self):
     try:

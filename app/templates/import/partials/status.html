@@ -8,21 +8,21 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">UUID</th>
           <th scope="col">Type</th>
           <th scope="col">Imported At</th>
-          <th scope="col">File Path</th>
+          <th scope="col">File Name</th>
           <th scope="col">Status</th>
+          <th scope="col">Errors</th>
         </tr>
       </thead>
       <tbody>
         {% for item in data['items']: %}
           <tr>
-            <td>{{item['uuid']}}</td> 
             <td>{{item['type']}}</td> 
             <td>{{item['created']}}</td> 
-            <td>{{item['filepath']}}</td>
+            <td>{{item['filename']}}</td>
             <td>{{item['status']}}</td>
+            <td><a href="/import/{{item['id']}}/errors">Error file</a></td>
           </tr>
         {% endfor %}
       </tbody>

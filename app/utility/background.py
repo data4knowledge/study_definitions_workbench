@@ -22,7 +22,7 @@ async def process_excel(uuid, user: User) -> None:
     # print("Background running")
     file_import = None
     files = Files(uuid)
-    full_path, filename = files.path('xlsx')
+    full_path, filename, exists = files.path('xlsx')
     file_import = FileImport.create(full_path, filename, 'Processing', 'XLSX', uuid, user.id, session)
     db = USDMDb()
     file_import.update_status('Saving', session)
@@ -49,7 +49,7 @@ async def process_word(uuid, user: User) -> None:
     session = SessionLocal()
     file_import = None
     files = Files(uuid)
-    full_path, filename = files.path('docx')
+    full_path, filename, exists = files.path('docx')
     file_import = FileImport.create(full_path, filename, 'Processing', 'DOCX', uuid, user.id, session)
     m11 = M11Protocol(full_path, SYSTEM_NAME, VERSION)
     await m11.process()
@@ -74,7 +74,7 @@ async def process_fhir_v1(uuid, user: User) -> None:
     session = SessionLocal()
     file_import = None
     files = Files(uuid)
-    full_path, filename = files.path('fhir')
+    full_path, filename, exists = files.path('fhir')
     file_import = FileImport.create(full_path, filename, 'Processing', 'FHIR V1', uuid, user.id, session)
     file_import.update_status('Saving', session)
     fhir = FromFHIRV1(uuid)

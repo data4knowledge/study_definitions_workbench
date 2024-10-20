@@ -45,11 +45,11 @@ app = FastAPI(
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, exc: Exception):
-  return templates.TemplateResponse("errors/error.html", {'request': request, 'data': {'error': f"{exc}"}})
+  RedirectResponse(f"/", status_code=303)
 
 @app.exception_handler(FindException)
 async def exception_callback(request: Request, exc: FindException):
-  return templates.TemplateResponse("errors/error.html", {'request': request, 'data': {'error': exc.msg}})
+  RedirectResponse(f"/", status_code=303)
 
 application_logger.set_level(application_logger.DEBUG)
 application_logger.info(f"Starting {SYSTEM_NAME}")
@@ -271,6 +271,19 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
   data = FileImport.page(page, size, user.id, session)
   pagination = Pagination(data, "/import/status/data") 
   return templates.TemplateResponse("import/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+
+@app.get('/import/{id}/errors', dependencies=[Depends(protect_endpoint)])
+async def import_status(request: Request, id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  data = FileImport.find(id, session)
+  files = Files(data.uuid)
+  fullpath, filename, exists = files.path('errors')
+  print(f"EXISTS: {exists}")
+  if exists:
+    return FileResponse(path=fullpath, filename=filename, media_type='text/plain')
+  else:
+    data = {'error': 'Something went wrong downloading the errors file for the import'}
+    return templates.TemplateResponse("errors/error.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
