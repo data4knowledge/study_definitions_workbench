@@ -2,10 +2,10 @@ import os
 from app.model import database_tables
 from app.model.database import engine
 from app.model.database_tables import Study as StudyDB, Version as VersionDB, FileImport as FileImportDB, Endpoint as EndpointDB
-from app.model.database_tables import UserEndpoint as UserEndpointDB, User as UserDB
+from app.model.database_tables import UserEndpoint as UserEndpointDB, User as UserDB, TransmissionTable as TransmissionDB
 from app.model.files import Files
 from sqlalchemy.orm import Session
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Table, MetaData
+#from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Table, MetaData
 from d4kms_generic.service_environment import ServiceEnvironment
 from d4kms_generic import application_logger
 
@@ -39,6 +39,7 @@ class DatabaseManager():
     self.session.query(FileImportDB).delete()
     self.session.query(EndpointDB).delete()
     self.session.query(UserEndpointDB).delete()
+    self.session.query(TransmissionDB).delete()
     self.session.commit()
     Files().delete_all()
 
