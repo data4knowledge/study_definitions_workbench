@@ -1,3 +1,7 @@
+**Release 0.20.0, 2024-10-21**
+
+- Fixes
+
 **Release 0.19.0, 2024-10-20**
 
 - Add in USDM 3.6 support
