@@ -361,11 +361,11 @@ class USDMJson():
   def _set_blinded_roles(self, id) -> dict:
     design = self._study_design(id)
     result = {}
-    if design['maskingRoles']:
-      for item in design['maskingRoles']:
-        result[item['role']['decode']] = item['role']['decode']
-    else:
-      result['[Blinded Roles]'] = '[Blinded Roles]'
+    # if design['maskingRoles']:
+    #   for item in design['maskingRoles']:
+    #     result[item['role']['decode']] = item['role']['decode']
+    # else:
+    #   result['[Blinded Roles]'] = '[Blinded Roles]'
     return result
 
   def _set_characteristics(self, id) -> dict:

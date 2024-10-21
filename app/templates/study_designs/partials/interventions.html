@@ -49,7 +49,14 @@
                 <p class="card-text"><small>{{admin['route']['standardCode']['decode']}}</small></p>
               </td>
               <td>
-                <p class="card-text"><small>{{admin['duration']['quantity']['value']}} {{admin['duration']['quantity']['unit']['standardCode']['decode']}}</small></p>
+                {% set quantity = admin['duration']['quantity'] %}
+                {% set value = quantity['value'] %}
+                {% set unit = quantity['unit'] %}
+                {% if unit %}
+                  <p class="card-text"><small>{{admin['duration']['quantity']['value']}} {{admin['duration']['quantity']['unit']['standardCode']['decode']}}</small></p>
+                {% else %}
+                  <p class="card-text"><small>{{admin['duration']['quantity']['value']}}</small></p>
+                {% endif %}
               </td>
             </tr>
           {% endfor %}
