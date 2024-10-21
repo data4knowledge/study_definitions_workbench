@@ -33,15 +33,16 @@ The following other environment varaibles are also required:
 Deploy to fly.io using the following:
 
 ```
-fly launch --no-deploy -c <fly_production.toml | fly_staging.toml> --ha=false
-fly secrets set -a <d4k-sdw | d4k-sdw-staging>  ..... all the secrets, space separated, on one line ....
-fly deploy -a <d4k-sdw | d4k-sdw-staging> -c <fly_production.toml | fly_staging.toml>
+fly launch --no-deploy -c <fly_production.toml | fly_staging.toml | ... > --ha=false
+fly secrets set -a <d4k-sdw | d4k-sdw-staging | ...>  ..... all the secrets, space separated, on one line ....
+fly deploy -c <fly_production.toml | fly_staging.toml | ... >
 ````
 
 Notes:
-- Note the option for production or staging applications.
+- Note the option for production, staging or other applications.
 - Run on one machine at the moment, sharing of file store is an issue as well as database. The ```-ha``` flag forces the use of a single machine. 
 - The ```-c``` flag forces the use of the correct configuration file.
+- Once deployed the -a d4k-sdw appplication name flag works
 
 Volumes:
 - A volumne is created as part of the deploy (from this bit in the ```.toml``` file)

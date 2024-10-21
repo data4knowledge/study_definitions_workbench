@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for d4k-sdw-training on 2024-10-20T19:31:34-07:00
+# fly.toml app configuration file generated for d4k-sdw-training on 2024-10-21T05:05:30-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -30,4 +30,3 @@ kill_timeout = '5s'
   memory = '4gb'
   cpu_kind = 'performance'
   cpus = 2
-
