@@ -4,6 +4,8 @@ def server_name() -> str:
   name = root_url()
   if 'staging' in name:
     return 'STAGING'
+  elif 'training' in name:
+    return 'TRAINING'
   elif 'd4k-sdw' in name:
     return 'PRODUCTION'
   elif 'localhost' in name:
