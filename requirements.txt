@@ -7,6 +7,6 @@ sqlalchemy==2.0.31
 alembic==1.13.2
 python-docx==1.1.2
 docx2txt==0.8
-usdm==0.51.0
+usdm==0.53.0
 pytest==8.2.2
-bs4==0.0.2
+beautifulsoup4==4.12.3
