@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for d4k-sdw-workshop on 2024-10-20T19:31:34-07:00
+# fly.toml app configuration file generated for d4k-sdw-training on 2024-10-20T19:31:34-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'd4k-sdw-workshop'
+app = 'd4k-sdw-training'
 primary_region = 'ams'
 kill_signal = 'SIGINT'
 kill_timeout = '5s'
@@ -15,8 +15,8 @@ kill_timeout = '5s'
   PORT = '8080'
 
 [[mounts]]
-  source = 'sdw_data_workshop'
-  destination = '/mnt/sdw_data_workshop'
+  source = 'sdw_data_training'
+  destination = '/mnt/sdw_data_training'
 
 [http_service]
   internal_port = 8080
@@ -27,6 +27,7 @@ kill_timeout = '5s'
   processes = ['app']
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
+  memory = '4gb'
+  cpu_kind = 'performance'
+  cpus = 2
+
