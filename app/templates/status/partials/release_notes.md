@@ -1,3 +1,7 @@
+**Release 0.19.0, 2024-10-20**
+
+- Add in USDM 3.6 support
+
 **Release 0.18.0, 2024-10-18**
 
 - First, simple, file picking support for precisionFDA
