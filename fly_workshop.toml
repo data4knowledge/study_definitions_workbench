@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for d4k-sdw on 2024-10-20T19:57:34-07:00
+# fly.toml app configuration file generated for d4k-sdw-workshop on 2024-10-20T19:31:34-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'd4k-sdw'
+app = 'd4k-sdw-workshop'
 primary_region = 'ams'
 kill_signal = 'SIGINT'
 kill_timeout = '5s'
@@ -15,8 +15,8 @@ kill_timeout = '5s'
   PORT = '8080'
 
 [[mounts]]
-  source = 'sdw_data'
-  destination = '/mnt/sdw_data'
+  source = 'sdw_data_workshop'
+  destination = '/mnt/sdw_data_workshop'
 
 [http_service]
   internal_port = 8080
