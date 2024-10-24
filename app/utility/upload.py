@@ -160,7 +160,7 @@ def _save_files(import_file: dict, type: str) -> str:
   saved_full_path, saved_filename = _save_file(files, import_file, type)
   return uuid
 
-def _save_file(files: Files, import_file: dict, type: str) -> tuple[str, str]:
+def _save_file(files: DataFiles, import_file: dict, type: str) -> tuple[str, str]:
   filename = import_file['filename']
   contents = import_file['contents']
   return files.save(type, contents, filename)

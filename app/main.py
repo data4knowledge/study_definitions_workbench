@@ -33,8 +33,8 @@ from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.file_handling.pfda.pfda import PFDA
 
-Files.clean_and_tidy()
-Files.check()
+DataFiles.clean_and_tidy()
+DataFiles.check()
 DBM.check()
 
 app = FastAPI(
