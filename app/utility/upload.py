@@ -2,8 +2,8 @@ import os
 import json
 from fastapi import File
 from starlette.datastructures import FormData
-from app.model.files import Files
-from app.model.pfda.pfda import PFDA
+from app.model.file_handling.data_files import DataFiles
+from app.model.file_handling.pfda.pfda import PFDA
 from d4kms_generic import application_logger
 from app.utility.background import process_excel, process_word, process_fhir_v1, run_background_task
 
@@ -49,7 +49,7 @@ async def get_xl_files(form: File):
   return import_file, image_files, messages
 
 def save_xl_files(import_file: dict, image_files: dict):
-  files = Files()
+  files = DataFiles()
   uuid = files.new()
   saved_full_path, saved_filename = _save_file(files, import_file, "xlsx")
   for image_file in image_files:
@@ -155,7 +155,7 @@ def save_fhir_files(import_file: dict):
   return _save_files(import_file, "fhir")
 
 def _save_files(import_file: dict, type: str) -> str:
-  files = Files()
+  files = DataFiles()
   uuid = files.new()
   saved_full_path, saved_filename = _save_file(files, import_file, type)
   return uuid

@@ -1,7 +1,7 @@
 import json
 import subprocess
 from d4kms_generic.logger import application_logger
-from app.model.pfda.pfda_files import PFDAFiles
+from app.model.file_handling.pfda.pfda_files import PFDAFiles
 
 class PFDA():
 

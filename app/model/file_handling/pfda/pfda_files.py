@@ -66,7 +66,7 @@ class PFDAFiles:
     return os.path.join(self.dir, self.DOWNLOAD_DIR, filename)
 
   def _dir_files_by_extension(self, extension):
-    dir = self._dir_files()
+    dir = self._dir_DataFiles()
     return [f for f in dir if self._extension(f) == extension]
 
   def _dir_files(self):

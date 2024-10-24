@@ -5,7 +5,7 @@ from app.model.database import SessionLocal
 from d4kms_generic import application_logger
 from usdm_db import USDMDb
 from usdm_db import USDMDb, Wrapper
-from app.model.files import Files
+from app.model.file_handling.data_files import DataFiles
 from app.model.file_import import FileImport
 from app.model.study import Study
 from app.model.user import User

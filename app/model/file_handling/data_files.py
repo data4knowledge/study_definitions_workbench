@@ -8,7 +8,7 @@ from uuid import uuid4
 from d4kms_generic import application_logger
 from d4kms_generic.service_environment import ServiceEnvironment
 
-class Files:
+class DataFiles:
   
   class LogicError(Exception):
     pass
@@ -227,7 +227,7 @@ class Files:
     return f"{self.media_type[type]['filename']}.{self.media_type[type]['extension']}"
 
   def _dir_files_by_extension(self, extension):
-    dir = self._dir_files()
+    dir = self._dir_DataFiles()
     return [f for f in dir if self._extension(f) == extension]
 
   def _dir_files(self):

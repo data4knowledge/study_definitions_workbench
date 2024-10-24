@@ -18,7 +18,7 @@ from fhir.resources.bundle import Bundle, BundleEntry
 from fhir.resources.composition import Composition, CompositionSection
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
 from app import SYSTEM_NAME, VERSION
-from app.model.files import Files
+from app.model.file_handling.data_files import DataFiles
 from app.model.fhir.fhir_title_page import FHIRTitlePage
 from d4kms_generic.logger import application_logger
 
