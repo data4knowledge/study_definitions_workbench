@@ -1,6 +1,7 @@
 from app.utility.environment import *
 
-def server_name() -> str:
+def server_name(request) -> str:
+  print(f"SERVER: {request.base_url}, {request.url.path}")
   name = root_url()
   if 'staging' in name:
     return 'STAGING'
