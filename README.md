@@ -69,6 +69,12 @@ Note the separate ```.toml``` configuration files. Be careful when launching, th
 
 # Docker
 
+## Login
+
+```
+docker login
+```
+
 ## Build & Run using Compose
 
 ```
