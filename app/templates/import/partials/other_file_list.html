@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for item in data %}
+      {% for item in data['files'] %}
         {% set is_folder = True if item['type'] == 'Folder' else False %}
         {% set x = item['uid'] %}
         {% if is_folder %}
@@ -39,7 +39,7 @@
       {% endfor %}
     </tbody>
   </table>
-  <form id='form' hx-post='/import/m11?source={{source}}' hx-target="#file_list_div" hx-swap="outerHTML">
+  <form id='form' hx-post="/import/m11?source={{data['source']}}" hx-target="#file_list_div" hx-swap="outerHTML">
     <input type="hidden" id="file_list_input" name="file_list_input">
     <button class="btn btn-outline-primary rounded-5">
       <i class="bi bi-upload pe-2"></i>Upload File(s)

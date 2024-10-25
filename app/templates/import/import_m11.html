@@ -8,9 +8,10 @@
 
 {% block main_content %}
   {% if data['pfda'] or data['os'] %}
+    {% set source = 'pfda' if data['pfda'] else 'os' %}
     <div class="mt-3 row row-cols-2">
       <div class="col">
-        {% with url="/import/m11/fileList", title="Import M11 Protocol", subtitle="Import for a M11 formatted '.docx' file", text="Select a single M11 file", disable=False, dir=data['dir'] %}
+        {% with url="/import/m11/fileList", title="Import M11 Protocol", subtitle="Import for a M11 formatted '.docx' file", text="Select a single M11 file", disable=False, dir=data['dir'], source=source %}
           {% include "import/partials/other_file_select.html" %}
         {% endwith %}
       </div>

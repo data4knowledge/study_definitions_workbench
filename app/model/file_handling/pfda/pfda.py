@@ -15,13 +15,13 @@ class PFDA():
       response = json.loads(result.stdout)
       if 'error' in response:
         application_logger.error(f"pFDA error: {response['error']}")
-        return False, [], response['error']
+        return False, {}, response['error']
       else:
         application_logger.info(f"pFDA file list response: {response}")
-        return True, response['files'], ''
+        return True, {'files': response['files'], 'source': 'pfda'}, ''
     except Exception as e:
       application_logger.exception(f"pFDA exception", e)
-      return False, [], f"Exception '{e}' raised, check the logs for more information"
+      return False, {}, f"Exception '{e}' raised, check the logs for more information"
 
   def download(self, uid: str):
     target = self._files.path()
