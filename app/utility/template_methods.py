@@ -1,8 +1,8 @@
 from app.utility.environment import *
 
 def server_name(request) -> str:
-  print(f"SERVER: {request.base_url}, {request.url.path}")
-  name = root_url()
+  application_logger.info(f"SERVER: {request.base_url}, {request.url.path}")
+  name = str(request.base_url)
   if 'staging' in name:
     return 'STAGING'
   elif 'training' in name:
@@ -11,7 +11,9 @@ def server_name(request) -> str:
     return 'PRODUCTION'
   elif 'localhost' in name:
     return 'DEVELOPMENT'
-  elif 'prism' in name:
+  elif '0.0.0.0' in name:
+    return 'DEVELOPMENT'
+  elif 'job-' in name:
     return 'PRISM'
   else:
     return name

@@ -1,5 +1,4 @@
 rm .env
-echo ROOT_URL="http://0.0.0.0:8000" >> .env
 echo SINGLE_USER=True >> .env
 echo FILE_PICKER="os" >> .env
 docker image pull data4knowledge/sdw:v0.18.1
