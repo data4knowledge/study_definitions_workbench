@@ -13,7 +13,7 @@ def server_name(request) -> str:
     return 'DEVELOPMENT'
   elif '0.0.0.0' in name:
     return 'DEVELOPMENT'
-  elif 'job-' in name:
+  elif 'dnanexus.cloud' in name:
     return 'PRISM'
   else:
     return name
