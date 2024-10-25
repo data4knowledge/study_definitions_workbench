@@ -209,7 +209,7 @@ def about(request: Request, dir: str = None, session: Session = Depends(get_db))
   picker = file_picker()
   valid, data, message = PFDA().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
   if valid:
-    return templates.TemplateResponse("import/partials/file_list.html", {'request': request, 'user': user, 'data': data})
+    return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
   else:
     application_logger.error(message)
     return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': {'error': message}})

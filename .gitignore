@@ -168,6 +168,7 @@ install_local_d4kms.sh
 # Mount for DB and data files
 mount/database/database.db
 mount/datafiles/*/
+mount/localfiles/*
 
 # Python test programs, prefix with 'test_'
 test_*.py

@@ -9,10 +9,15 @@ class LocalFiles:
     se = ServiceEnvironment()
     self.root = se.get("LOCALFILE_PATH")
 
-  def dir(self, dir):
+  def dir(self, path):
     try:
-      root, dirs, files = os.walk(dir)
-      return True, {'files': files, 'dirs': dirs}, ''
+      result = []
+      for item in os.listdir(path):
+        if os.path.isfile(os.path.join(path, item)):
+          result.append({'type': 'File', 'name': item, 'created_at': '', 'file_size': ''})
+        else:
+          result.append({'type': 'Folder', 'name': item, 'created_at': '', 'file_size': ''})
+      return True, result, ''
     except Exception as e:
       application_logger.exception(f"Exception listing local files dir '{dir}'", e)
       return False, {}, f"Exception '{e}' listing local files dir '{dir}'"

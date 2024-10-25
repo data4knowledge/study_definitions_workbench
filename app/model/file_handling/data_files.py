@@ -34,7 +34,7 @@ class DataFiles:
   def clean_and_tidy(cls):
     se = ServiceEnvironment()
     dir = se.get("MNT_PATH")
-    keep = [se.get("DATAFILE_PATH"), se.get("DATABASE_PATH")]
+    keep = [se.get("DATAFILE_PATH"), se.get("DATABASE_PATH"), se.get("LOCALFILE_PATH")]
     application_logger.info(f"Running clean and tidy on '{dir}'")
     try:
       for file in os.listdir(dir):
