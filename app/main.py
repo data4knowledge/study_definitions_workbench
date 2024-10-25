@@ -218,6 +218,7 @@ def about(request: Request, dir: str = None, session: Session = Depends(get_db))
 def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = file_picker()
+  data['dir'] = LocalFiles().root if data['os'] else ''
   return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
