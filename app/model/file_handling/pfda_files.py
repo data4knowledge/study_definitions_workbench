@@ -1,12 +1,9 @@
+import os
 import json
 import subprocess
 from d4kms_generic.logger import application_logger
-from app.model.file_handling.pfda.pfda_files import PFDAFiles
 
-class PFDA():
-
-  def __init__(self):
-    self._files = PFDAFiles()
+class PFDAFiles():
 
   def dir(self, dir):
     try:
@@ -31,6 +28,16 @@ class PFDA():
     #print(f"RESULT: {result}")
     application_logger.info(f"PFDA download: {result.stdout}")
     files = json.loads(result.stdout)
-    file_root, file_extension, contents = self._files.read(files['result'])
+    file_root, file_extension, contents = self._read(files['result'])
     return file_root, file_extension, contents
 
+  def _read(self, full_path):
+    #print(f"FULL_PATH: {full_path}")
+    head_tail = os.path.split(full_path)
+    stem, extension = self._stem_and_extension(head_tail[1])
+    with open(full_path, "rb") as stream:
+      return stem, extension, stream.read()
+
+  def _stem_and_extension(self, filename):
+    result = os.path.splitext(filename)
+    return result[0], result[1][1:]

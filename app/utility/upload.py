@@ -3,7 +3,8 @@ import json
 from fastapi import File
 from starlette.datastructures import FormData
 from app.model.file_handling.data_files import DataFiles
-from app.model.file_handling.pfda.pfda import PFDA
+from app.model.file_handling.pfda_files import PFDAFiles
+from app.model.file_handling.local_files import LocalFiles
 from d4kms_generic import application_logger
 from app.utility.background import process_excel, process_word, process_fhir_v1, run_background_task
 
@@ -101,7 +102,7 @@ async def get_m11_files_pfda(form: FormData):
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
     #print(f"FILE: {uid}")
-    pfda = PFDA()
+    pfda = PFDAFiles()
     file_root, file_extension, contents = pfda.download(uid)
     #print(f"FILE: {file_root}, {file_extension}")
     filename = f"{file_root}.{file_extension}"
@@ -119,16 +120,15 @@ async def get_m11_files_os(form: FormData):
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
     print(f"FILE: {uid}")
-    # pfda = PFDA()
-    # file_root, file_extension, contents = pfda.download(uid)
-    # #print(f"FILE: {file_root}, {file_extension}")
-    # filename = f"{file_root}.{file_extension}"
-    # if file_extension == 'docx':
-    #   messages.append(f"Word file '{filename}' accepted")
-    #   import_file = {'filename': filename, 'contents': contents}
-    #   application_logger.info(f"Processing upload file '{file_root}'")
-    # else:
-    #   messages.append(f"File '{filename}' was ignored, not .docx file")
+    local_files = LocalFiles()
+    file_root, file_extension, contents = local_files.download(uid)
+    filename = f"{file_root}.{file_extension}"
+    if file_extension == 'docx':
+      messages.append(f"Word file '{filename}' accepted")
+      import_file = {'filename': filename, 'contents': contents}
+      application_logger.info(f"Processing upload file '{file_root}'")
+    else:
+      messages.append(f"File '{filename}' was ignored, not .docx file")
   return import_file, messages
 
 def save_m11_files(import_file: dict):

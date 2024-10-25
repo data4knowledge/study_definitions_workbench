@@ -30,7 +30,7 @@ from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
-from app.model.file_handling.pfda.pfda import PFDA
+from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 
 DataFiles.clean_and_tidy()
@@ -207,7 +207,7 @@ def about(request: Request, session: Session = Depends(get_db)):
 def about(request: Request, dir: str = None, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   picker = file_picker()
-  valid, data, message = PFDA().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
+  valid, data, message = PFDAFiles().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
   if valid:
     return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
   else:
