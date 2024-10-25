@@ -35,6 +35,7 @@ from app.model.file_handling.local_files import LocalFiles
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
+LocalFiles.check()
 DBM.check()
 
 app = FastAPI(
@@ -71,7 +72,6 @@ templates.env.globals['fhir_version_description'] = fhir_version_description
 templates.env.globals['title_page_study_list_headings'] = title_page_study_list_headings
 
 single = single_user()
-application_logger.info(f'Single user mode: {single}')
 
 def protect_endpoint(request: Request) -> None:
   if single:

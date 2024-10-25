@@ -13,7 +13,6 @@ The following variables are required for authentication and the server. Note tha
 | AUTH0_CLIENT_ID | Auth0 client id |
 | AUTH0_CLIENT_SECRET | Auth0 client secret |
 | AUTH0_AUDIENCE | Auth0 audience key |
-| ROOT_URL | Set to the root URL of the server |
 
 The following other environment varaibles are also required:
 
@@ -23,6 +22,7 @@ The following other environment varaibles are also required:
 | DATABASE_PATH | The path where the DB will reside |
 | DATABASE_NAME | The name of the database file, 'production.db' for example |
 | DATAFILE_PATH | The path where the datafiles will reside |
+| LOCALFILE_PATH | The path to where local files will reside within the volume |
 | ADDRESS_SERVER_URL | URL for the address server |
 | SINGLE_USER | 'True' for single user environment, 'False' otherwise |
 

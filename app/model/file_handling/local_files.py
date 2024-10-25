@@ -11,6 +11,21 @@ class LocalFiles:
     se = ServiceEnvironment()
     self.root = se.get("LOCALFILE_PATH")
 
+  @classmethod
+  def check(cls):
+    se = ServiceEnvironment()
+    dir = se.get("LOCALFILE_PATH")
+    application_logger.info("Checking localfiles dir exists")
+    try:
+      os.mkdir(dir)
+      application_logger.info("Localfiles dir created")
+      return True
+    except FileExistsError as e:
+      application_logger.info("Localfiles dir exists")
+    except Exception as e:
+      application_logger.exception(f"Exception checking/creating localfiles dir '{dir}'", e)
+      return False
+    
   def dir(self, path):
     try:
       result = []
