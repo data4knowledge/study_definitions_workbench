@@ -15,6 +15,6 @@ def file_picker() -> dict:
   se = ServiceEnvironment()
   picker = se.get('FILE_PICKER')
   application_logger.info(f"File picker '{picker}'")
-  return {'os': picker.upper() == 'OS', 'pfda': picker.upper() == 'PFDA'} 
+  return {'browser': picker.upper() == 'BROWSER', 'os': picker.upper() == 'OS', 'pfda': picker.upper() == 'PFDA'} 
 
   

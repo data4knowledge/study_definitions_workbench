@@ -227,7 +227,7 @@ class DataFiles:
     return f"{self.media_type[type]['filename']}.{self.media_type[type]['extension']}"
 
   def _dir_files_by_extension(self, extension):
-    dir = self._dir_DataFiles()
+    dir = self._dir_files()
     return [f for f in dir if self._extension(f) == extension]
 
   def _dir_files(self):

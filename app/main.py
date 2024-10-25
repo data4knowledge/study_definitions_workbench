@@ -19,7 +19,6 @@ from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
-#from app.utility.fhir_transmit import fhir_transmit
 from app.utility.template_methods import *
 from app.utility.environment import single_user, file_picker
 from app.model.usdm_json import USDMJson
@@ -32,6 +31,7 @@ from app.model.exceptions import FindException
 from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.file_handling.pfda.pfda import PFDA
+from app.model.file_handling.local_files import LocalFiles
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
@@ -203,12 +203,13 @@ def about(request: Request, session: Session = Depends(get_db)):
   data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
-@app.get("/pfda", dependencies=[Depends(protect_endpoint)])
+@app.get("/flieList", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, dir: str = None, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  valid, data, message = PFDA().dir(dir)
+  picker = file_picker()
+  valid, data, message = PFDA().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
   if valid:
-    return templates.TemplateResponse("import/partials/pfda_file_list.html", {'request': request, 'user': user, 'data': data})
+    return templates.TemplateResponse("import/partials/file_list.html", {'request': request, 'user': user, 'data': data})
   else:
     application_logger.error(message)
     return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': {'error': message}})

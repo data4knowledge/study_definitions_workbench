@@ -56,11 +56,12 @@ def save_xl_files(import_file: dict, image_files: dict):
     saved_full_path, saved_filename = _save_file(files, image_file, "image")
   return uuid
 
-async def process_m11(request, templates, user, source='os'):
+async def process_m11(request, templates, user, source='browser'):
+  files_method = {'browser': get_m11_files, 'pfda': get_m11_files_pfda, 'os': get_m11_files_os}
   try:
     form = await request.form()
-    print(f"FORM: {type(form)}")
-    import_file, messages = await get_m11_files(form) if source == 'os' else await get_m11_files_pfda(form)
+    #print(f"FORM: {type(form)}")
+    import_file, messages = await files_method[source](form)
     if import_file:
       uuid = save_m11_files(import_file)
       if uuid:
@@ -110,6 +111,24 @@ async def get_m11_files_pfda(form: FormData):
       application_logger.info(f"Processing upload file '{file_root}'")
     else:
       messages.append(f"File '{filename}' was ignored, not .docx file")
+  return import_file, messages
+
+async def get_m11_files_os(form: FormData):
+  messages = []
+  import_file = None
+  data = form.getlist('file_list_input')
+  for uid in json.loads(data[0]):
+    print(f"FILE: {uid}")
+    # pfda = PFDA()
+    # file_root, file_extension, contents = pfda.download(uid)
+    # #print(f"FILE: {file_root}, {file_extension}")
+    # filename = f"{file_root}.{file_extension}"
+    # if file_extension == 'docx':
+    #   messages.append(f"Word file '{filename}' accepted")
+    #   import_file = {'filename': filename, 'contents': contents}
+    #   application_logger.info(f"Processing upload file '{file_root}'")
+    # else:
+    #   messages.append(f"File '{filename}' was ignored, not .docx file")
   return import_file, messages
 
 def save_m11_files(import_file: dict):

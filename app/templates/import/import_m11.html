@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block main_content %}
-  {% if data['pfda'] == True %}
+  {% if data['pfda'] or data['os'] %}
     <div class="mt-3 row row-cols-2">
       <div class="col">
         {% with url="/import/m11/pfda", title="Import M11 Protocol", subtitle="Import for a M11 formatted '.docx' file", text="Select a single M11 file", disable=False %}
