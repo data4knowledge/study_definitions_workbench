@@ -203,7 +203,7 @@ def about(request: Request, session: Session = Depends(get_db)):
   data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
-@app.get("/flieList", dependencies=[Depends(protect_endpoint)])
+@app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, dir: str = None, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   picker = file_picker()
