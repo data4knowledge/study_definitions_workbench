@@ -1,3 +1,7 @@
+**Release 0.21.0, 2024-10-25**
+
+- Further work to allow for execution within the precisionFDA environment
+
 **Release 0.20.0, 2024-10-21**
 
 - Fixes
