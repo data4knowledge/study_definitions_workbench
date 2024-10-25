@@ -20,7 +20,7 @@ class USDMJson():
     self.uuid = file_import.uuid
     self.type = file_import.type
     self.m11 = True if self.type == "DOCX" or self.type == "FHIR V1" else False
-    self._files = Files(file_import.uuid)
+    self._files = DataFiles(file_import.uuid)
     self._data = self._get_usdm()
     self._extra = self._get_extra()
 
