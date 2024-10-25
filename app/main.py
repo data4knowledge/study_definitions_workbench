@@ -241,14 +241,9 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': message}})
     
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
-async def import_m11(request: Request, session: Session = Depends(get_db)):
+async def import_m11(request: Request, source: str='browser', session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_m11(request, templates, user)
-
-@app.post('/import/m11/pfda', dependencies=[Depends(protect_endpoint)])
-async def import_m11_pfda(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  return await process_m11(request, templates, user, source='pfda')
+  return await process_m11(request, templates, user, source)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
 async def import_xl(request: Request, session: Session = Depends(get_db)):

@@ -20,7 +20,7 @@
     <div class="mt-3 row row-cols-2">
       <div class="col">
         {% with url="/import/xl", title="Import USDM Excel Definition", subtitle="Import for a USDM formatted '.xlsx' file and image files ('.png' or '.jpg')", text="Select a single Excel file and zero, one or more images files. ", disable=False %}
-          {% include "import/partials/file_select.html" %}
+          {% include "import/partials/browser_file_select.html" %}
         {% endwith %}
       </div>
     </div>
