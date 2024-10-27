@@ -46,7 +46,7 @@ class LocalFiles:
         else:
           dirs.append({'uid': item.path, 'type': 'Folder', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': ''})
       results = sorted(dirs, key=lambda d: d['name']) + sorted(files, key=lambda d: d['name'])
-      return True, {'files': results, 'dir': rel_dir, 'source': 'os'}, ''
+      return True, {'files': results, 'dir': rel_dir}, ''
     except Exception as e:
       application_logger.exception(f"Exception listing local files dir '{path}'", e)
       return False, {}, f"Exception '{e}' listing local files dir '{path}'"

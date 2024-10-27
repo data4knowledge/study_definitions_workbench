@@ -8,11 +8,12 @@ from app.model.file_handling.local_files import LocalFiles
 from d4kms_generic import application_logger
 from app.utility.background import process_excel, process_word, process_fhir_v1, run_background_task
 
-async def process_xl(request, templates, user):
+async def process_xl(request, templates, user, source='browser'):
+  files_method = {'browser': get_xl_files, 'pfda': None, 'os': get_xl_files_os}
   print(f"PROCESS XL")
   try:
     form = await request.form()
-    import_file, image_files, messages = await get_xl_files(form)
+    import_file, image_files, messages = await files_method[source](form)
     if import_file:
       uuid = save_xl_files(import_file, image_files)
       if uuid:
@@ -50,6 +51,29 @@ async def get_xl_files(form: File):
       application_logger.info(f"Processing upload file '{file_root}'")
     else:
       messages.append(f"File '{filename}' was ignored, not .xlsx or an image file")
+  return import_file, image_files, messages
+
+async def get_xl_files_os(form: File):
+  print(f"GET XL FILES OS")
+  messages = []
+  image_files = []
+  import_file = None
+  data = form.getlist('file_list_input')
+  for uid in json.loads(data[0]):
+    print(f"XL OS FILE: {uid}")
+    local_files = LocalFiles()
+    file_root, file_extension, contents = local_files.download(uid)
+    filename = f"{file_root}.{file_extension}"
+    if file_extension == 'xlsx':
+      messages.append(f"Excel file '{filename}' accepted")
+      import_file = {'filename': filename, 'contents': contents}
+      application_logger.info(f"Processing upload file '{file_root}'")
+    elif file_extension in ['.png', 'jpg', 'jpeg']:
+      messages.append(f"Image file '{filename}' accepted")
+      image_files.append({'filename': filename, 'contents': contents})
+      application_logger.info(f"Processing upload file '{file_root}'")
+    else:
+      messages.append(f"File '{filename}' was ignored, not .docx file")
   return import_file, image_files, messages
 
 def save_xl_files(import_file: dict, image_files: dict):
@@ -138,10 +162,11 @@ async def get_m11_files_os(form: FormData):
 def save_m11_files(import_file: dict):
   return _save_files(import_file, "docx")
 
-async def process_fhir(request, templates, user):
+async def process_fhir(request, templates, user, source='browser'):
+  files_method = {'browser': get_fhir_files, 'pfda': None, 'os': get_fhir_files_os}
   try:
     form = await request.form()
-    import_file, messages = await get_fhir_files(form)
+    import_file, messages = await files_method[source](form)
     if import_file:
       uuid = save_fhir_files(import_file)
       if uuid:
@@ -167,6 +192,24 @@ async def get_fhir_files(form: File):
     filename = v.filename
     contents = await v.read()
     file_root, file_extension = os.path.splitext(filename)
+    if file_extension == '.json':
+      messages.append(f"FHIR file '{filename}' accepted")
+      import_file = {'filename': filename, 'contents': contents}
+      application_logger.info(f"Processing upload file '{file_root}'")
+    else:
+      messages.append(f"File '{filename}' was ignored, not .json file")
+  return import_file, messages
+
+async def get_fhir_files_os(form: File):
+  messages = []
+  import_file = None
+  files = form.getlist('files')
+  data = form.getlist('file_list_input')
+  for uid in json.loads(data[0]):
+    print(f"XL OS FILE: {uid}")
+    local_files = LocalFiles()
+    file_root, file_extension, contents = local_files.download(uid)
+    filename = f"{file_root}.{file_extension}"
     if file_extension == '.json':
       messages.append(f"FHIR file '{filename}' accepted")
       import_file = {'filename': filename, 'contents': contents}

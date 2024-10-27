@@ -209,6 +209,8 @@ def about(request: Request, dir: str, url: str, session: Session = Depends(get_d
   picker = file_picker()
   valid, data, message = PFDAFiles().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
   data['url'] = url
+  data['source'] = picker['source']
+  print(f"DATA: {data}")
   if valid:
     return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
   else:
@@ -260,15 +262,15 @@ async def import_m11(request: Request, source: str='browser', session: Session =
   return await process_m11(request, templates, user, source)
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
-async def import_xl(request: Request, session: Session = Depends(get_db)):
+async def import_xl(request: Request, source: str='browser', session: Session = Depends(get_db)):
   print(f"IMPORT: XL")
   user, present_in_db = user_details(request, session)
-  return await process_xl(request, templates, user)
+  return await process_xl(request, templates, user, source)
 
 @app.post('/import/fhir', dependencies=[Depends(protect_endpoint)])
-async def import_fhir(request: Request, session: Session = Depends(get_db)):
+async def import_fhir(request: Request, source: str='browser', session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  return await process_fhir(request, templates, user)
+  return await process_fhir(request, templates, user, source)
 
 @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):

@@ -15,7 +15,7 @@ class PFDAFiles():
         return False, {}, response['error']
       else:
         application_logger.info(f"pFDA file list response: {response}")
-        return True, {'files': response['files'], 'source': 'pfda'}, ''
+        return True, {'files': response['files']}, ''
     except Exception as e:
       application_logger.exception(f"pFDA exception", e)
       return False, {}, f"Exception '{e}' raised, check the logs for more information"
