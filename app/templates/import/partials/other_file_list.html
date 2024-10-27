@@ -69,35 +69,45 @@
   var input = document.getElementById('file_list_input');
   var required_ext = document.getElementById("required_ext").value;
   var other_files = (document.getElementById("other_files").value === 'True');
+  var image_ext = ['jpeg', 'jpg', 'png']
   input.value = JSON.stringify([]);
-
+  
   function toggleSelect(x, value) {
-    // console.log("Other Files=" + document.getElementById("other_files").value + " ends=" + !value.endsWith(required_ext));
+    var ext = value.split('.').pop();
     var files = JSON.parse(input.value);
+    var ends_with = value.endsWith(required_ext);
+    var empty = files.length === 0;
+    var image = image_ext.includes(ext);
+    console.log("Value='" + value + "'");
+    console.log("Ext='" + required_ext + "'");
+    console.log("Other='" + other_files + "'");
+    console.log("Ends With='" + ends_with  + "'");
+    console.log("Empty='" + empty  + "'");
+    console.log("Files='" + files  + "'");
     if (files.includes(value)) {
       // console.log("Remove");
       files = files.filter(e => e !== value); 
       x.classList.toggle("table-success");
     } else {
-      // console.log("Add");
-      if (other_files && !value.endsWith(required_ext)) {
-        // console.log("1");
+      console.log("Add");
+      if (other_files && image) {
+        console.log("1");
         files.push(value);
         x.classList.toggle("table-success");
-      } else if (value.endsWith(required_ext) && files.length === 0) {
-        // console.log("2");
+      } else if (ends_with && empty) {
+        console.log("2");
         files.push(value);
         x.classList.toggle("table-success");
       } else if (other_files) {  
-        // console.log("3");
+        console.log("3");
         alert("Select a single '" + required_ext + "' file and additional image files only.")
       } else {
-        // console.log("4");
+        console.log("4");
         alert("Select a single '" + required_ext + "' file only.")
       }
     }
+    console.log("Files='" + files  + "'");
     input.value = JSON.stringify(files);
-    // console.log("Ext='" + required_ext + "', Other='" + other_files + "' f=" + files);
   }
 
 </script>

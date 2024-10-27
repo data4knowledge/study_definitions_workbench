@@ -225,6 +225,7 @@ def import_m11(request: Request, session: Session = Depends(get_db)):
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
+  print(f"IMPORT: XL")
   user, present_in_db = user_details(request, session)
   data = file_picker()
   data['dir'] = LocalFiles().root if data['os'] else ''
