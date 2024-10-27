@@ -168,7 +168,7 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
-  print(f"DATA SHOW: {data}")
+  #print(f"DATA SHOW: {data}")
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
