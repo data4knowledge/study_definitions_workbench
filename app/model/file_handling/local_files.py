@@ -1,7 +1,7 @@
 import os
 import datetime
 import math
-#from pathlib import Path
+from pathlib import Path
 from d4kms_generic import application_logger
 from d4kms_generic.service_environment import ServiceEnvironment
 
@@ -29,11 +29,18 @@ class LocalFiles:
   def dir(self, path):
     try:
       result = []
+      print(f"DIR: p='{path}', r='{self.root}'")
+      if not str(path).endswith(self.root):
+        print(f"SUB")
+        path_obj = Path(path)
+        parent_dir = str(path_obj.parent.absolute())
+        result.append({'uid': parent_dir, 'type': 'Folder', 'name': '..', 'path': str(parent_dir), 'created_at': '', 'file_size': ''})
       for item in os.scandir(path):
         ts = datetime.datetime.fromtimestamp(item.stat().st_atime)
         size = self._size_to_string(item.stat().st_size)
         if os.path.isfile(item.path):
-          result.append({'uid': item.path, 'type': 'File', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': size})
+          if not item.name.startswith('.'):
+            result.append({'uid': item.path, 'type': 'File', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': size})
         else:
           result.append({'uid': item.path, 'type': 'Folder', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': ''})
       return True, {'files': result, 'source': 'os'}, ''

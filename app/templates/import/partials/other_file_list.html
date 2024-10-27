@@ -1,3 +1,8 @@
+<style>
+  .table-fit {
+    width: 1px;
+  }
+</style>
 <div class="mt-3" id="file_list_div">
   <table class="table responsive table-striped mt-1">
     <thead>
@@ -17,13 +22,13 @@
         {% else %}
           <tr onclick="toggleSelect(this, '{{x}}');">
         {% endif %}  
-          <td>
+          <td class="table-fit text-center">
             {% if is_folder %}
-              <button type="button" class="btn btn-xs btn-outline-primary rounded-2" onclick="return confirm('Not implemented yet')">
+              <button type="button" class="btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
                 <i class="bi bi-folder"></i>
               </button>
             {% else %}
-              <i class="bi bi-file"></i>
+              <i style="color: #808080" class="bi bi-file-earmark"></i>
             {% endif %}
           </td>  
           <td>
