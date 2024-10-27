@@ -13,6 +13,7 @@ The following variables are required for authentication and the server. Note tha
 | AUTH0_CLIENT_ID | Auth0 client id |
 | AUTH0_CLIENT_SECRET | Auth0 client secret |
 | AUTH0_AUDIENCE | Auth0 audience key |
+| ROOT_URL | The server's base url |
 
 The following other environment varaibles are also required:
 
