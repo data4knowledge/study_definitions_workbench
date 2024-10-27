@@ -30,9 +30,8 @@ class LocalFiles:
     try:
       files = []
       dirs = []
-      print(f"DIR: p='{path}', r='{self.root}'")
+      #print(f"DIR: p='{path}', r='{self.root}'")
       if not str(path).endswith(self.root):
-        print(f"SUB")
         path_obj = Path(path)
         parent_dir = str(path_obj.parent.absolute())
         dirs.append({'uid': parent_dir, 'type': 'Folder', 'name': '..', 'path': str(parent_dir), 'created_at': '', 'file_size': ''})

@@ -16,6 +16,7 @@
     <tbody>
       {% for item in data['files'] %}
         {% set is_folder = True if item['type'] == 'Folder' else False %}
+        {% set is_parent = True if item['name'] == '..' else False %}
         {% set x = item['uid'] %}
         {% if is_folder %}
           <tr>
@@ -23,19 +24,25 @@
           <tr onclick="toggleSelect(this, '{{x}}');">
         {% endif %}  
           <td class="table-fit text-center">
-            {% if is_folder %}
+            {% if is_folder and is_parent%}
+              <button type="button" class="ps-0 pe-0 pt-0 pb-0 btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
+                .. 
+              </button>
+            {% elif is_folder %}
               <i style="color: #808080" class="bi bi-folder"></i>
             {% else %}
               <i style="color: #808080" class="bi bi-file-earmark"></i>
             {% endif %}
           </td>  
           <td>
-            {% if is_folder %}
+            {% if is_folder and is_parent%}
+              <i><small class="pb-5 text-muted">parent directory</small></i> 
+            {% elif is_folder %}
               <button type="button" class="ps-0 pe-0 pt-0 pb-0 btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
                 {{item['name']}}
               </button>
-              {% else %}
-              <p class="card-text">{{item['name']}}</p>
+            {% else %}
+               <p class="card-text">{{item['name']}}</p>
             {% endif %}
           </td>  
           <td>
