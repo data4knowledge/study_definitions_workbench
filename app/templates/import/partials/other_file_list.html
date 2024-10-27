@@ -24,15 +24,19 @@
         {% endif %}  
           <td class="table-fit text-center">
             {% if is_folder %}
-              <button type="button" class="btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
-                <i class="bi bi-folder"></i>
-              </button>
+              <i style="color: #808080" class="bi bi-folder"></i>
             {% else %}
               <i style="color: #808080" class="bi bi-file-earmark"></i>
             {% endif %}
           </td>  
           <td>
-            <p class="card-text">{{item['name']}}</p>
+            {% if is_folder %}
+              <button type="button" class="ps-0 pe-0 pt-0 pb-0 btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
+                {{item['name']}}
+              </button>
+              {% else %}
+              <p class="card-text">{{item['name']}}</p>
+            {% endif %}
           </td>  
           <td>
             <p class="card-text">{{item['created_at']}}</p>

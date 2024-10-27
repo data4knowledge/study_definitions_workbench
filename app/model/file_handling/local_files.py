@@ -28,25 +28,27 @@ class LocalFiles:
     
   def dir(self, path):
     try:
-      result = []
+      files = []
+      dirs = []
       print(f"DIR: p='{path}', r='{self.root}'")
       if not str(path).endswith(self.root):
         print(f"SUB")
         path_obj = Path(path)
         parent_dir = str(path_obj.parent.absolute())
-        result.append({'uid': parent_dir, 'type': 'Folder', 'name': '..', 'path': str(parent_dir), 'created_at': '', 'file_size': ''})
+        dirs.append({'uid': parent_dir, 'type': 'Folder', 'name': '..', 'path': str(parent_dir), 'created_at': '', 'file_size': ''})
       for item in os.scandir(path):
         ts = datetime.datetime.fromtimestamp(item.stat().st_atime)
         size = self._size_to_string(item.stat().st_size)
         if os.path.isfile(item.path):
           if not item.name.startswith('.'):
-            result.append({'uid': item.path, 'type': 'File', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': size})
+            files.append({'uid': item.path, 'type': 'File', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': size})
         else:
-          result.append({'uid': item.path, 'type': 'Folder', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': ''})
-      return True, {'files': result, 'source': 'os'}, ''
+          dirs.append({'uid': item.path, 'type': 'Folder', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': ''})
+      results = sorted(dirs, key=lambda d: d['name']) + sorted(files, key=lambda d: d['name'])
+      return True, {'files': results, 'source': 'os'}, ''
     except Exception as e:
-      application_logger.exception(f"Exception listing local files dir '{dir}'", e)
-      return False, {}, f"Exception '{e}' listing local files dir '{dir}'"
+      application_logger.exception(f"Exception listing local files dir '{path}'", e)
+      return False, {}, f"Exception '{e}' listing local files dir '{path}'"
 
   def download(self, path: str):
     application_logger.info(f"Local file download: {path}")
