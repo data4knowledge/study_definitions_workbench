@@ -38,7 +38,7 @@ class LocalFiles:
         parent_dir = str(path_obj.parent.absolute())
         dirs.append({'uid': parent_dir, 'type': 'Folder', 'name': '..', 'path': str(parent_dir), 'created_at': '', 'file_size': ''})
       for item in os.scandir(path):
-        ts = datetime.datetime.fromtimestamp(item.stat().st_atime)
+        ts = datetime.datetime.fromtimestamp(item.stat().st_atime).isoformat(sep=' ', timespec="seconds")
         size = self._size_to_string(item.stat().st_size)
         if os.path.isfile(item.path):
           if not item.name.startswith('.'):
