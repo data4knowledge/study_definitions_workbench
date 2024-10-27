@@ -5,6 +5,7 @@
 </style>
 <div class="mt-3" id="file_list_div">
   <p class="lead text-center">{{data['dir']}}</p>
+  <p class="lead text-center">{{data['url']}}</p>
   <table class="table responsive table-striped mt-1">
     <thead>
       <tr>
@@ -26,7 +27,7 @@
         {% endif %}  
           <td class="table-fit text-center">
             {% if is_folder and is_parent%}
-              <button type="button" class="ps-0 pe-0 pt-0 pb-0 btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
+              <button type="button" class="ps-0 pe-0 pt-0 pb-0 btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}&url={{data['url']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
                 .. 
               </button>
             {% elif is_folder %}
@@ -39,7 +40,7 @@
             {% if is_folder and is_parent%}
               <i><small class="text-muted">parent directory</small></i> 
             {% elif is_folder %}
-              <button type="button" class="ps-0 pe-0 pt-0 pb-0 btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
+              <button type="button" class="ps-0 pe-0 pt-0 pb-0 btn btn-xs btn-link" hx-get="/fileList?dir={{item['path']}}&url={{data['url']}}" hx-trigger="click" hx-target="#file_list_div" hx-swap="outerHTML">
                 {{item['name']}}
               </button>
             {% else %}
@@ -56,7 +57,7 @@
       {% endfor %}
     </tbody>
   </table>
-  <form id='form' hx-post="/import/m11?source={{data['source']}}" hx-target="#file_list_div" hx-swap="outerHTML">
+  <form id='form' hx-post="{{data['url']}}?source={{data['source']}}" hx-target="#file_list_div" hx-swap="outerHTML">
     <input type="hidden" id="file_list_input" name="file_list_input">
     <button class="btn btn-outline-primary rounded-5">
       <i class="bi bi-upload pe-2"></i>Upload File(s)

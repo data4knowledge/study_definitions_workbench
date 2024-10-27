@@ -9,6 +9,7 @@ from d4kms_generic import application_logger
 from app.utility.background import process_excel, process_word, process_fhir_v1, run_background_task
 
 async def process_xl(request, templates, user):
+  print(f"PROCESS XL")
   try:
     form = await request.form()
     import_file, image_files, messages = await get_xl_files(form)
@@ -29,11 +30,13 @@ async def process_xl(request, templates, user):
     return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information'], 'type': 'Excel'})  
 
 async def get_xl_files(form: File):
+  print(f"GET XL FILES")
   image_files = []
   messages = []
   import_file = None
   files = form.getlist('files')
   for v in files:
+    print(f"XL FILES: {v}")
     filename = v.filename
     contents = await v.read()
     file_root, file_extension = os.path.splitext(filename)
@@ -83,6 +86,7 @@ async def get_m11_files(form: FormData):
   import_file = None
   files = form.getlist('files')
   for v in files:
+    print(f"XL FILES: {v}")
     filename = v.filename
     contents = await v.read()
     file_root, file_extension = os.path.splitext(filename)
@@ -101,7 +105,7 @@ async def get_m11_files_pfda(form: FormData):
   #print(f"ITEMS: {form.getlist('file_list_input')}")
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
-    #print(f"FILE: {uid}")
+    print(f"M11 PFDA FILE: {uid}")
     pfda = PFDAFiles()
     file_root, file_extension, contents = pfda.download(uid)
     #print(f"FILE: {file_root}, {file_extension}")
@@ -119,7 +123,7 @@ async def get_m11_files_os(form: FormData):
   import_file = None
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
-    print(f"FILE: {uid}")
+    print(f"M11 OS FILE: {uid}")
     local_files = LocalFiles()
     file_root, file_extension, contents = local_files.download(uid)
     filename = f"{file_root}.{file_extension}"
@@ -159,6 +163,7 @@ async def get_fhir_files(form: File):
   import_file = None
   files = form.getlist('files')
   for v in files:
+    print(f"FHIR FILES: {v}")
     filename = v.filename
     contents = await v.read()
     file_root, file_extension = os.path.splitext(filename)

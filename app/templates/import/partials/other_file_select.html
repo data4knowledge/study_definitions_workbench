@@ -5,7 +5,7 @@
     <p>{{text}}</p>
     <input type="hidden" name="required_ext" id="required_ext" value="{{data['required_ext']}}">
     <input type="hidden" name="other_files" id="other_files" value="{{data['other_files']}}">  
-    <div class="mt-3" id="file_list_div" hx-get="/fileList?dir={{data['dir']}}" hx-trigger="load" hx-target="#file_list_div" hx-swap="outerHTML">
+    <div class="mt-3" id="file_list_div" hx-get="/fileList?dir={{data['dir']}}&url={{data['url']}}" hx-trigger="load" hx-target="#file_list_div" hx-swap="outerHTML">
       {% with %}
         {% include "shared/partials/spinner.html" %}
       {% endwith %}  

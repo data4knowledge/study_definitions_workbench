@@ -204,10 +204,11 @@ def about(request: Request, session: Session = Depends(get_db)):
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
-def about(request: Request, dir: str = None, session: Session = Depends(get_db)):
+def about(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   picker = file_picker()
   valid, data, message = PFDAFiles().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
+  data['url'] = url
   if valid:
     return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
   else:
@@ -221,6 +222,7 @@ def import_m11(request: Request, session: Session = Depends(get_db)):
   data['dir'] = LocalFiles().root if data['os'] else ''
   data['required_ext'] = 'docx'
   data['other_files'] = False
+  data['url'] = '/import/m11'
   return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
@@ -231,6 +233,7 @@ def import_xl(request: Request, session: Session = Depends(get_db)):
   data['dir'] = LocalFiles().root if data['os'] else ''
   data['required_ext'] = 'xlsx'
   data['other_files'] = True
+  data['url'] = '/import/xl'
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/fhir", dependencies=[Depends(protect_endpoint)])
@@ -244,6 +247,7 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
     data['dir'] = LocalFiles().root if data['os'] else ''
     data['required_ext'] = 'json'
     data['other_files'] = False
+    data['url'] = '/import/fhir'
     return templates.TemplateResponse("import/import_fhir.html", {'request': request, 'user': user, 'data': data})
   else:
     message = f"Invalid FHIR version '{version}'"
@@ -257,6 +261,7 @@ async def import_m11(request: Request, source: str='browser', session: Session =
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
 async def import_xl(request: Request, session: Session = Depends(get_db)):
+  print(f"IMPORT: XL")
   user, present_in_db = user_details(request, session)
   return await process_xl(request, templates, user)
 
