@@ -31,7 +31,7 @@ class LocalFiles:
       files = []
       dirs = []
       parts = path.split(self.root)
-      rel_dir = parts[-1] if parts[-1] else 'Root Directory'
+      rel_dir = parts[-1] if parts[-1] else '/'
       print(f"DIR: p='{path}', r='{self.root}' e={parts[-1]}")
       if not str(path).endswith(self.root):
         path_obj = Path(path)
@@ -41,7 +41,9 @@ class LocalFiles:
         ts = datetime.datetime.fromtimestamp(item.stat().st_atime).isoformat(sep=' ', timespec="seconds")
         size = self._size_to_string(item.stat().st_size)
         if os.path.isfile(item.path):
-          if not item.name.startswith('.'):
+          start_strings = ['.', '~$']
+          if not any(item.name.startswith(x) for x in start_strings):
+          #if not item.name.startswith('.'):
             files.append({'uid': item.path, 'type': 'File', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': size})
         else:
           dirs.append({'uid': item.path, 'type': 'Folder', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': ''})

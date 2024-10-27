@@ -210,7 +210,7 @@ def about(request: Request, dir: str, url: str, session: Session = Depends(get_d
   valid, data, message = PFDAFiles().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
   data['url'] = url
   data['source'] = picker['source']
-  print(f"DATA: {data}")
+  #print(f"DATA: {data}")
   if valid:
     return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
   else:
@@ -425,7 +425,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.analysis_sets(study_design_id)
-  ###print(f"ANALYSIS SETS DATA: {data}")
+  #print(f"ANALYSIS SETS DATA: {data}")
   return templates.TemplateResponse("study_designs/partials/analysis_sets.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/analysisObjective', dependencies=[Depends(protect_endpoint)])
