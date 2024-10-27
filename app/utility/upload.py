@@ -17,7 +17,6 @@ async def process_xl(request, templates, user, source='browser'):
     if import_file:
       uuid = save_xl_files(import_file, image_files)
       if uuid:
-        #background_tasks.add_task(process_excel, uuid, user, session)
         run_background_task(process_excel, uuid, user)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
@@ -37,7 +36,7 @@ async def get_xl_files(form: File):
   import_file = None
   files = form.getlist('files')
   for v in files:
-    print(f"XL FILES: {v}")
+    # print(f"XL FILES: {v}")
     filename = v.filename
     contents = await v.read()
     file_root, file_extension = os.path.splitext(filename)
@@ -60,7 +59,7 @@ async def get_xl_files_os(form: File):
   import_file = None
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
-    print(f"XL OS FILE: {uid}")
+    # print(f"XL OS FILE: {uid}")
     local_files = LocalFiles()
     file_root, file_extension, contents = local_files.download(uid)
     filename = f"{file_root}.{file_extension}"
@@ -110,7 +109,7 @@ async def get_m11_files(form: FormData):
   import_file = None
   files = form.getlist('files')
   for v in files:
-    print(f"XL FILES: {v}")
+    # print(f"XL FILES: {v}")
     filename = v.filename
     contents = await v.read()
     file_root, file_extension = os.path.splitext(filename)
@@ -129,7 +128,7 @@ async def get_m11_files_pfda(form: FormData):
   #print(f"ITEMS: {form.getlist('file_list_input')}")
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
-    print(f"M11 PFDA FILE: {uid}")
+    # print(f"M11 PFDA FILE: {uid}")
     pfda = PFDAFiles()
     file_root, file_extension, contents = pfda.download(uid)
     #print(f"FILE: {file_root}, {file_extension}")
@@ -147,7 +146,7 @@ async def get_m11_files_os(form: FormData):
   import_file = None
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
-    print(f"M11 OS FILE: {uid}")
+    # print(f"M11 OS FILE: {uid}")
     local_files = LocalFiles()
     file_root, file_extension, contents = local_files.download(uid)
     filename = f"{file_root}.{file_extension}"
@@ -170,7 +169,6 @@ async def process_fhir(request, templates, user, source='browser'):
     if import_file:
       uuid = save_fhir_files(import_file)
       if uuid:
-        #background_tasks.add_task(process_fhir_v1, uuid, user, session)
         run_background_task(process_fhir_v1, uuid, user)
         return templates.TemplateResponse('import/partials/upload_success.html', {"request": request, 'filename': import_file['filename'], 'messages': messages})  
       else:
@@ -188,7 +186,7 @@ async def get_fhir_files(form: File):
   import_file = None
   files = form.getlist('files')
   for v in files:
-    print(f"FHIR FILES: {v}")
+    #print(f"FHIR FILES: {v}")
     filename = v.filename
     contents = await v.read()
     file_root, file_extension = os.path.splitext(filename)
@@ -206,11 +204,11 @@ async def get_fhir_files_os(form: File):
   files = form.getlist('files')
   data = form.getlist('file_list_input')
   for uid in json.loads(data[0]):
-    print(f"XL OS FILE: {uid}")
+    # print(f"FHIR OS FILE: {uid}")
     local_files = LocalFiles()
     file_root, file_extension, contents = local_files.download(uid)
     filename = f"{file_root}.{file_extension}"
-    if file_extension == '.json':
+    if file_extension == 'json':
       messages.append(f"FHIR file '{filename}' accepted")
       import_file = {'filename': filename, 'contents': contents}
       application_logger.info(f"Processing upload file '{file_root}'")
