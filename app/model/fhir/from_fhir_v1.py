@@ -36,7 +36,7 @@ class FromFHIRV1():
     
   def to_usdm(self) -> str:
     try:
-      files = Files(self._uuid)
+      files = DataFiles(self._uuid)
       data = files.read('fhir')
       study = self._from_fhir(self._uuid, data)
       return Wrapper(study=study, usdmVersion=usdm_version, systemName=SYSTEM_NAME, systemVersion=VERSION).to_json()

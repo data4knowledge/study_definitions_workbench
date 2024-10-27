@@ -141,7 +141,7 @@ def study_delete(request: Request, delete_studies: Annotated[str, Form()]=None, 
     imports = study.file_imports(session)
     for im in imports:
       #print(f"IM: {im}, id={im[0]}, uuid={im[1]}")
-      files = Files(im[1])
+      files = DataFiles(im[1])
       files.delete()
       x = FileImport.find(im[0], session)
       x.delete(session)
@@ -289,7 +289,7 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
 async def import_status(request: Request, id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = FileImport.find(id, session)
-  files = Files(data.uuid)
+  files = DataFiles(data.uuid)
   fullpath, filename, exists = files.path('errors')
   if exists:
     return FileResponse(path=fullpath, filename=filename, media_type='text/plain')
