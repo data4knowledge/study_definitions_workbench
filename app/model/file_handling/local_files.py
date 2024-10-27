@@ -30,7 +30,9 @@ class LocalFiles:
     try:
       files = []
       dirs = []
-      #print(f"DIR: p='{path}', r='{self.root}'")
+      parts = path.split(self.root)
+      rel_dir = parts[-1] if parts[-1] else 'Root Directory'
+      print(f"DIR: p='{path}', r='{self.root}' e={parts[-1]}")
       if not str(path).endswith(self.root):
         path_obj = Path(path)
         parent_dir = str(path_obj.parent.absolute())
@@ -44,7 +46,7 @@ class LocalFiles:
         else:
           dirs.append({'uid': item.path, 'type': 'Folder', 'name': item.name, 'path': item.path, 'created_at': ts, 'file_size': ''})
       results = sorted(dirs, key=lambda d: d['name']) + sorted(files, key=lambda d: d['name'])
-      return True, {'files': results, 'source': 'os'}, ''
+      return True, {'files': results, 'dir': rel_dir, 'source': 'os'}, ''
     except Exception as e:
       application_logger.exception(f"Exception listing local files dir '{path}'", e)
       return False, {}, f"Exception '{e}' listing local files dir '{path}'"

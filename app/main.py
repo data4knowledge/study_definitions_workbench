@@ -219,12 +219,17 @@ def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = file_picker()
   data['dir'] = LocalFiles().root if data['os'] else ''
+  data['required_ext'] = 'docx'
+  data['other_files'] = False
   return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = file_picker()
+  data['dir'] = LocalFiles().root if data['os'] else ''
+  data['required_ext'] = 'xlsx'
+  data['other_files'] = True
   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/import/fhir", dependencies=[Depends(protect_endpoint)])
@@ -235,6 +240,9 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
     data = file_picker()
     data['version'] = version
     data['description'] = description
+    data['dir'] = LocalFiles().root if data['os'] else ''
+    data['required_ext'] = 'json'
+    data['other_files'] = False
     return templates.TemplateResponse("import/import_fhir.html", {'request': request, 'user': user, 'data': data})
   else:
     message = f"Invalid FHIR version '{version}'"
