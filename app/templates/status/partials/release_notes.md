@@ -1,3 +1,8 @@
+**Release 0.22.0, 2024-10-28**
+
+- Improvements to the file picking for a server / precisionFDA environment
+- Fix issues with ROOT_URL environment variable and deprecate
+
 **Release 0.21.0, 2024-10-25**
 
 - Further work to allow for execution within the precisionFDA environment
