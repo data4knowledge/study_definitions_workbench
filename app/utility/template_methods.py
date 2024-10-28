@@ -1,7 +1,7 @@
 from app.utility.environment import *
 
 def server_name(request) -> str:
-  application_logger.info(f"SERVER: {request.base_url}, {request.url.path}")
+  application_logger.info(f"Base URL used to obtain server name: '{request.base_url}'")
   name = str(request.base_url)
   if 'staging' in name:
     return 'STAGING'
