@@ -1,3 +1,9 @@
-<a class="nav-link text-info" href="/users/{{user.id}}/show">
-  <i class="bi bi-person me-1"></i>{{user.display_name}}
-</a>
+{% if user %}
+  <a class="nav-link text-info" href="/users/{{user.id}}/show">
+    <i class="bi bi-person me-1"></i>{{user.display_name}}
+  </a>
+{% else %}
+  <a class="nav-link text-info" href="/">
+    <i class="bi bi-person me-1"></i>Undefined User
+  </a>
+{% endif %}

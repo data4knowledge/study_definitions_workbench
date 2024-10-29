@@ -45,14 +45,12 @@ app = FastAPI(
 )
 
 @app.exception_handler(Exception)
-async def exception_callback(request: Request, exc: Exception):
-  print("Exception")
-  RedirectResponse(f"/", status_code=303)
+async def exception_callback(request: Request, e: Exception):
+  return templates.TemplateResponse('errors/error.html', {"request": request, 'user': None, 'data': {'error': f"An exception '{e}' was raised."}})
 
 @app.exception_handler(FindException)
-async def exception_callback(request: Request, exc: FindException):
-  print("Find Exception")
-  RedirectResponse(f"/", status_code=303)
+async def exception_callback(request: Request, e: FindException):
+  return templates.TemplateResponse('errors/error.html', {"request": request, 'user': None, 'data': {'error': f"A find exception '{e}' was raised."}})
 
 application_logger.set_level(application_logger.DEBUG)
 application_logger.info(f"Starting {SYSTEM_NAME}")
@@ -116,14 +114,13 @@ def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
-    #print(f"INDEX DATA: {data}")
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
-  else:
-    print(f"USER: {user}")
+  elif user:
     data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
-    #print(f"INDEX DATA: {data}")
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
+  else:
+    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': None, 'data': {'error': "Unable to determine user."}})
 
 @app.patch("/studies/{id}/select", dependencies=[Depends(protect_endpoint)])
 def study_select(request: Request, id: int, action: str, list_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):

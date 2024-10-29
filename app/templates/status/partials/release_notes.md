@@ -1,6 +1,7 @@
 **Release 0.23.0, 2024-10-29**
 
 - Fix issue with Github login
+- Ensure Google, Microsoft and Apple logins work
 
 **Release 0.22.0, 2024-10-28**
 
