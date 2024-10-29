@@ -1,3 +1,7 @@
+**Release 0.23.0, 2024-10-29**
+
+- Fix issue with Github login
+
 **Release 0.22.0, 2024-10-28**
 
 - Improvements to the file picking for a server / precisionFDA environment

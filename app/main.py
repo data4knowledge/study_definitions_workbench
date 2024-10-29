@@ -46,10 +46,12 @@ app = FastAPI(
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, exc: Exception):
+  print("Exception")
   RedirectResponse(f"/", status_code=303)
 
 @app.exception_handler(FindException)
 async def exception_callback(request: Request, exc: FindException):
+  print("Find Exception")
   RedirectResponse(f"/", status_code=303)
 
 application_logger.set_level(application_logger.DEBUG)
@@ -83,7 +85,7 @@ def protect_endpoint(request: Request) -> None:
 def user_details(request: Request, db):
   user_info = request.session['userinfo']
   user, present_in_db = User.check(user_info, db)
-  #application_logger.info(f"User details {user}")
+  print(f"User details {user_info} {user}")
   return user, present_in_db
 
 @app.websocket("/alerts/{user_id}")
@@ -118,6 +120,7 @@ def index(request: Request, session: Session = Depends(get_db)):
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
   else:
+    print(f"USER: {user}")
     data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
     #print(f"INDEX DATA: {data}")
     return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
