@@ -1,6 +1,7 @@
 import pytest
 from app.main import app
 from app.main import protect_endpoint
+from app.model.user import User
 from fastapi import FastAPI, Request
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
@@ -32,13 +33,52 @@ async def override_protect_endpoint(request: Request):
 
 app.dependency_overrides[protect_endpoint] = override_protect_endpoint
 
-def test_index(mocker):
+def test_index_no_user(mocker):
+  check = mock_user_check(mocker)
+  check.side_effect=[(None, False)]
+  response = client.get("/index")
+  assert response.status_code == 200
+  result = response.text
+  #print(f"RESULT: {result}")
+  expected = """Unable to determine user."""
+  assert expected in result
+
+def test_index_new_user(mocker):
+  check = mock_user_check(mocker)
+  check.side_effect=[(factory_user(), False)]
+  response = client.get("/index")
+  assert response.status_code == 200
+  result = response.text
+  expected = """Update Display Name"""
+  assert expected in result
+
+def test_index_existing_user_none(mocker):
+  check = mock_user_check(mocker)
+  check.side_effect=[(factory_user(), True)]
+  page = mock_study_page(mocker)
+  page.side_effect=[{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   response = client.get("/index")
   assert response.status_code == 200
   result = response.text
   expected = """You have not loaded any studies yet."""
   assert expected in result
 
-# def mock_protect_endpoint(mocker):
-#   mock = mocker.patch("app.main.protect_endpoint")
-#   mock.side_effect=[None]
+def test_index_existing_user_studies(mocker):
+  check = mock_user_check(mocker)
+  check.side_effect=[(factory_user(), True)]
+  page = mock_study_page(mocker)
+  page.side_effect=[{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [{}]}]
+  response = client.get("/index")
+  assert response.status_code == 200
+  result = response.text
+  expected = """View Protocol"""
+  assert expected in result
+
+def mock_user_check(mocker):
+  return mocker.patch("app.model.user.User.check")
+
+def mock_study_page(mocker):
+  return mocker.patch("app.model.study.Study.page")
+
+def factory_user() -> User:
+  return User(**{'identifier': 'FRED', 'email': "fred@example.com", 'display_name': "Fred Smith", 'is_active': True, 'id': 1})
