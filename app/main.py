@@ -71,10 +71,8 @@ templates.env.globals['single_multiple'] = single_multiple
 templates.env.globals['fhir_version_description'] = fhir_version_description
 templates.env.globals['title_page_study_list_headings'] = title_page_study_list_headings
 
-single = single_user()
-
 def protect_endpoint(request: Request) -> None:
-  if single:
+  if single_user():
     request.session['userinfo'] = {'email': '', 'sub': 'SUE|1234567890', 'nickname': 'Single User'}
     return None
   else:
@@ -97,12 +95,12 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
 
 @app.get("/")
 def home(request: Request):
-  response = templates.TemplateResponse('home/home.html', {'request': request, "version": VERSION})
+  response = templates.TemplateResponse(request, 'home/home.html', {"version": VERSION})
   return response
 
 @app.get("/login")
 async def login(request: Request):
-  if single:
+  if single_user():
     return RedirectResponse("/index")
   else:
     if not 'id_token' in request.session:  # it could be userinfo instead of id_token
@@ -115,12 +113,12 @@ def index(request: Request, session: Session = Depends(get_db)):
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
     pagination = Pagination(data, "/index") 
-    return templates.TemplateResponse("home/index.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+    return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
   elif user:
     data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
-    return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
+    return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
   else:
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': None, 'data': {'error': "Unable to determine user."}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': "Unable to determine user."}})
 
 @app.patch("/studies/{id}/select", dependencies=[Depends(protect_endpoint)])
 def study_select(request: Request, id: int, action: str, list_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):

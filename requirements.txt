@@ -9,4 +9,5 @@ python-docx==1.1.2
 docx2txt==0.8
 usdm==0.53.0
 pytest==8.2.2
+pytest-mock==3.14.0
 beautifulsoup4==4.12.3
