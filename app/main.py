@@ -121,13 +121,14 @@ def index(request: Request, session: Session = Depends(get_db)):
 
 @app.patch("/studies/{id}/select", dependencies=[Depends(protect_endpoint)])
 def study_select(request: Request, id: int, action: str, list_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):
+  # data = {}
   user, present_in_db = user_details(request, session)
   selected = True if action.upper() == 'SELECT' else False
   parts = list_studies.split(',') if list_studies else []
+  parts = [x.strip() for x in parts]
   parts.append(str(id)) if selected else parts.remove(str(id))
   data = {'study': Study.summary(id, session), 'selected': selected, 'selected_list': (',').join(parts)}
-  #print(f"DATA: {data}")
-  return templates.TemplateResponse("studies/partials/select.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "studies/partials/select.html", {'user': user, 'data': data})
 
 @app.post("/studies/delete", dependencies=[Depends(protect_endpoint)])
 def study_delete(request: Request, delete_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):

@@ -39,7 +39,6 @@ def test_index_no_user(mocker):
   response = client.get("/index")
   assert response.status_code == 200
   result = response.text
-  #print(f"RESULT: {result}")
   expected = """Unable to determine user."""
   assert expected in result
 
@@ -74,11 +73,46 @@ def test_index_existing_user_studies(mocker):
   expected = """View Protocol"""
   assert expected in result
 
+def test_study_select(mocker):
+  fake_user(mocker)
+  summary = mock_study_summary(mocker)
+  summary.side_effect=["Study Summary"]
+  response = client.patch(
+    "/studies/15/select?action=select", 
+    data={'list_studies': '1, 2'},
+    headers={'Content-Type': 'application/x-www-form-urlencoded'}
+  )
+  assert response.status_code == 200
+  result = response.text
+  expected = """<input type="hidden" name="list_studies" id="list_studies" value="1,2,15">"""
+  assert expected in result
+
+def test_study_deselect(mocker):
+  fake_user(mocker)
+  summary = mock_study_summary(mocker)
+  summary.side_effect=["Study Summary"]
+  response = client.patch(
+    "/studies/15/select?action=deselect", 
+    data={'list_studies': '1, 2,15'},
+    headers={'Content-Type': 'application/x-www-form-urlencoded'}
+  )
+  assert response.status_code == 200
+  result = response.text
+  expected = """<input type="hidden" name="list_studies" id="list_studies" value="1,2">"""
+  assert expected in result
+
+def fake_user(mocker):
+  check = mock_user_check(mocker)
+  check.side_effect=[(factory_user(), True)]
+
 def mock_user_check(mocker):
   return mocker.patch("app.model.user.User.check")
 
 def mock_study_page(mocker):
   return mocker.patch("app.model.study.Study.page")
+
+def mock_study_summary(mocker):
+  return mocker.patch("app.model.study.Study.summary")
 
 def factory_user() -> User:
   return User(**{'identifier': 'FRED', 'email': "fred@example.com", 'display_name': "Fred Smith", 'is_active': True, 'id': 1})
