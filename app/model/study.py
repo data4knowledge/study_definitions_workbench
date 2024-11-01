@@ -145,5 +145,5 @@ class Study(StudyBase):
 
   @staticmethod
   def _generate_name(filename: str) -> str:
-    return re.sub('[\W_]+', '', filename.upper())
+    return re.sub(r'[\W_]+', '', filename.upper())
   
