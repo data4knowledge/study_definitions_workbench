@@ -52,7 +52,7 @@ def test_index_new_user(mocker):
 def test_index_existing_user_none(mocker):
   mock_user_check_exists(mocker)
   page = mock_study_page(mocker)
-  page.side_effect=[{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+  page.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   response = client.get("/index")
   assert response.status_code == 200
   assert """You have not loaded any studies yet.""" in response.text
@@ -60,7 +60,7 @@ def test_index_existing_user_none(mocker):
 def test_index_existing_user_studies(mocker):
   mock_user_check_exists(mocker)
   page = mock_study_page(mocker)
-  page.side_effect=[{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [{}]}]
+  page.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [{}]}]
   response = client.get("/index")
   assert response.status_code == 200
   assert """View Protocol""" in response.text
@@ -68,7 +68,7 @@ def test_index_existing_user_studies(mocker):
 def test_study_select(mocker):
   mock_user_check_exists(mocker)
   summary = mock_study_summary(mocker)
-  summary.side_effect=["Study Summary"]
+  summary.side_effect = ["Study Summary"]
   response = client.patch(
     "/studies/15/select?action=select", 
     data={'list_studies': '1, 2'},
@@ -80,7 +80,7 @@ def test_study_select(mocker):
 def test_study_deselect(mocker):
   mock_user_check_exists(mocker)
   summary = mock_study_summary(mocker)
-  summary.side_effect=["Study Summary"]
+  summary.side_effect = ["Study Summary"]
   response = client.patch(
     "/studies/15/select?action=deselect", 
     data={'list_studies': '1, 2,15'},
@@ -92,17 +92,17 @@ def test_study_deselect(mocker):
 def test_study_delete(mocker):
   mock_user_check_exists(mocker)
   sf = mock_study_find(mocker)
-  sf.side_effect=[factory_study()]
+  sf.side_effect = [factory_study()]
   sfi = mock_study_file_imports(mocker)
-  sfi.side_effect=[[[12,'1234-5678']]]
+  sfi.side_effect = [[[12,'1234-5678']]]
   fif = mock_file_import_find(mocker)
-  fif.side_effect=[factory_file_import()]
+  fif.side_effect = [factory_file_import()]
   fid = mock_file_import_delete(mocker)
-  fid.side_effect=[1]
+  fid.side_effect = [1]
   dfd = mock_data_file_delete(mocker)
-  dfd.side_effect=[1]
+  dfd.side_effect = [1]
   sd = mock_study_delete(mocker)
-  sd.side_effect=[1]
+  sd.side_effect = [1]
   response = client.post(
     "/studies/delete", 
     data={'delete_studies': '1'},
@@ -118,11 +118,11 @@ def test_study_delete(mocker):
 def test_user_show(mocker):
   uf = mock_user_find(mocker)
   uep = mock_user_endpoints_page(mocker)
-  uep.side_effect=[{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+  uep.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   uv = mock_user_valid(mocker)
-  uv.side_effect=[{'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}]
+  uv.side_effect = [{'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}]
   ev = mock_endpoint_valid(mocker)
-  ev.side_effect=[{'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''},}]
+  ev.side_effect = [{'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''},}]
   response = client.get("/users/1/show")
   assert response.status_code == 200
   assert """Enter a new display name""" in response.text
@@ -131,7 +131,7 @@ def test_user_show(mocker):
 def test_user_update_display_name(mocker):
   uf = mock_user_find(mocker)
   uudn = mock_user_update_display_name(mocker)
-  uudn.side_effect=[(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
+  uudn.side_effect = [(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
   response = client.post(
     "/users/1/displayName",
     data={'name': 'Smithy'},
@@ -144,7 +144,7 @@ def test_user_update_display_name(mocker):
 def test_user_update_display_name_error(mocker):
   uf = mock_user_find(mocker)
   uudn = mock_user_update_display_name(mocker)
-  uudn.side_effect=[(None, {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
+  uudn.side_effect = [(None, {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
   response = client.post(
     "/users/1/displayName",
     data={'name': 'Smithy'},
@@ -157,7 +157,7 @@ def test_user_update_display_name_error(mocker):
 def test_user_endpoint(mocker):
   uf = mock_user_find(mocker)
   ec = mock_endpoint_create(mocker)
-  ec.side_effect=[(factory_endpoint(),  {'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''}})]
+  ec.side_effect = [(factory_endpoint(),  {'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''}})]
   uep = mock_user_endpoints_page(mocker)
   uep.side_effects=[{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   response = client.post(
@@ -190,36 +190,44 @@ def test_file_list_local(mocker):
   assert mock_called(fp)
   assert mock_called(lfd)
 
+def test_file_list_local_invalid(mocker, caplog):
+  uc = mock_user_check_exists(mocker)
+  fp = mock_file_picker_os(mocker)
+  lfd = mock_local_files_dir_error(mocker)
+  response = client.get("/fileList?dir=xxx&url=http://example.com")
+  assert response.status_code == 200
+  print(f"RESULT: {response.text}")
+  assert """Error Error Error!!!""" in response.text
+  assert mock_called(uc)
+  assert mock_called(fp)
+  assert mock_called(lfd)
+  assert error_logged(caplog, "Error Error Error!!!")
+
 def mock_file_picker_os(mocker):
   fp = mocker.patch("app.main.file_picker")
-  fp.side_effect=[{'browser': False, 'os': True, 'pfda': False, 'source': 'os'}]
+  fp.side_effect = [{'browser': False, 'os': True, 'pfda': False, 'source': 'os'}]
   return fp
 
 def mock_called(mock, count=1):
-  #print(f"MOCK COUNT: {mock.call_count}")
   return mock.call_count == count
 
 def mock_local_files_dir(mocker):
   lfd = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
   ts = datetime.datetime.now()
   files = [{'uid': 1234-5678, 'type': 'File', 'name': 'a-file.txt', 'path': 'xxx/a-file.txt', 'created_at': ts, 'file_size': '100 kb'}]
-  lfd.side_effect=[(True, {'files': files, 'dir': 'xxx'}, '')]
+  lfd.side_effect = [(True, {'files': files, 'dir': 'xxx'}, '')]
   return lfd
 
-# @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
-# def about(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   picker = file_picker()
-#   valid, data, message = PFDAFiles().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
-#   data['url'] = url
-#   data['source'] = picker['source']
-#   #print(f"DATA: {data}")
-#   if valid:
-#     return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
-#   else:
-#     application_logger.error(message)
-#     return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': {'error': message}})
+def mock_local_files_dir_error(mocker):
+  lfd = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
+  files = []
+  lfd.side_effect = [(False, {'files': files, 'dir': 'xxx'}, 'Error Error Error!!!')]
+  return lfd
 
+def error_logged(caplog, text):
+    correct_level = caplog.records[-1].levelname == "ERROR"
+    return text in caplog.records[-1].message and correct_level
+    
 # @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 # def import_m11(request: Request, session: Session = Depends(get_db)):
 #   user, present_in_db = user_details(request, session)
@@ -566,22 +574,22 @@ def mock_local_files_dir(mocker):
 
 def mock_user_check_exists(mocker):
   uc = mock_user_check(mocker)
-  uc.side_effect=[(factory_user(), True)]
+  uc.side_effect = [(factory_user(), True)]
   return uc
 
 def mock_user_check_new(mocker):
   uc = mock_user_check(mocker)
-  uc.side_effect=[(factory_user(), False)]
+  uc.side_effect = [(factory_user(), False)]
   return uc
 
 def mock_user_check_fail(mocker):
   uc = mock_user_check(mocker)
-  uc.side_effect=[(None, False)]
+  uc.side_effect = [(None, False)]
   return uc
 
 def mock_user_find(mocker):
   uf = mocker.patch("app.model.user.User.find")
-  uf.side_effect=[factory_user()]
+  uf.side_effect = [factory_user()]
   return uf
 
 def mock_user_check(mocker):
@@ -647,6 +655,6 @@ def factory_endpoint() -> FileImport:
 
 def mock_release_notes(mocker):
   rn = mocker.patch("d4kms_ui.ReleaseNotes.__init__")
-  rn.side_effect=[None]
+  rn.side_effect = [None]
   rnn = mocker.patch("d4kms_ui.ReleaseNotes.notes")
-  rnn.side_effect=['Release Notes Test Testy']
+  rnn.side_effect = ['Release Notes Test Testy']
