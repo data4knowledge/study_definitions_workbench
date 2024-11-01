@@ -96,7 +96,6 @@ def test_study_delete(mocker):
   sfi = mock_study_file_imports(mocker)
   sfi.side_effect = [[[12,'1234-5678']]]
   fif = mock_file_import_find(mocker)
-  fif.side_effect = [factory_file_import()]
   fid = mock_file_import_delete(mocker)
   fid.side_effect = [1]
   dfd = mock_data_file_delete(mocker)
@@ -219,16 +218,16 @@ def mock_local_files_dir(mocker):
   return lfd
 
 def mock_local_files_dir_error(mocker):
-  lfd = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
+  mock = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
   files = []
-  lfd.side_effect = [(False, {'files': files, 'dir': 'xxx'}, 'Error Error Error!!!')]
-  return lfd
+  mock.side_effect = [(False, {'files': files, 'dir': 'xxx'}, 'Error Error Error!!!')]
+  return mock
 
 def error_logged(caplog, text):
-    correct_level = caplog.records[-1].levelname == "ERROR"
-    return text in caplog.records[-1].message and correct_level
+  correct_level = caplog.records[-1].levelname == "ERROR"
+  return text in caplog.records[-1].message and correct_level
 
-def test_import_m11(mocker, caplog):
+def test_import_m11(mocker):
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   response = client.get("/import/m11")
@@ -238,51 +237,107 @@ def test_import_m11(mocker, caplog):
   assert mock_called(uc)
   assert mock_called(fp)
 
-def test_import_xl(mocker, caplog):
+def test_import_xl(mocker):
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   response = client.get("/import/xl")
   assert response.status_code == 200
-  print(f"RESULT: {response.text}")
   assert '<h4 class="card-title">Import USDM Excel Definition</h4>' in response.text
   assert '<p>Select a single Excel file and zero, one or more images files. </p>' in response.text
   assert mock_called(uc)
   assert mock_called(fp)
 
-# @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
-# async def import_m11(request: Request, source: str='browser', session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   return await process_m11(request, templates, user, source)
+@pytest.mark.anyio
+async def test_import_m11_execute(mocker):
+  uc = mock_user_check_exists(mocker)
+  pm11 = mock_process_m11(mocker)
+  response = await async_client.post("/import/m11")
+  assert response.status_code == 200
+  assert '<h1>Fake M11 Response</h1>' in response.text
+  assert mock_called(uc)
+  assert mock_called(pm11)
 
-# @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
-# async def import_xl(request: Request, source: str='browser', session: Session = Depends(get_db)):
-#   print(f"IMPORT: XL")
-#   user, present_in_db = user_details(request, session)
-#   return await process_xl(request, templates, user, source)
+def mock_process_m11(mocker):
+  mock = mocker.patch("app.main.process_m11")
+  mock.side_effect = ['<h1>Fake M11 Response</h1>']
+  return mock
 
-# @app.get('/import/status', dependencies=[Depends(protect_endpoint)])
-# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   data = {'page': page, 'size': size, 'filter': filter} 
-#   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'data': data})
+@pytest.mark.anyio
+async def test_import_xl_execute(mocker):
+  uc = mock_user_check_exists(mocker)
+  pxl = mock_process_xl(mocker)
+  response = await async_client.post("/import/xl")
+  assert response.status_code == 200
+  assert '<h1>Fake XL Response</h1>' in response.text
+  assert mock_called(uc)
+  assert mock_called(pxl)
 
-# @app.get('/import/status/data', dependencies=[Depends(protect_endpoint)])
-# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   data = FileImport.page(page, size, user.id, session)
-#   pagination = Pagination(data, "/import/status/data") 
-#   return templates.TemplateResponse("import/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+def mock_process_xl(mocker):
+  mock = mocker.patch("app.main.process_xl")
+  mock.side_effect = ['<h1>Fake XL Response</h1>']
+  return mock
 
-# @app.get('/import/{id}/errors', dependencies=[Depends(protect_endpoint)])
-# async def import_status(request: Request, id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   data = FileImport.find(id, session)
-#   files = DataFiles(data.uuid)
-#   fullpath, filename, exists = files.path('errors')
-#   if exists:
-#     return FileResponse(path=fullpath, filename=filename, media_type='text/plain')
-#   else:
-#     return templates.TemplateResponse("errors/error.html", {'request': request, 'user': user, 'data': {'error': 'Something went wrong downloading the errors file for the import'}})
+def test_import_status(mocker):
+  uc = mock_user_check_exists(mocker)
+  response = client.get("/import/status?page=1&size=10&filter=")
+  assert response.status_code == 200
+  print(f"RESULT: {response.text}")
+  assert '<h4 class="card-title">Import Status</h4>' in response.text
+  assert mock_called(uc)
+
+def test_import_status_data(mocker):
+  uc = mock_user_check_exists(mocker)
+  fip = mock_file_import_page(mocker)
+  response = client.get("/import/status/data?page=1&size=10&filter=")
+  assert response.status_code == 200
+  print(f"RESULT: {response.text}")
+  assert '<div id="data_div">' in response.text
+  assert '<th scope="col">Imported At</th>' in response.text
+  assert mock_called(uc)
+  assert mock_called(fip)
+
+def mock_file_import_page(mocker):
+  mock = mocker.patch("app.model.file_import.FileImport.page")
+  mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+  return mock
+
+def test_import_errors(mocker):
+  uc = mock_user_check_exists(mocker)
+  fif = mock_file_import_find(mocker)
+  dfp = mock_data_file_path(mocker)
+  response = client.get("/import/1/errors")
+  assert response.status_code == 200
+  assert 'Test File' in response.text
+  assert mock_called(uc)
+  assert mock_called(fif)
+  assert mock_called(dfp)
+
+def test_import_errors_error(mocker):
+  uc = mock_user_check_exists(mocker)
+  fif = mock_file_import_find(mocker)
+  dfp = mock_data_file_path_error(mocker)
+  response = client.get("/import/1/errors")
+  assert response.status_code == 200
+  assert '<p class="lead text-danger">Fatal Error</p>' in response.text
+  assert '<p>Something went wrong downloading the errors file for the import</p>' in response.text
+  assert mock_called(uc)
+  assert mock_called(fif)
+  assert mock_called(dfp)
+
+def mock_file_import_find(mocker):
+  mock = mocker.patch("app.model.file_import.FileImport.find")
+  mock.side_effect = [factory_file_import()]
+  return mock
+
+def mock_data_file_path(mocker):
+  mock = mocker.patch("app.model.file_handling.data_files.DataFiles.path")
+  mock.side_effect = [('tests/test_files/a.txt', 'a.txt', True)]
+  return mock
+
+def mock_data_file_path_error(mocker):
+  mock = mocker.patch("app.model.file_handling.data_files.DataFiles.path")
+  mock.side_effect = [('', '', False)]
+  return mock
 
 # @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 # async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
@@ -627,9 +682,6 @@ def mock_study_delete(mocker):
 
 def mock_delete(mocker):
   return mocker.patch("app.model.data_files.DataFiles.delete")
-
-def mock_file_import_find(mocker):
-  return mocker.patch("app.model.file_import.FileImport.find")
 
 def mock_file_import_delete(mocker):
   return mocker.patch("app.model.file_import.FileImport.delete")

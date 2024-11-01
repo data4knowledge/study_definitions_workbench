@@ -221,7 +221,6 @@ def import_m11(request: Request, session: Session = Depends(get_db)):
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
-  print(f"IMPORT: XL")
   user, present_in_db = user_details(request, session)
   data = file_picker()
   data['dir'] = LocalFiles().root if data['os'] else ''
@@ -255,7 +254,6 @@ async def import_m11(request: Request, source: str='browser', session: Session =
 
 @app.post('/import/xl', dependencies=[Depends(protect_endpoint)])
 async def import_xl(request: Request, source: str='browser', session: Session = Depends(get_db)):
-  print(f"IMPORT: XL")
   user, present_in_db = user_details(request, session)
   return await process_xl(request, templates, user, source)
 
@@ -271,14 +269,14 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
   return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'data': data})
 
 @app.get('/import/status/data', dependencies=[Depends(protect_endpoint)])
-async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+async def import_status_data(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = FileImport.page(page, size, user.id, session)
   pagination = Pagination(data, "/import/status/data") 
   return templates.TemplateResponse("import/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/import/{id}/errors', dependencies=[Depends(protect_endpoint)])
-async def import_status(request: Request, id: str, session: Session = Depends(get_db)):
+async def import_errors(request: Request, id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = FileImport.find(id, session)
   files = DataFiles(data.uuid)
