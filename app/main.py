@@ -1,6 +1,6 @@
 
 from typing import Annotated
-from fastapi import Form, Depends, FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import Form, Depends, FastAPI, Request, WebSocket, WebSocketDisconnect, status
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -46,11 +46,11 @@ app = FastAPI(
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, e: Exception):
-  return templates.TemplateResponse('errors/error.html', {"request": request, 'user': None, 'data': {'error': f"An exception '{e}' was raised."}})
+  return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': f"An exception '{e}' was raised."}})
 
 @app.exception_handler(FindException)
 async def exception_callback(request: Request, e: FindException):
-  return templates.TemplateResponse('errors/error.html', {"request": request, 'user': None, 'data': {'error': f"A find exception '{e}' was raised."}})
+  return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': f"A find exception '{e}' was raised."}})
 
 application_logger.set_level(application_logger.DEBUG)
 application_logger.info(f"Starting {SYSTEM_NAME}")
@@ -143,7 +143,7 @@ def study_delete(request: Request, delete_studies: Annotated[str, Form()]=None, 
       x = FileImport.find(im[0], session)
       x.delete(session)
     study.delete(session)
-  return RedirectResponse("/index", status_code=303)
+  return RedirectResponse("/index", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.get("/studies/list", dependencies=[Depends(protect_endpoint)])
 def study_list(request: Request, list_studies: str=None, session: Session = Depends(get_db)):
@@ -158,13 +158,13 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
     data.append(m11.__dict__)
   data = restructure_study_list(data)
   #print(f"STUDY LIST: {data}")
-  return templates.TemplateResponse("studies/list.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "studies/list.html", {'user': user, 'data': data})
 
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
-  return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
 def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
@@ -172,14 +172,14 @@ def user_display_name(request: Request, id: int, name: Annotated[str, Form()], s
   updated_user, validation = user.update_display_name(name, session)
   use_user = updated_user if updated_user else user
   data = {'validation': {'user': validation}}
-  return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': use_user, 'data': data})
+  return templates.TemplateResponse(request, f"users/partials/display_name.html", {'user': use_user, 'data': data})
   
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
 def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
   user = User.find(id, session)
   endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': validation}}
-  return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
 
 @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
 def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)):
@@ -187,14 +187,14 @@ def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session 
   endpoint = Endpoint.find(endpoint_id, session)
   endpoint.delete(user.id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': Endpoint.valid()}}
-  return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
 
 @app.get("/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   rn = ReleaseNotes(os.path.join(templates_path, 'status', 'partials'))
   data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
-  return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "about/about.html", {'user': user, 'data': data})
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
@@ -204,10 +204,10 @@ def file_list(request: Request, dir: str, url: str, session: Session = Depends(g
   data['url'] = url
   data['source'] = picker['source']
   if valid:
-    return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
+    return templates.TemplateResponse(request, "import/partials/other_file_list.html", {'user': user, 'data': data})
   else:
     application_logger.error(message)
-    return templates.TemplateResponse('errors/partials/error.html', {"request": request, 'data': {'error': message}})
+    return templates.TemplateResponse(request, 'errors/partials/error.html', {'data': {'error': message}})
 
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 def import_m11(request: Request, session: Session = Depends(get_db)):
@@ -217,7 +217,7 @@ def import_m11(request: Request, session: Session = Depends(get_db)):
   data['required_ext'] = 'docx'
   data['other_files'] = False
   data['url'] = '/import/m11'
-  return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "import/import_m11.html", {'user': user, 'data': data})
 
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
@@ -227,7 +227,7 @@ def import_xl(request: Request, session: Session = Depends(get_db)):
   data['required_ext'] = 'xlsx'
   data['other_files'] = True
   data['url'] = '/import/xl'
-  return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "import/import_xl.html", {'user': user, 'data': data})
 
 @app.get("/import/fhir", dependencies=[Depends(protect_endpoint)])
 def import_fhir(request: Request, version: str, session: Session = Depends(get_db)):
@@ -241,11 +241,11 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
     data['required_ext'] = 'json'
     data['other_files'] = False
     data['url'] = '/import/fhir'
-    return templates.TemplateResponse("import/import_fhir.html", {'request': request, 'user': user, 'data': data})
+    return templates.TemplateResponse(request, "import/import_fhir.html", {'user': user, 'data': data})
   else:
     message = f"Invalid FHIR version '{version}'"
     application_logger.error(message)
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': message}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': message}})
     
 @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 async def import_m11(request: Request, source: str='browser', session: Session = Depends(get_db)):
@@ -266,14 +266,14 @@ async def import_fhir(request: Request, source: str='browser', session: Session 
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = {'page': page, 'size': size, 'filter': filter} 
-  return templates.TemplateResponse("import/status.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "import/status.html", {'user': user, 'data': data})
 
 @app.get('/import/status/data', dependencies=[Depends(protect_endpoint)])
 async def import_status_data(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = FileImport.page(page, size, user.id, session)
   pagination = Pagination(data, "/import/status/data") 
-  return templates.TemplateResponse("import/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+  return templates.TemplateResponse(request, "import/partials/status.html", {'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/import/{id}/errors', dependencies=[Depends(protect_endpoint)])
 async def import_errors(request: Request, id: str, session: Session = Depends(get_db)):
@@ -284,7 +284,7 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
   if exists:
     return FileResponse(path=fullpath, filename=filename, media_type='text/plain')
   else:
-    return templates.TemplateResponse("errors/error.html", {'request': request, 'user': user, 'data': {'error': 'Something went wrong downloading the errors file for the import'}})
+    return templates.TemplateResponse(request, "errors/error.html", {'user': user, 'data': {'error': 'Something went wrong downloading the errors file for the import'}})
 
 @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
@@ -292,14 +292,14 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
   # data = Transmission.page(page, size, user.id, session)
   # pagination = Pagination(data, "/transmissions/status")
   data = {'page': page, 'size': size, 'filter': filter} 
-  return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "transmissions/status.html", {'user': user, 'data': data})
 
 @app.get('/transmissions/status/data', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = Transmission.page(page, size, user.id, session)
   pagination = Pagination(data, "/transmissions/status/data")
-  return templates.TemplateResponse("transmissions/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
+  return templates.TemplateResponse(request, "transmissions/partials/status.html", {'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
@@ -307,14 +307,14 @@ async def get_version_summary(request: Request, id: int, session: Session = Depe
   usdm = USDMJson(id, session)
   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
   #print(f"VERSION SUMMARY DATA: {data}")
-  return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_versions/summary.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
-  return templates.TemplateResponse("study_designs/summary.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/summary.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/overallParameters', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_o_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -322,7 +322,7 @@ async def get_study_design_o_parameters(request: Request, version_id: int, study
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_overall_parameters(study_design_id)
   #print(f"OVERALL SUMMARY DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/overall_parameters.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/overall_parameters.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/designParameters', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_d_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -330,7 +330,7 @@ async def get_study_design_d_parameters(request: Request, version_id: int, study
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_design_parameters(study_design_id)
   #print(f"DESIGN PARAMETERS DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/design_parameters.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/design_parameters.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/schema', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_schema(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -338,7 +338,7 @@ async def get_study_design_schema(request: Request, version_id: int, study_desig
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_schema(study_design_id)
   #print(f"SCHEMA DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/schema.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/schema.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/interventions', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_interventions(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -346,7 +346,7 @@ async def get_study_design_interventions(request: Request, version_id: int, stud
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_interventions(study_design_id)
   #print(f"INTERVENTION DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/interventions.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/interventions.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/estimands', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -354,7 +354,7 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   usdm = USDMJson(version_id, session)
   data = usdm.study_design_estimands(study_design_id)
   #print(f"ESTIMAND DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/estimands.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/estimands.html", {'user': user, 'data': data})
 
 @app.get('/versions/{id}/safety', dependencies=[Depends(protect_endpoint)])
 async def get_version_safety(request: Request, id: int, session: Session = Depends(get_db)):
@@ -362,14 +362,14 @@ async def get_version_safety(request: Request, id: int, session: Session = Depen
   usdm = USDMJson(id, session)
   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
   #print(f"VERSION SUMMARY DATA: {data}")
-  return templates.TemplateResponse("study_versions/safety.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_versions/safety.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/safety', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
-  return templates.TemplateResponse("study_designs/safety.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/safety.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/aeSpecialInterest', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -377,7 +377,7 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   usdm = USDMJson(version_id, session)
   data = usdm.adverse_events_special_interest(study_design_id)
   #print(f"AE SPECIAL INTEREST DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/ae_special_interest.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/ae_special_interest.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/safetyAssessments', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -385,7 +385,7 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   usdm = USDMJson(version_id, session)
   data = usdm.safety_assessments(study_design_id)
   #print(f"SAFETY ASSESSMENT DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/safety_assessments.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/safety_assessments.html", {'user': user, 'data': data})
 
 @app.get('/versions/{id}/statistics', dependencies=[Depends(protect_endpoint)])
 async def get_version_statistics(request: Request, id: int, session: Session = Depends(get_db)):
@@ -393,14 +393,14 @@ async def get_version_statistics(request: Request, id: int, session: Session = D
   usdm = USDMJson(id, session)
   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
   #print(f"VERSION SUMMARY DATA: {data}")
-  return templates.TemplateResponse("study_versions/statistics.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_versions/statistics.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/statistics', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
-  return templates.TemplateResponse("study_designs/statistics.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/statistics.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/sampleSize', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -408,7 +408,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   usdm = USDMJson(version_id, session)
   data = usdm.sample_size(study_design_id)
   #print(f"SAMPLE SIZE DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/sample_size.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/sample_size.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/analysisSets', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -416,7 +416,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   usdm = USDMJson(version_id, session)
   data = usdm.analysis_sets(study_design_id)
   #print(f"ANALYSIS SETS DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/analysis_sets.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/analysis_sets.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/analysisObjective', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
@@ -424,7 +424,7 @@ async def get_study_design_summary(request: Request, version_id: int, study_desi
   usdm = USDMJson(version_id, session)
   data = usdm.analysis_objectives(study_design_id)
   #print(f"ANALYSIS OBJECTIVES DATA: {data}")
-  return templates.TemplateResponse("study_designs/partials/analysis_objective.html", {'request': request, 'user': user, 'data': data})
+  return templates.TemplateResponse(request, "study_designs/partials/analysis_objective.html", {'user': user, 'data': data})
 
 @app.get('/versions/{id}/export/fhir', dependencies=[Depends(protect_endpoint)])
 async def export_fhir(request: Request, id: int, version: str, session: Session = Depends(get_db)):
@@ -436,9 +436,9 @@ async def export_fhir(request: Request, id: int, version: str, session: Session 
     if full_path:
       return FileResponse(path=full_path, filename=filename, media_type=media_type)
     else:
-      return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"The study with id '{id}' was not found."}})
+      return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"The study with id '{id}' was not found."}})
   else:
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version export requested. Version requested was '{version}'."}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Invalid FHIR M11 message version export requested. Version requested was '{version}'."}})
 
 @app.get('/versions/{id}/transmit/{endpoint_id}', dependencies=[Depends(protect_endpoint)])
 async def version_transmit(request: Request, id: int, endpoint_id: int, version: str, session: Session = Depends(get_db)):
@@ -448,7 +448,7 @@ async def version_transmit(request: Request, id: int, endpoint_id: int, version:
     run_fhir_transmit(id, endpoint_id, version, user)
     return RedirectResponse(f'/versions/{id}/summary')
   else:
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."}})
 
 @app.get('/versions/{id}/export/json', dependencies=[Depends(protect_endpoint)])
 async def export_json(request: Request, id: int, session: Session = Depends(get_db)):
@@ -458,7 +458,7 @@ async def export_json(request: Request, id: int, session: Session = Depends(get_
   if full_path:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
   else:
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Error downloading the requested JSON file"}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Error downloading the requested JSON file"}})
 
 @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
 async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
@@ -468,7 +468,7 @@ async def export_protocol(request: Request, id: int, session: Session = Depends(
   if full_path:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
   else:
-    return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Error downloading the requested PDF file"}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Error downloading the requested PDF file"}})
 
 @app.get("/versions/{id}/protocol", dependencies=[Depends(protect_endpoint)])
 async def protocol(request: Request, id: int, session: Session = Depends(get_db)):
@@ -476,7 +476,7 @@ async def protocol(request: Request, id: int, session: Session = Depends(get_db)
   usdm = USDMJson(id, session)
   data = {'version': usdm.study_version(), 'sections': usdm.protocol_sections(), 'section_list': usdm.protocol_sections_list()}
   #print(f"PROTOCOL SECTION: {data}")
-  response = templates.TemplateResponse('versions/protocol/show.html', {"request": request, "data": data, 'user': user})
+  response = templates.TemplateResponse(request, 'versions/protocol/show.html', {"data": data, 'user': user})
   return response
 
 @app.get("/versions/{id}/section/{section_id}", dependencies=[Depends(protect_endpoint)])
@@ -484,7 +484,7 @@ async def protocl_section(request: Request, id: int, section_id: str, session: S
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
   data = {'section': usdm.section(section_id)}
-  response = templates.TemplateResponse('versions/protocol//partials/section.html', {"request": request, "data": data })
+  response = templates.TemplateResponse(request, 'versions/protocol//partials/section.html', {"data": data })
   return response
 
 @app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
@@ -513,12 +513,12 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
     data['imports'] = json.dumps(FileImport.debug(session), indent=2)
     data['endpoints'] = json.dumps(Endpoint.debug(session), indent=2)
     data['user_endpoints'] = json.dumps(UserEndpoint.debug(session), indent=2)
-    response = templates.TemplateResponse('database/debug.html', {'request': request, 'user': user, 'data': data})
+    response = templates.TemplateResponse(request, 'database/debug.html', {'user': user, 'data': data})
     return response
   else:
     await connection_manager.error(f"Operation request denied", str(user.id))
     application_logger.error(f"User '{user.id}', '{user.email} attempted to debug the database!")
-    return RedirectResponse(f"/users/{user.id}/show", status_code=303)
+    return RedirectResponse(f"/users/{user.id}/show", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.patch("/debug", dependencies=[Depends(protect_endpoint)])
 async def debug_level(request: Request, level: str='INFO', session: Session = Depends(get_db)):
@@ -526,11 +526,11 @@ async def debug_level(request: Request, level: str='INFO', session: Session = De
   if user.email == "daveih1664dk@gmail.com" and level.upper() in ['DEBUG', 'INFO']:
     level = application_logger.DEBUG if level.upper() == 'DEBUG' else application_logger.INFO
     application_logger.set_level(level)
-    return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
+    return templates.TemplateResponse(request, 'users/partials/debug.html', {'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
   else:
     await connection_manager.error(f"Operation request denied", str(user.id))
     application_logger.error(f"User '{user.id}', '{user.email} attempted to change debug level!")
-    return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
+    return templates.TemplateResponse(request, 'users/partials/debug.html', {'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
 
 @app.get("/logout")
 def logout(request: Request):

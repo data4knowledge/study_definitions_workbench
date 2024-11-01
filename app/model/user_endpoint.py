@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 from app.model.database_tables import UserEndpoint as UserEndpointDB
 
@@ -10,8 +10,7 @@ class UserEndpointBase(BaseModel):
 class UserEndpoint(UserEndpointBase):
   id: int
 
-  class Config:
-    from_attributes = True
+  model_config = ConfigDict(from_attributes =True)
 
   @classmethod
   def debug(cls, session: Session) -> list[dict]:

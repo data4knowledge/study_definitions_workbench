@@ -1,6 +1,6 @@
 import re
 from typing import Optional
-from pydantic import BaseModel, HttpUrl, TypeAdapter
+from pydantic import BaseModel, HttpUrl, TypeAdapter, ConfigDict
 from sqlalchemy.orm import Session
 from app.model.database_tables import Endpoint as EndpointDB
 from app.model.database_tables import UserEndpoint as UserEndpointDB
@@ -16,8 +16,7 @@ class EndpointBase(BaseModel):
 class Endpoint(EndpointBase):
   id: int
 
-  class Config:
-    from_attributes = True
+  model_config = ConfigDict(from_attributes =True)
 
   @classmethod
   def create(cls, name: str, endpoint: str, type: str, user_id: int, session: Session) -> 'Endpoint':

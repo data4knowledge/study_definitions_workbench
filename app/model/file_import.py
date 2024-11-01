@@ -1,7 +1,7 @@
 import os
 import datetime
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 from app.model.database_tables import FileImport as FileImportDB
 from d4kms_generic.logger import application_logger
@@ -18,8 +18,7 @@ class FileImport(FileImportBase):
   user_id: int
   created: datetime.datetime
 
-  class Config:
-    from_attributes = True
+  model_config = ConfigDict(from_attributes =True)
 
   @classmethod
   def create(cls, fullpath: str, filename: str, status: str, type: str, uuid: str, user_id: int, session: Session) -> 'FileImport':

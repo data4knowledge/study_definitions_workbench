@@ -51,24 +51,39 @@ def test_index_new_user(mocker):
 
 def test_index_existing_user_none(mocker):
   mock_user_check_exists(mocker)
-  page = mock_study_page(mocker)
-  page.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+  sp = mock_study_page_none(mocker)
   response = client.get("/index")
   assert response.status_code == 200
   assert """You have not loaded any studies yet.""" in response.text
+  assert mock_called(sp)
+
+def mock_study_page_none(mocker):
+  mock = mocker.patch("app.model.study.Study.page")
+  mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+  return mock
 
 def test_index_existing_user_studies(mocker):
   mock_user_check_exists(mocker)
-  page = mock_study_page(mocker)
-  page.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [{}]}]
+  sp = mock_study_page(mocker)
   response = client.get("/index")
   assert response.status_code == 200
   assert """View Protocol""" in response.text
+  assert """A study for Z""" in response.text
+  assert mock_called(sp)
+
+def mock_study_page(mocker):
+  mock = mocker.patch("app.model.study.Study.page")
+  items = [
+    {'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"},
+    {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Y', 'versions': 2, 'phase': "Phase 1", 'import_type': "XLSX"},
+    {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Z', 'versions': 3, 'phase': "Phase 4", 'import_type': "FHIR"}
+  ]
+  mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': items}]
+  return mock
 
 def test_study_select(mocker):
   mock_user_check_exists(mocker)
-  summary = mock_study_summary(mocker)
-  summary.side_effect = ["Study Summary"]
+  ss = mock_study_summary(mocker)
   response = client.patch(
     "/studies/15/select?action=select", 
     data={'list_studies': '1, 2'},
@@ -76,6 +91,12 @@ def test_study_select(mocker):
   )
   assert response.status_code == 200
   assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2,15">""" in response.text
+  assert mock_called(ss)
+
+def mock_study_summary(mocker):
+  mock = mocker.patch("app.model.study.Study.summary")
+  mock.side_effect = ["Study Summary"]
+  return mock
 
 def test_study_deselect(mocker):
   mock_user_check_exists(mocker)
@@ -90,47 +111,102 @@ def test_study_deselect(mocker):
   assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2">""" in response.text
 
 def test_study_delete(mocker):
-  mock_user_check_exists(mocker)
+  #mock_user_check_exists(mocker)
   sf = mock_study_find(mocker)
-  sf.side_effect = [factory_study()]
   sfi = mock_study_file_imports(mocker)
-  sfi.side_effect = [[[12,'1234-5678']]]
+  dfd = mock_data_file_delete(mocker)
   fif = mock_file_import_find(mocker)
   fid = mock_file_import_delete(mocker)
-  fid.side_effect = [1]
-  dfd = mock_data_file_delete(mocker)
-  dfd.side_effect = [1]
   sd = mock_study_delete(mocker)
-  sd.side_effect = [1]
   response = client.post(
     "/studies/delete", 
     data={'delete_studies': '1'},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    headers={'Content-Type': 'application/x-www-form-urlencoded'},
+    follow_redirects=False
   )
-  #assert sf.call_count == 3
+  assert response.status_code == 303
+  #assert response.status_code == 200
+  assert str(response.next_request.url) == "http://testserver/index"
+  assert mock_called(sf)
   #sf.assert_has_calls([mocker.call('1'), mocker.call('2'), mocker.call('15')])
-  #assert sfi.call_count == 3
+  assert mock_called(sfi)
   #sfi.assert_has_calls([mocker.call('1'), mocker.call('2'), mocker.call('15')])
-  assert response.status_code == 307
-  assert str(response.next_request.url) == "http://test/index"
+  assert mock_called(fif)
+  assert mock_called(fid)
+  assert mock_called(dfd)
+  assert mock_called(sd)
+
+def mock_study_file_imports(mocker):
+  mock = mocker.patch("app.model.study.Study.file_imports")
+  mock.side_effect = [[[12,'1234-5678']]]
+  return mock
+
+def mock_study_delete(mocker):
+  mock = mocker.patch("app.model.study.Study.delete")
+  mock.side_effect = [1]
+  return mock
+
+def mock_file_import_delete(mocker):
+  mock = mocker.patch("app.model.file_import.FileImport.delete")
+  mock.side_effect = [1]
+  return mock
+
+def mock_data_file_delete(mocker):
+  mock = mocker.patch("app.model.file_handling.data_files.DataFiles.delete")
+  mock.side_effect = [1]
+  return mock
+
+# @app.post("/studies/delete", dependencies=[Depends(protect_endpoint)])
+# def study_delete(request: Request, delete_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):
+#   #user, present_in_db = user_details(request, session)
+#   parts = delete_studies.split(',') if delete_studies else []
+#   for id in parts:
+#     study = Study.find(id, session)
+#     imports = study.file_imports(session)
+#     for im in imports:
+#       files = DataFiles(im[1])
+#       files.delete()
+#       x = FileImport.find(im[0], session)
+#       x.delete(session)
+#     study.delete(session)
+#   return RedirectResponse("/index", status_code=303)
+
+def mock_study_find(mocker):
+  mock = mocker.patch("app.model.study.Study.find")
+  mock.side_effect = [factory_study()]
+  return mock
 
 def test_user_show(mocker):
   uf = mock_user_find(mocker)
   uep = mock_user_endpoints_page(mocker)
-  uep.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   uv = mock_user_valid(mocker)
-  uv.side_effect = [{'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}]
   ev = mock_endpoint_valid(mocker)
-  ev.side_effect = [{'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''},}]
   response = client.get("/users/1/show")
   assert response.status_code == 200
   assert """Enter a new display name""" in response.text
   assert mock_called(uf)
+  assert mock_called(uv)
+  assert mock_called(uep)
+  assert mock_called(ev)
+
+def mock_user_endpoints_page(mocker):
+  mock = mocker.patch("app.model.user.User.endpoints_page")
+  mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+  return mock
+
+def mock_user_valid(mocker):
+  mock = mocker.patch("app.model.user.User.valid")
+  mock.side_effect = [{'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}]
+  return mock
+
+def mock_endpoint_valid(mocker):
+  mock = mocker.patch("app.model.endpoint.Endpoint.valid")
+  mock.side_effect = [{'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''},}]
+  return mock
 
 def test_user_update_display_name(mocker):
   uf = mock_user_find(mocker)
   uudn = mock_user_update_display_name(mocker)
-  uudn.side_effect = [(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
   response = client.post(
     "/users/1/displayName",
     data={'name': 'Smithy'},
@@ -139,6 +215,12 @@ def test_user_update_display_name(mocker):
   assert response.status_code == 200
   assert """Fred Smithy""" in response.text
   assert mock_called(uf)
+  assert mock_called(uudn)
+
+def mock_user_update_display_name(mocker):
+  mock = mocker.patch("app.model.user.User.update_display_name")
+  mock.side_effect = [(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
+  return mock
 
 def test_user_update_display_name_error(mocker):
   uf = mock_user_find(mocker)
@@ -156,7 +238,6 @@ def test_user_update_display_name_error(mocker):
 def test_user_endpoint(mocker):
   uf = mock_user_find(mocker)
   ec = mock_endpoint_create(mocker)
-  ec.side_effect = [(factory_endpoint(),  {'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''}})]
   uep = mock_user_endpoints_page(mocker)
   uep.side_effects=[{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   response = client.post(
@@ -167,6 +248,12 @@ def test_user_endpoint(mocker):
   assert response.status_code == 200
   assert """Enter a name for the server""" in response.text
   assert mock_called(uf)
+  assert mock_called(ec)
+
+def mock_endpoint_create(mocker):
+  mock = mocker.patch("app.model.endpoint.Endpoint.create")
+  mock.side_effect = [(factory_endpoint(),  {'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''}})]
+  return mock
 
 def test_about(mocker):
   uc = mock_user_check_exists(mocker)
@@ -650,44 +737,11 @@ def mock_user_find(mocker):
 def mock_user_check(mocker):
   return mocker.patch("app.model.user.User.check")
 
-def mock_user_endpoints_page(mocker):
-  return mocker.patch("app.model.user.User.endpoints_page")
-
-def mock_user_valid(mocker):
-  return mocker.patch("app.model.user.User.valid")
-
-def mock_user_update_display_name(mocker):
-  return mocker.patch("app.model.user.User.update_display_name")
-
-def mock_endpoint_create(mocker):
-  return mocker.patch("app.model.endpoint.Endpoint.create")
-
-def mock_endpoint_valid(mocker):
-  return mocker.patch("app.model.endpoint.Endpoint.valid")
-
-def mock_study_find(mocker):
-  return mocker.patch("app.model.study.Study.find")
-
-def mock_study_file_imports(mocker):
-  return mocker.patch("app.model.study.Study.file_imports")
-
-def mock_study_page(mocker):
-  return mocker.patch("app.model.study.Study.page")
-
-def mock_study_summary(mocker):
-  return mocker.patch("app.model.study.Study.summary")
-
-def mock_study_delete(mocker):
-  return mocker.patch("app.model.study.Study.delete")
-
-def mock_delete(mocker):
-  return mocker.patch("app.model.data_files.DataFiles.delete")
-
-def mock_file_import_delete(mocker):
-  return mocker.patch("app.model.file_import.FileImport.delete")
-
-def mock_data_file_delete(mocker):
-  return mocker.patch("app.model.file_handling.data_files.DataFiles.delete")
+def mock_release_notes(mocker):
+  rn = mocker.patch("d4kms_ui.ReleaseNotes.__init__")
+  rn.side_effect = [None]
+  rnn = mocker.patch("d4kms_ui.ReleaseNotes.notes")
+  rnn.side_effect = ['Release Notes Test Testy']
 
 def factory_user() -> User:
   return User(**{'identifier': 'FRED', 'email': "fred@example.com", 'display_name': "Fred Smith", 'is_active': True, 'id': 1})
@@ -704,9 +758,3 @@ def factory_file_import() -> FileImport:
 
 def factory_endpoint() -> FileImport:
   return Endpoint(**{'name': 'Endpoint One', 'endpoint': 'http://example.com', 'type': "XXX", 'id': 1})
-
-def mock_release_notes(mocker):
-  rn = mocker.patch("d4kms_ui.ReleaseNotes.__init__")
-  rn.side_effect = [None]
-  rnn = mocker.patch("d4kms_ui.ReleaseNotes.notes")
-  rnn.side_effect = ['Release Notes Test Testy']

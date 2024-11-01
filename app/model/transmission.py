@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from app.model.database_tables import TransmissionTable
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
@@ -12,8 +12,7 @@ class Transmission(TransmissionBase):
   id: int
   user_id: int
 
-  class Config:
-    from_attributes = True
+  model_config = ConfigDict(from_attributes =True)
 
   @classmethod
   def create(cls, version: int, study: str, status: str, user_id: int, session: Session) -> 'Transmission':

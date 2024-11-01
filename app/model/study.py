@@ -1,7 +1,7 @@
 import re
 from sqlalchemy import text
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from app.model.database_tables import Study as StudyDB, Version as VersionDB
 from app.model.version import Version
 from app.model.user import User
@@ -24,8 +24,7 @@ class Study(StudyBase):
   id: int
   user_id: int
   
-  class Config:
-    from_attributes = True
+  model_config = ConfigDict(from_attributes =True)
 
   @classmethod
   def create(cls, name: str, title: str, phase: str, sponsor: str, sponsor_identifier: str, nct_identifier: str, session: Session) -> 'Study':

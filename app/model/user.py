@@ -1,5 +1,5 @@
 import re 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from app.model.database_tables import User as UserDB
 from app.model.exceptions import FindException
 from sqlalchemy.orm import Session
@@ -17,8 +17,7 @@ class UserCreate(UserBase):
 class User(UserBase):
   id: int
   
-  class Config:
-    from_attributes = True
+  model_config = ConfigDict(from_attributes =True)
 
   @classmethod
   def create(cls, identifier: str, email: str, display_name: str, session: Session) -> 'User':
