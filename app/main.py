@@ -132,19 +132,17 @@ def study_select(request: Request, id: int, action: str, list_studies: Annotated
 
 @app.post("/studies/delete", dependencies=[Depends(protect_endpoint)])
 def study_delete(request: Request, delete_studies: Annotated[str, Form()]=None, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
+  #user, present_in_db = user_details(request, session)
   parts = delete_studies.split(',') if delete_studies else []
   for id in parts:
     study = Study.find(id, session)
     imports = study.file_imports(session)
     for im in imports:
-      #print(f"IM: {im}, id={im[0]}, uuid={im[1]}")
       files = DataFiles(im[1])
       files.delete()
       x = FileImport.find(im[0], session)
       x.delete(session)
     study.delete(session)
-    #print(f"STUDY DELETE: {imports}")
   return RedirectResponse("/index", status_code=303)
 
 @app.get("/studies/list", dependencies=[Depends(protect_endpoint)])
@@ -166,7 +164,6 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
-  #print(f"DATA SHOW: {data}")
   return templates.TemplateResponse("users/show.html", {'request': request, 'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
@@ -175,7 +172,6 @@ def user_display_name(request: Request, id: int, name: Annotated[str, Form()], s
   updated_user, validation = user.update_display_name(name, session)
   use_user = updated_user if updated_user else user
   data = {'validation': {'user': validation}}
-  #print(f"UPDATE DISPLAY NAME: {data}")
   return templates.TemplateResponse(f"users/partials/display_name.html", {'request': request, 'user': use_user, 'data': data})
   
 @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
@@ -183,7 +179,6 @@ def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: 
   user = User.find(id, session)
   endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': validation}}
-  #print(f"UPDATE ENDPOINT: {data}")
   return templates.TemplateResponse(f"users/partials/endpoint.html", {'request': request, 'user': user, 'data': data})
 
 @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
