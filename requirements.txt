@@ -11,3 +11,4 @@ usdm==0.53.0
 pytest==8.2.2
 pytest-mock==3.14.0
 beautifulsoup4==4.12.3
+playwright==1.48.0
