@@ -197,13 +197,12 @@ def about(request: Request, session: Session = Depends(get_db)):
   return templates.TemplateResponse("about/about.html", {'request': request, 'user': user, 'data': data})
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
-def about(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
+def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   picker = file_picker()
   valid, data, message = PFDAFiles().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
   data['url'] = url
   data['source'] = picker['source']
-  #print(f"DATA: {data}")
   if valid:
     return templates.TemplateResponse("import/partials/other_file_list.html", {'request': request, 'user': user, 'data': data})
   else:
