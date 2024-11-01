@@ -227,27 +227,27 @@ def mock_local_files_dir_error(mocker):
 def error_logged(caplog, text):
     correct_level = caplog.records[-1].levelname == "ERROR"
     return text in caplog.records[-1].message and correct_level
-    
-# @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
-# def import_m11(request: Request, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   data = file_picker()
-#   data['dir'] = LocalFiles().root if data['os'] else ''
-#   data['required_ext'] = 'docx'
-#   data['other_files'] = False
-#   data['url'] = '/import/m11'
-#   return templates.TemplateResponse("import/import_m11.html", {'request': request, 'user': user, 'data': data})
 
-# @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
-# def import_xl(request: Request, session: Session = Depends(get_db)):
-#   print(f"IMPORT: XL")
-#   user, present_in_db = user_details(request, session)
-#   data = file_picker()
-#   data['dir'] = LocalFiles().root if data['os'] else ''
-#   data['required_ext'] = 'xlsx'
-#   data['other_files'] = True
-#   data['url'] = '/import/xl'
-#   return templates.TemplateResponse("import/import_xl.html", {'request': request, 'user': user, 'data': data})
+def test_import_m11(mocker, caplog):
+  uc = mock_user_check_exists(mocker)
+  fp = mock_file_picker_os(mocker)
+  response = client.get("/import/m11")
+  assert response.status_code == 200
+  assert '<h4 class="card-title">Import M11 Protocol</h4>' in response.text
+  assert """<p>Select a single M11 file</p>""" in response.text
+  assert mock_called(uc)
+  assert mock_called(fp)
+
+def test_import_xl(mocker, caplog):
+  uc = mock_user_check_exists(mocker)
+  fp = mock_file_picker_os(mocker)
+  response = client.get("/import/xl")
+  assert response.status_code == 200
+  print(f"RESULT: {response.text}")
+  assert '<h4 class="card-title">Import USDM Excel Definition</h4>' in response.text
+  assert '<p>Select a single Excel file and zero, one or more images files. </p>' in response.text
+  assert mock_called(uc)
+  assert mock_called(fp)
 
 # @app.post('/import/m11', dependencies=[Depends(protect_endpoint)])
 # async def import_m11(request: Request, source: str='browser', session: Session = Depends(get_db)):
