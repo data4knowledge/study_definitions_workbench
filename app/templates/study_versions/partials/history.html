@@ -11,7 +11,7 @@
           <th scope="col">Version</th>
           <th scope="col">Study</th>
           <th scope="col">JSON</th>
-          <th scope="col"></th>
+          <th scope="col">Difference</th>
         </tr>
       </thead>
       <tbody>
@@ -19,8 +19,13 @@
           <tr>
             <td>{{item['version']}}</td>
             <td>{{item}}</td> 
-            <td><td><a href="/versions/{{item['id']}}/usdm">View JSON</a></td></td>
-            <td></td>
+            <td><a href="/versions/{{item['id']}}/usdm">View JSON</a></td>
+            <td>
+              {% if loop.index0 != 0 %}
+                {% set previous_id = data['items'][loop.index0 - 1]['id'] %}
+                <a href="/versions/{{item['id']}}/usdmDiff?previous={{previous_id}}">JSON Diff</a>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>

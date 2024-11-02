@@ -32,6 +32,7 @@ from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
+from difflib import *
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
@@ -315,11 +316,23 @@ async def get_version_history(request: Request, id: int, page: int, size: int, f
   return templates.TemplateResponse(request, "study_versions/partials/history.html", {'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/usdm', dependencies=[Depends(protect_endpoint)])
-async def get_version_history(request: Request, id: int, session: Session = Depends(get_db)):
+async def get_version_usdm(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(id, session)
   data = {'version': usdm.study_version(), 'version_id': id, 'json':  usdm._get_raw()}
   return templates.TemplateResponse(request, "study_versions/usdm.html", {'user': user, 'data': data})
+
+@app.get('/versions/{id}/usdmDiff', dependencies=[Depends(protect_endpoint)])
+async def get_version_usdm_diff(request: Request, id: int, previous: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  curr_usdm = USDMJson(id, session)
+  prev_usdm = USDMJson(previous, session)
+  curr_lines = prev_usdm._get_raw().split('\n')
+  prev_lines = prev_usdm._get_raw().split('\n')
+  diff = HtmlDiff().make_table(prev_lines, curr_lines)
+  print(f"DIFF: {diff}")
+  data = {'version': curr_usdm.study_version(), 'version_id': id, 'diff': diff}
+  return templates.TemplateResponse(request, "study_versions/diff.html", {'user': user, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
