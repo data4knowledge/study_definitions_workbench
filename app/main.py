@@ -289,8 +289,6 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
 @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  # data = Transmission.page(page, size, user.id, session)
-  # pagination = Pagination(data, "/transmissions/status")
   data = {'page': page, 'size': size, 'filter': filter} 
   return templates.TemplateResponse(request, "transmissions/status.html", {'user': user, 'data': data})
 
@@ -300,6 +298,21 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
   data = Transmission.page(page, size, user.id, session)
   pagination = Pagination(data, "/transmissions/status/data")
   return templates.TemplateResponse(request, "transmissions/partials/status.html", {'user': user, 'pagination': pagination, 'data': data})
+
+@app.get('/versions/{id}/history', dependencies=[Depends(protect_endpoint)])
+async def get_version_history(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(id, session)
+  data = {'version': usdm.study_version(), 'version_id': id, 'page': 1, 'size': 10, 'filter': ''}
+  return templates.TemplateResponse(request, "study_versions/history.html", {'user': user, 'data': data})
+
+@app.get('/versions/{id}/history/data', dependencies=[Depends(protect_endpoint)])
+async def get_version_history(request: Request, id: int, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  version = Version.find(id, session)
+  data = Version.page(page, size, filter, version.study_id, session)
+  pagination = Pagination(data, f"/versions/{id}/history/data")
+  return templates.TemplateResponse(request, "study_versions/partials/history.html", {'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 def test_page_empty(db):
   _clean(db)
   user, study = _base_setup(db)
-  results = Version.page(1, 10, study.id, db)
+  results = Version.page(1, 10, '', study.id, db)
   assert results['count'] == 0
   assert len(results['items']) == 0
 
@@ -16,7 +16,7 @@ def test_page_first(db):
   _clean(db)
   user, study = _base_setup(db)
   _import_setup(db, 1, 1, user, study)
-  results = Version.page(1, 10, study.id, db)
+  results = Version.page(1, 10, '', study.id, db)
   assert results['count'] == 1
   assert len(results['items']) == 1
 
@@ -24,7 +24,7 @@ def test_page_nth(db):
   _clean(db)
   user, study = _base_setup(db)
   _import_setup(db, 1, 15, user, study)
-  results = Version.page(2, 10, study.id, db)
+  results = Version.page(2, 10, '', study.id, db)
   assert results['count'] == 15
   assert len(results['items']) == 5
 

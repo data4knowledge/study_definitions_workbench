@@ -4,6 +4,7 @@ from app.main import app
 from app.main import protect_endpoint
 from app.model.user import User
 from app.model.study import Study
+from app.model.version import Version
 from app.model.file_import import FileImport
 from app.model.endpoint import Endpoint
 from app.utility.environment import file_picker
@@ -377,7 +378,6 @@ def test_import_status_data(mocker):
   fip = mock_file_import_page(mocker)
   response = client.get("/import/status/data?page=1&size=10&filter=")
   assert response.status_code == 200
-  print(f"RESULT: {response.text}")
   assert '<div id="data_div">' in response.text
   assert '<th scope="col">Imported At</th>' in response.text
   assert mock_called(uc)
@@ -424,6 +424,59 @@ def mock_data_file_path(mocker):
 def mock_data_file_path_error(mocker):
   mock = mocker.patch("app.model.file_handling.data_files.DataFiles.path")
   mock.side_effect = [('', '', False)]
+  return mock
+
+def test_version_history(mocker):
+  print(f"TEST")
+  uc = mock_user_check_exists(mocker)
+  usv = mock_usdm_study_version(mocker)
+  uji = mock_usdm_json_init(mocker)
+  response = client.get("/versions/1/history")
+  assert response.status_code == 200
+  assert '<h4 class="card-title">The Offical Study Title For Test</h4>' in response.text
+  assert '<h6 class="card-subtitle mb-2 text-muted">Sponsor: Identifier For Test | Phase: Phase For Test | Identifier: </h6>' in response.text
+  assert mock_called(uc)
+  assert mock_called(usv)
+  assert mock_called(uji)
+
+def mock_usdm_study_version(mocker):
+  mock = mocker.patch("app.model.usdm_json.USDMJson.study_version")
+  mock.side_effect = [
+    {
+      'id': '1',
+      'version_identifier': '1',
+      'identifiers': {'Clinical Study Sponsor': 'Identifier For Test'},
+      'titles': {'Official Study Title': 'The Offical Study Title For Test'},
+      'study_designs': {'xxx': {'id': '2', 'name': 'design name', 'label': 'design label'}},
+      'phase': {'standardCode': {'decode': 'Phase For Test'}}
+    }
+  ]
+  return mock
+
+def test_version_history_data(mocker):
+  vf = mock_version_find(mocker)
+  vp = mock_version_page(mocker)
+  response = client.get("/versions/1/history/data?page=1&size=10&filter=")
+  assert response.status_code == 200
+  print(f"RESULT: {response.text}")
+  assert '<th scope="col">Version</th>' in response.text
+  assert '<td>1</td>' in response.text
+  assert mock_called(vf)
+  assert mock_called(vp)
+
+def mock_version_find(mocker):
+  mock = mocker.patch("app.model.version.Version.find")
+  mock.side_effect = [factory_version()]
+  return mock
+
+def mock_version_page(mocker):
+  mock = mocker.patch("app.model.version.Version.page")
+  mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version()]}]
+  return mock
+
+def mock_usdm_json_init(mocker):
+  mock = mocker.patch("app.main.USDMJson.__init__")
+  mock.side_effect = [None]
   return mock
 
 # @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
@@ -752,6 +805,9 @@ def factory_user_2() -> User:
 def factory_study() -> Study:
   return Study(**{'name': 'STUDYNAME', 'title': "Study Title", 'phase': "Phase 1", 'sponsor': 'ACME', 
                  'sponsor_identifier': 'STUDY IDENTIFIER', 'nct_identifier': 'NCT12345678', 'id': 1, 'user_id': 1})
+
+def factory_version() -> Version:
+  return Version(**{'version': '1', 'id': 1, 'import_id': 1, 'study_id': 1})
 
 def factory_file_import() -> FileImport:
   return FileImport(**{'filepath': 'filepath', 'filename': 'filename', 'type': "XXX", 'status': "Done", 'uuid': "1234-5678", 'id': 1, 'user_id': 1, 'created': datetime.datetime.now()})
