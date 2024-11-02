@@ -44,6 +44,19 @@ class Version(VersionBase):
     return session.query(VersionDB).filter(VersionDB.study_id == study_id).count()
 
   @classmethod
+  def page(cls, page: int, size: int, study_id: int, session: Session) -> list[dict]:
+    page = page if page >= 1 else 1
+    size = size if size > 0 else 10
+    skip = (page - 1) * size
+    count = session.query(VersionDB).filter(VersionDB.study_id == study_id).count()
+    data = session.query(VersionDB).filter(VersionDB.study_id == study_id).offset(skip).limit(size).all()
+    results = []
+    for db_item in data:
+      results.append(db_item.__dict__)
+    result = {'items': results, 'page': page, 'size': size, 'filter': '', 'count': count }
+    return result
+
+  @classmethod
   def debug(cls, session: Session) -> list[dict]:
     count = session.query(VersionDB).count()
     data = session.query(VersionDB).all()

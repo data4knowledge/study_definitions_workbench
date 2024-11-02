@@ -5,7 +5,6 @@ from app.model.database_tables import Study as StudyDB, Version as VersionDB, Fi
 from app.model.database_tables import UserEndpoint as UserEndpointDB, User as UserDB, TransmissionTable as TransmissionDB
 from app.model.file_handling.data_files import DataFiles
 from sqlalchemy.orm import Session
-#from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Table, MetaData
 from d4kms_generic.service_environment import ServiceEnvironment
 from d4kms_generic import application_logger
 

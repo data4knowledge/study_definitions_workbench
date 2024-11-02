@@ -1,7 +1,9 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from app.model.database import Base
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
 
 class UserEndpoint(Base):
     
