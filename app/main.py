@@ -314,6 +314,13 @@ async def get_version_history(request: Request, id: int, page: int, size: int, f
   pagination = Pagination(data, f"/versions/{id}/history/data")
   return templates.TemplateResponse(request, "study_versions/partials/history.html", {'user': user, 'pagination': pagination, 'data': data})
 
+@app.get('/versions/{id}/usdm', dependencies=[Depends(protect_endpoint)])
+async def get_version_history(request: Request, id: int, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(id, session)
+  data = {'version': usdm.study_version(), 'version_id': id, 'json': usdm._data}
+  return templates.TemplateResponse(request, "study_versions/usdm.html", {'user': user, 'data': data})
+
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
