@@ -454,6 +454,11 @@ class USDMJson():
     data = open(fullpath)
     return json.load(data)
 
+  def _get_raw(self):
+    fullpath, filename, exists = self._files.path('usdm')
+    f = open(fullpath)
+    return f.read()
+
   def _get_extra(self):
     fullpath, filename, exists = self._files.path('extra')
     data = open(fullpath)
