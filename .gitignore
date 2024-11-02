@@ -175,3 +175,4 @@ mount/localfiles/*
 # Python test programs, prefix with 'test_'
 xxx_*.py
 install_local_microservices.sh
+mount/database/test_database.db
