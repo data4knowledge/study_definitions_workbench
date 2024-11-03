@@ -5,18 +5,13 @@ from usdm_model.timing import Timing
 from d4kms_generic.logger import application_logger
 
 def first_timepoint(self: ScheduleTimeline) -> ScheduledActivityInstance:
-  return next((x for x in self.instances if not x.previousId and x.nextId), None)
+  return self.instances[0] if self.instances else None
 
 def find_timepoint(self: ScheduleTimeline, id: str) -> ScheduledActivityInstance:
   return next((x for x in self.instances if x.id == id), None)
 
 def timepoint_list(self: ScheduleTimeline) -> list:
-  items = []
-  item = self.first_timepoint()
-  while item:
-    items.append(item)
-    item = self.find_timepoint(item.nextId)
-  return items
+  return self.instances
 
 def find_timing_from(self: ScheduleTimeline, id: str) -> Timing:
   return next((x for x in self.timings if x.relativeFromScheduledInstanceId == id), None)
@@ -31,8 +26,8 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
   timepoints = self.timepoint_list()
   for timepoint in timepoints:
     timing = self.find_timing_from(timepoint.id)
-    encounter = study_design.find_encounter(timepoint.id)
-    epoch = study_design.find_epoch(timepoint.id)
+    encounter = study_design.find_encounter(timepoint.encounterId)
+    epoch = study_design.find_epoch(timepoint.epochId)
     entry = {
       'instance': timepoint,
       'timing': timing,
@@ -40,6 +35,7 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
       'encounter': encounter
     }
     ai.append(entry)
+  print(f"AI: {ai}")
 
   # Blank row
   visit_row = {}
@@ -63,12 +59,12 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
   results.append([""] + [item['epoch'].label for item in ai])
   results.append([""] + labels)
   results.append([""] + [item['instance'].label for item in ai])
-  results.append([""] + [item['instance'].windowLabel for item in ai])
+  results.append([""] + [item['timing'].windowLabel for item in ai])
   for activity in activity_order:
     if activity.name in activities:
       data = activities[activity.name]
       label = activity.label if activity.label else activity.name
-      results.append([{'name': label, 'uuid': activity['uuid']}] + list(data.values()))
+      results.append([{'name': label, 'id': activity.id}] + list(data.values()))
   return results
 
 setattr(ScheduleTimeline, 'first_timepoint', first_timepoint)
