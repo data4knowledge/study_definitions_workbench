@@ -3,6 +3,7 @@ from usdm_model.activity import Activity
 from usdm_model.study_epoch import StudyEpoch
 from usdm_model.encounter import Encounter
 from usdm_model.schedule_timeline import ScheduleTimeline
+from app.model.usdm.model.schedule_timeline import *
 
 def soa(self: StudyDesign, timeline_name: str) -> list:
   timeline = next((x for x in self.scheduleTimelines if x.name == timeline_name), None)
@@ -23,7 +24,7 @@ def activity_list(self: StudyDesign) -> list:
   item = self.first_activity()
   while item:
     items.append(item)
-    item = self.find_activty(item.nextId)
+    item = self.find_activity(item.nextId)
   return items
 
 def find_epoch(self: StudyDesign, id: str) -> StudyEpoch:
