@@ -1,94 +1,78 @@
 from usdm_model.schedule_timeline import ScheduleTimeline
 from usdm_model.study_design import StudyDesign
+from usdm_model.scheduled_instance import ScheduledActivityInstance
+from usdm_model.timing import Timing
 from d4kms_generic.logger import application_logger
+
+def first_timepoint(self: ScheduleTimeline) -> ScheduledActivityInstance:
+  return next((x for x in self.instances if not x.previousId and x.nextId), None)
+
+def find_timepoint(self: ScheduleTimeline, id: str) -> ScheduledActivityInstance:
+  return next((x for x in self.instances if x.id == id), None)
+
+def timepoint_list(self: ScheduleTimeline) -> list:
+  items = []
+  item = self.first_timepoint()
+  while item:
+    items.append(item)
+    item = self.find_timepoint(item.nextId)
+  return items
+
+def find_timing_from(self: ScheduleTimeline, id: str) -> Timing:
+  return next((x for x in self.timings if x.relativeFromScheduledInstanceId == id), None)
 
 def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
 
   # Activities
-  # Find first activity within study design
-  # Get ordered list of activities
-  
-  # query = """MATCH (st:ScheduleTimeline {uuid: '%s'})<-[]-(sd:StudyDesign)-[]->(a1:Activity)
-  #   WHERE NOT (a1)-[:PREVIOUS_REL]->()
-  #   WITH a1 
-  #   MATCH path=(a1)-[:NEXT_REL *0..]->(a)
-  #   WITH a ORDER BY LENGTH(path) ASC
-  #   RETURN DISTINCT a.name as name, a.label as label, a.uuid as uuid
-  # """ % (self.uuid)
-  # result = session.run(query)
-
-  activity_order = []
-  for record in result:
-    activity_order.append({'name': record['name'], 'label': record['label'], 'uuid': record['uuid']})
+  activity_order = study_design.activity_list()
 
   # Epochs and Visits
-  # 
-  query = """
-    MATCH (st:ScheduleTimeline {uuid: '%s'})-[:ENTRY_REL]->(sai1:ScheduledActivityInstance)
-    WITH sai1
-    MATCH path=(sai1)-[:DEFAULT_CONDITION_REL *0..]->(sai)
-    WITH sai ORDER BY LENGTH(path) ASC
-    OPTIONAL MATCH (e:StudyEpoch)<-[]-(sai)
-    OPTIONAL MATCH (sai)-[]->(v:Encounter)
-    OPTIONAL MATCH (sai)<-[:RELATIVE_FROM_SCHEDULED_INSTANCE_REL]-(t:Timing)
-    RETURN DISTINCT e.name as epoch_name, e.label as epoch_label, v.name as visit_name, v.label as visit_label, t.windowLabel as window, t.label as tvalue, sai.uuid as uuid 
-  """ % (self.uuid)
-  #print(f"ACTIVITY INSTANCES QUERY: {query}")
-  result = session.run(query)
   ai = []
-  for index, record in enumerate(result):
-    window = record['window'] if record['window'] else ''
+  timepoints = self.timepoint_list()
+  for timepoint in timepoints:
+    timing = self.find_timing_from(timepoint.id)
+    encounter = study_design.find_encounter(timepoint.id)
+    epoch = study_design.find_epoch(timepoint.id)
     entry = {
-      'instance': {'uuid': record['uuid'], 'name': f'SAI{index+1}', 'label': f'Instance {index+1}', 'label1': record['tvalue']},
-      'epoch': {'name': record['epoch_name'], 'label': record['epoch_label']},
-      'visit': {'name': record['visit_name'], 'label': record['visit_label'], 'window': window}
+      'instance': timepoint,
+      'timing': timing,
+      'epoch': epoch,
+      'encounter': encounter
     }
     ai.append(entry)
-  #print(f"ACTIVITY INSTANCES: {ai}")
-  #print("")
-  #print("")
-  
+
+  # Blank row
   visit_row = {}
   for item in ai:
-    visit_row[item['instance']['uuid']] = ''
-  #print(f"VISIT ROW: {visit_row}")
-  #print("")
-  #print("")
+    visit_row[item['instance'].id] = ''
   
   # Activities
-  query = """
-    UNWIND $instances AS uuid
-      MATCH (sai:ScheduledActivityInstance {uuid: uuid})-[]->(a:Activity) 
-    RETURN sai.uuid as uuid, a.name as name, a.label as label
-  """
-  #print(f"ACTIVITIES QUERY: {query}")
-  instances = [item['instance']['uuid'] for item in ai]
-  #print(f"INSTANCES: {instances}")
-  result = session.run(query, instances=instances)
   activities = {}
-  for record in result:
-    if not record["name"] in activities:
-      activities[record["name"]] = visit_row.copy()
-    activities[record["name"]][record["uuid"]] = "X" 
-  #print(f"ACTIVITIES: {activities}")
-  #print("")
-  #print("")
+  for activity in activity_order:
+    activities[activity.name] = visit_row.copy()
+    for timepoint in timepoints:
+      if activity.id in timepoint.activityIds:
+        activities[activity.name][timepoint.id] = "X" 
   
   # Return the results
   labels = []
   for item in ai:
-    label = item['visit']['label'] if item['visit']['label'] else item['instance']['label']
+    label = item['encounter'].label if item['encounter'].label else item['instance'].label
     labels.append(label)
   results = []
-  results.append([""] + [item['epoch']['label'] for item in ai])
+  results.append([""] + [item['epoch'].label for item in ai])
   results.append([""] + labels)
-  results.append([""] + [item['instance']['label1'] for item in ai])
-  results.append([""] + [item['visit']['window'] for item in ai])
+  results.append([""] + [item['instance'].label for item in ai])
+  results.append([""] + [item['instance'].windowLabel for item in ai])
   for activity in activity_order:
-    if activity['name'] in activities:
-      data = activities[activity['name']]
-      label = activity['label'] if activity['label'] else activity['name'] 
+    if activity.name in activities:
+      data = activities[activity.name]
+      label = activity.label if activity.label else activity.name
       results.append([{'name': label, 'uuid': activity['uuid']}] + list(data.values()))
   return results
 
+setattr(ScheduleTimeline, 'first_timepoint', first_timepoint)
+setattr(ScheduleTimeline, 'find_timepoint', find_timepoint)
+setattr(ScheduleTimeline, 'timepoint_list', timepoint_list)
+setattr(ScheduleTimeline, 'find_timing_from', find_timing_from)
 setattr(ScheduleTimeline, 'soa', soa)
