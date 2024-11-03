@@ -31,10 +31,10 @@ class HunkLine():
 
   def to_html(self) -> str:
     return f"""
-    <tr class="m-1 p-1 table-{self.style}">
-      <td class="col-auto m-1 p-1 text-center">{self.old_line_number if self.old_line_number else ''}</td>
-      <td class="col-auto m-1 p-1 text-center">{self.new_line_number if self.new_line_number else ''}</td>
-      <td class="col-auto m-1 p-1">{self.line}</td>
+    <tr class="m-0 p-0 table-{self.style}">
+      <td class="col-auto m-0 p-0 text-center">{self.old_line_number if self.old_line_number else ''}</td>
+      <td class="col-auto m-0 p-0 text-center">{self.new_line_number if self.new_line_number else ''}</td>
+      <td class="col-auto m-0 p-0">{self.line}</td>
     </tr>
     """
     
@@ -99,9 +99,9 @@ class UnifiedDiff():
     lines = []
     lines.append(f'<table class="table responsive w-auto">')
     for index, hunk in enumerate(self._hunks):
-      header = f"""<tr class="m-1 p-1">
-        <td class="col-auto text-center table-primary m-1 p-1" colspan="2">...</td>
-        <td class="col-auto m-1 p-1">{hunk.header}</td>
+      header = f"""<tr class="m-0 p-0">
+        <td class="col-auto text-center table-primary m-0 p-0" colspan="2">...</td>
+        <td class="col-auto m-0 p-0">{hunk.header}</td>
       </tr>"""
       lines.append(header)
       for item in hunk.lines:
