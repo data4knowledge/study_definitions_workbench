@@ -1,7 +1,8 @@
+from itertools import groupby
+from usdm_model.timing import Timing
 from usdm_model.schedule_timeline import ScheduleTimeline
 from usdm_model.study_design import StudyDesign
 from usdm_model.scheduled_instance import ScheduledActivityInstance
-from usdm_model.timing import Timing
 from d4kms_generic.logger import application_logger
 
 def first_timepoint(self: ScheduleTimeline) -> ScheduledActivityInstance:
@@ -49,7 +50,7 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
       if activity.id in timepoint.activityIds:
         activities[activity.name][timepoint.id] = "X" 
   
-  # Return the results
+  # Form results
   labels = []
   for item in ai:
     label = item['encounter'].label if item['encounter'].label else item['instance'].label
@@ -64,7 +65,35 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
       data = activities[activity.name]
       label = activity.label if activity.label else activity.name
       results.append([{'name': label, 'id': activity.id}] + list(data.values()))
-  return results
+
+  # Format as HTML
+  lines = []
+  lines.append('<table class="soa-table table">')
+  lines.append('<thead>')
+  lines.append('<tr class="table-active">')
+  epochs = [[i, len([*group])] for i, group in groupby(results[0])]
+  text = f'<td><p class="m-0 p-0"><small>&nbsp;</small></p></td>'
+  for epoch in epochs[1:]:
+    text += f'<td class="text-center" colspan="{epoch[1]}"><p class="m-0 p-0"><small>{epoch[0]}</small></p></td>'
+  lines.append(text)
+  lines.append('</tr>')
+  for result in results[1:4]:
+    lines.append('<tr class="table-active">')
+    lines.append(f'<td><p class="m-0 p-0"><small>&nbsp;</small></p></td>')
+    for cell in result[1:]:
+      lines.append(f'<td class="text-center"><p class="m-0 p-0"><small>{cell}</small></p></td>')
+    lines.append('</tr>')
+  lines.append('</thead>')
+  lines.append('<tbody>')
+  for result in results[4:]:
+    lines.append('<tr>')
+    lines.append(f'<td class="m-0 p-0"><p class="m-0 p-0"><small>{result[0]['name']}</small></p></td>')
+    for cell in result[1:]:
+      lines.append(f'<td class="m-0 p-0 text-center"><p class="m-0 p-0"><small>{cell}</small></p></td>')
+    lines.append('</tr>')
+  lines.append('</tbody>')
+  lines.append('</table>')
+  return results, ('\n').join(lines)
 
 setattr(ScheduleTimeline, 'first_timepoint', first_timepoint)
 setattr(ScheduleTimeline, 'find_timepoint', find_timepoint)
