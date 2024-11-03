@@ -12,16 +12,20 @@
     <div class="col-12">
       <div class="card card-body rounded-3 shadow-sm">
         <div class="row mt-2">
-          <h4 class="card-title">{{data['version']['titles']['Official Study Title']}}</h4>
-          <h6 class="card-subtitle mb-2 text-muted">Sponsor: {{sponsor}} | Phase: {{data['version']['phase']['standardCode']['decode']}} | Identifier: </h6>
+          <h4 class="card-title">USDM JSON View</h4>
+          <h6 class="card-subtitle mb-2 text-muted">Title: {{data['version']['titles']['Official Study Title']}} | Sponsor: {{sponsor}} | Phase: {{data['version']['phase']['standardCode']['decode']}} | Identifier: </h6>
         </div>
       </div>
     </div>
   </div>
   <div class="mt-3 row">
-    <div class="col">
-      <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
-      <div id="json_view"></div>
+    <div class="col-12">
+      <div class="card card-body rounded-3 h-100">
+        <div class="col">
+          <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
+          <div id="json_view"></div>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
@@ -37,7 +41,7 @@
     var json_element = document.getElementById('json_view')
     var data = document.getElementById('json_input').value
     var jsonObj = JSON.parse(data);
-    
+
     json_element.appendChild(jsonViewer.getContainer());
     jsonViewer.showJSON(jsonObj);
   </script>

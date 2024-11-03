@@ -12,16 +12,21 @@
     <div class="col-12">
       <div class="card card-body rounded-3 shadow-sm">
         <div class="row mt-2">
-          <h4 class="card-title">{{data['version']['titles']['Official Study Title']}}</h4>
-          <h6 class="card-subtitle mb-2 text-muted">Sponsor: {{sponsor}} | Phase: {{data['version']['phase']['standardCode']['decode']}} | Identifier: </h6>
+          <h4 class="card-title">USDM JSON Difference</h4>
+          <h6 class="card-subtitle mb-2 text-muted">Title: {{data['version']['titles']['Official Study Title']}} | Sponsor: {{sponsor}} | Phase: {{data['version']['phase']['standardCode']['decode']}} | Identifier: </h6>
         </div>
       </div>
     </div>
   </div>
   <div class="mt-3 row">
-    <div class="col">
-      {{data['diff']|safe}}
+    <div class="col-12">
+      <div class="card card-body rounded-3 h-100">
+        <div class="col">
+          {{data['diff']|safe}}
+        </div>
+      </div>
     </div>
   </div>
+
 {% endblock %}
 
