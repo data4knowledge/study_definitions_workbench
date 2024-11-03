@@ -1,0 +1,61 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}  
+
+{% block main_content %}
+  <div class="mt-3 row">
+    <div class="col-12">
+      <div class="card card-body rounded-3 shadow-sm">
+        <div class="row mt-2">
+          <h4 class="card-title">Timeline Schedule of Activities</h4>
+          <h6 class="card-subtitle mb-2 text-muted">Subtitle</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-3 row">
+    <div class="col-12">
+      <div class="mt-3 table-responsive">
+        <table class="table text-xsmall">
+          <tbody>
+            {% for row in data['soa']: %}
+              {% set outer_loop = loop %}
+              {% if loop.index <= 4 %}
+                <tr class="fs-6 table-active">
+              {% else: %}
+                <tr class="fs-6">
+              {% endif %}  
+              {% for item in row: %}
+                {% if loop.index == 1 %}
+                  <td class="m-0 p-0">
+                {% else %}
+                  <td class="text-center m-0 p-0">
+                {% endif %}
+                {% if loop.index == 1 %}
+                  {% if outer_loop.index > 4 %}
+                    {% set uuid = item['uuid'] %}
+                    {% set uuid_id = "UUID" ~ uuid %}                
+                    <div class="container">
+                      <p class="m-0 p-0"><small>{{item['name']}}</small></p>
+                    </div>
+                  {% else %}  
+                    &nbsp;
+                  {% endif %}  
+                {% else %}
+                  <p class="m-0 p-0"><small>{{item}}</small></p>
+                {% endif %}
+                </td>
+              {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -35,8 +35,7 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
       'encounter': encounter
     }
     ai.append(entry)
-  print(f"AI: {ai}")
-
+  
   # Blank row
   visit_row = {}
   for item in ai:
