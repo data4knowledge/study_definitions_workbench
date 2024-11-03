@@ -93,7 +93,7 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
     lines.append('</tr>')
   lines.append('</tbody>')
   lines.append('</table>')
-  return results, ('\n').join(lines)
+  return ('\n').join(lines)
 
 setattr(ScheduleTimeline, 'first_timepoint', first_timepoint)
 setattr(ScheduleTimeline, 'find_timepoint', find_timepoint)

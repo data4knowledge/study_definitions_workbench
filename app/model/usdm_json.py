@@ -244,12 +244,11 @@ class USDMJson():
       if design:
         timeline = design.find_timeline(id)
         if timeline:
-          soa, html = timeline.soa(design)
+          soa = timeline.soa(design)
           result = {
             'id': self.id,
             'study_id': design.id,
             'm11': self.m11,
-            'html': html,
             'soa': soa
           }
           return result
