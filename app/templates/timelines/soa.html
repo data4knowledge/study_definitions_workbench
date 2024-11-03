@@ -30,12 +30,14 @@
 
 {% block additional_css %}
   <style>
+    .soa-table thead, tbody, tfoot { vertical-align: top }
+    .soa-table td, th, tr { vertical-align: inherit }
     .soa-table > thead > tr > td {
       padding: 2px;
     }
     .soa-table > thead > tr > td:not(:first-child) {
-      border-bottom: 1px solid gray;   
+      border-bottom: 1px solid #D3D3D3;   
     }
-    .soa-table td { border-right: 1px solid gray; }
+    .soa-table td { border-right: 1px solid #D3D3D3; }
   </style>
 {% endblock %}   
