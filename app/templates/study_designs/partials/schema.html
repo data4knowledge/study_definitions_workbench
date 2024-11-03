@@ -1,15 +1,21 @@
 <div>
-  <style>
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-  </style>
-  <div class="outer-div row mt-3">
-    <div class="col-12 extract-div mt-3 mb-3">
-      <div class="overflow-auto section-div">
-        {{data|safe}}
+  {% if data['m11'] %}
+    <style>
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+    <div class="outer-div row mt-3">
+      <div class="col-12 extract-div mt-3 mb-3">
+        <div class="overflow-auto section-div">
+          {{data|safe}}
+        </div>
       </div>
-    </div>
-  </div>  
+    </div>  
+  {% else %}
+    {% with show_link=False, note="Finding the schema image within a sponsor template is not yet implemented" %}
+      {% include "shared/partials/not_implemented.html" %}
+    {% endwith %}
+  {% endif %}
 </div>

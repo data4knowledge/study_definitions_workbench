@@ -1,0 +1,18 @@
+<div>
+  {% if not data['m11'] %}
+    <ul class="list-group mt-3">
+      {% for timeline in data['timelines'] %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{timeline.name}}
+        <a href="/versions/{{data['id']}}/studyDesigns/{{data['study_id']}}/timelines/{{timeline['id']}}/soa" class="btn btn-sm btn-outline-primary rounded-5">
+          <i class="bi bi-clock pe-2"></i>View
+        </a>  
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    {% with show_link=False %}
+      {% include "shared/partials/not_implemented.html" %}
+    {% endwith %}
+  {% endif %}
+</div>

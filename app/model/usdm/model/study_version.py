@@ -1,3 +1,4 @@
+from usdm_model.study_design import StudyDesign
 from usdm_model.study_version import StudyVersion
 from usdm_model.organization import Organization
 from app.model.usdm.model.study_title import *
@@ -23,7 +24,6 @@ def acronym(self: StudyVersion) -> str:
 
 def sponsor_identifier(self: StudyVersion) -> StudyIdentifier:
   for x in self.studyIdentifiers:
-    #print(f"SPONSOR: {x}")
     if x.is_sponsor(self.organization_map()):
       return x.text
   return ''
@@ -50,14 +50,15 @@ def protocol_date(self: StudyVersion) -> StudyIdentifier:
 
 def approval_date(self: StudyVersion) -> StudyIdentifier:
   for x in self.dateValues:
-    #print(f"A: {x}")
     if x.type.decode == 'Sponsor Approval Date':
-      #print(f"B: {x}")
       return x.dateValue
   return ''
 
 def organization_map(self: StudyVersion) -> Organization:
   return {x.id: x for x in self.organizations}
+
+def find_study_design(self: StudyVersion, id: str) -> StudyDesign:
+  return next((x for x in self.studyDesigns if x.id == id), None)
 
 setattr(StudyVersion, 'official_title', official_title)
 setattr(StudyVersion, 'short_title', short_title)
@@ -68,3 +69,4 @@ setattr(StudyVersion, 'nct_identifier', nct_identifier)
 setattr(StudyVersion, 'protocol_date', protocol_date)
 setattr(StudyVersion, 'approval_date', approval_date)
 setattr(StudyVersion, 'organization_map', organization_map)
+setattr(StudyVersion, 'find_study_design', find_study_design)

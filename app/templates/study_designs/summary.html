@@ -61,5 +61,17 @@
         </div>
       </div>
     </div>
+    <div class="card rounded-3 mt-3">
+      <div class="card-body">
+        <h5 class="card-title">Schedule of Activities</h5>
+        <h6 class="card-subtitle text-muted">The SoA for the study</h6>
+        {% set id = "soa_" ~ data['uuid'] ~"_div" %}
+        <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/timelines" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
+          {% with %}
+            {% include "shared/partials/spinner.html" %}
+          {% endwith %}            
+        </div>
+      </div>
+    </div>
   </div>  
 </div>  

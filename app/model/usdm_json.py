@@ -221,6 +221,38 @@ class USDMJson():
     else:
       return None
 
+  def timelines(self, id: str):
+    wrapper = self.wrapper()
+    version = wrapper.study.first_version()
+    if version:
+      design = version.find_study_design(id)
+      if design:
+        result = {
+          'id': self.id,
+          'study_id': design.id,
+          'm11': self.m11,
+          'timelines': [x.model_dump() for x in design.scheduleTimelines]
+        }
+        return result
+    return None
+
+  def soa(self, study_id: str, id: str):
+    wrapper = self.wrapper()
+    version = wrapper.study.first_version()
+    if version:
+      design = version.find_study_design(study_id)
+      if design:
+        timeline = design.find_timeline(id)
+        if timeline:
+          result = {
+            'id': self.id,
+            'study_id': design.id,
+            'm11': self.m11,
+            'soa': timeline.soa(design)
+          }
+          return result
+    return None
+
   def sample_size(self, id: str) -> dict:
     return self._section_response(id, '10.11', 'sample size', '[Sample Size]')
   

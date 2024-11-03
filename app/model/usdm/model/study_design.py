@@ -2,6 +2,7 @@ from usdm_model.study_design import StudyDesign
 from usdm_model.activity import Activity
 from usdm_model.study_epoch import StudyEpoch
 from usdm_model.encounter import Encounter
+from usdm_model.schedule_timeline import ScheduleTimeline
 
 def soa(self: StudyDesign, timeline_name: str) -> list:
   timeline = next((x for x in self.scheduleTimelines if x.name == timeline_name), None)
@@ -31,6 +32,9 @@ def find_epoch(self: StudyDesign, id: str) -> StudyEpoch:
 def find_encounter(self: StudyDesign, id: str) -> Encounter:
   return next((x for x in self.encounters if x.id == id), None)
 
+def find_timeline(self: StudyDesign, id: str) -> ScheduleTimeline:
+  return next((x for x in self.scheduleTimelines if x.id == id), None)
+
 setattr(StudyDesign, 'soa', soa)
 setattr(StudyDesign, 'main_soa', main_soa)
 setattr(StudyDesign, 'first_activity', first_activity)
@@ -38,3 +42,4 @@ setattr(StudyDesign, 'find_activity', find_activity)
 setattr(StudyDesign, 'activity_list', activity_list)
 setattr(StudyDesign, 'find_epoch', find_epoch)
 setattr(StudyDesign, 'find_encounter', find_encounter)
+setattr(StudyDesign, 'find_timeline', find_timeline)

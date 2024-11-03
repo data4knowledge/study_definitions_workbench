@@ -390,6 +390,20 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   #print(f"ESTIMAND DATA: {data}")
   return templates.TemplateResponse(request, "study_designs/partials/estimands.html", {'user': user, 'data': data})
 
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.timelines(study_design_id)
+  return templates.TemplateResponse(request, "study_designs/partials/timelines.html", {'user': user, 'data': data})
+
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.soa(study_design_id, timeline_id)
+  return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
+
 @app.get('/versions/{id}/safety', dependencies=[Depends(protect_endpoint)])
 async def get_version_safety(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
