@@ -87,7 +87,8 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
   lines.append('<tbody>')
   for result in results[4:]:
     lines.append('<tr>')
-    lines.append(f'<td class="m-0 p-0"><p class="m-0 p-0"><small>{result[0]['name']}</small></p></td>')
+    x = result[0]['name']
+    lines.append(f'<td class="m-0 p-0"><p class="m-0 p-0"><small>{x}</small></p></td>')
     for cell in result[1:]:
       lines.append(f'<td class="m-0 p-0 text-center"><p class="m-0 p-0"><small>{cell}</small></p></td>')
     lines.append('</tr>')
