@@ -1,37 +1,44 @@
-<div class="card border-primary mt-3">
-  <div class="card-body">
+<div class="card card-body rounded-3">
+  <div class="row">
     <div class="d-flex justify-content-between">
-      <h4 class="card-title">{{title}}</h4>
+      <h5 class="card-title">{{title}}</h5>
+      <!-- <h6 class="card-subtitle">{{title}}</h6> -->
       <div class="d-flex justify-right">
-        <a class="link-dark" style="font-size: 20px;" data-bs-toggle="modal" data-bs-target="#headerHelpModal">
-          <i class="ps-2 bi bi-info-circle"></i>
-        </a>  
+        {% if help %}
+          <a class="text-info me-2" style="font-size: 1rem;" data-bs-toggle="modal" data-bs-target="#headerHelpModal">
+            <i class="me-1 bi bi-info-circle" title="Help"></i>
+          </a>  
+        {% endif %}
         {% for link in links: %}
-          <a href="{{link['href']}}">
-            <i class="ps-2 {{link['icon']}}" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="left" title="{{link['tooltip']}}"></i>
+          <a href="{{link['href']}}" class="nav-link text-primary me-2">
+            <i class="me-1 {{link['icon']}}" style="font-size: 1rem;" title="{{link['tooltip']}}"></i>
           </a>
         {% endfor %}
-        <a href="#" onclick="history.back()">
-          <i class="ps-2 bi bi-arrow-up-circle" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="left" title="Go to previous page."></i>
+        <a href="#" class="nav-link text-primary" onclick="history.back()">
+          <i class="me-1 bi bi-arrow-up-circle" style="font-size: 1rem;" title="Return to previous page."></i>Back
         </a>  
-      </div>
+      </div>  
     </div>
-    <p class="card-text">{{text}}</p>
+  </div>
+  <div class="row">
+    <h6 class="card-subtitle mb-2 text-muted">{{subtitle}}</h6>
+    <!-- <p class="card-text text-muted lh-1"><small>{{subtitle}}</small></p> -->
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="headerHelpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Page Help</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        {{help|safe}}
+{% if help %}
+  <!-- Modal -->
+  <div class="modal fade" id="headerHelpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Page Help</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{help|safe}}
+        </div>
       </div>
     </div>
   </div>
-</div>
-
+{% endif %}

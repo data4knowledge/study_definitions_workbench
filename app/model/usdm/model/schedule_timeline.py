@@ -21,7 +21,7 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
 
   # Activities
   activity_order = study_design.activity_list()
-
+  
   # Epochs and Visits
   ai = []
   timepoints = self.timepoint_list()
@@ -29,6 +29,9 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
     timing = self.find_timing_from(timepoint.id)
     encounter = study_design.find_encounter(timepoint.encounterId)
     epoch = study_design.find_epoch(timepoint.epochId)
+    # print(f"TPT: {timepoint}")
+    # print(f"ENCOUNTER: {encounter}")
+    # print(f"EPOCH: {epoch}")
     entry = {
       'instance': timepoint,
       'timing': timing,
@@ -45,21 +48,22 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
   # Activities
   activities = {}
   for activity in activity_order:
-    activities[activity.name] = visit_row.copy()
     for timepoint in timepoints:
       if activity.id in timepoint.activityIds:
+        if activity.name not in activities:
+          activities[activity.name] = visit_row.copy()
         activities[activity.name][timepoint.id] = "X" 
   
   # Form results
   labels = []
   for item in ai:
-    label = item['encounter'].label if item['encounter'].label else item['instance'].label
+    label = item['encounter'].label if item['encounter'] else item['instance'].label
     labels.append(label)
   results = []
-  results.append([""] + [item['epoch'].label for item in ai])
+  results.append([""] + [item['epoch'].label if item['epoch'] else '&nbsp;' for item in ai])
   results.append([""] + labels)
-  results.append([""] + [item['instance'].label for item in ai])
-  results.append([""] + [item['timing'].windowLabel for item in ai])
+  results.append([""] + [item['instance'].label if item['instance'] else '&nbsp;' for item in ai])
+  results.append([""] + [item['timing'].windowLabel if item['timing'] else '&nbsp;'for item in ai])
   for activity in activity_order:
     if activity.name in activities:
       data = activities[activity.name]
