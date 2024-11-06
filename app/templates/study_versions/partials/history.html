@@ -25,14 +25,14 @@
             <td>{{item['import']['created']}}</td> 
             <td>
               <a href="/versions/{{item['id']}}/usdm" class="nav-link text-primary">
-                <i class="me-1 bi bi-filetype-json" style="font-size: 1rem;" title="Return to previous page."></i>USDM JSON
+                <i class="me-1 bi bi-filetype-json" style="font-size: 1rem;" title="View the USDM JSON"></i>USDM JSON
               </a>  
             </td>
             <td>
               {% if loop.index0 != 0 %}
                 {% set previous_id = data['items'][loop.index0 - 1]['id'] %}
                 <a href="/versions/{{item['id']}}/usdmDiff?previous={{previous_id}}" class="nav-link text-primary">
-                  <i class="me-1 bi bi-file-diff" style="font-size: 1rem;" title="Return to previous page."></i>USDM JSON Diff
+                  <i class="me-1 bi bi-file-diff" style="font-size: 1rem;" title="View the difference in the JSON compared to the previous version"></i>USDM JSON Diff
                 </a>  
               {% else %}
                 <p><small><i>No difference possible</i></small></p>

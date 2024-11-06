@@ -22,7 +22,15 @@
             <td>{{item['created']}}</td> 
             <td>{{item['filename']}}</td>
             <td>{{item['status']}}</td>
-            <td><a href="/import/{{item['id']}}/errors">Error file</a></td>
+            <td>
+              {% if item['type'] == "XLSX" %}
+                <a href="/import/{{item['id']}}/errors" class="nav-link text-primary">
+                  <i class="me-1 bi bi-bug" style="font-size: 1rem;" title="Download errors file"></i>Errors File
+                </a>  
+              {% else %}
+                <p><small><i>No errors file available</i></small></p>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>
