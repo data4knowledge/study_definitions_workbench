@@ -393,14 +393,14 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   return templates.TemplateResponse(request, "study_designs/partials/estimands.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines', dependencies=[Depends(protect_endpoint)])
-async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+async def get_study_design_timelines(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.timelines(study_design_id)
   return templates.TemplateResponse(request, "study_designs/partials/timelines.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa', dependencies=[Depends(protect_endpoint)])
-async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
+async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.soa(study_design_id, timeline_id)

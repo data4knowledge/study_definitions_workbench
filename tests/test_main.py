@@ -458,7 +458,6 @@ def test_version_history_data(mocker):
   vp = mock_version_page(mocker)
   response = client.get("/versions/1/history/data?page=1&size=10&filter=")
   assert response.status_code == 200
-  print(f"RESULT: {response.text}")
   assert '<th scope="col">Version</th>' in response.text
   assert '<td>1</td>' in response.text
   assert mock_called(vf)
@@ -477,6 +476,23 @@ def mock_version_page(mocker):
 def mock_usdm_json_init(mocker):
   mock = mocker.patch("app.main.USDMJson.__init__")
   mock.side_effect = [None]
+  return mock
+
+def test_get_study_design_timelines(mocker):
+  uji = mock_usdm_json_init(mocker)
+  ujt = mock_usdm_json_timelines(mocker)
+  response = client.get("/versions/1/studyDesigns/1/timelines")
+  assert response.status_code == 200
+  print(f"RESULT: {response.text}")
+  assert '<a href="/versions/1/studyDesigns/2/timelines/3/soa" class="btn btn-sm btn-outline-primary rounded-5">' in response.text
+  assert 'Special Timeline' in response.text
+  assert mock_called(uji)
+  assert mock_called(ujt)
+
+def mock_usdm_json_timelines(mocker):
+  mock = mocker.patch("app.main.USDMJson.timelines")
+  data = {'id': '1', 'study_id': '2', 'm11': False, 'timelines': [{'id': '3', 'name': 'Special Timeline', }]}
+  mock.side_effect = [data]
   return mock
 
 # @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
