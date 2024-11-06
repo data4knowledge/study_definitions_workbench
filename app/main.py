@@ -314,6 +314,8 @@ async def get_version_history(request: Request, id: int, page: int, size: int, f
   user, present_in_db = user_details(request, session)
   version = Version.find(id, session)
   data = Version.page(page, size, filter, version.study_id, session)
+  for item in data['items']:
+    item['import'] = FileImport.find(item['import_id'], session)
   pagination = Pagination(data, f"/versions/{id}/history/data")
   return templates.TemplateResponse(request, "study_versions/partials/history.html", {'user': user, 'pagination': pagination, 'data': data})
 

@@ -9,21 +9,33 @@
       <thead>
         <tr>
           <th scope="col">Version</th>
-          <th scope="col">Study</th>
-          <th scope="col">JSON</th>
-          <th scope="col">Difference</th>
+          <th scope="col">Filename</th>
+          <th scope="col">Import Type</th>
+          <th scope="col">When</th>
+          <th scope="col">USDM JSON</th>
+          <th scope="col">USDM JSON Difference</th>
         </tr>
       </thead>
       <tbody>
         {% for item in data['items']: %}
           <tr>
             <td>{{item['version']}}</td>
-            <td>{{item}}</td> 
-            <td><a href="/versions/{{item['id']}}/usdm">View JSON</a></td>
+            <td>{{item['import']['filename']}}</td> 
+            <td>{{item['import']['type']}}</td> 
+            <td>{{item['import']['created']}}</td> 
+            <td>
+              <a href="/versions/{{item['id']}}/usdm" class="nav-link text-primary">
+                <i class="me-1 bi bi-filetype-json" style="font-size: 1rem;" title="Return to previous page."></i>USDM JSON
+              </a>  
+            </td>
             <td>
               {% if loop.index0 != 0 %}
                 {% set previous_id = data['items'][loop.index0 - 1]['id'] %}
-                <a href="/versions/{{item['id']}}/usdmDiff?previous={{previous_id}}">JSON Diff</a>
+                <a href="/versions/{{item['id']}}/usdmDiff?previous={{previous_id}}" class="nav-link text-primary">
+                  <i class="me-1 bi bi-file-diff" style="font-size: 1rem;" title="Return to previous page."></i>USDM JSON Diff
+                </a>  
+              {% else %}
+                <p><small><i>No difference possible</i></small></p>
               {% endif %}
             </td>
           </tr>
