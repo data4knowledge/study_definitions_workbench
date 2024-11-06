@@ -283,7 +283,7 @@ def test_file_list_local_invalid(mocker, caplog):
   lfd = mock_local_files_dir_error(mocker)
   response = client.get("/fileList?dir=xxx&url=http://example.com")
   assert response.status_code == 200
-  print(f"RESULT: {response.text}")
+  #print(f"RESULT: {response.text}")
   assert """Error Error Error!!!""" in response.text
   assert mock_called(uc)
   assert mock_called(fp)
@@ -369,8 +369,8 @@ def test_import_status(mocker):
   uc = mock_user_check_exists(mocker)
   response = client.get("/import/status?page=1&size=10&filter=")
   assert response.status_code == 200
-  print(f"RESULT: {response.text}")
-  assert '<h4 class="card-title">Import Status</h4>' in response.text
+  #print(f"RESULT: {response.text}")
+  assert '<h5 class="card-title">Import Status</h5>' in response.text
   assert mock_called(uc)
 
 def test_import_status_data(mocker):
@@ -427,14 +427,15 @@ def mock_data_file_path_error(mocker):
   return mock
 
 def test_version_history(mocker):
-  print(f"TEST")
+  #print(f"TEST")
   uc = mock_user_check_exists(mocker)
   usv = mock_usdm_study_version(mocker)
   uji = mock_usdm_json_init(mocker)
   response = client.get("/versions/1/history")
+  #print(f"RESULT: {response.text}")
   assert response.status_code == 200
-  assert '<h4 class="card-title">The Offical Study Title For Test</h4>' in response.text
-  assert '<h6 class="card-subtitle mb-2 text-muted">Sponsor: Identifier For Test | Phase: Phase For Test | Identifier: </h6>' in response.text
+  assert '<h5 class="card-title">Version History</h5>' in response.text
+  assert ' <h6 class="card-subtitle mb-2 text-muted">Title: The Offical Study Title For Test | Sponsor: Identifier For Test| Phase: Phase For Test | Identifier:</h6>' in response.text
   assert mock_called(uc)
   assert mock_called(usv)
   assert mock_called(uji)
@@ -456,12 +457,14 @@ def mock_usdm_study_version(mocker):
 def test_version_history_data(mocker):
   vf = mock_version_find(mocker)
   vp = mock_version_page(mocker)
+  fif = mock_file_import_find(mocker)
   response = client.get("/versions/1/history/data?page=1&size=10&filter=")
   assert response.status_code == 200
   assert '<th scope="col">Version</th>' in response.text
   assert '<td>1</td>' in response.text
   assert mock_called(vf)
   assert mock_called(vp)
+  assert mock_called(fif)
 
 def mock_version_find(mocker):
   mock = mocker.patch("app.model.version.Version.find")
@@ -470,7 +473,7 @@ def mock_version_find(mocker):
 
 def mock_version_page(mocker):
   mock = mocker.patch("app.model.version.Version.page")
-  mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version()]}]
+  mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version().model_dump()]}]
   return mock
 
 def mock_usdm_json_init(mocker):
@@ -483,7 +486,7 @@ def test_get_study_design_timelines(mocker):
   ujt = mock_usdm_json_timelines(mocker)
   response = client.get("/versions/1/studyDesigns/1/timelines")
   assert response.status_code == 200
-  print(f"RESULT: {response.text}")
+  #print(f"RESULT: {response.text}")
   assert '<a href="/versions/1/studyDesigns/2/timelines/3/soa" class="btn btn-sm btn-outline-primary rounded-5">' in response.text
   assert 'Special Timeline' in response.text
   assert mock_called(uji)
@@ -492,6 +495,26 @@ def test_get_study_design_timelines(mocker):
 def mock_usdm_json_timelines(mocker):
   mock = mocker.patch("app.main.USDMJson.timelines")
   data = {'id': '1', 'study_id': '2', 'm11': False, 'timelines': [{'id': '3', 'name': 'Special Timeline', }]}
+  mock.side_effect = [data]
+  return mock
+
+def test_get_study_design_soa(mocker):
+  uji = mock_usdm_json_init(mocker)
+  ujs = mock_usdm_json_soa(mocker)
+  response = client.get("/versions/1/studyDesigns/2/timelines/3/soa")
+  assert response.status_code == 200
+  #print(f"RESULT: {response.text}")
+  assert '<h5 class="card-title">Schedule of Activities: SOA LABEL</h5>' in response.text
+  assert '<h6 class="card-subtitle mb-2 text-muted">Description: SOA Description | Main: False | Name: SoA Name</h6>' in response.text
+  assert mock_called(uji)
+  assert mock_called(ujs)
+
+def mock_usdm_json_soa(mocker):
+  mock = mocker.patch("app.main.USDMJson.soa")
+  data = {
+    'timeline': {'label': "SOA LABEL", 'description': "SOA Description", 'mainTimeline': False, 'name': 'SoA Name'},
+    'soa': "<table>SOA Table</table>"
+  }
   mock.side_effect = [data]
   return mock
 

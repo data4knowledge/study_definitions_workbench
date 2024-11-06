@@ -32,7 +32,7 @@ class LocalFiles:
       dirs = []
       parts = path.split(self.root)
       rel_dir = parts[-1] if parts[-1] else '/'
-      print(f"DIR: p='{path}', r='{self.root}' e={parts[-1]}")
+      #print(f"DIR: p='{path}', r='{self.root}' e={parts[-1]}")
       if not str(path).endswith(self.root):
         path_obj = Path(path)
         parent_dir = str(path_obj.parent.absolute())

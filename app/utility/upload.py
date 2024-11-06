@@ -10,7 +10,7 @@ from app.utility.background import process_excel, process_word, process_fhir_v1,
 
 async def process_xl(request, templates, user, source='browser'):
   files_method = {'browser': get_xl_files, 'pfda': None, 'os': get_xl_files_os}
-  print(f"PROCESS XL")
+  #print(f"PROCESS XL")
   try:
     form = await request.form()
     import_file, image_files, messages = await files_method[source](form)
@@ -30,7 +30,7 @@ async def process_xl(request, templates, user, source='browser'):
     return templates.TemplateResponse('import/partials/upload_fail.html', {"request": request, 'filename': '', 'messages': ['Exception raised while uploading files, see logs for more information'], 'type': 'Excel'})  
 
 async def get_xl_files(form: File):
-  print(f"GET XL FILES")
+  #print(f"GET XL FILES")
   image_files = []
   messages = []
   import_file = None
@@ -53,7 +53,7 @@ async def get_xl_files(form: File):
   return import_file, image_files, messages
 
 async def get_xl_files_os(form: File):
-  print(f"GET XL FILES OS")
+  #print(f"GET XL FILES OS")
   messages = []
   image_files = []
   import_file = None

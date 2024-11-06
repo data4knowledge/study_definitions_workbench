@@ -40,11 +40,11 @@ def test_run(playwright: Playwright) -> None:
 def username():
   se = ServiceEnvironment()
   value = se.get("USERNAME")
-  print(f"USERNAME: {value}")
+  #print(f"USERNAME: {value}")
   return value
 
 def password():
   se = ServiceEnvironment()
   value = se.get('PASSWORD')  
-  print(f"PASSWORD: {value}")
+  #print(f"PASSWORD: {value}")
   return value

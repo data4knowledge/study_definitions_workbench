@@ -75,13 +75,13 @@ class Hunk():
 class UnifiedDiff():
 
   def __init__(self, old_data: list, new_data: list):
-    print(f"UD: Processing...")
+    #print(f"UD: Processing...")
     self._hunks = []
     hunk = None
     application_logger.debug(f"Unified diff processing ...")
     for text in difflib.unified_diff(old_data, new_data):
       application_logger.debug(f"Unified diff text '{text}'")
-      print(f"UD: {text}")
+      #print(f"UD: {text}")
       if text.startswith('---') or text.startswith('+++'):
         pass
       elif text.startswith('@@'):

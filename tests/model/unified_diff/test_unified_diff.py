@@ -38,6 +38,7 @@ def test_hunk_error(caplog):
   assert error_logged(caplog, "Failed to decode hunk header '@@ 1,xxx 1,9 @@'")
 
 def test_unified_diff_1(caplog):
+  caplog.set_level('INFO')
   old_lines = [
     'line 1',
     'line 2',
@@ -63,10 +64,11 @@ def test_unified_diff_1(caplog):
     'New line 11'
   ]
   ud = UnifiedDiff(old_lines, new_lines)
+  #print(f"CAPLOG: {caplog.records}")
   assert len(caplog.records) == 0
   assert len(ud._hunks) == 1
   #assert ud.to_html() == "xxx"
-  print(f"HTML: {ud.to_html()}")
+  #print(f"HTML: {ud.to_html()}")
 
 def error_logged(caplog, text):
   correct_level = caplog.records[-1].levelname == "ERROR"
