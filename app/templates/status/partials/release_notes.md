@@ -1,3 +1,12 @@
+**Release 0.24.0, 2024-11-07**
+
+- Add in SoA display
+- Add study version view
+- Add JSON view
+- Add JSON difference view
+- Update study views
+- Tidy buttons
+
 **Release 0.23.0, 2024-10-29**
 
 - Fix issue with Github login
