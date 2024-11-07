@@ -4,17 +4,17 @@
       <h5 class="card-title">{{title}}</h5>
       <div class="d-flex justify-right">
         {% if help %}
-          <a class="text-info me-2" style="font-size: 1rem;" data-bs-toggle="modal" data-bs-target="#headerHelpModal">
-            <i class="me-1 bi bi-info-circle" title="Help"></i>
+          <a class="text-info me-2"title="Help" data-bs-toggle="modal" data-bs-target="#headerHelpModal">
+            <i class="me-1 bi bi-info-circle" style="font-size: 1rem;"></i>
           </a>  
         {% endif %}
         {% for link in links: %}
-          <a href="{{link['href']}}" class="nav-link text-primary me-2">
-            <i class="me-1 {{link['icon']}}" style="font-size: 1rem;" title="{{link['tooltip']}}"></i>
+          <a href="{{link['href']}}" class="nav-link text-primary me-2" title="{{link['tooltip']}}">
+            <i class="me-1 {{link['icon']}}" style="font-size: 1rem;"></i>
           </a>
         {% endfor %}
-        <a href="#" class="nav-link text-primary" onclick="history.back()">
-          <i class="me-1 bi bi-arrow-up-circle" style="font-size: 1rem;" title="Return to previous page."></i>Back
+        <a href="#" class="nav-link text-primary" title="Return to previous page" onclick="history.back()">
+          <i class="me-1 bi bi-arrow-up-circle" style="font-size: 1rem;"></i>Back
         </a>  
       </div>  
     </div>

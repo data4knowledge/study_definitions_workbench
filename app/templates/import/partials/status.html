@@ -24,8 +24,8 @@
             <td>{{item['status']}}</td>
             <td>
               {% if item['type'] == "XLSX" %}
-                <a href="/import/{{item['id']}}/errors" class="nav-link text-primary">
-                  <i class="me-1 bi bi-bug" style="font-size: 1rem;" title="Download errors file"></i>Errors File
+                <a href="/import/{{item['id']}}/errors" class="btn btn-sm btn-outline-primary rounded-5" title="Download errors file">
+                  <i class="me-1 bi bi-bug"></i>Errors File
                 </a>  
               {% else %}
                 <p><small><i>No errors file available</i></small></p>
