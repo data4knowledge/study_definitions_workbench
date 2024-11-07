@@ -15,23 +15,112 @@
 
 {% block main_content %}
   {% set user_info = request.session['userinfo'] %}
-  <div class="container-fluid mt-3">
-    <div class="row row-cols-2">
-      <div class="col">
+  <div class="container-fluid">
+    <div class="row row-cols-md-2 row-cols-sm-1">
+      <div class="col mt-3">
         <div class="card rounded-3">
           <div class="card-body">
-            <h4 class="card-title">{{ data['system'] }} (v{{ data['version'] }})</h4>
-            <h6 class="card-subtitle mb-2 text-muted">System Information</h6>
+            <h5 class="card-title">{{ data['system'] }} (v{{ data['version'] }})</h5>
             <p>This tool is the swiss army knife for the TransCelerate / CDISC Unified Studies Definition Model.</p>
             <p>The tool is currently at a beta level of level of development so expect bugs and issues. If you encounter any issues please feel free to send an email 'company' then the funny atty symbol and then 'data4knowledge.dk' [written this way to avoid the spammers].</p>
+            <h5 class="card-subtitle mb-2 text-muted">Licence Information</h5>
+            <p>This software is licensed using the ' GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007' licence, see <a href="https://github.com/data4knowledge/study_definitions_workbench/blob/main/LICENSE">the full licence</a>.</p>
+            <p>The following package are used by the tool and their respective licence terms are recognized.</p>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Package</th>
+                    <th scope="col">Licence</th>
+                    <th scope="col">Details (pypi.org)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="col">fastapi</td>
+                    <td>MIT</td>  
+                    <td><a href="https://pypi.org/project/pytest-playwright/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">d4kms</td>
+                    <td>GPL-3.0</td>  
+                    <td><a href=">https://pypi.org/project/d4kms/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">itsdangerous</td>
+                    <td>BSD</td>  
+                    <td><a href="https://pypi.org/project/itsdangerous/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">starlette</td>
+                    <td>BSD</td>  
+                    <td><a href="https://pypi.org/project/starlette/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">Authlib</td>
+                    <td>BSD</td>  
+                    <td><a href="https://pypi.org/project/Authlib/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">sqlalchemy</td>
+                    <td>MIT</td>  
+                    <td><a href=">https://pypi.org/project/SQLAlchemy/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">alembic</td>
+                    <td>MIT</td>  
+                    <td><a href="https://pypi.org/project/alembic/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">python-docx</td>
+                    <td>MIT</td>  
+                    <td><a href="https://pypi.org/project/python-docx/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">docx2text</td>
+                    <td>MIT</td>  
+                    <td><a href=">https://pypi.org/project/docx2txt/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">usdm</td>
+                    <td>GPL-3.0</td>  
+                    <td><a href=">https://pypi.org/project/usdm/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">pytest</td>
+                    <td>MIT</td>  
+                    <td><a href=">https://pypi.org/project/pytest/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">pytest-mock</td>
+                    <td>MIT</td>  
+                    <td><a href="https://pypi.org/project/pytest-mock/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">beautifulsoup4</td>
+                    <td>MIT</td>  
+                    <td><a href="https://pypi.org/project/beautifulsoup4/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">playwright</td>
+                    <td>Apache 2.0</td>  
+                    <td><a href="https://pypi.org/project/playwright/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                  <tr>
+                    <td scope="col">pytest-playwright</td>
+                    <td>Apache 2.0</td>  
+                    <td><a href="https://pypi.org/project/pytest-playwright/" class="btn btn-sm btn-outline-primary rounded-5">More Details</a></td>  
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col">
+      <div class="col mt-3">
         <div class="card rounded-3">
           <div class="card-body">
-            <h4 class="card-title">Version History</h4>
-            <h6 class="card-subtitle mb-2 text-muted">System release log</h6>
+            <h5 class="card-title">Release Log</h5>
             {{data['release_notes']|safe}}
           </div>
         </div>
