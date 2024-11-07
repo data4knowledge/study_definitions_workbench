@@ -159,7 +159,7 @@ class USDMJson():
         section = self._section_by_title_contains("trial schema")  
       if not section:
         section = self._section_by_title_contains("study design")
-      return self._image_in_section(section) if section else '[Study Design]'
+      return {'id': self.id, 'm11': self.m11, 'image': self._image_in_section(section) if section else '[Study Design]'}
     else:
       return None
     
