@@ -1,14 +1,11 @@
 <div>
-  {% if not data['m11'] %}
-    {% with %}
-      {% include "study_designs/partials/not_supported.html" %}
-    {% endwith %} 
-  {% else %}
+  {% if data['m11'] %}
     {% with data=data %}
       {% include "study_designs/partials/doc_text.html" %}
     {% endwith %} 
+  {% else %}
+    {% with show_link=False, note="Ongoing work to extract the dashboard view from USDM" %}
+      {% include "shared/partials/not_implemented.html" %}
+    {% endwith %}
   {% endif %}
 </div>
-
-
-

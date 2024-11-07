@@ -1,6 +1,17 @@
 <div class="overflow-auto">
-  {% if not data['m11'] %}
-    <table class="table responsive mt-1">
+  {% if data['m11'] %}
+    <div class="outer-div row mt-3">
+      <div class="col-12 extract-div mt-3 mb-3">
+        <div class="overflow-auto section-div">
+          {{data['text']|safe}}
+        </div>
+      </div>
+    </div>  
+  {% else %}
+    {% with show_link=False, note="Ongoing work to extract the dashboard view from USDM" %}
+      {% include "shared/partials/not_implemented.html" %}
+    {% endwith %}
+    <!-- <table class="table responsive mt-1">
       <thead>
         <tr>
           <th scope="col">Arm Name</th>
@@ -62,15 +73,7 @@
           {% endfor %}
         {% endfor %}
       </tbody>
-    </table>
-  {% else %}
-    <div class="outer-div row mt-3">
-      <div class="col-12 extract-div mt-3 mb-3">
-        <div class="overflow-auto section-div">
-          {{data['text']|safe}}
-        </div>
-      </div>
-    </div>  
+    </table> -->
   {% endif %}
 </div>
 

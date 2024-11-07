@@ -1,6 +1,17 @@
 <div>
-  {% if not data['m11'] %}
-    <ul class="nav nav-tabs role="tablist">
+  {% if data['m11'] %}
+    <div class="outer-div row mt-3">
+      <div class="col-12 extract-div mt-3 mb-3">
+        <div class="overflow-auto section-div">
+          {{data['text']|safe}}
+        </div>
+      </div>
+    </div>  
+  {% else %}
+    {% with show_link=False, note="Ongoing work to extract the dashboard view from USDM" %}
+      {% include "shared/partials/not_implemented.html" %}
+    {% endwith %}
+    <!-- <ul class="nav nav-tabs role="tablist">
       {% for item in data['estimands'] %}
         {% set id = "estimand_tab-" ~ loop.index0 ~ "_div" %}
         <li class="nav-item">
@@ -75,15 +86,7 @@
         </div>
       {% endfor %}
       </div>
-    </div>
-  {% else %}
-    <div class="outer-div row mt-3">
-      <div class="col-12 extract-div mt-3 mb-3">
-        <div class="overflow-auto section-div">
-          {{data['text']|safe}}
-        </div>
-      </div>
-    </div>  
+    </div> -->
   {% endif %}
 </div>
 
