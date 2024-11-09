@@ -86,6 +86,11 @@ def user_details(request: Request, db):
   user, present_in_db = User.check(user_info, db)
   return user, present_in_db
 
+def is_admin(request: Request):
+  user_info = request.session['userinfo']
+  admin = next((x for x in user_info['roles'] if x['name'] == 'Admin'), None)
+  return True if admin else False
+
 @app.websocket("/alerts/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
   await connection_manager.connect(user_id, websocket)
@@ -166,7 +171,8 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
 @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
+  user_is_admin = is_admin(request)
+  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}, 'admin': user_is_admin}
   return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
   
 @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
