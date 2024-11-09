@@ -1,4 +1,4 @@
-**Release 0.24.0, 2024-11-09**
+**Release 0.25.0, 2024-11-09**
 
 - Add in user roles
 - Improve handling of admin role
