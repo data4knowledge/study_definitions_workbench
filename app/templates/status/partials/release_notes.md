@@ -1,3 +1,8 @@
+**Release 0.24.0, 2024-11-09**
+
+- Add in user roles
+- Improve handling of admin role
+
 **Release 0.24.0, 2024-11-07**
 
 - Add in SoA display
