@@ -21,7 +21,7 @@ client = TestClient(app)
 async_client =  AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
 
 async def override_protect_endpoint(request: Request):
-  request.session['userinfo'] = {'sub': "1234", 'email': 'user@example.com', 'nickname': 'Nickname'}
+  request.session['userinfo'] = {'sub': "1234", 'email': 'user@example.com', 'nickname': 'Nickname', 'roles': []}
   return None
 
 app.dependency_overrides[protect_endpoint] = override_protect_endpoint
@@ -259,9 +259,17 @@ def mock_endpoint_create(mocker):
 def test_about(mocker):
   uc = mock_user_check_exists(mocker)
   mock_release_notes(mocker)
-  response = client.get("/about")
+  response = client.get("/help/about")
   assert response.status_code == 200
   assert """Release Notes Test Testy""" in response.text
+  assert mock_called(uc)
+
+def test_examples(mocker):
+  uc = mock_user_check_exists(mocker)
+  mock_examples(mocker)
+  response = client.get("/help/examples")
+  assert response.status_code == 200
+  assert """Examples Test Testy""" in response.text
   assert mock_called(uc)
 
 def test_file_list_local(mocker):
@@ -834,6 +842,12 @@ def mock_release_notes(mocker):
   rn.side_effect = [None]
   rnn = mocker.patch("d4kms_ui.ReleaseNotes.notes")
   rnn.side_effect = ['Release Notes Test Testy']
+
+def mock_examples(mocker):
+  mp = mocker.patch("d4kms_ui.MarkdownPage.__init__")
+  mp.side_effect = [None]
+  mpr = mocker.patch("d4kms_ui.MarkdownPage.read")
+  mpr.side_effect = ['Examples Test Testy']
 
 def factory_user() -> User:
   return User(**{'identifier': 'FRED', 'email': "fred@example.com", 'display_name': "Fred Smith", 'is_active': True, 'id': 1})

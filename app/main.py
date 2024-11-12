@@ -210,7 +210,6 @@ def about(request: Request, session: Session = Depends(get_db)):
 def examples(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   ex = MarkdownPage('examples.md', os.path.join(templates_path, 'help', 'partials'))
-  print(f"EXAMPLE: {ex.read()}")
   data = {'examples': ex.read(), 'system': SYSTEM_NAME, 'version': VERSION}
   return templates.TemplateResponse(request, "help/examples.html", {'user': user, 'data': data})
 
