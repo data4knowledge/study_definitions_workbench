@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
 from d4kms_ui.release_notes import ReleaseNotes
+from d4kms_ui.markdown_page import MarkdownPage
 from d4kms_ui.pagination import Pagination
 from app.model.database import get_db
 from app.model.user import User
@@ -198,12 +199,20 @@ def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session 
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': Endpoint.valid()}}
   return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
 
-@app.get("/about", dependencies=[Depends(protect_endpoint)])
+@app.get("/help/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  rn = ReleaseNotes(os.path.join(templates_path, 'status', 'partials'))
+  rn = ReleaseNotes(os.path.join(templates_path, 'help', 'partials'))
   data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
-  return templates.TemplateResponse(request, "about/about.html", {'user': user, 'data': data})
+  return templates.TemplateResponse(request, "help/about.html", {'user': user, 'data': data})
+
+@app.get("/help/examples", dependencies=[Depends(protect_endpoint)])
+def examples(request: Request, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  ex = MarkdownPage('examples.md', os.path.join(templates_path, 'help', 'partials'))
+  print(f"EXAMPLE: {ex.read()}")
+  data = {'examples': ex.read(), 'system': SYSTEM_NAME, 'version': VERSION}
+  return templates.TemplateResponse(request, "help/examples.html", {'user': user, 'data': data})
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
