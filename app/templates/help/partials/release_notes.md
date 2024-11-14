@@ -1,7 +1,9 @@
-<h5>Release 0.25.0, 2024-11-09</h5>
+<h5>Release 0.25.0, 2024-11-14</h5>
 
 - Add in user roles
 - Improve handling of admin role
+- Add in help examples
+- Add in help issues and feedback
 
 <h5>Release 0.24.0, 2024-11-07</h5>
 
