@@ -210,8 +210,15 @@ def about(request: Request, session: Session = Depends(get_db)):
 def examples(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   ex = MarkdownPage('examples.md', os.path.join(templates_path, 'help', 'partials'))
-  data = {'examples': ex.read(), 'system': SYSTEM_NAME, 'version': VERSION}
+  data = {'examples': ex.read()}
   return templates.TemplateResponse(request, "help/examples.html", {'user': user, 'data': data})
+
+@app.get("/help/feedback", dependencies=[Depends(protect_endpoint)])
+def examples(request: Request, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  fb = MarkdownPage('feedback.md', os.path.join(templates_path, 'help', 'partials'))
+  data = {'feedback': fb.read()}
+  return templates.TemplateResponse(request, "help/feedback.html", {'user': user, 'data': data})
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
