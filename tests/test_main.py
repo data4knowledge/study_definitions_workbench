@@ -272,6 +272,14 @@ def test_examples(mocker):
   assert """Examples Test Testy""" in response.text
   assert mock_called(uc)
 
+def test_feedback(mocker):
+  uc = mock_user_check_exists(mocker)
+  mock_feedback(mocker)
+  response = client.get("/help/examples")
+  assert response.status_code == 200
+  assert """Feedback Test Testy Testy""" in response.text
+  assert mock_called(uc)
+
 def test_file_list_local(mocker):
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
@@ -848,6 +856,12 @@ def mock_examples(mocker):
   mp.side_effect = [None]
   mpr = mocker.patch("d4kms_ui.MarkdownPage.read")
   mpr.side_effect = ['Examples Test Testy']
+
+def mock_feedback(mocker):
+  mp = mocker.patch("d4kms_ui.MarkdownPage.__init__")
+  mp.side_effect = [None]
+  mpr = mocker.patch("d4kms_ui.MarkdownPage.read")
+  mpr.side_effect = ['Feedback Test Testy Testy']
 
 def factory_user() -> User:
   return User(**{'identifier': 'FRED', 'email': "fred@example.com", 'display_name': "Fred Smith", 'is_active': True, 'id': 1})
