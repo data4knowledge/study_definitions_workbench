@@ -34,8 +34,6 @@ from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
-#from difflib import *
-import difflib
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
@@ -77,7 +75,7 @@ templates.env.globals['title_page_study_list_headings'] = title_page_study_list_
 
 def protect_endpoint(request: Request) -> None:
   if single_user():
-    request.session['userinfo'] = {'email': '', 'sub': 'SUE|1234567890', 'nickname': 'Single User'}
+    request.session['userinfo'] = User.single_user()
     return None
   else:
     authorisation.protect_route(request, "/login")
@@ -561,7 +559,7 @@ async def protocl_section(request: Request, id: int, section_id: str, session: S
 @app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
 async def database_clean(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  if user.email == "daveih1664dk@gmail.com":
+  if is_admin(request):
     database_managr = DBM(session)
     database_managr.clear_all()
     endpoint, validation = Endpoint.create('LOCAL TEST', 'http://localhost:8010/m11', "FHIR", user.id, session)
@@ -576,7 +574,7 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
 @app.get("/database/debug", dependencies=[Depends(protect_endpoint)])
 async def database_clean(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  if user.email == "daveih1664dk@gmail.com":
+  if is_admin(request):
     data = {}
     data['users'] = json.dumps(User.debug(session), indent=2)
     data['studies'] = json.dumps(Study.debug(session), indent=2)
@@ -588,19 +586,19 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
     return response
   else:
     await connection_manager.error(f"Operation request denied", str(user.id))
-    application_logger.error(f"User '{user.id}', '{user.email} attempted to debug the database!")
+    application_logger.error(f"User with id '{user.id}', email '{user.email}' attempted to debug the database!")
     return RedirectResponse(f"/users/{user.id}/show", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.patch("/debug", dependencies=[Depends(protect_endpoint)])
 async def debug_level(request: Request, level: str='INFO', session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  if user.email == "daveih1664dk@gmail.com" and level.upper() in ['DEBUG', 'INFO']:
+  if is_admin(request) and level.upper() in ['DEBUG', 'INFO']:
     level = application_logger.DEBUG if level.upper() == 'DEBUG' else application_logger.INFO
     application_logger.set_level(level)
     return templates.TemplateResponse(request, 'users/partials/debug.html', {'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
   else:
     await connection_manager.error(f"Operation request denied", str(user.id))
-    application_logger.error(f"User '{user.id}', '{user.email} attempted to change debug level!")
+    application_logger.error(f"User with id '{user.id}', email '{user.email}' attempted to change debug level!")
     return templates.TemplateResponse(request, 'users/partials/debug.html', {'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
 
 @app.get("/logout")

@@ -13,6 +13,8 @@ The following variables are required for authentication and the server. Note tha
 | AUTH0_CLIENT_ID | Auth0 client id |
 | AUTH0_CLIENT_SECRET | Auth0 client secret |
 | AUTH0_AUDIENCE | Auth0 audience key |
+| AUTH0_MNGT_CLIENT_ID | Auth0 management API client id |
+| AUTH0_MNGT_CLIENT_SECRET | Auth0 management API client secret |
 | ROOT_URL | The server's base url. Can be set but deprecated |
 
 The following other environment varaibles are also required:
@@ -26,6 +28,7 @@ The following other environment varaibles are also required:
 | LOCALFILE_PATH | The path to where local files will reside within the volume |
 | ADDRESS_SERVER_URL | URL for the address server |
 | SINGLE_USER | 'True' for single user environment, 'False' otherwise |
+| FILE_PICKER | The file picker to be used, 'browser' for using the normal browser picker for file uploads or 'os' using a built in picker that access the server environment |
 
 # Fly Deployment
 
@@ -116,7 +119,10 @@ The following environment variables need to be set (The remainder are set within
 - AUTH0_CLIENT_ID
 - AUTH0_CLIENT_SECRET
 - AUTH0_AUDIENCE
+- AUTH0_MNGT_CLIENT_ID
+- AUTH0_MNGT_CLIENT_SECRET
 - ROOT_URL
 - SINGLE_USER
+- FILE_PICKER 
 
 For a single user environment the AUTH0 variables can be empty.

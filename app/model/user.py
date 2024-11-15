@@ -89,6 +89,10 @@ class User(UserBase):
     result = {'items': results, 'count': count }
     return result
 
+  @classmethod
+  def single_user(cls) -> list[dict]:
+    return {'email': '', 'sub': 'SUE|1234567890', 'nickname': 'Single User', 'roles': []}
+  
   def update_display_name(self, display_name: str, session: Session) -> 'User':
     db_item = session.query(UserDB).filter(UserDB.id == self.id).first()
     valid, validation = self.__class__._is_valid(db_item.identifier, db_item.email, display_name)

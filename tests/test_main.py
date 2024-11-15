@@ -32,11 +32,28 @@ def test_home():
   assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text in response.text
 
 @pytest.mark.anyio
-async def test_login(mocker, monkeypatch):
+async def test_login_single(mocker, monkeypatch):
   monkeypatch.setenv("SINGLE_USER", "True")
   response = await async_client.get("/login")
   assert response.status_code == 307
   assert str(response.next_request.url) == "http://test/index"
+
+# @pytest.mark.anyio
+# async def test_login_mutltiple_authorised(mocker):
+#   # session = async_client.
+#   # session['id_token'] = 'here'
+#   # session.save()
+#   response = await async_client.get("/login")
+#   assert response.status_code == 307
+#   assert str(response.next_request.url) == "http://test/index"
+
+# @pytest.mark.anyio
+# async def test_login_mutltiple_not_authorised(mocker):
+#   l = mocker.patch("d4kms_generic.auth0_service.Auth0Service.login")
+#   l.side_effect = [None]
+#   response = await async_client.get("/login")
+#   assert mock_called(l)
+#   assert response.status_code == 200
 
 def test_index_no_user(mocker):
   mock_user_check_fail(mocker)
@@ -767,7 +784,7 @@ def mock_usdm_json_soa(mocker):
 # @app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
 # async def database_clean(request: Request, session: Session = Depends(get_db)):
 #   user, present_in_db = user_details(request, session)
-#   if user.email == "daveih1664dk@gmail.com":
+#   if admin:
 #     database_managr = DBM(session)
 #     database_managr.clear_all()
 #     endpoint, validation = Endpoint.create('LOCAL TEST', 'http://localhost:8010/m11', "FHIR", user.id, session)
@@ -782,7 +799,7 @@ def mock_usdm_json_soa(mocker):
 # @app.get("/database/debug", dependencies=[Depends(protect_endpoint)])
 # async def database_clean(request: Request, session: Session = Depends(get_db)):
 #   user, present_in_db = user_details(request, session)
-#   if user.email == "daveih1664dk@gmail.com":
+#   if admin:
 #     data = {}
 #     data['users'] = json.dumps(User.debug(session), indent=2)
 #     data['studies'] = json.dumps(Study.debug(session), indent=2)
@@ -800,7 +817,7 @@ def mock_usdm_json_soa(mocker):
 # @app.patch("/debug", dependencies=[Depends(protect_endpoint)])
 # async def debug_level(request: Request, level: str='INFO', session: Session = Depends(get_db)):
 #   user, present_in_db = user_details(request, session)
-#   if user.email == "daveih1664dk@gmail.com" and level.upper() in ['DEBUG', 'INFO']:
+#   if admin:
 #     level = application_logger.DEBUG if level.upper() == 'DEBUG' else application_logger.INFO
 #     application_logger.set_level(level)
 #     return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
