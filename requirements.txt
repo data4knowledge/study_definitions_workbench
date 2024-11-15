@@ -12,4 +12,5 @@ pytest==8.2.2
 pytest-mock==3.14.0
 beautifulsoup4==4.12.3
 playwright==1.48.0
-pytest-playwright==0.5.2 
+pytest-playwright==0.5.2
+auth0-python==4.7.2
