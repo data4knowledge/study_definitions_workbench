@@ -35,6 +35,10 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
+from .dependencies.dependency import *
+from .routers import users
+from app.dependencies.templates import templates
+
 DataFiles.clean_and_tidy()
 DataFiles.check()
 LocalFiles.check()
@@ -45,6 +49,9 @@ app = FastAPI(
   description = "d4k Study Definitions Workbench. The Swiss Army Knife for DDF / USDM Study Definitions",
   version = VERSION
 )
+
+set_middleware_secret(app)
+app.include_router(users.router)
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, e: Exception):
@@ -58,37 +65,27 @@ application_logger.set_level(application_logger.DEBUG)
 application_logger.info(f"Starting {SYSTEM_NAME}")
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-templates_path = os.path.join(dir_path, "templates")
+#templates_path = os.path.join(dir_path, "templates")
 static_path = os.path.join(dir_path, "static")
 app.mount("/static", StaticFiles(directory=static_path), name="static")
-templates = Jinja2Templates(directory=templates_path)
-application_logger.info(f"Template dir set to '{templates_path}'")
+#templates = Jinja2Templates(directory=templates_path)
+#application_logger.info(f"Template dir set to '{templates_path}'")
 application_logger.info(f"Static dir set to '{static_path}'")
 
-authorisation = Auth0Service(app)
-authorisation.register()
+# # authorisation = Auth0Service(app)
+# # authorisation.register()
 
-templates.env.globals['server_name'] = server_name
-templates.env.globals['single_multiple'] = single_multiple
-templates.env.globals['fhir_version_description'] = fhir_version_description
-templates.env.globals['title_page_study_list_headings'] = title_page_study_list_headings
+# templates.env.globals['server_name'] = server_name
+# templates.env.globals['single_multiple'] = single_multiple
+# templates.env.globals['fhir_version_description'] = fhir_version_description
+# templates.env.globals['title_page_study_list_headings'] = title_page_study_list_headings
 
-def protect_endpoint(request: Request) -> None:
-  if single_user():
-    request.session['userinfo'] = User.single_user()
-    return None
-  else:
-    authorisation.protect_route(request, "/login")
-
-def user_details(request: Request, db):
-  user_info = request.session['userinfo']
-  user, present_in_db = User.check(user_info, db)
-  return user, present_in_db
-
-def is_admin(request: Request):
-  user_info = request.session['userinfo']
-  admin = next((x for x in user_info['roles'] if x['name'] == 'Admin'), None)
-  return True if admin else False
+# def protect_endpoint(request: Request) -> None:
+#   if single_user():
+#     request.session['userinfo'] = User.single_user()
+#     return None
+#   else:
+#     authorisation.protect_route(request, "/login")
 
 @app.websocket("/alerts/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
@@ -167,35 +164,35 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
   #print(f"STUDY LIST: {data}")
   return templates.TemplateResponse(request, "studies/list.html", {'user': user, 'data': data})
 
-@app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
-def user_show(request: Request, id: int, session: Session = Depends(get_db)):
-  user = User.find(id, session)
-  user_is_admin = is_admin(request)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}, 'admin': user_is_admin}
-  return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
+# @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
+# def user_show(request: Request, id: int, session: Session = Depends(get_db)):
+#   user = User.find(id, session)
+#   user_is_admin = is_admin(request)
+#   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}, 'admin': user_is_admin}
+#   return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
   
-@app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
-def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
-  user = User.find(id, session)
-  updated_user, validation = user.update_display_name(name, session)
-  use_user = updated_user if updated_user else user
-  data = {'validation': {'user': validation}}
-  return templates.TemplateResponse(request, f"users/partials/display_name.html", {'user': use_user, 'data': data})
+# @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
+# def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
+#   user = User.find(id, session)
+#   updated_user, validation = user.update_display_name(name, session)
+#   use_user = updated_user if updated_user else user
+#   data = {'validation': {'user': validation}}
+#   return templates.TemplateResponse(request, f"users/partials/display_name.html", {'user': use_user, 'data': data})
   
-@app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
-def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
-  user = User.find(id, session)
-  endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': validation}}
-  return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
+# @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
+# def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
+#   user = User.find(id, session)
+#   endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
+#   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': validation}}
+#   return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
 
-@app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
-def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)):
-  user = User.find(id, session)
-  endpoint = Endpoint.find(endpoint_id, session)
-  endpoint.delete(user.id, session)
-  data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': Endpoint.valid()}}
-  return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
+# @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
+# def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)):
+#   user = User.find(id, session)
+#   endpoint = Endpoint.find(endpoint_id, session)
+#   endpoint.delete(user.id, session)
+#   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': Endpoint.valid()}}
+#   return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
 
 @app.get("/help/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):
