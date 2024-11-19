@@ -178,4 +178,8 @@ tests/test_files/mount/database/test_database.db
 
 # Python test programs, prefix with 'test_'
 xxx_*.py
-install_local_microservices.sh
+
+# Useful files
+install_local_d4kms.sh
+test_server.sh
+dev_server.sh
