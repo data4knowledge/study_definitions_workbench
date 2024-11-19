@@ -5,6 +5,14 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from d4kms_generic.service_environment import ServiceEnvironment
 from app.model import database_tables
 
+def set_test():
+  os.environ["PYTHON_ENVIRONMENT"] = "test"
+
+def clear_test():
+  os.environ["PYTHON_ENVIRONMENT"] = "development"
+
+set_test()
+
 @pytest.fixture(scope="session", autouse=True)
 def tests_setup_and_teardown():
   set_test()
@@ -22,8 +30,3 @@ def db():
   database_tables.Base.metadata.create_all(bind=engine)
   return TestSession()
 
-def set_test():
-  os.environ["PYTHON_ENVIRONMENT"] = "test"
-
-def clear_test():
-  os.environ["PYTHON_ENVIRONMENT"] = "development"
