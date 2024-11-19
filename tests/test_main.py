@@ -61,14 +61,15 @@ async def test_login_single(monkeypatch):
   #assert mock_called(r)
   #assert mock_called(mt)
 
-# @pytest.mark.anyio
-# async def test_login_mutltiple_authorised(mocker):
-#   # session = async_client.
-#   # session['id_token'] = 'here'
-#   # session.save()
-#   response = await async_client.get("/login")
-#   assert response.status_code == 307
-#   assert str(response.next_request.url) == "http://test/index"
+@pytest.mark.anyio
+async def test_login_mutltiple_authorised(monkeypatch, mocker):
+  l = mocker.patch("d4kms_generic.auth0_service.Auth0Service.login")
+  l.side_effect = [None]
+  async_client = mock_async_client()
+  monkeypatch.setenv("SINGLE_USER", "False")
+  response = await async_client.get("/login")
+  assert response.status_code == 200
+  assert str(response.next_request.url) == "http://test/index"
 
 # @pytest.mark.anyio
 # async def test_login_mutltiple_not_authorised(mocker):
