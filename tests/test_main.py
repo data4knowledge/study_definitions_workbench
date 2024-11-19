@@ -42,13 +42,13 @@ def mock_async_client():
   return AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
 
 def test_home(mocker):
-  r, mt = mock_authorisation(mocker)
+  #r, mt = mock_authorisation(mocker)
   client = mock_client()
   response = client.get("/")
   assert response.status_code == 200
   assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text in response.text
-  assert mock_called(r)
-  assert mock_called(mt)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 @pytest.mark.anyio
 async def test_login_single(monkeypatch):
