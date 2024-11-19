@@ -11,9 +11,9 @@ pfda download -folder-id 8539507 -output M11
 rm .env
 echo SINGLE_USER=True >> .env
 echo FILE_PICKER="os" >> .env
-docker image pull data4knowledge/sdw:v0.22.0
+docker image pull data4knowledge/sdw:latest
 docker volume create sdw_data
-docker run -d --env-file .env --mount source=sdw_data,target=/mount -p 8080:8000 data4knowledge/sdw:v0.22.0
+docker run -d --env-file .env --mount source=sdw_data,target=/mount -p 8080:8000 data4knowledge/sdw:latest
 mkdir /var/lib/docker/volumes/sdw_data/_data/localfiles
 mv Sanofi /var/lib/docker/volumes/sdw_data/_data/localfiles
 mv Lilly-Diabetes /var/lib/docker/volumes/sdw_data/_data/localfiles

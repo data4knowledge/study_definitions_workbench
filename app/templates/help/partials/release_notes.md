@@ -1,3 +1,7 @@
+<h5>Release 0.26.0, 2024-11-19</h5>
+
+- Fix bug with single user version calling role server
+
 <h5>Release 0.25.0, 2024-11-14</h5>
 
 - Add in user roles

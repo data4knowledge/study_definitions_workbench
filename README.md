@@ -106,7 +106,7 @@ The image can also be run. obviously, using Docker desktop. Set the environment 
 
 ````
 docker buildx create --name mybuilder --use
-docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:<tag>> . --push
+docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:latest -t data4knowledge/sdw:<tag>> . --push
 docker manifest inspect data4knowledge/sdw:<tag>  
 ```
 

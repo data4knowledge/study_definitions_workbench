@@ -166,6 +166,7 @@ setup_env.sh
 .training_env
 .test_env
 install_local_d4kms.sh
+.env
 
 # Mount for DB and data files
 mount/database/database.db

@@ -9,6 +9,8 @@ services:
       AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
       AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
       SINGLE_USER: ${SINGLE_USER}
+      ROOT_URL: ${ROOT_URL}
+      FILE_PICKER: ${FILE_PICKER}
     volumes:
       - sdw_data:/mount
 volumes:
