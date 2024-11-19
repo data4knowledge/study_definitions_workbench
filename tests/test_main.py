@@ -1,14 +1,12 @@
 import pytest
 import datetime
-from app.main import app
-from app.main import protect_endpoint
 from app.model.user import User
 from app.model.study import Study
 from app.model.version import Version
 from app.model.file_import import FileImport
 from app.model.endpoint import Endpoint
-from app.utility.environment import file_picker
-from d4kms_ui.release_notes import ReleaseNotes
+#from app.utility.environment import file_picker
+#from d4kms_ui.release_notes import ReleaseNotes
 from fastapi import FastAPI, Request
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
@@ -17,26 +15,51 @@ from httpx import ASGITransport, AsyncClient
 def anyio_backend():
   return 'asyncio'
 
-client = TestClient(app)
-async_client =  AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
+def protect_endpoint():
 
-async def override_protect_endpoint(request: Request):
-  request.session['userinfo'] = {'sub': "1234", 'email': 'user@example.com', 'nickname': 'Nickname', 'roles': []}
-  return None
+  from app.main import app
+  from app.main import protect_endpoint
+  
+  def override_protect_endpoint(request: Request):
+    request.session['userinfo'] = {'sub': "1234", 'email': 'user@example.com', 'nickname': 'Nickname', 'roles': []}
+    return None
+  
+  app.dependency_overrides[protect_endpoint] = override_protect_endpoint
 
-app.dependency_overrides[protect_endpoint] = override_protect_endpoint
+def mock_authorisation(mocker):
+  r = mocker.patch("d4kms_generic.auth0_service.Auth0Service.register")
+  mt = mocker.patch("d4kms_generic.auth0_service.Auth0Service.management_token")
+  r.side_effect = [[]]
+  mt.side_effect = [[]]
+  return r, mt
 
-def test_home():
+def mock_client():
+  from app.main import app
+  return TestClient(app)
+
+def mock_async_client():
+  from app.main import app
+  return AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
+
+def test_home(mocker):
+  r, mt = mock_authorisation(mocker)
+  client = mock_client()
   response = client.get("/")
   assert response.status_code == 200
   assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text in response.text
+  assert mock_called(r)
+  assert mock_called(mt)
 
 @pytest.mark.anyio
-async def test_login_single(mocker, monkeypatch):
+async def test_login_single(monkeypatch):
+  #r, mt = mock_authorisation(mocker)
+  async_client = mock_async_client()
   monkeypatch.setenv("SINGLE_USER", "True")
   response = await async_client.get("/login")
   assert response.status_code == 307
   assert str(response.next_request.url) == "http://test/index"
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 # @pytest.mark.anyio
 # async def test_login_mutltiple_authorised(mocker):
@@ -56,24 +79,39 @@ async def test_login_single(mocker, monkeypatch):
 #   assert response.status_code == 200
 
 def test_index_no_user(mocker):
+  #r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   mock_user_check_fail(mocker)
   response = client.get("/index")
   assert response.status_code == 200
   assert """Unable to determine user.""" in response.text
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def test_index_new_user(mocker):
+  #r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   mock_user_check_new(mocker)
   response = client.get("/index")
   assert response.status_code == 200
   assert """Update Display Name""" in response.text
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def test_index_existing_user_none(mocker):
+  #r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   mock_user_check_exists(mocker)
   sp = mock_study_page_none(mocker)
   response = client.get("/index")
   assert response.status_code == 200
   assert """You have not loaded any studies yet.""" in response.text
   assert mock_called(sp)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def mock_study_page_none(mocker):
   mock = mocker.patch("app.model.study.Study.page")
@@ -81,6 +119,9 @@ def mock_study_page_none(mocker):
   return mock
 
 def test_index_existing_user_studies(mocker):
+  #r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   mock_user_check_exists(mocker)
   sp = mock_study_page(mocker)
   response = client.get("/index")
@@ -88,6 +129,8 @@ def test_index_existing_user_studies(mocker):
   assert """View Protocol""" in response.text
   assert """A study for Z""" in response.text
   assert mock_called(sp)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def mock_study_page(mocker):
   mock = mocker.patch("app.model.study.Study.page")
@@ -100,6 +143,9 @@ def mock_study_page(mocker):
   return mock
 
 def test_study_select(mocker):
+  #r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   mock_user_check_exists(mocker)
   ss = mock_study_summary(mocker)
   response = client.patch(
@@ -110,6 +156,8 @@ def test_study_select(mocker):
   assert response.status_code == 200
   assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2,15">""" in response.text
   assert mock_called(ss)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_study_summary(mocker):
   mock = mocker.patch("app.model.study.Study.summary")
@@ -117,6 +165,9 @@ def mock_study_summary(mocker):
   return mock
 
 def test_study_deselect(mocker):
+  #r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   mock_user_check_exists(mocker)
   summary = mock_study_summary(mocker)
   summary.side_effect = ["Study Summary"]
@@ -127,9 +178,13 @@ def test_study_deselect(mocker):
   )
   assert response.status_code == 200
   assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2">""" in response.text
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def test_study_delete(mocker):
-  #mock_user_check_exists(mocker)
+  #r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   sf = mock_study_find(mocker)
   sfi = mock_study_file_imports(mocker)
   dfd = mock_data_file_delete(mocker)
@@ -143,16 +198,15 @@ def test_study_delete(mocker):
     follow_redirects=False
   )
   assert response.status_code == 303
-  #assert response.status_code == 200
   assert str(response.next_request.url) == "http://testserver/index"
   assert mock_called(sf)
-  #sf.assert_has_calls([mocker.call('1'), mocker.call('2'), mocker.call('15')])
   assert mock_called(sfi)
-  #sfi.assert_has_calls([mocker.call('1'), mocker.call('2'), mocker.call('15')])
   assert mock_called(fif)
   assert mock_called(fid)
   assert mock_called(dfd)
   assert mock_called(sd)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def mock_study_file_imports(mocker):
   mock = mocker.patch("app.model.study.Study.file_imports")
@@ -195,6 +249,9 @@ def mock_study_find(mocker):
   return mock
 
 def test_user_show(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uf = mock_user_find(mocker)
   uep = mock_user_endpoints_page(mocker)
   uv = mock_user_valid(mocker)
@@ -206,6 +263,8 @@ def test_user_show(mocker):
   assert mock_called(uv)
   assert mock_called(uep)
   assert mock_called(ev)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_user_endpoints_page(mocker):
   mock = mocker.patch("app.model.user.User.endpoints_page")
@@ -223,6 +282,9 @@ def mock_endpoint_valid(mocker):
   return mock
 
 def test_user_update_display_name(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uf = mock_user_find(mocker)
   uudn = mock_user_update_display_name(mocker)
   response = client.post(
@@ -234,13 +296,18 @@ def test_user_update_display_name(mocker):
   assert """Fred Smithy""" in response.text
   assert mock_called(uf)
   assert mock_called(uudn)
-
+#  assert mock_called(r)
+#  assert mock_called(mt)
+  
 def mock_user_update_display_name(mocker):
   mock = mocker.patch("app.model.user.User.update_display_name")
   mock.side_effect = [(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
   return mock
 
 def test_user_update_display_name_error(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uf = mock_user_find(mocker)
   uudn = mock_user_update_display_name(mocker)
   uudn.side_effect = [(None, {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
@@ -252,8 +319,13 @@ def test_user_update_display_name_error(mocker):
   assert response.status_code == 200
   assert """Fred Smith""" in response.text
   assert mock_called(uf)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def test_user_endpoint(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uf = mock_user_find(mocker)
   ec = mock_endpoint_create(mocker)
   uep = mock_user_endpoints_page(mocker)
@@ -267,6 +339,8 @@ def test_user_endpoint(mocker):
   assert """Enter a name for the server""" in response.text
   assert mock_called(uf)
   assert mock_called(ec)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_endpoint_create(mocker):
   mock = mocker.patch("app.model.endpoint.Endpoint.create")
@@ -274,54 +348,77 @@ def mock_endpoint_create(mocker):
   return mock
 
 def test_about(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   mock_release_notes(mocker)
   response = client.get("/help/about")
   assert response.status_code == 200
   assert """Release Notes Test Testy""" in response.text
   assert mock_called(uc)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def test_examples(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   mock_examples(mocker)
   response = client.get("/help/examples")
   assert response.status_code == 200
   assert """Examples Test Testy""" in response.text
   assert mock_called(uc)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def test_feedback(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   mock_feedback(mocker)
   response = client.get("/help/examples")
   assert response.status_code == 200
   assert """Feedback Test Testy Testy""" in response.text
   assert mock_called(uc)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def test_file_list_local(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   lfd = mock_local_files_dir(mocker)
   response = client.get("/fileList?dir=xxx&url=http://example.com")
   assert response.status_code == 200
-  #print(f"RESULT: {response.text}")
   assert """<p class="card-text">a-file.txt</p>""" in response.text
   assert """<p class="card-text">100 kb</p>""" in response.text
   assert mock_called(uc)
   assert mock_called(fp)
   assert mock_called(lfd)
+  #assert mock_called(r)
+  #assert mock_called(mt)
 
 def test_file_list_local_invalid(mocker, caplog):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   lfd = mock_local_files_dir_error(mocker)
   response = client.get("/fileList?dir=xxx&url=http://example.com")
   assert response.status_code == 200
-  #print(f"RESULT: {response.text}")
   assert """Error Error Error!!!""" in response.text
   assert mock_called(uc)
   assert mock_called(fp)
   assert mock_called(lfd)
   assert error_logged(caplog, "Error Error Error!!!")
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_file_picker_os(mocker):
   fp = mocker.patch("app.main.file_picker")
@@ -349,6 +446,9 @@ def error_logged(caplog, text):
   return text in caplog.records[-1].message and correct_level
 
 def test_import_m11(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   response = client.get("/import/m11")
@@ -357,8 +457,13 @@ def test_import_m11(mocker):
   assert """<p>Select a single M11 file</p>""" in response.text
   assert mock_called(uc)
   assert mock_called(fp)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def test_import_xl(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   response = client.get("/import/xl")
@@ -367,9 +472,14 @@ def test_import_xl(mocker):
   assert '<p>Select a single Excel file and zero, one or more images files. </p>' in response.text
   assert mock_called(uc)
   assert mock_called(fp)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 @pytest.mark.anyio
 async def test_import_m11_execute(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  async_client = mock_async_client()
   uc = mock_user_check_exists(mocker)
   pm11 = mock_process_m11(mocker)
   response = await async_client.post("/import/m11")
@@ -377,6 +487,8 @@ async def test_import_m11_execute(mocker):
   assert '<h1>Fake M11 Response</h1>' in response.text
   assert mock_called(uc)
   assert mock_called(pm11)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_process_m11(mocker):
   mock = mocker.patch("app.main.process_m11")
@@ -385,6 +497,9 @@ def mock_process_m11(mocker):
 
 @pytest.mark.anyio
 async def test_import_xl_execute(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  async_client = mock_async_client()
   uc = mock_user_check_exists(mocker)
   pxl = mock_process_xl(mocker)
   response = await async_client.post("/import/xl")
@@ -392,6 +507,8 @@ async def test_import_xl_execute(mocker):
   assert '<h1>Fake XL Response</h1>' in response.text
   assert mock_called(uc)
   assert mock_called(pxl)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_process_xl(mocker):
   mock = mocker.patch("app.main.process_xl")
@@ -399,14 +516,22 @@ def mock_process_xl(mocker):
   return mock
 
 def test_import_status(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   response = client.get("/import/status?page=1&size=10&filter=")
   assert response.status_code == 200
   #print(f"RESULT: {response.text}")
   assert '<h5 class="card-title">Import Status</h5>' in response.text
   assert mock_called(uc)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def test_import_status_data(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   fip = mock_file_import_page(mocker)
   response = client.get("/import/status/data?page=1&size=10&filter=")
@@ -415,6 +540,8 @@ def test_import_status_data(mocker):
   assert '<th scope="col">Imported At</th>' in response.text
   assert mock_called(uc)
   assert mock_called(fip)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_file_import_page(mocker):
   mock = mocker.patch("app.model.file_import.FileImport.page")
@@ -422,6 +549,9 @@ def mock_file_import_page(mocker):
   return mock
 
 def test_import_errors(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   fif = mock_file_import_find(mocker)
   dfp = mock_data_file_path(mocker)
@@ -431,8 +561,13 @@ def test_import_errors(mocker):
   assert mock_called(uc)
   assert mock_called(fif)
   assert mock_called(dfp)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def test_import_errors_error(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   fif = mock_file_import_find(mocker)
   dfp = mock_data_file_path_error(mocker)
@@ -443,6 +578,8 @@ def test_import_errors_error(mocker):
   assert mock_called(uc)
   assert mock_called(fif)
   assert mock_called(dfp)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_file_import_find(mocker):
   mock = mocker.patch("app.model.file_import.FileImport.find")
@@ -460,18 +597,21 @@ def mock_data_file_path_error(mocker):
   return mock
 
 def test_version_history(mocker):
-  #print(f"TEST")
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uc = mock_user_check_exists(mocker)
   usv = mock_usdm_study_version(mocker)
   uji = mock_usdm_json_init(mocker)
   response = client.get("/versions/1/history")
-  #print(f"RESULT: {response.text}")
   assert response.status_code == 200
   assert '<h5 class="card-title">Version History</h5>' in response.text
   assert ' <h6 class="card-subtitle mb-2 text-muted">Title: The Offical Study Title For Test | Sponsor: Identifier For Test| Phase: Phase For Test | Identifier:</h6>' in response.text
   assert mock_called(uc)
   assert mock_called(usv)
   assert mock_called(uji)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_usdm_study_version(mocker):
   mock = mocker.patch("app.model.usdm_json.USDMJson.study_version")
@@ -488,6 +628,9 @@ def mock_usdm_study_version(mocker):
   return mock
 
 def test_version_history_data(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   vf = mock_version_find(mocker)
   vp = mock_version_page(mocker)
   fif = mock_file_import_find(mocker)
@@ -498,6 +641,8 @@ def test_version_history_data(mocker):
   assert mock_called(vf)
   assert mock_called(vp)
   assert mock_called(fif)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_version_find(mocker):
   mock = mocker.patch("app.model.version.Version.find")
@@ -515,6 +660,9 @@ def mock_usdm_json_init(mocker):
   return mock
 
 def test_get_study_design_timelines(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uji = mock_usdm_json_init(mocker)
   ujt = mock_usdm_json_timelines(mocker)
   response = client.get("/versions/1/studyDesigns/1/timelines")
@@ -524,6 +672,8 @@ def test_get_study_design_timelines(mocker):
   assert 'Special Timeline' in response.text
   assert mock_called(uji)
   assert mock_called(ujt)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_usdm_json_timelines(mocker):
   mock = mocker.patch("app.main.USDMJson.timelines")
@@ -532,6 +682,9 @@ def mock_usdm_json_timelines(mocker):
   return mock
 
 def test_get_study_design_soa(mocker):
+#  r, mt = mock_authorisation(mocker)
+  protect_endpoint()
+  client = mock_client()
   uji = mock_usdm_json_init(mocker)
   ujs = mock_usdm_json_soa(mocker)
   response = client.get("/versions/1/studyDesigns/2/timelines/3/soa")
@@ -541,6 +694,8 @@ def test_get_study_design_soa(mocker):
   assert '<h6 class="card-subtitle mb-2 text-muted">Description: SOA Description | Main: False | Name: SoA Name</h6>' in response.text
   assert mock_called(uji)
   assert mock_called(ujs)
+#  assert mock_called(r)
+#  assert mock_called(mt)
 
 def mock_usdm_json_soa(mocker):
   mock = mocker.patch("app.main.USDMJson.soa")

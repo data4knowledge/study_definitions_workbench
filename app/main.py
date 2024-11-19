@@ -35,9 +35,9 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
-from .dependencies.dependency import *
-from .routers import users
-from app.dependencies.templates import templates
+from app.dependencies.dependency import *
+from app.routers import users
+from app.dependencies.templates import templates, templates_path
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
@@ -50,6 +50,9 @@ app = FastAPI(
   version = VERSION
 )
 
+application_logger.set_level(application_logger.DEBUG)
+application_logger.info(f"Starting {SYSTEM_NAME}")
+
 set_middleware_secret(app)
 app.include_router(users.router)
 
@@ -60,9 +63,6 @@ async def exception_callback(request: Request, e: Exception):
 @app.exception_handler(FindException)
 async def exception_callback(request: Request, e: FindException):
   return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': f"A find exception '{e}' was raised."}})
-
-application_logger.set_level(application_logger.DEBUG)
-application_logger.info(f"Starting {SYSTEM_NAME}")
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 #templates_path = os.path.join(dir_path, "templates")

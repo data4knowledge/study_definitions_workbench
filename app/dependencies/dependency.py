@@ -1,13 +1,10 @@
-import os
+#import os
 from fastapi import FastAPI, Request
 from app.model.user import User
 from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
 from d4kms_generic.service_environment import ServiceEnvironment
 from starlette.middleware.sessions import SessionMiddleware
-
-authorisation = Auth0Service()
-authorisation.register()
 
 def set_middleware_secret(app: FastAPI):
   se = ServiceEnvironment()
@@ -36,3 +33,8 @@ def is_admin(request: Request):
   user_info = request.session['userinfo']
   admin = next((x for x in user_info['roles'] if x['name'] == 'Admin'), None)
   return True if admin else False
+
+authorisation = Auth0Service()
+if not single_user():
+  authorisation.register()
+  authorisation.management_token()
