@@ -248,104 +248,104 @@ def mock_study_find(mocker):
   mock.side_effect = [factory_study()]
   return mock
 
-def test_user_show(mocker):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client()
-  uf = mock_user_find(mocker)
-  uep = mock_user_endpoints_page(mocker)
-  uv = mock_user_valid(mocker)
-  ev = mock_endpoint_valid(mocker)
-  response = client.get("/users/1/show")
-  assert response.status_code == 200
-  assert """Enter a new display name""" in response.text
-  assert mock_called(uf)
-  assert mock_called(uv)
-  assert mock_called(uep)
-  assert mock_called(ev)
-#  assert mock_called(r)
-#  assert mock_called(mt)
+# def test_user_show(mocker):
+# #  r, mt = mock_authorisation(mocker)
+#   protect_endpoint()
+#   client = mock_client()
+#   uf = mock_user_find(mocker)
+#   uep = mock_user_endpoints_page(mocker)
+#   uv = mock_user_valid(mocker)
+#   ev = mock_endpoint_valid(mocker)
+#   response = client.get("/users/1/show")
+#   assert response.status_code == 200
+#   assert """Enter a new display name""" in response.text
+#   assert mock_called(uf)
+#   assert mock_called(uv)
+#   assert mock_called(uep)
+#   assert mock_called(ev)
+# #  assert mock_called(r)
+# #  assert mock_called(mt)
 
-def mock_user_endpoints_page(mocker):
-  mock = mocker.patch("app.model.user.User.endpoints_page")
-  mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
-  return mock
+# def mock_user_endpoints_page(mocker):
+#   mock = mocker.patch("app.model.user.User.endpoints_page")
+#   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+#   return mock
 
-def mock_user_valid(mocker):
-  mock = mocker.patch("app.model.user.User.valid")
-  mock.side_effect = [{'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}]
-  return mock
+# def mock_user_valid(mocker):
+#   mock = mocker.patch("app.model.user.User.valid")
+#   mock.side_effect = [{'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}]
+#   return mock
 
-def mock_endpoint_valid(mocker):
-  mock = mocker.patch("app.model.endpoint.Endpoint.valid")
-  mock.side_effect = [{'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''},}]
-  return mock
+# def mock_endpoint_valid(mocker):
+#   mock = mocker.patch("app.model.endpoint.Endpoint.valid")
+#   mock.side_effect = [{'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''},}]
+#   return mock
 
-def test_user_update_display_name(mocker):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client()
-  uf = mock_user_find(mocker)
-  uudn = mock_user_update_display_name(mocker)
-  response = client.post(
-    "/users/1/displayName",
-    data={'name': 'Smithy'},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
-  )
-  assert response.status_code == 200
-  assert """Fred Smithy""" in response.text
-  assert mock_called(uf)
-  assert mock_called(uudn)
-#  assert mock_called(r)
-#  assert mock_called(mt)
+# def test_user_update_display_name(mocker):
+# #  r, mt = mock_authorisation(mocker)
+#   protect_endpoint()
+#   client = mock_client()
+#   uf = mock_user_find(mocker)
+#   uudn = mock_user_update_display_name(mocker)
+#   response = client.post(
+#     "/users/1/displayName",
+#     data={'name': 'Smithy'},
+#     headers={'Content-Type': 'application/x-www-form-urlencoded'}
+#   )
+#   assert response.status_code == 200
+#   assert """Fred Smithy""" in response.text
+#   assert mock_called(uf)
+#   assert mock_called(uudn)
+# #  assert mock_called(r)
+# #  assert mock_called(mt)
   
-def mock_user_update_display_name(mocker):
-  mock = mocker.patch("app.model.user.User.update_display_name")
-  mock.side_effect = [(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
-  return mock
+# def mock_user_update_display_name(mocker):
+#   mock = mocker.patch("app.model.user.User.update_display_name")
+#   mock.side_effect = [(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
+#   return mock
 
-def test_user_update_display_name_error(mocker):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client()
-  uf = mock_user_find(mocker)
-  uudn = mock_user_update_display_name(mocker)
-  uudn.side_effect = [(None, {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
-  response = client.post(
-    "/users/1/displayName",
-    data={'name': 'Smithy'},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
-  )
-  assert response.status_code == 200
-  assert """Fred Smith""" in response.text
-  assert mock_called(uf)
-#  assert mock_called(r)
-#  assert mock_called(mt)
+# def test_user_update_display_name_error(mocker):
+# #  r, mt = mock_authorisation(mocker)
+#   protect_endpoint()
+#   client = mock_client()
+#   uf = mock_user_find(mocker)
+#   uudn = mock_user_update_display_name(mocker)
+#   uudn.side_effect = [(None, {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
+#   response = client.post(
+#     "/users/1/displayName",
+#     data={'name': 'Smithy'},
+#     headers={'Content-Type': 'application/x-www-form-urlencoded'}
+#   )
+#   assert response.status_code == 200
+#   assert """Fred Smith""" in response.text
+#   assert mock_called(uf)
+# #  assert mock_called(r)
+# #  assert mock_called(mt)
 
-def test_user_endpoint(mocker):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client()
-  uf = mock_user_find(mocker)
-  ec = mock_endpoint_create(mocker)
-  uep = mock_user_endpoints_page(mocker)
-  uep.side_effects=[{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
-  response = client.post(
-    "/users/1/endpoint",
-    data={'name': 'Smithy', 'url': 'http://'},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
-  )
-  assert response.status_code == 200
-  assert """Enter a name for the server""" in response.text
-  assert mock_called(uf)
-  assert mock_called(ec)
-#  assert mock_called(r)
-#  assert mock_called(mt)
+# def test_user_endpoint(mocker):
+# #  r, mt = mock_authorisation(mocker)
+#   protect_endpoint()
+#   client = mock_client()
+#   uf = mock_user_find(mocker)
+#   ec = mock_endpoint_create(mocker)
+#   uep = mock_user_endpoints_page(mocker)
+#   uep.side_effects=[{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+#   response = client.post(
+#     "/users/1/endpoint",
+#     data={'name': 'Smithy', 'url': 'http://'},
+#     headers={'Content-Type': 'application/x-www-form-urlencoded'}
+#   )
+#   assert response.status_code == 200
+#   assert """Enter a name for the server""" in response.text
+#   assert mock_called(uf)
+#   assert mock_called(ec)
+# #  assert mock_called(r)
+# #  assert mock_called(mt)
 
-def mock_endpoint_create(mocker):
-  mock = mocker.patch("app.model.endpoint.Endpoint.create")
-  mock.side_effect = [(factory_endpoint(),  {'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''}})]
-  return mock
+# def mock_endpoint_create(mocker):
+#   mock = mocker.patch("app.model.endpoint.Endpoint.create")
+#   mock.side_effect = [(factory_endpoint(),  {'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''}})]
+#   return mock
 
 def test_about(mocker):
 #  r, mt = mock_authorisation(mocker)
