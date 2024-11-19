@@ -1,1 +1,10 @@
 fly.toml
+.development_env
+.production_env
+.staging_env
+.test_env
+.env
+install_local_d4kms.sh
+prism.sh
+data
+data/**/*

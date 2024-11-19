@@ -66,7 +66,8 @@ application_logger.info(f"Template dir set to '{templates_path}'")
 application_logger.info(f"Static dir set to '{static_path}'")
 
 authorisation = Auth0Service(app)
-authorisation.register()
+if not single_user():
+  authorisation.register()
 
 templates.env.globals['server_name'] = server_name
 templates.env.globals['single_multiple'] = single_multiple
@@ -603,9 +604,12 @@ async def debug_level(request: Request, level: str='INFO', session: Session = De
 
 @app.get("/logout")
 def logout(request: Request):
-  url = authorisation.logout(request, "home")
-  return RedirectResponse(url=url)
-
+  if not single_user():
+    url = authorisation.logout(request, "home")
+    return RedirectResponse(url=url)
+  else:
+    return RedirectResponse("/")
+  
 @app.get("/callback")
 async def callback(request: Request):
   try:
