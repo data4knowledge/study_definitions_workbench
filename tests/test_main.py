@@ -27,24 +27,24 @@ def anyio_backend():
   
 #   app.dependency_overrides[protect_endpoint] = override_protect_endpoint
 
-# def mock_authorisation(mocker):
+# def mock_authorisation(mocker, monkeypatch):
 #   r = mocker.patch("d4kms_generic.auth0_service.Auth0Service.register")
 #   mt = mocker.patch("d4kms_generic.auth0_service.Auth0Service.management_token")
 #   r.side_effect = [[]]
 #   mt.side_effect = [[]]
 #   return r, mt
 
-# def mock_client():
+# def mock_client(monkeypatch):
 #   from app.main import app
 #   return TestClient(app)
 
-# def mock_async_client():
+# def mock_async_client(monkeypatch):
 #   from app.main import app
 #   return AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
 
-def test_home(mocker):
+def test_home(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
-  client = mock_client()
+  client = mock_client(monkeypatch)
   response = client.get("/")
   assert response.status_code == 200
   assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text in response.text
@@ -54,7 +54,7 @@ def test_home(mocker):
 @pytest.mark.anyio
 async def test_login_single(monkeypatch):
   #r, mt = mock_authorisation(mocker)
-  async_client = mock_async_client()
+  async_client = mock_async_client(monkeypatch)
   monkeypatch.setenv("SINGLE_USER", "True")
   response = await async_client.get("/login")
   assert response.status_code == 307
@@ -63,27 +63,27 @@ async def test_login_single(monkeypatch):
   #assert mock_called(mt)
 
 @pytest.mark.anyio
-async def test_login_mutltiple_authorised(monkeypatch, mocker):
+async def test_login_mutltiple_authorised(mocker, monkeypatch):
   l = mocker.patch("d4kms_generic.auth0_service.Auth0Service.login")
   l.side_effect = [None]
-  async_client = mock_async_client()
+  async_client = mock_async_client(monkeypatch)
   monkeypatch.setenv("SINGLE_USER", "False")
   response = await async_client.get("/login")
   assert response.status_code == 200
   assert str(response.next_request.url) == "http://test/index"
 
 # @pytest.mark.anyio
-# async def test_login_mutltiple_not_authorised(mocker):
+# async def test_login_mutltiple_not_authorised(mocker, monkeypatch):
 #   l = mocker.patch("d4kms_generic.auth0_service.Auth0Service.login")
 #   l.side_effect = [None]
 #   response = await async_client.get("/login")
 #   assert mock_called(l)
 #   assert response.status_code == 200
 
-def test_index_no_user(mocker):
+def test_index_no_user(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   mock_user_check_fail(mocker)
   response = client.get("/index")
   assert response.status_code == 200
@@ -91,10 +91,10 @@ def test_index_no_user(mocker):
   #assert mock_called(r)
   #assert mock_called(mt)
 
-def test_index_new_user(mocker):
+def test_index_new_user(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   mock_user_check_new(mocker)
   response = client.get("/index")
   assert response.status_code == 200
@@ -102,10 +102,10 @@ def test_index_new_user(mocker):
   #assert mock_called(r)
   #assert mock_called(mt)
 
-def test_index_existing_user_none(mocker):
+def test_index_existing_user_none(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
   sp = mock_study_page_none(mocker)
   response = client.get("/index")
@@ -120,10 +120,10 @@ def mock_study_page_none(mocker):
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   return mock
 
-def test_index_existing_user_studies(mocker):
+def test_index_existing_user_studies(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
   sp = mock_study_page(mocker)
   response = client.get("/index")
@@ -144,10 +144,10 @@ def mock_study_page(mocker):
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': items}]
   return mock
 
-def test_study_select(mocker):
+def test_study_select(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
   ss = mock_study_summary(mocker)
   response = client.patch(
@@ -166,10 +166,10 @@ def mock_study_summary(mocker):
   mock.side_effect = ["Study Summary"]
   return mock
 
-def test_study_deselect(mocker):
+def test_study_deselect(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
   summary = mock_study_summary(mocker)
   summary.side_effect = ["Study Summary"]
@@ -183,10 +183,10 @@ def test_study_deselect(mocker):
 #  assert mock_called(r)
 #  assert mock_called(mt)
 
-def test_study_delete(mocker):
+def test_study_delete(mocker, monkeypatch):
   #r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   sf = mock_study_find(mocker)
   sfi = mock_study_file_imports(mocker)
   dfd = mock_data_file_delete(mocker)
@@ -250,10 +250,10 @@ def mock_study_find(mocker):
   mock.side_effect = [factory_study()]
   return mock
 
-# def test_user_show(mocker):
+# def test_user_show(mocker, monkeypatch):
 # #  r, mt = mock_authorisation(mocker)
 #   protect_endpoint()
-#   client = mock_client()
+#   client = mock_client(monkeypatch)
 #   uf = mock_user_find(mocker)
 #   uep = mock_user_endpoints_page(mocker)
 #   uv = mock_user_valid(mocker)
@@ -268,25 +268,25 @@ def mock_study_find(mocker):
 # #  assert mock_called(r)
 # #  assert mock_called(mt)
 
-# def mock_user_endpoints_page(mocker):
+# def mock_user_endpoints_page(mocker, monkeypatch):
 #   mock = mocker.patch("app.model.user.User.endpoints_page")
 #   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
 #   return mock
 
-# def mock_user_valid(mocker):
+# def mock_user_valid(mocker, monkeypatch):
 #   mock = mocker.patch("app.model.user.User.valid")
 #   mock.side_effect = [{'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}}]
 #   return mock
 
-# def mock_endpoint_valid(mocker):
+# def mock_endpoint_valid(mocker, monkeypatch):
 #   mock = mocker.patch("app.model.endpoint.Endpoint.valid")
 #   mock.side_effect = [{'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''},}]
 #   return mock
 
-# def test_user_update_display_name(mocker):
+# def test_user_update_display_name(mocker, monkeypatch):
 # #  r, mt = mock_authorisation(mocker)
 #   protect_endpoint()
-#   client = mock_client()
+#   client = mock_client(monkeypatch)
 #   uf = mock_user_find(mocker)
 #   uudn = mock_user_update_display_name(mocker)
 #   response = client.post(
@@ -301,15 +301,15 @@ def mock_study_find(mocker):
 # #  assert mock_called(r)
 # #  assert mock_called(mt)
   
-# def mock_user_update_display_name(mocker):
+# def mock_user_update_display_name(mocker, monkeypatch):
 #   mock = mocker.patch("app.model.user.User.update_display_name")
 #   mock.side_effect = [(factory_user_2(), {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
 #   return mock
 
-# def test_user_update_display_name_error(mocker):
+# def test_user_update_display_name_error(mocker, monkeypatch):
 # #  r, mt = mock_authorisation(mocker)
 #   protect_endpoint()
-#   client = mock_client()
+#   client = mock_client(monkeypatch)
 #   uf = mock_user_find(mocker)
 #   uudn = mock_user_update_display_name(mocker)
 #   uudn.side_effect = [(None, {'display_name': {'valid': True, 'message': ''}, 'email': {'valid': True, 'message': ''}, 'identifier': {'valid': True, 'message': ''}})]
@@ -324,10 +324,10 @@ def mock_study_find(mocker):
 # #  assert mock_called(r)
 # #  assert mock_called(mt)
 
-# def test_user_endpoint(mocker):
+# def test_user_endpoint(mocker, monkeypatch):
 # #  r, mt = mock_authorisation(mocker)
 #   protect_endpoint()
-#   client = mock_client()
+#   client = mock_client(monkeypatch)
 #   uf = mock_user_find(mocker)
 #   ec = mock_endpoint_create(mocker)
 #   uep = mock_user_endpoints_page(mocker)
@@ -344,15 +344,15 @@ def mock_study_find(mocker):
 # #  assert mock_called(r)
 # #  assert mock_called(mt)
 
-# def mock_endpoint_create(mocker):
+# def mock_endpoint_create(mocker, monkeypatch):
 #   mock = mocker.patch("app.model.endpoint.Endpoint.create")
 #   mock.side_effect = [(factory_endpoint(),  {'name': {'valid': True, 'message': ''}, 'endpoint': {'valid': True, 'message': ''}, 'type': {'valid': True, 'message': ''}})]
 #   return mock
 
-def test_about(mocker):
+def test_about(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   mock_release_notes(mocker)
   response = client.get("/help/about")
@@ -362,10 +362,10 @@ def test_about(mocker):
   #assert mock_called(r)
   #assert mock_called(mt)
 
-def test_examples(mocker):
+def test_examples(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   mock_examples(mocker)
   response = client.get("/help/examples")
@@ -375,10 +375,10 @@ def test_examples(mocker):
   #assert mock_called(r)
   #assert mock_called(mt)
 
-def test_feedback(mocker):
+def test_feedback(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   mock_feedback(mocker)
   response = client.get("/help/examples")
@@ -388,10 +388,10 @@ def test_feedback(mocker):
   #assert mock_called(r)
   #assert mock_called(mt)
 
-def test_file_list_local(mocker):
+def test_file_list_local(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   lfd = mock_local_files_dir(mocker)
@@ -405,10 +405,10 @@ def test_file_list_local(mocker):
   #assert mock_called(r)
   #assert mock_called(mt)
 
-def test_file_list_local_invalid(mocker, caplog):
+def test_file_list_local_invalid(mocker, caplog, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   lfd = mock_local_files_dir_error(mocker)
@@ -447,10 +447,10 @@ def error_logged(caplog, text):
   correct_level = caplog.records[-1].levelname == "ERROR"
   return text in caplog.records[-1].message and correct_level
 
-def test_import_m11(mocker):
+def test_import_m11(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   response = client.get("/import/m11")
@@ -462,10 +462,10 @@ def test_import_m11(mocker):
 #  assert mock_called(r)
 #  assert mock_called(mt)
 
-def test_import_xl(mocker):
+def test_import_xl(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   fp = mock_file_picker_os(mocker)
   response = client.get("/import/xl")
@@ -478,10 +478,10 @@ def test_import_xl(mocker):
 #  assert mock_called(mt)
 
 @pytest.mark.anyio
-async def test_import_m11_execute(mocker):
+async def test_import_m11_execute(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  async_client = mock_async_client()
+  async_client = mock_async_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   pm11 = mock_process_m11(mocker)
   response = await async_client.post("/import/m11")
@@ -498,10 +498,10 @@ def mock_process_m11(mocker):
   return mock
 
 @pytest.mark.anyio
-async def test_import_xl_execute(mocker):
+async def test_import_xl_execute(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  async_client = mock_async_client()
+  async_client = mock_async_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   pxl = mock_process_xl(mocker)
   response = await async_client.post("/import/xl")
@@ -517,10 +517,10 @@ def mock_process_xl(mocker):
   mock.side_effect = ['<h1>Fake XL Response</h1>']
   return mock
 
-def test_import_status(mocker):
+def test_import_status(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   response = client.get("/import/status?page=1&size=10&filter=")
   assert response.status_code == 200
@@ -530,10 +530,10 @@ def test_import_status(mocker):
 #  assert mock_called(r)
 #  assert mock_called(mt)
 
-def test_import_status_data(mocker):
+def test_import_status_data(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   fip = mock_file_import_page(mocker)
   response = client.get("/import/status/data?page=1&size=10&filter=")
@@ -550,10 +550,10 @@ def mock_file_import_page(mocker):
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   return mock
 
-def test_import_errors(mocker):
+def test_import_errors(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   fif = mock_file_import_find(mocker)
   dfp = mock_data_file_path(mocker)
@@ -566,10 +566,10 @@ def test_import_errors(mocker):
 #  assert mock_called(r)
 #  assert mock_called(mt)
 
-def test_import_errors_error(mocker):
+def test_import_errors_error(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   fif = mock_file_import_find(mocker)
   dfp = mock_data_file_path_error(mocker)
@@ -598,10 +598,10 @@ def mock_data_file_path_error(mocker):
   mock.side_effect = [('', '', False)]
   return mock
 
-def test_version_history(mocker):
+def test_version_history(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   usv = mock_usdm_study_version(mocker)
   uji = mock_usdm_json_init(mocker)
@@ -629,10 +629,10 @@ def mock_usdm_study_version(mocker):
   ]
   return mock
 
-def test_version_history_data(mocker):
+def test_version_history_data(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   vf = mock_version_find(mocker)
   vp = mock_version_page(mocker)
   fif = mock_file_import_find(mocker)
@@ -661,10 +661,10 @@ def mock_usdm_json_init(mocker):
   mock.side_effect = [None]
   return mock
 
-def test_get_study_design_timelines(mocker):
+def test_get_study_design_timelines(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uji = mock_usdm_json_init(mocker)
   ujt = mock_usdm_json_timelines(mocker)
   response = client.get("/versions/1/studyDesigns/1/timelines")
@@ -683,10 +683,10 @@ def mock_usdm_json_timelines(mocker):
   mock.side_effect = [data]
   return mock
 
-def test_get_study_design_soa(mocker):
+def test_get_study_design_soa(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
-  client = mock_client()
+  client = mock_client(monkeypatch)
   uji = mock_usdm_json_init(mocker)
   ujs = mock_usdm_json_soa(mocker)
   response = client.get("/versions/1/studyDesigns/2/timelines/3/soa")

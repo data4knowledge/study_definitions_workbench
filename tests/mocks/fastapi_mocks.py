@@ -20,10 +20,18 @@ def mock_authorisation(mocker):
   mt.side_effect = [[]]
   return r, mt
 
-def mock_client():
+def mock_client(monkeypatch):
+
+  # Need this to stop exception of trying to send API call on elaborationpytes
+  monkeypatch.setenv("SINGLE_USER", "True")
   from app.main import app
+  
   return TestClient(app)
 
-def mock_async_client():
+def mock_async_client(monkeypatch):
+  
+  # Need this to stop exception of trying to send API call on elaborationpytes
+  monkeypatch.setenv("SINGLE_USER", "True")
   from app.main import app
+  
   return AsyncClient(transport=ASGITransport(app=app), base_url="http://test")

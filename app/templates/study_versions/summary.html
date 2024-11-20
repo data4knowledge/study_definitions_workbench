@@ -23,10 +23,12 @@
   {% endwith %} 
   {% with data=data %}
     {% include "shared/partials/export_menu.html" %}
-  {% endwith %} 
-  {% with data=data %}
-    {% include "shared/partials/transmit_menu.html" %}
-  {% endwith %} 
+  {% endwith %}
+  {% if data['fhir'] %}
+    {% with data=data %}
+      {% include "shared/partials/transmit_menu.html" %}
+    {% endwith %} 
+  {% endif %} 
 {% endblock %}
 
 {% block main_content %}

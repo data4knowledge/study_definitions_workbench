@@ -35,8 +35,9 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
-from app.dependencies.dependency import *
 from app.routers import users
+from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
+from app.dependencies.utility import user_details, single_user, is_admin, is_fhir_tx
 from app.dependencies.templates import templates, templates_path
 
 DataFiles.clean_and_tidy()
@@ -308,18 +309,18 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
   else:
     return templates.TemplateResponse(request, "errors/error.html", {'user': user, 'data': {'error': 'Something went wrong downloading the errors file for the import'}})
 
-@app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
-async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  data = {'page': page, 'size': size, 'filter': filter} 
-  return templates.TemplateResponse(request, "transmissions/status.html", {'user': user, 'data': data})
+# @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
+# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+#   user, present_in_db = user_details(request, session)
+#   data = {'page': page, 'size': size, 'filter': filter} 
+#   return templates.TemplateResponse(request, "transmissions/status.html", {'user': user, 'data': data})
 
-@app.get('/transmissions/status/data', dependencies=[Depends(protect_endpoint)])
-async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  data = Transmission.page(page, size, user.id, session)
-  pagination = Pagination(data, "/transmissions/status/data")
-  return templates.TemplateResponse(request, "transmissions/partials/status.html", {'user': user, 'pagination': pagination, 'data': data})
+# @app.get('/transmissions/status/data', dependencies=[Depends(protect_endpoint)])
+# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
+#   user, present_in_db = user_details(request, session)
+#   data = Transmission.page(page, size, user.id, session)
+#   pagination = Pagination(data, "/transmissions/status/data")
+#   return templates.TemplateResponse(request, "transmissions/partials/status.html", {'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/history', dependencies=[Depends(protect_endpoint)])
 async def get_version_history(request: Request, id: int, session: Session = Depends(get_db)):
@@ -359,9 +360,9 @@ async def get_version_usdm_diff(request: Request, id: int, previous: int, sessio
 @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
+  fhir = is_fhir_tx(request)
   usdm = USDMJson(id, session)
-  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
-  #print(f"VERSION SUMMARY DATA: {data}")
+  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session), 'fhir': fhir}
   return templates.TemplateResponse(request, "study_versions/summary.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])

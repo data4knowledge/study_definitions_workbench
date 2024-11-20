@@ -1,12 +1,13 @@
-import os
 from typing import Annotated
 from fastapi import APIRouter, Form, Depends, Request
 from sqlalchemy.orm import Session
 from app.model.user import User
 from app.model.endpoint import Endpoint
 from app.model.database import get_db
-from app.dependencies.dependency import *
+from app.dependencies.dependency import protect_endpoint
+from app.dependencies.utility import is_admin
 from app.dependencies.templates import templates
+from d4kms_generic.logger import application_logger
 
 router = APIRouter(
   prefix="/users",
