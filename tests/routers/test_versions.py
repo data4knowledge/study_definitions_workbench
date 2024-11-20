@@ -40,7 +40,7 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
   usv = mock_usdm_study_version(mocker, 'app.routers.versions')
   fv = mock_fhir_versions(mocker, 'app.routers.versions')
   response = client.get("/versions/1/summary")
-  print(f"RESPONSE: {response.text}")
+  #print(f"RESPONSE: {response.text}")
   assert response.status_code == 200
   assert """Transmission Status""" not in response.text
   assert """M11 FHIR v3, FHIR Version not supported""" in response.text
