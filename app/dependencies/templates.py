@@ -3,7 +3,7 @@ from pathlib import Path
 from d4kms_generic import application_logger
 from fastapi.templating import Jinja2Templates
 from app.utility.template_methods import *
-from app.utility.fhir_version import fhir_version_description
+from app.dependencies.fhir_version import fhir_version_description
 
 full_path = os.path.realpath(__file__)
 templates_path = f"{str(Path(full_path).parents[1])}/templates"

@@ -25,7 +25,7 @@ from app.utility.environment import single_user, file_picker
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
-from app.utility.fhir_version import check_fhir_version, fhir_version_description
+from app.dependencies.fhir_version import check_fhir_version
 from app.utility.fhir_transmit import run_fhir_transmit
 from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
