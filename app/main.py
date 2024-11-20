@@ -25,7 +25,7 @@ from app.utility.environment import single_user, file_picker
 from app.model.usdm_json import USDMJson
 from app.model.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
-from app.dependencies.fhir_version import check_fhir_version
+from app.dependencies.fhir_version import check_fhir_version, fhir_versions
 from app.utility.fhir_transmit import run_fhir_transmit
 from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
@@ -98,12 +98,14 @@ async def login(request: Request):
 @app.get("/index", dependencies=[Depends(protect_endpoint)])
 def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
+  fhir = {'enabled': is_fhir_tx(request), 'versions': fhir_versions()}
   if present_in_db:
     data = Study.page(1, 10, user.id, session)
+    data['fhir'] = fhir
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
   elif user:
-    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}}
+    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}, 'fhir': fhir}
     return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
   else:
     return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': "Unable to determine user."}})

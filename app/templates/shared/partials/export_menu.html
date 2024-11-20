@@ -4,7 +4,7 @@
   </a>
   <div class="dropdown-menu">
     {% for version in data['fhir']['versions'] %}
-      {% set title = "Download FHIR v" ~ version %}
+      {% set title = "M11 FHIR v" ~ version %}
       {% set desc = fhir_version_description(version) %}
       <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
     {% endfor %}
