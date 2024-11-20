@@ -11,6 +11,7 @@ from app.model.endpoint import Endpoint
 # from fastapi.testclient import TestClient
 # from httpx import ASGITransport, AsyncClient
 from tests.mocks.fastapi_mocks import *
+from tests.mocks.usdm_json_mocks import *
 
 @pytest.fixture
 def anyio_backend():
@@ -501,19 +502,19 @@ def test_version_history(mocker, monkeypatch):
 #  assert mock_called(r)
 #  assert mock_called(mt)
 
-def mock_usdm_study_version(mocker):
-  mock = mocker.patch("app.model.usdm_json.USDMJson.study_version")
-  mock.side_effect = [
-    {
-      'id': '1',
-      'version_identifier': '1',
-      'identifiers': {'Clinical Study Sponsor': 'Identifier For Test'},
-      'titles': {'Official Study Title': 'The Offical Study Title For Test'},
-      'study_designs': {'xxx': {'id': '2', 'name': 'design name', 'label': 'design label'}},
-      'phase': {'standardCode': {'decode': 'Phase For Test'}}
-    }
-  ]
-  return mock
+# def mock_usdm_study_version(mocker):
+#   mock = mocker.patch("app.model.usdm_json.USDMJson.study_version")
+#   mock.side_effect = [
+#     {
+#       'id': '1',
+#       'version_identifier': '1',
+#       'identifiers': {'Clinical Study Sponsor': 'Identifier For Test'},
+#       'titles': {'Official Study Title': 'The Offical Study Title For Test'},
+#       'study_designs': {'xxx': {'id': '2', 'name': 'design name', 'label': 'design label'}},
+#       'phase': {'standardCode': {'decode': 'Phase For Test'}}
+#     }
+#   ]
+#   return mock
 
 def test_version_history_data(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
@@ -542,10 +543,10 @@ def mock_version_page(mocker):
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version().model_dump()]}]
   return mock
 
-def mock_usdm_json_init(mocker):
-  mock = mocker.patch("app.main.USDMJson.__init__")
-  mock.side_effect = [None]
-  return mock
+# def mock_usdm_json_init(mocker):
+#   mock = mocker.patch("app.main.USDMJson.__init__")
+#   mock.side_effect = [None]
+#   return mock
 
 def test_get_study_design_timelines(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
@@ -563,11 +564,11 @@ def test_get_study_design_timelines(mocker, monkeypatch):
 #  assert mock_called(r)
 #  assert mock_called(mt)
 
-def mock_usdm_json_timelines(mocker):
-  mock = mocker.patch("app.main.USDMJson.timelines")
-  data = {'id': '1', 'study_id': '2', 'm11': False, 'timelines': [{'id': '3', 'name': 'Special Timeline', }]}
-  mock.side_effect = [data]
-  return mock
+# def mock_usdm_json_timelines(mocker):
+#   mock = mocker.patch("app.main.USDMJson.timelines")
+#   data = {'id': '1', 'study_id': '2', 'm11': False, 'timelines': [{'id': '3', 'name': 'Special Timeline', }]}
+#   mock.side_effect = [data]
+#   return mock
 
 def test_get_study_design_soa(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
@@ -585,14 +586,14 @@ def test_get_study_design_soa(mocker, monkeypatch):
 #  assert mock_called(r)
 #  assert mock_called(mt)
 
-def mock_usdm_json_soa(mocker):
-  mock = mocker.patch("app.main.USDMJson.soa")
-  data = {
-    'timeline': {'label': "SOA LABEL", 'description': "SOA Description", 'mainTimeline': False, 'name': 'SoA Name'},
-    'soa': "<table>SOA Table</table>"
-  }
-  mock.side_effect = [data]
-  return mock
+# def mock_usdm_json_soa(mocker):
+#   mock = mocker.patch("app.main.USDMJson.soa")
+#   data = {
+#     'timeline': {'label': "SOA LABEL", 'description': "SOA Description", 'mainTimeline': False, 'name': 'SoA Name'},
+#     'soa': "<table>SOA Table</table>"
+#   }
+#   mock.side_effect = [data]
+#   return mock
 
 # @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
 # async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):

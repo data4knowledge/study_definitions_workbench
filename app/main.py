@@ -35,7 +35,7 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
-from app.routers import transmissions, users
+from app.routers import transmissions, users, versions
 from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
 from app.dependencies.utility import user_details, single_user, is_admin, is_fhir_tx
 from app.dependencies.templates import templates, templates_path
@@ -57,6 +57,7 @@ application_logger.info(f"Starting {SYSTEM_NAME}")
 set_middleware_secret(app)
 app.include_router(users.router)
 app.include_router(transmissions.router)
+app.include_router(versions.router)
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, e: Exception):
@@ -294,13 +295,13 @@ async def get_version_usdm_diff(request: Request, id: int, previous: int, sessio
   data = {'version': curr_usdm.study_version(), 'version_id': id, 'diff': diff.to_html()}
   return templates.TemplateResponse(request, "study_versions/diff.html", {'user': user, 'data': data})
 
-@app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
-async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  fhir = is_fhir_tx(request)
-  usdm = USDMJson(id, session)
-  data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session), 'fhir': fhir}
-  return templates.TemplateResponse(request, "study_versions/summary.html", {'user': user, 'data': data})
+# @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
+# async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
+#   user, present_in_db = user_details(request, session)
+#   fhir = is_fhir_tx(request)
+#   usdm = USDMJson(id, session)
+#   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session), 'fhir': fhir}
+#   return templates.TemplateResponse(request, "study_versions/summary.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):

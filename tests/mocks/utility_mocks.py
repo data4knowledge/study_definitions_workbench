@@ -19,15 +19,15 @@
 #   mock.side_effect = [False]
 #   return mock
 
-def mock_is_fhir_tx_true(mocker):
+def mock_is_fhir_tx_true(mocker, path='app.routers.transmissions'):
   # The path below could ne made configurable
-  mock = mocker.patch("app.routers.transmissions.is_fhir_tx")
+  mock = mocker.patch(f"{path}.is_fhir_tx")
   print(f"MOCK: {mock}")
   mock.side_effect = [True]
   return mock
 
-def mock_is_fhir_tx_false(mocker):
+def mock_is_fhir_tx_false(mocker, path='app.routers.transmissions'):
   # The path below could ne made configurable
-  mock = mocker.patch("app.routers.transmissions.is_fhir_tx")
+  mock = mocker.patch(f"{path}.is_fhir_tx")
   mock.side_effect = [False]
   return mock
