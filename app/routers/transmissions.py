@@ -13,7 +13,7 @@ router = APIRouter(
   dependencies=[Depends(protect_endpoint)]
 )
 
-@router.get('/transmissions/status')
+@router.get('/status')
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if is_fhir_tx(request):
@@ -23,7 +23,7 @@ async def import_status(request: Request, page: int, size: int, filter: str="", 
     return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': "User is not authorised to transmit FHIR messages."}})
 
 
-@router.get('/transmissions/status/data')
+@router.get('/status/data')
 async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   if is_fhir_tx(request):

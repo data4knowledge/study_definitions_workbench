@@ -35,7 +35,7 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
-from app.routers import users
+from app.routers import transmissions, users
 from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
 from app.dependencies.utility import user_details, single_user, is_admin, is_fhir_tx
 from app.dependencies.templates import templates, templates_path
@@ -56,6 +56,7 @@ application_logger.info(f"Starting {SYSTEM_NAME}")
 
 set_middleware_secret(app)
 app.include_router(users.router)
+app.include_router(transmissions.router)
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, e: Exception):
@@ -66,30 +67,9 @@ async def exception_callback(request: Request, e: FindException):
   return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': f"A find exception '{e}' was raised."}})
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-#templates_path = os.path.join(dir_path, "templates")
 static_path = os.path.join(dir_path, "static")
 app.mount("/static", StaticFiles(directory=static_path), name="static")
-#templates = Jinja2Templates(directory=templates_path)
-#application_logger.info(f"Template dir set to '{templates_path}'")
 application_logger.info(f"Static dir set to '{static_path}'")
-
-# # authorisation = Auth0Service(app)
-# # authorisation.register()
-# authorisation = Auth0Service(app)
-# if not single_user():
-#   authorisation.register()
-
-# templates.env.globals['server_name'] = server_name
-# templates.env.globals['single_multiple'] = single_multiple
-# templates.env.globals['fhir_version_description'] = fhir_version_description
-# templates.env.globals['title_page_study_list_headings'] = title_page_study_list_headings
-
-# def protect_endpoint(request: Request) -> None:
-#   if single_user():
-#     request.session['userinfo'] = User.single_user()
-#     return None
-#   else:
-#     authorisation.protect_route(request, "/login")
 
 @app.websocket("/alerts/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
@@ -167,36 +147,6 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
   data = restructure_study_list(data)
   #print(f"STUDY LIST: {data}")
   return templates.TemplateResponse(request, "studies/list.html", {'user': user, 'data': data})
-
-# @app.get("/users/{id}/show", dependencies=[Depends(protect_endpoint)])
-# def user_show(request: Request, id: int, session: Session = Depends(get_db)):
-#   user = User.find(id, session)
-#   user_is_admin = is_admin(request)
-#   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}, 'admin': user_is_admin}
-#   return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
-  
-# @app.post("/users/{id}/displayName", dependencies=[Depends(protect_endpoint)])
-# def user_display_name(request: Request, id: int, name: Annotated[str, Form()], session: Session = Depends(get_db)):
-#   user = User.find(id, session)
-#   updated_user, validation = user.update_display_name(name, session)
-#   use_user = updated_user if updated_user else user
-#   data = {'validation': {'user': validation}}
-#   return templates.TemplateResponse(request, f"users/partials/display_name.html", {'user': use_user, 'data': data})
-  
-# @app.post("/users/{id}/endpoint", dependencies=[Depends(protect_endpoint)])
-# def user_endpoint(request: Request, id: int, name: Annotated[str, Form()], url: Annotated[str, Form()], session: Session = Depends(get_db)):
-#   user = User.find(id, session)
-#   endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
-#   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': validation}}
-#   return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
-
-# @app.delete("/users/{id}/endpoint/{endpoint_id}", dependencies=[Depends(protect_endpoint)])
-# def user_endpoint(request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)):
-#   user = User.find(id, session)
-#   endpoint = Endpoint.find(endpoint_id, session)
-#   endpoint.delete(user.id, session)
-#   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'endpoint': Endpoint.valid()}}
-#   return templates.TemplateResponse(request, f"users/partials/endpoint.html", {'user': user, 'data': data})
 
 @app.get("/help/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):
@@ -308,19 +258,6 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
     return FileResponse(path=fullpath, filename=filename, media_type='text/plain')
   else:
     return templates.TemplateResponse(request, "errors/error.html", {'user': user, 'data': {'error': 'Something went wrong downloading the errors file for the import'}})
-
-# @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
-# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   data = {'page': page, 'size': size, 'filter': filter} 
-#   return templates.TemplateResponse(request, "transmissions/status.html", {'user': user, 'data': data})
-
-# @app.get('/transmissions/status/data', dependencies=[Depends(protect_endpoint)])
-# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   data = Transmission.page(page, size, user.id, session)
-#   pagination = Pagination(data, "/transmissions/status/data")
-#   return templates.TemplateResponse(request, "transmissions/partials/status.html", {'user': user, 'pagination': pagination, 'data': data})
 
 @app.get('/versions/{id}/history', dependencies=[Depends(protect_endpoint)])
 async def get_version_history(request: Request, id: int, session: Session = Depends(get_db)):
