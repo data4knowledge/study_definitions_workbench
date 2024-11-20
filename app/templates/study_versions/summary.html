@@ -24,7 +24,7 @@
   {% with data=data %}
     {% include "shared/partials/export_menu.html" %}
   {% endwith %}
-  {% if data['fhir'] %}
+  {% if data['fhir']['enabled'] %}
     {% with data=data %}
       {% include "shared/partials/transmit_menu.html" %}
     {% endwith %} 
