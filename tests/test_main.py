@@ -477,7 +477,7 @@ def mock_file_import_find(mocker):
 
 def mock_data_file_path(mocker):
   mock = mocker.patch("app.model.file_handling.data_files.DataFiles.path")
-  mock.side_effect = [('tests/test_files/a.txt', 'a.txt', True)]
+  mock.side_effect = [('tests/test_files/main/simple.txt', 'simple.txt', True)]
   return mock
 
 def mock_data_file_path_error(mocker):
