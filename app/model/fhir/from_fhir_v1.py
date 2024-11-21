@@ -99,9 +99,9 @@ class FromFHIRV1():
     #print(f"PDV: {protocol_document_version}")
     sections = protocol_document_version.contents
     #print(f"SECTION: {protocol_document_version}")
-    nci = next((x for x in ncis if x.id == sections[0].contentItemId), None)
+    #nci = next((x for x in ncis if x.id == sections[0].contentItemId), None)
     #print(f"TITLE: {nci}")
-    title_page = FHIRTitlePage(nci.text)
+    title_page = FHIRTitlePage(sections, ncis)
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
     study_title = self._model_instance(StudyTitle, {'text': title_page.full_title, 'type': sponsor_title_code})
     protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
@@ -127,7 +127,7 @@ class FromFHIRV1():
       'narrativeContentItems': ncis
     }
     study_version = self._model_instance(StudyVersion, params) 
-    study = self._model_instance(Study, {'id': self._uuid, 'name': 'Study', 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': [protocol_document]}) 
+    study = self._model_instance(Study, {'id': self._uuid, 'name': title_page.study_name, 'label': title_page.study_name, 'description': f'FHIR Imported {title_page.study_name}', 'versions': [study_version], 'documentedBy': [protocol_document]}) 
     return study
 
   def _cdisc_ct_code(self, code, decode):
@@ -186,8 +186,3 @@ class FromFHIRV1():
     cdisc_phase_code = self._cdisc_ct_code('C48660', '[Trial Phase] Not Applicable')
     application_logger.warning(f"Trial phase '{phase}' not decoded")
     return self._model_instance(AliasCode, {'standardCode': cdisc_phase_code})
-
-
-
-
-

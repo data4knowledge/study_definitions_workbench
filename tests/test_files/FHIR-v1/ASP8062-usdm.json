@@ -1,9 +1,9 @@
 {
   "study": {
     "id": "FAKE-UUID",
-    "name": "Study",
-    "description": "",
-    "label": "",
+    "name": "8062CL2002",
+    "description": "FHIR Imported 8062CL2002",
+    "label": "8062CL2002",
     "versions": [
       {
         "id": "StudyVersion_1",

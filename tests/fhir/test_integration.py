@@ -28,4 +28,4 @@ def _full_path(filename):
 
 
 def test_fhir_v1_1(mocker):
-  _run_test('ASP8062', False)
+  _run_test('ASP8062', True)

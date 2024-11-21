@@ -5,10 +5,8 @@ from d4kms_generic import application_logger
 
 class FHIRTitlePage():
 
-  def __init__(self, text: str):
-    self._soup = self._get_soup(text)
-    tables = self._soup(['table'])
-    table = tables[0] if tables else None
+  def __init__(self, sections: list, items: list):
+    table = self._title_table(sections, items)
     #print(f"TABLE: {table}")
     self.full_title = self._table_get_row(table, 'Full Title')
     self.acronym = self._table_get_row(table, 'Acronym')
@@ -27,6 +25,19 @@ class FHIRTitlePage():
     self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
     self.study_name = self._study_name()
 
+  def _title_table(self, sections, items):
+    for section in sections:
+      item = next((x for x in items if x.id == section.contentItemId), None)
+      if item:
+        soup = self._get_soup(str(item.text))
+        for table in soup(['table']):
+          title = self._table_get_row(table, 'Full Title')
+          if title:
+            application_logger.debug(f"Found M11 title page table")
+            return table
+    application_logger.warning(f"Cannot locate M11 title page table!")
+    return None
+    
   def _table_get_row(self, table, key: str) -> str:
     if table:
       soup = self._get_soup(str(table))
@@ -35,7 +46,7 @@ class FHIRTitlePage():
         if str(cells[0].get_text()).upper().startswith(key.upper()):
           application_logger.info(f"Decoded M11 FHIR message {key} = {cells[1].get_text()}")
           return str(cells[1].get_text()).strip()
-    return '[Not Found]'
+    return ''
 
   def _get_soup(self, text):
     soup = None
@@ -52,6 +63,7 @@ class FHIRTitlePage():
   def _study_name(self):
     items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
     for item in items:
+      application_logger.debug(f"Study name checking '{item}'")
       if item:
         name = re.sub('[\W_]+', '', item.upper())
         application_logger.info(f"Study name set to '{name}'")
@@ -69,3 +81,4 @@ class FHIRTitlePage():
       address = (',').join([x.strip() for x in parts[1:]])
     application_logger.info(f"Sponsor name set to '{name}' with address set to '{address}'")
     return name, address
+  
