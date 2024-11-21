@@ -52,7 +52,7 @@ class FromFHIRV1():
   
   def extra(self):
     return {
-      'title_page': self._self._title_page.extra(), 
+      'title_page': self._title_page.extra(), 
       'amendment': {
         'amendment_details': '',
         'robustness_impact': False,
