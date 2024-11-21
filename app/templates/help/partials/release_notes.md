@@ -1,3 +1,11 @@
+<h5>Release 0.27.0, 2024-11-21</h5>
+
+- Improve handling of FHIR v1 import
+- Tidy up FHIR menus
+- Add role for FHIR transmit
+- Add further testing
+- Initial splitting of main into routers
+
 <h5>Release 0.26.0, 2024-11-19</h5>
 
 - Fix bug with single user version calling role server
