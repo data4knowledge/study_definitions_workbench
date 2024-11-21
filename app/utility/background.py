@@ -31,7 +31,7 @@ async def process_excel(uuid, user: User) -> None:
     usdm_json = db.to_json()
     files.save('usdm', usdm_json)
     files.save('extra', _blank_extra())
-    parameters = _study_parameters(usdm_json)
+    parameters = _study_parameters(usdm_json, file_import.type)
     # print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
@@ -57,7 +57,7 @@ async def process_word(uuid, user: User) -> None:
     usdm_json = m11.to_usdm()
     files.save('usdm', usdm_json)
     files.save('extra', m11.extra())
-    parameters = _study_parameters(usdm_json)
+    parameters = _study_parameters(usdm_json, file_import.type)
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
     session.close()
@@ -82,7 +82,7 @@ async def process_fhir_v1(uuid, user: User) -> None:
     usdm_json = fhir.to_usdm()
     files.save('usdm', usdm_json)
     files.save('extra', fhir.extra())
-    parameters = _study_parameters(usdm_json)
+    parameters = _study_parameters(usdm_json, file_import.type)
     # print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
     file_import.update_status('Successful', session)
@@ -99,7 +99,7 @@ def run_background_task(name, uuid, user: User) -> None:
   t = threading.Thread(target=asyncio.run, args=(name(uuid, user),))
   t.start()
 
-def _study_parameters(json_str: str) -> dict:
+def _study_parameters(json_str: str, type: str) -> dict:
   try:
     data = json.loads(json_str) 
     db = USDMDb()
@@ -107,7 +107,7 @@ def _study_parameters(json_str: str) -> dict:
     object_path = ObjectPath(db.wrapper())
     version = db.wrapper().study.first_version()
     return {
-      'name': _get_parameter(object_path, 'study/name'),
+      'name': f"{_get_parameter(object_path, 'study/name')}-{type}",
       'phase': _get_parameter(object_path, 'study/versions[0]/studyPhase/standardCode/decode'),
       'full_title': version.official_title(),
       'sponsor_identifier': version.sponsor_identifier(),
