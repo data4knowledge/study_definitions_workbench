@@ -8,3 +8,10 @@ def read_json(full_path):
   with open(full_path, 'r') as f:
     return json.dumps(json.load(f), indent=2) # Return pretty printed version
 
+def read_excel(full_path):  
+  with open(full_path, "rb") as f:
+    return f.read()
+
+def read_word(full_path):  
+  with open(full_path, "rb") as f:
+    return f.read()
