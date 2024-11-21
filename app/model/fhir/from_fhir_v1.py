@@ -120,10 +120,11 @@ class FromFHIRV1():
       'rationale': 'XXX', 
       'titles': [study_title], 
       'studyDesigns': [study_design], 
-      'documentVersionId': protocol_document_version.id, 
+      'documentVersionIds': [protocol_document_version.id], 
       'studyIdentifiers': [identifier], 
       'studyPhase': self._phase(title_page.trial_phase), 
-      'organizations': [organization]
+      'organizations': [organization],
+      'narrativeContentItems': ncis
     }
     study_version = self._model_instance(StudyVersion, params) 
     study = self._model_instance(Study, {'id': self._uuid, 'name': 'Study', 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': [protocol_document]}) 
