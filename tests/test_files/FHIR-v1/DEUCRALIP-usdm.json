@@ -13,7 +13,7 @@
         "studyPhase": {
           "id": "AliasCode_1",
           "standardCode": {
-            "id": "Code_11",
+            "id": "Code_14",
             "code": "C15601",
             "codeSystem": "http://www.cdisc.org",
             "codeSystemVersion": "2023-12-15",
@@ -49,7 +49,7 @@
             "therapeuticAreas": [],
             "characteristics": [],
             "interventionModel": {
-              "id": "Code_8",
+              "id": "Code_11",
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -85,7 +85,7 @@
             "id": "StudyTitle_1",
             "text": "Proof of concept study (multicenter, phase II) on the efficacy of the selective TYK2 inhibitor Deucravacitinib in Lichen planus patients (DEUCRALIP)",
             "type": {
-              "id": "Code_4",
+              "id": "Code_7",
               "code": "C99905x2",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -98,11 +98,24 @@
             "id": "StudyTitle_2",
             "text": "DEUCRALIP",
             "type": {
-              "id": "Code_5",
+              "id": "Code_9",
               "code": "C94108",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
               "decode": "Study Acronym",
+              "instanceType": "Code"
+            },
+            "instanceType": "StudyTitle"
+          },
+          {
+            "id": "StudyTitle_3",
+            "text": "DEUCRALIP",
+            "type": {
+              "id": "Code_8",
+              "code": "C99905x1",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2023-12-15",
+              "decode": "Brief Study Title",
               "instanceType": "Code"
             },
             "instanceType": "StudyTitle"
@@ -3347,7 +3360,7 @@
             "name": "Rheinische Friedrich-Wilhelms-Universit\u00e4t Bonnrepresented by the Faculty of Medicine of the University of Bonn represented by the Dean of the Faculty of Medicine Venusberg-Campus 1, D-53127 BonnProf. Dr. med. Joerg Wenzel Department of Dermatology and Allergology University Hospital of Bonn Venusberg- Campus 1, D-53127 Bonn",
             "label": null,
             "type": {
-              "id": "Code_10",
+              "id": "Code_13",
               "code": "C70793",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -3365,7 +3378,7 @@
               "state": "",
               "postalCode": "12345",
               "country": {
-                "id": "Code_9",
+                "id": "Code_12",
                 "code": "DNK",
                 "codeSystem": "ISO 3166 1 alpha3",
                 "codeSystemVersion": "2020-08",

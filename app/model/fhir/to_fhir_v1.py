@@ -34,4 +34,3 @@ class ToFHIRV1(ToFHIR):
     except Exception as e:
       self._errors_and_logging.exception(f"Exception raised generating FHIR content. See logs for more details", e)
       return None
-
