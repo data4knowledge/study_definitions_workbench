@@ -27,5 +27,8 @@ def _full_path(filename):
   return f"tests/test_files/FHIR-v1/{filename}"
 
 
-def test_fhir_v1_1(mocker):
+def test_fhir_v1_ASP8062(mocker):
   _run_test('ASP8062', True)
+
+def test_fhir_v1_DEUCRALIP(mocker):
+  _run_test('DEUCRALIP', True)
