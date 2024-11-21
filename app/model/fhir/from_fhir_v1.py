@@ -173,6 +173,7 @@ class FromFHIRV1():
       'versionIdentifier': self._title_page.version_number, 
       'rationale': 'XXX', 
       'titles': titles, 
+      'dateValues': dates,
       'studyDesigns': [study_design], 
       'documentVersionIds': [protocol_document_version.id], 
       'studyIdentifiers': [identifier], 
@@ -180,6 +181,7 @@ class FromFHIRV1():
       'organizations': [organization],
       'narrativeContentItems': ncis
     }
+    application_logger.debug(f"Study Version params {params}")
     study_version = self._model_instance(StudyVersion, params) 
     study = self._model_instance(Study, {'id': self._uuid, 'name': self._title_page.study_name, 'label': self._title_page.study_name, 'description': f'FHIR Imported {self._title_page.study_name}', 'versions': [study_version], 'documentedBy': [protocol_document]}) 
     return study

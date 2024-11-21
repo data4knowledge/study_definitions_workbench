@@ -26,7 +26,70 @@
         "documentVersionIds": [
           "StudyDefinitionDocumentVersion_1"
         ],
-        "dateValues": [],
+        "dateValues": [
+          {
+            "id": "GovernanceDate_1",
+            "name": "Approval Date",
+            "label": null,
+            "description": null,
+            "type": {
+              "id": "Code_4",
+              "code": "C132352",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2023-12-15",
+              "decode": "Sponsor Approval Date",
+              "instanceType": "Code"
+            },
+            "dateValue": "2023-11-07",
+            "geographicScopes": [
+              {
+                "id": "GeographicScope_1",
+                "type": {
+                  "id": "Code_6",
+                  "code": "C68846",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2023-12-15",
+                  "decode": "Global",
+                  "instanceType": "Code"
+                },
+                "code": null,
+                "instanceType": "GeographicScope"
+              }
+            ],
+            "instanceType": "GovernanceDate"
+          },
+          {
+            "id": "GovernanceDate_2",
+            "name": "Protocol Date",
+            "label": null,
+            "description": null,
+            "type": {
+              "id": "Code_5",
+              "code": "C99903x1",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2023-12-15",
+              "decode": "Protocol Effective Date",
+              "instanceType": "Code"
+            },
+            "dateValue": "2023-11-07",
+            "geographicScopes": [
+              {
+                "id": "GeographicScope_1",
+                "type": {
+                  "id": "Code_6",
+                  "code": "C68846",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2023-12-15",
+                  "decode": "Global",
+                  "instanceType": "Code"
+                },
+                "code": null,
+                "instanceType": "GeographicScope"
+              }
+            ],
+            "instanceType": "GovernanceDate"
+          }
+        ],
         "amendments": [],
         "businessTherapeuticAreas": [],
         "studyIdentifiers": [
