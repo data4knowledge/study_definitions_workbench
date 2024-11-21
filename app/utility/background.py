@@ -81,6 +81,7 @@ async def process_fhir_v1(uuid, user: User) -> None:
     file_import.update_status('Saving', session)
     usdm_json = fhir.to_usdm()
     files.save('usdm', usdm_json)
+    files.save('extra', _blank_extra())
     parameters = _study_parameters(usdm_json)
     # print(f"PARAMETERS: {parameters}")
     Study.study_and_version(parameters, user, file_import, session)
