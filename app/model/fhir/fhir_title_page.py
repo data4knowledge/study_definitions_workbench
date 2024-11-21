@@ -1,5 +1,6 @@
 import re
 import warnings
+import dateutil.parser as parser
 from bs4 import BeautifulSoup   
 from d4kms_generic import application_logger
 
@@ -8,22 +9,48 @@ class FHIRTitlePage():
   def __init__(self, sections: list, items: list):
     table = self._title_table(sections, items)
     #print(f"TABLE: {table}")
+    self.sponosr_confidentiality = self._table_get_row(table, 'Sponsor Confidentiality')
     self.full_title = self._table_get_row(table, 'Full Title')
     self.acronym = self._table_get_row(table, 'Acronym')
     self.sponsor_protocol_identifier = self._table_get_row(table, 'Sponsor Protocol Identifier')
     self.original_protocol = self._table_get_row(table, 'Original Protocol')
     self.version_number = self._table_get_row(table, 'Version Number')
+    self.version_date = self._get_protocol_date(table)
     self.amendment_identifier = self._table_get_row(table, 'Amendment Identifier')
     self.amendment_scope = self._table_get_row(table, 'Amendment Scope')
-    self.compound_codes = self._table_get_row(table, 'Compound Code(s)')
-    self.compound_names = self._table_get_row(table, 'Compound Name(s)')
+    self.amendment_details = self._table_get_row(table, 'Amendment Details')
+    self.trial_phase_raw = self._table_get_row(table, 'Trial Phase')
+    self.compound_codes = self._table_get_row(table, 'Compound Code')
+    self.compound_names = self._table_get_row(table, 'Compound Name')
     self.trial_phase = self._table_get_row(table, 'Trial Phase')
     self.short_title = self._table_get_row(table, 'Short Title')
     self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
     self.sponsor_name, self.sponsor_address = self._sponsor_name_and_address()
     self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
-    self.sponsor_approval_date = self._table_get_row(table, 'Sponsor Approval Date')
+    self.sponsor_approval_date = self._get_sponsor_approval_date(table)
+    self.manufacturer_name_and_address = self._table_get_row(table, 'Manufacturer')
+    self.sponsor_signatory = self._table_get_row(table, 'Sponsor Signatory')
+    self.medical_expert_contact = self._table_get_row(table, 'Medical Expert')
+    self.sae_reporting_method = self._table_get_row(table, 'SAE Reporting')
     self.study_name = self._study_name()
+
+  def extra(self):
+    return {
+      'sponsor_confidentiality': self.sponosr_confidentiality,
+      'compound_codes': self.compound_codes,
+      'compound_names': self.compound_names,
+      'amendment_identifier': self.amendment_identifier,
+      'amendment_scope': self.amendment_scope,
+      'amendment_details': self.amendment_details,
+      'sponsor_name_and_address': self.sponsor_name_and_address,
+      'original_protocol': self.original_protocol,
+      'regulatory_agency_identifiers': self.regulatory_agency_identifiers,
+      'manufacturer_name_and_address': self.manufacturer_name_and_address,
+      'sponsor_signatory': self.sponsor_signatory,
+      'medical_expert_contact': self.medical_expert_contact,
+      'sae_reporting_method': self.sae_reporting_method,
+      'sponsor_approval_date': self.sponsor_approval_date
+    }
 
   def _title_table(self, sections, items):
     for section in sections:
@@ -34,6 +61,7 @@ class FHIRTitlePage():
           title = self._table_get_row(table, 'Full Title')
           if title:
             application_logger.debug(f"Found M11 title page table")
+            #print(f"TABLE: {table}")
             return table
     application_logger.warning(f"Cannot locate M11 title page table!")
     return None
@@ -43,9 +71,10 @@ class FHIRTitlePage():
       soup = self._get_soup(str(table))
       for row in soup(['tr']):
         cells = row.findAll('td')
-        if str(cells[0].get_text()).upper().startswith(key.upper()):
+        if key.upper() in str(cells[0].get_text()).upper():
           application_logger.info(f"Decoded M11 FHIR message {key} = {cells[1].get_text()}")
           return str(cells[1].get_text()).strip()
+    application_logger.info(f"Failed to decode M11 FHIR message {key}")
     return ''
 
   def _get_soup(self, text):
@@ -65,7 +94,7 @@ class FHIRTitlePage():
     for item in items:
       application_logger.debug(f"Study name checking '{item}'")
       if item:
-        name = re.sub('[\W_]+', '', item.upper())
+        name = re.sub(r'[\W_]+', '', item.upper())
         application_logger.info(f"Study name set to '{name}'")
         return name
     return ''  
@@ -81,4 +110,21 @@ class FHIRTitlePage():
       address = (',').join([x.strip() for x in parts[1:]])
     application_logger.info(f"Sponsor name set to '{name}' with address set to '{address}'")
     return name, address
-  
+
+  def _get_sponsor_approval_date(self, table):
+    return self._get_date(table, 'Sponsor Approval')
+
+  def _get_protocol_date(self, table):
+    return self._get_date(table, 'Version Date')
+
+  def _get_date(self, table, text):
+    try:
+      date_text = self._table_get_row(table, text)
+      if date_text:
+        date = parser.parse(date_text)
+        return date
+      else:
+        return None
+    except Exception as e:
+      application_logger.exception(f"Exception raised during date processing for '{text}'", e)
+      return None
