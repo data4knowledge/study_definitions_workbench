@@ -71,14 +71,14 @@ class FromFHIRV1():
 
   def _section(self, section: CompositionSection, protocol_document_version: StudyDefinitionDocumentVersion, ncis: list, index: int):
     index = index + 1
-    print(f"SECTION: {section.title}, {section.code.text}")
+    #print(f"SECTION: {section.title}, {section.code.text}")
     section_number = self._get_section_number(section.code.text)
     section_title = section.title
     sn = section_number if section_number else ''
     dsn = True if sn else False
     st = section_title if section_title else ''
     dst = True if st else False
-    print(f"SECTION: sn='{sn}', dsn='{dsn}', st='{st}', dst='{dst}'")
+    #print(f"SECTION: sn='{sn}', dsn='{dsn}', st='{st}', dst='{dst}'")
     text = section.text.div if section.text else '&nbsp'
     nci = self._model_instance(NarrativeContentItem, {'name': f"NCI-{index}", 'text': text})
     nc = self._model_instance(NarrativeContent, {'name': f"NC-{index}", 'sectionNumber': sn, 'displaySectionNumber': dsn, 'sectionTitle': st, 'displaySectionTitle': dst, 'contentItemId': nci.id, 'childIds': [], 'previousId': None, 'nextId': None})
@@ -100,7 +100,7 @@ class FromFHIRV1():
     sections = protocol_document_version.contents
     #print(f"SECTION: {protocol_document_version}")
     nci = next((x for x in ncis if x.id == sections[0].contentItemId), None)
-    print(f"TITLE: {nci}")
+    #print(f"TITLE: {nci}")
     title_page = FHIRTitlePage(nci.text)
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
     study_title = self._model_instance(StudyTitle, {'text': title_page.full_title, 'type': sponsor_title_code})
@@ -114,7 +114,7 @@ class FromFHIRV1():
     address = self._model_instance(Address, {'line': 'Den Lille Havfrue', 'city': 'Copenhagen', 'district': '', 'state': '', 'postalCode': '12345', 'country': country_code})
     organization = self._model_instance(Organization, {'name': title_page.sponsor_name, 'type': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'text': title_page.sponsor_protocol_identifier, 'scopeId': organization.id})
-    print(f"IDENTIFIER: {identifier}")
+    #print(f"IDENTIFIER: {identifier}")
     params = {
       'versionIdentifier': title_page.version_number, 
       'rationale': 'XXX', 
