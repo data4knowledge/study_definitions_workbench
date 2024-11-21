@@ -94,7 +94,7 @@ class M11TitlePage():
     items = [self.acronym, self.sponsor_protocol_identifier, self.compound_codes]
     for item in items:
       if item:
-        name = re.sub('[\W_]+', '', item.upper())
+        name = re.sub(r'[\W_]+', '', item.upper())
         application_logger.info(f"Study name set to '{name}'")
         return name
     return ''  

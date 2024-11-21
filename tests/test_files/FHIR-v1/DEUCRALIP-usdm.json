@@ -1,9 +1,9 @@
 {
   "study": {
     "id": "FAKE-UUID",
-    "name": "DER202201",
-    "description": "FHIR Imported DER202201",
-    "label": "DER202201",
+    "name": "DEUCRALIP",
+    "description": "FHIR Imported DEUCRALIP",
+    "label": "DEUCRALIP",
     "versions": [
       {
         "id": "StudyVersion_1",
@@ -13,7 +13,7 @@
         "studyPhase": {
           "id": "AliasCode_1",
           "standardCode": {
-            "id": "Code_9",
+            "id": "Code_11",
             "code": "C15601",
             "codeSystem": "http://www.cdisc.org",
             "codeSystemVersion": "2023-12-15",
@@ -49,7 +49,7 @@
             "therapeuticAreas": [],
             "characteristics": [],
             "interventionModel": {
-              "id": "Code_6",
+              "id": "Code_8",
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -90,6 +90,19 @@
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
               "decode": "Official Study Title",
+              "instanceType": "Code"
+            },
+            "instanceType": "StudyTitle"
+          },
+          {
+            "id": "StudyTitle_2",
+            "text": "DEUCRALIP",
+            "type": {
+              "id": "Code_5",
+              "code": "C94108",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2023-12-15",
+              "decode": "Study Acronym",
               "instanceType": "Code"
             },
             "instanceType": "StudyTitle"
@@ -3334,7 +3347,7 @@
             "name": "Rheinische Friedrich-Wilhelms-Universit\u00e4t Bonnrepresented by the Faculty of Medicine of the University of Bonn represented by the Dean of the Faculty of Medicine Venusberg-Campus 1, D-53127 BonnProf. Dr. med. Joerg Wenzel Department of Dermatology and Allergology University Hospital of Bonn Venusberg- Campus 1, D-53127 Bonn",
             "label": null,
             "type": {
-              "id": "Code_8",
+              "id": "Code_10",
               "code": "C70793",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -3352,7 +3365,7 @@
               "state": "",
               "postalCode": "12345",
               "country": {
-                "id": "Code_7",
+                "id": "Code_9",
                 "code": "DNK",
                 "codeSystem": "ISO 3166 1 alpha3",
                 "codeSystemVersion": "2020-08",

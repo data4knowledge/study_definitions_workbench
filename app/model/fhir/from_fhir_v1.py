@@ -103,7 +103,24 @@ class FromFHIRV1():
     #print(f"TITLE: {nci}")
     title_page = FHIRTitlePage(sections, ncis)
     sponsor_title_code = self._cdisc_ct_code('C99905x2', 'Official Study Title')
-    study_title = self._model_instance(StudyTitle, {'text': title_page.full_title, 'type': sponsor_title_code})
+    acronym_code = self._cdisc_ct_code('C94108', 'Study Acronym')
+    sponsor_short_title_code = self._cdisc_ct_code('C99905x1', 'Brief Study Title')
+    titles = []
+    try:
+      title = self._model_instance(StudyTitle, {'text': title_page.full_title, 'type': sponsor_title_code})
+      titles.append(title)
+    except:
+      application_logger.info(f"No study title set, source = '{title_page.full_title}'")
+    try:
+      title = self._model_instance(StudyTitle, {'text': title_page.acronym, 'type': acronym_code}) 
+      titles.append(title)
+    except:
+      application_logger.info(f"No study acronym set, source = '{title_page.acronym}'")
+    try:
+      title = self._model_instance(StudyTitle, {'text': title_page.short_title, 'type': sponsor_short_title_code}, self._id_manager) 
+      titles.append(title)
+    except:
+      application_logger.info(f"No study short title set, source = '{title_page.short_title}'")
     protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
     intervention_model_code = self._cdisc_ct_code('C82639', 'Parallel Study')
     country_code = self._iso_country_code('DNK', 'Denmark')
@@ -118,7 +135,7 @@ class FromFHIRV1():
     params = {
       'versionIdentifier': title_page.version_number, 
       'rationale': 'XXX', 
-      'titles': [study_title], 
+      'titles': titles, 
       'studyDesigns': [study_design], 
       'documentVersionIds': [protocol_document_version.id], 
       'studyIdentifiers': [identifier], 

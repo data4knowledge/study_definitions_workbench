@@ -13,7 +13,7 @@
         "studyPhase": {
           "id": "AliasCode_1",
           "standardCode": {
-            "id": "Code_9",
+            "id": "Code_11",
             "code": "C15600",
             "codeSystem": "http://www.cdisc.org",
             "codeSystemVersion": "2023-12-15",
@@ -49,7 +49,7 @@
             "therapeuticAreas": [],
             "characteristics": [],
             "interventionModel": {
-              "id": "Code_6",
+              "id": "Code_8",
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -90,6 +90,19 @@
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
               "decode": "Official Study Title",
+              "instanceType": "Code"
+            },
+            "instanceType": "StudyTitle"
+          },
+          {
+            "id": "StudyTitle_2",
+            "text": "",
+            "type": {
+              "id": "Code_5",
+              "code": "C94108",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2023-12-15",
+              "decode": "Study Acronym",
               "instanceType": "Code"
             },
             "instanceType": "StudyTitle"
@@ -2932,7 +2945,7 @@
             "name": "Astellas PharmaGlobal Development Inc.1 Astellas Way Northbrook, IL 60062, US",
             "label": null,
             "type": {
-              "id": "Code_8",
+              "id": "Code_10",
               "code": "C70793",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -2950,7 +2963,7 @@
               "state": "",
               "postalCode": "12345",
               "country": {
-                "id": "Code_7",
+                "id": "Code_9",
                 "code": "DNK",
                 "codeSystem": "ISO 3166 1 alpha3",
                 "codeSystemVersion": "2020-08",

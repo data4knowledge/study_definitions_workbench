@@ -135,7 +135,7 @@ class M11ToUSDM():
       title = model_instance(StudyTitle, {'text': self._title_page.short_title, 'type': sponsor_short_title_code}, self._id_manager) 
       titles.append(title)
     except:
-      application_logger.info(f"No study acronym set, source = '{self._title_page.acronym}'")
+      application_logger.info(f"No study short title set, source = '{self._title_page.short_title}'")
     protocol_document_version = model_instance(StudyDefinitionDocumentVersion, {'version': self._title_page.version_number, 'status': protocol_status_code}, self._id_manager)
     language = language_code('en', 'English', self._id_manager)
     doc_type = cdisc_ct_code('C70817', 'Protocol', self._cdisc_ct_library, self._id_manager)
