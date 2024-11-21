@@ -149,6 +149,7 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
     data.append(m11.__dict__)
   data = restructure_study_list(data)
   #print(f"STUDY LIST: {data}")
+  data['fhir'] = {'enabled': is_fhir_tx(request), 'versions': fhir_versions()}
   return templates.TemplateResponse(request, "studies/list.html", {'user': user, 'data': data})
 
 @app.get("/help/about", dependencies=[Depends(protect_endpoint)])
