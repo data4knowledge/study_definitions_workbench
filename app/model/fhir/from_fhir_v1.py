@@ -65,7 +65,7 @@ class FromFHIRV1():
     ncis = []
     for item in bundle.entry[0].resource.section:
       nc = self._section(item, protocl_document_version, ncis, 0)
-    #self._double_link(protocl_document_version.contents, 'previousId', 'nextId')
+    self._double_link(protocl_document_version.contents, 'previousId', 'nextId')
     #print(f"DOC: {protocl_document}")
     return protocl_document, ncis
 
