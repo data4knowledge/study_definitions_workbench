@@ -6,7 +6,7 @@ from usdm_model.code import Code
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
 from d4kms_generic import application_logger
-from app.utility.address_service import AddressService
+from app.model.services.address_service import AddressService
 from app.model.m11_protocol.m11_utility import *
 
 class M11TitlePage():
