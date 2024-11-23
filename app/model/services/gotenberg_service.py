@@ -14,7 +14,6 @@ class GotenbergService(Service):
       """
       se = ServiceEnvironment()
       url = se.get('GOTENBERG_SERVER_URL')
-      self.convert_endpoint = f"{url}"
       super().__init__(url)
 
     async def convert_docx_to_pdf(
@@ -58,6 +57,8 @@ class GotenbergService(Service):
             output_path = Path(output_path)
             output_path.write_bytes(response['data'])
             return True
+        elif 'data' in response:
+            return response
         else:
             try:
                 files['files'][1].close()
