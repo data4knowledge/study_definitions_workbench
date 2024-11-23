@@ -11,8 +11,6 @@ def anyio_backend():
 def test_init(monkeypatch):
   monkeypatch.setenv("ADDRESS_SERVER_URL", "http://example.com")
   service = AddressService()
-  method_list = [func for func in dir(AddressService) if callable(getattr(AddressService, func))]
-  print(f"METHODS: {method_list}")
   assert service.base_url == "http://example.com"
 
 @pytest.mark.asyncio

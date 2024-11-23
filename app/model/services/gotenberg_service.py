@@ -16,7 +16,7 @@ class GotenbergService(Service):
       url = se.get('GOTENBERG_SERVER_URL')
       super().__init__(url)
 
-    async def convert_docx_to_pdf(
+    async def docx_to_pdf(
         self,
         docx_path: Union[str, Path],
         output_path: Optional[Union[str, Path]] = None,
@@ -52,7 +52,7 @@ class GotenbergService(Service):
         }
         if page_ranges:
             data['pageRanges'] = page_ranges
-        response = await self.file_post('/forms/libreoffice/convert', files, data)
+        response = await self._file_post('/forms/libreoffice/convert', files, data)
         if 'data' in response and output_path:
             output_path = Path(output_path)
             output_path.write_bytes(response['data'])
@@ -66,16 +66,16 @@ class GotenbergService(Service):
                 pass
             return response
 
-    def health_check(self) -> bool:
+    def health(self) -> bool:
         """
         Check if the Gotenberg service is available.
 
         Returns:
-            bool: True if service is healthy, False otherwise
+            dict: the status response
         """
         return self.get('/health')
 
-    async def file_post(self, url, files, data={}):
+    async def _file_post(self, url, files, data={}):
       try:
         full_url = self._full_url(url)
         response = await self._client.post(full_url, files=files, data=data) if data else await self._client.post(full_url, files=files)
