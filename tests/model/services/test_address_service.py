@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import patch
 from app.model.services.address_service import AddressService
-from tests.mocks.service_mocks import *
-from tests.mocks.general_mocks import mock_called
+from tests.mocks.service_mocks import mock_post
+from tests.mocks.general_mocks import mock_called, mock_parameters_correct
 
 @pytest.fixture
 def anyio_backend():
@@ -22,3 +22,4 @@ async def test_parser(mocker, monkeypatch):
   service = AddressService()
   assert await service.parser('100 main st buffalo ny usa') == {'address': 'address'}
   assert mock_called(sp)
+  mock_parameters_correct(sp, [mocker.call('parser', data={'query': '100 main st buffalo ny usa'})])
