@@ -163,10 +163,10 @@ setup_env.sh
 .development_env
 .production_env
 .staging_env
-.training_env
 .test_env
-install_local_d4kms.sh
+.playwright_env
 .env
+install_local_d4kms.sh
 
 # Mount for DB and data files
 mount/database/database.db

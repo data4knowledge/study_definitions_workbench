@@ -1,32 +1,19 @@
 
 import os
-import time
-import uvicorn
 import pytest
-from multiprocessing import Process
-from app.main import app
-from app.model.database_manager import DatabaseManager
-from playwright.sync_api import Playwright, sync_playwright, expect
+from d4kms_generic.service_environment import ServiceEnvironment
+from playwright.sync_api import Playwright
 
-port = 8000
-url = f"http://localhost:{port}"
-
-def start_server():
-  uvicorn.run(app, host="0.0.0.0", port=port)
+url = f"https://d4k-sdw-staging.fly.dev"
 
 @pytest.fixture(scope="session", autouse=True)
 def setup():
-  proc = Process(target=start_server, args=())
-  proc.start()
-  time.sleep(2)
+  os.environ["PYTHON_ENVIRONMENT"] = "playwright"
   yield
-  proc.terminate()
+  os.environ["PYTHON_ENVIRONMENT"] = "development"
 
 @pytest.mark.playwright
-def test_login(playwright: Playwright, db) -> None:
-  database = DatabaseManager(db)
-  database.clear_all()
-  database.clear_users()
+def test_login(playwright: Playwright) -> None:
   browser = playwright.chromium.launch(headless=False)
   context = browser.new_context()
   page = context.new_page()
@@ -75,9 +62,11 @@ def test_load_m11(playwright: Playwright) -> None:
   browser.close()
 
 def username():
-  value = os.environ["USERNAME"]
+  se = ServiceEnvironment()
+  value = se.get("USERNAME")
   return value
 
 def password():
-  value = os.environ["PASSWORD"]
+  se = ServiceEnvironment()
+  value = se.get("PASSWORD")
   return value
