@@ -32,6 +32,6 @@ async def test_docx_to_pdf(mocker, monkeypatch):
   mock_parameters_correct(sp, [mocker.call('/forms/libreoffice/convert', {'files': ('LZZT.docx', 'xxx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')}, {'landscape': 'false', 'paperWidth': 8.27, 'paperHeight': 11.7})])
 
 def mock_file_post(mocker):
-  mock = mocker.patch(f"app.model.services.gotenberg_service.GotenbergService.file_post")
+  mock = mocker.patch(f"app.model.services.gotenberg_service.GotenbergService._file_post")
   mock.side_effect = [{'address': 'address'}]
   return mock
