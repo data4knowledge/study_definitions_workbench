@@ -23,10 +23,10 @@ def _full_path(filename):
   return f"tests/test_files/fhir_v1/{filename}"
 
 def test_fhir_v1_ASP8062():
-  _run_test('ASP8062', True)
+  _run_test('ASP8062')
 
 def test_fhir_v1_DEUCRALIP():
-  _run_test('DEUCRALIP', True)
+  _run_test('DEUCRALIP')
 
 def test_fhir_v1_IGBJ():
-  _run_test('IGBJ', True)
+  _run_test('IGBJ')
