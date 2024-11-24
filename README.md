@@ -126,3 +126,12 @@ The following environment variables need to be set (The remainder are set within
 - FILE_PICKER 
 
 For a single user environment the AUTH0 variables can be empty.
+
+# Deployment Checklist
+
+- Unit tests pass
+- Deploy to Staging
+- Playwright tests pass
+- Deploy to Production
+- Build docker image (tagged with version and as latest)
+- Tag release in GitHub

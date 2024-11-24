@@ -2,9 +2,10 @@
 import os
 import pytest
 from d4kms_generic.service_environment import ServiceEnvironment
-from playwright.sync_api import Playwright
+from playwright.sync_api import Playwright, expect
 
-url = f"https://d4k-sdw-staging.fly.dev"
+#url = f"https://d4k-sdw-staging.fly.dev"
+url = f"http://localhost:8000"
 
 @pytest.fixture(scope="session", autouse=True)
 def setup():
@@ -28,38 +29,109 @@ def test_login(playwright: Playwright) -> None:
   browser.close()
 
 @pytest.mark.playwright
-def test_load_m11(playwright: Playwright) -> None:
+def test_clear_db(playwright: Playwright) -> None:
   browser = playwright.chromium.launch(headless=False)
   context = browser.new_context()
   page = context.new_page()
   page.goto(url)
   page.get_by_role("link", name="Click here to register or").click()
-  page.get_by_label("Email address").click()
-  page.get_by_label("Email address").fill("daveih1664dk@gmail.com")
+  page.get_by_label("Email address").fill(username())
   page.get_by_label("Password").click()
-  page.get_by_label("Password").fill("Something34#Secure")
-  page.get_by_role("button", name="Show password").click()
+  page.get_by_label("Password").fill(password())
   page.get_by_role("button", name="Continue", exact=True).click()
-  page.get_by_role("button", name=" Import").click()
-  page.get_by_role("link", name="M11 Document (.docx)").click()
-  page.locator("#files").click()
-  page.locator("#files").set_input_files("/Users/daveih/Documents/python/study_definitions_workbench/tests/test_files/M11-Protocols/ICH_M11_Template_RadVax_Example_Mods.docx")
-  page.get_by_role("button", name=" Upload File(s)").click()
-  page.get_by_role("link").first.click()
-  page.get_by_role("button", name=" Import").click()
-  page.get_by_role("link", name="M11 Document (.docx)").click()
-  page.locator("#files").click()
-  page.locator("#files").set_input_files("/Users/daveih/Documents/python/study_definitions_workbench/tests/test_files/M11-Protocols/ICH_M11_Template_LZZT_Example_Estimand.docx")
-  page.get_by_role("button", name=" Upload File(s)").click()
-  page.get_by_role("button", name="Home").click()
-  page.get_by_role("button", name=" Import").click()
-  page.get_by_role("link", name="M11 Document (.docx)").click()
-  page.locator("#files").click()
-  page.locator("#files").set_input_files("/Users/daveih/Documents/python/study_definitions_workbench/tests/test_files/M11-Protocols/ICH_M11_Template_IGBJ_Example_Estimand.docx")
-  page.get_by_role("button", name=" Upload File(s)").click()
-  page.get_by_role("link").first.click()
+  page.get_by_role("link", name=" DIH").click()
+  page.once("dialog", lambda dialog: dialog.accept())
+  page.get_by_role("link", name=" Delete Database").click()
   context.close()
   browser.close()
+
+@pytest.mark.playwright
+def test_load_m11(playwright: Playwright) -> None:
+
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+  
+  login(page)
+  
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 Document (.docx)").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/RadVax/RadVax.docx"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+  expect(page.get_by_text("RADVAX™: A Stratified Phase I Trial of Pembrolizumab with Hypofractionated Radiotherapy in Patients with Advanced and Metastatic Cancers")).to_be_visible()
+  
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
+def test_load_excel(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="USDM Excel (.xlsx)").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/excel/pilot.xlsx"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of Excel")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+  expect(page.get_by_text("Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease")).to_be_visible()
+
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
+def test_load_fhir_v1(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/fhir_v1/ASP8062.json"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of FHIR")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+  expect(page.get_by_text("A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants")).to_be_visible()
+
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
+def test_help(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.get_by_role("button", name=" Help").click()
+  page.get_by_role("link", name="About").click()
+  expect(page.locator("body")).to_contain_text("d4k Study Definitions Workbench (v0.27.0)")
+  expect(page.locator("body")).to_contain_text("Release Log")
+  expect(page.locator("body")).to_contain_text("Licence Information")
+  page.get_by_role("button", name=" Help").click()
+  page.get_by_role("link", name="Examples").click()
+  expect(page.locator("h4")).to_contain_text("Example Files")
+  page.get_by_role("button", name=" Help").click()
+  page.get_by_role("link", name="Issues & Feedback").click()
+  expect(page.locator("h4")).to_contain_text("Issues and Feedback")
+  expect(page.get_by_role("link", name="bug / issue")).to_be_visible()
+  expect(page.get_by_role("link", name="discussion topic")).to_be_visible()
 
 def username():
   se = ServiceEnvironment()
@@ -70,3 +142,17 @@ def password():
   se = ServiceEnvironment()
   value = se.get("PASSWORD")
   return value
+
+def filepath():
+  se = ServiceEnvironment()
+  value = se.get("FILEPATH")
+  return value
+
+def login(page):
+  page.get_by_role("link", name="Click here to register or").click()
+  page.get_by_label("Email address").click()
+  page.get_by_label("Email address").fill("daveih1664dk@gmail.com")
+  page.get_by_label("Password").click()
+  page.get_by_label("Password").fill("Something34#Secure")
+  page.get_by_role("button", name="Show password").click()
+  page.get_by_role("button", name="Continue", exact=True).click()
