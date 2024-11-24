@@ -4,8 +4,8 @@ import pytest
 from d4kms_generic.service_environment import ServiceEnvironment
 from playwright.sync_api import Playwright, expect
 
-#url = f"https://d4k-sdw-staging.fly.dev"
-url = f"http://localhost:8000"
+url = f"https://d4k-sdw-staging.fly.dev"
+#url = f"http://localhost:8000"
 
 @pytest.fixture(scope="session", autouse=True)
 def setup():
