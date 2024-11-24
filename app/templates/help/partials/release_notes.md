@@ -1,4 +1,8 @@
-<h5>Release 0.27.0, 2024-11-21</h5>
+<h5>Release 0.28.0, 202x-xx-xx</h5>
+
+- TBD
+
+<h5>Release 0.27.0, 2024-11-24</h5>
 
 - Improve handling of FHIR v1 import
 - Tidy up FHIR menus

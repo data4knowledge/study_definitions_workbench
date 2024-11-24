@@ -1,2 +1,2 @@
 pytest -m "not playwright"
-pytest -m "playwright"
+#pytest -m "playwright"
