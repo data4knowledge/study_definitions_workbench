@@ -178,8 +178,8 @@ tests/test_files/mount/database/test_database.db
 tests/test_files/mount/datafiles/*/
 tests/test_files/mount/localfiles/*/
 
-# Python test programs, prefix with 'test_'
-xxx_*.py
+# Python test programs, prefix with 'xxx_'
+xxx_*.*
 
 # Useful files
 install_local_d4kms.sh
