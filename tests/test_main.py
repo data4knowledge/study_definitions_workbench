@@ -870,10 +870,6 @@ def test_get_study_design_soa(mocker, monkeypatch):
 #     application_logger.error(f"User '{user.id}', '{user.email} attempted to change debug level!")
 #     return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
 
-# @app.get("/logout")
-# def logout(request: Request):
-#   url = authorisation.logout(request, "home")
-#   return RedirectResponse(url=url)
 
 # @app.get("/callback")
 # async def callback(request: Request):
@@ -882,6 +878,26 @@ def test_get_study_design_soa(mocker, monkeypatch):
 #     return RedirectResponse("/index")
 #   except:
 #     return RedirectResponse("/logout")
+
+# @app.get("/logout")
+# def logout(request: Request):
+#   if not single_user():
+#     url = authorisation.logout(request, "/")
+#     return RedirectResponse(url=url)
+#   else:
+#     return RedirectResponse("/")
+
+def test_get_logout_single(mocker, monkeypatch):
+  client = mock_client(monkeypatch)
+  response = client.get("/logout", follow_redirects=False)
+  assert response.status_code == 307
+  assert str(response.next_request.url) == "http://testserver/"
+
+def test_get_logout_multiple(mocker, monkeypatch):
+  client = mock_client_multiple(mocker)
+  response = client.get("/logout", follow_redirects=False)
+  assert response.status_code == 307
+  assert str(response.next_request.url).startswith('https://dev-0')
 
 def mock_user_check_exists(mocker):
   uc = mock_user_check(mocker)

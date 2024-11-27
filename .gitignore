@@ -178,7 +178,7 @@ tests/test_files/mount/database/test_database.db
 tests/test_files/mount/datafiles/*/
 tests/test_files/mount/localfiles/*/
 
-# Test programs, prefix with 'xxx_'
+# Test programs and data, prefix with 'xxx_'
 xxx_*.*
 
 # Useful files

@@ -546,7 +546,7 @@ async def debug_level(request: Request, level: str='INFO', session: Session = De
 @app.get("/logout")
 def logout(request: Request):
   if not single_user():
-    url = authorisation.logout(request, "home")
+    url = authorisation.logout(request, "/")
     return RedirectResponse(url=url)
   else:
     return RedirectResponse("/")

@@ -28,6 +28,13 @@ def mock_client(monkeypatch):
   
   return TestClient(app)
 
+def mock_client_multiple(mocker):
+
+  mock_authorisation(mocker)
+  from app.main import app
+  
+  return TestClient(app)
+
 def mock_async_client(monkeypatch):
   
   # Need this to stop exception of trying to send API call on elaborationpytes
