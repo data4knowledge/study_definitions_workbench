@@ -3,9 +3,10 @@ import os
 import pytest
 from d4kms_generic.service_environment import ServiceEnvironment
 from playwright.sync_api import Playwright, expect
+from app.__init__ import VERSION
 
-url = f"https://d4k-sdw-staging.fly.dev"
-#url = f"http://localhost:8000"
+#url = f"https://d4k-sdw-staging.fly.dev"
+url = f"http://localhost:8000"
 
 @pytest.fixture(scope="session", autouse=True)
 def setup():
@@ -29,7 +30,7 @@ def test_login(playwright: Playwright) -> None:
   browser.close()
 
 @pytest.mark.playwright
-def test_load_m11(playwright: Playwright) -> None:
+def test_logout(playwright: Playwright) -> None:
 
   browser = playwright.chromium.launch(headless=False)
   context = browser.new_context()
@@ -137,7 +138,7 @@ def test_help(playwright: Playwright) -> None:
 
   page.get_by_role("button", name=" Help").click()
   page.get_by_role("link", name="About").click()
-  expect(page.locator("body")).to_contain_text("d4k Study Definitions Workbench (v0.27.0)")
+  expect(page.locator("body")).to_contain_text(f"d4k Study Definitions Workbench (v{VERSION})")
   expect(page.locator("body")).to_contain_text("Release Log")
   expect(page.locator("body")).to_contain_text("Licence Information")
   page.get_by_role("button", name=" Help").click()
