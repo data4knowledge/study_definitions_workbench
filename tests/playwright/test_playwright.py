@@ -29,19 +29,35 @@ def test_login(playwright: Playwright) -> None:
   browser.close()
 
 @pytest.mark.playwright
+def test_load_m11(playwright: Playwright) -> None:
+
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+  
+  login(page)
+
+  page.get_by_role("link", name=" Logout").click()
+  expect(page.get_by_role("paragraph")).to_contain_text("Welcome to the d4k Study Definitions Workbench. Click on the button below to register or login.")
+
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
 def test_clear_db(playwright: Playwright) -> None:
   browser = playwright.chromium.launch(headless=False)
   context = browser.new_context()
   page = context.new_page()
   page.goto(url)
-  page.get_by_role("link", name="Click here to register or").click()
-  page.get_by_label("Email address").fill(username())
-  page.get_by_label("Password").click()
-  page.get_by_label("Password").fill(password())
-  page.get_by_role("button", name="Continue", exact=True).click()
+
+  login(page)
+
   page.get_by_role("link", name=" DIH").click()
   page.once("dialog", lambda dialog: dialog.accept())
   page.get_by_role("link", name=" Delete Database").click()
+
   context.close()
   browser.close()
 
