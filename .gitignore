@@ -186,3 +186,8 @@ install_local_d4kms.sh
 test_server.sh
 dev_server.sh
 pytest-playwright-gen.sh
+
+# MS lock files
+~$*.docx
+~$*.xlsx
+~$*.pptx
