@@ -241,23 +241,6 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
   else:
     return templates.TemplateResponse(request, "errors/error.html", {'user': user, 'data': {'error': 'Something went wrong downloading the errors file for the import'}})
 
-@app.get('/versions/{id}/history', dependencies=[Depends(protect_endpoint)])
-async def get_version_history(request: Request, id: int, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  usdm = USDMJson(id, session)
-  data = {'version': usdm.study_version(), 'version_id': id, 'page': 1, 'size': 10, 'filter': ''}
-  return templates.TemplateResponse(request, "study_versions/history.html", {'user': user, 'data': data})
-
-@app.get('/versions/{id}/history/data', dependencies=[Depends(protect_endpoint)])
-async def get_version_history(request: Request, id: int, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  version = Version.find(id, session)
-  data = Version.page(page, size, filter, version.study_id, session)
-  for item in data['items']:
-    item['import'] = FileImport.find(item['import_id'], session)
-  pagination = Pagination(data, f"/versions/{id}/history/data")
-  return templates.TemplateResponse(request, "study_versions/partials/history.html", {'user': user, 'pagination': pagination, 'data': data})
-
 @app.get('/versions/{id}/usdm', dependencies=[Depends(protect_endpoint)])
 async def get_version_usdm(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)

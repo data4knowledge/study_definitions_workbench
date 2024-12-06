@@ -446,75 +446,49 @@ def mock_data_file_path_error(mocker):
   mock.side_effect = [('', '', False)]
   return mock
 
-def test_version_history(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uc = mock_user_check_exists(mocker)
-  usv = mock_usdm_study_version(mocker)
-  uji = mock_usdm_json_init(mocker)
-  response = client.get("/versions/1/history")
-#  print(f"RESPONSE: {response.text}")
-  assert response.status_code == 200
-  assert '<h5 class="card-title">Version History</h5>' in response.text
-  assert ' <h6 class="card-subtitle mb-2 text-muted">Title: The Offical Study Title For Test | Sponsor: Identifier For Test| Phase: Phase For Test | Identifier:</h6>' in response.text
-  assert mock_called(uc)
-  assert mock_called(usv)
-  assert mock_called(uji)
-  assert_view_menu(response.text, "history")
+# def test_version_history(mocker, monkeypatch):
+# #  r, mt = mock_authorisation(mocker)
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   uc = mock_user_check_exists(mocker)
+#   usv = mock_usdm_study_version(mocker)
+#   uji = mock_usdm_json_init(mocker)
+#   response = client.get("/versions/1/history")
+# #  print(f"RESPONSE: {response.text}")
+#   assert response.status_code == 200
+#   assert '<h5 class="card-title">Version History</h5>' in response.text
+#   assert ' <h6 class="card-subtitle mb-2 text-muted">Title: The Offical Study Title For Test | Sponsor: Identifier For Test| Phase: Phase For Test | Identifier:</h6>' in response.text
+#   assert mock_called(uc)
+#   assert mock_called(usv)
+#   assert mock_called(uji)
+#   assert_view_menu(response.text, "history")
 
-def assert_view_menu(text, type):
-  if type != 'summary':
-    assert '<a class="dropdown-item" href="/versions/1/summary">Summary View</a>' in text
-  if type != 'safety':
-    assert '<a class="dropdown-item" href="/versions/1/safety">Safety View</a>' in text
-  if type != 'statisitcs':
-    assert '<a class="dropdown-item" href="/versions/1/statistics">Statistics View</a>' in text
-  if type != 'protocol':
-    assert '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text
-  if type != 'history':
-    assert '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text
+# def test_version_history_data(mocker, monkeypatch):
+# #  r, mt = mock_authorisation(mocker)
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   vf = mock_version_find(mocker)
+#   vp = mock_version_page(mocker)
+#   fif = mock_file_import_find(mocker)
+#   response = client.get("/versions/1/history/data?page=1&size=10&filter=")
+#   assert response.status_code == 200
+#   assert '<th scope="col">Version</th>' in response.text
+#   assert '<td>1</td>' in response.text
+#   assert mock_called(vf)
+#   assert mock_called(vp)
+#   assert mock_called(fif)
+# #  assert mock_called(r)
+# #  assert mock_called(mt)
 
-# def mock_usdm_study_version(mocker):
-#   mock = mocker.patch("app.model.usdm_json.USDMJson.study_version")
-#   mock.side_effect = [
-#     {
-#       'id': '1',
-#       'version_identifier': '1',
-#       'identifiers': {'Clinical Study Sponsor': 'Identifier For Test'},
-#       'titles': {'Official Study Title': 'The Offical Study Title For Test'},
-#       'study_designs': {'xxx': {'id': '2', 'name': 'design name', 'label': 'design label'}},
-#       'phase': {'standardCode': {'decode': 'Phase For Test'}}
-#     }
-#   ]
+# def mock_version_find(mocker):
+#   mock = mocker.patch("app.model.version.Version.find")
+#   mock.side_effect = [factory_version()]
 #   return mock
 
-def test_version_history_data(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  vf = mock_version_find(mocker)
-  vp = mock_version_page(mocker)
-  fif = mock_file_import_find(mocker)
-  response = client.get("/versions/1/history/data?page=1&size=10&filter=")
-  assert response.status_code == 200
-  assert '<th scope="col">Version</th>' in response.text
-  assert '<td>1</td>' in response.text
-  assert mock_called(vf)
-  assert mock_called(vp)
-  assert mock_called(fif)
-#  assert mock_called(r)
-#  assert mock_called(mt)
-
-def mock_version_find(mocker):
-  mock = mocker.patch("app.model.version.Version.find")
-  mock.side_effect = [factory_version()]
-  return mock
-
-def mock_version_page(mocker):
-  mock = mocker.patch("app.model.version.Version.page")
-  mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version().model_dump()]}]
-  return mock
+# def mock_version_page(mocker):
+#   mock = mocker.patch("app.model.version.Version.page")
+#   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version().model_dump()]}]
+#   return mock
 
 # def mock_usdm_json_init(mocker):
 #   mock = mocker.patch("app.main.USDMJson.__init__")
