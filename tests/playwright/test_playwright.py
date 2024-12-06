@@ -14,18 +14,31 @@ def setup():
   yield
   os.environ["PYTHON_ENVIRONMENT"] = "development"
 
+
+@pytest.mark.playwright
+def test_splash(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  page.goto(url)
+
+  expect(page.get_by_role("paragraph")).to_contain_text("Welcome to the d4k Study Definitions Workbench. Click on the button below to register or login. A basic user guide can be downloaded from here.")
+  with page.expect_download() as download_info:
+    page.get_by_role("link", name="here", exact=True).click()
+  download = download_info.value
+
+  context.close()
+  browser.close()
+
 @pytest.mark.playwright
 def test_login(playwright: Playwright) -> None:
   browser = playwright.chromium.launch(headless=False)
   context = browser.new_context()
   page = context.new_page()
   page.goto(url)
-  page.get_by_role("link", name="Click here to register or").click()
-  page.get_by_label("Email address").fill(username())
-  page.get_by_label("Password").click()
-  page.get_by_label("Password").fill(password())
-  page.get_by_role("button", name="Show password").click()
-  page.get_by_role("button", name="Continue", exact=True).click()
+
+  login(page)
+
   context.close()
   browser.close()
 
@@ -168,8 +181,8 @@ def filepath():
 def login(page):
   page.get_by_role("link", name="Click here to register or").click()
   page.get_by_label("Email address").click()
-  page.get_by_label("Email address").fill("daveih1664dk@gmail.com")
+  page.get_by_label("Email address").fill(username())
   page.get_by_label("Password").click()
-  page.get_by_label("Password").fill("Something34#Secure")
+  page.get_by_label("Password").fill(password())
   page.get_by_role("button", name="Show password").click()
   page.get_by_role("button", name="Continue", exact=True).click()
