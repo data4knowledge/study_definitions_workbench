@@ -236,45 +236,6 @@ def mock_study_find(mocker):
   mock.side_effect = [factory_study()]
   return mock
 
-def test_about(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uc = mock_user_check_exists(mocker)
-  mock_release_notes(mocker)
-  response = client.get("/help/about")
-  assert response.status_code == 200
-  assert """Release Notes Test Testy""" in response.text
-  assert mock_called(uc)
-  #assert mock_called(r)
-  #assert mock_called(mt)
-
-def test_examples(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uc = mock_user_check_exists(mocker)
-  mock_examples(mocker)
-  response = client.get("/help/examples")
-  assert response.status_code == 200
-  assert """Examples Test Testy""" in response.text
-  assert mock_called(uc)
-  #assert mock_called(r)
-  #assert mock_called(mt)
-
-def test_feedback(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uc = mock_user_check_exists(mocker)
-  mock_feedback(mocker)
-  response = client.get("/help/examples")
-  assert response.status_code == 200
-  assert """Feedback Test Testy Testy""" in response.text
-  assert mock_called(uc)
-  #assert mock_called(r)
-  #assert mock_called(mt)
-
 def test_file_list_local(mocker, monkeypatch):
 #  r, mt = mock_authorisation(mocker)
   protect_endpoint()
@@ -921,24 +882,6 @@ def mock_user_find(mocker):
 
 def mock_user_check(mocker):
   return mocker.patch("app.model.user.User.check")
-
-def mock_release_notes(mocker):
-  rn = mocker.patch("d4kms_ui.ReleaseNotes.__init__")
-  rn.side_effect = [None]
-  rnn = mocker.patch("d4kms_ui.ReleaseNotes.notes")
-  rnn.side_effect = ['Release Notes Test Testy']
-
-def mock_examples(mocker):
-  mp = mocker.patch("d4kms_ui.MarkdownPage.__init__")
-  mp.side_effect = [None]
-  mpr = mocker.patch("d4kms_ui.MarkdownPage.read")
-  mpr.side_effect = ['Examples Test Testy']
-
-def mock_feedback(mocker):
-  mp = mocker.patch("d4kms_ui.MarkdownPage.__init__")
-  mp.side_effect = [None]
-  mpr = mocker.patch("d4kms_ui.MarkdownPage.read")
-  mpr.side_effect = ['Feedback Test Testy Testy']
 
 def factory_user() -> User:
   return User(**{'identifier': 'FRED', 'email': "fred@example.com", 'display_name': "Fred Smith", 'is_active': True, 'id': 1})

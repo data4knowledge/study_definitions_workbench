@@ -2,12 +2,10 @@
 from typing import Annotated
 from fastapi import Form, Depends, FastAPI, Request, WebSocket, WebSocketDisconnect, status
 from fastapi.responses import RedirectResponse, FileResponse
-from fastapi.templating import Jinja2Templates
+#from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from d4kms_generic.auth0_service import Auth0Service
+#from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
-from d4kms_ui.release_notes import ReleaseNotes
-from d4kms_ui.markdown_page import MarkdownPage
 from d4kms_ui.pagination import Pagination
 from app.model.database import get_db
 from app.model.user import User
@@ -15,7 +13,7 @@ from app.model.version import Version
 from app.model.file_import import FileImport
 from app.model.endpoint import Endpoint
 from app.model.user_endpoint import UserEndpoint
-from app.model.transmission import Transmission
+#from app.model.transmission import Transmission
 from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
@@ -29,13 +27,13 @@ from app.dependencies.fhir_version import check_fhir_version, fhir_versions
 from app.utility.fhir_transmit import run_fhir_transmit
 from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
-from usdm_model.wrapper import Wrapper
+#from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
-from app.routers import transmissions, users, versions
+from app.routers import transmissions, users, versions, help
 from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
 from app.dependencies.utility import user_details, single_user, is_admin, is_fhir_tx
 from app.dependencies.templates import templates, templates_path
@@ -58,6 +56,7 @@ set_middleware_secret(app)
 app.include_router(users.router)
 app.include_router(transmissions.router)
 app.include_router(versions.router)
+app.include_router(help.router)
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, e: Exception):
@@ -151,27 +150,6 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
   #print(f"STUDY LIST: {data}")
   data['fhir'] = {'enabled': is_fhir_tx(request), 'versions': fhir_versions()}
   return templates.TemplateResponse(request, "studies/list.html", {'user': user, 'data': data})
-
-@app.get("/help/about", dependencies=[Depends(protect_endpoint)])
-def about(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  rn = ReleaseNotes(os.path.join(templates_path, 'help', 'partials'))
-  data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
-  return templates.TemplateResponse(request, "help/about.html", {'user': user, 'data': data})
-
-@app.get("/help/examples", dependencies=[Depends(protect_endpoint)])
-def examples(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  ex = MarkdownPage('examples.md', os.path.join(templates_path, 'help', 'partials'))
-  data = {'examples': ex.read()}
-  return templates.TemplateResponse(request, "help/examples.html", {'user': user, 'data': data})
-
-@app.get("/help/feedback", dependencies=[Depends(protect_endpoint)])
-def examples(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  fb = MarkdownPage('feedback.md', os.path.join(templates_path, 'help', 'partials'))
-  data = {'feedback': fb.read()}
-  return templates.TemplateResponse(request, "help/feedback.html", {'user': user, 'data': data})
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
