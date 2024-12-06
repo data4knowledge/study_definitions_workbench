@@ -30,6 +30,7 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
   assert mock_called(uji)
   assert mock_called(usv)
   assert mock_called(fv)
+  assert_view_menu(response.text, 'summary')
 
 def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
   protect_endpoint()
@@ -49,3 +50,16 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
   assert mock_called(uji)
   assert mock_called(usv)
   assert mock_called(fv)
+  assert_view_menu(response.text, 'summary')
+
+def assert_view_menu(text, type):
+  if type != 'summary':
+    assert '<a class="dropdown-item" href="/versions/1/summary">Summary View</a>' in text
+  if type != 'safety':
+    assert '<a class="dropdown-item" href="/versions/1/safety">Safety View</a>' in text
+  if type != 'statisitcs':
+    assert '<a class="dropdown-item" href="/versions/1/statistics">Statistics View</a>' in text
+  if type != 'protocol':
+    assert '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text
+  if type != 'history':
+    assert '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text

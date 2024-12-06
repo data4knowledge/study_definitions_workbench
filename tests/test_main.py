@@ -454,14 +454,26 @@ def test_version_history(mocker, monkeypatch):
   usv = mock_usdm_study_version(mocker)
   uji = mock_usdm_json_init(mocker)
   response = client.get("/versions/1/history")
+#  print(f"RESPONSE: {response.text}")
   assert response.status_code == 200
   assert '<h5 class="card-title">Version History</h5>' in response.text
   assert ' <h6 class="card-subtitle mb-2 text-muted">Title: The Offical Study Title For Test | Sponsor: Identifier For Test| Phase: Phase For Test | Identifier:</h6>' in response.text
   assert mock_called(uc)
   assert mock_called(usv)
   assert mock_called(uji)
-#  assert mock_called(r)
-#  assert mock_called(mt)
+  assert_view_menu(response.text, "history")
+
+def assert_view_menu(text, type):
+  if type != 'summary':
+    assert '<a class="dropdown-item" href="/versions/1/summary">Summary View</a>' in text
+  if type != 'safety':
+    assert '<a class="dropdown-item" href="/versions/1/safety">Safety View</a>' in text
+  if type != 'statisitcs':
+    assert '<a class="dropdown-item" href="/versions/1/statistics">Statistics View</a>' in text
+  if type != 'protocol':
+    assert '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text
+  if type != 'history':
+    assert '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text
 
 # def mock_usdm_study_version(mocker):
 #   mock = mocker.patch("app.model.usdm_json.USDMJson.study_version")
