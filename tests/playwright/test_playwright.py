@@ -169,6 +169,59 @@ def test_help(playwright: Playwright) -> None:
   download = download_info.value
   download.save_as(f"tests/test_files/downloads/help/{download.suggested_filename}")
 
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
+def test_view_menu(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.get_by_role("link").first.click()
+  page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+  page.get_by_role("button", name=" Views").click()
+  expect(page.locator("#navBarMain")).to_contain_text("Safety View")
+  expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
+  expect(page.locator("#navBarMain")).to_contain_text("Protocol")
+  expect(page.locator("#navBarMain")).to_contain_text("Version History")
+
+  page.get_by_role("link", name="Safety View").click()
+  page.get_by_role("button", name=" Views").click()
+  expect(page.locator("#navBarMain")).to_contain_text("Summary View")
+  expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
+  expect(page.locator("#navBarMain")).to_contain_text("Protocol")
+  expect(page.locator("#navBarMain")).to_contain_text("Version History")
+
+  page.get_by_role("link", name="Statistics View").click()
+  page.get_by_role("button", name=" Views").click()
+  expect(page.locator("#navBarMain")).to_contain_text("Summary View")
+  expect(page.locator("#navBarMain")).to_contain_text("Safety View")
+  expect(page.locator("#navBarMain")).to_contain_text("Protocol")
+  expect(page.locator("#navBarMain")).to_contain_text("Version History")
+
+  page.get_by_role("link", name="Protocol").click()
+  page.get_by_role("button", name=" Views").click()
+  expect(page.locator("#navBarMain")).to_contain_text("Summary View")
+  expect(page.locator("#navBarMain")).to_contain_text("Safety View")
+  expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
+  expect(page.locator("#navBarMain")).to_contain_text("Version History")
+
+  page.get_by_role("link", name="Version History").click()
+  page.get_by_role("button", name=" Views").click()
+  expect(page.locator("#navBarMain")).to_contain_text("Summary View")
+  expect(page.locator("#navBarMain")).to_contain_text("Safety View")
+  expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
+  expect(page.locator("#navBarMain")).to_contain_text("Protocol")
+
+  context.close()
+  browser.close()
+
+
 def username():
   se = ServiceEnvironment()
   value = se.get("USERNAME")
