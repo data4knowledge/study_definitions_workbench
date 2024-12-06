@@ -41,6 +41,23 @@ def test_feedback(mocker, monkeypatch):
   assert """Feedback Test Testy Testy""" in response.text
   assert mock_called(uc)
 
+def test_user_guide(mocker, monkeypatch):
+  protect_endpoint()
+  client = mock_client(monkeypatch)
+  ug = mock_user_guide(mocker)
+  response = client.get("/help/document")
+  assert response.status_code == 200
+  assert mock_called(ug)
+
+def test_user_guide_error(mocker, monkeypatch):
+  protect_endpoint()
+  client = mock_client(monkeypatch)
+  ug = mock_user_guide_error(mocker)
+  response = client.get("/help/document", follow_redirects=False)
+  assert response.status_code == 200
+  assert """Error downloading the user guide""" in response.text
+  assert mock_called(ug)
+
 def test_user_guide_splash(mocker, monkeypatch):
   client = mock_client(monkeypatch)
   ug = mock_user_guide(mocker)

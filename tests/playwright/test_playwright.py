@@ -26,6 +26,7 @@ def test_splash(playwright: Playwright) -> None:
   with page.expect_download() as download_info:
     page.get_by_role("link", name="here", exact=True).click()
   download = download_info.value
+  download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
 
   context.close()
   browser.close()
@@ -162,6 +163,11 @@ def test_help(playwright: Playwright) -> None:
   expect(page.locator("h4")).to_contain_text("Issues and Feedback")
   expect(page.get_by_role("link", name="bug / issue")).to_be_visible()
   expect(page.get_by_role("link", name="discussion topic")).to_be_visible()
+  page.get_by_role("button", name=" Help").click()
+  with page.expect_download() as download_info:
+      page.get_by_role("link", name="User Guide").click()
+  download = download_info.value
+  download.save_as(f"tests/test_files/downloads/help/{download.suggested_filename}")
 
 def username():
   se = ServiceEnvironment()
@@ -184,5 +190,4 @@ def login(page):
   page.get_by_label("Email address").fill(username())
   page.get_by_label("Password").click()
   page.get_by_label("Password").fill(password())
-  page.get_by_role("button", name="Show password").click()
   page.get_by_role("button", name="Continue", exact=True).click()
