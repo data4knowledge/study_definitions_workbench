@@ -103,8 +103,10 @@ class FHIRTitlePage():
       for row in soup(['tr']):
         cells = row.findAll('td')
         if key.upper() in str(cells[0].get_text()).upper():
-          application_logger.info(f"Decoded M11 FHIR message {key} = {cells[1].get_text()}")
-          return str(cells[1].get_text()).strip()
+          r1 = [x.get_text() for x in cells[1](['p'])]
+          r2 = ('\n').join(r1)
+          application_logger.info(f"Decoded M11 FHIR message {key} = {r2}")
+          return r2
     application_logger.info(f"Failed to decode M11 FHIR message {key}")
     return ''
 
