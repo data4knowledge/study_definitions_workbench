@@ -13,7 +13,7 @@
         "studyPhase": {
           "id": "AliasCode_1",
           "standardCode": {
-            "id": "Code_14",
+            "id": "Code_13",
             "code": "C15602",
             "codeSystem": "http://www.cdisc.org",
             "codeSystemVersion": "2023-12-15",
@@ -112,7 +112,7 @@
             "therapeuticAreas": [],
             "characteristics": [],
             "interventionModel": {
-              "id": "Code_11",
+              "id": "Code_10",
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -2535,7 +2535,7 @@
             "name": "Eli Lilly Japan K.KJapan",
             "label": null,
             "type": {
-              "id": "Code_13",
+              "id": "Code_11",
               "code": "C70793",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -2547,11 +2547,11 @@
             "legalAddress": {
               "id": "Address_1",
               "text": null,
-              "line": "Den Lille Havfrue",
-              "city": "Copenhagen",
+              "line": "",
+              "city": "",
               "district": "",
               "state": "",
-              "postalCode": "12345",
+              "postalCode": "",
               "country": {
                 "id": "Code_12",
                 "code": "DNK",

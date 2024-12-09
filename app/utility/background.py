@@ -79,7 +79,7 @@ async def process_fhir_v1(uuid, user: User) -> None:
     file_import.update_status('Saving', session)
     fhir = FromFHIRV1(uuid)
     file_import.update_status('Saving', session)
-    usdm_json = fhir.to_usdm()
+    usdm_json = await fhir.to_usdm()
     files.save('usdm', usdm_json)
     files.save('extra', fhir.extra())
     parameters = _study_parameters(usdm_json, file_import.type)

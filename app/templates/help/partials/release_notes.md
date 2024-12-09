@@ -2,6 +2,7 @@
 
 - Add help documents (issue 1)
 - Improve view menu on protocol page (issue 8)
+- Address decode on import of FHIR message (issue 9)
 
 <h5>Release 0.28.0, 2024-11-27</h5>
 

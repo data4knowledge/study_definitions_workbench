@@ -3,12 +3,43 @@ import warnings
 import dateutil.parser as parser
 from bs4 import BeautifulSoup   
 from d4kms_generic import application_logger
+from usdm_excel.iso_3166 import ISO3166
+from app.utility.address_service import AddressService
 
 class FHIRTitlePage():
 
   def __init__(self, sections: list, items: list):
-    table = self._title_table(sections, items)
-    #print(f"TABLE: {table}")
+    self._sections = sections
+    self._items = items
+    self._address_service = AddressService()
+    self.sponosr_confidentiality = None
+    self.full_title = None
+    self.acronym = None
+    self.sponsor_protocol_identifier = None
+    self.original_protocol = None
+    self.version_number = None
+    self.version_date = None
+    self.amendment_identifier = None
+    self.amendment_scope = None
+    self.amendment_details = None
+    self.trial_phase_raw = None
+    self.compound_codes = None
+    self.compound_names = None
+    self.trial_phase = None
+    self.short_title = None
+    self.sponsor_name_and_address = None
+    self.sponsor_name = None
+    self.sponsor_address = None
+    self.regulatory_agency_identifiers = None
+    self.sponsor_approval_date = None
+    self.manufacturer_name_and_address = None
+    self.sponsor_signatory = None
+    self.medical_expert_contact = None
+    self.sae_reporting_method = None
+    self.study_name = None
+
+  async def process(self):
+    table = self._title_table(self._sections, self._items)
     self.sponosr_confidentiality = self._table_get_row(table, 'Sponsor Confidentiality')
     self.full_title = self._table_get_row(table, 'Full Title')
     self.acronym = self._table_get_row(table, 'Acronym')
@@ -25,7 +56,7 @@ class FHIRTitlePage():
     self.trial_phase = self._table_get_row(table, 'Trial Phase')
     self.short_title = self._table_get_row(table, 'Short Title')
     self.sponsor_name_and_address = self._table_get_row(table, 'Sponsor Name and Address')
-    self.sponsor_name, self.sponsor_address = self._sponsor_name_and_address()
+    self.sponsor_name, self.sponsor_address = await self._sponsor_name_and_address()
     self.regulatory_agency_identifiers = self._table_get_row(table, 'Regulatory Agency Identifier Number(s)')
     self.sponsor_approval_date = self._get_sponsor_approval_date(table)
     self.manufacturer_name_and_address = self._table_get_row(table, 'Manufacturer')
@@ -99,17 +130,42 @@ class FHIRTitlePage():
         return name
     return ''  
 
-  def _sponsor_name_and_address(self):
+  # def _sponsor_name_and_address(self):
+  #   name = '[Sponsor Name]'
+  #   address = '[Sponsor Address]'
+  #   parts = self.sponsor_name_and_address.split('\n')
+  #   if len(parts) > 0:
+  #     name = parts[0].strip()
+  #     application_logger.info(f"Sponsor name set to '{name}'")
+  #   if len(parts) > 1:
+  #     address = (',').join([x.strip() for x in parts[1:]])
+  #   application_logger.info(f"Sponsor name set to '{name}' with address set to '{address}'")
+  #   return name, address
+
+  async def _sponsor_name_and_address(self):
     name = '[Sponsor Name]'
-    address = '[Sponsor Address]'
     parts = self.sponsor_name_and_address.split('\n')
+    params = {'line': '', 'city': '', 'district': '', 'state': '', 'postalCode': '', 'country': ''}
     if len(parts) > 0:
       name = parts[0].strip()
       application_logger.info(f"Sponsor name set to '{name}'")
     if len(parts) > 1:
-      address = (',').join([x.strip() for x in parts[1:]])
-    application_logger.info(f"Sponsor name set to '{name}' with address set to '{address}'")
-    return name, address
+      application_logger.info(f"Processing address {self.sponsor_name_and_address}")
+      tmp_address = (' ').join([x.strip() for x in parts[1:]])
+      results = await self._address_service.parser(tmp_address)
+      application_logger.info(f"Address service result '{tmp_address}' returned {results}")
+      if 'error' in results:
+        application_logger.error(f"Error with address server: {results['error']}")
+      else:
+        for result in results:
+          if result['label'] == 'country':
+            params['country'] = result['value']
+          elif result['label'] == 'postcode':
+            params['postalCode'] = result['value']        
+          elif result['label'] in ['city', 'state']:
+            params[result['label']] = result['value']        
+    application_logger.info(f"Name and address result '{name}', '{params}'")
+    return name, params
 
   def _get_sponsor_approval_date(self, table):
     return self._get_date(table, 'Sponsor Approval')

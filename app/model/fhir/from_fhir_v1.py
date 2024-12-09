@@ -26,6 +26,8 @@ from d4kms_generic.logger import application_logger
 from app.model.m11_protocol.m11_utility import language_code
 from usdm_model.governance_date import GovernanceDate
 from usdm_model.geographic_scope import GeographicScope
+from usdm_excel.iso_3166 import ISO3166
+from usdm_excel.globals import Globals
 
 class FromFHIRV1():
 
@@ -33,18 +35,23 @@ class FromFHIRV1():
     pass
 
   def __init__(self, uuid: str):
-    self._errors_and_logging = ErrorsAndLogging()
-    self._id_manager = IdManager(self._errors_and_logging)
-    self._cdisc_ct_manager = CDISCCTLibrary(self._errors_and_logging)
+
+
+    self._globals = Globals()
+    self._globals.create()
+    self._errors_and_logging = self._globals.errors_and_logging
+    self._id_manager = self._globals.id_manager
+    self._iso = ISO3166(self._globals)
+    self._cdisc_ct_manager = self._globals.cdisc_ct_library
     self._uuid = uuid
     self._ncs = []
     self._title_page = None
 
-  def to_usdm(self) -> str:
+  async def to_usdm(self) -> str:
     try:
       files = DataFiles(self._uuid)
       data = files.read('fhir')
-      study = self._from_fhir(self._uuid, data)
+      study = await self._from_fhir(self._uuid, data)
       return Wrapper(study=study, usdmVersion=usdm_version, systemName=SYSTEM_NAME, systemVersion=VERSION).to_json()
     except Exception as e:
       self._errors_and_logging.exception(f"Exception raised parsing FHIR content. See logs for more details", e)
@@ -67,10 +74,10 @@ class FromFHIRV1():
       }
     }
   
-  def _from_fhir(self, uuid: str, data: str) -> Wrapper:
+  async def _from_fhir(self, uuid: str, data: str) -> Wrapper:
     bundle = Bundle.parse_raw(data)
     protocol_document, ncis = self._document(bundle)
-    study = self._study(protocol_document, ncis)
+    study = await self._study(protocol_document, ncis)
     return study
 
   def _document(self, bundle):
@@ -114,10 +121,11 @@ class FromFHIRV1():
     parts = text.split('-')
     return parts[0].replace('section', '') if len(parts) >= 2 else ''
       
-  def _study(self, protocol_document: StudyDefinitionDocument, ncis: list):
+  async def _study(self, protocol_document: StudyDefinitionDocument, ncis: list):
     protocol_document_version = protocol_document.versions[0]
     sections = protocol_document_version.contents
     self._title_page = FHIRTitlePage(sections, ncis)
+    await self._title_page.process()
 
     # Dates
     sponsor_approval_date_code = self._cdisc_ct_code('C132352', 'Sponsor Approval Date')
@@ -156,16 +164,16 @@ class FromFHIRV1():
       titles.append(title)
     except:
       application_logger.info(f"No study short title set, source = '{self._title_page.short_title}'")
-
-    
-    protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
+    #protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
     intervention_model_code = self._cdisc_ct_code('C82639', 'Parallel Study')
-    country_code = self._iso_country_code('DNK', 'Denmark')
+    #country_code = self._iso_country_code('DNK', 'Denmark')
     sponsor_code = self._cdisc_ct_code("C70793", 'Clinical Study Sponsor')
     study_design = self._model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
       'rationale': '[Not Found]', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
       'epochs': [], 'population': None})
-    address = self._model_instance(Address, {'line': 'Den Lille Havfrue', 'city': 'Copenhagen', 'district': '', 'state': '', 'postalCode': '12345', 'country': country_code})
+    print(f"ADDRESS: {self._title_page.sponsor_address}")
+    self._title_page.sponsor_address['country'] = self._iso3166_decode(self._title_page.sponsor_address['country'])
+    address = self._model_instance(Address, self._title_page.sponsor_address)
     organization = self._model_instance(Organization, {'name': self._title_page.sponsor_name, 'type': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'text': self._title_page.sponsor_protocol_identifier, 'scopeId': organization.id})
     #print(f"IDENTIFIER: {identifier}")
@@ -188,6 +196,14 @@ class FromFHIRV1():
 
   def _cdisc_ct_code(self, code, decode):
     return self._model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': self._cdisc_ct_manager.system, 'codeSystemVersion': self._cdisc_ct_manager.version})
+
+  def _iso3166_decode(self, decode: str) -> Code:
+    #print(f"ISO: {self._iso.db}")
+    print(f"DECODE: {decode}")
+    entry = next((item for item in self._iso.db if item['name'].upper() == decode.upper()), None)
+    code = entry['alpha-3'] if entry else 'DNK'
+    decode = entry['name']  if entry else 'Denmark'
+    return self._iso_country_code(code, decode)
 
   def _iso_country_code(self, code, decode):
     return self._model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08'})
