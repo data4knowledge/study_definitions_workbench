@@ -161,18 +161,18 @@ class ToFHIR():
       except Exception as e:
         self._errors_and_logging.exception(f"Exception raised cleaning 'script' tags", e)
     # Images
-    for ref in soup('img'):
-      try:
-        ref.extract()
-      except Exception as e:
-        self._errors_and_logging.exception(f"Exception raised cleaning 'img' tags", e)
+    # for ref in soup('img'):
+    #   try:
+    #     ref.extract()
+    #   except Exception as e:
+    #     self._errors_and_logging.exception(f"Exception raised cleaning 'img' tags", e)
     # Empty 'p' tags
     for ref in soup('p'):
       try:
         if len(ref.get_text(strip=True)) == 0:
           ref.extract()
       except Exception as e:
-        self._errors_and_logging.exception(f"Exception raised cleaning 'img' tags", e)
+        self._errors_and_logging.exception(f"Exception raised cleaning empty 'p' tags", e)
     after = str(soup) 
     # if before != after:
     #   print(f"Cleaning modified")
