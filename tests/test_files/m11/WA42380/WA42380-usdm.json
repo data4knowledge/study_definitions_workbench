@@ -1134,7 +1134,7 @@
             "identifier": "123456789",
             "legalAddress": {
               "id": "Address_1",
-              "text": null,
+              "text": "",
               "line": "",
               "city": "",
               "district": "",

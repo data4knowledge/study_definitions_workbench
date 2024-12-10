@@ -42,10 +42,12 @@ def alias_code(standard_code: Code, id_manager: IdManager) -> AliasCode:
   return model_instance(AliasCode, {'standardCode': standard_code}, id_manager)
 
 def iso3166_decode(decode: str, iso_library: ISO3166, id_manager: IdManager) -> Code:
-  entry = next((item for item in iso_library.db if item['name'].upper() == decode.upper()), None)
-  code = entry['alpha-3'] if entry else 'DNK'
-  decode = entry['name']  if entry else 'Denmark'
-  return iso_country_code(code, decode, id_manager)
+  for key in ['name', 'alpha-2', 'alpha-3']:
+    entry = next((item for item in iso_library.db if item[key].upper() == decode.upper()), None)
+    if entry:
+      application_logger.info(f"ISO3166 decode of '{decode}' to {entry}")
+      break
+  return iso_country_code(entry['alpha-3'], entry['name'], id_manager) if entry else None
 
 def iso_country_code(code, decode, id_manager: IdManager) -> Code:
   return model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08'}, id_manager)

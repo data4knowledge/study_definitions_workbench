@@ -9,7 +9,7 @@ from usdm_model.population_definition import StudyDesignPopulation
 from usdm_model.eligibility_criterion import EligibilityCriterion
 from usdm_model.identifier import StudyIdentifier
 from usdm_model.organization import Organization
-from usdm_model.address import Address
+#from usdm_model.address import Address
 from usdm_model.narrative_content import NarrativeContent, NarrativeContentItem
 from usdm_model.study_amendment import StudyAmendment
 from usdm_model.study_amendment_reason import StudyAmendmentReason
@@ -32,6 +32,7 @@ from app.model.m11_protocol.m11_estimands import M11IEstimands
 from app.model.m11_protocol.m11_amendment import M11IAmendment
 from app.model.m11_protocol.m11_sections import M11Sections
 from app.model.m11_protocol.m11_utility import *
+from app.model.usdm.model.address import Address
 
 class M11ToUSDM():
   
@@ -148,6 +149,7 @@ class M11ToUSDM():
     sponsor_address = self._title_page.sponsor_address
     #print(f"INTERVENTIONS: {interventions}")
     address = model_instance(Address, sponsor_address, self._id_manager)
+    address.set_text()
     organization = model_instance(Organization, {'name': self._title_page.sponsor_name, 'type': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}, self._id_manager) 
     identifier = model_instance(StudyIdentifier, {'text': self._title_page.sponsor_protocol_identifier, 'scopeId': organization.id}, self._id_manager)
     params = {

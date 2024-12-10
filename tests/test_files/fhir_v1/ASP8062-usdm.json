@@ -3032,7 +3032,7 @@
             "identifier": "123456789",
             "legalAddress": {
               "id": "Address_1",
-              "text": null,
+              "text": "northbrook, il, 60062, United States of America",
               "line": "",
               "city": "northbrook",
               "district": "",
