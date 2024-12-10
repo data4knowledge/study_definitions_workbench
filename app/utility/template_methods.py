@@ -42,7 +42,7 @@ def title_page_study_list_headings() -> list:
     ('Compound Name(s):', 'compound_names'),
     ('Trial Phase:', 'trial_phase'),
     ('Short Title:', 'short_title'),
-    ('Sponsor Name and Address:', 'sponsor_name'),
+    ('Sponsor Name and Address:', 'sponsor_name_and_address'),
     ('', ''),
     ('Manufacturer Name and Address:', 'manufacturer_name_and_address'),
     ('Regulatory Agency Identifier Number(s):', 'regulatory_agency_identifiers'),

@@ -25,7 +25,7 @@ class USDMM11TitlePage():
     self.trial_phase = study_version.studyPhase.standardCode.decode
     self.short_title = study_version.short_title()
     self.sponsor_name = study_version.sponsor_name()
-    # self.sponsor_address = None
+    self.sponsor_name_and_address = study_version.sponsor_name_and_address()
     self.regulatory_agency_identifiers = title_page['regulatory_agency_identifiers']
     self.sponsor_approval_date = study_version.approval_date()
     self.manufacturer_name_and_address = title_page['manufacturer_name_and_address']
