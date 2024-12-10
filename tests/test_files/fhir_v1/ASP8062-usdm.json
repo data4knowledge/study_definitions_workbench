@@ -3018,7 +3018,7 @@
         "organizations": [
           {
             "id": "Organization_1",
-            "name": "Astellas PharmaGlobal Development Inc.1 Astellas Way Northbrook, IL 60062, US",
+            "name": "Astellas Pharma",
             "label": null,
             "type": {
               "id": "Code_11",
@@ -3034,16 +3034,16 @@
               "id": "Address_1",
               "text": null,
               "line": "",
-              "city": "",
+              "city": "northbrook",
               "district": "",
-              "state": "",
-              "postalCode": "",
+              "state": "il",
+              "postalCode": "60062",
               "country": {
                 "id": "Code_12",
-                "code": "DNK",
+                "code": "USA",
                 "codeSystem": "ISO 3166 1 alpha3",
                 "codeSystemVersion": "2020-08",
-                "decode": "Denmark",
+                "decode": "United States of America",
                 "instanceType": "Code"
               },
               "instanceType": "Address"

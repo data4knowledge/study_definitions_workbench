@@ -171,8 +171,8 @@ class FromFHIRV1():
     study_design = self._model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
       'rationale': '[Not Found]', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
       'epochs': [], 'population': None})
-    print(f"ADDRESS: {self._title_page.sponsor_address}")
-    self._title_page.sponsor_address['country'] = self._iso3166_decode(self._title_page.sponsor_address['country'])
+    #print(f"ADDRESS: {self._title_page.sponsor_address}")
+    self._title_page.sponsor_address['country'] = self._iso3166_decode(self._title_page.sponsor_address['country'].upper())
     address = self._model_instance(Address, self._title_page.sponsor_address)
     organization = self._model_instance(Organization, {'name': self._title_page.sponsor_name, 'type': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'text': self._title_page.sponsor_protocol_identifier, 'scopeId': organization.id})
@@ -198,12 +198,12 @@ class FromFHIRV1():
     return self._model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': self._cdisc_ct_manager.system, 'codeSystemVersion': self._cdisc_ct_manager.version})
 
   def _iso3166_decode(self, decode: str) -> Code:
-    #print(f"ISO: {self._iso.db}")
-    print(f"DECODE: {decode}")
-    entry = next((item for item in self._iso.db if item['name'].upper() == decode.upper()), None)
-    code = entry['alpha-3'] if entry else 'DNK'
-    decode = entry['name']  if entry else 'Denmark'
-    return self._iso_country_code(code, decode)
+    for key in ['name', 'alpha-2', 'alpha-3']:
+      entry = next((item for item in self._iso.db if item[key].upper() == decode.upper()), None)
+      if entry:
+        application_logger.info(f"ISO3166 decode of '{decode}' to {entry}")
+        break
+    return self._iso_country_code(entry['alpha-3'], entry['name']) if entry else None
 
   def _iso_country_code(self, code, decode):
     return self._model_instance(Code, {'code': code, 'decode': decode, 'codeSystem': 'ISO 3166 1 alpha3', 'codeSystemVersion': '2020-08'})

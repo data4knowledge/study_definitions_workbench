@@ -29,12 +29,12 @@ def _full_path(filename):
 
 @pytest.mark.anyio
 async def test_fhir_v1_ASP8062():
-  await _run_test('ASP8062', True)
+  await _run_test('ASP8062')
 
 @pytest.mark.anyio
 async def test_fhir_v1_DEUCRALIP():
-  await _run_test('DEUCRALIP', True)
+  await _run_test('DEUCRALIP')
 
 @pytest.mark.anyio
 async def test_fhir_v1_IGBJ():
-  await _run_test('IGBJ', True)
+  await _run_test('IGBJ')

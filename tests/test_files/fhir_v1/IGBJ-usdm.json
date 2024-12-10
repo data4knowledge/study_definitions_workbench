@@ -2532,7 +2532,7 @@
         "organizations": [
           {
             "id": "Organization_1",
-            "name": "Eli Lilly Japan K.KJapan",
+            "name": "Eli Lilly Japan K.K",
             "label": null,
             "type": {
               "id": "Code_11",
@@ -2554,10 +2554,10 @@
               "postalCode": "",
               "country": {
                 "id": "Code_12",
-                "code": "DNK",
+                "code": "JPN",
                 "codeSystem": "ISO 3166 1 alpha3",
                 "codeSystemVersion": "2020-08",
-                "decode": "Denmark",
+                "decode": "Japan",
                 "instanceType": "Code"
               },
               "instanceType": "Address"

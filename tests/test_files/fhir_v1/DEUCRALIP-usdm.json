@@ -13,7 +13,7 @@
         "studyPhase": {
           "id": "AliasCode_1",
           "standardCode": {
-            "id": "Code_13",
+            "id": "Code_12",
             "code": "C15601",
             "codeSystem": "http://www.cdisc.org",
             "codeSystemVersion": "2023-12-15",
@@ -3420,7 +3420,7 @@
         "organizations": [
           {
             "id": "Organization_1",
-            "name": "Rheinische Friedrich-Wilhelms-Universit\u00e4t Bonnrepresented by the Faculty of Medicine of the University of Bonn represented by the Dean of the Faculty of Medicine Venusberg-Campus 1, D-53127 BonnProf. Dr. med. Joerg Wenzel Department of Dermatology and Allergology University Hospital of Bonn Venusberg- Campus 1, D-53127 Bonn",
+            "name": "Rheinische Friedrich-Wilhelms-Universit\u00e4t Bonn",
             "label": null,
             "type": {
               "id": "Code_11",
@@ -3436,18 +3436,11 @@
               "id": "Address_1",
               "text": null,
               "line": "",
-              "city": "",
+              "city": "bonn",
               "district": "",
               "state": "",
-              "postalCode": "",
-              "country": {
-                "id": "Code_12",
-                "code": "DNK",
-                "codeSystem": "ISO 3166 1 alpha3",
-                "codeSystemVersion": "2020-08",
-                "decode": "Denmark",
-                "instanceType": "Code"
-              },
+              "postalCode": "d-53127",
+              "country": null,
               "instanceType": "Address"
             },
             "managedSites": [],
