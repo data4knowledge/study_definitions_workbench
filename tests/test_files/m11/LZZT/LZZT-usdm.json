@@ -1134,11 +1134,11 @@
             "identifier": "123456789",
             "legalAddress": {
               "id": "Address_1",
-              "text": "indianapolis, in, 46285",
+              "text": "Indianapolis, IN, 46285",
               "line": "",
-              "city": "indianapolis",
+              "city": "Indianapolis",
               "district": "",
-              "state": "in",
+              "state": "IN",
               "postalCode": "46285",
               "country": null,
               "instanceType": "Address"
