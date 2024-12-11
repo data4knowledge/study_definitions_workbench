@@ -164,7 +164,6 @@ class M11ToUSDM():
       'organizations': [organization],
       'amendments': self._get_amendments()
     }
-    application_logger.debug(f"Study Version params {params}")
     study_version = model_instance(StudyVersion, params, self._id_manager) 
     study = model_instance(Study, {'id': uuid4(), 'name': self._title_page.study_name, 'label': '', 'description': '', 'versions': [study_version], 'documentedBy': [protocol_document]}, self._id_manager) 
     return study
