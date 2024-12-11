@@ -221,6 +221,51 @@ def test_view_menu(playwright: Playwright) -> None:
   context.close()
   browser.close()
 
+@pytest.mark.playwright
+def test_export_import(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.get_by_role("link", name=" DIH").click()
+  page.once("dialog", lambda dialog: dialog.accept())
+  page.get_by_role("link", name=" Delete Database").click()
+  page.get_by_role("link", name=" Home").click()
+
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 Document (.docx)").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+  
+  page.get_by_role("link", name=" View Details").click()
+  page.get_by_role("button", name=" Export").click()
+  with page.expect_download() as download_info:
+      page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+  download = download_info.value
+  page.get_by_role("navigation").get_by_role("link").first.click()
+  page.get_by_role("button", name=" Import").click()
+  page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/fhir_v1/WA42380.json"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of FHIR")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+  
+  expect(page.locator("#card_1_div")).to_contain_text("A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA")
+  expect(page.locator("#card_2_div")).to_contain_text("A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA")
+  page.locator("#card_2_div").get_by_role("link", name=" View Details").click()
+  expect(page.get_by_role("img", name="alt text")).to_be_visible()
+  page.get_by_role("navigation").get_by_role("link").first.click()
+  page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+  expect(page.get_by_role("img", name="alt text")).to_be_visible()
+
+  context.close()
+  browser.close()
 
 def username():
   se = ServiceEnvironment()

@@ -2,9 +2,7 @@
 from typing import Annotated
 from fastapi import Form, Depends, FastAPI, Request, WebSocket, WebSocketDisconnect, status
 from fastapi.responses import RedirectResponse, FileResponse
-#from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-#from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic import application_logger
 from d4kms_ui.pagination import Pagination
 from app.model.database import get_db
@@ -13,7 +11,6 @@ from app.model.version import Version
 from app.model.file_import import FileImport
 from app.model.endpoint import Endpoint
 from app.model.user_endpoint import UserEndpoint
-#from app.model.transmission import Transmission
 from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
@@ -27,7 +24,6 @@ from app.dependencies.fhir_version import check_fhir_version, fhir_versions
 from app.utility.fhir_transmit import run_fhir_transmit
 from app.model.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
-#from usdm_model.wrapper import Wrapper
 from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
@@ -104,8 +100,9 @@ def index(request: Request, session: Session = Depends(get_db)):
     pagination = Pagination(data, "/index") 
     return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
   elif user:
-    data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}, 'fhir': fhir}
-    return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
+    data = {'items': [], 'page': 1, 'size': 10, 'filter': '', 'count': 0, 'fhir': fhir}
+    pagination = Pagination(data, "/index") 
+    return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
   else:
     return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': "Unable to determine user."}})
 

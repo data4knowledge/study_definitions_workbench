@@ -17,51 +17,19 @@ from tests.mocks.usdm_json_mocks import *
 def anyio_backend():
   return 'asyncio'
 
-# def protect_endpoint():
-
-#   from app.main import app
-#   from app.main import protect_endpoint
-  
-#   def override_protect_endpoint(request: Request):
-#     request.session['userinfo'] = {'sub': "1234", 'email': 'user@example.com', 'nickname': 'Nickname', 'roles': []}
-#     return None
-  
-#   app.dependency_overrides[protect_endpoint] = override_protect_endpoint
-
-# def mock_authorisation(mocker, monkeypatch):
-#   r = mocker.patch("d4kms_generic.auth0_service.Auth0Service.register")
-#   mt = mocker.patch("d4kms_generic.auth0_service.Auth0Service.management_token")
-#   r.side_effect = [[]]
-#   mt.side_effect = [[]]
-#   return r, mt
-
-# def mock_client(monkeypatch):
-#   from app.main import app
-#   return TestClient(app)
-
-# def mock_async_client(monkeypatch):
-#   from app.main import app
-#   return AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
-
 def test_home(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   client = mock_client(monkeypatch)
   response = client.get("/")
   assert response.status_code == 200
   assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text in response.text
-  #assert mock_called(r)
-  #assert mock_called(mt)
 
 @pytest.mark.anyio
 async def test_login_single(monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   async_client = mock_async_client(monkeypatch)
   monkeypatch.setenv("SINGLE_USER", "True")
   response = await async_client.get("/login")
   assert response.status_code == 307
   assert str(response.next_request.url) == "http://test/index"
-  #assert mock_called(r)
-  #assert mock_called(mt)
 
 # @pytest.mark.anyio
 # async def test_login_mutltiple_authorised(mocker, monkeypatch):
@@ -82,29 +50,22 @@ async def test_login_single(monkeypatch):
 #   assert response.status_code == 200
 
 def test_index_no_user(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   mock_user_check_fail(mocker)
   response = client.get("/index")
   assert response.status_code == 200
   assert """Unable to determine user.""" in response.text
-  #assert mock_called(r)
-  #assert mock_called(mt)
 
 def test_index_new_user(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   mock_user_check_new(mocker)
   response = client.get("/index")
   assert response.status_code == 200
-  assert """Update Display Name""" in response.text
-  #assert mock_called(r)
-  #assert mock_called(mt)
+  assert """You have not loaded any studies yet. Use the import menu to upload one or more studies.""" in response.text
 
 def test_index_existing_user_none(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
@@ -113,8 +74,6 @@ def test_index_existing_user_none(mocker, monkeypatch):
   assert response.status_code == 200
   assert """You have not loaded any studies yet.""" in response.text
   assert mock_called(sp)
-  #assert mock_called(r)
-  #assert mock_called(mt)
 
 def mock_study_page_none(mocker):
   mock = mocker.patch("app.model.study.Study.page")
@@ -122,7 +81,6 @@ def mock_study_page_none(mocker):
   return mock
 
 def test_index_existing_user_studies(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
@@ -132,8 +90,6 @@ def test_index_existing_user_studies(mocker, monkeypatch):
   assert """View Protocol""" in response.text
   assert """A study for Z""" in response.text
   assert mock_called(sp)
-  #assert mock_called(r)
-  #assert mock_called(mt)
 
 def mock_study_page(mocker):
   mock = mocker.patch("app.model.study.Study.page")
@@ -146,7 +102,6 @@ def mock_study_page(mocker):
   return mock
 
 def test_study_select(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
@@ -159,8 +114,6 @@ def test_study_select(mocker, monkeypatch):
   assert response.status_code == 200
   assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2,15">""" in response.text
   assert mock_called(ss)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def mock_study_summary(mocker):
   mock = mocker.patch("app.model.study.Study.summary")
@@ -168,7 +121,6 @@ def mock_study_summary(mocker):
   return mock
 
 def test_study_deselect(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
@@ -181,11 +133,8 @@ def test_study_deselect(mocker, monkeypatch):
   )
   assert response.status_code == 200
   assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2">""" in response.text
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def test_study_delete(mocker, monkeypatch):
-  #r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   sf = mock_study_find(mocker)
@@ -208,8 +157,6 @@ def test_study_delete(mocker, monkeypatch):
   assert mock_called(fid)
   assert mock_called(dfd)
   assert mock_called(sd)
-  #assert mock_called(r)
-  #assert mock_called(mt)
 
 def mock_study_file_imports(mocker):
   mock = mocker.patch("app.model.study.Study.file_imports")
