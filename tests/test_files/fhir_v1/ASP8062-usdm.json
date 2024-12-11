@@ -3032,11 +3032,11 @@
             "identifier": "123456789",
             "legalAddress": {
               "id": "Address_1",
-              "text": null,
+              "text": "Northbrook, IL, 60062, United States of America",
               "line": "",
-              "city": "northbrook",
+              "city": "Northbrook",
               "district": "",
-              "state": "il",
+              "state": "IL",
               "postalCode": "60062",
               "country": {
                 "id": "Code_12",

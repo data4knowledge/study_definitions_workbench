@@ -3434,12 +3434,12 @@
             "identifier": "123456789",
             "legalAddress": {
               "id": "Address_1",
-              "text": null,
+              "text": "Bonn, D-53127",
               "line": "",
-              "city": "bonn",
+              "city": "Bonn",
               "district": "",
               "state": "",
-              "postalCode": "d-53127",
+              "postalCode": "D-53127",
               "country": null,
               "instanceType": "Address"
             },

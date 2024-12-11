@@ -132,18 +132,6 @@ class FHIRTitlePage():
         return name
     return ''  
 
-  # def _sponsor_name_and_address(self):
-  #   name = '[Sponsor Name]'
-  #   address = '[Sponsor Address]'
-  #   parts = self.sponsor_name_and_address.split('\n')
-  #   if len(parts) > 0:
-  #     name = parts[0].strip()
-  #     application_logger.info(f"Sponsor name set to '{name}'")
-  #   if len(parts) > 1:
-  #     address = (',').join([x.strip() for x in parts[1:]])
-  #   application_logger.info(f"Sponsor name set to '{name}' with address set to '{address}'")
-  #   return name, address
-
   async def _sponsor_name_and_address(self):
     name = '[Sponsor Name]'
     parts = self.sponsor_name_and_address.split('\n')
@@ -161,11 +149,11 @@ class FHIRTitlePage():
       else:
         for result in results:
           if result['label'] == 'country':
-            params['country'] = result['value']
+            params['country'] = self._preserve_original(parts[1:], result['value'])
           elif result['label'] == 'postcode':
-            params['postalCode'] = result['value']        
+            params['postalCode'] = self._preserve_original(parts[1:], result['value'])
           elif result['label'] in ['city', 'state']:
-            params[result['label']] = result['value']        
+            params[result['label']] = self._preserve_original(parts[1:], result['value'])
     application_logger.info(f"Name and address result '{name}', '{params}'")
     return name, params
 
@@ -186,3 +174,11 @@ class FHIRTitlePage():
     except Exception as e:
       application_logger.exception(f"Exception raised during date processing for '{text}'", e)
       return None
+
+  def _preserve_original(self, original_parts, value):
+    for part in original_parts:
+      for item in re.split(r'[,\s]+', part):
+        if item.upper() == value.upper():
+          print(f"PRESERVE: {value} as {item}")
+          return item
+    return value

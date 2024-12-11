@@ -3,21 +3,16 @@ from usdm_model.study import Study
 from usdm_model.study_design import StudyDesign
 from usdm_model.study_version import StudyVersion
 from usdm_model.study_title import StudyTitle
-# from usdm_model.study_protocol_document import StudyDefinitionDocument
-# from usdm_model.study_protocol_document_version import StudyDefinitionDocumentVersion
 from usdm_model.study_definition_document import StudyDefinitionDocument
 from usdm_model.study_definition_document_version import StudyDefinitionDocumentVersion
 from usdm_model.code import Code
 from usdm_model.alias_code import AliasCode
 from usdm_model.identifier import StudyIdentifier
 from usdm_model.organization import Organization
-from usdm_model.address import Address
+#from usdm_model.address import Address
 from usdm_model.narrative_content import NarrativeContent, NarrativeContentItem
-from usdm_db.errors_and_logging.errors_and_logging import ErrorsAndLogging
-from usdm_excel.id_manager import IdManager
-from usdm_excel.cdisc_ct_library import CDISCCTLibrary
-from fhir.resources.bundle import Bundle, BundleEntry
-from fhir.resources.composition import Composition, CompositionSection
+from fhir.resources.bundle import Bundle
+from fhir.resources.composition import CompositionSection
 from usdm_info import __model_version__ as usdm_version, __package_version__ as system_version
 from app import SYSTEM_NAME, VERSION
 from app.model.file_handling.data_files import DataFiles
@@ -28,6 +23,7 @@ from usdm_model.governance_date import GovernanceDate
 from usdm_model.geographic_scope import GeographicScope
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
+from app.model.usdm.model.address import Address
 
 class FromFHIRV1():
 
@@ -164,19 +160,18 @@ class FromFHIRV1():
       titles.append(title)
     except:
       application_logger.info(f"No study short title set, source = '{self._title_page.short_title}'")
-    #protocl_status_code = self._cdisc_ct_code('C85255', 'Draft')
+    
+    # Build
     intervention_model_code = self._cdisc_ct_code('C82639', 'Parallel Study')
-    #country_code = self._iso_country_code('DNK', 'Denmark')
     sponsor_code = self._cdisc_ct_code("C70793", 'Clinical Study Sponsor')
     study_design = self._model_instance(StudyDesign, {'name': 'Study Design', 'label': '', 'description': '', 
       'rationale': '[Not Found]', 'interventionModel': intervention_model_code, 'arms': [], 'studyCells': [], 
       'epochs': [], 'population': None})
-    #print(f"ADDRESS: {self._title_page.sponsor_address}")
     self._title_page.sponsor_address['country'] = self._iso3166_decode(self._title_page.sponsor_address['country'].upper())
     address = self._model_instance(Address, self._title_page.sponsor_address)
+    address.set_text()
     organization = self._model_instance(Organization, {'name': self._title_page.sponsor_name, 'type': sponsor_code, 'identifier': "123456789", 'identifierScheme': "DUNS", 'legalAddress': address}) 
     identifier = self._model_instance(StudyIdentifier, {'text': self._title_page.sponsor_protocol_identifier, 'scopeId': organization.id})
-    #print(f"IDENTIFIER: {identifier}")
     params = {
       'versionIdentifier': self._title_page.version_number, 
       'rationale': 'XXX', 
@@ -189,7 +184,6 @@ class FromFHIRV1():
       'organizations': [organization],
       'narrativeContentItems': ncis
     }
-    application_logger.debug(f"Study Version params {params}")
     study_version = self._model_instance(StudyVersion, params) 
     study = self._model_instance(Study, {'id': self._uuid, 'name': self._title_page.study_name, 'label': self._title_page.study_name, 'description': f'FHIR Imported {self._title_page.study_name}', 'versions': [study_version], 'documentedBy': [protocol_document]}) 
     return study

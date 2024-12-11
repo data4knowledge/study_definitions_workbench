@@ -36,6 +36,13 @@ def sponsor_name(self: StudyVersion) -> str:
       return map[x.scopeId].name 
   return ''
 
+def sponsor_address(self: StudyVersion) -> str:
+  map = self.organization_map()
+  for x in self.studyIdentifiers:
+    if x.is_sponsor(map):
+      return map[x.scopeId].legalAddress.text
+  return ''
+
 def nct_identifier(self: StudyVersion) -> StudyIdentifier:
   map = self.organization_map()
   for x in self.studyIdentifiers:
@@ -66,6 +73,7 @@ setattr(StudyVersion, 'short_title', short_title)
 setattr(StudyVersion, 'acronym', acronym)
 setattr(StudyVersion, 'sponsor_identifier', sponsor_identifier)
 setattr(StudyVersion, 'sponsor_name', sponsor_name)
+setattr(StudyVersion, 'sponsor_address', sponsor_address)
 setattr(StudyVersion, 'nct_identifier', nct_identifier)
 setattr(StudyVersion, 'protocol_date', protocol_date)
 setattr(StudyVersion, 'approval_date', approval_date)

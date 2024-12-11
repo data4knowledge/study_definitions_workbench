@@ -116,11 +116,12 @@ class M11TitlePage():
       else:
         for result in results:
           if result['label'] == 'country':
-            params['country'] = iso3166_decode(result['value'], self._iso, self._id_manager)
+            value = self._preserve_original(parts[1:], result['value'])
+            params['country'] = iso3166_decode(value, self._iso, self._id_manager)
           elif result['label'] == 'postcode':
-            params['postalCode'] = result['value']        
+            params['postalCode'] = self._preserve_original(parts[1:], result['value'])    
           elif result['label'] in ['city', 'state']:
-            params[result['label']] = result['value']        
+            params[result['label']] = self._preserve_original(parts[1:], result['value'])
     application_logger.info(f"Name and address result '{name}', '{params}'")
     return name, params
 
@@ -183,3 +184,12 @@ class M11TitlePage():
         return table
     application_logger.warning(f"Cannot locate M11 title page table!")
     return None
+  
+  def _preserve_original(self, original_parts, value):
+    print(f"CHECK: {value} si {original_parts}?")
+    for part in original_parts:
+      for item in re.split(r'[,\s]+', part):
+        if item.upper() == value.upper():
+          print(f"PRESERVE: {value} as {item}")
+          return item
+    return value
