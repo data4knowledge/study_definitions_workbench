@@ -267,6 +267,105 @@ def test_export_import(playwright: Playwright) -> None:
   context.close()
   browser.close()
 
+@pytest.mark.playwright
+def test_selection_menu(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.locator("#card_1_div").get_by_role("button", name=" Select").click()
+  expect(page.get_by_role("button", name=" Selection")).to_be_visible()
+  page.get_by_role("button", name=" Selection").click()
+  expect(page.get_by_role("button", name=" Delete selected studies")).to_be_visible()
+  expect(page.get_by_role("button", name=" List selected studies")).to_be_visible()
+  page.get_by_role("button", name=" Deselect").click()
+  expect(page.get_by_role("button", name=" Selection")).to_be_hidden()
+
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
+def test_selection_list(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.get_by_role("link", name=" DIH").click()
+  page.once("dialog", lambda dialog: dialog.accept())
+  page.get_by_role("link", name=" Delete Database").click()
+  page.get_by_role("link", name=" Home").click()
+  
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 Document (.docx)").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 Document (.docx)").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/ASP8062/ASP8062.docx"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+
+  page.locator("#card_1_div").get_by_role("button", name=" Select").click()
+  page.locator("#card_2_div").get_by_role("button", name=" Select").click()
+  page.get_by_role("button", name=" Selection").click()
+  page.get_by_role("button", name=" List selected studies").click()
+  expect(page.get_by_role("rowgroup")).to_contain_text("A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA")
+  expect(page.get_by_role("rowgroup")).to_contain_text("A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants")
+  
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
+def test_selection_delete(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+
+  page.get_by_role("link", name=" DIH").click()
+  page.once("dialog", lambda dialog: dialog.accept())
+  page.get_by_role("link", name=" Delete Database").click()
+  page.get_by_role("link", name=" Home").click()
+  
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 Document (.docx)").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 Document (.docx)").click()
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/ASP8062/ASP8062.docx"))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+  page.get_by_role("link").first.click()
+
+  page.locator("#card_1_div").get_by_role("button", name=" Select").click()
+  page.locator("#card_2_div").get_by_role("button", name=" Select").click()
+  page.get_by_role("button", name=" Selection").click()
+  page.once("dialog", lambda dialog: dialog.accept())
+  page.get_by_role("button", name=" Delete selected studies").click()
+  expect(page.get_by_role("paragraph")).to_contain_text("You have not loaded any studies yet. Use the import menu to upload one or more studies. Examples files can be downloaded by clicking on the help menu and selcting the examples option.")
+  
+  context.close()
+  browser.close()
+
 def username():
   se = ServiceEnvironment()
   value = se.get("USERNAME")
