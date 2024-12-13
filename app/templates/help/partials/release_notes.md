@@ -1,9 +1,10 @@
-<h5>Release 0.29.0, 2024-NN-NN</h5>
+<h5>Release 0.29.0, 2024-12-12</h5>
 
 - Add help documents (issue 1)
 - Improve view menu on protocol page (issue 8)
 - Address decode on import of FHIR message (issue 9)
 - Images not appearing on FHIR import (issue 10)
+- Initial screen for unknown user (issue 11)
 
 <h5>Release 0.28.0, 2024-11-27</h5>
 
