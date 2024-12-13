@@ -6,7 +6,7 @@ from tests.mocks.fastapi_mocks import *
 from tests.mocks.utility_mocks import *
 from tests.mocks.usdm_json_mocks import *
 from tests.mocks.fhir_version_mocks import *
-from tests.mocks.file_import_mocks import *
+from tests.mocks.file_mocks import *
 
 @pytest.fixture
 def anyio_backend():

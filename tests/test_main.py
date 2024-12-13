@@ -5,13 +5,10 @@ from app.model.study import Study
 from app.model.version import Version
 from app.model.file_import import FileImport
 from app.model.endpoint import Endpoint
-#from app.utility.environment import file_picker
-#from d4kms_ui.release_notes import ReleaseNotes
-# from fastapi import FastAPI, Request
-# from fastapi.testclient import TestClient
-# from httpx import ASGITransport, AsyncClient
 from tests.mocks.fastapi_mocks import *
 from tests.mocks.usdm_json_mocks import *
+from tests.mocks.file_mocks import *
+from tests.mocks.general_mocks import *
 
 @pytest.fixture
 def anyio_backend():
@@ -101,149 +98,7 @@ def mock_study_page(mocker):
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': items}]
   return mock
 
-def test_study_select(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  mock_user_check_exists(mocker)
-  ss = mock_study_summary(mocker)
-  response = client.patch(
-    "/studies/15/select?action=select", 
-    data={'list_studies': '1, 2'},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
-  )
-  assert response.status_code == 200
-  assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2,15">""" in response.text
-  assert mock_called(ss)
-
-def mock_study_summary(mocker):
-  mock = mocker.patch("app.model.study.Study.summary")
-  mock.side_effect = ["Study Summary"]
-  return mock
-
-def test_study_deselect(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  mock_user_check_exists(mocker)
-  summary = mock_study_summary(mocker)
-  summary.side_effect = ["Study Summary"]
-  response = client.patch(
-    "/studies/15/select?action=deselect", 
-    data={'list_studies': '1, 2,15'},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
-  )
-  assert response.status_code == 200
-  assert """<input type="hidden" name="list_studies" id="list_studies" value="1,2">""" in response.text
-
-def test_study_delete(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  sf = mock_study_find(mocker)
-  sfi = mock_study_file_imports(mocker)
-  dfd = mock_data_file_delete(mocker)
-  fif = mock_file_import_find(mocker)
-  fid = mock_file_import_delete(mocker)
-  sd = mock_study_delete(mocker)
-  response = client.post(
-    "/studies/delete", 
-    data={'delete_studies': '1'},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'},
-    follow_redirects=False
-  )
-  assert response.status_code == 303
-  assert str(response.next_request.url) == "http://testserver/index"
-  assert mock_called(sf)
-  assert mock_called(sfi)
-  assert mock_called(fif)
-  assert mock_called(fid)
-  assert mock_called(dfd)
-  assert mock_called(sd)
-
-def mock_study_file_imports(mocker):
-  mock = mocker.patch("app.model.study.Study.file_imports")
-  mock.side_effect = [[[12,'1234-5678']]]
-  return mock
-
-def mock_study_delete(mocker):
-  mock = mocker.patch("app.model.study.Study.delete")
-  mock.side_effect = [1]
-  return mock
-
-def mock_file_import_delete(mocker):
-  mock = mocker.patch("app.model.file_import.FileImport.delete")
-  mock.side_effect = [1]
-  return mock
-
-def mock_data_file_delete(mocker):
-  mock = mocker.patch("app.model.file_handling.data_files.DataFiles.delete")
-  mock.side_effect = [1]
-  return mock
-
-def mock_study_find(mocker):
-  mock = mocker.patch("app.model.study.Study.find")
-  mock.side_effect = [factory_study()]
-  return mock
-
-def test_file_list_local(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uc = mock_user_check_exists(mocker)
-  fp = mock_file_picker_os(mocker)
-  lfd = mock_local_files_dir(mocker)
-  response = client.get("/fileList?dir=xxx&url=http://example.com")
-  assert response.status_code == 200
-  assert """<p class="card-text">a-file.txt</p>""" in response.text
-  assert """<p class="card-text">100 kb</p>""" in response.text
-  assert mock_called(uc)
-  assert mock_called(fp)
-  assert mock_called(lfd)
-  #assert mock_called(r)
-  #assert mock_called(mt)
-
-def test_file_list_local_invalid(mocker, caplog, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uc = mock_user_check_exists(mocker)
-  fp = mock_file_picker_os(mocker)
-  lfd = mock_local_files_dir_error(mocker)
-  response = client.get("/fileList?dir=xxx&url=http://example.com")
-  assert response.status_code == 200
-  assert """Error Error Error!!!""" in response.text
-  assert mock_called(uc)
-  assert mock_called(fp)
-  assert mock_called(lfd)
-  assert error_logged(caplog, "Error Error Error!!!")
-#  assert mock_called(r)
-#  assert mock_called(mt)
-
-def mock_file_picker_os(mocker):
-  fp = mocker.patch("app.main.file_picker")
-  fp.side_effect = [{'browser': False, 'os': True, 'pfda': False, 'source': 'os'}]
-  return fp
-
-def mock_called(mock, count=1):
-  return mock.call_count == count
-
-def mock_local_files_dir(mocker):
-  lfd = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
-  ts = datetime.datetime.now()
-  files = [{'uid': 1234-5678, 'type': 'File', 'name': 'a-file.txt', 'path': 'xxx/a-file.txt', 'created_at': ts, 'file_size': '100 kb'}]
-  lfd.side_effect = [(True, {'files': files, 'dir': 'xxx'}, '')]
-  return lfd
-
-def mock_local_files_dir_error(mocker):
-  mock = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
-  files = []
-  mock.side_effect = [(False, {'files': files, 'dir': 'xxx'}, 'Error Error Error!!!')]
-  return mock
-
-def error_logged(caplog, text):
-  correct_level = caplog.records[-1].levelname == "ERROR"
-  return text in caplog.records[-1].message and correct_level
-
 def test_import_m11(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
@@ -254,11 +109,8 @@ def test_import_m11(mocker, monkeypatch):
   assert """<p>Select a single M11 file</p>""" in response.text
   assert mock_called(uc)
   assert mock_called(fp)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def test_import_xl(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
@@ -269,12 +121,9 @@ def test_import_xl(mocker, monkeypatch):
   assert '<p>Select a single Excel file and zero, one or more images files. </p>' in response.text
   assert mock_called(uc)
   assert mock_called(fp)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 @pytest.mark.anyio
 async def test_import_m11_execute(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   async_client = mock_async_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
@@ -284,8 +133,6 @@ async def test_import_m11_execute(mocker, monkeypatch):
   assert '<h1>Fake M11 Response</h1>' in response.text
   assert mock_called(uc)
   assert mock_called(pm11)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def mock_process_m11(mocker):
   mock = mocker.patch("app.main.process_m11")
@@ -294,7 +141,6 @@ def mock_process_m11(mocker):
 
 @pytest.mark.anyio
 async def test_import_xl_execute(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   async_client = mock_async_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
@@ -304,8 +150,6 @@ async def test_import_xl_execute(mocker, monkeypatch):
   assert '<h1>Fake XL Response</h1>' in response.text
   assert mock_called(uc)
   assert mock_called(pxl)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def mock_process_xl(mocker):
   mock = mocker.patch("app.main.process_xl")
@@ -313,20 +157,15 @@ def mock_process_xl(mocker):
   return mock
 
 def test_import_status(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
   response = client.get("/import/status?page=1&size=10&filter=")
   assert response.status_code == 200
-  #print(f"RESULT: {response.text}")
   assert '<h5 class="card-title">Import Status</h5>' in response.text
   assert mock_called(uc)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def test_import_status_data(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
@@ -337,8 +176,6 @@ def test_import_status_data(mocker, monkeypatch):
   assert '<th scope="col">Imported At</th>' in response.text
   assert mock_called(uc)
   assert mock_called(fip)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def mock_file_import_page(mocker):
   mock = mocker.patch("app.model.file_import.FileImport.page")
@@ -346,7 +183,6 @@ def mock_file_import_page(mocker):
   return mock
 
 def test_import_errors(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
@@ -358,11 +194,8 @@ def test_import_errors(mocker, monkeypatch):
   assert mock_called(uc)
   assert mock_called(fif)
   assert mock_called(dfp)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def test_import_errors_error(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
@@ -375,8 +208,6 @@ def test_import_errors_error(mocker, monkeypatch):
   assert mock_called(uc)
   assert mock_called(fif)
   assert mock_called(dfp)
-#  assert mock_called(r)
-#  assert mock_called(mt)
 
 def mock_file_import_find(mocker):
   mock = mocker.patch("app.model.file_import.FileImport.find")
@@ -393,57 +224,7 @@ def mock_data_file_path_error(mocker):
   mock.side_effect = [('', '', False)]
   return mock
 
-# def test_version_history(mocker, monkeypatch):
-# #  r, mt = mock_authorisation(mocker)
-#   protect_endpoint()
-#   client = mock_client(monkeypatch)
-#   uc = mock_user_check_exists(mocker)
-#   usv = mock_usdm_study_version(mocker)
-#   uji = mock_usdm_json_init(mocker)
-#   response = client.get("/versions/1/history")
-# #  print(f"RESPONSE: {response.text}")
-#   assert response.status_code == 200
-#   assert '<h5 class="card-title">Version History</h5>' in response.text
-#   assert ' <h6 class="card-subtitle mb-2 text-muted">Title: The Offical Study Title For Test | Sponsor: Identifier For Test| Phase: Phase For Test | Identifier:</h6>' in response.text
-#   assert mock_called(uc)
-#   assert mock_called(usv)
-#   assert mock_called(uji)
-#   assert_view_menu(response.text, "history")
-
-# def test_version_history_data(mocker, monkeypatch):
-# #  r, mt = mock_authorisation(mocker)
-#   protect_endpoint()
-#   client = mock_client(monkeypatch)
-#   vf = mock_version_find(mocker)
-#   vp = mock_version_page(mocker)
-#   fif = mock_file_import_find(mocker)
-#   response = client.get("/versions/1/history/data?page=1&size=10&filter=")
-#   assert response.status_code == 200
-#   assert '<th scope="col">Version</th>' in response.text
-#   assert '<td>1</td>' in response.text
-#   assert mock_called(vf)
-#   assert mock_called(vp)
-#   assert mock_called(fif)
-# #  assert mock_called(r)
-# #  assert mock_called(mt)
-
-# def mock_version_find(mocker):
-#   mock = mocker.patch("app.model.version.Version.find")
-#   mock.side_effect = [factory_version()]
-#   return mock
-
-# def mock_version_page(mocker):
-#   mock = mocker.patch("app.model.version.Version.page")
-#   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version().model_dump()]}]
-#   return mock
-
-# def mock_usdm_json_init(mocker):
-#   mock = mocker.patch("app.main.USDMJson.__init__")
-#   mock.side_effect = [None]
-#   return mock
-
 def test_get_study_design_timelines(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uji = mock_usdm_json_init(mocker)
@@ -455,17 +236,8 @@ def test_get_study_design_timelines(mocker, monkeypatch):
   assert 'Special Timeline' in response.text
   assert mock_called(uji)
   assert mock_called(ujt)
-#  assert mock_called(r)
-#  assert mock_called(mt)
-
-# def mock_usdm_json_timelines(mocker):
-#   mock = mocker.patch("app.main.USDMJson.timelines")
-#   data = {'id': '1', 'study_id': '2', 'm11': False, 'timelines': [{'id': '3', 'name': 'Special Timeline', }]}
-#   mock.side_effect = [data]
-#   return mock
 
 def test_get_study_design_soa(mocker, monkeypatch):
-#  r, mt = mock_authorisation(mocker)
   protect_endpoint()
   client = mock_client(monkeypatch)
   uji = mock_usdm_json_init(mocker)
@@ -477,309 +249,6 @@ def test_get_study_design_soa(mocker, monkeypatch):
   assert '<h6 class="card-subtitle mb-2 text-muted">Description: SOA Description | Main: False | Name: SoA Name</h6>' in response.text
   assert mock_called(uji)
   assert mock_called(ujs)
-#  assert mock_called(r)
-#  assert mock_called(mt)
-
-# def mock_usdm_json_soa(mocker):
-#   mock = mocker.patch("app.main.USDMJson.soa")
-#   data = {
-#     'timeline': {'label': "SOA LABEL", 'description': "SOA Description", 'mainTimeline': False, 'name': 'SoA Name'},
-#     'soa': "<table>SOA Table</table>"
-#   }
-#   mock.side_effect = [data]
-#   return mock
-
-# @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
-# async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
-#   #print(f"VERSION SUMMARY DATA: {data}")
-#   return templates.TemplateResponse("study_versions/summary.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
-#   return templates.TemplateResponse("study_designs/summary.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/overallParameters', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_o_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.study_design_overall_parameters(study_design_id)
-#   #print(f"OVERALL SUMMARY DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/overall_parameters.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/designParameters', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_d_parameters(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.study_design_design_parameters(study_design_id)
-#   #print(f"DESIGN PARAMETERS DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/design_parameters.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/schema', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_schema(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.study_design_schema(study_design_id)
-#   #print(f"SCHEMA DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/schema.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/interventions', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_interventions(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.study_design_interventions(study_design_id)
-#   #print(f"INTERVENTION DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/interventions.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/estimands', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.study_design_estimands(study_design_id)
-#   #print(f"ESTIMAND DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/estimands.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{id}/safety', dependencies=[Depends(protect_endpoint)])
-# async def get_version_safety(request: Request, id: int, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
-#   #print(f"VERSION SUMMARY DATA: {data}")
-#   return templates.TemplateResponse("study_versions/safety.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/safety', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
-#   return templates.TemplateResponse("study_designs/safety.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/aeSpecialInterest', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.adverse_events_special_interest(study_design_id)
-#   #print(f"AE SPECIAL INTEREST DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/ae_special_interest.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/safetyAssessments', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_estimands(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.safety_assessments(study_design_id)
-#   #print(f"SAFETY ASSESSMENT DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/safety_assessments.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{id}/statistics', dependencies=[Depends(protect_endpoint)])
-# async def get_version_statistics(request: Request, id: int, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session)}
-#   #print(f"VERSION SUMMARY DATA: {data}")
-#   return templates.TemplateResponse("study_versions/statistics.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/statistics', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = {'id': version_id, 'study_design_id': study_design_id, 'm11': usdm.m11}
-#   return templates.TemplateResponse("study_designs/statistics.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/sampleSize', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.sample_size(study_design_id)
-#   #print(f"SAMPLE SIZE DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/sample_size.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/analysisSets', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.analysis_sets(study_design_id)
-#   #print(f"ANALYSIS SETS DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/analysis_sets.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/analysisObjective', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.analysis_objectives(study_design_id)
-#   #print(f"ANALYSIS OBJECTIVES DATA: {data}")
-#   return templates.TemplateResponse("study_designs/partials/analysis_objective.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/versions/{id}/export/json', dependencies=[Depends(protect_endpoint)])
-# async def export_json(request: Request, id: int, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   full_path, filename, media_type = usdm.json()
-#   if full_path:
-#     return FileResponse(path=full_path, filename=filename, media_type=media_type)
-#   else:
-#     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Error downloading the requested JSON file"}})
-
-# @app.get('/versions/{id}/export/protocol', dependencies=[Depends(protect_endpoint)])
-# async def export_protocol(request: Request, id: int, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   full_path, filename, media_type = usdm.pdf()
-#   if full_path:
-#     return FileResponse(path=full_path, filename=filename, media_type=media_type)
-#   else:
-#     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Error downloading the requested PDF file"}})
-
-# @app.get("/versions/{id}/protocol", dependencies=[Depends(protect_endpoint)])
-# async def protocol(request: Request, id: int, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   data = {'version': usdm.study_version(), 'sections': usdm.protocol_sections(), 'section_list': usdm.protocol_sections_list()}
-#   #print(f"PROTOCOL SECTION: {data}")
-#   response = templates.TemplateResponse('versions/protocol/show.html', {"request": request, "data": data, 'user': user})
-#   return response
-
-# @app.get("/versions/{id}/section/{section_id}", dependencies=[Depends(protect_endpoint)])
-# async def protocl_section(request: Request, id: int, section_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   data = {'section': usdm.section(section_id)}
-#   response = templates.TemplateResponse('versions/protocol//partials/section.html', {"request": request, "data": data })
-#   return response
-
-
-
-
-# **************************************************** On Hold ***************************************************
-
-# @app.get("/import/fhir", dependencies=[Depends(protect_endpoint)])
-# def import_fhir(request: Request, version: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   valid, description = check_fhir_version(version)
-#   if valid:
-#     data = file_picker()
-#     data['version'] = version
-#     data['description'] = description
-#     data['dir'] = LocalFiles().root if data['os'] else ''
-#     data['required_ext'] = 'json'
-#     data['other_files'] = False
-#     data['url'] = '/import/fhir'
-#     return templates.TemplateResponse("import/import_fhir.html", {'request': request, 'user': user, 'data': data})
-#   else:
-#     message = f"Invalid FHIR version '{version}'"
-#     application_logger.error(message)
-#     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': message}})
-    
-# @app.post('/import/fhir', dependencies=[Depends(protect_endpoint)])
-# async def import_fhir(request: Request, source: str='browser', session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   return await process_fhir(request, templates, user, source)
-
-# @app.get('/transmissions/status', dependencies=[Depends(protect_endpoint)])
-# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   # data = Transmission.page(page, size, user.id, session)
-#   # pagination = Pagination(data, "/transmissions/status")
-#   data = {'page': page, 'size': size, 'filter': filter} 
-#   return templates.TemplateResponse("transmissions/status.html", {'request': request, 'user': user, 'data': data})
-
-# @app.get('/transmissions/status/data', dependencies=[Depends(protect_endpoint)])
-# async def import_status(request: Request, page: int, size: int, filter: str="", session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   data = Transmission.page(page, size, user.id, session)
-#   pagination = Pagination(data, "/transmissions/status/data")
-#   return templates.TemplateResponse("transmissions/partials/status.html", {'request': request, 'user': user, 'pagination': pagination, 'data': data})
-
-# @app.get('/versions/{id}/export/fhir', dependencies=[Depends(protect_endpoint)])
-# async def export_fhir(request: Request, id: int, version: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(id, session)
-#   valid, description = check_fhir_version(version)
-#   if valid:
-#     full_path, filename, media_type = usdm.fhir(version.upper())
-#     if full_path:
-#       return FileResponse(path=full_path, filename=filename, media_type=media_type)
-#     else:
-#       return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"The study with id '{id}' was not found."}})
-#   else:
-#     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version export requested. Version requested was '{version}'."}})
-
-# @app.get('/versions/{id}/transmit/{endpoint_id}', dependencies=[Depends(protect_endpoint)])
-# async def version_transmit(request: Request, id: int, endpoint_id: int, version: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   valid, description = check_fhir_version(version)
-#   if valid:
-#     run_fhir_transmit(id, endpoint_id, version, user)
-#     return RedirectResponse(f'/versions/{id}/summary')
-#   else:
-#     return templates.TemplateResponse('errors/error.html', {"request": request, 'user': user, 'data': {'error': f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."}})
-
-
-# @app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
-# async def database_clean(request: Request, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   if admin:
-#     database_managr = DBM(session)
-#     database_managr.clear_all()
-#     endpoint, validation = Endpoint.create('LOCAL TEST', 'http://localhost:8010/m11', "FHIR", user.id, session)
-#     endpoint, validation = Endpoint.create('Hugh Server', 'https://fs-01.azurewebsites.net', "FHIR", user.id, session)
-#     endpoint, validation = Endpoint.create('HAPI Server', 'https://hapi.fhir.org/baseR5', "FHIR", user.id, session)
-#     application_logger.info(f"User '{user.id}', '{user.email} cleared the database")
-#   else:
-#     # Error here
-#     application_logger.warning(f"User '{user.id}', '{user.email} attempted to clear the database!")
-#   return RedirectResponse("/index")
-
-# @app.get("/database/debug", dependencies=[Depends(protect_endpoint)])
-# async def database_clean(request: Request, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   if admin:
-#     data = {}
-#     data['users'] = json.dumps(User.debug(session), indent=2)
-#     data['studies'] = json.dumps(Study.debug(session), indent=2)
-#     data['versions'] = json.dumps(Version.debug(session), indent=2)
-#     data['imports'] = json.dumps(FileImport.debug(session), indent=2)
-#     data['endpoints'] = json.dumps(Endpoint.debug(session), indent=2)
-#     data['user_endpoints'] = json.dumps(UserEndpoint.debug(session), indent=2)
-#     response = templates.TemplateResponse('database/debug.html', {'request': request, 'user': user, 'data': data})
-#     return response
-#   else:
-#     await connection_manager.error(f"Operation request denied", str(user.id))
-#     application_logger.error(f"User '{user.id}', '{user.email} attempted to debug the database!")
-#     return RedirectResponse(f"/users/{user.id}/show", status_code=303)
-
-# @app.patch("/debug", dependencies=[Depends(protect_endpoint)])
-# async def debug_level(request: Request, level: str='INFO', session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   if admin:
-#     level = application_logger.DEBUG if level.upper() == 'DEBUG' else application_logger.INFO
-#     application_logger.set_level(level)
-#     return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
-#   else:
-#     await connection_manager.error(f"Operation request denied", str(user.id))
-#     application_logger.error(f"User '{user.id}', '{user.email} attempted to change debug level!")
-#     return templates.TemplateResponse('users/partials/debug.html', {'request': request, 'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
-
-
-# @app.get("/callback")
-# async def callback(request: Request):
-#   try:
-#     await authorisation.save_token(request)
-#     return RedirectResponse("/index")
-#   except:
-#     return RedirectResponse("/logout")
-
-# @app.get("/logout")
-# def logout(request: Request):
-#   if not single_user():
-#     url = authorisation.logout(request, "/")
-#     return RedirectResponse(url=url)
-#   else:
-#     return RedirectResponse("/")
 
 def test_get_logout_single(mocker, monkeypatch):
   client = mock_client(monkeypatch)
