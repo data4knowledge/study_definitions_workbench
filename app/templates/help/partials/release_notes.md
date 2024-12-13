@@ -1,3 +1,7 @@
+<h5>Release 0.30.0, 2024-NN-NN</h5>
+
+- TBD (issue ...)
+
 <h5>Release 0.29.0, 2024-12-12</h5>
 
 - Add help documents (issue 1)
