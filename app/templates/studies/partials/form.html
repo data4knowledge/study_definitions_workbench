@@ -3,9 +3,8 @@
 {% else %}
   <form action="{{data['action']}}" method="post" class="m-0 p-0 me-1">
 {% endif %}
-  {% set disabled = 'disabled' if data['value'] == '' else '' %}
   {% set bclass = 'btn-outline-danger' if data['delete'] else 'btn-outline-primary' %}
-  <button type="submit" formmethod="{{data['method']}}" class="btn {{bclass}} rounded-5 mt-3" {{disabled}}>
+  <button type="submit" formmethod="{{data['method']}}" class="dropdown-item btn">
     <i class="{{data['icon']}} me-1"></i>{{data['label']}}
   </button>
   <input type="hidden" name="{{data['name']}}" id="{{data['name']}}" value="{{data['value']}}">

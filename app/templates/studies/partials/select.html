@@ -1,13 +1,9 @@
 {% with user=user, data=data %}
   {% include "studies/partials/show.html" %}
 {% endwith %}
-<div id="delete_studies_form_div" hx-swap-oob="true">
-  {% with data = {'action': '/studies/delete', 'method': 'post', 'icon': '"bi bi-trash', 'label': 'Delete selected studies', 'name': 'delete_studies', 'value': data['selected_list'], 'delete': True} %}
-    {% include "studies/partials/form.html" %}
+<div id="selectMenu" hx-swap-oob="true">
+  {% with data=data['selected_list'] %}
+    {% include "shared/partials/select_menu.html" %}
   {% endwith %} 
 </div>
-<div id="list_studies_form_div" hx-swap-oob="true">
-  {% with data = {'action': '/studies/list', 'method': 'get', 'icon': 'bi bi-layout-three-columns', 'label': 'List selected studies', 'name': 'list_studies', 'value': data['selected_list'], 'delete': False} %}
-    {% include "studies/partials/form.html" %}
-  {% endwith %} 
-</div>
+  
