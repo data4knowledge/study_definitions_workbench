@@ -5,8 +5,8 @@
 {% set action = 'DESELECT' if selected else 'SELECT' %}
 {% set action_text = 'Deselect' if selected else 'Select' %}
 {% set action_icon = 'bi bi-toggle-on' if selected else 'bi bi-toggle-off' %}
-{% set action_class = 'btn-outline-success' if selected else 'btn-outline-dark' %}
-{% set border = 'border-success' if selected else '' %}
+{% set action_class = 'btn-primary' if selected else 'btn-outline-primary' %}
+{% set border = 'border-primary' if selected else '' %}
 <div id="{{id}}" class="card card-body rounded-3 h-100 {{border}}">
   <div class="row">
     <h6 class="card-subtitle">{{study['sponsor']}}: {{study['sponsor_identifier']}}</h6>
