@@ -154,6 +154,7 @@ def test_help(playwright: Playwright) -> None:
   page.get_by_role("link", name="About").click()
   expect(page.locator("body")).to_contain_text(f"d4k Study Definitions Workbench (v{VERSION})")
   expect(page.locator("body")).to_contain_text("Release Log")
+  expect(page.locator("body")).to_contain_text("USDM Version")
   expect(page.locator("body")).to_contain_text("Licence Information")
   page.get_by_role("button", name=" Help").click()
   page.get_by_role("link", name="Examples").click()
