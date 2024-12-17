@@ -7,6 +7,32 @@
       </div>
     </div>
   {% else %}
+
+    <div class="mt-3">
+      <div class="row">
+        <div class="col">
+        </div>  
+        <div class="col">
+        </div>  
+        <div class="col text-end">
+          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <label>
+              Items to Display: 
+              <button type="button" class="btn btn-sm btn-outline-primary rounded-5 dropdown-toggle" data-bs-toggle="dropdown">{{pagination.page_size}}</button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                {% for i in ["8", "12", "24", "48", "96"]: %}
+                  <li>
+                    {% set url = pagination.base_link_with_filter("1", i) %}
+                    <a class="dropdown-item" href="#" hx-get="{{url}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{i}}</a>
+                  </li>
+                {% endfor %}
+              </ul> 
+            </label>
+          </div>
+        </div>  
+      <div>  
+    </div>
+
     <div>
       {% for item in data['items'] %}
         {% if loop.index0 % data['width'] == 0 %}
@@ -23,29 +49,12 @@
       {% endfor %}
     </div>  
     <div class="mt-3">
-      <div class="row">
-        <div class="col">
-          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-5 dropdown-toggle" data-bs-toggle="dropdown">{{pagination.page_size}}</button>
-            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              {% for i in ["8", "12", "24", "48", "96"]: %}
-                <li>
-                  {% set url = pagination.base_link_with_filter("1", i) %}
-                  <a class="dropdown-item" href="#" hx-get="{{url}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{i}}</a>
-                </li>
-              {% endfor %}
-            </ul> 
-          </div>
-        </div>  
-        <div class="col text-center">
-          {% for button in pagination.pages: %}
-            <button class="btn btn-sm btn-outline-primary rounded-5 mb-1 {{button.active}} {{button.disabled}}" href="#" hx-get="{{button.link}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{button.text|safe}}</a>
-            </button>
-          {% endfor %}
-        </div>  
-        <div class="col">
-        </div>  
-      <div>  
+      <div class="text-center">
+        {% for button in pagination.pages: %}
+          <button class="btn btn-sm btn-outline-primary rounded-5 mb-1 {{button.active}} {{button.disabled}}" href="#" hx-get="{{button.link}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{button.text|safe}}</a>
+          </button>
+        {% endfor %}
+      </div>  
     </div>
   {% endif %}
 </div>  
