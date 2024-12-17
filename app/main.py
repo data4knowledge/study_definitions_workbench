@@ -4,12 +4,12 @@ from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from d4kms_generic import application_logger
 from d4kms_ui.pagination import Pagination
-from app.model.database import get_db
-from app.model.user import User
-from app.model.version import Version
-from app.model.file_import import FileImport
-from app.model.endpoint import Endpoint
-from app.model.user_endpoint import UserEndpoint
+from app.database.database import get_db
+from app.database.user import User
+from app.database.version import Version
+from app.database.file_import import FileImport
+from app.database.endpoint import Endpoint
+from app.database.user_endpoint import UserEndpoint
 from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
@@ -17,11 +17,11 @@ from app.utility.upload import *
 from app.utility.template_methods import *
 from app.utility.environment import single_user, file_picker
 from app.model.usdm_json import USDMJson
-from app.model.file_import import FileImport
+from app.database.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
 from app.dependencies.fhir_version import check_fhir_version, fhir_versions
 from app.utility.fhir_transmit import run_fhir_transmit
-from app.model.database_manager import DatabaseManager as DBM
+from app.database.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles

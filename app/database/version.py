@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict
-from app.model.database_tables import Version as VersionDB
+from app.database.database_tables import Version as VersionDB
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 

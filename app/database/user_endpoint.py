@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
-from app.model.database_tables import UserEndpoint as UserEndpointDB
+from app.database.database_tables import UserEndpoint as UserEndpointDB
 
 class UserEndpointBase(BaseModel):
   user_id: int

@@ -1,5 +1,5 @@
 from fastapi import Request
-from app.model.user import User
+from app.database.user import User
 from d4kms_generic import application_logger
 from d4kms_generic.service_environment import ServiceEnvironment
 

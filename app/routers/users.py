@@ -1,9 +1,9 @@
 from typing import Annotated
 from fastapi import APIRouter, Form, Depends, Request
 from sqlalchemy.orm import Session
-from app.model.user import User
-from app.model.endpoint import Endpoint
-from app.model.database import get_db
+from app.database.user import User
+from app.database.endpoint import Endpoint
+from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import is_admin
 from app.dependencies.templates import templates

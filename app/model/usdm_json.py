@@ -1,11 +1,11 @@
 import json
 import yaml
 import warnings
-from app.model.file_import import FileImport
+from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from app.model.fhir.to_fhir_v1 import ToFHIRV1
 from app.model.fhir.to_fhir_v2 import ToFHIRV2
-from app.model.version import Version
+from app.database.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
 from usdm_db import USDMDb

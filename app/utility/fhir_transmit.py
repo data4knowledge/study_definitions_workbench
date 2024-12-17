@@ -1,14 +1,14 @@
 import asyncio
 import threading
-from app.model.database import SessionLocal
+from app.database.database import SessionLocal
 from d4kms_generic import application_logger
 from app.model.connection_manager import connection_manager
-from app.model.user import User
-from app.model.endpoint import Endpoint
+from app.database.user import User
+from app.database.endpoint import Endpoint
 from sqlalchemy.orm import Session
-from app.model.transmission import Transmission
+from app.database.transmission import Transmission
 from app.model.usdm_json import USDMJson
-from app.model.database_manager import DatabaseManager as DBM
+from app.database.database_manager import DatabaseManager as DBM
 from app.utility.fhir_service import FHIRService
 
 def run_fhir_transmit(version_id: int, endpoint_id: int, version: str, user: User) -> None:

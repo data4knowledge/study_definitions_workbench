@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from app.dependencies.utility import single_user
-from app.model.user import User
+from app.database.user import User
 from d4kms_generic.auth0_service import Auth0Service
 from d4kms_generic.service_environment import ServiceEnvironment
 from starlette.middleware.sessions import SessionMiddleware

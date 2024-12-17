@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
-from app.model.database import get_db
+from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import is_fhir_tx, user_details
 from app.dependencies.templates import templates
-from app.model.transmission import Transmission
+from app.database.transmission import Transmission
 from d4kms_ui.pagination import Pagination
 
 router = APIRouter(

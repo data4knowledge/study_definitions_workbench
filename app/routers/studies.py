@@ -2,10 +2,10 @@ from typing import Annotated
 from fastapi import APIRouter, Form, Depends, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
-from app.model.study import Study
-from app.model.version import Version
-from app.model.file_import import FileImport
-from app.model.database import get_db
+from app.database.study import Study
+from app.database.version import Version
+from app.database.file_import import FileImport
+from app.database.database import get_db
 from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.usdm_json import USDMJson
 from app.model.file_handling.data_files import DataFiles

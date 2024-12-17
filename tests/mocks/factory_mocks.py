@@ -1,9 +1,9 @@
 import datetime
-from app.model.user import User
-from app.model.file_import import FileImport
-from app.model.endpoint import Endpoint
-from app.model.study import Study
-from app.model.version import Version
+from app.database.user import User
+from app.database.file_import import FileImport
+from app.database.endpoint import Endpoint
+from app.database.study import Study
+from app.database.version import Version
 from tests.mocks.fastapi_mocks import *
 
 def factory_user() -> User:

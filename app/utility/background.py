@@ -1,14 +1,14 @@
 import json
 import threading
 import asyncio
-from app.model.database import SessionLocal
+from app.database.database import SessionLocal
 from d4kms_generic import application_logger
 from usdm_db import USDMDb
 from usdm_db import USDMDb, Wrapper
 from app.model.file_handling.data_files import DataFiles
-from app.model.file_import import FileImport
-from app.model.study import Study
-from app.model.user import User
+from app.database.file_import import FileImport
+from app.database.study import Study
+from app.database.user import User
 from app.model.m11_protocol.m11_protocol import M11Protocol
 from app.model.fhir.from_fhir_v1 import FromFHIRV1
 from app.model.connection_manager import connection_manager

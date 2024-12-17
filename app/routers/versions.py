@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from d4kms_ui.pagination import Pagination
-from app.model.user import User
-from app.model.version import Version
-from app.model.database import get_db
-from app.model.file_import import FileImport
+from app.database.user import User
+from app.database.version import Version
+from app.database.database import get_db
+from app.database.file_import import FileImport
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import is_fhir_tx, user_details
 from app.dependencies.templates import templates

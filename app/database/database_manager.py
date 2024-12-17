@@ -1,8 +1,8 @@
 import os
-from app.model import database_tables
-from app.model.database import engine
-from app.model.database_tables import Study as StudyDB, Version as VersionDB, FileImport as FileImportDB, Endpoint as EndpointDB
-from app.model.database_tables import UserEndpoint as UserEndpointDB, User as UserDB, TransmissionTable as TransmissionDB
+from app.database import database_tables
+from app.database.database import engine
+from app.database.database_tables import Study as StudyDB, Version as VersionDB, FileImport as FileImportDB, Endpoint as EndpointDB
+from app.database.database_tables import UserEndpoint as UserEndpointDB, User as UserDB, TransmissionTable as TransmissionDB
 from app.model.file_handling.data_files import DataFiles
 from sqlalchemy.orm import Session
 from d4kms_generic.service_environment import ServiceEnvironment

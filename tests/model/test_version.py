@@ -1,8 +1,8 @@
 import pytest
-from app.model.version import Version
-from app.model.user import User
-from app.model.study import Study
-from app.model.database_tables import Study as StudyDB, Version as VersionDB, User as UserDB, FileImport as FileImportDB
+from app.database.version import Version
+from app.database.user import User
+from app.database.study import Study
+from app.database.database_tables import Study as StudyDB, Version as VersionDB, User as UserDB, FileImport as FileImportDB
 from sqlalchemy.orm import Session
 
 def test_page_empty(db):

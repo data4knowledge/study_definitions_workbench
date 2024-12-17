@@ -2,10 +2,10 @@ import re
 from sqlalchemy import text
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
-from app.model.database_tables import Study as StudyDB, Version as VersionDB
-from app.model.version import Version
-from app.model.user import User
-from app.model.file_import import FileImport
+from app.database.database_tables import Study as StudyDB, Version as VersionDB
+from app.database.version import Version
+from app.database.user import User
+from app.database.file_import import FileImport
 from sqlalchemy.orm import Session
 from d4kms_generic import application_logger
 
