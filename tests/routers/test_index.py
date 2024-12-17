@@ -70,7 +70,22 @@ def test_index_page(mocker, monkeypatch):
   assert sp.mock_calls[0].args[0] == 2
   assert sp.mock_calls[0].args[1] == 10
   assert sp.mock_calls[0].args[2] == 1
-  
+
+def test_index_pagination(mocker, monkeypatch):
+  protect_endpoint()
+  client = mock_client(monkeypatch)
+  mock_user_check_exists(mocker)
+  sp = mock_study_page_many(mocker)
+  response = client.get("/index/page?page=1&size=12")
+  #print(f"RESPONSE: {response.text}")
+  assert response.status_code == 200
+  assert """View Protocol""" in response.text
+  assert """A study for X""" in response.text
+  assert """<a class="dropdown-item" href="#" hx-get="/index/page?page=1&amp;size=96&amp;filter=" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">96</a>""" in response.text
+  assert """<button class="btn btn-sm btn-outline-primary rounded-5 mb-1  " href="#" hx-get="/index/page?page=4&amp;size=12&amp;filter=" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">4</a>""" in response.text
+  assert """<button class="btn btn-sm btn-outline-primary rounded-5 mb-1  disabled" href="#" hx-get="" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">...</a>""" in response.text
+  assert mock_called(sp)  
+
 # Mocks
 def mock_study_page_none(mocker):
   mock = mocker.patch("app.model.study.Study.page")
@@ -85,4 +100,12 @@ def mock_study_page(mocker):
     {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Z', 'versions': 3, 'phase': "Phase 4", 'import_type': "FHIR"}
   ]
   mock.side_effect = [{'page': 1, 'size': 12, 'count': 3, 'filter': '', 'items': items}]
+  return mock
+
+def mock_study_page_many(mocker):
+  items = []
+  mock = mocker.patch("app.model.study.Study.page")
+  for index in range(12):
+    items.append({'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"})
+  mock.side_effect = [{'page': 1, 'size': 12, 'count': 100, 'filter': '', 'items': items}]
   return mock
