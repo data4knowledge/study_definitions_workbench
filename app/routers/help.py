@@ -10,7 +10,7 @@ from app.dependencies.utility import user_details
 from app.dependencies.templates import templates, templates_path
 from app.dependencies.static import static_path
 from app import VERSION, SYSTEM_NAME
-
+from usdm_info import __model_version__ as usdm_version
 
 router = APIRouter(
   prefix="/help",
@@ -21,7 +21,7 @@ router = APIRouter(
 def about(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   rn = ReleaseNotes(os.path.join(templates_path, 'help', 'partials'))
-  data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION}
+  data = {'release_notes': rn.notes(), 'system': SYSTEM_NAME, 'version': VERSION, 'usdm': usdm_version}
   return templates.TemplateResponse(request, "help/about.html", {'user': user, 'data': data})
 
 @router.get("/examples", dependencies=[Depends(protect_endpoint)])
