@@ -185,7 +185,7 @@ xxx_*.*
 install_local_d4kms.sh
 test_server.sh
 dev_server.sh
-pytest-playwright-gen.sh
+pytest_playwright_gen.sh
 
 # MS lock files
 ~$*.docx
