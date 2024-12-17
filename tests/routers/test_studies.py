@@ -23,7 +23,7 @@ def test_study_select(mocker, monkeypatch):
   assert mock_called(ss)
 
 def mock_study_summary(mocker):
-  mock = mocker.patch("app.model.study.Study.summary")
+  mock = mocker.patch("app.database.study.Study.summary")
   mock.side_effect = ["Study Summary"]
   return mock
 
@@ -66,17 +66,17 @@ def test_study_delete(mocker, monkeypatch):
   assert mock_called(sd)
 
 def mock_study_file_imports(mocker):
-  mock = mocker.patch("app.model.study.Study.file_imports")
+  mock = mocker.patch("app.database.study.Study.file_imports")
   mock.side_effect = [[[12,'1234-5678']]]
   return mock
 
 def mock_study_delete(mocker):
-  mock = mocker.patch("app.model.study.Study.delete")
+  mock = mocker.patch("app.database.study.Study.delete")
   mock.side_effect = [1]
   return mock
 
 def mock_study_find(mocker):
-  mock = mocker.patch("app.model.study.Study.find")
+  mock = mocker.patch("app.database.study.Study.find")
   mock.side_effect = [factory_study()]
   return mock
 

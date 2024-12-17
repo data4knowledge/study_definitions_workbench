@@ -84,12 +84,12 @@ def test_version_history_data(mocker, monkeypatch):
   assert mock_called(fif)
 
 def mock_version_find(mocker):
-  mock = mocker.patch("app.model.version.Version.find")
+  mock = mocker.patch("app.database.version.Version.find")
   mock.side_effect = [factory_version()]
   return mock
 
 def mock_version_page(mocker):
-  mock = mocker.patch("app.model.version.Version.page")
+  mock = mocker.patch("app.database.version.Version.page")
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': [factory_version().model_dump()]}]
   return mock
 

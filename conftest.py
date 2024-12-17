@@ -3,7 +3,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from d4kms_generic.service_environment import ServiceEnvironment
-from app.model import database_tables
+from app.database import database_tables
 
 def set_test():
   os.environ["PYTHON_ENVIRONMENT"] = "test"

@@ -88,12 +88,12 @@ def test_index_pagination(mocker, monkeypatch):
 
 # Mocks
 def mock_study_page_none(mocker):
-  mock = mocker.patch("app.model.study.Study.page")
+  mock = mocker.patch("app.database.study.Study.page")
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   return mock
 
 def mock_study_page(mocker):
-  mock = mocker.patch("app.model.study.Study.page")
+  mock = mocker.patch("app.database.study.Study.page")
   items = [
     {'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"},
     {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Y', 'versions': 2, 'phase': "Phase 1", 'import_type': "XLSX"},
@@ -104,7 +104,7 @@ def mock_study_page(mocker):
 
 def mock_study_page_many(mocker):
   items = []
-  mock = mocker.patch("app.model.study.Study.page")
+  mock = mocker.patch("app.database.study.Study.page")
   for index in range(12):
     items.append({'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"})
   mock.side_effect = [{'page': 1, 'size': 12, 'count': 100, 'filter': '', 'items': items}]

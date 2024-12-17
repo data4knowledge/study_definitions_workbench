@@ -1,12 +1,13 @@
 import re
-from sqlalchemy import text
+from sqlalchemy import text, or_
+from sqlalchemy.orm import Session, Query
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from app.database.database_tables import Study as StudyDB, Version as VersionDB
 from app.database.version import Version
 from app.database.user import User
 from app.database.file_import import FileImport
-from sqlalchemy.orm import Session
+from app.database.database import engine
 from d4kms_generic import application_logger
 
 class StudyBase(BaseModel):
@@ -81,12 +82,16 @@ class Study(StudyBase):
     return cls._summary(db_item, session)
 
   @classmethod
-  def page(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
+  def page(cls, page: int, size: int, user_id: int, filter: dict, session: Session) -> list[dict]:
     page = page if page >= 1 else 1
     size = size if size > 0 else 10
     skip = (page - 1) * size
-    count = session.query(StudyDB).filter(StudyDB.user_id == user_id).count()
-    data = session.query(StudyDB).filter(StudyDB.user_id == user_id).offset(skip).limit(size).all()
+    c_query = session.query(StudyDB).filter(StudyDB.user_id == user_id)
+    c_query = cls._add_filters(c_query, filter)
+    count = c_query.count()
+    d_query = session.query(StudyDB).filter(StudyDB.user_id == user_id)
+    d_query = cls._add_filters(d_query, filter)
+    data = d_query.offset(skip).limit(size).all()
     results = []
     for db_item in data:
       results.append(cls._summary(db_item, session))
@@ -126,8 +131,24 @@ class Study(StudyBase):
     return results
 
   @staticmethod
+  def _add_filters(query: Query, filter: dict) -> Query:
+    for k, v in filter.items():
+      if v:
+        if k in ['name', 'title', 'sponsor_identifier', 'nct_identifier']:
+          query = query.filter(getattr(StudyDB, k).like(v))
+        elif k in ['phase', 'sponsor']:
+          filter_list = []
+          for p in v:
+            filter_list.append(getattr(StudyDB, k) == p)
+          query = query.filter(or_(*filter_list))
+        else:  
+          query = query.filter(getattr(StudyDB, k) == v)
+    return query
+
+  @staticmethod
   def _summary(item: StudyDB, session: Session) -> dict:
     record = item.__dict__
+    record.pop('_sa_instance_state')
     record['versions'] = Version.version_count(item.id, session)
     latest_version = Version.find_latest_version(item.id, session)
     record['latest_version_id'] = latest_version.id

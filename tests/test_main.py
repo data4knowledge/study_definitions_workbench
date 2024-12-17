@@ -73,7 +73,7 @@ async def test_login_single(monkeypatch):
 #   assert mock_called(sp)
 
 # def mock_study_page_none(mocker):
-#   mock = mocker.patch("app.model.study.Study.page")
+#   mock = mocker.patch("app.database.study.Study.page")
 #   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
 #   return mock
 
@@ -89,7 +89,7 @@ async def test_login_single(monkeypatch):
 #   assert mock_called(sp)
 
 # def mock_study_page(mocker):
-#   mock = mocker.patch("app.model.study.Study.page")
+#   mock = mocker.patch("app.database.study.Study.page")
 #   items = [
 #     {'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"},
 #     {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Y', 'versions': 2, 'phase': "Phase 1", 'import_type': "XLSX"},
@@ -178,7 +178,7 @@ def test_import_status_data(mocker, monkeypatch):
   assert mock_called(fip)
 
 def mock_file_import_page(mocker):
-  mock = mocker.patch("app.model.file_import.FileImport.page")
+  mock = mocker.patch("app.database.file_import.FileImport.page")
   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
   return mock
 
@@ -210,7 +210,7 @@ def test_import_errors_error(mocker, monkeypatch):
   assert mock_called(dfp)
 
 def mock_file_import_find(mocker):
-  mock = mocker.patch("app.model.file_import.FileImport.find")
+  mock = mocker.patch("app.database.file_import.FileImport.find")
   mock.side_effect = [factory_file_import()]
   return mock
 
@@ -278,12 +278,12 @@ def mock_user_check_fail(mocker):
   return uc
 
 def mock_user_find(mocker):
-  uf = mocker.patch("app.model.user.User.find")
+  uf = mocker.patch("app.database.user.User.find")
   uf.side_effect = [factory_user()]
   return uf
 
 def mock_user_check(mocker):
-  return mocker.patch("app.model.user.User.check")
+  return mocker.patch("app.database.user.User.check")
 
 def factory_user() -> User:
   return User(**{'identifier': 'FRED', 'email': "fred@example.com", 'display_name': "Fred Smith", 'is_active': True, 'id': 1})

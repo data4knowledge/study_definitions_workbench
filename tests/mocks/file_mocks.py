@@ -1,12 +1,12 @@
 from tests.mocks.factory_mocks import *
 
 def mock_file_import_find(mocker):
-  mock = mocker.patch("app.model.file_import.FileImport.find")
+  mock = mocker.patch("app.database.file_import.FileImport.find")
   mock.side_effect = [factory_file_import()]
   return mock
 
 def mock_file_import_delete(mocker):
-  mock = mocker.patch("app.model.file_import.FileImport.delete")
+  mock = mocker.patch("app.database.file_import.FileImport.delete")
   mock.side_effect = [1]
   return mock
 
