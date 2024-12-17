@@ -44,6 +44,18 @@ def test_page_filter_3(db):
   assert results['count'] == 5
   assert len(results['items']) == 5
 
+def test_phases(db):
+  _clean(db)
+  user = _base_setup(db)
+  results = Study.phases(user.id, db)
+  assert results == ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4']
+
+def test_phases(db):
+  _clean(db)
+  user = _base_setup(db)
+  results = Study.sponsors(user.id, db)
+  assert results == ['SPONSOR A', 'SPONSOR B']
+
 def _clean(db: Session):
   db.query(UserDB).delete()
   db.query(StudyDB).delete()

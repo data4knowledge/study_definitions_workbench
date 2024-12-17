@@ -99,6 +99,14 @@ class Study(StudyBase):
     return result
 
   @classmethod
+  def phases(cls, user_id: int, session: Session) -> list[str]:
+    return cls._distinct_single('phase', user_id, session)
+
+  @classmethod
+  def sponsors(cls, user_id: int, session: Session) -> list[str]:
+    return cls._distinct_single('sponsor', user_id, session)
+
+  @classmethod
   def debug(cls, session: Session) -> list[dict]:
     count = session.query(StudyDB).count()
     data = session.query(StudyDB).all()
@@ -144,6 +152,15 @@ class Study(StudyBase):
         else:  
           query = query.filter(getattr(StudyDB, k) == v)
     return query
+
+  @classmethod
+  def _distinct_single(cls, name: str, user_id: int, session: Session) -> list[str]:
+    rows = session.query(getattr(StudyDB, name)).filter(StudyDB.user_id == user_id).all()
+    results = []
+    for row in rows:
+      if row[0] not in results:
+        results.append(row[0])
+    return sorted(results)
 
   @staticmethod
   def _summary(item: StudyDB, session: Session) -> dict:
