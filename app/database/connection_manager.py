@@ -33,25 +33,6 @@ class ConnectionManager:
     for user, connection in self.active_connections.items():
       await self.warning(message, user)
 
-  # def success_sync(self, message: str, user_id: str):
-  #   websocket = self._get_connection(user_id)
-  #   if websocket:
-  #     text = self._to_html('Success:', 'success', message)
-  #     self._sync_send_text(websocket, text)
-
-  # def error_sync(self, message: str, user_id: str):
-  #   websocket = self._get_connection(user_id)
-  #   if websocket:
-  #     text = self._to_html('Error:', 'danger', message)
-  #     self._sync_send_text(websocket, text)
-
-  # def _sync_send_text(self, websocket: WebSocket, message: str):
-  #   #notice: socket send is originally async. We have to change it to syncronous code - 
-  #   loop = asyncio.new_event_loop()
-  #   asyncio.set_event_loop(loop)
-  #   websocket.send_text
-  #   loop.run_until_complete(websocket.send_text(message))
-
   def _get_connection(self, user_id: str) -> WebSocket:
     if user_id in self.active_connections:
       return self.active_connections[user_id]
