@@ -23,27 +23,10 @@
 
 {% block main_content %}
   <div class="container-fluid">
-    {% if data['items']|length == 0 %}
-      <div class="col mt-3">
-        <div class="card card-body rounded-3">
-          <h4>Welcome</h4>
-          <p class="card-text">You have not loaded any studies yet. Use the import menu to upload one or more studies. Examples files can be downloaded by clicking on the help menu and selcting the examples option.</small></p>
-        </div>
-      </div>
-    {% else %}
-      {% for item in data['items'] %}
-        {% if loop.index0 % 4 == 0 %}
-          <div class="mt-3 row row-cols-4">
-        {% endif %}
-        <div class="col">
-          {% with data={'study': item, 'selected': False} %}
-            {% include "studies/partials/show.html" %}
-          {% endwith %} 
-        </div>
-        {% if loop.index0 % 4 == 3 %}
-          </div>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+    <div id="data_div" class="container" hx-get="/index/page?page=1&size=12" hx-trigger="load" hx-target="#data_div" hx-swap="outerHTML">
+      {% with %}
+        {% include "shared/partials/spinner.html" %}
+      {% endwith %}            
+    </div>
   </div>
 {% endblock %}

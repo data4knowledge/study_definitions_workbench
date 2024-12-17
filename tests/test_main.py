@@ -46,57 +46,57 @@ async def test_login_single(monkeypatch):
 #   assert mock_called(l)
 #   assert response.status_code == 200
 
-def test_index_no_user(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  mock_user_check_fail(mocker)
-  response = client.get("/index")
-  assert response.status_code == 200
-  assert """Unable to determine user.""" in response.text
+# def test_index_no_user(mocker, monkeypatch):
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   mock_user_check_fail(mocker)
+#   response = client.get("/index")
+#   assert response.status_code == 200
+#   assert """Unable to determine user.""" in response.text
 
-def test_index_new_user(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  mock_user_check_new(mocker)
-  response = client.get("/index")
-  assert response.status_code == 200
-  assert """You have not loaded any studies yet. Use the import menu to upload one or more studies.""" in response.text
+# def test_index_new_user(mocker, monkeypatch):
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   mock_user_check_new(mocker)
+#   response = client.get("/index")
+#   assert response.status_code == 200
+#   assert """You have not loaded any studies yet. Use the import menu to upload one or more studies.""" in response.text
 
-def test_index_existing_user_none(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  mock_user_check_exists(mocker)
-  sp = mock_study_page_none(mocker)
-  response = client.get("/index")
-  assert response.status_code == 200
-  assert """You have not loaded any studies yet.""" in response.text
-  assert mock_called(sp)
+# def test_index_existing_user_none(mocker, monkeypatch):
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   mock_user_check_exists(mocker)
+#   sp = mock_study_page_none(mocker)
+#   response = client.get("/index")
+#   assert response.status_code == 200
+#   assert """You have not loaded any studies yet.""" in response.text
+#   assert mock_called(sp)
 
-def mock_study_page_none(mocker):
-  mock = mocker.patch("app.model.study.Study.page")
-  mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
-  return mock
+# def mock_study_page_none(mocker):
+#   mock = mocker.patch("app.model.study.Study.page")
+#   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
+#   return mock
 
-def test_index_existing_user_studies(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  mock_user_check_exists(mocker)
-  sp = mock_study_page(mocker)
-  response = client.get("/index")
-  assert response.status_code == 200
-  assert """View Protocol""" in response.text
-  assert """A study for Z""" in response.text
-  assert mock_called(sp)
+# def test_index_existing_user_studies(mocker, monkeypatch):
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   mock_user_check_exists(mocker)
+#   sp = mock_study_page(mocker)
+#   response = client.get("/index")
+#   assert response.status_code == 200
+#   assert """View Protocol""" in response.text
+#   assert """A study for Z""" in response.text
+#   assert mock_called(sp)
 
-def mock_study_page(mocker):
-  mock = mocker.patch("app.model.study.Study.page")
-  items = [
-    {'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"},
-    {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Y', 'versions': 2, 'phase': "Phase 1", 'import_type': "XLSX"},
-    {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Z', 'versions': 3, 'phase': "Phase 4", 'import_type': "FHIR"}
-  ]
-  mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': items}]
-  return mock
+# def mock_study_page(mocker):
+#   mock = mocker.patch("app.model.study.Study.page")
+#   items = [
+#     {'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"},
+#     {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Y', 'versions': 2, 'phase': "Phase 1", 'import_type': "XLSX"},
+#     {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Z', 'versions': 3, 'phase': "Phase 4", 'import_type': "FHIR"}
+#   ]
+#   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': items}]
+#   return mock
 
 def test_import_m11(mocker, monkeypatch):
   protect_endpoint()

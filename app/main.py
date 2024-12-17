@@ -27,7 +27,7 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
-from app.routers import transmissions, users, versions, help, studies
+from app.routers import transmissions, users, versions, help, studies, index
 from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
 from app.dependencies.utility import user_details, single_user, is_admin, is_fhir_tx
 from app.dependencies.templates import templates, templates_path
@@ -52,6 +52,7 @@ app.include_router(transmissions.router)
 app.include_router(versions.router)
 app.include_router(studies.router)
 app.include_router(help.router)
+app.include_router(index.router)
 
 @app.exception_handler(Exception)
 async def exception_callback(request: Request, e: Exception):
@@ -88,22 +89,6 @@ async def login(request: Request):
     if not 'id_token' in request.session:  # it could be userinfo instead of id_token
       return await authorisation.login(request, "callback")
     return RedirectResponse("/index")
-
-@app.get("/index", dependencies=[Depends(protect_endpoint)])
-def index(request: Request, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  fhir = {'enabled': is_fhir_tx(request), 'versions': fhir_versions()}
-  if present_in_db:
-    data = Study.page(1, 10, user.id, session)
-    data['fhir'] = fhir
-    pagination = Pagination(data, "/index") 
-    return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
-  elif user:
-    data = {'items': [], 'page': 1, 'size': 10, 'filter': '', 'count': 0, 'fhir': fhir}
-    pagination = Pagination(data, "/index") 
-    return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
-  else:
-    return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': "Unable to determine user."}})
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
@@ -212,14 +197,6 @@ async def get_version_usdm_diff(request: Request, id: int, previous: int, sessio
   diff = UnifiedDiff(prev_lines, curr_lines)
   data = {'version': curr_usdm.study_version(), 'version_id': id, 'diff': diff.to_html()}
   return templates.TemplateResponse(request, "study_versions/diff.html", {'user': user, 'data': data})
-
-# @app.get('/versions/{id}/summary', dependencies=[Depends(protect_endpoint)])
-# async def get_version_summary(request: Request, id: int, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   fhir = is_fhir_tx(request)
-#   usdm = USDMJson(id, session)
-#   data = {'version': usdm.study_version(), 'endpoints': User.endpoints_page(1, 100, user.id, session), 'fhir': fhir}
-#   return templates.TemplateResponse(request, "study_versions/summary.html", {'user': user, 'data': data})
 
 @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/summary', dependencies=[Depends(protect_endpoint)])
 async def get_study_design_summary(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
