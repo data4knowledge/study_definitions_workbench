@@ -31,7 +31,10 @@ def index(request: Request, session: Session = Depends(get_db)):
 @router.get("/index/page")
 def index_page(request: Request, page: int, size: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = Study.page(page, size, user.id, {}, session)
+  data = {}
+  data['page'] = Study.page(page, size, user.id, {}, session)
   data['width'] = 4
-  pagination = Pagination(data, "/index/page") 
+  data['phases'] = Study.phases(user.id, session)
+  data['sponsors'] = Study.sponsors(user.id, session)
+  pagination = Pagination(data['page'], "/index/page") 
   return templates.TemplateResponse(request, "home/partials/page.html", {'user': user, 'pagination': pagination, 'data': data})
