@@ -23,16 +23,8 @@ def index(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   fhir = {'enabled': is_fhir_tx(request), 'versions': fhir_versions()}
   if present_in_db or user:
-    #data = Study.page(1, 12, user.id, session)
-    #data['fhir'] = fhir
     data = {'fhir': fhir}
-    #pagination = Pagination(data, "/index/page") 
-    #return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
     return templates.TemplateResponse(request, "home/index.html", {'user': user, 'data': data})
-  # elif user:
-  #   data = {'items': [], 'page': 1, 'size': 10, 'filter': '', 'count': 0, 'fhir': fhir}
-  #   pagination = Pagination(data, "/index/page") 
-  #   return templates.TemplateResponse(request, "home/index.html", {'user': user, 'pagination': pagination, 'data': data})
   else:
     return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': "Unable to determine user."}})
   
