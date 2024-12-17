@@ -336,26 +336,12 @@ def test_selection_delete(playwright: Playwright) -> None:
   page.goto(url)
 
   login(page)
-
-  page.get_by_role("link", name=" DIH").click()
-  page.once("dialog", lambda dialog: dialog.accept())
-  page.get_by_role("link", name=" Delete Database").click()
-  page.get_by_role("link", name=" Home").click()
+  delete_db(page)
   
-  page.get_by_role("button", name=" Import").click()  
-  page.get_by_role("link", name="M11 Document (.docx)").click()
-  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx"))
-  page.locator("text = Upload File(s)").last.click()
-  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+  load_m11(page, path, "tests/test_files/m11/WA42380/WA42380.docx")
+  load_m11(page, path, "tests/test_files/m11/ASP8062/ASP8062.docx")
+  
   page.get_by_role("link").first.click()
-
-  page.get_by_role("button", name=" Import").click()  
-  page.get_by_role("link", name="M11 Document (.docx)").click()
-  page.set_input_files("#files", os.path.join(path, "tests/test_files/m11/ASP8062/ASP8062.docx"))
-  page.locator("text = Upload File(s)").last.click()
-  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
-  page.get_by_role("link").first.click()
-
   page.locator("#card_1_div").get_by_role("button", name=" Select").click()
   page.locator("#card_2_div").get_by_role("button", name=" Select").click()
   page.get_by_role("button", name=" Selection").click()
@@ -363,6 +349,61 @@ def test_selection_delete(playwright: Playwright) -> None:
   page.get_by_role("button", name=" Delete selected studies").click()
   expect(page.get_by_role("paragraph")).to_contain_text("You have not loaded any studies yet. Use the import menu to upload one or more studies. Examples files can be downloaded by clicking on the help menu and selcting the examples option.")
   
+  context.close()
+  browser.close()
+
+@pytest.mark.playwright
+def test_pagination(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+  delete_db(page)
+
+  load_m11(page, path, "tests/test_files/m11/WA42380/WA42380.docx")
+  load_m11(page, path, "tests/test_files/m11/ASP8062/ASP8062.docx")
+  load_m11(page, path, "tests/test_files/m11/RadVax/RadVax.docx")
+  load_m11(page, path, "tests/test_files/m11/LZZT/LZZT.docx")
+  load_fhir(page, path, "tests/test_files/fhir_v1/IGBJ.json")
+  load_fhir(page, path, "tests/test_files/fhir_v1/WA42380.json")
+  load_fhir(page, path, "tests/test_files/fhir_v1/ASP8062.json")
+  load_fhir(page, path, "tests/test_files/fhir_v1/DEUCRALIP.json")
+  load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
+
+  page.get_by_role("link").first.click()
+  page.get_by_label("Items to Display: 12 8 12 24 48").click()
+  expect(page.get_by_label("Items to Display: 12 8 12 24 48")).to_be_visible()
+  page.get_by_role("link", name="8", exact=True).click()
+  expect(page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")).to_be_visible()
+  expect(page.get_by_role("button", name="«")).to_be_visible()
+  expect(page.get_by_role("button", name="1")).to_be_visible()
+  expect(page.get_by_role("button", name="2")).to_be_visible()
+  expect(page.get_by_role("button", name="»")).to_be_visible()
+  page.get_by_role("button", name="2").click()
+  expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
+  page.get_by_label("Items to Display: 8 8 12 24 48").click()
+  expect(page.get_by_label("Items to Display: 8 8 12 24 48")).to_be_visible()
+  page.get_by_label("Items to Display: 8 8 12 24 48").click()
+  expect(page.get_by_role("button", name="«")).to_be_visible()
+  expect(page.get_by_role("button", name="1")).to_be_visible()
+  expect(page.get_by_role("button", name="2")).to_be_visible()
+  expect(page.get_by_role("button", name="»")).to_be_visible()
+  page.get_by_role("button", name="1").click()
+  expect(page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")).to_be_visible()
+  #expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
+  page.get_by_role("button", name="»").click()
+  expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
+  page.get_by_role("button", name="«").click()
+  expect(page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")).to_be_visible()
+  page.get_by_label("Items to Display: 8 8 12 24 48").click()
+  page.get_by_role("link", name="96").click()
+  page.get_by_label("Items to Display: 96 8 12 24 48").click()
+  expect(page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")).to_be_visible()
+  expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
+
   context.close()
   browser.close()
 
@@ -388,3 +429,33 @@ def login(page):
   page.get_by_label("Password").click()
   page.get_by_label("Password").fill(password())
   page.get_by_role("button", name="Continue", exact=True).click()
+
+def load_excel(page, root_path, filepath):
+  page.get_by_role("link").first.click()
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="USDM Excel (.xlsx)").click()
+  page.set_input_files("#files", os.path.join(root_path, filepath))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of Excel")).to_be_visible(timeout=30_000)
+
+def load_m11(page, root_path, filepath):
+  page.get_by_role("link").first.click()
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 Document (.docx)").click()
+  page.set_input_files("#files", os.path.join(root_path, filepath))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+
+def load_fhir(page, root_path, filepath):
+  page.get_by_role("link").first.click()
+  page.get_by_role("button", name=" Import").click()  
+  page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+  page.set_input_files("#files", os.path.join(root_path, filepath))
+  page.locator("text = Upload File(s)").last.click()
+  expect(page.get_by_text("Success: Import of FHIR")).to_be_visible(timeout=30_000)
+
+def delete_db(page):
+  page.get_by_role("link", name=" DIH").click()
+  page.once("dialog", lambda dialog: dialog.accept())
+  page.get_by_role("link", name=" Delete Database").click()
+  page.get_by_role("link", name=" Home").click()
