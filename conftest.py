@@ -30,3 +30,5 @@ def db():
   database_tables.Base.metadata.create_all(bind=engine)
   return TestSession()
 
+def pytest_configure(config):
+  config.addinivalue_line("markers", "playwright:  marks tests as playwright tests")
