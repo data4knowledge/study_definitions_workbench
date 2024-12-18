@@ -26,54 +26,41 @@ def index(request: Request, session: Session = Depends(get_db)):
     return templates.TemplateResponse(request, 'errors/error.html', {'user': None, 'data': {'error': "Unable to determine user."}})
   
 @router.get("/index/page")
-def index_page(request: Request, page: int, size: int, session: Session = Depends(get_db)):
+def index_page(request: Request, page: int, size: int, initial: bool=False, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = {}
-  data['page'] = Study.page(page, size, user.id, {}, session)
+  if initial:
+    cookie = {
+      'phase': [{'selected': True, 'label': x, 'index': i} for i, x in enumerate(Study.phases(user.id, session))],
+      'sponsor': [{'selected': True, 'label': x, 'index': i} for i, x in enumerate(Study.sponsors(user.id, session))]
+    }
+    params = {}
+  else:
+    cookie_value = request.cookies.get('index_filter')
+    cookie = json.loads(cookie_value)
+    print(f"ALL: {cookie}")
+    all_true = all([x['selected'] for x in cookie['phase']]) and all([x['selected'] for x in cookie['sponsor']])
+    print(f"ALL1: {all_true}")
+    params = {'phase': [x['label'] for x in cookie['phase'] if x['selected']] , 'sponsor': [x['label'] for x in cookie['sponsor'] if x['selected']]}
+    print(f"ALL2: {params}")
+    params = params if not all_true else {}
+  data['page'] = Study.page(page, size, user.id, params, session)
   data['width'] = 4
-  
-  # data['index_filter'] = {
-  #   'phases': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.phases(user.id, session))],
-  #   'sponsors': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.sponsors(user.id, session))]
-  # }
-  
-  cookie = {
-    'phase': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.phases(user.id, session))],
-    'sponsor': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.sponsors(user.id, session))]
-  }
-  print(f"POSS COOKIE: {cookie}")
   data['index_filter'] = cookie
-
-  phases = []
-  sponsors = []
-  for index, label in enumerate(Study.phases(user.id, session)):
-    phases.append({'selected': False, 'label': label, 'index': index})
-  for index, label in enumerate(Study.sponsors(user.id, session)):
-    sponsors.append({'selected': False, 'label': label, 'index': index})
-
+  print(f"PARAMS: {params}")
   pagination = Pagination(data['page'], "/index/page") 
   response = templates.TemplateResponse(request, "home/partials/page.html", {'user': user, 'pagination': pagination, 'data': data})
-
-  #response.set_cookie('index_filter', value={'phases': phases, 'sponsors': sponsors}, httponly=True, expires=3600)
   response.set_cookie('index_filter', value=json.dumps(cookie), httponly=True, expires=3600)
   return response
 
-@router.get("/index/filter")
+@router.post("/index/filter")
 def index_page(request: Request, filter_type: str, id: int, state: bool, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  
-  print(f"FILTER: {filter_type}, {id}, {state}")
-  
   cookie_value = request.cookies.get('index_filter')
-  #print(f"COOKIE: {cookie_value}")
-  xxx = json.loads(cookie_value)
-  #print(f"VALUE: {xxx} {type(xxx)}")
-  #x = xxx[filter_type]
-  #y = x[id]
-  xxx[filter_type][id]['selected'] = state
-  print(f"FILTER: {xxx[filter_type]}")
-  
-  data = {'index_filter': xxx}
-  response = templates.TemplateResponse(request, "home/partials/filter.html", {'user': user, 'data': data})
-  response.set_cookie('index_filter', value=json.dumps(xxx), httponly=True, expires=3600)
+  data = json.loads(cookie_value)
+  data[filter_type][id]['selected'] = state
+  print(f"FILTER: {filter_type}, {id}, {state}")
+  response = templates.TemplateResponse(request, "home/partials/empty.html", {'user': user, 'data': {'index_filter': data}})
+  response.set_cookie('index_filter', value=json.dumps(data), httponly=True, expires=3600)
   return response
+
