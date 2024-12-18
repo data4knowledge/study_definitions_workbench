@@ -1,41 +1,42 @@
 <div id="data_div">
   {% if data['page']['items']|length == 0 %}
-    <div class="col mt-3">
-      <div class="card card-body rounded-3">
-        <h4>Welcome</h4>
-        <p class="card-text">You have not loaded any studies yet. Use the import menu to upload one or more studies. Examples files can be downloaded by clicking on the help menu and selcting the examples option.</small></p>
-      </div>
+  <div class="col mt-3">
+    <div class="card card-body rounded-3">
+      <h4>Welcome</h4>
+      <p class="card-text">You have not loaded any studies yet. Use the import menu to upload one or more studies.
+        Examples files can be downloaded by clicking on the help menu and selcting the examples option.</small></p>
     </div>
+  </div>
   {% else %}
-
-    <div class="mt-3">
+    <div class="card card-body rounded-3 mt-3">
       <div class="row">
         <div class="col">
           {% with data=data %}
             {% include "home/partials/filter.html" %}
-          {% endwith %} 
-        </div>  
+          {% endwith %}
+        </div>
         <div class="col">
-        </div>  
+        </div>
         <div class="col text-end">
           <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             <label>
-              Items to Display: 
-              <button type="button" class="btn btn-sm btn-outline-primary rounded-5 dropdown-toggle" data-bs-toggle="dropdown">{{pagination.page_size}}</button>
+              Items to Display:
+              <button type="button" class="btn btn-sm btn-outline-primary rounded-5 dropdown-toggle"
+                data-bs-toggle="dropdown">{{pagination.page_size}}</button>
               <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 {% for i in ["8", "12", "24", "48", "96"]: %}
                   <li>
                     {% set url = pagination.base_link("1", i) %}
-                    <a class="dropdown-item" href="#" hx-get="{{url}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{i}}</a>
+                    <a class="dropdown-item" href="#" hx-get="{{url}}" hx-trigger="click" hx-target="#data_div"
+                      hx-swap="outerHTML">{{i}}</a>
                   </li>
-                {% endfor %}
-              </ul> 
+                  {% endfor %}
+              </ul>
             </label>
           </div>
-        </div>  
-      <div>  
+        </div>
+      </div>
     </div>
-
     <div>
       {% for item in data['page']['items'] %}
         {% if loop.index0 % data['width'] == 0 %}
@@ -44,20 +45,21 @@
         <div class="col">
           {% with data={'study': item, 'selected': False} %}
             {% include "studies/partials/show.html" %}
-          {% endwith %} 
+          {% endwith %}
         </div>
         {% if loop.index0 % data['width'] == data['width'] - 1 %}
           </div>
         {% endif %}
       {% endfor %}
-    </div>  
-    <div class="mt-3">
+    </div>
+    <div class="card card-body rounded-3 mt-3">
       <div class="text-center">
         {% for button in pagination.pages: %}
-          <button class="btn btn-sm btn-outline-primary rounded-5 mb-1 {{button.active}} {{button.disabled}}" href="#" hx-get="{{button.link}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{button.text|safe}}</a>
-          </button>
+        <button class="btn btn-sm btn-outline-primary rounded-5 mb-1 {{button.active}} {{button.disabled}}" href="#"
+          hx-get="{{button.link}}" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">{{button.text|safe}}</a>
+        </button>
         {% endfor %}
-      </div>  
+      </div>
     </div>
   {% endif %}
-</div>  
+</div>
