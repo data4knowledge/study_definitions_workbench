@@ -1,19 +1,6 @@
 <div id="filterDiv" class="input-group">
   <div class="btn-group">
-    <button class="btn btn-outline-primary dropdown-toggle btn-sm rounded-5 " data-bs-auto-close="outside" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-clock me-1"></i>Phases</button>
-    <ul class="dropdown-menu">
-      {% for i in data['index_filter']['phase'] %}
-        {% set checked = 'checked' if i['selected'] else '' %}
-        {% set state = 'false' if i['selected'] else 'true' %}
-        <li>
-          <input type="checkbox" value="true" {{checked}} class="ms-1 me-1" hx-post="/index/filter?filter_type=phase&id={{i['index']}}&state={{state}}" hx-trigger="change" hx-target="#filterSelectedDiv" hx-swap="outerHTML">
-          {{i['label']}}
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
-  <div class="btn-group">
-    <button class="ms-1 btn btn-outline-primary dropdown-toggle btn-sm rounded-5" data-bs-auto-close="outside" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi bi-hospital me-1"></i>Sponsors</button>
+    <button class="btn btn-outline-primary dropdown-toggle btn-sm rounded-5" data-bs-auto-close="outside" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi bi-hospital me-1"></i>Sponsors</button>
     <ul class="dropdown-menu">
       {% for i in data['index_filter']['sponsor'] %}
         {% set checked = 'checked' if i['selected'] else '' %}
@@ -25,6 +12,18 @@
       {% endfor %}
     </ul>
   </div>
+  <div class="btn-group">
+    <button class="ms-1 btn btn-outline-primary dropdown-toggle btn-sm rounded-5 " data-bs-auto-close="outside" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-clock me-1"></i>Phases</button>
+    <ul class="dropdown-menu">
+      {% for i in data['index_filter']['phase'] %}
+        {% set checked = 'checked' if i['selected'] else '' %}
+        {% set state = 'false' if i['selected'] else 'true' %}
+        <li>
+          <input type="checkbox" value="true" {{checked}} class="ms-1 me-1" hx-post="/index/filter?filter_type=phase&id={{i['index']}}&state={{state}}" hx-trigger="change" hx-target="#filterSelectedDiv" hx-swap="outerHTML">
+          {{i['label']}}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
   <button class="ms-1 btn btn-outline-primary btn-sm rounded-5" type="button" hx-get="/index/page?page=1&size=12&filter=true" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML"><i class="bi bi bi-filter me-1"></i>Filter</button>
-  <div id="filterSelectedDiv"></div>
 </div>
