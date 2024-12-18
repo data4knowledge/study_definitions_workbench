@@ -49,7 +49,7 @@ def test_index_page_none(mocker, monkeypatch):
   client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
   sp = mock_study_page_none(mocker)
-  response = client.get("/index/page?page=1&size=5")
+  response = client.get("/index/page?page=1&size=5&initial=true")
   assert response.status_code == 200
   assert """You have not loaded any studies yet.""" in response.text
   assert mock_called(sp)
@@ -62,7 +62,7 @@ def test_index_page(mocker, monkeypatch):
   client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
   sp = mock_study_page(mocker)
-  response = client.get("/index/page?page=2&size=10")
+  response = client.get("/index/page?page=2&size=10&initial=true")
   assert response.status_code == 200
   assert """View Protocol""" in response.text
   assert """A study for Z""" in response.text
@@ -76,12 +76,12 @@ def test_index_pagination(mocker, monkeypatch):
   client = mock_client(monkeypatch)
   mock_user_check_exists(mocker)
   sp = mock_study_page_many(mocker)
-  response = client.get("/index/page?page=1&size=12")
-  #print(f"RESPONSE: {response.text}")
+  response = client.get("/index/page?page=1&size=12&initial=true")
+  print(f"RESPONSE: {response.text}")
   assert response.status_code == 200
   assert """View Protocol""" in response.text
   assert """A study for X""" in response.text
-  assert """<a class="dropdown-item" href="#" hx-get="/index/page?page=1&amp;size=96&amp;filter=" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">96</a>""" in response.text
+  assert """<a class="dropdown-item" href="#" hx-get="/index/page?page=1&amp;size=96" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">96</a>""" in response.text
   assert """<button class="btn btn-sm btn-outline-primary rounded-5 mb-1  " href="#" hx-get="/index/page?page=4&amp;size=12&amp;filter=" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">4</a>""" in response.text
   assert """<button class="btn btn-sm btn-outline-primary rounded-5 mb-1  disabled" href="#" hx-get="" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">...</a>""" in response.text
   assert mock_called(sp)  
