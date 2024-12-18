@@ -1,16 +1,13 @@
-#from typing import Annotated
+import json
 from fastapi import APIRouter, Form, Depends, Request
 from sqlalchemy.orm import Session
 from app.database.study import Study
 from d4kms_ui.pagination import Pagination
-#from app.database.endpoint import Endpoint
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
-#from app.dependencies.utility import is_admin
 from app.dependencies.templates import templates
 from app.dependencies.utility import is_fhir_tx, user_details
 from app.dependencies.fhir_version import fhir_versions
-#from d4kms_generic.logger import application_logger
 
 router = APIRouter(
   prefix="",
@@ -34,7 +31,49 @@ def index_page(request: Request, page: int, size: int, session: Session = Depend
   data = {}
   data['page'] = Study.page(page, size, user.id, {}, session)
   data['width'] = 4
-  data['phases'] = Study.phases(user.id, session)
-  data['sponsors'] = Study.sponsors(user.id, session)
+  
+  # data['index_filter'] = {
+  #   'phases': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.phases(user.id, session))],
+  #   'sponsors': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.sponsors(user.id, session))]
+  # }
+  
+  cookie = {
+    'phase': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.phases(user.id, session))],
+    'sponsor': [{'selected': False, 'label': x, 'index': i} for i, x in enumerate(Study.sponsors(user.id, session))]
+  }
+  print(f"POSS COOKIE: {cookie}")
+  data['index_filter'] = cookie
+
+  phases = []
+  sponsors = []
+  for index, label in enumerate(Study.phases(user.id, session)):
+    phases.append({'selected': False, 'label': label, 'index': index})
+  for index, label in enumerate(Study.sponsors(user.id, session)):
+    sponsors.append({'selected': False, 'label': label, 'index': index})
+
   pagination = Pagination(data['page'], "/index/page") 
-  return templates.TemplateResponse(request, "home/partials/page.html", {'user': user, 'pagination': pagination, 'data': data})
+  response = templates.TemplateResponse(request, "home/partials/page.html", {'user': user, 'pagination': pagination, 'data': data})
+
+  #response.set_cookie('index_filter', value={'phases': phases, 'sponsors': sponsors}, httponly=True, expires=3600)
+  response.set_cookie('index_filter', value=json.dumps(cookie), httponly=True, expires=3600)
+  return response
+
+@router.get("/index/filter")
+def index_page(request: Request, filter_type: str, id: int, state: bool, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  
+  print(f"FILTER: {filter_type}, {id}, {state}")
+  
+  cookie_value = request.cookies.get('index_filter')
+  #print(f"COOKIE: {cookie_value}")
+  xxx = json.loads(cookie_value)
+  #print(f"VALUE: {xxx} {type(xxx)}")
+  #x = xxx[filter_type]
+  #y = x[id]
+  xxx[filter_type][id]['selected'] = state
+  print(f"FILTER: {xxx[filter_type]}")
+  
+  data = {'index_filter': xxx}
+  response = templates.TemplateResponse(request, "home/partials/filter.html", {'user': user, 'data': data})
+  response.set_cookie('index_filter', value=json.dumps(xxx), httponly=True, expires=3600)
+  return response

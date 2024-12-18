@@ -11,30 +11,9 @@
     <div class="mt-3">
       <div class="row">
         <div class="col">
-          {% set url = pagination.base_link_with_filter("1", pagination.page_size) %}
-
-          <div class="input-group mb-3">
-            <button class="btn btn-outline-primary dropdown-toggle btn-sm rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-clock me-1"></i>Phases</button>
-            <ul class="dropdown-menu">
-              {% for i in data['phases'] %}
-                <li>
-                  <input type="checkbox" class="ms-1 me-1">
-                  {{i}}
-                </li>
-              {% endfor %}
-            </ul>
-            <button class="ms-1 btn btn-outline-primary dropdown-toggle btn-sm rounded-5" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi bi-hospital me-1"></i>Sponsors</button>
-            <ul class="dropdown-menu">
-              {% for i in data['sponsors'] %}
-                <li>
-                  <input type="checkbox" class="ms-1 me-1">
-                  {{i}}
-                </li>
-              {% endfor %}
-            </ul>
-            <button class="ms-1 btn btn-outline-primary btn-sm rounded-5" type="button" ><i class="bi bi bi-filter me-1"></i>Filter</button>
-          </div>
-
+          {% with data=data %}
+            {% include "home/partials/filter.html" %}
+          {% endwith %} 
         </div>  
         <div class="col">
         </div>  
