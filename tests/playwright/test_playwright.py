@@ -24,7 +24,7 @@ def test_splash(playwright: Playwright) -> None:
 
   expect(page.get_by_role("paragraph")).to_contain_text("Welcome to the d4k Study Definitions Workbench. Click on the button below to register or login.")
   expect(page.get_by_role("paragraph")).to_contain_text("A basic user guide can be downloaded from")
-  expect(page.get_by_role("paragraph")).to_contain_text("Our privacy policye can be downloaded from")  
+  expect(page.get_by_role("paragraph")).to_contain_text("Our privacy policy can be downloaded from")  
   with page.expect_download() as download_info:
     page.get_by_role("link", name="here").first.click()
   download = download_info.value
@@ -386,8 +386,8 @@ def test_pagination(playwright: Playwright) -> None:
   load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
 
   page.get_by_role("link").first.click()
-  page.get_by_label("Items to Display: 12 8 12 24 48").click()
-  expect(page.get_by_label("Items to Display: 12 8 12 24 48")).to_be_visible()
+  page.get_by_label("Items: 12 4 8 12 24 48").click()
+  expect(page.get_by_label("Items: 12 4 8 12 24 48")).to_be_visible()
   page.get_by_role("link", name="8", exact=True).click()
   expect(page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")).to_be_visible()
   expect(page.get_by_role("button", name="«")).to_be_visible()
@@ -396,9 +396,9 @@ def test_pagination(playwright: Playwright) -> None:
   expect(page.get_by_role("button", name="»")).to_be_visible()
   page.get_by_role("button", name="2").click()
   expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
-  page.get_by_label("Items to Display: 8 8 12 24 48").click()
-  expect(page.get_by_label("Items to Display: 8 8 12 24 48")).to_be_visible()
-  page.get_by_label("Items to Display: 8 8 12 24 48").click()
+  page.get_by_label("Items: 8 4 8 12 24 48").click()
+  expect(page.get_by_label("Items: 8 4 8 12 24 48")).to_be_visible()
+  page.get_by_label("Items: 8 4 8 12 24 48").click()
   expect(page.get_by_role("button", name="«")).to_be_visible()
   expect(page.get_by_role("button", name="1")).to_be_visible()
   expect(page.get_by_role("button", name="2")).to_be_visible()
@@ -410,11 +410,69 @@ def test_pagination(playwright: Playwright) -> None:
   expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
   page.get_by_role("button", name="«").click()
   expect(page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")).to_be_visible()
-  page.get_by_label("Items to Display: 8 8 12 24 48").click()
-  page.get_by_role("link", name="96").click()
-  page.get_by_label("Items to Display: 96 8 12 24 48").click()
+  page.get_by_label("Items: 8 4 8 12 24 48").click()
+  page.get_by_role("link", name="48").click()
+  page.get_by_label("Items: 48 4 8 12 24 48").click()
   expect(page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")).to_be_visible()
   expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
+
+  context.close()
+  browser.close()
+
+# Expects data from previous test
+@pytest.mark.playwright
+def test_filter(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  page.goto(url)
+
+  login(page)
+
+  expect(page.get_by_role("button", name=" Sponsors")).to_be_visible()
+  expect(page.get_by_role("button", name=" Phases")).to_be_visible()
+  expect(page.get_by_role("button", name=" Filter")).to_be_visible()
+
+  # Check sponsor menu
+  page.get_by_role("button", name=" Sponsors").click()
+  expect(page.get_by_text("Astellas Pharma", exact=True)).to_be_visible()
+  expect(page.get_by_text("Eli Lilly", exact=True)).to_be_visible()
+  expect(page.get_by_text("University of Pennsylvania", exact=True)).to_be_visible()
+  page.get_by_role("button", name=" Sponsors").click()
+
+  # Check Phase menu
+  page.get_by_role("button", name=" Phases").click()
+  expect(page.get_by_text("Phase I Trial Phase II Trial")).to_be_visible()
+  page.get_by_role("button", name=" Phases").click()
+
+  # Check filter
+  page.get_by_role("button", name=" Sponsors").click()
+  page.locator("li").filter(has_text="Astellas Pharma").get_by_role("checkbox").uncheck()
+  page.get_by_role("button", name=" Phases").click()
+  page.locator("li").filter(has_text="Phase I Trial").get_by_role("checkbox").uncheck()
+  page.locator("li").filter(has_text="Phase II Trial").get_by_role("checkbox").uncheck()
+  page.get_by_role("button", name=" Filter").click()
+  expect(page.get_by_text("« 1 »")).to_be_visible()
+  expect(page.locator("#card_1_div")).to_contain_text("A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA")
+  expect(page.locator("#card_4_div")).to_contain_text("Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer’s Disease")
+  expect(page.locator("#card_6_div")).to_contain_text("A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA")
+
+  # Check filter
+  page.get_by_role("button", name=" Sponsors").click()
+  page.locator("li").filter(has_text="Astellas Pharma").get_by_role("checkbox").check()
+  page.locator("li:nth-child(2) > .ms-1").first.uncheck()
+  page.locator("li").filter(has_text="Eli Lilly Japan K.K").get_by_role("checkbox").uncheck()
+  page.locator("li").filter(has_text="Eli Lilly and Company").get_by_role("checkbox").uncheck()
+  page.locator("li").filter(has_text="F. Hoffmann-La Roche Ltd").get_by_role("checkbox").uncheck()
+  page.locator("li").filter(has_text="Rheinische Friedrich-Wilhelms").get_by_role("checkbox").uncheck()
+  page.locator("li").filter(has_text="University of Pennsylvania").get_by_role("checkbox").uncheck()
+  page.get_by_role("button", name=" Phases").click()
+  page.locator("li").filter(has_text="Phase I Trial").get_by_role("checkbox").check()
+  page.locator("li").filter(has_text="Phase II Trial").get_by_role("checkbox").check()
+  page.get_by_role("button", name=" Filter").click()
+  expect(page.locator("#card_2_div")).to_contain_text("A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants")
+  expect(page.locator("#card_7_div")).to_contain_text("A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants")
+  expect(page.get_by_text("« 1 »")).to_be_visible()
 
   context.close()
   browser.close()
