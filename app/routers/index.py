@@ -9,6 +9,7 @@ from app.dependencies.dependency import protect_endpoint
 from app.dependencies.templates import templates
 from app.dependencies.utility import is_fhir_tx, user_details
 from app.dependencies.fhir_version import fhir_versions
+from d4kms_generic.logger import application_logger
 
 COOKIE = 'index_filter'
 
@@ -38,7 +39,7 @@ def index_page(request: Request, page: int, size: int, initial: bool=False, sess
   data['index_filter'] = cookie
   pagination = Pagination(data['page'], "/index/page") 
   response = templates.TemplateResponse(request, "home/partials/page.html", {'user': user, 'pagination': pagination, 'data': data})
-  _set_cookie(response, data)
+  _set_cookie(response, cookie)
   return response
 
 @router.post("/index/filter")
@@ -63,9 +64,12 @@ def _cookie_and_params(initial: bool, request: Request, user: User, session: Ses
 
 def _get_cookie(request: Request, user: User, session: Session) -> dict:
   default = json.dumps(_base_cookie(user, session))
-  return json.loads(request.cookies.get(COOKIE, default))
+  cookie = json.loads(request.cookies.get(COOKIE, default))
+  #application_logger.debug(f"Index filter cookie get {cookie}")
+  return cookie
 
 def _set_cookie(response, cookie: dict) -> None:
+  #application_logger.debug(f"Index filter cookie set {cookie}")
   response.set_cookie(COOKIE, value=json.dumps(cookie), httponly=True, expires=3600)
 
 def _base_cookie(user: User, session: Session) -> dict:
