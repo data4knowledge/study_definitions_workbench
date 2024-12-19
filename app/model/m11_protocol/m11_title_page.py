@@ -148,6 +148,7 @@ class M11TitlePage():
       (['0', 'PRE-CLINICAL', 'PRE CLINICAL'], {'code': 'C54721',  'decode': 'Phase 0 Trial'}),
       (['1', 'I'],                            {'code': 'C15600',  'decode': 'Phase I Trial'}),
       (['1-2'],                               {'code': 'C15693',  'decode': 'Phase I/II Trial'}),
+      (['1/2'],                               {'code': 'C15693',  'decode': 'Phase I/II Trial'}),
       (['1/2/3'],                             {'code': 'C198366', 'decode': 'Phase I/II/III Trial'}),
       (['1/3'],                               {'code': 'C198367', 'decode': 'Phase I/III Trial'}),
       (['1A', 'IA'],                          {'code': 'C199990', 'decode': 'Phase Ia Trial'}),
