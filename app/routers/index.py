@@ -63,7 +63,8 @@ def cookie_and_params(initial: bool, request: Request, user: User, session: Sess
   return cookie, params
 
 def get_cookie(request: Request, user: User, session: Session) -> dict:
-  return json.loads(request.cookies.get(COOKIE, base_cookie(user, session)))
+  default = json.dumps(base_cookie(user, session))
+  return json.loads(request.cookies.get(COOKIE, default))
 
 def set_cookie(response, cookie: dict) -> None:
   response.set_cookie(COOKIE, value=json.dumps(cookie), httponly=True, expires=3600)
