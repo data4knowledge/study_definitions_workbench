@@ -40,7 +40,7 @@ def feedback(request: Request, session: Session = Depends(get_db)):
 
 @router.get("/userGuide", dependencies=[Depends(protect_endpoint)])
 def logged_in_ug(request: Request, session: Session = Depends(get_db)):
-  return _logged_in_document(request, "user_guide.pdf", session)
+  return _logged_in_document(request, "user_guide.pdf", "user guide", session)
 
 @router.get("/userGuide/splash")
 def splash_ug(request: Request):
@@ -48,20 +48,20 @@ def splash_ug(request: Request):
 
 @router.get("/privacyPolicy", dependencies=[Depends(protect_endpoint)])
 def logged_in_pp(request: Request, session: Session = Depends(get_db)):
-  return _logged_in_document(request, "privacy_policy.pdf", session)
+  return _logged_in_document(request, "privacy_policy.pdf", "privacy policy", session)
 
 @router.get("/privacyPolicy/splash")
 def splash_pp(request: Request):
   return _splash_document("privacy_policy.pdf")
 
-def _logged_in_document(request: Request, filename, session: Session):
+def _logged_in_document(request: Request, filename: str, file_type: str, session: Session):
   user, present_in_db = user_details(request, session)
   full_path, filename, media_type =  _pdf(filename)
   print(f"PATH: {full_path}")
   if full_path:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
   else:
-    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Error downloading the privacy policy"}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Error downloading the {file_type}"}})
 
 def _splash_document(filename):
   full_path, filename, media_type =  _pdf(filename)

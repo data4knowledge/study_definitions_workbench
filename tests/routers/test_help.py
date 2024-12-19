@@ -1,5 +1,5 @@
 import pytest
-from tests.mocks.general_mocks import mock_called
+from tests.mocks.general_mocks import mock_called, mock_parameters_correct
 from tests.mocks.user_mocks import *
 from tests.mocks.fastapi_mocks import *
 from tests.mocks.utility_mocks import *
@@ -54,9 +54,29 @@ def test_user_guide_error(mocker, monkeypatch):
   client = mock_client(monkeypatch)
   ug = mock_user_guide_error(mocker)
   response = client.get("/help/userGuide", follow_redirects=False)
+  print(f"RESPONSE: {response.text}")
   assert response.status_code == 200
   assert """Error downloading the user guide""" in response.text
   assert mock_called(ug)
+
+def test_privacy(mocker, monkeypatch):
+  protect_endpoint()
+  client = mock_client(monkeypatch)
+  pp = mock_user_guide(mocker)
+  response = client.get("/help/privacyPolicy")
+  assert response.status_code == 200
+  assert mock_called(pp)
+  mock_parameters_correct(pp, [mocker.call('privacy_policy.pdf')])
+
+def test_privacy_error(mocker, monkeypatch):
+  protect_endpoint()
+  client = mock_client(monkeypatch)
+  pp = mock_user_guide_error(mocker)
+  response = client.get("/help/privacyPolicy", follow_redirects=False)
+  assert response.status_code == 200
+  assert """Error downloading the privacy policy""" in response.text
+  assert mock_called(pp)
+  mock_parameters_correct(pp, [mocker.call('privacy_policy.pdf')])
 
 def test_user_guide_splash(mocker, monkeypatch):
   client = mock_client(monkeypatch)
@@ -64,6 +84,7 @@ def test_user_guide_splash(mocker, monkeypatch):
   response = client.get("/help/userGuide/splash")
   assert response.status_code == 200
   assert mock_called(ug)
+  mock_parameters_correct(ug, [mocker.call('user_guide.pdf')])
 
 def test_user_guide_splash_error(mocker, monkeypatch):
   client = mock_client(monkeypatch)
@@ -71,6 +92,23 @@ def test_user_guide_splash_error(mocker, monkeypatch):
   response = client.get("/help/userGuide/splash", follow_redirects=False)
   assert response.status_code == 303
   assert mock_called(ug)
+  mock_parameters_correct(ug, [mocker.call('user_guide.pdf')])
+
+def test_privacy_splash(mocker, monkeypatch):
+  client = mock_client(monkeypatch)
+  pp = mock_privacy(mocker)
+  response = client.get("/help/privacyPolicy/splash")
+  assert response.status_code == 200
+  assert mock_called(pp)
+  mock_parameters_correct(pp, [mocker.call('privacy_policy.pdf')])
+
+def test_privacy_splash_error(mocker, monkeypatch):
+  client = mock_client(monkeypatch)
+  pp = mock_privacy_error(mocker)
+  response = client.get("/help/privacyPolicy/splash", follow_redirects=False)
+  assert response.status_code == 303
+  assert mock_called(pp)
+  mock_parameters_correct(pp, [mocker.call('privacy_policy.pdf')])
 
 # Mocks
 def mock_release_notes(mocker):
@@ -92,12 +130,21 @@ def mock_feedback(mocker):
   mpr.side_effect = ['Feedback Test Testy Testy']
 
 def mock_user_guide_error(mocker):
-  mock = mocker.patch("app.routers.help._user_guide")
+  mock = mocker.patch("app.routers.help._pdf")
   mock.side_effect = [(None, None, None)]
   return mock
 
 def mock_user_guide(mocker):
-  mock = mocker.patch("app.routers.help._user_guide")
+  mock = mocker.patch("app.routers.help._pdf")
   mock.side_effect = [('tests/test_files/main/simple.txt', 'simple.txt', 'text/plain')]
   return mock
 
+def mock_privacy_error(mocker):
+  mock = mocker.patch("app.routers.help._pdf")
+  mock.side_effect = [(None, None, None)]
+  return mock
+
+def mock_privacy(mocker):
+  mock = mocker.patch("app.routers.help._pdf")
+  mock.side_effect = [('tests/test_files/main/simple.txt', 'simple.txt', 'text/plain')]
+  return mock
