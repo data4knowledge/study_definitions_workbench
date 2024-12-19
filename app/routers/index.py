@@ -32,44 +32,43 @@ def index(request: Request, session: Session = Depends(get_db)):
 def index_page(request: Request, page: int, size: int, initial: bool=False, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   data = {}
-  cookie, params = cookie_and_params(initial, request, user, session)
+  cookie, params = _cookie_and_params(initial, request, user, session)
   data['page'] = Study.page(page, size, user.id, params, session)
   data['width'] = 4
   data['index_filter'] = cookie
   pagination = Pagination(data['page'], "/index/page") 
   response = templates.TemplateResponse(request, "home/partials/page.html", {'user': user, 'pagination': pagination, 'data': data})
-  response.set_cookie('index_filter', value=json.dumps(cookie), httponly=True, expires=3600)
+  _set_cookie(response, data)
   return response
 
 @router.post("/index/filter")
 def index_page(request: Request, filter_type: str, id: int, state: bool, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = get_cookie(request, user, session)
+  data = _get_cookie(request, user, session)
   data[filter_type][id]['selected'] = state
   response = templates.TemplateResponse(request, "home/partials/empty.html")
-  print(f"RESPONSE: {type(response)}")
-  response.set_cookie('index_filter', value=json.dumps(data), httponly=True, expires=3600)
+  _set_cookie(response, data)
   return response
 
-def cookie_and_params(initial: bool, request: Request, user: User, session: Session) -> tuple[dict, dict]:
+def _cookie_and_params(initial: bool, request: Request, user: User, session: Session) -> tuple[dict, dict]:
   params = {}
   if initial:
-    cookie = base_cookie(user, session)
+    cookie = _base_cookie(user, session)
   else:
-    cookie = get_cookie(request, user, session)
+    cookie = _get_cookie(request, user, session)
     all_true = all([x['selected'] for x in cookie['phase']]) and all([x['selected'] for x in cookie['sponsor']])
     params = {'phase': [x['label'] for x in cookie['phase'] if x['selected']] , 'sponsor': [x['label'] for x in cookie['sponsor'] if x['selected']]}
     params = params if not all_true else {}
   return cookie, params
 
-def get_cookie(request: Request, user: User, session: Session) -> dict:
-  default = json.dumps(base_cookie(user, session))
+def _get_cookie(request: Request, user: User, session: Session) -> dict:
+  default = json.dumps(_base_cookie(user, session))
   return json.loads(request.cookies.get(COOKIE, default))
 
-def set_cookie(response, cookie: dict) -> None:
+def _set_cookie(response, cookie: dict) -> None:
   response.set_cookie(COOKIE, value=json.dumps(cookie), httponly=True, expires=3600)
 
-def base_cookie(user: User, session: Session) -> dict:
+def _base_cookie(user: User, session: Session) -> dict:
   return {
     'phase': [{'selected': True, 'label': x, 'index': i} for i, x in enumerate(Study.phases(user.id, session))],
     'sponsor': [{'selected': True, 'label': x, 'index': i} for i, x in enumerate(Study.sponsors(user.id, session))]
