@@ -22,9 +22,15 @@ def test_splash(playwright: Playwright) -> None:
   page = context.new_page()
   page.goto(url)
 
-  expect(page.get_by_role("paragraph")).to_contain_text("Welcome to the d4k Study Definitions Workbench. Click on the button below to register or login. A basic user guide can be downloaded from here.")
+  expect(page.get_by_role("paragraph")).to_contain_text("Welcome to the d4k Study Definitions Workbench. Click on the button below to register or login.")
+  expect(page.get_by_role("paragraph")).to_contain_text("A basic user guide can be downloaded from")
+  expect(page.get_by_role("paragraph")).to_contain_text("Our privacy policye can be downloaded from")  
   with page.expect_download() as download_info:
-    page.get_by_role("link", name="here", exact=True).click()
+    page.get_by_role("link", name="here").first.click()
+  download = download_info.value
+  download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+  with page.expect_download() as download_info:
+    page.get_by_role("link", name="here").nth(1).click()
   download = download_info.value
   download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
 
@@ -167,6 +173,11 @@ def test_help(playwright: Playwright) -> None:
   page.get_by_role("button", name=" Help").click()
   with page.expect_download() as download_info:
       page.get_by_role("link", name="User Guide").click()
+  download = download_info.value
+  download.save_as(f"tests/test_files/downloads/help/{download.suggested_filename}")
+  page.get_by_role("button", name=" Help").click()
+  with page.expect_download() as download_info:
+      page.get_by_role("link", name="Privacy Policy").click()
   download = download_info.value
   download.save_as(f"tests/test_files/downloads/help/{download.suggested_filename}")
 

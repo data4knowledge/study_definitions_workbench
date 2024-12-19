@@ -32,31 +32,45 @@ def examples(request: Request, session: Session = Depends(get_db)):
   return templates.TemplateResponse(request, "help/examples.html", {'user': user, 'data': data})
 
 @router.get("/feedback", dependencies=[Depends(protect_endpoint)])
-def examples(request: Request, session: Session = Depends(get_db)):
+def feedback(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
   fb = MarkdownPage('feedback.md', os.path.join(templates_path, 'help', 'partials'))
   data = {'feedback': fb.read()}
   return templates.TemplateResponse(request, "help/feedback.html", {'user': user, 'data': data})
 
-@router.get("/document", dependencies=[Depends(protect_endpoint)])
-def examples(request: Request, session: Session = Depends(get_db)):
+@router.get("/userGuide", dependencies=[Depends(protect_endpoint)])
+def logged_in_ug(request: Request, session: Session = Depends(get_db)):
+  return _logged_in_document(request, "user_guide.pdf", "user guide", session)
+
+@router.get("/userGuide/splash")
+def splash_ug(request: Request):
+  return _splash_document("user_guide.pdf")
+
+@router.get("/privacyPolicy", dependencies=[Depends(protect_endpoint)])
+def logged_in_pp(request: Request, session: Session = Depends(get_db)):
+  return _logged_in_document(request, "privacy_policy.pdf", "privacy policy", session)
+
+@router.get("/privacyPolicy/splash")
+def splash_pp(request: Request):
+  return _splash_document("privacy_policy.pdf")
+
+def _logged_in_document(request: Request, filename: str, file_type: str, session: Session):
   user, present_in_db = user_details(request, session)
-  full_path, filename, media_type = _user_guide()
+  full_path, filename, media_type =  _pdf(filename)
+  print(f"PATH: {full_path}")
   if full_path:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
   else:
-    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Error downloading the user guide"}})
+    return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Error downloading the {file_type}"}})
 
-@router.get("/document/splash")
-def examples(request: Request):
-  full_path, filename, media_type = _user_guide()
+def _splash_document(filename):
+  full_path, filename, media_type =  _pdf(filename)
   if full_path:
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
   else:
     return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
 
-def _user_guide():
+def _pdf(filename):
   media_type='text/plain'
-  filename = "user_guide.pdf"
   full_path = os.path.join(static_path, "files", filename)
   return (full_path, filename, media_type) if os.path.isfile(full_path) else (None, None, None)

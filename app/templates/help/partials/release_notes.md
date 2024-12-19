@@ -1,8 +1,9 @@
-<h5>Release 0.30.0, 2024-12-17</h5>
+<h5>Release 0.30.0, 2024-12-19</h5>
 
 - Improve index page selection (issue 12)
 - Add pagination for the index page (issue 14)
 - Add USDM version (issue 13)
+- Privacy policy (issue 16)
 
 <h5>Release 0.29.0, 2024-12-12</h5>
 
