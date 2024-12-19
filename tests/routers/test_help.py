@@ -45,7 +45,7 @@ def test_user_guide(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   ug = mock_user_guide(mocker)
-  response = client.get("/help/document")
+  response = client.get("/help/userGuide")
   assert response.status_code == 200
   assert mock_called(ug)
 
@@ -53,7 +53,7 @@ def test_user_guide_error(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   ug = mock_user_guide_error(mocker)
-  response = client.get("/help/document", follow_redirects=False)
+  response = client.get("/help/userGuide", follow_redirects=False)
   assert response.status_code == 200
   assert """Error downloading the user guide""" in response.text
   assert mock_called(ug)
@@ -61,14 +61,14 @@ def test_user_guide_error(mocker, monkeypatch):
 def test_user_guide_splash(mocker, monkeypatch):
   client = mock_client(monkeypatch)
   ug = mock_user_guide(mocker)
-  response = client.get("/help/document/splash")
+  response = client.get("/help/userGuide/splash")
   assert response.status_code == 200
   assert mock_called(ug)
 
 def test_user_guide_splash_error(mocker, monkeypatch):
   client = mock_client(monkeypatch)
   ug = mock_user_guide_error(mocker)
-  response = client.get("/help/document/splash", follow_redirects=False)
+  response = client.get("/help/userGuide/splash", follow_redirects=False)
   assert response.status_code == 303
   assert mock_called(ug)
 
