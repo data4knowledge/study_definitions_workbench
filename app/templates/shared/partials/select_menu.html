@@ -5,13 +5,13 @@
       <i class="bi bi-box-arrow-in-down me-2"></i>Selection
     </a>
     <div class="dropdown-menu">
-      <div id="delete_studies_form_div">
-        {% with data = {'action': '/studies/delete', 'method': 'post', 'icon': '"bi bi-trash', 'label': 'Delete selected studies', 'name': 'delete_studies', 'value': data, 'delete': True} %}
+      <div id="list_studies_form_div">
+        {% with data = {'action': '/studies/list', 'method': 'get', 'icon': 'bi bi-layout-three-columns', 'label': 'List selected studies', 'name': 'list_studies', 'value': data, 'delete': False} %}
           {% include "studies/partials/form.html" %}
         {% endwith %} 
       </div>
-      <div id="list_studies_form_div">
-        {% with data = {'action': '/studies/list', 'method': 'get', 'icon': 'bi bi-layout-three-columns', 'label': 'List selected studies', 'name': 'list_studies', 'value': data, 'delete': False} %}
+      <div id="delete_studies_form_div">
+        {% with data = {'action': '/studies/delete', 'method': 'post', 'icon': '"bi bi-trash', 'label': 'Delete selected studies', 'name': 'delete_studies', 'value': data, 'delete': True} %}
           {% include "studies/partials/form.html" %}
         {% endwith %} 
       </div>
