@@ -79,7 +79,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
 
 @app.get("/")
 def home(request: Request):
-  response = templates.TemplateResponse(request, 'home/home.html', {'data': {'version': VERSION, 'multiple_user': application_configuration.multiple_user}})
+  response = templates.TemplateResponse(request, 'home/home.html', {'data': {'version': VERSION}})
   return response
 
 @app.get("/login")
