@@ -16,11 +16,25 @@ def anyio_backend():
   return 'asyncio'
 
 def test_home(mocker, monkeypatch):
+  application_configuration.single_user = False
+  application_configuration.multiple_user = True
   client = mock_client(monkeypatch)
   response = client.get("/")
   assert response.status_code == 200
-  assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text in response.text
+  assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text 
+  assert """Welcome to the d4k Study Definitions Workbench""" in response.text
+  assert """Our privacy policy can be downloaded from""" in response.text
 
+def test_home_single(mocker, monkeypatch):
+  application_configuration.single_user = True
+  application_configuration.multiple_user = False
+  client = mock_client(monkeypatch)
+  response = client.get("/")
+  assert response.status_code == 200
+  assert """style="background-image: url('static/images/background.jpg'); height: 100vh">""" in response.text
+  assert """Welcome to the d4k Study Definitions Workbench""" in response.text
+  assert """Our privacy policy can be downloaded from""" not in response.text
+  
 @pytest.mark.anyio
 async def test_login_single(monkeypatch):
   async_client = mock_async_client(monkeypatch)
