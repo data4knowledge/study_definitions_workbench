@@ -4,6 +4,8 @@
 - Add pagination for the index page (issue 14)
 - Add USDM version (issue 13)
 - Privacy policy (issue 16)
+- Index page search (issue 15)
+- Import of protocols (images) (issue 17)
 
 <h5>Release 0.29.0, 2024-12-12</h5>
 
