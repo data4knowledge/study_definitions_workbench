@@ -15,11 +15,6 @@ def mock_data_file_delete(mocker):
   mock.side_effect = [1]
   return mock
 
-def mock_file_picker_os(mocker):
-  fp = mocker.patch("app.main.file_picker")
-  fp.side_effect = [{'browser': False, 'os': True, 'pfda': False, 'source': 'os'}]
-  return fp
-
 def mock_local_files_dir(mocker):
   lfd = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
   ts = datetime.datetime.now()

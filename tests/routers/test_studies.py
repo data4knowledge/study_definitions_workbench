@@ -1,4 +1,5 @@
 import pytest
+from app.configuration.configuration import application_configuration
 from tests.mocks.general_mocks import *
 from tests.mocks.user_mocks import *
 from tests.mocks.fastapi_mocks import *
@@ -84,26 +85,24 @@ def test_file_list_local(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  fp = mock_file_picker_os(mocker)
+  application_configuration.file_picker = {'browser': False, 'os': True, 'pfda': False, 'source': 'os'} 
   lfd = mock_local_files_dir(mocker)
   response = client.get("/fileList?dir=xxx&url=http://example.com")
   assert response.status_code == 200
   assert """<p class="card-text">a-file.txt</p>""" in response.text
   assert """<p class="card-text">100 kb</p>""" in response.text
   assert mock_called(uc)
-  assert mock_called(fp)
   assert mock_called(lfd)
 
 def test_file_list_local_invalid(mocker, caplog, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  fp = mock_file_picker_os(mocker)
+  application_configuration.file_picker = {'browser': False, 'os': True, 'pfda': False, 'source': 'os'} 
   lfd = mock_local_files_dir_error(mocker)
   response = client.get("/fileList?dir=xxx&url=http://example.com")
   assert response.status_code == 200
   assert """Error Error Error!!!""" in response.text
   assert mock_called(uc)
-  assert mock_called(fp)
   assert mock_called(lfd)
   assert error_logged(caplog, "Error Error Error!!!")

@@ -1,6 +1,4 @@
 from app.database.user import User
-#from app.database.database_tables import Study as StudyDB, Version as VersionDB, User as UserDB, FileImport as FileImportDB
-#from sqlalchemy.orm import Session
 
 def test_single_user(db):
   results = User.single_user()

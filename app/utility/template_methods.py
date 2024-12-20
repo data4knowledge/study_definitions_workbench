@@ -1,4 +1,5 @@
-from app.utility.environment import *
+from app.configuration.configuration import application_configuration
+from d4kms_generic.logger import application_logger
 
 def server_name(request) -> str:
   application_logger.info(f"Base URL used to obtain server name: '{request.base_url}'")
@@ -19,7 +20,7 @@ def server_name(request) -> str:
     return name
   
 def single_multiple() -> str:  
-  return 'SINGLE' if single_user() else 'MULTIPLE'
+  return 'SINGLE' if application_configuration.single_user else 'MULTIPLE'
 
 def restructure_study_list(data: list) -> dict:
   result = {}

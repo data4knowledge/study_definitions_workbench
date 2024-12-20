@@ -15,11 +15,10 @@ from sqlalchemy.orm import Session
 from app.utility.background import *
 from app.utility.upload import *
 from app.utility.template_methods import *
-from app.utility.environment import single_user, file_picker
 from app.model.usdm_json import USDMJson
 from app.database.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
-from app.dependencies.fhir_version import check_fhir_version, fhir_versions
+from app.dependencies.fhir_version import check_fhir_version
 from app.utility.fhir_transmit import run_fhir_transmit
 from app.database.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
@@ -29,8 +28,10 @@ from app.model.unified_diff.unified_diff import UnifiedDiff
 
 from app.routers import transmissions, users, versions, help, studies, index
 from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
-from app.dependencies.utility import user_details, single_user, is_admin, is_fhir_tx
-from app.dependencies.templates import templates, templates_path
+from app.dependencies.utility import user_details, is_admin
+from app.dependencies.templates import templates
+
+from app.configuration.configuration import application_configuration
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
@@ -83,7 +84,7 @@ def home(request: Request):
 
 @app.get("/login")
 async def login(request: Request):
-  if single_user():
+  if application_configuration.single_user:
     return RedirectResponse("/index")
   else:
     if not 'id_token' in request.session:  # it could be userinfo instead of id_token
@@ -93,7 +94,7 @@ async def login(request: Request):
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  picker = file_picker()
+  picker = application_configuration.file_picker
   valid, data, message = PFDAFiles().dir(dir) if picker['pfda'] else LocalFiles().dir(dir)
   data['url'] = url
   data['source'] = picker['source']
@@ -106,7 +107,7 @@ def file_list(request: Request, dir: str, url: str, session: Session = Depends(g
 @app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
 def import_m11(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = file_picker()
+  data = application_configuration.file_picker
   data['dir'] = LocalFiles().root if data['os'] else ''
   data['required_ext'] = 'docx'
   data['other_files'] = False
@@ -116,7 +117,7 @@ def import_m11(request: Request, session: Session = Depends(get_db)):
 @app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  data = file_picker()
+  data = application_configuration.file_picker
   data['dir'] = LocalFiles().root if data['os'] else ''
   data['required_ext'] = 'xlsx'
   data['other_files'] = True
@@ -128,7 +129,7 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
   user, present_in_db = user_details(request, session)
   valid, description = check_fhir_version(version)
   if valid:
-    data = file_picker()
+    data = application_configuration.file_picker
     data['version'] = version
     data['description'] = description
     data['dir'] = LocalFiles().root if data['os'] else ''
@@ -437,7 +438,7 @@ async def debug_level(request: Request, level: str='INFO', session: Session = De
 
 @app.get("/logout")
 def logout(request: Request):
-  if not single_user():
+  if application_configuration.multiple_user:
     url = authorisation.logout(request, "/")
     return RedirectResponse(url=url)
   else:

@@ -5,6 +5,7 @@ from app.database.study import Study
 from app.database.version import Version
 from app.database.file_import import FileImport
 from app.database.endpoint import Endpoint
+from app.configuration.configuration import application_configuration
 from tests.mocks.fastapi_mocks import *
 from tests.mocks.usdm_json_mocks import *
 from tests.mocks.file_mocks import *
@@ -28,99 +29,27 @@ async def test_login_single(monkeypatch):
   assert response.status_code == 307
   assert str(response.next_request.url) == "http://test/index"
 
-# @pytest.mark.anyio
-# async def test_login_mutltiple_authorised(mocker, monkeypatch):
-#   l = mocker.patch("d4kms_generic.auth0_service.Auth0Service.login")
-#   l.side_effect = [None]
-#   async_client = mock_async_client(monkeypatch)
-#   monkeypatch.setenv("SINGLE_USER", "False")
-#   response = await async_client.get("/login")
-#   assert response.status_code == 200
-#   assert str(response.next_request.url) == "http://test/index"
-
-# @pytest.mark.anyio
-# async def test_login_mutltiple_not_authorised(mocker, monkeypatch):
-#   l = mocker.patch("d4kms_generic.auth0_service.Auth0Service.login")
-#   l.side_effect = [None]
-#   response = await async_client.get("/login")
-#   assert mock_called(l)
-#   assert response.status_code == 200
-
-# def test_index_no_user(mocker, monkeypatch):
-#   protect_endpoint()
-#   client = mock_client(monkeypatch)
-#   mock_user_check_fail(mocker)
-#   response = client.get("/index")
-#   assert response.status_code == 200
-#   assert """Unable to determine user.""" in response.text
-
-# def test_index_new_user(mocker, monkeypatch):
-#   protect_endpoint()
-#   client = mock_client(monkeypatch)
-#   mock_user_check_new(mocker)
-#   response = client.get("/index")
-#   assert response.status_code == 200
-#   assert """You have not loaded any studies yet. Use the import menu to upload one or more studies.""" in response.text
-
-# def test_index_existing_user_none(mocker, monkeypatch):
-#   protect_endpoint()
-#   client = mock_client(monkeypatch)
-#   mock_user_check_exists(mocker)
-#   sp = mock_study_page_none(mocker)
-#   response = client.get("/index")
-#   assert response.status_code == 200
-#   assert """You have not loaded any studies yet.""" in response.text
-#   assert mock_called(sp)
-
-# def mock_study_page_none(mocker):
-#   mock = mocker.patch("app.database.study.Study.page")
-#   mock.side_effect = [{'page': 1, 'size': 10, 'count': 0, 'filter': '', 'items': []}]
-#   return mock
-
-# def test_index_existing_user_studies(mocker, monkeypatch):
-#   protect_endpoint()
-#   client = mock_client(monkeypatch)
-#   mock_user_check_exists(mocker)
-#   sp = mock_study_page(mocker)
-#   response = client.get("/index")
-#   assert response.status_code == 200
-#   assert """View Protocol""" in response.text
-#   assert """A study for Z""" in response.text
-#   assert mock_called(sp)
-
-# def mock_study_page(mocker):
-#   mock = mocker.patch("app.database.study.Study.page")
-#   items = [
-#     {'sponsor': 'ACME', 'sponsor_identifier': 'ACME', 'title': 'A study for X', 'versions': 1, 'phase': "Phase 1", 'import_type': "DOCX"},
-#     {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Y', 'versions': 2, 'phase': "Phase 1", 'import_type': "XLSX"},
-#     {'sponsor': 'Big Pharma', 'sponsor_identifier': 'BP', 'title': 'A study for Z', 'versions': 3, 'phase': "Phase 4", 'import_type': "FHIR"}
-#   ]
-#   mock.side_effect = [{'page': 1, 'size': 10, 'count': 1, 'filter': '', 'items': items}]
-#   return mock
-
 def test_import_m11(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  fp = mock_file_picker_os(mocker)
+  application_configuration.file_picker = {'browser': False, 'os': True, 'pfda': False, 'source': 'os'} 
   response = client.get("/import/m11")
   assert response.status_code == 200
   assert '<h4 class="card-title">Import M11 Protocol</h4>' in response.text
   assert """<p>Select a single M11 file</p>""" in response.text
   assert mock_called(uc)
-  assert mock_called(fp)
 
 def test_import_xl(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  fp = mock_file_picker_os(mocker)
+  application_configuration.file_picker = {'browser': False, 'os': True, 'pfda': False, 'source': 'os'} 
   response = client.get("/import/xl")
   assert response.status_code == 200
   assert '<h4 class="card-title">Import USDM Excel Definition</h4>' in response.text
   assert '<p>Select a single Excel file and zero, one or more images files. </p>' in response.text
   assert mock_called(uc)
-  assert mock_called(fp)
 
 @pytest.mark.anyio
 async def test_import_m11_execute(mocker, monkeypatch):
@@ -251,12 +180,16 @@ def test_get_study_design_soa(mocker, monkeypatch):
   assert mock_called(ujs)
 
 def test_get_logout_single(mocker, monkeypatch):
+  application_configuration.single_user = True
+  application_configuration.multiple_user = False
   client = mock_client(monkeypatch)
   response = client.get("/logout", follow_redirects=False)
   assert response.status_code == 307
   assert str(response.next_request.url) == "http://testserver/"
 
 def test_get_logout_multiple(mocker, monkeypatch):
+  application_configuration.single_user = False
+  application_configuration.multiple_user = True
   client = mock_client_multiple(mocker)
   response = client.get("/logout", follow_redirects=False)
   assert response.status_code == 307

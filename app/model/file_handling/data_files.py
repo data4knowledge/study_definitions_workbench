@@ -6,7 +6,7 @@ import yaml
 from pathlib import Path
 from uuid import uuid4
 from d4kms_generic import application_logger
-from d4kms_generic.service_environment import ServiceEnvironment
+from app.configuration.configuration import application_configuration
 
 class DataFiles:
   
@@ -27,14 +27,12 @@ class DataFiles:
       "extra": {'method': self._save_yaml_file, 'use_original': False, 'filename': 'extra', 'extension': 'yaml'}
     }
     self.uuid = uuid
-    se = ServiceEnvironment()
-    self.dir = se.get("DATAFILE_PATH")
+    self.dir = application_configuration.data_file_path
 
   @classmethod
   def clean_and_tidy(cls):
-    se = ServiceEnvironment()
-    dir = se.get("MNT_PATH")
-    keep = [se.get("DATAFILE_PATH"), se.get("DATABASE_PATH"), se.get("LOCALFILE_PATH")]
+    dir = application_configuration.mount_path
+    keep = [application_configuration.data_file_path, application_configuration.database_path, application_configuration.local_file_path]
     application_logger.info(f"Running clean and tidy on '{dir}'")
     try:
       for file in os.listdir(dir):
@@ -67,8 +65,7 @@ class DataFiles:
 
   @classmethod
   def check(cls):
-    se = ServiceEnvironment()
-    dir = se.get("DATAFILE_PATH")
+    dir = application_configuration.data_file_path
     application_logger.info("Checking datafiles dir exists")
     try:
       os.mkdir(dir)

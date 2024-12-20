@@ -3,27 +3,24 @@ import datetime
 import math
 from pathlib import Path
 from d4kms_generic import application_logger
-from d4kms_generic.service_environment import ServiceEnvironment
+from app.configuration.configuration import application_configuration
 
 class LocalFiles:
   
   def __init__(self, uuid=None):
-    se = ServiceEnvironment()
-    self.root = se.get("LOCALFILE_PATH")
+    self.root = application_configuration.local_file_path
 
   @classmethod
   def check(cls):
-    se = ServiceEnvironment()
-    dir = se.get("LOCALFILE_PATH")
     application_logger.info("Checking localfiles dir exists")
     try:
-      os.mkdir(dir)
+      os.mkdir(application_configuration.local_file_path)
       application_logger.info("Localfiles dir created")
       return True
     except FileExistsError as e:
       application_logger.info("Localfiles dir exists")
     except Exception as e:
-      application_logger.exception(f"Exception checking/creating localfiles dir '{dir}'", e)
+      application_logger.exception(f"Exception checking/creating localfiles dir '{application_configuration.local_file_path}'", e)
       return False
     
   def dir(self, path):

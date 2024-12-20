@@ -1,13 +1,5 @@
 from fastapi import Request
 from app.database.user import User
-from d4kms_generic import application_logger
-from d4kms_generic.service_environment import ServiceEnvironment
-
-def single_user() -> bool:
-  se = ServiceEnvironment()
-  single = se.get('SINGLE_USER')
-  application_logger.info(f"Single user mode '{single}'")
-  return single.upper() in ['TRUE', 'Y', 'YES']
 
 def user_details(request: Request, db):
   user_info = request.session['userinfo']

@@ -5,8 +5,8 @@ from app.database.database_tables import Study as StudyDB, Version as VersionDB,
 from app.database.database_tables import UserEndpoint as UserEndpointDB, User as UserDB, TransmissionTable as TransmissionDB
 from app.model.file_handling.data_files import DataFiles
 from sqlalchemy.orm import Session
-from d4kms_generic.service_environment import ServiceEnvironment
 from d4kms_generic import application_logger
+from app.configuration.configuration import application_configuration
 
 class DatabaseManager():
 
@@ -15,8 +15,7 @@ class DatabaseManager():
 
   @classmethod
   def check(cls):
-    se = ServiceEnvironment()
-    dir = se.get("DATABASE_PATH")
+    dir = application_configuration.database_path
     application_logger.info("Checking database dir exists")
     try:
       os.mkdir(dir)
