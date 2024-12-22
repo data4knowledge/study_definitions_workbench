@@ -1,3 +1,7 @@
+<h5>Release 0.31.0, 2025-NN-NN</h5>
+
+- Ready for next release
+
 <h5>Release 0.30.0, 2024-12-22</h5>
 
 - Improve index page selection (issue 12)

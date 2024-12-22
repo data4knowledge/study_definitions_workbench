@@ -130,10 +130,11 @@ For a single user environment the AUTH0 variables can be empty.
 # Deployment Checklist
 
 - Unit tests pass
-- Deploy to Staging
+- Deploy to Staging and check
 - Playwright tests pass
-- Deploy to Production
+- Deploy to Production and check
 - Build docker image (tagged with version and as latest)
 - Tag release in GitHub
+- Check pFDA
 - Write GitHub release note
 - Update version and release notes ready for the next release
