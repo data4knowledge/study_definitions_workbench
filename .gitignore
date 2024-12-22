@@ -165,6 +165,7 @@ setup_env.sh
 .staging_env
 .test_env
 .playwright_env
+.prism_env
 .env
 install_local_d4kms.sh
 
