@@ -1,4 +1,4 @@
-<h5>Release 0.30.0, 2024-12-19</h5>
+<h5>Release 0.30.0, 2024-12-22</h5>
 
 - Improve index page selection (issue 12)
 - Add pagination for the index page (issue 14)
