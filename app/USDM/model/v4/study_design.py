@@ -3,7 +3,7 @@ from usdm_model.activity import Activity
 from usdm_model.study_epoch import StudyEpoch
 from usdm_model.encounter import Encounter
 from usdm_model.schedule_timeline import ScheduleTimeline
-from app.USDM.model.v4.schedule_timeline import *
+from app.usdm.model.v4.schedule_timeline import *
 
 def soa(self: StudyDesign, timeline_name: str) -> list:
   timeline = next((x for x in self.scheduleTimelines if x.name == timeline_name), None)
