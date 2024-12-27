@@ -1,4 +1,3 @@
-import re
 from tests.files. files import *
 from usdm_db import USDMDb
 from app.model.file_handling.data_files import DataFiles
