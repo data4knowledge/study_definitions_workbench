@@ -1,3 +1,4 @@
+import re
 import pytest
 from tests.files. files import *
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
@@ -41,9 +42,11 @@ async def _run_test_to_v1(name, save=False):
   extra = read_yaml(_full_path(f"{name}_extra.yaml", version, mode))
   result = ToFHIRV1(study, 'FAKE-UUID', extra).to_fhir()
 
-  x = re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}[+-]\d\d:\d\d$', result)
-  print("Dates found:", x.groupdict())
-
+  dates = re.findall(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}[+-]\d\d:\d\d', result)
+  for date in dates:
+    print(f"Date found: {date}")
+    result = result.replace(date, '2024-12-25:00:00:00.000000+00:00')  
+  
   pretty_result = json.dumps(json.loads(result), indent=2)
   result_filename = f"{name}_fhir.json"
   if save:
@@ -72,4 +75,4 @@ async def test_to_fhir_v1_pilot():
 
 @pytest.mark.anyio
 async def test_to_fhir_v1_ASP8062():
-  await _run_test_to_v1('ASP8062', True)
+  await _run_test_to_v1('ASP8062', WRITE_FILE)
