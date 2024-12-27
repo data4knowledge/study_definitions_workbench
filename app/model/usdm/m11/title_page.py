@@ -1,6 +1,6 @@
 from usdm_model.wrapper import Wrapper
-from app.model.usdm.model.study import *
-from app.model.usdm.model.study_version import *
+from app.USDM.model.v4.study import *
+from app.USDM.model.v4.study_version import *
 
 class USDMM11TitlePage():
   

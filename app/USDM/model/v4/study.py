@@ -1,5 +1,5 @@
 from usdm_model.study import Study as Study
-from app.model.usdm.model.study_version import StudyVersion
+from app.USDM.model.v4.study_version import StudyVersion
 from d4kms_generic.logger import application_logger
 
 def first_version(self: Study) -> StudyVersion:

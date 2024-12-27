@@ -23,7 +23,7 @@ from usdm_model.governance_date import GovernanceDate
 from usdm_model.geographic_scope import GeographicScope
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
-from app.model.usdm.model.address import Address
+from app.USDM.model.v4.address import Address
 
 class FromFHIRV1():
 

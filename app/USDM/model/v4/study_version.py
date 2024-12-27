@@ -1,9 +1,9 @@
 from usdm_model.study_design import StudyDesign
 from usdm_model.study_version import StudyVersion
 from usdm_model.organization import Organization
-from app.model.usdm.model.study_title import *
-from app.model.usdm.model.study_identifier import *
-from app.model.usdm.model.study_design import *
+from app.USDM.model.v4.study_title import *
+from app.USDM.model.v4.study_identifier import *
+from app.USDM.model.v4.study_design import *
 
 def official_title(self: StudyVersion) -> str:
   for x in self.titles:
