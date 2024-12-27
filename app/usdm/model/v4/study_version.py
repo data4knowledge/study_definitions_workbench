@@ -1,6 +1,7 @@
 from usdm_model.study_design import StudyDesign
 from usdm_model.study_version import StudyVersion
 from usdm_model.organization import Organization
+from usdm_model.eligibility_criterion import EligibilityCriterion
 from app.usdm.model.v4.study_title import *
 from app.usdm.model.v4.study_identifier import *
 from app.usdm.model.v4.study_design import *
@@ -22,6 +23,13 @@ def acronym(self: StudyVersion) -> str:
     if x.is_acronym():
       return x.text
   return ''
+
+def sponsor(self: StudyVersion) -> Organization:
+  map = self.organization_map()
+  for x in self.studyIdentifiers:
+    if x.is_sponsor(map):
+      return map[x.scopeId]
+  return None
 
 def sponsor_identifier(self: StudyVersion) -> StudyIdentifier:
   for x in self.studyIdentifiers:
@@ -65,12 +73,16 @@ def approval_date(self: StudyVersion) -> StudyIdentifier:
 def organization_map(self: StudyVersion) -> Organization:
   return {x.id: x for x in self.organizations}
 
+def criterion_map(self: StudyVersion) -> EligibilityCriterion:
+  return {x.id: x for x in self.criteria}
+
 def find_study_design(self: StudyVersion, id: str) -> StudyDesign:
   return next((x for x in self.studyDesigns if x.id == id), None)
 
 setattr(StudyVersion, 'official_title', official_title)
 setattr(StudyVersion, 'short_title', short_title)
 setattr(StudyVersion, 'acronym', acronym)
+setattr(StudyVersion, 'sponsor', sponsor)
 setattr(StudyVersion, 'sponsor_identifier', sponsor_identifier)
 setattr(StudyVersion, 'sponsor_name', sponsor_name)
 setattr(StudyVersion, 'sponsor_address', sponsor_address)
@@ -78,4 +90,5 @@ setattr(StudyVersion, 'nct_identifier', nct_identifier)
 setattr(StudyVersion, 'protocol_date', protocol_date)
 setattr(StudyVersion, 'approval_date', approval_date)
 setattr(StudyVersion, 'organization_map', organization_map)
+setattr(StudyVersion, 'criterion_map', criterion_map)
 setattr(StudyVersion, 'find_study_design', find_study_design)

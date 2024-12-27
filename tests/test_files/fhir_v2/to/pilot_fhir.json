@@ -1,0 +1,906 @@
+{
+  "resourceType": "Bundle",
+  "identifier": {
+    "system": "urn:ietf:rfc:3986",
+    "value": "urn:uuid:FAKE-UUID"
+  },
+  "type": "document",
+  "timestamp": "2024-12-25:00:00:00.000000+00:00",
+  "entry": [
+    {
+      "fullUrl": "https://www.example.com/Composition/1234B",
+      "resource": {
+        "resourceType": "Composition",
+        "status": "preliminary",
+        "type": {
+          "text": "EvidenceReport"
+        },
+        "date": "2024-12-25:00:00:00.000000+00:00",
+        "author": [
+          {
+            "display": "USDM"
+          }
+        ],
+        "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease"
+      }
+    },
+    {
+      "fullUrl": "https://www.example.com/Composition/1234D",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "FAKE-UUID",
+        "name": "Eli Lilly",
+        "contact": [
+          {
+            "address": {
+              "id": "Address_1",
+              "text": "Lilly Corporate Ctr, Indianapolis, IN, 4628, United States of America",
+              "line": [
+                "Lilly Corporate Ctr"
+              ],
+              "city": "Indianapolis",
+              "state": "IN",
+              "postalCode": "4628",
+              "country": "United States of America"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://www.example.com/Composition/1234A",
+      "resource": {
+        "resourceType": "ResearchStudy",
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/primaryReason",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.cdisc.org",
+                      "version": "2023-12-15",
+                      "code": "C99904x3",
+                      "display": "IRB/IEC Feedback"
+                    }
+                  ]
+                }
+              },
+              {
+                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/secondaryReason",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.cdisc.org",
+                      "version": "2023-12-15",
+                      "code": "C17649",
+                      "display": "Other"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://example.org/fhir/extension/studyAmendment"
+          }
+        ],
+        "identifier": [
+          {
+            "type": {
+              "text": "Clinical Study Sponsor"
+            },
+            "system": "https://example.org/sponsor-identifier",
+            "value": "H2Q-MC-LZZT"
+          },
+          {
+            "type": {
+              "text": "Study Registry"
+            },
+            "system": "https://example.org/sponsor-identifier",
+            "value": "NCT12345678"
+          },
+          {
+            "type": {
+              "text": "Amendment Identifier"
+            },
+            "system": "https://example.org/amendment-identifier",
+            "value": ""
+          }
+        ],
+        "version": "2",
+        "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
+        "label": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://www.cdisc.org",
+                  "version": "2023-12-15",
+                  "code": "C94108",
+                  "display": "Study Acronym"
+                }
+              ]
+            },
+            "value": "LZZT"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://www.cdisc.org",
+                  "version": "2023-12-15",
+                  "code": "C99905x1",
+                  "display": "Brief Study Title"
+                }
+              ]
+            },
+            "value": "Xanomeline (LY246708)"
+          }
+        ],
+        "status": "draft",
+        "phase": {
+          "coding": [
+            {
+              "system": "http://www.cdisc.org",
+              "version": "2023-12-15",
+              "code": "C15601",
+              "display": "Phase II Trial"
+            }
+          ],
+          "text": "Phase II Trial"
+        },
+        "associatedParty": [
+          {
+            "role": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/research-study-party-role",
+                  "code": "sponsor",
+                  "display": "sponsor"
+                }
+              ]
+            },
+            "party": {
+              "reference": "Organization/FAKE-UUID"
+            }
+          }
+        ],
+        "recruitment": {
+          "eligibility": {
+            "reference": "Group/FAKE-UUID"
+          }
+        }
+      }
+    },
+    {
+      "fullUrl": "https://www.example.com/Composition/1234X1",
+      "resource": {
+        "resourceType": "Group",
+        "id": "FAKE-UUID",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod",
+            "valueString": "all-of"
+          }
+        ],
+        "type": "person",
+        "membership": "definitional",
+        "characteristic": [
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Males and postmenopausal females at least  years of age."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": " as defined by National Institute of Neurological and Communicative Disorders and Stroke (NINCDS) and the Alzheimer's Disease and Related Disorders Association (ADRDA) guidelines (Attachment LZZT.7)."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": " score of 10 to 23."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "  score of \u22644 (Attachment LZZT.8)."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "CNS imaging (CT scan or MRI of brain) compatible with AD within past 1 year.\nThe following findings are incompatible with AD:\n\n\nLarge vessel strokes\n\n\nAny definite area of encephalomalacia consistent with ischemic necrosis in any cerebral artery territory.\n\n\nLarge, confluent areas of encephalomalacia in parieto-occipital or frontal regions consistent with watershed\n          infarcts.\nThe above are exclusionary. Exceptions are made for small areas of cortical asymmetry which may represent a\n          small cortical stroke or a focal area of atrophy provided there is no abnormal signal intensity in the\n          immediately underlying parenchyma. Only one such questionable area allowed per scan, and size is restricted to\n          \u22641cm in frontal/parietal/temporal cortices and \u22642 cm in occipital cortex.\n\n\n\n\nSmall vessel ischemia\n\n\nLacunar infarct is defined as an area of abnormal intensity seen on CT scan or on both T1 and T2 weighted MRI\n          images in the basal ganglia, thalamus or deep white matter which is \u22641 cm in maximal diameter. A maximum of\n          one\n          lacune is allowed per scan.\n\n\nLeukoariosis or leukoencephalopathy is regarded as an abnormality seen on T2 but not T1 weighted MRIs, or on\n          CT. This is accepted if mild or moderate in extent, meaning involvement of less than 25% of cortical white\n          matter.\n      \n\n\n\nMiscellaneous\n\n\nBenign small extra-axial tumors (ie, meningiomas) are accepted if they do not contact or indent the brain\n          parenchyma.\n\n\nSmall extra-axial arachnoid cysts are accepted if they do not indent or deform the brain parenchyma.\n\n\n\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Investigator has obtained informed consent signed by the patient (and/or legal representative) and by the caregiver."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Geographic proximity to investigator's site that allows adequate follow-up."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A reliable caregiver who is in frequent or daily contact with the patient and who will accompany the patient to the office and/or be available by telephone at designated times, will monitor administration of prescribed medications, and will be responsible for the overall care of the patient at home. The caregiver and the patient must be able to communicate in English and willing to comply with 26 weeks of transdermal therapy."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": false
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Persons who have previously completed or withdrawn from this study or any other study investigating xanomeline TTS or the oral formulation of xanomeline."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Use of any investigational agent or approved Alzheimer's therapeutic medication within 30 days prior to enrollment into the study."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Serious illness which required hospitalization within 3 months of screening."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Diagnosis of serious neurological conditions, including \n\nStroke or vascular dementia documented by clinical history and/or radiographic findings interpretable by the investigator as indicative of these disorders\nSeizure disorder other than simple childhood febrile seizures\nSevere head trauma resulting in protracted loss of consciousness within the last 5 years, or multiple episodes of head trauma\nParkinson's disease\nMultiple sclerosis\nAmyotrophic lateral sclerosis\nMyasthenia gravis.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Episode of depression meeting DSM-IV criteria within 3 months of screening."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of the following:\n\nSchizophrenia\nBipolar Disease\nEthanol or psychoactive drug abuse or dependence. \n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history of syncope within the last 5 years."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Evidence from ECG recording at screening of any of the following conditions :\n\nLeft bundle branch block\nBradycardia \u226450 beats per minute\nSinus pauses >2 seconds\nSecond or third degree heart block unless treated with a pacemaker\nWolff-Parkinson-White syndrome\nSustained supraventricular tachyarrhythmia including SVT\u226510 sec, atrial fibrillation, atrial flutter.\nVentricular tachycardia at a rate of \u2265120 beats per minute lasting\u226510 seconds.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of a serious cardiovascular disorder, including\n\nClinically significant arrhythmia\nSymptomatic sick sinus syndrome not treated with a pacemaker\nCongestive heart failure refractory to treatment\nAngina except angina controlled with PRN nitroglycerin\nResting heart rate <50 or >100 beats per minute, on physical exam\nUncontrolled hypertension.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of a serious gastrointestinal disorder, including \n\nChronic peptic/duodenal/gastric/esophageal ulcer that are untreated or refractory to treatment\nSymptomatic diverticular disease\nInflammatory bowel disease\nPancreatitis\nHepatitis\nCirrhosis of the liver.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of a serious endocrine disorder, including\n\nUncontrolled Insulin Dependent Diabetes Mellitus (IDDM)\nDiabetic ketoacidosis\nUntreated hyperthyroidism\nUntreated hypothyroidism\nOther untreated endocrinological disorder\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": " A history within the last 5 years of a serious respiratory disorder, including\n\nAsthma with bronchospasm refractory to treatment\nDecompensated chronic obstructive pulmonary disease.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of a serious genitourinary disorder, including\n\nRenal failure\nUncontrolled urinary retention.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of a serious rheumatologic disorder, including\n\nLupus\nTemporal arteritis\nSevere rheumatoid arthritis.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A known history of human immunodeficiency virus (HIV) within the last 5 years."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of a serious infectious disease including\n\na)  Neurosyphilis\nb)  Meningitis\nc)  Encephalitis.\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "A history within the last 5 years of a primary or recurrent malignant disease with the exception of resected cutaneous squamous cell carcinoma in situ, basal cell carcinoma, cervical carcinoma in situ, or in situ prostate cancer with a normal PSA postresection."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Visual, hearing, or communication disabilities impairing the ability to participate in the study; (for example, inability to speak or understand English, illiteracy)."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Laboratory test values exceeding the Lilly Reference Range III for the patient's age in any of the following analytes: \u2191 creatinine, \u2191 total bilirubin, \u2191 SGOT, \u2191 SGPT, \u2191 alkaline phosphatase, \u2191 GGT, \u2191\u2193 hemoglobin, \u2191\u2193 white blood cell count, \u2191\u2193 platelet count, \u2191\u2193 serum sodium, potassium, or calcium.\nIf values exceed these laboratory reference ranges, clinical significance will be judged by the monitoring physicians. If the monitoring physician determines that the deviation from the reference range is not clinically significant, the patient may be included in the study. This decision will be documented."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Central laboratory test values below reference range for folate, and Vitamin B 12 , and outside reference range for thyroid function tests.\n\n\nFolate reference range 2.0 to 25.0 ng/mL. Patients will be allowed to enroll if their folate levels are above the upper end of the range if patients are taking vitamin supplements.\n\n\nVitamin B 12 reference range 130 to 900 pg/mL. Patients will be allowed to enroll if their B 12 levels are above the upper reference range if patients are taking oral vitamin supplements.\n\n\nThyroid functions\n\n\nThyroid Uptake reference range 25 to 38%. Patients will be allowed to enroll with results of 23 to 51% provided the remainder of the thyroid profile is normal and there are no clinical signs or symptoms of thyroid abnormality.\n\n\nTSH reference range 0.32 to 5.0. Patients will be allowed to enroll with results of 0.03 to 6.2 if patients are taking stable doses of exogenous thyroid supplements, with normal free thyroid index, and show no clinical signs or symptoms of thyroid abnormality.\n\n\nTotal T4 reference range 4.5 to 12.5. Patients will be allowed to enroll with results of 4.1 to 13.4 if patients are taking stable doses of exogenous thyroid hormone, with normal free thyroid index, and show no clinical signs or symptoms of thyroid abnormality.\n\n\nFree Thyroid Index reference range 1.1 to 4.6.\n\n\n\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Positive syphilis screening.\nPositive syphilis screening. As determined by positive RPR followed up by confirmatory FTA-Abs. Confirmed patients are excluded unless there is a documented medical history of an alternative disease (for example, yaws) which caused the lab abnormality."
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Glycosylated hemoglobin (A1C). Required only on patients with known diabetes mellitus or random blood sugar >200 on screening labs. Patients will be excluded if levels are >9.5%"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          },
+          {
+            "extension": {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+              "valueString": "Treatment with the following medications within the specified washout periods prior to enrollment and during the\n  study:\n\n\nAnticonvulsants including but not limited to \n\n\nDepakote\u00ae (valproic acid) \n2 weeks\n\n\nDilantin\u00ae (phenytoin)\n2 weeks\n\n\nFelbatol\u00ae\n          (felbamate)\n1 month\n\n\nKlonopin\u00ae (clonazepam)\n2\n          weeks\n\n\nLamictal\u00ae (lamotrigine)\n2 weeks\n\n\nMysoline\u00ae (primidone)\n1 month\n\n\nNeurontin\u00ae\n          (gabapentin)\n2 weeks\n\n\nPhenobarbitol\n1 month\n\n\nTegretol\u00ae (carbamazepine)\n2 weeks\n\n\n\n\nAlpha receptor blockers including but not limited to \n\n\nAldomet\u00ae (methyldopa) \n2 weeks\n\n\nCardura\u00ae\n          (doxazosin) \n2 weeks\n\n\nCatapres\u00ae (clonidine)\n        \n2 weeks\n\n\nHytrin\u00ae (terazosin) \n2 weeks\n\n\nMinipress\u00ae (prazosin)\n2 weeks\n\n\nTenex\u00ae (guanfacine)\n2 weeks\n\n\nWytensin\u00ae\n          (guanabenz) \n2 weeks\n\n\nThe use of low doses\n        (2 mg daily) of either Hytrin\u00ae or Cardura\u00ae for relief of\n        urinary retention for patients with prostatic hypertrophy will be considered\n        on a case-by-case basis provided blood pressure is stable and the medication\n        has not had demonstrable effect on dementia symptoms in the opinion of the treating\n        physician. Contact CRO medical monitor.\n\n\nCalcium channel blockers\n      that are CNS active including but not limited to \n\n\nCalan\u00ae , Isoptin\u00ae , Verelan\u00ae (verapamil) \n2 weeks\n\n\nCardizem\u00ae (diltiazem) \n2 weeks\n\n\nNimotop\u00ae\n          (nimodipine) \n2 weeks\n\n\nAdalat\u00ae , Procardia XL\u00ae\n          (nifedipine) \n2 weeks\n\n\nCardene\u00ae (nicardipine),\n        Norvasc\u00ae , (amlodipine), and DynaCirc\u00ae (isradipine) will\n        be allowed during the study. If a patient is taking an excluded calcium channel\n        blocker and is changed to an equivalent dose of an allowed calcium channel blocker,\n        enrollment may proceed in as little as 24 hours though 1 week is preferred when\n        possible.\n\n\nBeta blockers including but not limited to \n\n\nBetapace\u00ae (sotalol) \n2 weeks\n\n\nInderal\u00ae (propranolol) \n2 weeks\n\n\nLopressor\u00ae\n          , Toprol XL\u00ae (metoprolol) \n2 weeks\n\n\nCorgard\u00ae (nadolol) \n2 weeks\n\n\nSectral\u00ae (acebutolol)\n2 weeks\n\n\nTenormin\u00ae (atenolol) \n2 weeks\n\n\nVisken\u00ae (pindolol)\n2 weeks\n\n\nBeta\n        blocker eye drops for glaucoma will be considered on a case-by-case basis. Call\n        medical monitor.\n\n\nBeta sympathomimetics (unless inhaled) including\n      but not limited to \n\n\nAlupent\u00ae tablets\n          (metaproterenol) \n2 weeks\n\n\nBrethine\u00ae tablets\n          (terbutaline) \n2 weeks\n\n\nDopamine \n2 weeks\n\n\nProventil Repetabs\u00ae , Ventolin\u00ae tablets (albuterol tablets)\n        \n2 weeks\n\n\n\nParasympathomimetics (cholinergics) (unless opthalmic) including but not limited to\n    \n\nAntilirium\u00ae (physostigmine) \n1 month\n\n\nAricept\u00ae (donepezil) \n1 month\n\n\nCognex\u00ae (tacrine) \n1\n          month\n\n\nMestinon\u00ae (pyridostigmine) \n1 week\n\n\nReglan\u00ae (metoclopramide)\n2 weeks\n\n\nUrecholine\u00ae\n          , Duvoid (bethanechol) \n2 weeks\n\n\nCholinergic eye drops for treatment of glaucoma will be allowed during the study on a case-by-case basis.\n        Please contact the CRO medical monitor.\n\n\nMuscle relaxants-centrally active including but not limited to \n\n\nEquanil\u00ae (meprobamate) \n2 weeks\n\n\nFlexeril\u00ae (cyclobenzaprine)\n2 weeks\n\n\nLioresal\u00ae (baclofen) \n2 weeks\n\n\nNorflex\u00ae (orphenadrine) \n2 weeks\n\n\nParafon Forte\u00ae (chlorzoxazone)\n2 weeks\n\n\nRobaxin\u00ae (methocarbamol) \n2 weeks\n\n\nSkelaxin\u00ae (metaxalone)\n        \n2 weeks\n\n\nSoma\u00ae (carisoprodol) \n2 weeks\n\n\n\n\nMonamine oxidase inhibitors (MAOI) including but not limited to\n\n\nEldepryl\u00ae (selegiline)\n1 month\n\n\nNardil\u00ae (phenelzine) \n1 month\n\n\nParnate\u00ae (tranylcypromine) \n1 month\n\n\n\n\nParasympatholytics including but not limited to \n\n\nAntivert\u00ae , Bonine\u00ae , Dramamine II\u00ae (meclizine)\n3 days \n\n\nArtane\u00ae (trihexyphenidyl)\n2 weeks\n\n\nBellergal-S\u00ae (alkaloids of belladonna and ergotamine) \n2 weeks \n\n\nBentyl\u00ae (dicyclomine) \n3 days \n\n\nCogentin\u00ae (benztropine) \n2 weeks\n\n\nCystospaz\u00ae, Levsin\u00ae , Levsinex\u00ae (hyoscyamine)\n2 weeks\n\n\nDitropan\u00ae\n          (oxybutynin) \n2 weeks\n\n\nDonnatal\u00ae , Hyosophen\u00ae\n          (atropine, scopolamine, hyoscyamine and phenobarbitol) \n1 month \n\n\nDramamine\u00ae (dimenhydrinate)\n3 days\n\n\nLomotil\u00ae, Lonox\u00ae (atropine, diphenoxylate) \n2 weeks\n\n\nPro-Banthine\u00ae(propantheline) \n2 weeks\n\n\nRobinul\u00ae (glycopyrrolate)\n3 days \n\n\nTigan\u00ae (trimethobenzamide) \n3 days \n\n\nTransderm-Scop\u00ae (scopolamine) \n2 weeks\n\n\nUrispas\u00ae (flavoxate)\n2 weeks\n\n\n\n\nAntidepressants including but not limited to \n\n\nAnafranil\u00ae (clomipramine)\n 1 month\n\n\nAsendin\u00ae\n          (amoxapine)\n 1 month\n\n\nDesyrel\u00ae (trazodone)\n\n          1 month\n\n\nEffexor\u00ae (venlafaxine) \n 1 month\n\n\nElavil\u00ae (amitriptyline)\n 1 month\n\n\nLudiomil\u00ae\n          (maprotiline)\n 1 month\n\n\nNorpramin\u00ae (desipramine)\n\n          1 month\n\n\nPamelor\u00ae , Aventyl\u00ae (nortriptyline)\n 1\n          month\n\n\nPaxil\u00ae (paroxetine)\n 1 month\n\n\nProzac\u00ae\n          (fluoxetine\n 1 month\n\n\nRemeron\u00ae (mirtazapine)\n\n          1 month\n\n\nSerzone\u00ae (nefazodone) \n 1 month\n\n\nSinequan\u00ae\n          (doxepin)\n 1 month\n\n\nTofranil\u00ae (imipramine)\n\n          1 month\n\n\nVivactil\u00ae (protriptyline)\n 1 month\n\n\nWellbutrin\u00ae (bupropion)\n 1 month\n\n\nZoloft\u00ae\n          (sertraline)\n 1 month\n\n\n\n\nSystemic corticosteroids including but not limited to \n\n\nCortisone\n2 weeks\n\n\nDecadron\u00ae (dexamethasone)\n2 weeks\n\n\nDepo-Medrol\u00ae (methylprednisolone)\n1 month\n\n\n\nPrednisone\n2 weeks\n\n\n\n\nXanthine derivatives\n      including but not limited to \n\n\nAminophylline\n2 weeks\n\n\n\nFioricet\u00ae , Esgic\u00ae , Phrenilin Forte\u00ae (caffeine, butalbital)\n3 days\n\n\n\nTheo-Dur\u00ae (theophylline)\n2 weeks\n\n\n\nWigraine\u00ae , Cafergot\u00ae (caffeine, ergotamine)\n3 days\n\n\n\n\n\nHistamine (H2 ) antagonists including but not limited to \n\n\nAxid\u00ae (nizatidine)\n1 week\n\n\nPepcid\u00ae (famotidine)\n1 week\n\n\nTagamet\u00ae (cimetidine)\n1 week\n\n\nZantac\u00ae (ranitidine)\n1 week\n\n\nIf an H 2 antagonist is needed by the patient, Axid\u00ae will be allowed on a case-by-case\n        basis. Please consult CRO medical monitor.\n\n\nNarcotic Analgesics including but not limited to \n\n\nDarvocet-N\n          100\u00ae , (propoxyphene)\n1 week \n\n\nDemerol\u00ae (meperidine)\n1\n          week \n\n\nDilaudid\u00ae (hydromorphone)\n1 week \n\n\nDuragesic\u00ae (fentanyl)\n1 week \n\n\nMS\n          Contin\u00ae , Roxanol\u00ae , Oramorph\u00ae (morphine) \n1 week \n\n\nPercocet\u00ae , Roxicet\u00ae (oxycodone with acetaminophen)\n3\n          days \n\n\nPercodan\u00ae , Roxiprin\n1 week\n\n\nStadol\u00ae (butorphanol)\n1 week \n\n\nTalacen\u00ae\n          (pentazocine)\n1 week \n\n\nTylenol #2\u00ae , #3\u00ae\n          , #4\u00ae (codeine and acetaminophen) \n3 days \n\n\nTylox\u00ae\n          , Roxilox\u00ae (oxycodone)\n3 days \n\n\nVicodin\u00ae, Lorcet\u00ae (hydrocodone)\n1 week\n\n\nPercocet\n        (oxycodone with acetaminophen) and Tylenol\u00ae with codeine #2, #3, #4\n        (acetaminophen + codeine) ARE allowed in the month prior to enrollment, but\n        are not permitted in the 3 days prior to enrollment.\n\n\nNeuroleptics\n      (antipsychotics) including but not limited to \n\n\nClozaril\u00ae\n          (clozapine)\n2 weeks\n\n\nHaldol\u00ae (haloperidol)\n2\n          weeks\n\n\nLoxitane\u00ae (loxapine)\n2 weeks\n\n\nMellaril\u00ae (thioridazine)\n2 weeks\n\n\nMoban\u00ae\n          (molindone)\n2 weeks\n\n\nNavane\u00ae (thiothixene)\n2\n          weeks\n\n\nOrap\u00ae (pimozide)\n2 weeks\n\n\nProlixin\u00ae (fluphenazine)\n1 month\n\n\nRisperdal\u00ae\n          (risperidone)\n2 weeks\n\n\nStelazine\u00ae (trifluoperazine)\n2\n          weeks\n\n\nThorazine\u00ae (chlorpromazine)\n2 weeks\n\n\nTrilafon\u00ae (perphenazine)\n2 weeks\n\n\nSerentil\u00ae\n          (mesoridazine)\n2 weeks\n\n\nThe use of neuroleptics\n        on a daily basis must be discontinued 2 to 4 weeks prior to enrollment. The\n        use of neuroleptics on an as-needed basis is allowable during the screening\n        period, but the last dose must be at least 7 days prior to enrollment.\n\n\nAntianxiety agents including but not limited to \n\n\nAtarax\u00ae (hydroxyzine)\n2 weeks\n\n\nBuSpar\u00ae\n          (buspirone)\n2 weeks\n\n\nLibrium\u00ae (chlordiazepoxide)\n2 weeks\n\n\nSerax\u00ae (oxazepam)\n2 weeks\n\n\nTranxene\u00ae (clorazepate)\n2 weeks\n\n\nValium\u00ae (diazepam)\n2 weeks\n\n\nVistaril\u00ae (hydroxyzine pamoate)\n2 weeks\n\n\nXanax\u00ae (alprazolam)\n2 weeks\n\n\nAtivan\u00ae (lorazepam) should be discontinued on a daily\n        basis 2 weeks\nprior to enrollment. It may be used on an as-needed\n        basis during the screening period, but is not permitted in the 24 hours prior\n        to enrollment.\n\n\nHypnotics/Sedatives including but not limited to\n\n\nAmbien\u00ae (zolpidem)\n 3 days\n        \n\n\nDalmane\u00ae (flurazepam)\n3 days\n\n\nDoral\u00ae (quazepam)\n3 days\n\n\nHalcion\u00ae (triazolam)\n3 days\n\n\nNembutal\u00ae \n2 weeks\n\n\nProSom\u00ae (estazolam)\n3 days\n\n\nRestoril\u00ae\n          (temazepam)\n3 days\n\n\nSeconal\u00ae\n2 weeks\n\n\nChloral Hydrate is allowed on an as-needed basis during screening, but is not permitted in the 24 hours prior to enrollment.\n\n\nHistamine (H1 ) antagonists including but not limited to \n\n\nActifed\u00ae , Actifed Plus\u00ae (triprolidine) Benadryl\u00ae\n          , Unisom\u00ae , Tylenol P.M.\u00ae \n3 days \n\n\n(diphenhydramine)\n3 days\n\n\nCompazine\u00ae (prochlorperazine)\n3 days\n\n\nContac\u00ae , Coricidin D\u00ae , Sinutab\u00ae , Novahistine\u00ae , Alka\n          Seltzer Plus\u00ae , Naldecon\u00ae , Sudafed Plus\u00ae , Tylenol Cold\u00ae , Tylenol\n          Cold and Flu\u00ae (chlorpheniramine)\n3 days\n\n\nDimetapp\u00ae\n          (brompheniramine)\n3 days\n\n\nDrixoral\u00ae (dexbrompheniramine)\n3 days\n\n\nHismanal\u00ae (astemizole)\n1 week\n\n\nPhenergan\u00ae\n          (promethazine)\n3 days\n\n\nSeldane\u00ae (terfenadine)\n1\n          week\n\n\nTavist\u00ae (clemastine fumarate)\n3 days\n\n\nZyrtec\u00ae (cetrizine) \n1 week\n\n\nAllegra\u00ae\n      (fexofenadine hydrochloride) or Claritin\u00ae (loratadine) may be taken\n        on as-needed basis during screening but must be discontinued within 24 hours\n        of enrollment.\n\n\n\nStimulants including but not limited to \n\n\nCylert\u00ae (pemoline) \n1 month\n\n\nRitalin\u00ae (methylphenidate)\n1 month\n\n\n\n\nAntiarrhythmics including but not limited to the following\n\n\nAdenocard\u00ae (adenosine) \n\n\nCordarone\u00ae\n          (amiodarone) \n\n\nEthmozine\u00ae (moricizine) \n\n\nMexitil\u00ae (mexiletine) \n\n\nNorpace\u00ae (disopyramide)\n        \n\n\nProcan\u00ae (procainamide) \n\n\nQuinaglute\u00ae\n          (quinidine) \n\n\nRythmol\u00ae (propafenone) \n\n\nTambocor\u00ae\n          (flecainide) \n\n\nTonocard\u00ae (tocainide)\n\n\nRequirement of these drugs for control of cardiac arrhythmia indicates that\n        the patient should be excluded from the study. If discontinuation of an antiarrhythmic\n        is considered, please discuss case with CRO medical monitor.\n\n\nMiscellaneous drugs including but not limited to \n\n\nCoenzyme\n          Q\n2 weeks\n\n\nEskalith\u00ae , Lithobid\u00ae (lithium)\n2\n          weeks \n\n\nGinkgo biloba\n1 week\n\n\nLecithin\n        \n1 week\n\n\nLecithin \n1 week \n\n\nLupron\n2 weeks\n\n\nTamoxifen\n1 month\n\n\n\n\nEstrogen supplements are permitted during the study, but dosage must be stable for at least 3 months prior to\n      enrollment.\n\n"
+            },
+            "code": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "valueCodeableConcept": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "not-applicable"
+                }
+              ]
+            },
+            "exclude": true
+          }
+        ]
+      }
+    }
+  ]
+}

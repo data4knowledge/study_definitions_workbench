@@ -1,12 +1,12 @@
 from usdm_model.identifier import StudyIdentifier
+from usdm_model.organization import Organization
 
 def is_sponsor(self: StudyIdentifier, organization_map: dict) -> bool:
-  #print(f"ORG: {organization_map}")
   org = organization_map[self.scopeId]
   return True if org.type.code == 'C70793' else False
 
-# def is_nct_identifier(self: StudyIdentifier) -> bool:
-#   return True if self.studyIdentifierScope.name == 'ClinicalTrials.gov' else False
+def scoped_by(self: StudyIdentifier, organization_map: dict) -> Organization:
+  return organization_map[self.scopeId]
 
 setattr(StudyIdentifier, 'is_sponsor', is_sponsor)
-# setattr(StudyIdentifier, 'is_nct_identifier', is_nct_identifier)
+setattr(StudyIdentifier, 'scoped_by', scoped_by)

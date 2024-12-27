@@ -1,0 +1,304 @@
+{
+  "resourceType": "Bundle",
+  "identifier": {
+    "system": "urn:ietf:rfc:3986",
+    "value": "urn:uuid:FAKE-UUID"
+  },
+  "type": "document",
+  "timestamp": "2024-12-25:00:00:00.000000+00:00",
+  "entry": [
+    {
+      "fullUrl": "https://www.example.com/Composition/1234B",
+      "resource": {
+        "resourceType": "Composition",
+        "status": "preliminary",
+        "type": {
+          "text": "EvidenceReport"
+        },
+        "date": "2024-12-25:00:00:00.000000+00:00",
+        "author": [
+          {
+            "display": "USDM"
+          }
+        ],
+        "title": "A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants"
+      }
+    },
+    {
+      "fullUrl": "https://www.example.com/Composition/1234D",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "FAKE-UUID",
+        "name": "Astellas Pharma",
+        "contact": [
+          {
+            "address": {
+              "id": "Address_1",
+              "text": "Northbrook, IL, 60062, United States of America",
+              "city": "Northbrook",
+              "state": "IL",
+              "postalCode": "60062",
+              "country": "United States of America"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://www.example.com/Composition/1234A",
+      "resource": {
+        "resourceType": "ResearchStudy",
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "amendmentNumber",
+                "valueString": "1.1"
+              },
+              {
+                "url": "scope",
+                "valueString": "Local US\n"
+              },
+              {
+                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/primaryReason",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.cdisc.org",
+                      "version": "2023-12-15",
+                      "code": "C17649",
+                      "display": "Other"
+                    }
+                  ]
+                }
+              },
+              {
+                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/secondaryReason",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.cdisc.org",
+                      "version": "2023-12-15",
+                      "code": "C48660",
+                      "display": "Not Applicable"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://example.org/fhir/extension/studyAmendment"
+          }
+        ],
+        "identifier": [
+          {
+            "type": {
+              "text": "Clinical Study Sponsor"
+            },
+            "system": "https://example.org/sponsor-identifier",
+            "value": "8062-CL-2002"
+          },
+          {
+            "type": {
+              "text": "Amendment Identifier"
+            },
+            "system": "https://example.org/amendment-identifier",
+            "value": "1.1"
+          }
+        ],
+        "version": "1.1",
+        "title": "A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants",
+        "label": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://www.cdisc.org",
+                  "version": "2023-12-15",
+                  "code": "C94108",
+                  "display": "Study Acronym"
+                }
+              ]
+            },
+            "value": ""
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://www.cdisc.org",
+                  "version": "2023-12-15",
+                  "code": "C99905x1",
+                  "display": "Brief Study Title"
+                }
+              ]
+            },
+            "value": ""
+          }
+        ],
+        "date": "2020-07-30",
+        "status": "draft",
+        "phase": {
+          "coding": [
+            {
+              "system": "http://www.cdisc.org",
+              "version": "2023-12-15",
+              "code": "C15600",
+              "display": "Phase I Trial"
+            }
+          ],
+          "text": "Phase I Trial"
+        },
+        "associatedParty": [
+          {
+            "role": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/research-study-party-role",
+                  "code": "sponsor",
+                  "display": "sponsor"
+                }
+              ]
+            },
+            "party": {
+              "reference": "Organization/FAKE-UUID"
+            }
+          }
+        ],
+        "progressStatus": [
+          {
+            "state": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/research-study-party-role",
+                  "code": "sponsor-approved",
+                  "display": "sponsor apporval date"
+                }
+              ]
+            },
+            "period": {
+              "start": "2020-07-30T00:00:00"
+            }
+          }
+        ],
+        "recruitment": {
+          "eligibility": {
+            "reference": "Group/FAKE-UUID"
+          }
+        },
+        "comparisonGroup": [
+          {
+            "linkId": "StudyIntervention-1",
+            "name": "Treatment Group",
+            "intendedExposure": {
+              "display": null
+            },
+            "observedGroup": {
+              "display": "Not Availabe"
+            }
+          },
+          {
+            "linkId": "StudyIntervention-2",
+            "name": "Treatment Group",
+            "intendedExposure": {
+              "display": null
+            },
+            "observedGroup": {
+              "display": "Not Availabe"
+            }
+          }
+        ],
+        "objective": [
+          {
+            "type": {
+              "coding": {
+                "system": "http://www.cdisc.org",
+                "version": "2023-12-15",
+                "code": "C85826",
+                "display": "Primary Objective"
+              }
+            },
+            "description": null,
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "populationLevelSummary",
+                    "valueId": "Estimand-1"
+                  },
+                  {
+                    "url": "endpoint-outcomeMeasure",
+                    "valueId": "Endpoint-1"
+                  }
+                ],
+                "url": "http://example.org/fhir/extension/estimand"
+              }
+            ]
+          },
+          {
+            "type": {
+              "coding": {
+                "system": "http://www.cdisc.org",
+                "version": "2023-12-15",
+                "code": "C85826",
+                "display": "Primary Objective"
+              }
+            },
+            "description": null,
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "populationLevelSummary",
+                    "valueId": "Estimand-2"
+                  },
+                  {
+                    "url": "endpoint-outcomeMeasure",
+                    "valueId": "Endpoint-2"
+                  }
+                ],
+                "url": "http://example.org/fhir/extension/estimand"
+              }
+            ]
+          }
+        ],
+        "outcomeMeasure": [
+          {
+            "extension": [
+              {
+                "url": "http://example.org/fhir/extension/linkId",
+                "valueId": "Endpoint-1"
+              }
+            ],
+            "name": "Endpoint",
+            "description": ""
+          },
+          {
+            "extension": [
+              {
+                "url": "http://example.org/fhir/extension/linkId",
+                "valueId": "Endpoint-2"
+              }
+            ],
+            "name": "Endpoint",
+            "description": ""
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://www.example.com/Composition/1234X1",
+      "resource": {
+        "resourceType": "Group",
+        "id": "FAKE-UUID",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod",
+            "valueString": "all-of"
+          }
+        ],
+        "type": "person",
+        "membership": "definitional"
+      }
+    }
+  ]
+}

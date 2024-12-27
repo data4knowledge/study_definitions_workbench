@@ -11,15 +11,15 @@ from fhir.resources.researchstudy import ResearchStudy
 from fhir.resources.extension import Extension
 from fhir.resources.researchstudy import ResearchStudyAssociatedParty
 from fhir.resources.researchstudy import ResearchStudyProgressStatus
-from fhir.resources.organization import Organization
+from fhir.resources.organization import Organization as FHIROrganization
 from fhir.resources.extendedcontactdetail import ExtendedContactDetail
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
 from fhir.resources.fhirprimitiveextension import FHIRPrimitiveExtension
 from fhir.resources.group import Group
 from usdm_model.code import Code as USDMCode
-from usdm_model.study_title import StudyTitle as USDMStudyTitle
+#from usdm_model.study_title import StudyTitle as USDMStudyTitle
 from usdm_model.endpoint import Endpoint as USDMEndpoint
-from usdm_model.estimand import Estimand as USDMEstimand
+#from usdm_model.estimand import Estimand as USDMEstimand
 from usdm_model.study_intervention import StudyIntervention as USDMStudyIntervention
 from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
 from usdm_model.organization import Organization as USDMOrganization
@@ -29,7 +29,8 @@ from usdm_model.study_design import StudyDesign as USDMStudyDesign
 from usdm_model.eligibility_criterion import EligibilityCriterion
 from uuid import uuid4
 from d4kms_generic import application_logger
-
+from app.usdm.model.v4.study_version import *
+from app.usdm.model.v4.study_identifier import *
 import datetime
 
 class ToFHIRV2(ToFHIR):
@@ -67,10 +68,12 @@ class ToFHIRV2(ToFHIR):
 
   def _inclusion_exclusion_critieria(self):
     version = self.study_version
+    criteria = version.criterion_map()
     design = version.studyDesigns[0]
     all_of = self._extension_string('http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod', 'all-of')
     group = Group(id=str(uuid4()), characteristic=[], type='person', membership='definitional', extension=[all_of])
-    for index, criterion in enumerate(design.population.criteria):
+    for index, id in enumerate(design.population.criterionIds):
+      criterion = criteria[id]
       self._criterion(criterion, group.characteristic)
     return group
 
@@ -92,6 +95,7 @@ class ToFHIRV2(ToFHIR):
   
   def _research_study(self, group_id: str) -> ResearchStudy:
     version = self.study_version
+    organizations = version.organization_map()
     result = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[], objective=[], comparisonGroup=[], outcomeMeasure=[])
 
     # Sponsor Confidentiality Statememt
@@ -110,9 +114,10 @@ class ToFHIRV2(ToFHIR):
     
     # Sponsor Protocol Identifier
     for identifier in version.studyIdentifiers:
-      identifier_code = CodeableConcept(text=f"{identifier.studyIdentifierScope.organizationType.decode}")
+      org = identifier.scoped_by(organizations)
+      identifier_code = CodeableConcept(text=f"{org.type.decode}")
       #print(f"IDENTIFIER: {identifier} = {identifier_code}")
-      result.identifier.append({'type': identifier_code, 'system': 'https://example.org/sponsor-identifier', 'value': identifier.studyIdentifier})
+      result.identifier.append({'type': identifier_code, 'system': 'https://example.org/sponsor-identifier', 'value': identifier.text})
     
     # Original Protocol - No implementation details currently
     x = self._title_page['original_protocol']
@@ -149,7 +154,7 @@ class ToFHIRV2(ToFHIR):
       result.label.append(ResearchStudyLabelType(type=type, value=title.text))    
     
     # Sponsor Name and Address
-    sponsor = self._sponsor()
+    sponsor = version.sponsor()
     org = self._organization_from_organization(sponsor)
     if org:
       self._entries.append({'item': org, 'url': 'https://www.example.com/Composition/1234D'})
@@ -204,27 +209,30 @@ class ToFHIRV2(ToFHIR):
     version = self.study_version
     design = version.studyDesigns[0]
     for objective in self._primary_objectives():
-      ext = self._extension_wrapper('http://example.org/fhir/extension/estimand')
-      id = self._treatment(research_study, objective['treatment'])
-      pls_ext = self._extension_id('populationLevelSummary', self._fix_id(objective['summary'].id))
-      if pls_ext:
-        ext.extension.append(pls_ext)
-      id = self._endpoint(research_study, objective['endpoint'])
-      pls_ext = self._extension_id('endpoint-outcomeMeasure', id)
-      if pls_ext:
-        ext.extension.append(pls_ext)
-      pls_ext = self._extension_codeable_text('populationLevelSummary', objective['summary'].summaryMeasure)
-      if pls_ext:
-        ext.extension.append(pls_ext)
-      for ice in objective['events']:
-        event_ext = self._extension_codeable_text('event', ice.description)
-        strategy_ext = self._extension_codeable_text('event', ice.strategy)
-        ice_ext = self._extension_wrapper('intercurrentEvent')
-        if ice_ext:
-          ice_ext.extension.append(event_ext)
-          ice_ext.extension.append(strategy_ext)
-      item = {'type': {'coding': self._coding_from_code(objective['type'])}, 'description': objective['objective'].description, 'extension': [ext]}
-      research_study.objective.append(item)
+      try:
+        ext = self._extension_wrapper('http://example.org/fhir/extension/estimand')
+        id = self._treatment(research_study, objective['treatment'])
+        pls_ext = self._extension_id('populationLevelSummary', self._fix_id(objective['summary'].id))
+        if pls_ext:
+          ext.extension.append(pls_ext)
+        id = self._endpoint(research_study, objective['endpoint'])
+        pls_ext = self._extension_id('endpoint-outcomeMeasure', id)
+        if pls_ext:
+          ext.extension.append(pls_ext)
+        pls_ext = self._extension_codeable_text('populationLevelSummary', objective['summary'].summaryMeasure)
+        if pls_ext:
+          ext.extension.append(pls_ext)
+        for ice in objective['events']:
+          event_ext = self._extension_codeable_text('event', ice.description)
+          strategy_ext = self._extension_codeable_text('event', ice.strategy)
+          ice_ext = self._extension_wrapper('intercurrentEvent')
+          if ice_ext:
+            ice_ext.extension.append(event_ext)
+            ice_ext.extension.append(strategy_ext)
+        item = {'type': {'coding': self._coding_from_code(objective['type'])}, 'description': objective['objective'].description, 'extension': [ext]}
+        research_study.objective.append(item)
+      except Exception as e:
+        application_logger.exception(f"Exception in method _estimands", e)
 
   def _treatment(self, research_study: ResearchStudy, treatment: USDMStudyIntervention):
     id = treatment.id
@@ -238,17 +246,17 @@ class ToFHIRV2(ToFHIR):
     research_study.outcomeMeasure.append(item)
     return id
   
-  def _sponsor_identifier(self):
-    for identifier in self.study_version.studyIdentifiers:
-      if identifier.studyIdentifierScope.organizationType.code == 'C70793':
-        return identifier
-    return None
+  # def _sponsor_identifier(self):
+  #   for identifier in self.study_version.studyIdentifiers:
+  #     if identifier.studyIdentifierScope.organizationType.code == 'C70793':
+  #       return identifier
+  #   return None
 
-  def _sponsor(self):
-    for identifier in self.study_version.studyIdentifiers:
-      if identifier.studyIdentifierScope.organizationType.code == 'C70793':
-        return identifier.studyIdentifierScope
-    return None
+  # def _sponsor(self):
+  #   for identifier in self.study_version.studyIdentifiers:
+  #     if identifier.studyIdentifierScope.organizationType.code == 'C70793':
+  #       return identifier.studyIdentifierScope
+  #   return None
 
   def _phase(self):
     return self.study_version.studyPhase.standardCode
@@ -283,6 +291,7 @@ class ToFHIRV2(ToFHIR):
             result['events'].append(event)
         #print(f"OBJECIVE: {result}")
         results.append(result)
+    print(f"OBJECIVE: {results[0].keys()}")
     return results
 
   def _intervention(self, design: USDMStudyDesign, id: str) -> USDMStudyIntervention:
@@ -301,7 +310,7 @@ class ToFHIRV2(ToFHIR):
     #print(f"ORG: {organization}")
     address = self._address_from_address(organization.legalAddress)
     name = organization.label if organization.label else organization.name
-    return Organization(id=str(uuid4()), name=name, contact=[{'address': address}])
+    return FHIROrganization(id=str(uuid4()), name=name, contact=[{'address': address}])
 
   def _address_from_address(self, address: USDMAddress):  
     x = dict(address)
