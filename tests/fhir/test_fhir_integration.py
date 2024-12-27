@@ -40,6 +40,10 @@ async def _run_test_to_v1(name, save=False):
   study = usdm.wrapper().study
   extra = read_yaml(_full_path(f"{name}_extra.yaml", version, mode))
   result = ToFHIRV1(study, 'FAKE-UUID', extra).to_fhir()
+
+  x = re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}[+-]\d\d:\d\d$', result)
+  print("Dates found:", x.groupdict())
+
   pretty_result = json.dumps(json.loads(result), indent=2)
   result_filename = f"{name}_fhir.json"
   if save:
