@@ -1,0 +1,25 @@
+amendment:
+  amendment_details: ''
+  robustness_impact: false
+  robustness_impact_reason: ''
+  safety_impact: false
+  safety_impact_reason: ''
+miscellaneous:
+  medical_expert_contact: ''
+  sae_reporting_method: ''
+  sponsor_signatory: ''
+title_page:
+  amendment_details: ''
+  amendment_identifier: ''
+  amendment_scope: ''
+  compound_codes: ''
+  compound_names: ''
+  manufacturer_name_and_address: ''
+  medical_expert_contact: ''
+  original_protocol: ''
+  regulatory_agency_identifiers: ''
+  sae_reporting_method: ''
+  sponsor_approval_date: ''
+  sponsor_confidentiality: ''
+  sponsor_name_and_address: ''
+  sponsor_signatory: ''

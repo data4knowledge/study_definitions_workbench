@@ -1,4 +1,5 @@
 import json
+import yaml
 
 def write_json(full_path, content):
   with open(full_path, 'w', encoding='utf-8') as f:
@@ -15,3 +16,7 @@ def read_excel(full_path):
 def read_word(full_path):  
   with open(full_path, "rb") as f:
     return f.read()
+
+def read_yaml(full_path):
+  data = open(full_path)
+  return yaml.load(data, Loader=yaml.FullLoader)
