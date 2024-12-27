@@ -113,7 +113,7 @@ class RawDocx():
       target_table.add(target_row)
       cells = row.cells
       for c_index, cell in enumerate(cells):
-        if cell._tc:
+        if cell._tc is not None:
           x = cell._tc
           r = x.right
           l = x.left
