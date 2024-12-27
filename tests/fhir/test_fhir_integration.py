@@ -2,7 +2,8 @@ import pytest
 from tests.files. files import *
 from app.model.fhir.from_fhir_v1 import FromFHIRV1
 from app.model.file_handling.data_files import DataFiles
-# from uuid import UUID
+
+WRITE_FILE = False
 
 @pytest.fixture
 def anyio_backend():
@@ -29,12 +30,12 @@ def _full_path(filename):
 
 @pytest.mark.anyio
 async def test_fhir_v1_ASP8062():
-  await _run_test('ASP8062')
+  await _run_test('ASP8062', WRITE_FILE)
 
 @pytest.mark.anyio
 async def test_fhir_v1_DEUCRALIP():
-  await _run_test('DEUCRALIP')
+  await _run_test('DEUCRALIP', WRITE_FILE)
 
 @pytest.mark.anyio
 async def test_fhir_v1_IGBJ():
-  await _run_test('IGBJ')
+  await _run_test('IGBJ', WRITE_FILE)

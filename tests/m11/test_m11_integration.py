@@ -5,6 +5,8 @@ from app.model.file_handling.data_files import DataFiles
 from app.model.m11_protocol.m11_protocol import M11Protocol
 from app import VERSION, SYSTEM_NAME
 
+WRITE_FILE = False
+
 @pytest.fixture
 def anyio_backend():
   return 'asyncio'
@@ -33,15 +35,15 @@ def _full_path(dir, filename):
 
 @pytest.mark.anyio
 async def test_m11_radvax():
-  await _run_test('RadVax', 'RadVax')
+  await _run_test('RadVax', 'RadVax', WRITE_FILE)
 
 @pytest.mark.anyio
 async def test_m11_wa42380():
-  await _run_test('WA42380', 'WA42380')
+  await _run_test('WA42380', 'WA42380', WRITE_FILE)
 
 @pytest.mark.anyio
 async def test_m11_lzzt():
-  await _run_test('LZZT', 'LZZT')
+  await _run_test('LZZT', 'LZZT', WRITE_FILE)
 
 def replace_uuid(result):
   return re.sub(r'[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}', 'FAKE', result)
