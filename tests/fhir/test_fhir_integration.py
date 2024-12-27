@@ -1,6 +1,6 @@
 import pytest
 from tests.files. files import *
-from app.USDM.fhir.from_fhir_v1 import FromFHIRV1
+from app.USDM.FHIR.from_fhir_v1 import FromFHIRV1
 from app.model.file_handling.data_files import DataFiles
 
 WRITE_FILE = False

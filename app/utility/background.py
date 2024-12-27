@@ -10,7 +10,7 @@ from app.database.file_import import FileImport
 from app.database.study import Study
 from app.database.user import User
 from app.model.m11_protocol.m11_protocol import M11Protocol
-from app.USDM.fhir.from_fhir_v1 import FromFHIRV1
+from app.USDM.FHIR.from_fhir_v1 import FromFHIRV1
 from app.model.connection_manager import connection_manager
 from app import VERSION, SYSTEM_NAME
 from sqlalchemy.orm import Session

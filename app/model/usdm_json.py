@@ -3,8 +3,8 @@ import yaml
 import warnings
 from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
-from app.USDM.fhir.to_fhir_v1 import ToFHIRV1
-from app.USDM.fhir.to_fhir_v2 import ToFHIRV2
+from app.USDM.FHIR.to_fhir_v1 import ToFHIRV1
+from app.USDM.FHIR.to_fhir_v2 import ToFHIRV2
 from app.database.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
