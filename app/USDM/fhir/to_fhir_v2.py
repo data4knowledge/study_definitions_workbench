@@ -1,6 +1,6 @@
 import warnings
 from bs4 import BeautifulSoup   
-from app.model.fhir.to_fhir import ToFHIR
+from app.USDM.fhir.to_fhir import ToFHIR
 from fhir.resources.bundle import Bundle, BundleEntry
 from fhir.resources.identifier import Identifier
 from fhir.resources.composition import Composition
