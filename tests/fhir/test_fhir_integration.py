@@ -41,12 +41,25 @@ async def _run_test_to_v1(name, save=False):
   study = usdm.wrapper().study
   extra = read_yaml(_full_path(f"{name}_extra.yaml", version, mode))
   result = ToFHIRV1(study, 'FAKE-UUID', extra).to_fhir()
+  result = _fix_iso_dates(result)  
+  pretty_result = json.dumps(json.loads(result), indent=2)
+  result_filename = f"{name}_fhir.json"
+  if save:
+    write_json(_full_path(result_filename, version, mode), result)
+  expected = read_json(_full_path(result_filename, version, mode))
+  assert pretty_result == expected
 
-  dates = re.findall(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}[+-]\d\d:\d\d', result)
-  for date in dates:
-    print(f"Date found: {date}")
-    result = result.replace(date, '2024-12-25:00:00:00.000000+00:00')  
-  
+async def _run_test_to_v2(name, save=False):
+  version = 'v2'
+  mode = 'to'
+  filename = f"{name}_usdm.json"
+  contents = json.loads(read_json(_full_path(filename, version, mode)))
+  usdm = USDMDb()
+  usdm.from_json(contents)
+  study = usdm.wrapper().study
+  extra = read_yaml(_full_path(f"{name}_extra.yaml", version, mode))
+  result = ToFHIRV2(study, 'FAKE-UUID', extra).to_fhir()
+  result = _fix_iso_dates(result)  
   pretty_result = json.dumps(json.loads(result), indent=2)
   result_filename = f"{name}_fhir.json"
   if save:
@@ -57,6 +70,13 @@ async def _run_test_to_v1(name, save=False):
 def _full_path(filename, version, mode):
   return f"tests/test_files/fhir_{version}/{mode}/{filename}"
 
+def _fix_iso_dates(text):
+  dates = re.findall(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}[+-]\d\d:\d\d', text)
+  for date in dates:
+    print(f"Date found: {date}")
+    text = text.replace(date, '2024-12-25:00:00:00.000000+00:00')  
+  return text
+  
 @pytest.mark.anyio
 async def test_from_fhir_v1_ASP8062():
   await _run_test_from_v1('ASP8062', WRITE_FILE)
@@ -76,3 +96,11 @@ async def test_to_fhir_v1_pilot():
 @pytest.mark.anyio
 async def test_to_fhir_v1_ASP8062():
   await _run_test_to_v1('ASP8062', WRITE_FILE)
+
+@pytest.mark.anyio
+async def test_to_fhir_v2_pilot():
+  await _run_test_to_v2('pilot', True)
+
+@pytest.mark.anyio
+async def test_to_fhir_v2_ASP8062():
+  await _run_test_to_v2('ASP8062', True)
