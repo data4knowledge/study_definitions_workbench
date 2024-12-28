@@ -74,15 +74,15 @@ def _full_path(filename, version, mode):
 def _fix_iso_dates(text):
   dates = re.findall(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}[+-]\d\d:\d\d', text)
   for date in dates:
-    print(f"Date found: {date}")
+    text = text.replace(date, '2024-12-25:00:00:00.000000+00:00')  
+  dates = re.findall(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z', text)
+  for date in dates:
     text = text.replace(date, '2024-12-25:00:00:00.000000+00:00')  
   return text
 
 def _fix_org_uuid(text):
-  #"reference": "Organization/ed617f34-7da7-4a46-bb35-bf3fdf1a7a47"
   refs = re.findall(r'[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', text)
   for ref in refs:
-    print(f"Ref found: {ref}")
     text = text.replace(ref, 'FAKE-UUID')  
   return text
 
@@ -100,7 +100,7 @@ async def test_from_fhir_v1_IGBJ():
 
 @pytest.mark.anyio
 async def test_to_fhir_v1_pilot():
-  await _run_test_to_v1('pilot', WRITE_FILE)
+  await _run_test_to_v1('pilot', True)
 
 @pytest.mark.anyio
 async def test_to_fhir_v1_ASP8062():

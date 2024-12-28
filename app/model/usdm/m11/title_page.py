@@ -13,7 +13,7 @@ class USDMM11TitlePage():
     self.sponosr_confidentiality = title_page['sponsor_confidentiality']
     self.acronym = study_version.acronym()
     self.full_title = study_version.official_title()
-    self.sponsor_protocol_identifier = study_version.sponsor_identifier()
+    self.sponsor_protocol_identifier = study_version.sponsor_identifier_text()
     self.original_protocol = title_page['original_protocol']
     self.version_number = study_version.versionIdentifier
     self.version_date = study_version.protocol_date()

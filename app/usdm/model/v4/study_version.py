@@ -31,7 +31,9 @@ def sponsor(self: StudyVersion) -> Organization:
       return map[x.scopeId]
   return None
 
-def sponsor_identifier(self: StudyVersion) -> StudyIdentifier:
+# Note: Method sponsor_identifier in base USDM class
+
+def sponsor_identifier_text(self: StudyVersion) -> StudyIdentifier:
   for x in self.studyIdentifiers:
     if x.is_sponsor(self.organization_map()):
       return x.text
@@ -83,7 +85,7 @@ setattr(StudyVersion, 'official_title', official_title)
 setattr(StudyVersion, 'short_title', short_title)
 setattr(StudyVersion, 'acronym', acronym)
 setattr(StudyVersion, 'sponsor', sponsor)
-setattr(StudyVersion, 'sponsor_identifier', sponsor_identifier)
+setattr(StudyVersion, 'sponsor_identifier_text', sponsor_identifier_text)
 setattr(StudyVersion, 'sponsor_name', sponsor_name)
 setattr(StudyVersion, 'sponsor_address', sponsor_address)
 setattr(StudyVersion, 'nct_identifier', nct_identifier)

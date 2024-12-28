@@ -110,7 +110,7 @@ def _study_parameters(json_str: str, type: str) -> dict:
       'name': f"{_get_parameter(object_path, 'study/name')}-{type}",
       'phase': _get_parameter(object_path, 'study/versions[0]/studyPhase/standardCode/decode'),
       'full_title': version.official_title(),
-      'sponsor_identifier': version.sponsor_identifier(),
+      'sponsor_identifier': version.sponsor_identifier_text(),
       'nct_identifier': version.nct_identifier(),
       'sponsor': version.sponsor_name(),
     }
