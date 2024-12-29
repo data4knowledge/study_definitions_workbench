@@ -15,6 +15,6 @@ class AddressFactory():
         result['line'] = [result['line']]
       if 'country' in result:
         result['country'] = address.country.decode
-      self.item = AddressType(result)
+      self.item = AddressType(**result)
     except Exception as e:
       self.item = None

@@ -5,7 +5,7 @@ class ExtensionFactory():
   def __init__(self, **kwargs):
     try:
       kwargs['extension'] = []
-      self.item = Extension(kwargs)
+      self.item = Extension(**kwargs)
     except Exception as e:
       self.item = None
   

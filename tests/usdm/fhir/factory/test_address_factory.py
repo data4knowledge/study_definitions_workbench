@@ -1,7 +1,7 @@
 from app.usdm.fhir.factory.address_factory import AddressFactory
 from usdm_model.address import Address
 
-def test_address(mocker, monkeypatch):
+def test_address():
   address_dict = {
     'city': 'city',
     'country': {
@@ -34,6 +34,6 @@ def test_address(mocker, monkeypatch):
   assert result.item is not None
   assert result.item == expected
 
-def test_address_error(mocker, monkeypatch):
+def test_address_error():
   result = AddressFactory({})
   assert result.item is None

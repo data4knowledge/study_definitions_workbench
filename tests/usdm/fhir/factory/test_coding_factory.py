@@ -31,7 +31,7 @@ def test_coding_usdm(mocker, monkeypatch):
   assert result.item is not None
   assert result.item.__dict__ == expected
 
-def test_coding_params(mocker, monkeypatch):
+def test_coding_params():
   params = {'system': 'Code System', 'version': '1', 'code': 'Code', 'display': 'Decode'}
   expected = {
     'resource_type': 'Coding', 
@@ -53,7 +53,7 @@ def test_coding_params(mocker, monkeypatch):
   assert result.item is not None
   assert result.item.__dict__ == expected
 
-def test_coding_error(mocker, monkeypatch):
+def test_coding_error():
   params = {'code': (1,2)} # Force an exception, code not a string type
   result = CodingFactory(**params)
   assert result.item is None
