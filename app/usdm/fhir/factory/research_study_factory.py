@@ -35,6 +35,9 @@ from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
 from app.usdm.fhir.factory.extension_factory import ExtensionFactory
 from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
 from app.usdm.fhir.factory.coding_factory import CodingFactory
+from app.usdm.fhir.factory.organization_factory import OrganizationFactory
+from app.usdm.fhir.factory.associated_party_factory import AssociatedPartyFactory
+from app.usdm.fhir.factory.progress_status_factory import ProgressStatusFactory
 from usdm_model.study import Study as USDMStudy
 from usdm_model.study_version import StudyVersion as USDMStudyVersion
 
@@ -58,8 +61,8 @@ class ResearchStudyFactory:
     # Trial Acronym
     acronym = self._version.acronym() # self._get_title('Study Acronym')
     if acronym:
-      coding = CodingFactory(acronym.type)
-      type = CodeableConceptFactory({'coding': coding}) 
+      coding = CodingFactory(usdm_code=acronym.type)
+      type = CodeableConceptFactory(coding=coding) 
       self.item.label.append(ResearchStudyLabelType(type=type, value=acronym.text))
     
     # Sponsor Protocol Identifier
@@ -104,11 +107,11 @@ class ResearchStudyFactory:
       self.item.label.append(ResearchStudyLabelType(type=type, value=title.text))    
     
     # Sponsor Name and Address
-    sponsor = version.sponsor()
-    org = self._organization_from_organization(sponsor)
+    sponsor = self._version.sponsor()
+    org = OrganizationFactory(sponsor)
     if org:
       self._entries.append({'item': org, 'url': 'https://www.example.com/Composition/1234D'})
-      item = self._associated_party_reference(f"Organization/{self._fix_id(org.id)}", 'sponsor', 'sponsor')
+      item = AssociatedPartyFactory(party={'reference': f"Organization/{self._fix_id(org.id)}"}, role='sponsor', code='sponsor')
       if item:
         self.item.associatedParty.append(item)
 
@@ -119,17 +122,17 @@ class ResearchStudyFactory:
     x = self._title_page['regulatory_agency_identifiers']
     
     # Sponsor Approval
-    status = self._progress_status(self._title_page['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date')
+    status = ProgressStatusFactory(self._title_page['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date')
     if status:
       self.item.progressStatus.append(status)
     
     # Sponsor Signatory
-    item = self._associated_party(self._title_page['sponsor_signatory'], 'sponsor-signatory', 'sponsor signatory')
+    item = AssociatedPartyFactory(party={'value': self._title_page['sponsor_signatory']}, role='sponsor-signatory', code='sponsor signatory')
     if item:
       self.item.associatedParty.append(item)
     
     # Medical Expert Contact
-    item = self._associated_party(self._title_page['medical_expert_contact'], 'medical-expert', 'medical expert')
+    item = AssociatedPartyFactory(party={'value': self._title_page['medical_expert_contact']}, role='medical-expert', code='medical-expert')
     if item:
       self.item.associatedParty.append(item)
     

@@ -3,8 +3,14 @@ from usdm_model.code import Code as USDMCode
 
 class CodingFactory():
 
-  def __init__(self, code: USDMCode):
+  def __init__(self, **kwargs):
     try:
-      self.item = Coding(system=code.codeSystem, version=code.codeSystemVersion, code=code.code, display=code.decode)
+      if 'usdm_code' in kwargs:
+        kwargs['system'] = kwargs['code'].codeSystem, 
+        kwargs['version'] = kwargs['code'].codeSystemVersion, 
+        kwargs['code'] = kwargs['code'].code, 
+        kwargs['display'] = kwargs['code'].decode
+        kwargs.pop('usdm_code')
+      self.item = Coding(kwargs)
     except Exception as e:
       self.item = None
