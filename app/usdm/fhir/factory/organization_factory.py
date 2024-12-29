@@ -6,7 +6,10 @@ from uuid import uuid4
 class OrganizationFactory():
 
   def __init__(self, organization: USDMOrganization):
-    address = AddressFactory(organization.legalAddress)
-    name = organization.label if organization.label else organization.name
-    self.item = FHIROrganization(id=str(uuid4()), name=name, contact=[{'address': address}])
+    try:
+      address = AddressFactory(organization.legalAddress)
+      name = organization.label if organization.label else organization.name
+      self.item = FHIROrganization(id=str(uuid4()), name=name, contact=[{'address': address.item}])
+    except Exception as e:
+      self.item = None
   
