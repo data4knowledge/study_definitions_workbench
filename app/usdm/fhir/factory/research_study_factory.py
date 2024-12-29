@@ -97,13 +97,13 @@ class ResearchStudyFactory:
     
     # Trial Phase
     phase = self._version.phase()
-    phase_code = Coding(system=phase.codeSystem, version=phase.codeSystemVersion, code=phase.code, display=phase.decode)
-    self.item.phase = CodeableConcept(coding=[phase_code], text=phase.decode)
+    phase_code = CodingFactory(system=phase.codeSystem, version=phase.codeSystemVersion, code=phase.code, display=phase.decode)
+    self.item.phase = CodeableConceptFactory(coding=[phase_code], text=phase.decode)
     
     # Short Title
     title = self._get_title('Brief Study Title')
     if title:
-      type = CodeableConcept(coding=[self._coding_from_code(title.type)]) 
+      type = CodeableConceptFactory(coding=[self._coding_from_code(title.type)]) 
       self.item.label.append(ResearchStudyLabelType(type=type, value=title.text))    
     
     # Sponsor Name and Address

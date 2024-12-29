@@ -21,16 +21,19 @@ def test_address(mocker, monkeypatch):
     'text': 'line 1, city, district, state, postal code, USA'
   }
   expected = {
-    'item': {
-      'city': 'city',
-      'country': 'USA',
-      'district': 'district',
-      'id': 'Addr_1',
-      'postalCode': 'postal code',
-      'state': 'state',
-      'text': 'line 1, city, district, state, postal code, USA',
-    }
+    'city': 'city',
+    'country': 'USA',
+    'district': 'district',
+    'id': 'Addr_1',
+    'postalCode': 'postal code',
+    'state': 'state',
+    'text': 'line 1, city, district, state, postal code, USA',
   }
   address = Address(**address_dict)
   result = AddressFactory(address)
-  assert result.__dict__ == expected
+  assert result.item is not None
+  assert result.item == expected
+
+def test_address_error(mocker, monkeypatch):
+  result = AddressFactory({})
+  assert result.item is None
