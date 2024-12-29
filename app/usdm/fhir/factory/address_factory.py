@@ -4,14 +4,14 @@ from fhir.resources.fhirtypes import AddressType
 class AddressFactory():
 
   def __init__(self, address: USDMAddress):  
-    x = dict(address)
-    x.pop('instanceType')
-    y = {}
-    for k, v in x.items():
+    address_dict = dict(address)
+    address_dict.pop('instanceType')
+    result = {}
+    for k, v in address_dict.items():
       if v:
-        y[k] = v
-    if 'line' in y:
-      y['line'] = [y['line']]
-    if 'country' in y:
-      y['country'] = address.country.decode
-    self.item = AddressType(y)
+        result[k] = v
+    if 'line' in result:
+      result['line'] = [result['line']]
+    if 'country' in result:
+      result['country'] = address.country.decode
+    self.item = AddressType(result)
