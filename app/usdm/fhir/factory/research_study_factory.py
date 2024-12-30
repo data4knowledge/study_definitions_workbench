@@ -1,11 +1,11 @@
 import traceback
 
-from .base_factory import BaseFactory
 from usdm_model.study import Study as USDMStudy
 from usdm_model.study_version import StudyVersion as USDMStudyVersion
 from app.usdm.model.v4.study_version import *
 from app.usdm.model.v4.study_identifier import *
 from fhir.resources.researchstudy import ResearchStudy
+from app.usdm.fhir.factory.base_factory import BaseFactory
 from app.usdm.fhir.factory.extension_factory import ExtensionFactory
 from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
 from app.usdm.fhir.factory.coding_factory import CodingFactory
@@ -68,7 +68,6 @@ class ResearchStudyFactory(BaseFactory):
       # Trial Phase
       phase = self._version.phase()
       phase_code = CodingFactory(system=phase.codeSystem, version=phase.codeSystemVersion, code=phase.code, display=phase.decode)
-      print(f"PHASE CODE: {phase_code.item}")
       self.item.phase = CodeableConceptFactory(coding=[phase_code.item], text=phase.decode).item
       
       # Short Title
@@ -78,8 +77,8 @@ class ResearchStudyFactory(BaseFactory):
       # Sponsor Name and Address
       sponsor = self._version.sponsor()
       org = OrganizationFactory(sponsor)
-      #self._entries.append({'item': org, 'url': 'https://www.example.com/Composition/1234D'})
-      item = AssociatedPartyFactory(party={'reference': f"Organization/{self.fix_id(org.id)}"}, role='sponsor', code='sponsor')
+      #self._entries.append({'item': org.item, 'url': 'https://www.example.com/Composition/1234D'})
+      item = AssociatedPartyFactory(party={'reference': f"Organization/{self.fix_id(org.item.id)}"}, role='sponsor', code='sponsor')
       self.item.associatedParty.append(item)
 
       # Manufacturer Name and Address
@@ -89,16 +88,16 @@ class ResearchStudyFactory(BaseFactory):
       # x = self._title_page['regulatory_agency_identifiers']
       
       # Sponsor Approval
-      status = ProgressStatusFactory(self._title_page['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date')
-      self.item.progressStatus.append(status)
+      status = ProgressStatusFactory(value=self._title_page['sponsor_approval_date'], state_code='sponsor-approved', state_display='sponsor apporval date')
+      self.item.progressStatus.append(status.item)
       
       # Sponsor Signatory
-      item = AssociatedPartyFactory(party={'value': self._title_page['sponsor_signatory']}, role='sponsor-signatory', code='sponsor signatory')
-      self.item.associatedParty.append(item)
+      ap = AssociatedPartyFactory(party={'value': self._title_page['sponsor_signatory']}, role='sponsor-signatory', code='sponsor signatory')
+      self.item.associatedParty.append(ap.item)
       
       # Medical Expert Contact
-      item = AssociatedPartyFactory(party={'value': self._title_page['medical_expert_contact']}, role='medical-expert', code='medical-expert')
-      self.item.associatedParty.append(item)
+      ap = AssociatedPartyFactory(party={'value': self._title_page['medical_expert_contact']}, role='medical-expert', code='medical-expert')
+      self.item.associatedParty.append(ap.item)
       
     except Exception as e:
       print(f"EXCEPTION: {e}\n{traceback.format_exc()}")

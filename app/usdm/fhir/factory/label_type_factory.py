@@ -1,4 +1,4 @@
-from .base_factory import BaseFactory
+from app.usdm.fhir.factory.base_factory import BaseFactory
 from fhir.resources.fhirtypes import ResearchStudyLabelType
 from .coding_factory import CodingFactory
 from .codeable_concept_factory import CodeableConceptFactory
