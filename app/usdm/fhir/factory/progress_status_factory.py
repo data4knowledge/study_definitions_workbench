@@ -10,5 +10,4 @@ class ProgressStatusFactory():
       state = CodeableConceptFactory(coding=[code.item])
       self.item = ResearchStudyProgressStatus(state=state.item, period={'start': kwargs['value']})
     except Exception as e:
-      print(f"EXCEPTION: {e}")
       self.item = None
