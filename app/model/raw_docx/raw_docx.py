@@ -1,5 +1,3 @@
-import traceback
-
 import os
 import re
 import docx
