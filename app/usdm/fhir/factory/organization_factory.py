@@ -1,9 +1,10 @@
+from .base_factory import BaseFactory
 from fhir.resources.organization import Organization as FHIROrganization
 from usdm_model.organization import Organization as USDMOrganization
 from .address_factory import AddressFactory
 from uuid import uuid4
 
-class OrganizationFactory():
+class OrganizationFactoryBaseFactory():
 
   def __init__(self, organization: USDMOrganization):
     try:

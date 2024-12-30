@@ -1,7 +1,8 @@
+from .base_factory import BaseFactory
 from usdm_model.address import Address as USDMAddress
 from fhir.resources.fhirtypes import AddressType
 
-class AddressFactory():
+class AddressFactory(BaseFactory):
 
   def __init__(self, address: USDMAddress):
     try:  

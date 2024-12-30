@@ -1,6 +1,7 @@
+from .base_factory import BaseFactory
 from fhir.resources.coding import Coding
 
-class CodingFactory():
+class CodingFactory(BaseFactory):
 
   def __init__(self, **kwargs):
     try:

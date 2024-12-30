@@ -1,7 +1,7 @@
 from app.usdm.fhir.factory.coding_factory import CodingFactory
 from usdm_model.code import Code
 
-def test_coding_usdm(mocker, monkeypatch):
+def test_coding_usdm():
   usdm_code_dict = {
     'code': 'code',
     'codeSystem': 'codesys',

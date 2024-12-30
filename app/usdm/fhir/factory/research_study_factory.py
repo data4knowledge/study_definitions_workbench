@@ -1,5 +1,10 @@
+import traceback
+
+from .base_factory import BaseFactory
 from usdm_model.study import Study as USDMStudy
 from usdm_model.study_version import StudyVersion as USDMStudyVersion
+from app.usdm.model.v4.study_version import *
+from app.usdm.model.v4.study_identifier import *
 from fhir.resources.researchstudy import ResearchStudy
 from app.usdm.fhir.factory.extension_factory import ExtensionFactory
 from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
@@ -9,10 +14,13 @@ from app.usdm.fhir.factory.associated_party_factory import AssociatedPartyFactor
 from app.usdm.fhir.factory.progress_status_factory import ProgressStatusFactory
 from app.usdm.fhir.factory.label_type_factory import LabelTypeFactory
 
-class ResearchStudyFactory:
+class ResearchStudyFactory(BaseFactory):
 
-  def __init__(self, study: USDMStudy):
+  def __init__(self, study: USDMStudy, extra: dict={}):
     try:
+      self._title_page = extra['title_page']
+      # self._miscellaneous = extra['miscellaneous']
+      # self._amendment = extra['amendment']
       self._version: USDMStudyVersion = study.versions[0]
       self._organizations: dict = self._version.organization_map()
 
@@ -20,11 +28,11 @@ class ResearchStudyFactory:
       self.item = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[], objective=[], comparisonGroup=[], outcomeMeasure=[])
 
       # Sponsor Confidentiality Statememt
-      ext = ExtensionFactory({'url': "http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", 'stringValue': self._title_page['sponsor_confidentiality']})
+      ext = ExtensionFactory(**{'url': "http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", 'stringValue': self._title_page['sponsor_confidentiality']})
       self.item.extension.append(ext.item)
       
       # Full Title
-      self.item.title = self._version.official_title() # self._get_title('Official Study Title').text
+      self.item.title = self._version.official_title_text() # self._get_title('Official Study Title').text
       
       # Trial Acronym
       acronym = self._version.acronym() # self._get_title('Study Acronym')
@@ -33,21 +41,20 @@ class ResearchStudyFactory:
       # Sponsor Protocol Identifier
       for identifier in self._version.studyIdentifiers:
         org = identifier.scoped_by(self._organizations)
-        identifier_cc = CodeableConceptFactory({'text': org.type.decode})
+        identifier_cc = CodeableConceptFactory(text=org.type.decode)
         self.item.identifier.append({'type': identifier_cc.item, 'system': 'https://example.org/sponsor-identifier', 'value': identifier.text})
       
       # Original Protocol - No implementation details currently
-      x = self._title_page['original_protocol']
+      # x = self._title_page['original_protocol']
       
       # Version Number
       self.item.version = self._version.versionIdentifier
       
       # Version Date
-      approval_date = self._document_date()
-      self.item.date = approval_date.dateValue
+      self.item.date = self._version.approval_date_value()
       
       # Amendment Identifier
-      identifier_code = CodeableConceptFactory({'text': 'Amendment Identifier'})
+      identifier_code = CodeableConceptFactory(text='Amendment Identifier')
       self.item.identifier.append({'type': identifier_code, 'system': 'https://example.org/amendment-identifier', 'value': self._title_page['amendment_identifier']})    
       
       # Amendment Scope - Part of Amendment
@@ -61,7 +68,8 @@ class ResearchStudyFactory:
       # Trial Phase
       phase = self._version.phase()
       phase_code = CodingFactory(system=phase.codeSystem, version=phase.codeSystemVersion, code=phase.code, display=phase.decode)
-      self.item.phase = CodeableConceptFactory(coding=[phase_code], text=phase.decode)
+      print(f"PHASE CODE: {phase_code.item}")
+      self.item.phase = CodeableConceptFactory(coding=[phase_code.item], text=phase.decode).item
       
       # Short Title
       title = self._version.short_title() # self._get_title('Brief Study Title')
@@ -70,15 +78,15 @@ class ResearchStudyFactory:
       # Sponsor Name and Address
       sponsor = self._version.sponsor()
       org = OrganizationFactory(sponsor)
-      self._entries.append({'item': org, 'url': 'https://www.example.com/Composition/1234D'})
-      item = AssociatedPartyFactory(party={'reference': f"Organization/{self._fix_id(org.id)}"}, role='sponsor', code='sponsor')
+      #self._entries.append({'item': org, 'url': 'https://www.example.com/Composition/1234D'})
+      item = AssociatedPartyFactory(party={'reference': f"Organization/{self.fix_id(org.id)}"}, role='sponsor', code='sponsor')
       self.item.associatedParty.append(item)
 
       # Manufacturer Name and Address
-      x = self._title_page['manufacturer_name_and_address']
+      # x = self._title_page['manufacturer_name_and_address']
       
       # Regulatory Agency Identifiers, see above
-      x = self._title_page['regulatory_agency_identifiers']
+      # x = self._title_page['regulatory_agency_identifiers']
       
       # Sponsor Approval
       status = ProgressStatusFactory(self._title_page['sponsor_approval_date'], 'sponsor-approved', 'sponsor apporval date')
@@ -93,4 +101,5 @@ class ResearchStudyFactory:
       self.item.associatedParty.append(item)
       
     except Exception as e:
+      print(f"EXCEPTION: {e}\n{traceback.format_exc()}")
       self.item = None    

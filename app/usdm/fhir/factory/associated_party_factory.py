@@ -1,8 +1,9 @@
+from .base_factory import BaseFactory
 from fhir.resources.researchstudy import ResearchStudyAssociatedParty
 from .coding_factory import CodingFactory
 from .codeable_concept_factory import CodeableConceptFactory
 
-class AssociatedPartyFactory():
+class AssociatedPartyFactory(BaseFactory):
   
   def __init__(self, **kwargs):
     try: 
@@ -10,5 +11,4 @@ class AssociatedPartyFactory():
       role = CodeableConceptFactory(coding=[code.item])
       self.item = ResearchStudyAssociatedParty(role=role.item, party=kwargs['party'])
     except Exception as e:
-      print(f"EXCEPTION: {e}")
       self.item = None

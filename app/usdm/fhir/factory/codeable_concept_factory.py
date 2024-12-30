@@ -1,6 +1,7 @@
+from .base_factory import BaseFactory
 from fhir.resources.codeableconcept import CodeableConcept
 
-class CodeableConceptFactory():
+class CodeableConceptFactory(BaseFactory):
 
   def __init__(self, **kwargs):
     try:
