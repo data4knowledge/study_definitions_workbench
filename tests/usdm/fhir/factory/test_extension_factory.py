@@ -75,7 +75,7 @@ def _expected():
     'valueRelatedArtifact': None,
     'valueSampledData': None,
     'valueSignature': None,
-    'valueString': 'something',
+    'valueString': None,
     'valueTime': None,
     'valueTiming': None,
     'valueTriggerDefinition': None,
