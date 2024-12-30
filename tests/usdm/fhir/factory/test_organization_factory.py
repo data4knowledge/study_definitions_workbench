@@ -1,6 +1,6 @@
 from app.usdm.fhir.factory.organization_factory import OrganizationFactory
 from usdm_model.organization import Organization
-from collections import OrderedDict
+from tests.usdm.fhir.factory.dict_result import DictResult
 
 def test_organization():
   org = {
@@ -20,7 +20,7 @@ def test_organization():
   expected = _expected()
   result = OrganizationFactory(org)
   assert result.item is not None
-  result_dict = to_dict(result.item)
+  result_dict = DictResult(result.item).result
   expected['id'] = result_dict['id']
   assert result_dict == expected
 
@@ -28,25 +28,6 @@ def test_organization_error(mocker, monkeypatch):
   result = OrganizationFactory(None)
   assert result.item is None
 
-def to_dict(item):
-  return _to_dict(dict(item))
-
-def _to_dict(x):
-  if isinstance(x, list):
-    result = []
-    for v in x:
-      result.append(_to_dict(v))
-    return result
-  elif isinstance(x, dict):
-    result = {}
-    for k, v in x.items():
-      result[k] = _to_dict(v)
-    return result
-  elif isinstance(x, str) or x is None:
-    return x
-  else:
-    return _to_dict(dict(x))
-  
 def _expected():
   return {
     'resource_type': 'Organization',
