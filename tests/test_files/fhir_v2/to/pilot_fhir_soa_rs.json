@@ -78,7 +78,7 @@
         ]
       },
       "party": {
-        "reference": "Organization/22821976-faf9-4e34-9cd8-201657394757"
+        "reference": "Organization/FAKE-UUID"
       }
     }
   ],

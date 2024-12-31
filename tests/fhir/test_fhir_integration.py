@@ -1,6 +1,7 @@
 import re
 import pytest
-from tests.files. files import *
+from tests.files.files import *
+from tests.helpers.helpers import fix_uuid
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app.usdm.fhir.to_fhir_v1 import ToFHIRV1
 from app.usdm.fhir.to_fhir_v2 import ToFHIRV2
@@ -60,7 +61,7 @@ async def _run_test_to_v2(name, save=False):
   extra = read_yaml(_full_path(f"{name}_extra.yaml", version, mode))
   result = ToFHIRV2(study, 'FAKE-UUID', extra).to_fhir()
   result = _fix_iso_dates(result)  
-  result = _fix_org_uuid(result)
+  result = fix_uuid(result)
   pretty_result = json.dumps(json.loads(result), indent=2)
   result_filename = f"{name}_fhir.json"
   if save:
@@ -78,12 +79,6 @@ def _fix_iso_dates(text):
   dates = re.findall(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z', text)
   for date in dates:
     text = text.replace(date, '2024-12-25:00:00:00.000000+00:00')  
-  return text
-
-def _fix_org_uuid(text):
-  refs = re.findall(r'[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}', text)
-  for ref in refs:
-    text = text.replace(ref, 'FAKE-UUID')  
   return text
 
 @pytest.mark.anyio
