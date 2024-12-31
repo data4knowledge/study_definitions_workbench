@@ -18,33 +18,19 @@ def test_label_type():
       'coding': [
           {
             'code': 'code',
-            'code__ext': None,
             'display': 'USA',
-            'display__ext': None,
-            'extension': None,
-            'fhir_comments': None,
-            'id': None,
             'resource_type': 'Coding',
             'system': 'codesys',
-            'system__ext': None,
-            'userSelected': None,
-            'userSelected__ext': None,
             'version': '3',
-            'version__ext': None,
           },
       ],
-      'extension': None,
-      'fhir_comments': None,
-      'id': None,
       'resource_type': 'CodeableConcept',
-      'text': None,
-      'text__ext': None
     },
     'value': 'xxxxxxxxx',
   }
   result = LabelTypeFactory(**params)
   assert result.item is not None
-  assert DictResult(result.item).result == expected
+  assert result.item.__dict__ == expected
 
 def test_label_type_error(mocker, monkeypatch):
   params = {'valueString': (1,2)} # Force an exception, code not a string type

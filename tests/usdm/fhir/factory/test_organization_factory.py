@@ -30,67 +30,20 @@ def test_organization_error(mocker, monkeypatch):
 
 def _expected():
   return {
-    'resource_type': 'Organization',
-    'fhir_comments': None,
     'id': '0fe821f3-4fbe-4946-9d3e-9630c1cbaf0c',
-    'implicitRules': None,
-    'implicitRules__ext': None,
-    'language': None,
-    'language__ext': None,
-    'meta': None,
-    'contained': None,
-    'extension': None,
-    'modifierExtension': None,
-    'text': None,
-    'active': None,
-    'active__ext': None,
-    'alias': None,
-    'alias__ext': None,
     'contact': [
       {
-        'resource_type': 'ExtendedContactDetail',
-        'fhir_comments': None,
-        'extension': None,
-        'id': None,
         'address': {
-          'resource_type': 'Address',
-          'fhir_comments': None,
-          'extension': None,
           'id': 'Addr_1',
           'city': 'city',
-          'city__ext': None,
           'country': 'Denmark',
-          'country__ext': None,
           'district': 'district',
-          'district__ext': None,
-          'line': None,
-          'line__ext': None,
-          'period': None,
           'postalCode': 'postal_code',
-          'postalCode__ext': None,
           'state': 'state',
-          'state__ext': None,
           'text': 'line, city, district, state, postal_code, Denmark',
-          'text__ext': None,
-          'type': None,
-          'type__ext': None,
-          'use': None,
-          'use__ext': None
         },
-        'name': None,
-        'organization': None,
-        'period': None,
-        'purpose': None,
-        'telecom': None
       }
     ],
-    'description': None,
-    'description__ext': None,
-    'endpoint': None,
-    'identifier': None,
     'name': 'ClinicalTrials.gov',
-    'name__ext': None,
-    'partOf': None,
-    'qualification': None,
-    'type': None
+    'resourceType': 'Organization'
   }
