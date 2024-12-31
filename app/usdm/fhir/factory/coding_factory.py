@@ -14,3 +14,4 @@ class CodingFactory(BaseFactory):
       self.item = Coding(**kwargs)
     except Exception as e:
       self.item = None
+      self.handle_exception(e)

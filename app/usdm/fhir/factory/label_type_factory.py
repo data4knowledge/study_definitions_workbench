@@ -12,3 +12,4 @@ class LabelTypeFactory(BaseFactory):
       self.item = ResearchStudyLabelType(type=type.item, value=kwargs['text'])
     except Exception as e:
       self.item = None
+      self.handle_exception(e)

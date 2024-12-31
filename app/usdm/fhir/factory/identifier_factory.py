@@ -9,5 +9,5 @@ class IdentifierFactory(BaseFactory):
     try: 
       self.item = Identifier(**kwargs)
     except Exception as e:
-      print(f"ID EXCEPTION: {e}\n{traceback.format_exc()}")
       self.item = None
+      self.handle_exception(e)

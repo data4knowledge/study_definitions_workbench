@@ -28,8 +28,9 @@ class ResearchStudyFactory(BaseFactory):
       self.item = ResearchStudy(status='draft', identifier=[], extension=[], label=[], associatedParty=[], progressStatus=[], objective=[], comparisonGroup=[], outcomeMeasure=[])
 
       # Sponsor Confidentiality Statememt
-      ext = ExtensionFactory(**{'url': "http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", 'stringValue': self._title_page['sponsor_confidentiality']})
-      self.item.extension.append(ext.item)
+      if self._title_page['sponsor_confidentiality']:
+        ext = ExtensionFactory(**{'url': "http://hl7.org/fhir/uv/ebm/StructureDefinition/research-study-sponsor-confidentiality-statement", 'valueString': self._title_page['sponsor_confidentiality']})
+        self.item.extension.append(ext.item)
       
       # Full Title
       self.item.title = self._version.official_title_text() # self._get_title('Official Study Title').text
@@ -78,7 +79,7 @@ class ResearchStudyFactory(BaseFactory):
       sponsor = self._version.sponsor()
       org = OrganizationFactory(sponsor)
       #self._entries.append({'item': org.item, 'url': 'https://www.example.com/Composition/1234D'})
-      ap = AssociatedPartyFactory(party={'reference': f"Organization/{self.fix_id(org.item.id)}"}, role='sponsor', code='sponsor')
+      ap = AssociatedPartyFactory(party={'reference': f"Organization/{self.fix_id(org.item.id)}"}, role_code='sponsor', role_display='sponsor')
       self.item.associatedParty.append(ap.item)
 
       # Manufacturer Name and Address
@@ -88,17 +89,18 @@ class ResearchStudyFactory(BaseFactory):
       # x = self._title_page['regulatory_agency_identifiers']
       
       # Sponsor Approval
-      status = ProgressStatusFactory(value=self._title_page['sponsor_approval_date'], state_code='sponsor-approved', state_display='sponsor apporval date')
+      g_date: GovernanceDate = self._version.approval_date()
+      status = ProgressStatusFactory(value=g_date.dateValue, state_code='sponsor-approved', state_display='sponsor apporval date')
       self.item.progressStatus.append(status.item)
       
-      # Sponsor Signatory
-      ap = AssociatedPartyFactory(party={'value': self._title_page['sponsor_signatory']}, role='sponsor-signatory', code='sponsor signatory')
-      self.item.associatedParty.append(ap.item)
+      # # Sponsor Signatory
+      # ap = AssociatedPartyFactory(party={'value': self._title_page['sponsor_signatory']}, role_code='sponsor-signatory', role_display='sponsor signatory')
+      # self.item.associatedParty.append(ap.item)
       
-      # Medical Expert Contact
-      ap = AssociatedPartyFactory(party={'value': self._title_page['medical_expert_contact']}, role='medical-expert', code='medical-expert')
-      self.item.associatedParty.append(ap.item)
+      # # Medical Expert Contact
+      # ap = AssociatedPartyFactory(party={'value': self._title_page['medical_expert_contact']}, role_code='medical-expert', role_display='medical-expert')
+      # self.item.associatedParty.append(ap.item)
       
     except Exception as e:
-      print(f"EXCEPTION: {e}\n{traceback.format_exc()}")
       self.item = None    
+      self.handle_exception(e)

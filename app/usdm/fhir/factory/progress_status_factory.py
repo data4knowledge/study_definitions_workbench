@@ -12,3 +12,4 @@ class ProgressStatusFactory(BaseFactory):
       self.item = ResearchStudyProgressStatus(state=state.item, period={'start': kwargs['value']})
     except Exception as e:
       self.item = None
+      self.handle_exception(e)

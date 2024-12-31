@@ -11,11 +11,10 @@ class TimelinePlanDefinitionFactory(BaseFactory):
   
   def __init__(self, timeline: ScheduleTimeline):
     try: 
-      print(f"TIME: {timeline.name}")
       self.item = PlanDefinitionFactory(identifier=[self._identifier(timeline).item], status='draft').item
     except Exception as e:
-      print(f"TPD EXCEPTION: {e}\n{traceback.format_exc()}")
       self.item = None
+      self.handle_exception(e)
 
   @staticmethod
   def _identifier(timeline: ScheduleTimeline):
@@ -23,3 +22,11 @@ class TimelinePlanDefinitionFactory(BaseFactory):
     type = CodeableConceptFactory(coding=[plac.item])
     identifier = IdentifierFactory(value=timeline.name, use='usual', type=type.item)
     return identifier
+
+  @staticmethod
+  def _timimg(timeline: ScheduleTimeline):
+    pass
+
+  @staticmethod
+  def _timepoint(timeline: ScheduleTimeline):
+    pass

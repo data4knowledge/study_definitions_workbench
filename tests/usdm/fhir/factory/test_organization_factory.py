@@ -1,6 +1,8 @@
 from app.usdm.fhir.factory.organization_factory import OrganizationFactory
 from usdm_model.organization import Organization
 from tests.usdm.fhir.factory.dict_result import DictResult
+from tests.mocks.fhir_factory_mocks import mock_handle_exception
+from tests.mocks.general_mocks import mock_called
 
 def test_organization():
   org = {
@@ -24,9 +26,11 @@ def test_organization():
   expected['id'] = result_dict['id']
   assert result_dict == expected
 
-def test_organization_error(mocker, monkeypatch):
+def test_organization_error(mocker):
+  he = mock_handle_exception(mocker)
   result = OrganizationFactory(None)
   assert result.item is None
+  assert mock_called(he)
 
 def _expected():
   return {

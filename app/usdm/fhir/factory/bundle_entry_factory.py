@@ -8,3 +8,4 @@ class BundleEntryFactory(BaseFactory):
       self.item = BundleEntry(**kwargs)
     except Exception as e:
       self.item = None
+      self.handle_exception(e)

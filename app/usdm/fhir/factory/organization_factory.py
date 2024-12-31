@@ -13,4 +13,5 @@ class OrganizationFactory(BaseFactory):
       self.item = FHIROrganization(id=str(uuid4()), name=name, contact=[{'address': address.item}])
     except Exception as e:
       self.item = None
+      self.handle_exception(e)
   

@@ -1,8 +1,5 @@
 {
   "resourceType": "ResearchStudy",
-  "extension": [
-    null
-  ],
   "identifier": [
     {
       "type": {
@@ -70,11 +67,35 @@
     "text": "Phase II Trial"
   },
   "associatedParty": [
-    null,
-    null,
-    null
+    {
+      "role": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/research-study-party-role",
+            "code": "sponsor",
+            "display": "sponsor"
+          }
+        ]
+      },
+      "party": {
+        "reference": "Organization/22821976-faf9-4e34-9cd8-201657394757"
+      }
+    }
   ],
   "progressStatus": [
-    null
+    {
+      "state": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/research-study-party-role",
+            "code": "sponsor-approved",
+            "display": "sponsor apporval date"
+          }
+        ]
+      },
+      "period": {
+        "start": "2006-06-01"
+      }
+    }
   ]
 }

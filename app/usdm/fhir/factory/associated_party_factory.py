@@ -12,3 +12,4 @@ class AssociatedPartyFactory(BaseFactory):
       self.item = ResearchStudyAssociatedParty(role=role.item, party=kwargs['party'])
     except Exception as e:
       self.item = None
+      self.handle_exception(e)

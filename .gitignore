@@ -192,3 +192,4 @@ pytest_playwright_gen.sh
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
+tests/test_files/mount/database/test_database.db-journal
