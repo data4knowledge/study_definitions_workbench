@@ -3,7 +3,8 @@ from tests.usdm.fhir.factory.dict_result import DictResult
 from usdm_db import USDMDb
 from tests.files. files import *
 
-SAVE = False
+PATH = f"tests/test_files/fhir_v2/to/"
+SAVE = True
 
 def test_research_study():
   contents = json.loads(read_json(_full_path('pilot_usdm.json')))
@@ -13,13 +14,8 @@ def test_research_study():
   study = usdm.wrapper().study
   result = ResearchStudyFactory(study, extra)
   assert result.item is not None
-  result_dict = DictResult(result.item).result
-  pretty_result = json.dumps(result_dict, indent=2)
-  result_filename = f"pilot_fhir_soa_rs.json"
-  if SAVE:
-    write_json(_full_path(result_filename), json.dumps(result_dict, indent=2))
-  expected = read_json(_full_path(result_filename))
-  assert pretty_result == expected
+  result_dict = DictResult(result.item)
+  assert result_dict.results_match_file(PATH, f"pilot_fhir_soa_rs.json", SAVE)
 
 def test_research_study_error():
   result = ResearchStudyFactory(None)

@@ -1,194 +1,80 @@
 {
-  "resource_type": "ResearchStudy",
-  "fhir_comments": null,
-  "id": null,
-  "implicitRules": null,
-  "implicitRules__ext": null,
-  "language": null,
-  "language__ext": null,
-  "meta": null,
-  "contained": null,
+  "resourceType": "ResearchStudy",
   "extension": [
     null
   ],
-  "modifierExtension": null,
-  "text": null,
-  "associatedParty": [
-    {
-      "item": null
-    },
-    null,
-    null
-  ],
-  "classifier": null,
-  "comparisonGroup": [],
-  "condition": null,
-  "date": "2006-06-01",
-  "date__ext": null,
-  "description": null,
-  "description__ext": null,
-  "descriptionSummary": null,
-  "descriptionSummary__ext": null,
-  "focus": null,
   "identifier": [
     {
       "type": {
-        "resource_type": "CodeableConcept",
-        "fhir_comments": null,
-        "extension": null,
-        "id": null,
-        "coding": null,
-        "text": "Clinical Study Sponsor",
-        "text__ext": null
+        "text": "Clinical Study Sponsor"
       },
       "system": "https://example.org/sponsor-identifier",
       "value": "H2Q-MC-LZZT"
     },
     {
       "type": {
-        "resource_type": "CodeableConcept",
-        "fhir_comments": null,
-        "extension": null,
-        "id": null,
-        "coding": null,
-        "text": "Study Registry",
-        "text__ext": null
+        "text": "Study Registry"
       },
       "system": "https://example.org/sponsor-identifier",
       "value": "NCT12345678"
     },
     {
       "type": {
-        "item": {
-          "resource_type": "CodeableConcept",
-          "fhir_comments": null,
-          "extension": null,
-          "id": null,
-          "coding": null,
-          "text": "Amendment Identifier",
-          "text__ext": null
-        }
+        "text": "Amendment Identifier"
       },
       "system": "https://example.org/amendment-identifier",
       "value": ""
     }
   ],
-  "keyword": null,
+  "version": "2",
+  "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
   "label": [
     {
-      "item": {
-        "type": {
-          "resource_type": "CodeableConcept",
-          "fhir_comments": null,
-          "extension": null,
-          "id": null,
-          "coding": [
-            {
-              "resource_type": "Coding",
-              "fhir_comments": null,
-              "extension": null,
-              "id": null,
-              "code": "C94108",
-              "code__ext": null,
-              "display": "Study Acronym",
-              "display__ext": null,
-              "system": "http://www.cdisc.org",
-              "system__ext": null,
-              "userSelected": null,
-              "userSelected__ext": null,
-              "version": "2023-12-15",
-              "version__ext": null
-            }
-          ],
-          "text": null,
-          "text__ext": null
-        },
-        "value": "LZZT"
-      }
+      "type": {
+        "coding": [
+          {
+            "system": "http://www.cdisc.org",
+            "version": "2023-12-15",
+            "code": "C94108",
+            "display": "Study Acronym"
+          }
+        ]
+      },
+      "value": "LZZT"
     },
     {
-      "item": {
-        "type": {
-          "resource_type": "CodeableConcept",
-          "fhir_comments": null,
-          "extension": null,
-          "id": null,
-          "coding": [
-            {
-              "resource_type": "Coding",
-              "fhir_comments": null,
-              "extension": null,
-              "id": null,
-              "code": "C99905x1",
-              "code__ext": null,
-              "display": "Brief Study Title",
-              "display__ext": null,
-              "system": "http://www.cdisc.org",
-              "system__ext": null,
-              "userSelected": null,
-              "userSelected__ext": null,
-              "version": "2023-12-15",
-              "version__ext": null
-            }
-          ],
-          "text": null,
-          "text__ext": null
-        },
-        "value": "Xanomeline (LY246708)"
-      }
+      "type": {
+        "coding": [
+          {
+            "system": "http://www.cdisc.org",
+            "version": "2023-12-15",
+            "code": "C99905x1",
+            "display": "Brief Study Title"
+          }
+        ]
+      },
+      "value": "Xanomeline (LY246708)"
     }
   ],
-  "name": null,
-  "name__ext": null,
-  "note": null,
-  "objective": [],
-  "outcomeMeasure": [],
-  "partOf": null,
-  "period": null,
+  "date": "2006-06-01",
+  "status": "draft",
   "phase": {
-    "resource_type": "CodeableConcept",
-    "fhir_comments": null,
-    "extension": null,
-    "id": null,
     "coding": [
       {
-        "resource_type": "Coding",
-        "fhir_comments": null,
-        "extension": null,
-        "id": null,
-        "code": "C15601",
-        "code__ext": null,
-        "display": "Phase II Trial",
-        "display__ext": null,
         "system": "http://www.cdisc.org",
-        "system__ext": null,
-        "userSelected": null,
-        "userSelected__ext": null,
         "version": "2023-12-15",
-        "version__ext": null
+        "code": "C15601",
+        "display": "Phase II Trial"
       }
     ],
-    "text": "Phase II Trial",
-    "text__ext": null
+    "text": "Phase II Trial"
   },
-  "primaryPurposeType": null,
-  "progressStatus": [
+  "associatedParty": [
+    null,
+    null,
     null
   ],
-  "protocol": null,
-  "recruitment": null,
-  "region": null,
-  "relatedArtifact": null,
-  "result": null,
-  "site": null,
-  "status": "draft",
-  "status__ext": null,
-  "studyDesign": null,
-  "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
-  "title__ext": null,
-  "url": null,
-  "url__ext": null,
-  "version": "2",
-  "version__ext": null,
-  "whyStopped": null
+  "progressStatus": [
+    null
+  ]
 }

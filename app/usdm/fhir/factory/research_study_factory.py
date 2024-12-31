@@ -36,7 +36,7 @@ class ResearchStudyFactory(BaseFactory):
       
       # Trial Acronym
       acronym = self._version.acronym() # self._get_title('Study Acronym')
-      self.item.label.append(LabelTypeFactory(usdm_code=acronym.type, text=acronym.text))
+      self.item.label.append(LabelTypeFactory(usdm_code=acronym.type, text=acronym.text).item)
 
       # Sponsor Protocol Identifier
       for identifier in self._version.studyIdentifiers:
@@ -55,7 +55,7 @@ class ResearchStudyFactory(BaseFactory):
       
       # Amendment Identifier
       identifier_code = CodeableConceptFactory(text='Amendment Identifier')
-      self.item.identifier.append({'type': identifier_code, 'system': 'https://example.org/amendment-identifier', 'value': self._title_page['amendment_identifier']})    
+      self.item.identifier.append({'type': identifier_code.item, 'system': 'https://example.org/amendment-identifier', 'value': self._title_page['amendment_identifier']})    
       
       # Amendment Scope - Part of Amendment
       
@@ -72,14 +72,14 @@ class ResearchStudyFactory(BaseFactory):
       
       # Short Title
       title = self._version.short_title() # self._get_title('Brief Study Title')
-      self.item.label.append(LabelTypeFactory(usdm_code=title.type, text=title.text))
+      self.item.label.append(LabelTypeFactory(usdm_code=title.type, text=title.text).item)
     
       # Sponsor Name and Address
       sponsor = self._version.sponsor()
       org = OrganizationFactory(sponsor)
       #self._entries.append({'item': org.item, 'url': 'https://www.example.com/Composition/1234D'})
-      item = AssociatedPartyFactory(party={'reference': f"Organization/{self.fix_id(org.item.id)}"}, role='sponsor', code='sponsor')
-      self.item.associatedParty.append(item)
+      ap = AssociatedPartyFactory(party={'reference': f"Organization/{self.fix_id(org.item.id)}"}, role='sponsor', code='sponsor')
+      self.item.associatedParty.append(ap.item)
 
       # Manufacturer Name and Address
       # x = self._title_page['manufacturer_name_and_address']
