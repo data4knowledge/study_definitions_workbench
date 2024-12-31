@@ -8,27 +8,11 @@ def test_codeable_concept_coding():
     'coding': [
       {
         'code': 'Code',
-        'code__ext': None,
         'display': 'Decode',
-        'display__ext': None,
-        'extension': None,
-        'fhir_comments': None,
-        'id': None,
-        'resource_type': 'Coding',
         'system': 'Code System',
-        'system__ext': None,
-        'userSelected': None,
-        'userSelected__ext': None,
         'version': '1',
-        'version__ext': None,
       },
     ],
-    'extension': None,
-    'fhir_comments': None,
-    'id': None,
-    'resource_type': 'CodeableConcept',
-    'text': None,
-    'text__ext': None,
   }
   result = CodeableConceptFactory(**params)
   assert result.item is not None
@@ -37,13 +21,7 @@ def test_codeable_concept_coding():
 def test_codeable_concept_text():
   params = {'text': 'fred'}
   expected = {
-    'coding': None,
-    'extension': None,
-    'fhir_comments': None,
-    'id': None,
-    'resource_type': 'CodeableConcept',
     'text': 'fred',
-    'text__ext': None,
   }
   result = CodeableConceptFactory(**params)
   assert result.item is not None

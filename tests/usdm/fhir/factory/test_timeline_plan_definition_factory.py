@@ -7,18 +7,26 @@ from tests.files. files import *
 
 SAVE = True
 
+def test_identifier():
+  study = _setup()
+  result = TimelinePlanDefinitionFactory._identifier(_main_timeline(study))
+  assert result.item is not None
+  result_dict = DictResult(result.item)
+  assert result_dict.dict == {
+    'use': 'usual', 
+    'type': {'coding': [{'system': 'http://terminology.hl7.org/CodeSystem/v2-0203', 'code': 'PLAC'}]}, 
+    'value': 'Main Timeline'
+  }
+
 def test_timeline_plan_definition():
-  contents = json.loads(read_json(_full_path('pilot_usdm.json')))
-  usdm = USDMDb()
-  usdm.from_json(contents)
-  study = usdm.wrapper().study
+  study = _setup()
   result = TimelinePlanDefinitionFactory(_main_timeline(study))
   assert result.item is not None
-  result_dict = DictResult(result.item).result
-  pretty_result = json.dumps(result_dict, indent=2)
+  result_dict = result.item.json()
+  pretty_result = json.dumps(json.loads(result_dict), indent=2)
   result_filename = f"pilot_fhir_soa_tpd.json"
   if SAVE:
-    write_json(_full_path(result_filename), json.dumps(result_dict, indent=2))
+    write_json(_full_path(result_filename), pretty_result)
   expected = read_json(_full_path(result_filename))
   assert pretty_result == expected
 
@@ -33,3 +41,9 @@ def _main_timeline(study: Study) -> ScheduleTimeline:
   timeline = study.versions[0].studyDesigns[0].main_timeline()
   print(f"Timeline: {timeline.name}")
   return timeline
+
+def _setup():
+  contents = json.loads(read_json(_full_path('pilot_usdm.json')))
+  usdm = USDMDb()
+  usdm.from_json(contents)
+  return usdm.wrapper().study
