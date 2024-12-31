@@ -7,7 +7,7 @@ from usdm_model.schedule_timeline import ScheduleTimeline
 from tests.files. files import *
 
 PATH = f"tests/test_files/fhir_v2/to/"
-SAVE = True
+SAVE = False
 
 def test_identifier():
   study = _setup()

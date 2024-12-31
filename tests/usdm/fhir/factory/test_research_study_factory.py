@@ -4,7 +4,7 @@ from usdm_db import USDMDb
 from tests.files. files import *
 
 PATH = f"tests/test_files/fhir_v2/to/"
-SAVE = True
+SAVE = False
 
 def test_research_study():
   contents = json.loads(read_json(_full_path('pilot_usdm.json')))

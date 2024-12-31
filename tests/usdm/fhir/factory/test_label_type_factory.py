@@ -13,24 +13,10 @@ def test_label_type():
   }
   code = Code(**usdm_code_dict)
   params = {'usdm_code': code, 'text': 'xxxxxxxxx'}
-  expected = {
-    'type': {
-      'coding': [
-          {
-            'code': 'code',
-            'display': 'USA',
-            'resource_type': 'Coding',
-            'system': 'codesys',
-            'version': '3',
-          },
-      ],
-      'resource_type': 'CodeableConcept',
-    },
-    'value': 'xxxxxxxxx',
-  }
   result = LabelTypeFactory(**params)
   assert result.item is not None
-  assert result.item.__dict__ == expected
+  assert (result.item['type'].json()) == '{"coding":[{"system":"codesys","version":"3","code":"code","display":"USA"}]}'
+  assert (result.item['value']) == 'xxxxxxxxx'
 
 def test_label_type_error(mocker, monkeypatch):
   params = {'valueString': (1,2)} # Force an exception, code not a string type
