@@ -7,4 +7,5 @@ class BundleFactory(BaseFactory):
     try: 
       self.item = Bundle(**kwargs)
     except Exception as e:
+      print(f"Exception: {e}")
       self.item = None
