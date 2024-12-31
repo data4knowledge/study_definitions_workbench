@@ -5,7 +5,7 @@ from tests.files. files import *
 
 SAVE = False
 
-def test_label_type():
+def test_research_study():
   contents = json.loads(read_json(_full_path('pilot_usdm.json')))
   extra = read_yaml(_full_path(f"pilot_extra.yaml"))
   usdm = USDMDb()
@@ -15,13 +15,13 @@ def test_label_type():
   assert result.item is not None
   result_dict = DictResult(result.item).result
   pretty_result = json.dumps(result_dict, indent=2)
-  result_filename = f"pilot_fhir_soa.json"
+  result_filename = f"pilot_fhir_soa_rs.json"
   if SAVE:
     write_json(_full_path(result_filename), json.dumps(result_dict, indent=2))
   expected = read_json(_full_path(result_filename))
   assert pretty_result == expected
 
-def test_label_type_error():
+def test_research_study_error():
   result = ResearchStudyFactory(None)
   assert result.item is None
 

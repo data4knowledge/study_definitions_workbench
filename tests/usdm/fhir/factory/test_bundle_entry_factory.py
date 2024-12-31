@@ -76,7 +76,7 @@ def test_bundle_entry():
   assert result.item is not None
   assert DictResult(result.item).result == expected
 
-def test_extension_error(mocker, monkeypatch):
+def test_bundle_entry_error():
   params = {'valueString': (1,2)} # Force an exception, code not a string type
   result = BundleEntryFactory(**params)
   assert result.item is None
