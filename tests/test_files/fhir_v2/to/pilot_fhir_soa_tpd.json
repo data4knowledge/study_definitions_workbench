@@ -37,6 +37,9 @@
       "title": "Screen Two",
       "relatedAction": [
         {
+          "extension": [
+            null
+          ],
           "targetId": "Timing-2",
           "relationship": "Before",
           "offsetDuration": {
@@ -69,6 +72,22 @@
       "title": "Week 2",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-4",
           "relationship": "After",
           "offsetDuration": {
@@ -85,6 +104,22 @@
       "title": "Week 4",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-5",
           "relationship": "After",
           "offsetDuration": {
@@ -101,6 +136,22 @@
       "title": "Week 6",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-6",
           "relationship": "After",
           "offsetDuration": {
@@ -117,6 +168,22 @@
       "title": "Week 8",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-7",
           "relationship": "After",
           "offsetDuration": {
@@ -149,6 +216,22 @@
       "title": "Week 12",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-9",
           "relationship": "After",
           "offsetDuration": {
@@ -181,6 +264,22 @@
       "title": "Week 16",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-11",
           "relationship": "After",
           "offsetDuration": {
@@ -213,6 +312,22 @@
       "title": "Week 20",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-13",
           "relationship": "After",
           "offsetDuration": {
@@ -245,6 +360,22 @@
       "title": "Week 24",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 4,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-15",
           "relationship": "After",
           "offsetDuration": {
@@ -261,6 +392,22 @@
       "title": "Week 26",
       "relatedAction": [
         {
+          "extension": [
+            {
+              "valueRange": {
+                "low": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                },
+                "high": {
+                  "value": 3,
+                  "unit": "d",
+                  "system": "http://unitsofmeasure.org"
+                }
+              }
+            }
+          ],
           "targetId": "Timing-16",
           "relationship": "After",
           "offsetDuration": {
