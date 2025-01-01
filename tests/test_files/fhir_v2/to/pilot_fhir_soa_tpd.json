@@ -14,5 +14,87 @@
       "value": "Main Timeline"
     }
   ],
-  "status": "draft"
+  "status": "draft",
+  "action": [
+    {
+      "id": "ScheduledActivityInstance_9",
+      "title": "Screen One",
+      "definitionUri": "PlanDefinition/SCREEN1"
+    },
+    {
+      "id": "ScheduledActivityInstance_10",
+      "title": "Screen Two",
+      "definitionUri": "PlanDefinition/SCREEN2"
+    },
+    {
+      "id": "ScheduledActivityInstance_11",
+      "title": "Dose",
+      "definitionUri": "PlanDefinition/DOSE"
+    },
+    {
+      "id": "ScheduledActivityInstance_12",
+      "title": "Week 2",
+      "definitionUri": "PlanDefinition/WK2"
+    },
+    {
+      "id": "ScheduledActivityInstance_13",
+      "title": "Week 4",
+      "definitionUri": "PlanDefinition/WK4"
+    },
+    {
+      "id": "ScheduledActivityInstance_14",
+      "title": "Week 6",
+      "definitionUri": "PlanDefinition/WK6"
+    },
+    {
+      "id": "ScheduledActivityInstance_15",
+      "title": "Week 8",
+      "definitionUri": "PlanDefinition/WK8"
+    },
+    {
+      "id": "ScheduledActivityInstance_16",
+      "title": "Week NPI",
+      "definitionUri": "PlanDefinition/WK8N"
+    },
+    {
+      "id": "ScheduledActivityInstance_17",
+      "title": "Week 12",
+      "definitionUri": "PlanDefinition/WK12"
+    },
+    {
+      "id": "ScheduledActivityInstance_18",
+      "title": "Week 12 NPI",
+      "definitionUri": "PlanDefinition/WK12N"
+    },
+    {
+      "id": "ScheduledActivityInstance_19",
+      "title": "Week 16",
+      "definitionUri": "PlanDefinition/WK16"
+    },
+    {
+      "id": "ScheduledActivityInstance_20",
+      "title": "Week 16 NPI",
+      "definitionUri": "PlanDefinition/WK16N"
+    },
+    {
+      "id": "ScheduledActivityInstance_21",
+      "title": "Week 20",
+      "definitionUri": "PlanDefinition/WK20"
+    },
+    {
+      "id": "ScheduledActivityInstance_22",
+      "title": "Week 20 NPI",
+      "definitionUri": "PlanDefinition/WK20N"
+    },
+    {
+      "id": "ScheduledActivityInstance_23",
+      "title": "Week 24",
+      "definitionUri": "PlanDefinition/WK24"
+    },
+    {
+      "id": "ScheduledActivityInstance_24",
+      "title": "Week 26",
+      "definitionUri": "PlanDefinition/WK26"
+    }
+  ]
 }

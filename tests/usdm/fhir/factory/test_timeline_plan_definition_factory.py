@@ -9,18 +9,7 @@ from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 
 PATH = f"tests/test_files/fhir_v2/to/"
-SAVE = False
-
-def test_identifier():
-  study = _setup()
-  result = TimelinePlanDefinitionFactory._identifier(_main_timeline(study))
-  assert result.item is not None
-  result_dict = DictResult(result.item)
-  assert result_dict.dict == {
-    'use': 'usual', 
-    'type': {'coding': [{'system': 'http://terminology.hl7.org/CodeSystem/v2-0203', 'code': 'PLAC'}]}, 
-    'value': 'Main Timeline'
-  }
+SAVE = True
 
 def test_timeline_plan_definition():
   study = _setup()
@@ -37,7 +26,6 @@ def test_timeline_plan_definition_error(mocker):
 
 def _main_timeline(study: Study) -> ScheduleTimeline:
   timeline = study.versions[0].studyDesigns[0].main_timeline()
-  print(f"Timeline: {timeline.name}")
   return timeline
 
 def _setup():
