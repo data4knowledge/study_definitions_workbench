@@ -137,7 +137,7 @@ def test_load_fhir_v1(playwright: Playwright) -> None:
 
   page.get_by_role("button", name=" Import").click()  
   page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
-  page.set_input_files("#files", os.path.join(path, "tests/test_files/fhir_v1/ASP8062_fhir_m11.json"))
+  page.set_input_files("#files", os.path.join(path, "tests/test_files/fhir_v1/to/ASP8062_fhir_m11.json"))
   page.locator("text = Upload File(s)").last.click()
   expect(page.get_by_text("Success: Import of FHIR")).to_be_visible(timeout=30_000)
   page.get_by_role("link").first.click()
