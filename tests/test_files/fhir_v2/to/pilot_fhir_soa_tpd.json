@@ -22,7 +22,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-1",
-          "relationship": "Before"
+          "relationship": "Before",
+          "offsetDuration": {
+            "value": 2,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/SCREEN1"
@@ -33,7 +38,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-2",
-          "relationship": "Before"
+          "relationship": "Before",
+          "offsetDuration": {
+            "value": 2,
+            "unit": "d",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/SCREEN2"
@@ -44,7 +54,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-3",
-          "relationship": "Fixed Reference"
+          "relationship": "Fixed Reference",
+          "offsetDuration": {
+            "value": 1,
+            "unit": "d",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/DOSE"
@@ -55,7 +70,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-4",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 2,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK2"
@@ -66,7 +86,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-5",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 4,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK4"
@@ -77,7 +102,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-6",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 6,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK6"
@@ -88,7 +118,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-7",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 8,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK8"
@@ -99,7 +134,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-8",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 2,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK8N"
@@ -110,7 +150,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-9",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 12,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK12"
@@ -121,7 +166,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-10",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 2,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK12N"
@@ -132,7 +182,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-11",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 16,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK16"
@@ -143,7 +198,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-12",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 2,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK16N"
@@ -154,7 +214,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-13",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 20,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK20"
@@ -165,7 +230,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-14",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 2,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK20N"
@@ -176,7 +246,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-15",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 24,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK24"
@@ -187,7 +262,12 @@
       "relatedAction": [
         {
           "targetId": "Timing-16",
-          "relationship": "After"
+          "relationship": "After",
+          "offsetDuration": {
+            "value": 26,
+            "unit": "w",
+            "system": "http://unitsofmeasure.org"
+          }
         }
       ],
       "definitionUri": "PlanDefinition/WK26"

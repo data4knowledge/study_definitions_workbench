@@ -5,6 +5,7 @@ from app.usdm.fhir.factory.coding_factory import CodingFactory
 from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
 from app.usdm.fhir.factory.plan_definition_action_factory import PlanDefinitionActionFactory
 from app.usdm.fhir.factory.plan_definition_related_action_factory import PlanDefinitionRelatedActionFactory
+from app.usdm.fhir.factory.iso8601_ucum import ISO8601ToUCUM
 from usdm_model.schedule_timeline import ScheduleTimeline
 from usdm_model.scheduled_instance import ScheduledActivityInstance, ScheduledDecisionInstance
 from usdm_model.timing import Timing
@@ -36,7 +37,8 @@ class TimelinePlanDefinitionFactory(BaseFactory):
   
   def _related_action(self, timeline: ScheduleTimeline, timepoint: ScheduledDecisionInstance | ScheduledActivityInstance) -> dict:
     timing: Timing = timeline.find_timing_from(timepoint.id)
-    related = PlanDefinitionRelatedActionFactory(targetId=self.fix_id(timing.id), relationship=timing.type.decode)
+    offset = ISO8601ToUCUM.convert(timing.value)
+    related = PlanDefinitionRelatedActionFactory(targetId=self.fix_id(timing.id), relationship=timing.type.decode, offsetDuration=offset)
     return related.item
   
 

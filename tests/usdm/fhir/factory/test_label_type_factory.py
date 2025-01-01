@@ -1,5 +1,4 @@
 from app.usdm.fhir.factory.label_type_factory import LabelTypeFactory
-from tests.usdm.fhir.factory.dict_result import DictResult
 from usdm_model.code import Code
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
