@@ -34,9 +34,6 @@ def _study_design(study: Study) -> StudyDesign:
 def _main_timeline(study_design: StudyDesign) -> ScheduleTimeline:
   return study_design.main_timeline()
 
-def _timepoint(study: Study) -> ScheduleTimeline:
-  return study.versions[0].studyDesigns[0].main_timeline()
-
 def _setup():
   contents = json.loads(read_json(os.path.join(PATH, 'pilot_usdm.json')))
   usdm = USDMDb()

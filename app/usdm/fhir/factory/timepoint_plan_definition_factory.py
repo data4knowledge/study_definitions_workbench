@@ -1,16 +1,10 @@
 from app.usdm.fhir.factory.base_factory import BaseFactory
 from app.usdm.fhir.factory.plan_definition_factory import PlanDefinitionFactory
-from app.usdm.fhir.factory.identifier_factory import IdentifierFactory
 from app.usdm.fhir.factory.coding_factory import CodingFactory
 from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
 from app.usdm.fhir.factory.plan_definition_action_factory import PlanDefinitionActionFactory
-from app.usdm.fhir.factory.plan_definition_related_action_factory import PlanDefinitionRelatedActionFactory
-#from app.usdm.fhir.factory.extension_factory import ExtensionFactory
-#from app.usdm.fhir.factory.iso8601_ucum import ISO8601ToUCUM
-#from usdm_model.schedule_timeline import ScheduleTimeline
 from usdm_model.study_design import StudyDesign
 from usdm_model.scheduled_instance import ScheduledActivityInstance, ScheduledDecisionInstance
-from usdm_model.timing import Timing
 from app.usdm.model.v4.api_base_model import *
 from app.usdm.model.v4.study_design import *
 
