@@ -17,7 +17,15 @@ class TimelinePlanDefinitionFactory(BaseFactory):
   
   def __init__(self, timeline: ScheduleTimeline):
     try: 
-      self.item = PlanDefinitionFactory(identifier=[self._identifier(timeline).item], status='draft', action=self._actions(timeline)).item
+      self.item = PlanDefinitionFactory(
+        title=timeline.label_name(),
+        type=CodeableConceptFactory(coding=[CodingFactory(code="clinical-protocol", system="http://terminology.hl7.org/CodeSystem/plan-definition-type").item]).item,
+#       date=
+#       version=
+        purpose=timeline.description,
+        identifier=[self._identifier(timeline).item], 
+        status='draft', 
+        action=self._actions(timeline)).item
     except Exception as e:
       self.item = None
       self.handle_exception(e)
