@@ -5,7 +5,7 @@
     "value": "urn:uuid:None"
   },
   "type": "document",
-  "timestamp": "2025-01-01T16:40:19.746035+00:00",
+  "timestamp": "2024-12-25:00:00:00.000000+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234A",
@@ -89,7 +89,7 @@
               ]
             },
             "party": {
-              "reference": "Organization/47b6d31f-affe-41d6-a673-6e07844018cd"
+              "reference": "Organization/FAKE-UUID"
             }
           }
         ],
