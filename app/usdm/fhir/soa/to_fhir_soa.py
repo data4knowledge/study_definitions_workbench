@@ -1,11 +1,9 @@
 import datetime
-
+from d4kms_generic.logger import application_logger
 from usdm_model.study import Study
 from usdm_model.study_version import StudyVersion
 from usdm_model.study_design import StudyDesign
 from usdm_model.schedule_timeline import ScheduleTimeline
-from usdm_db.cross_reference import CrossReference
-from usdm_db.errors_and_logging.errors_and_logging import ErrorsAndLogging
 
 from app.usdm.fhir.factory.identifier_factory import IdentifierFactory
 from app.usdm.fhir.factory.research_study_factory import ResearchStudyFactory
@@ -14,16 +12,16 @@ from app.usdm.fhir.factory.bundle_entry_factory import BundleEntryFactory
 from app.usdm.fhir.factory.timeline_plan_definition_factory import TimelinePlanDefinitionFactory
 from app.usdm.fhir.factory.timepoint_plan_definition_factory import TimepointPlanDefinitionFactory
 
+from app.usdm.model.v4.study import *
+from app.usdm.model.v4.study_design import *
 
 class ToFHIRSoA():
   
   def __init__(self, study: Study, extra: dict={}):
     self._study: Study = study
     self._extra: dict = extra
-    self._errors_and_logging = ErrorsAndLogging()
-    self._cross_ref = CrossReference(study, self._errors_and_logging)
-    self._study_version: StudyVersion = study.first_versions
-    self._study_design: StudyDesign = self._study_version[0]
+    self._study_version: StudyVersion = study.first_version()
+    self._study_design: StudyDesign = self._study_version.studyDesigns[0]
     self._timeline: ScheduleTimeline = self._study_design.main_timeline()
 
   def to_message(self):
@@ -33,13 +31,13 @@ class ToFHIRSoA():
       identifier = IdentifierFactory(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._study.id}')
       rs = ResearchStudyFactory(self._study, self._extra)
       tlpd = TimelinePlanDefinitionFactory(self._timeline)
-      entries.append(BundleEntryFactory(resource=rs, fullUrl='https://www.example.com/Composition/1234A'))
-      entries.append(BundleEntryFactory(resource=tlpd, fullUrl='https://www.example.com/Composition/1234B'))
+      entries.append(BundleEntryFactory(resource=rs.item, fullUrl='https://www.example.com/Composition/1234A').item)
+      entries.append(BundleEntryFactory(resource=tlpd.item, fullUrl='https://www.example.com/Composition/1234B').item)
       for tp in self._timeline.instances:
         tppd = TimepointPlanDefinitionFactory(self._study_design, tp)
-        entries.append(BundleEntryFactory(resource=tppd, fullUrl='https://www.example.com/Composition/1234B'))
-      bundle = BundleFactory(entry=entries, type="document", identifier=identifier, timestamp=date)
-      return bundle.json()
+        entries.append(BundleEntryFactory(resource=tppd.item, fullUrl='https://www.example.com/Composition/1234B').item)
+      bundle = BundleFactory(entry=entries, type="document", identifier=identifier.item, timestamp=date)
+      return bundle.item.json()
     except Exception as e:
-      self._errors_and_logging
+      application_logger.exception("Error building FHIR SoA message. See logs for further information", e)
       return ''

@@ -17,7 +17,7 @@ def anyio_backend():
 async def _run_test_from_v1(name, save=False):
   version = 'v1'
   mode = 'from'
-  filename = f"{name}_fhir.json"
+  filename = f"{name}_fhir_m11.json"
   contents = read_json(_full_path(filename, version, mode))
   files = DataFiles()
   uuid = files.new()
@@ -44,7 +44,7 @@ async def _run_test_to_v1(name, save=False):
   result = ToFHIRV1(study, 'FAKE-UUID', extra).to_fhir()
   result = _fix_iso_dates(result)  
   pretty_result = json.dumps(json.loads(result), indent=2)
-  result_filename = f"{name}_fhir.json"
+  result_filename = f"{name}_fhir_m11.json"
   if save:
     write_json(_full_path(result_filename, version, mode), result)
   expected = read_json(_full_path(result_filename, version, mode))
@@ -63,7 +63,7 @@ async def _run_test_to_v2(name, save=False):
   result = _fix_iso_dates(result)  
   result = fix_uuid(result)
   pretty_result = json.dumps(json.loads(result), indent=2)
-  result_filename = f"{name}_fhir.json"
+  result_filename = f"{name}_fhir_m11.json"
   if save:
     write_json(_full_path(result_filename, version, mode), result)
   expected = read_json(_full_path(result_filename, version, mode))
