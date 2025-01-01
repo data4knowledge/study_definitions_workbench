@@ -11,5 +11,122 @@
     ]
   },
   "status": "draft",
-  "purpose": "-"
+  "purpose": "-",
+  "action": [
+    {
+      "id": "Activity_1",
+      "title": "Informed consent",
+      "definitionUri": "ActivityDefinition/Informed consent"
+    },
+    {
+      "id": "Activity_2",
+      "title": "Inclusion and exclusion criteria",
+      "definitionUri": "ActivityDefinition/Inclusion/exclusion criteria"
+    },
+    {
+      "id": "Activity_3",
+      "title": "Patient number assigned",
+      "definitionUri": "ActivityDefinition/Patient number assigned"
+    },
+    {
+      "id": "Activity_4",
+      "title": "Demographics",
+      "definitionUri": "ActivityDefinition/Demographics"
+    },
+    {
+      "id": "Activity_5",
+      "title": "Hachinski Ischemic Scale",
+      "definitionUri": "ActivityDefinition/Hachinski"
+    },
+    {
+      "id": "Activity_6",
+      "title": "MMSE",
+      "definitionUri": "ActivityDefinition/MMSE"
+    },
+    {
+      "id": "Activity_7",
+      "title": "Physical examination",
+      "definitionUri": "ActivityDefinition/Physical examination"
+    },
+    {
+      "id": "Activity_8",
+      "title": "Medical history",
+      "definitionUri": "ActivityDefinition/Medical history"
+    },
+    {
+      "id": "Activity_9",
+      "title": "Habits",
+      "definitionUri": "ActivityDefinition/Habits"
+    },
+    {
+      "id": "Activity_10",
+      "title": "Chest X-ray",
+      "definitionUri": "ActivityDefinition/Chest X-ray"
+    },
+    {
+      "id": "Activity_13",
+      "title": "Vital Signs and Temperature",
+      "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+    },
+    {
+      "id": "Activity_16",
+      "title": "ECG",
+      "definitionUri": "ActivityDefinition/ECG"
+    },
+    {
+      "id": "Activity_17",
+      "title": "Placebo TTS test",
+      "definitionUri": "ActivityDefinition/Placebo TTS test"
+    },
+    {
+      "id": "Activity_18",
+      "title": "CT scan",
+      "definitionUri": "ActivityDefinition/CT scan"
+    },
+    {
+      "id": "Activity_19",
+      "title": "Concomitant medications",
+      "definitionUri": "ActivityDefinition/Concomitant medications"
+    },
+    {
+      "id": "Activity_20",
+      "title": "Hematology",
+      "definitionUri": "ActivityDefinition/Hematology"
+    },
+    {
+      "id": "Activity_21",
+      "title": "Chemistry",
+      "definitionUri": "ActivityDefinition/Chemistry"
+    },
+    {
+      "id": "Activity_22",
+      "title": "Uninalysis",
+      "definitionUri": "ActivityDefinition/Uninalysis"
+    },
+    {
+      "id": "Activity_24",
+      "title": "Hemoglobin A1C",
+      "definitionUri": "ActivityDefinition/Hemoglobin A1C"
+    },
+    {
+      "id": "Activity_27",
+      "title": "ADAS-Cog",
+      "definitionUri": "ActivityDefinition/ADAS-Cog"
+    },
+    {
+      "id": "Activity_28",
+      "title": "CIBIC+",
+      "definitionUri": "ActivityDefinition/CIBIC+"
+    },
+    {
+      "id": "Activity_29",
+      "title": "DAD",
+      "definitionUri": "ActivityDefinition/DAD"
+    },
+    {
+      "id": "Activity_30",
+      "title": "NPI-X",
+      "definitionUri": "ActivityDefinition/NPI-X"
+    }
+  ]
 }

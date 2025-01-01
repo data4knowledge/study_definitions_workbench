@@ -5,17 +5,18 @@ from app.usdm.fhir.factory.coding_factory import CodingFactory
 from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
 from app.usdm.fhir.factory.plan_definition_action_factory import PlanDefinitionActionFactory
 from app.usdm.fhir.factory.plan_definition_related_action_factory import PlanDefinitionRelatedActionFactory
-from app.usdm.fhir.factory.extension_factory import ExtensionFactory
-from app.usdm.fhir.factory.iso8601_ucum import ISO8601ToUCUM
-from usdm_model.schedule_timeline import ScheduleTimeline
+#from app.usdm.fhir.factory.extension_factory import ExtensionFactory
+#from app.usdm.fhir.factory.iso8601_ucum import ISO8601ToUCUM
+#from usdm_model.schedule_timeline import ScheduleTimeline
+from usdm_model.study_design import StudyDesign
 from usdm_model.scheduled_instance import ScheduledActivityInstance, ScheduledDecisionInstance
 from usdm_model.timing import Timing
 from app.usdm.model.v4.api_base_model import *
-from app.usdm.model.v4.schedule_timeline import *
+from app.usdm.model.v4.study_design import *
 
 class TimepointPlanDefinitionFactory(BaseFactory):
   
-  def __init__(self, timeline: ScheduleTimeline, timepoint: ScheduledDecisionInstance | ScheduledActivityInstance):
+  def __init__(self, study_design: StudyDesign, timepoint: ScheduledDecisionInstance | ScheduledActivityInstance):
     try: 
       self.item = PlanDefinitionFactory(
         id=self.fix_id(timepoint.id),
@@ -24,24 +25,19 @@ class TimepointPlanDefinitionFactory(BaseFactory):
 #       date=
 #       version=
         purpose=timepoint.description,
-        status='draft').item
+        status='draft',
+        action=self._actions(study_design, timepoint)
+        ).item
     except Exception as e:
       self.item = None
       self.handle_exception(e)
 
-  # def _actions(self, timeline: ScheduleTimeline) -> list:
-  #   results = []
-  #   timepoints = timeline.timepoint_list()
-  #   for timepoint in timepoints:
-  #     action = PlanDefinitionActionFactory(id=timepoint.id, title=timepoint.label_name(), definitionUri=f'PlanDefinition/{self.fix_id(timepoint.name)}', relatedAction=[self._related_action(timeline, timepoint)])
-  #     results.append(action.item)
-  #   return results
-  
-  # def _related_action(self, timeline: ScheduleTimeline, timepoint: ScheduledDecisionInstance | ScheduledActivityInstance) -> dict:
-  #   timing: Timing = timeline.find_timing_from(timepoint.id)
-  #   offset = ISO8601ToUCUM.convert(timing.value)
-  #   related = PlanDefinitionRelatedActionFactory(targetId=self.fix_id(timing.id), relationship=timing.type.decode, offsetDuration=offset, extension=[])
-  #   if timing.windowLower:
-  #     window = ExtensionFactory(**{'valueRange': {'low': ISO8601ToUCUM.convert(timing.windowLower), 'high': ISO8601ToUCUM.convert(timing.windowUpper)}})
-  #     related.item.extension.append(window.item)
-  #   return related.item
+  def _actions(self, study_design: StudyDesign, timepoint: ScheduledDecisionInstance | ScheduledActivityInstance) -> list:
+    results = []
+    activity_list = study_design.activity_list()
+    activities = {v.id:v for v in activity_list}
+    for id in timepoint.activityIds:
+      activity = activities[id]
+      action = PlanDefinitionActionFactory(id=activity.id, title=activity.label_name(), definitionUri=f'ActivityDefinition/{self.fix_id(activity.name)}')
+      results.append(action.item)
+    return results
