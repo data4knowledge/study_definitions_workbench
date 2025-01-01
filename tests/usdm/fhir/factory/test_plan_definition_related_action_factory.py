@@ -1,4 +1,4 @@
-from app.usdm.fhir.factory.plan_definition_releated_action_factory import PlanDefinitionRelatedActionFactory
+from app.usdm.fhir.factory.plan_definition_related_action_factory import PlanDefinitionRelatedActionFactory
 from tests.usdm.fhir.factory.dict_result import DictResult
 from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
 from fhir.resources.coding import Coding

@@ -19,81 +19,177 @@
     {
       "id": "ScheduledActivityInstance_9",
       "title": "Screen One",
+      "relatedAction": [
+        {
+          "targetId": "Timing-1",
+          "relationship": "Before"
+        }
+      ],
       "definitionUri": "PlanDefinition/SCREEN1"
     },
     {
       "id": "ScheduledActivityInstance_10",
       "title": "Screen Two",
+      "relatedAction": [
+        {
+          "targetId": "Timing-2",
+          "relationship": "Before"
+        }
+      ],
       "definitionUri": "PlanDefinition/SCREEN2"
     },
     {
       "id": "ScheduledActivityInstance_11",
       "title": "Dose",
+      "relatedAction": [
+        {
+          "targetId": "Timing-3",
+          "relationship": "Fixed Reference"
+        }
+      ],
       "definitionUri": "PlanDefinition/DOSE"
     },
     {
       "id": "ScheduledActivityInstance_12",
       "title": "Week 2",
+      "relatedAction": [
+        {
+          "targetId": "Timing-4",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK2"
     },
     {
       "id": "ScheduledActivityInstance_13",
       "title": "Week 4",
+      "relatedAction": [
+        {
+          "targetId": "Timing-5",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK4"
     },
     {
       "id": "ScheduledActivityInstance_14",
       "title": "Week 6",
+      "relatedAction": [
+        {
+          "targetId": "Timing-6",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK6"
     },
     {
       "id": "ScheduledActivityInstance_15",
       "title": "Week 8",
+      "relatedAction": [
+        {
+          "targetId": "Timing-7",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK8"
     },
     {
       "id": "ScheduledActivityInstance_16",
       "title": "Week NPI",
+      "relatedAction": [
+        {
+          "targetId": "Timing-8",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK8N"
     },
     {
       "id": "ScheduledActivityInstance_17",
       "title": "Week 12",
+      "relatedAction": [
+        {
+          "targetId": "Timing-9",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK12"
     },
     {
       "id": "ScheduledActivityInstance_18",
       "title": "Week 12 NPI",
+      "relatedAction": [
+        {
+          "targetId": "Timing-10",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK12N"
     },
     {
       "id": "ScheduledActivityInstance_19",
       "title": "Week 16",
+      "relatedAction": [
+        {
+          "targetId": "Timing-11",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK16"
     },
     {
       "id": "ScheduledActivityInstance_20",
       "title": "Week 16 NPI",
+      "relatedAction": [
+        {
+          "targetId": "Timing-12",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK16N"
     },
     {
       "id": "ScheduledActivityInstance_21",
       "title": "Week 20",
+      "relatedAction": [
+        {
+          "targetId": "Timing-13",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK20"
     },
     {
       "id": "ScheduledActivityInstance_22",
       "title": "Week 20 NPI",
+      "relatedAction": [
+        {
+          "targetId": "Timing-14",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK20N"
     },
     {
       "id": "ScheduledActivityInstance_23",
       "title": "Week 24",
+      "relatedAction": [
+        {
+          "targetId": "Timing-15",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK24"
     },
     {
       "id": "ScheduledActivityInstance_24",
       "title": "Week 26",
+      "relatedAction": [
+        {
+          "targetId": "Timing-16",
+          "relationship": "After"
+        }
+      ],
       "definitionUri": "PlanDefinition/WK26"
     }
   ]
