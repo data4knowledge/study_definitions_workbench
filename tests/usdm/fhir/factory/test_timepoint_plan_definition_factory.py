@@ -1,5 +1,5 @@
 import os
-from app.usdm.fhir.factory.timeline_plan_definition_factory import TimelinePlanDefinitionFactory
+from app.usdm.fhir.factory.timepoint_plan_definition_factory import TimepointPlanDefinitionFactory
 from tests.usdm.fhir.factory.dict_result import DictResult
 from usdm_db import USDMDb
 from usdm_model.study import Study
@@ -13,18 +13,24 @@ SAVE = True
 
 def test_timeline_plan_definition():
   study = _setup()
-  result = TimelinePlanDefinitionFactory(_main_timeline(study))
+  tl = _main_timeline(study)
+  tp = tl.instances[0]
+  result = TimepointPlanDefinitionFactory(tl, tp)
   assert result.item is not None
   result_dict = DictResult(result.item)
-  assert result_dict.results_match_file(PATH, f"pilot_fhir_soa_tlpd.json", SAVE)
+  assert result_dict.results_match_file(PATH, f"pilot_fhir_soa_tppd.json", SAVE)
 
 def test_timeline_plan_definition_error(mocker):
   he = mock_handle_exception(mocker)
-  result = TimelinePlanDefinitionFactory(None)
+  result = TimepointPlanDefinitionFactory(None, None)
   assert result.item is None
   assert mock_called(he)
 
 def _main_timeline(study: Study) -> ScheduleTimeline:
+  timeline = study.versions[0].studyDesigns[0].main_timeline()
+  return timeline
+
+def _timepoint(study: Study) -> ScheduleTimeline:
   timeline = study.versions[0].studyDesigns[0].main_timeline()
   return timeline
 
