@@ -251,7 +251,7 @@ class USDMJson():
             'id': self.id,
             'study_id': design.id,
             'm11': self.m11,
-            'timeline': timeline,
+            'timeline': dict(timeline),
             'soa': soa
           }
           return result

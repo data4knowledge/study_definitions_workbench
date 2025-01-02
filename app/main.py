@@ -260,6 +260,14 @@ async def get_study_design_timeline_soa(request: Request, version_id: int, study
   data = usdm.soa(study_design_id, timeline_id)
   return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
 
+@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/fhir_soa', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  usdm = USDMJson(version_id, session)
+  data = usdm.soa(study_design_id, timeline_id)
+  print("EXPORT SOA")
+  return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
+
 @app.get('/versions/{id}/safety', dependencies=[Depends(protect_endpoint)])
 async def get_version_safety(request: Request, id: int, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)

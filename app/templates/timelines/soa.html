@@ -5,6 +5,11 @@
     {% include "shared/partials/user.html" %}
   {% endwith %}    
 {% endblock %}  
+{% block menu_content %}
+  {% with data=data %}
+    {% include "shared/partials/soa_export_menu.html" %}
+  {% endwith %} 
+{% endblock %}
 
 {% block main_content %}
   <div class="mt-3 row">
