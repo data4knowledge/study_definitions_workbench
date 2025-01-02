@@ -26,7 +26,7 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
-from app.routers import transmissions, users, versions, help, studies, index
+from app.routers import transmissions, users, versions, help, studies, index, version_timelines
 from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
 from app.dependencies.utility import user_details, is_admin
 from app.dependencies.templates import templates
@@ -51,8 +51,10 @@ set_middleware_secret(app)
 app.include_router(users.router)
 app.include_router(transmissions.router)
 app.include_router(versions.router)
+app.include_router(version_timelines.router)
 app.include_router(studies.router)
 app.include_router(help.router)
+app.include_router(index.router)
 app.include_router(index.router)
 
 @app.exception_handler(Exception)
@@ -246,27 +248,27 @@ async def get_study_design_estimands(request: Request, version_id: int, study_de
   #print(f"ESTIMAND DATA: {data}")
   return templates.TemplateResponse(request, "study_designs/partials/estimands.html", {'user': user, 'data': data})
 
-@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines', dependencies=[Depends(protect_endpoint)])
-async def get_study_design_timelines(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  usdm = USDMJson(version_id, session)
-  data = usdm.timelines(study_design_id)
-  return templates.TemplateResponse(request, "study_designs/partials/timelines.html", {'user': user, 'data': data})
+# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines', dependencies=[Depends(protect_endpoint)])
+# async def get_study_design_timelines(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
+#   user, present_in_db = user_details(request, session)
+#   usdm = USDMJson(version_id, session)
+#   data = usdm.timelines(study_design_id)
+#   return templates.TemplateResponse(request, "study_designs/partials/timelines.html", {'user': user, 'data': data})
 
-@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa', dependencies=[Depends(protect_endpoint)])
-async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  usdm = USDMJson(version_id, session)
-  data = usdm.soa(study_design_id, timeline_id)
-  return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
+# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa', dependencies=[Depends(protect_endpoint)])
+# async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
+#   user, present_in_db = user_details(request, session)
+#   usdm = USDMJson(version_id, session)
+#   data = usdm.soa(study_design_id, timeline_id)
+#   return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
 
-@app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/fhir_soa', dependencies=[Depends(protect_endpoint)])
-async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
-  user, present_in_db = user_details(request, session)
-  usdm = USDMJson(version_id, session)
-  data = usdm.soa(study_design_id, timeline_id)
-  print("EXPORT SOA")
-  return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
+# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/fhir_soa', dependencies=[Depends(protect_endpoint)])
+# async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
+#   user, present_in_db = user_details(request, session)
+#   usdm = USDMJson(version_id, session)
+#   data = usdm.soa(study_design_id, timeline_id)
+#   print("EXPORT SOA")
+#   return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
 
 @app.get('/versions/{id}/safety', dependencies=[Depends(protect_endpoint)])
 async def get_version_safety(request: Request, id: int, session: Session = Depends(get_db)):
