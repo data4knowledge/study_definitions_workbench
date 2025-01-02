@@ -2,7 +2,7 @@
   "resourceType": "Bundle",
   "identifier": {
     "system": "urn:ietf:rfc:3986",
-    "value": "urn:uuid:None"
+    "value": "urn:uuid:FAKE-UUID"
   },
   "type": "document",
   "timestamp": "2024-12-25:00:00:00.000000+00:00",

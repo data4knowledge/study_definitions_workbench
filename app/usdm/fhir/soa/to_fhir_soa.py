@@ -17,18 +17,19 @@ from app.usdm.model.v4.study_design import *
 
 class ToFHIRSoA():
   
-  def __init__(self, study: Study, extra: dict={}):
+  def __init__(self, study: Study, timeline_id: str, uuid: str, extra: dict={}):
     self._study: Study = study
     self._extra: dict = extra
     self._study_version: StudyVersion = study.first_version()
     self._study_design: StudyDesign = self._study_version.studyDesigns[0]
-    self._timeline: ScheduleTimeline = self._study_design.main_timeline()
+    self._timeline: ScheduleTimeline = self._study_design.find_timeline(timeline_id)
+    self._uuid = uuid
 
   def to_message(self):
     try:
       entries = []
       date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
-      identifier = IdentifierFactory(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._study.id}')
+      identifier = IdentifierFactory(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
       rs = ResearchStudyFactory(self._study, self._extra)
       tlpd = TimelinePlanDefinitionFactory(self._timeline)
       entries.append(BundleEntryFactory(resource=rs.item, fullUrl='https://www.example.com/Composition/1234A').item)

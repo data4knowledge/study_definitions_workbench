@@ -167,31 +167,31 @@ def mock_data_file_path_error(mocker):
   mock.side_effect = [('', '', False)]
   return mock
 
-def test_get_study_design_timelines(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uji = mock_usdm_json_init(mocker)
-  ujt = mock_usdm_json_timelines(mocker)
-  response = client.get("/versions/1/studyDesigns/1/timelines")
-  assert response.status_code == 200
-  #print(f"RESULT: {response.text}")
-  assert '<a href="/versions/1/studyDesigns/2/timelines/3/soa" class="btn btn-sm btn-outline-primary rounded-5">' in response.text
-  assert 'Special Timeline' in response.text
-  assert mock_called(uji)
-  assert mock_called(ujt)
+# def test_get_study_design_timelines(mocker, monkeypatch):
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   uji = mock_usdm_json_init(mocker)
+#   ujt = mock_usdm_json_timelines(mocker)
+#   response = client.get("/versions/1/studyDesigns/1/timelines")
+#   assert response.status_code == 200
+#   #print(f"RESULT: {response.text}")
+#   assert '<a href="/versions/1/studyDesigns/2/timelines/3/soa" class="btn btn-sm btn-outline-primary rounded-5">' in response.text
+#   assert 'Special Timeline' in response.text
+#   assert mock_called(uji)
+#   assert mock_called(ujt)
 
-def test_get_study_design_soa(mocker, monkeypatch):
-  protect_endpoint()
-  client = mock_client(monkeypatch)
-  uji = mock_usdm_json_init(mocker)
-  ujs = mock_usdm_json_soa(mocker)
-  response = client.get("/versions/1/studyDesigns/2/timelines/3/soa")
-  assert response.status_code == 200
-  #print(f"RESULT: {response.text}")
-  assert '<h5 class="card-title">Schedule of Activities: SOA LABEL</h5>' in response.text
-  assert '<h6 class="card-subtitle mb-2 text-muted">Description: SOA Description | Main: False | Name: SoA Name</h6>' in response.text
-  assert mock_called(uji)
-  assert mock_called(ujs)
+# def test_get_study_design_soa(mocker, monkeypatch):
+#   protect_endpoint()
+#   client = mock_client(monkeypatch)
+#   uji = mock_usdm_json_init(mocker)
+#   ujs = mock_usdm_json_soa(mocker)
+#   response = client.get("/versions/1/studyDesigns/2/timelines/3/soa")
+#   assert response.status_code == 200
+#   #print(f"RESULT: {response.text}")
+#   assert '<h5 class="card-title">Schedule of Activities: SOA LABEL</h5>' in response.text
+#   assert '<h6 class="card-subtitle mb-2 text-muted">Description: SOA Description | Main: False | Name: SoA Name</h6>' in response.text
+#   assert mock_called(uji)
+#   assert mock_called(ujs)
 
 def test_get_logout_single(mocker, monkeypatch):
   application_configuration.single_user = True

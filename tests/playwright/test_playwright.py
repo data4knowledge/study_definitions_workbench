@@ -365,6 +365,38 @@ def test_selection_delete(playwright: Playwright) -> None:
   browser.close()
 
 @pytest.mark.playwright
+def test_soa_export(playwright: Playwright) -> None:
+  browser = playwright.chromium.launch(headless=False)
+  context = browser.new_context()
+  page = context.new_page()
+  path = filepath()
+  page.goto(url)
+
+  login(page)
+  delete_db(page)
+
+  load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
+
+  page.get_by_role("link").first.click()
+  page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+  page.locator("li").filter(has_text="Main Timeline View").get_by_role("link").click()
+  expect(page.locator("body")).to_contain_text("Schedule of Activities: Main Timeline Back")
+  expect(page.locator("#navBarMain")).to_contain_text("Export")
+  page.get_by_role("button", name=" Export").click()
+  expect(page.locator("#navBarMain")).to_contain_text("FHIR SoA message (.json)")
+  with page.expect_download() as download_info:
+    page.get_by_role("link", name="FHIR SoA message (.json)").click()
+  download = download_info.value
+  download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+
+  context.close()
+  browser.close()
+
+# ---------------------------------------------------------
+# Add tests before here and leave the following to run last
+# ---------------------------------------------------------
+
+@pytest.mark.playwright
 def test_pagination(playwright: Playwright) -> None:
   browser = playwright.chromium.launch(headless=False)
   context = browser.new_context()

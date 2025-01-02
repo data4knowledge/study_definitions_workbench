@@ -4,8 +4,10 @@ from tests.files.files import *
 from tests.helpers.helpers import fix_uuid, fix_iso_dates
 from app.usdm.fhir.soa.to_fhir_soa import ToFHIRSoA
 from usdm_db import USDMDb
+from app.usdm.model.v4.study import *
+from app.usdm.model.v4.study_design import *
 
-WRITE_FILE = True
+WRITE_FILE = False
 
 @pytest.fixture
 def anyio_backend():
@@ -20,8 +22,9 @@ async def _run_test_to(name, save=False):
   usdm.from_json(contents)
   study = usdm.wrapper().study
   extra = read_yaml(_full_path(f"{name}_extra.yaml", version, mode))
-  result = ToFHIRSoA(study, extra).to_message()
-  print(f"RESULT: {result}")
+  study_version = study.first_version()
+  study_design = study_version.studyDesigns[0]
+  result = ToFHIRSoA(study, study_design.main_timeline().id, 'FAKE-UUID', extra).to_message()
   result = fix_iso_dates(result)  
   result = fix_uuid(result)  
   pretty_result = json.dumps(json.loads(result), indent=2)

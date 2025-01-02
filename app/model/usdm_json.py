@@ -5,6 +5,7 @@ from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from app.usdm.fhir.to_fhir_v1 import ToFHIRV1
 from app.usdm.fhir.to_fhir_v2 import ToFHIRV2
+from app.usdm.fhir.soa.to_fhir_soa import ToFHIRSoA
 from app.database.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
@@ -49,6 +50,15 @@ class USDMJson():
     data = fhir.to_fhir()
     self._files.save('fhir_v2', data)
     return data
+
+  def fhir_soa_data(self, timeline_id: str):
+    usdm = USDMDb()
+    usdm.from_json(self._data)
+    study = usdm.wrapper().study
+    fhir = ToFHIRSoA(study, timeline_id, self.uuid, self._extra)
+    data = fhir.to_message()
+    fullpath, filename = self._files.save("fhir_soa", data)
+    return fullpath, filename, 'text/plain' 
 
   def json(self):
     fullpath, filename, exists = self._files.path('usdm')

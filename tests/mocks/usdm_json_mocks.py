@@ -31,3 +31,14 @@ def mock_usdm_study_version(mocker, path='app.main'):
     }
   ]
   return mock
+
+def mock_usdm_json_fhir_soa(mocker, path='app.main'):
+  mock = mocker.patch(f"{path}.USDMJson.fhir_soa_data")
+  mock.side_effect = [('tests/test_files/main/simple.txt', 'simple.txt', 'text/plain')]
+  return mock
+
+def mock_usdm_json_fhir_soa_error(mocker, path='app.main'):
+  mock = mocker.patch(f"{path}.USDMJson.fhir_soa_data")
+  data = ('', '', '')
+  mock.side_effect = [data]
+  return mock
