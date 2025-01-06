@@ -8,7 +8,12 @@
 {% block menu_content %}
   {% with data=data %}
     {% include "shared/partials/soa_export_menu.html" %}
-  {% endwith %} 
+  {% endwith %}
+  {% if data['fhir']['enabled'] %}
+    {% with data=data %}
+      {% include "shared/partials/soa_transmit_menu.html" %}
+    {% endwith %} 
+  {% endif %} 
 {% endblock %}
 
 {% block main_content %}

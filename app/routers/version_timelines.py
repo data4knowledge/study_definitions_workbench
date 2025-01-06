@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
+from app.database.user import User
 from app.database.database import get_db
 from app.model.usdm_json import USDMJson
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import user_details
+from app.dependencies.utility import user_details, transmit_role_enabled
 from app.dependencies.templates import templates
 
 router = APIRouter(
@@ -26,6 +27,8 @@ async def get_study_design_timeline_soa(request: Request, version_id: int, study
   user, present_in_db = user_details(request, session)
   usdm = USDMJson(version_id, session)
   data = usdm.soa(study_design_id, timeline_id)
+  data['fhir'] = {'enabled': transmit_role_enabled(request)}
+  data['endpoints'] = User.endpoints_page(1, 100, user.id, session)
   #print(f"DATA: {data}")
   return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
 
