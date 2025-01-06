@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from app.database.user import User
 from app.database.database import get_db
@@ -41,3 +41,9 @@ async def get_study_design_timeline_soa(request: Request, version_id: int, study
     return FileResponse(path=full_path, filename=filename, media_type=media_type)
   else:
     return templates.TemplateResponse(request, 'errors/error.html', {'user': user, 'data': {'error': f"Error downloading the requested FHIR SoA message file"}})
+  
+@router.get('/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/transmit/{endpoint_id}', dependencies=[Depends(protect_endpoint)])
+async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, endpoint_id: str, session: Session = Depends(get_db)):
+  user, present_in_db = user_details(request, session)
+  #run_fhir_transmit(id, endpoint_id, version, user)
+  return RedirectResponse(f'/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa')
