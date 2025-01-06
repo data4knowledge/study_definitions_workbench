@@ -12,7 +12,7 @@ def test_transmisison_status_authorised(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  ift = mock_is_fhir_tx_true(mocker)
+  ift = mock_transmit_role_enabled_true(mocker)
   response = client.get("/transmissions/status?page=1&size=10")
   assert response.status_code == 200
   assert """Status of the transmissions perfomed by you""" in response.text
@@ -23,7 +23,7 @@ def test_transmisison_status_not_authorised(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  ift = mock_is_fhir_tx_false(mocker)
+  ift = mock_transmit_role_enabled_false(mocker)
   response = client.get("/transmissions/status?page=1&size=10")
   assert response.status_code == 200
   assert """User is not authorised to transmit FHIR messages.""" in response.text
@@ -34,7 +34,7 @@ def test_transmisison_status_data_authorised(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  ift = mock_is_fhir_tx_true(mocker)
+  ift = mock_transmit_role_enabled_true(mocker)
   response = client.get("/transmissions/status/data?page=1&size=10")
   assert response.status_code == 200
   assert """<th scope="col">Transmitted At</th>""" in response.text
@@ -45,7 +45,7 @@ def test_transmisison_status_data_not_authorised(mocker, monkeypatch):
   protect_endpoint()
   client = mock_client(monkeypatch)
   uc = mock_user_check_exists(mocker)
-  ift = mock_is_fhir_tx_false(mocker)
+  ift = mock_transmit_role_enabled_false(mocker)
   response = client.get("/transmissions/status/data?page=1&size=10")
   assert response.status_code == 200
   assert """User is not authorised to transmit FHIR messages.""" in response.text

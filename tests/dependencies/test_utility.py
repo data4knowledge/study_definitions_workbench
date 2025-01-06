@@ -1,6 +1,6 @@
 from starlette.requests import Request
 from starlette.datastructures import Headers
-from app.dependencies.utility import is_admin, is_fhir_tx
+from app.dependencies.utility import admin_role_enabled, transmit_role_enabled
 from tests.mocks.general_mocks import *
 
 headers = Headers()
@@ -11,22 +11,22 @@ scope = {
     'session': {}
 }
 
-def test_is_admin():
+def test_admin_role_enabled():
   request = Request(scope)
   request.session['userinfo'] = {'roles': [{'name': 'Admin'}]}
-  assert is_admin(request) == True
+  assert admin_role_enabled(request) == True
 
 def test_is_not_admin():
   request = Request(scope)
   request.session['userinfo'] = {'roles': []}
-  assert is_admin(request) == False
+  assert admin_role_enabled(request) == False
 
-def test_is_fhir_tx():
+def test_transmit_role_enabled():
   request = Request(scope)
-  request.session['userinfo'] = {'roles': [{'name': 'FHIR-Tx'}]}
-  assert is_fhir_tx(request) == True
+  request.session['userinfo'] = {'roles': [{'name': 'Transmit'}]}
+  assert transmit_role_enabled(request) == True
 
 def test_is_not_fhir_tx():
   request = Request(scope)
   request.session['userinfo'] = {'roles': []}
-  assert is_fhir_tx(request) == False
+  assert transmit_role_enabled(request) == False

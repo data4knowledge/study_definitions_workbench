@@ -10,7 +10,7 @@ from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.usdm_json import USDMJson
 from app.model.file_handling.data_files import DataFiles
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import is_fhir_tx, user_details
+from app.dependencies.utility import transmit_role_enabled, user_details
 from app.dependencies.templates import templates
 from app.utility.template_methods import restructure_study_list
 from app.dependencies.fhir_version import fhir_versions
@@ -61,5 +61,5 @@ def study_list(request: Request, list_studies: str=None, session: Session = Depe
     data.append(m11.__dict__)
   data = restructure_study_list(data)
   #print(f"STUDY LIST: {data}")
-  data['fhir'] = {'enabled': is_fhir_tx(request), 'versions': fhir_versions()}
+  data['fhir'] = {'enabled': transmit_role_enabled(request), 'versions': fhir_versions()}
   return templates.TemplateResponse(request, "studies/list.html", {'user': user, 'data': data})

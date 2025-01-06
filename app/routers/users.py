@@ -5,7 +5,7 @@ from app.database.user import User
 from app.database.endpoint import Endpoint
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import is_admin
+from app.dependencies.utility import admin_role_enabled
 from app.dependencies.templates import templates
 from d4kms_generic.logger import application_logger
 
@@ -18,7 +18,7 @@ router = APIRouter(
 @router.get("/{id}/show")
 def user_show(request: Request, id: int, session: Session = Depends(get_db)):
   user = User.find(id, session)
-  user_is_admin = is_admin(request)
+  user_is_admin = admin_role_enabled(request)
   data = {'endpoints': User.endpoints_page(1, 100, user.id, session), 'validation': {'user': User.valid(), 'endpoint': Endpoint.valid()}, 'debug': {'level': application_logger.get_level_str()}, 'admin': user_is_admin}
   return templates.TemplateResponse(request, "users/show.html", {'user': user, 'data': data})
   

@@ -28,7 +28,7 @@ from app.model.unified_diff.unified_diff import UnifiedDiff
 
 from app.routers import transmissions, users, versions, help, studies, index, version_timelines
 from app.dependencies.dependency import set_middleware_secret, protect_endpoint, authorisation
-from app.dependencies.utility import user_details, is_admin
+from app.dependencies.utility import user_details, admin_role_enabled
 from app.dependencies.templates import templates
 
 from app.configuration.configuration import application_configuration
@@ -404,7 +404,7 @@ async def protocl_section(request: Request, id: int, section_id: str, session: S
 @app.get('/database/clean', dependencies=[Depends(protect_endpoint)])
 async def database_clean(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  if is_admin(request):
+  if admin_role_enabled(request):
     database_managr = DBM(session)
     database_managr.clear_all()
     endpoint, validation = Endpoint.create('LOCAL TEST', 'http://localhost:8010/m11', "FHIR", user.id, session)
@@ -419,7 +419,7 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
 @app.get("/database/debug", dependencies=[Depends(protect_endpoint)])
 async def database_clean(request: Request, session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  if is_admin(request):
+  if admin_role_enabled(request):
     data = {}
     data['users'] = json.dumps(User.debug(session), indent=2)
     data['studies'] = json.dumps(Study.debug(session), indent=2)
@@ -437,7 +437,7 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
 @app.patch("/debug", dependencies=[Depends(protect_endpoint)])
 async def debug_level(request: Request, level: str='INFO', session: Session = Depends(get_db)):
   user, present_in_db = user_details(request, session)
-  if is_admin(request) and level.upper() in ['DEBUG', 'INFO']:
+  if admin_role_enabled(request) and level.upper() in ['DEBUG', 'INFO']:
     level = application_logger.DEBUG if level.upper() == 'DEBUG' else application_logger.INFO
     application_logger.set_level(level)
     return templates.TemplateResponse(request, 'users/partials/debug.html', {'user': user, 'data': {'debug': {'level': application_logger.get_level_str()}}})
