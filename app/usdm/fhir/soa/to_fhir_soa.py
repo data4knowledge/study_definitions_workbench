@@ -15,13 +15,16 @@ from app.usdm.fhir.factory.timeline_plan_definition_factory import (
 from app.usdm.fhir.factory.timepoint_plan_definition_factory import (
     TimepointPlanDefinitionFactory,
 )
-
+from app.usdm.fhir.factory.activity_definition_factory import ActivityDefinitionFactory
 from app.usdm.model.v4.study import *
 from app.usdm.model.v4.study_design import *
 
 
 class ToFHIRSoA:
     def __init__(self, study: Study, timeline_id: str, uuid: str, extra: dict = {}):
+        """
+        Initialize the ToFHIRSoA class
+        """
         self._study: Study = study
         self._extra: dict = extra
         self._study_version: StudyVersion = study.first_version()
@@ -30,26 +33,35 @@ class ToFHIRSoA:
         self._uuid = uuid
 
     def to_message(self):
+        """
+        Build the FHIR SoA message
+        """
         try:
             entries = []
             date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
             identifier = IdentifierFactory(
                 system="urn:ietf:rfc:3986", value=f"urn:uuid:{self._uuid}"
             )
+
+            # Add research study
             rs = ResearchStudyFactory(self._study, self._extra)
-            tlpd = TimelinePlanDefinitionFactory(self._timeline)
             entries.append(
                 BundleEntryFactory(
                     resource=rs.item,
                     fullUrl="https://www.example.com/Composition/1234A",
                 ).item
             )
+
+            # Add timeline plan definition, this is the overall timeline.
+            tlpd = TimelinePlanDefinitionFactory(self._timeline)
             entries.append(
                 BundleEntryFactory(
                     resource=tlpd.item,
                     fullUrl="https://www.example.com/Composition/1234B",
                 ).item
             )
+
+            # Add timepoint plan definitions for the activities
             for tp in self._timeline.instances:
                 tppd = TimepointPlanDefinitionFactory(self._study_design, tp)
                 entries.append(
@@ -58,6 +70,23 @@ class ToFHIRSoA:
                         fullUrl="https://www.example.com/Composition/1234B",
                     ).item
                 )
+
+            # Add activity definitions for each activit
+            activity_list = self._study_design.activity_list()
+            for activity in activity_list:
+                ad = ActivityDefinitionFactory(
+                    id=f"ActivityDefinition-{ActivityDefinitionFactory.fix_id(activity.name)}",
+                    status="active",
+                    description=activity.description,
+                )
+                entries.append(
+                    BundleEntryFactory(
+                        resource=ad.item,
+                        fullUrl="https://www.example.com/Composition/1234B",
+                    ).item
+                )
+                
+            # Build the final bundle
             bundle = BundleFactory(
                 entry=entries,
                 type="document",

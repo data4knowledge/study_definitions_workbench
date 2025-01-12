@@ -1,4 +1,4 @@
-from app.usdm.fhir.factory.activity_factory import ActivityDefinitionFactory
+from app.usdm.fhir.factory.activity_definition_factory import ActivityDefinitionFactory
 from fhir.resources.activitydefinition import ActivityDefinition
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called

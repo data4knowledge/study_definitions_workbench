@@ -40,7 +40,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/screen1"
+      "definitionUri": "PlanDefinition-screen1"
     },
     {
       "id": "ScheduledActivityInstance_10",
@@ -59,7 +59,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/screen2"
+      "definitionUri": "PlanDefinition-screen2"
     },
     {
       "id": "ScheduledActivityInstance_11",
@@ -75,7 +75,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/dose"
+      "definitionUri": "PlanDefinition-dose"
     },
     {
       "id": "ScheduledActivityInstance_12",
@@ -107,7 +107,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk2"
+      "definitionUri": "PlanDefinition-wk2"
     },
     {
       "id": "ScheduledActivityInstance_13",
@@ -139,7 +139,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk4"
+      "definitionUri": "PlanDefinition-wk4"
     },
     {
       "id": "ScheduledActivityInstance_14",
@@ -171,7 +171,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk6"
+      "definitionUri": "PlanDefinition-wk6"
     },
     {
       "id": "ScheduledActivityInstance_15",
@@ -203,7 +203,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk8"
+      "definitionUri": "PlanDefinition-wk8"
     },
     {
       "id": "ScheduledActivityInstance_16",
@@ -219,7 +219,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk8n"
+      "definitionUri": "PlanDefinition-wk8n"
     },
     {
       "id": "ScheduledActivityInstance_17",
@@ -251,7 +251,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk12"
+      "definitionUri": "PlanDefinition-wk12"
     },
     {
       "id": "ScheduledActivityInstance_18",
@@ -267,7 +267,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk12n"
+      "definitionUri": "PlanDefinition-wk12n"
     },
     {
       "id": "ScheduledActivityInstance_19",
@@ -299,7 +299,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk16"
+      "definitionUri": "PlanDefinition-wk16"
     },
     {
       "id": "ScheduledActivityInstance_20",
@@ -315,7 +315,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk16n"
+      "definitionUri": "PlanDefinition-wk16n"
     },
     {
       "id": "ScheduledActivityInstance_21",
@@ -347,7 +347,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk20"
+      "definitionUri": "PlanDefinition-wk20"
     },
     {
       "id": "ScheduledActivityInstance_22",
@@ -363,7 +363,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk20n"
+      "definitionUri": "PlanDefinition-wk20n"
     },
     {
       "id": "ScheduledActivityInstance_23",
@@ -395,7 +395,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk24"
+      "definitionUri": "PlanDefinition-wk24"
     },
     {
       "id": "ScheduledActivityInstance_24",
@@ -427,7 +427,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/wk26"
+      "definitionUri": "PlanDefinition-wk26"
     }
   ]
 }

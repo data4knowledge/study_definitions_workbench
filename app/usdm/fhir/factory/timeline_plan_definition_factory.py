@@ -60,7 +60,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
             action = PlanDefinitionActionFactory(
                 id=timepoint.id,
                 title=timepoint.label_name(),
-                definitionUri=f"PlanDefinition/{self.fix_id(timepoint.name)}",
+                definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
                 relatedAction=[self._related_action(timeline, timepoint)],
             )
             results.append(action.item)
