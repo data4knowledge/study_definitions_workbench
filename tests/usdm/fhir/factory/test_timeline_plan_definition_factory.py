@@ -1,4 +1,5 @@
 import os
+import json
 from app.usdm.fhir.factory.timeline_plan_definition_factory import (
     TimelinePlanDefinitionFactory,
 )
@@ -6,7 +7,7 @@ from tests.usdm.fhir.factory.dict_result import DictResult
 from usdm_db import USDMDb
 from usdm_model.study import Study
 from usdm_model.schedule_timeline import ScheduleTimeline
-from tests.files.files import *
+from tests.files.files import read_json
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 

@@ -1,4 +1,5 @@
 import os
+import json
 from app.usdm.fhir.factory.timepoint_plan_definition_factory import (
     TimepointPlanDefinitionFactory,
 )
@@ -7,7 +8,7 @@ from usdm_db import USDMDb
 from usdm_model.study import Study
 from usdm_model.study_design import StudyDesign
 from usdm_model.schedule_timeline import ScheduleTimeline
-from tests.files.files import *
+from tests.files.files import read_json
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 

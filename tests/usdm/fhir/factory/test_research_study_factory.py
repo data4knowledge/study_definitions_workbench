@@ -1,7 +1,8 @@
+import json
 from app.usdm.fhir.factory.research_study_factory import ResearchStudyFactory
 from tests.usdm.fhir.factory.dict_result import DictResult
 from usdm_db import USDMDb
-from tests.files.files import *
+from tests.files.files import read_json, read_yaml
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 

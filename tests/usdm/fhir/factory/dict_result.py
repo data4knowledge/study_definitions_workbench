@@ -1,6 +1,6 @@
 import os
 import json
-from tests.files.files import *
+from tests.files.files import read_json, write_json
 from tests.helpers.helpers import fix_uuid
 
 
