@@ -31,7 +31,7 @@
       "title": "Screen One",
       "relatedAction": [
         {
-          "targetId": "Timing-1",
+          "targetId": "timing-1",
           "relationship": "Before",
           "offsetDuration": {
             "value": 2,
@@ -40,7 +40,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/SCREEN1"
+      "definitionUri": "PlanDefinition/screen1"
     },
     {
       "id": "ScheduledActivityInstance_10",
@@ -50,7 +50,7 @@
           "extension": [
             null
           ],
-          "targetId": "Timing-2",
+          "targetId": "timing-2",
           "relationship": "Before",
           "offsetDuration": {
             "value": 2,
@@ -59,14 +59,14 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/SCREEN2"
+      "definitionUri": "PlanDefinition/screen2"
     },
     {
       "id": "ScheduledActivityInstance_11",
       "title": "Dose",
       "relatedAction": [
         {
-          "targetId": "Timing-3",
+          "targetId": "timing-3",
           "relationship": "Fixed Reference",
           "offsetDuration": {
             "value": 1,
@@ -75,7 +75,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/DOSE"
+      "definitionUri": "PlanDefinition/dose"
     },
     {
       "id": "ScheduledActivityInstance_12",
@@ -98,7 +98,7 @@
               }
             }
           ],
-          "targetId": "Timing-4",
+          "targetId": "timing-4",
           "relationship": "After",
           "offsetDuration": {
             "value": 2,
@@ -107,7 +107,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK2"
+      "definitionUri": "PlanDefinition/wk2"
     },
     {
       "id": "ScheduledActivityInstance_13",
@@ -130,7 +130,7 @@
               }
             }
           ],
-          "targetId": "Timing-5",
+          "targetId": "timing-5",
           "relationship": "After",
           "offsetDuration": {
             "value": 4,
@@ -139,7 +139,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK4"
+      "definitionUri": "PlanDefinition/wk4"
     },
     {
       "id": "ScheduledActivityInstance_14",
@@ -162,7 +162,7 @@
               }
             }
           ],
-          "targetId": "Timing-6",
+          "targetId": "timing-6",
           "relationship": "After",
           "offsetDuration": {
             "value": 6,
@@ -171,7 +171,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK6"
+      "definitionUri": "PlanDefinition/wk6"
     },
     {
       "id": "ScheduledActivityInstance_15",
@@ -194,7 +194,7 @@
               }
             }
           ],
-          "targetId": "Timing-7",
+          "targetId": "timing-7",
           "relationship": "After",
           "offsetDuration": {
             "value": 8,
@@ -203,14 +203,14 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK8"
+      "definitionUri": "PlanDefinition/wk8"
     },
     {
       "id": "ScheduledActivityInstance_16",
       "title": "Week NPI",
       "relatedAction": [
         {
-          "targetId": "Timing-8",
+          "targetId": "timing-8",
           "relationship": "After",
           "offsetDuration": {
             "value": 2,
@@ -219,7 +219,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK8N"
+      "definitionUri": "PlanDefinition/wk8n"
     },
     {
       "id": "ScheduledActivityInstance_17",
@@ -242,7 +242,7 @@
               }
             }
           ],
-          "targetId": "Timing-9",
+          "targetId": "timing-9",
           "relationship": "After",
           "offsetDuration": {
             "value": 12,
@@ -251,14 +251,14 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK12"
+      "definitionUri": "PlanDefinition/wk12"
     },
     {
       "id": "ScheduledActivityInstance_18",
       "title": "Week 12 NPI",
       "relatedAction": [
         {
-          "targetId": "Timing-10",
+          "targetId": "timing-10",
           "relationship": "After",
           "offsetDuration": {
             "value": 2,
@@ -267,7 +267,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK12N"
+      "definitionUri": "PlanDefinition/wk12n"
     },
     {
       "id": "ScheduledActivityInstance_19",
@@ -290,7 +290,7 @@
               }
             }
           ],
-          "targetId": "Timing-11",
+          "targetId": "timing-11",
           "relationship": "After",
           "offsetDuration": {
             "value": 16,
@@ -299,14 +299,14 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK16"
+      "definitionUri": "PlanDefinition/wk16"
     },
     {
       "id": "ScheduledActivityInstance_20",
       "title": "Week 16 NPI",
       "relatedAction": [
         {
-          "targetId": "Timing-12",
+          "targetId": "timing-12",
           "relationship": "After",
           "offsetDuration": {
             "value": 2,
@@ -315,7 +315,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK16N"
+      "definitionUri": "PlanDefinition/wk16n"
     },
     {
       "id": "ScheduledActivityInstance_21",
@@ -338,7 +338,7 @@
               }
             }
           ],
-          "targetId": "Timing-13",
+          "targetId": "timing-13",
           "relationship": "After",
           "offsetDuration": {
             "value": 20,
@@ -347,14 +347,14 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK20"
+      "definitionUri": "PlanDefinition/wk20"
     },
     {
       "id": "ScheduledActivityInstance_22",
       "title": "Week 20 NPI",
       "relatedAction": [
         {
-          "targetId": "Timing-14",
+          "targetId": "timing-14",
           "relationship": "After",
           "offsetDuration": {
             "value": 2,
@@ -363,7 +363,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK20N"
+      "definitionUri": "PlanDefinition/wk20n"
     },
     {
       "id": "ScheduledActivityInstance_23",
@@ -386,7 +386,7 @@
               }
             }
           ],
-          "targetId": "Timing-15",
+          "targetId": "timing-15",
           "relationship": "After",
           "offsetDuration": {
             "value": 24,
@@ -395,7 +395,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK24"
+      "definitionUri": "PlanDefinition/wk24"
     },
     {
       "id": "ScheduledActivityInstance_24",
@@ -418,7 +418,7 @@
               }
             }
           ],
-          "targetId": "Timing-16",
+          "targetId": "timing-16",
           "relationship": "After",
           "offsetDuration": {
             "value": 26,
@@ -427,7 +427,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition/WK26"
+      "definitionUri": "PlanDefinition/wk26"
     }
   ]
 }

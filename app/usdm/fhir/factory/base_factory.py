@@ -1,3 +1,4 @@
+import re
 from d4kms_generic.logger import application_logger
 
 
@@ -6,7 +7,9 @@ class BaseFactory:
         pass
 
     def fix_id(self, value: str) -> str:
-        return value.replace("_", "-")
+        result = re.sub('[^0-9a-zA-Z]', '-', value)
+        # result = value.replace("_", "-")
+        return result.lower()
 
     def handle_exception(self, e: Exception):
         application_logger.exception(

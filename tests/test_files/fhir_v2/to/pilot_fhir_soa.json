@@ -146,7 +146,7 @@
             "title": "Screen One",
             "relatedAction": [
               {
-                "targetId": "Timing-1",
+                "targetId": "timing-1",
                 "relationship": "Before",
                 "offsetDuration": {
                   "value": 2,
@@ -155,7 +155,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/SCREEN1"
+            "definitionUri": "PlanDefinition/screen1"
           },
           {
             "id": "ScheduledActivityInstance_10",
@@ -165,7 +165,7 @@
                 "extension": [
                   null
                 ],
-                "targetId": "Timing-2",
+                "targetId": "timing-2",
                 "relationship": "Before",
                 "offsetDuration": {
                   "value": 2,
@@ -174,14 +174,14 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/SCREEN2"
+            "definitionUri": "PlanDefinition/screen2"
           },
           {
             "id": "ScheduledActivityInstance_11",
             "title": "Dose",
             "relatedAction": [
               {
-                "targetId": "Timing-3",
+                "targetId": "timing-3",
                 "relationship": "Fixed Reference",
                 "offsetDuration": {
                   "value": 1,
@@ -190,7 +190,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/DOSE"
+            "definitionUri": "PlanDefinition/dose"
           },
           {
             "id": "ScheduledActivityInstance_12",
@@ -213,7 +213,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-4",
+                "targetId": "timing-4",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 2,
@@ -222,7 +222,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK2"
+            "definitionUri": "PlanDefinition/wk2"
           },
           {
             "id": "ScheduledActivityInstance_13",
@@ -245,7 +245,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-5",
+                "targetId": "timing-5",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 4,
@@ -254,7 +254,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK4"
+            "definitionUri": "PlanDefinition/wk4"
           },
           {
             "id": "ScheduledActivityInstance_14",
@@ -277,7 +277,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-6",
+                "targetId": "timing-6",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 6,
@@ -286,7 +286,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK6"
+            "definitionUri": "PlanDefinition/wk6"
           },
           {
             "id": "ScheduledActivityInstance_15",
@@ -309,7 +309,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-7",
+                "targetId": "timing-7",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 8,
@@ -318,14 +318,14 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK8"
+            "definitionUri": "PlanDefinition/wk8"
           },
           {
             "id": "ScheduledActivityInstance_16",
             "title": "Week NPI",
             "relatedAction": [
               {
-                "targetId": "Timing-8",
+                "targetId": "timing-8",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 2,
@@ -334,7 +334,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK8N"
+            "definitionUri": "PlanDefinition/wk8n"
           },
           {
             "id": "ScheduledActivityInstance_17",
@@ -357,7 +357,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-9",
+                "targetId": "timing-9",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 12,
@@ -366,14 +366,14 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK12"
+            "definitionUri": "PlanDefinition/wk12"
           },
           {
             "id": "ScheduledActivityInstance_18",
             "title": "Week 12 NPI",
             "relatedAction": [
               {
-                "targetId": "Timing-10",
+                "targetId": "timing-10",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 2,
@@ -382,7 +382,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK12N"
+            "definitionUri": "PlanDefinition/wk12n"
           },
           {
             "id": "ScheduledActivityInstance_19",
@@ -405,7 +405,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-11",
+                "targetId": "timing-11",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 16,
@@ -414,14 +414,14 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK16"
+            "definitionUri": "PlanDefinition/wk16"
           },
           {
             "id": "ScheduledActivityInstance_20",
             "title": "Week 16 NPI",
             "relatedAction": [
               {
-                "targetId": "Timing-12",
+                "targetId": "timing-12",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 2,
@@ -430,7 +430,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK16N"
+            "definitionUri": "PlanDefinition/wk16n"
           },
           {
             "id": "ScheduledActivityInstance_21",
@@ -453,7 +453,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-13",
+                "targetId": "timing-13",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 20,
@@ -462,14 +462,14 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK20"
+            "definitionUri": "PlanDefinition/wk20"
           },
           {
             "id": "ScheduledActivityInstance_22",
             "title": "Week 20 NPI",
             "relatedAction": [
               {
-                "targetId": "Timing-14",
+                "targetId": "timing-14",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 2,
@@ -478,7 +478,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK20N"
+            "definitionUri": "PlanDefinition/wk20n"
           },
           {
             "id": "ScheduledActivityInstance_23",
@@ -501,7 +501,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-15",
+                "targetId": "timing-15",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 24,
@@ -510,7 +510,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK24"
+            "definitionUri": "PlanDefinition/wk24"
           },
           {
             "id": "ScheduledActivityInstance_24",
@@ -533,7 +533,7 @@
                     }
                   }
                 ],
-                "targetId": "Timing-16",
+                "targetId": "timing-16",
                 "relationship": "After",
                 "offsetDuration": {
                   "value": 26,
@@ -542,7 +542,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition/WK26"
+            "definitionUri": "PlanDefinition/wk26"
           }
         ]
       }
@@ -551,7 +551,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-9",
+        "id": "scheduledactivityinstance-9",
         "title": "Screen One",
         "type": {
           "coding": [
@@ -567,117 +567,117 @@
           {
             "id": "Activity_1",
             "title": "Informed consent",
-            "definitionUri": "ActivityDefinition/Informed consent"
+            "definitionUri": "ActivityDefinition/informed-consent"
           },
           {
             "id": "Activity_2",
             "title": "Inclusion and exclusion criteria",
-            "definitionUri": "ActivityDefinition/Inclusion/exclusion criteria"
+            "definitionUri": "ActivityDefinition/inclusion-exclusion-criteria"
           },
           {
             "id": "Activity_3",
             "title": "Patient number assigned",
-            "definitionUri": "ActivityDefinition/Patient number assigned"
+            "definitionUri": "ActivityDefinition/patient-number-assigned"
           },
           {
             "id": "Activity_4",
             "title": "Demographics",
-            "definitionUri": "ActivityDefinition/Demographics"
+            "definitionUri": "ActivityDefinition/demographics"
           },
           {
             "id": "Activity_5",
             "title": "Hachinski Ischemic Scale",
-            "definitionUri": "ActivityDefinition/Hachinski"
+            "definitionUri": "ActivityDefinition/hachinski"
           },
           {
             "id": "Activity_6",
             "title": "MMSE",
-            "definitionUri": "ActivityDefinition/MMSE"
+            "definitionUri": "ActivityDefinition/mmse"
           },
           {
             "id": "Activity_7",
             "title": "Physical examination",
-            "definitionUri": "ActivityDefinition/Physical examination"
+            "definitionUri": "ActivityDefinition/physical-examination"
           },
           {
             "id": "Activity_8",
             "title": "Medical history",
-            "definitionUri": "ActivityDefinition/Medical history"
+            "definitionUri": "ActivityDefinition/medical-history"
           },
           {
             "id": "Activity_9",
             "title": "Habits",
-            "definitionUri": "ActivityDefinition/Habits"
+            "definitionUri": "ActivityDefinition/habits"
           },
           {
             "id": "Activity_10",
             "title": "Chest X-ray",
-            "definitionUri": "ActivityDefinition/Chest X-ray"
+            "definitionUri": "ActivityDefinition/chest-x-ray"
           },
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_17",
             "title": "Placebo TTS test",
-            "definitionUri": "ActivityDefinition/Placebo TTS test"
+            "definitionUri": "ActivityDefinition/placebo-tts-test"
           },
           {
             "id": "Activity_18",
             "title": "CT scan",
-            "definitionUri": "ActivityDefinition/CT scan"
+            "definitionUri": "ActivityDefinition/ct-scan"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition/Uninalysis"
+            "definitionUri": "ActivityDefinition/uninalysis"
           },
           {
             "id": "Activity_24",
             "title": "Hemoglobin A1C",
-            "definitionUri": "ActivityDefinition/Hemoglobin A1C"
+            "definitionUri": "ActivityDefinition/hemoglobin-a1c"
           },
           {
             "id": "Activity_27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition/ADAS-Cog"
+            "definitionUri": "ActivityDefinition/adas-cog"
           },
           {
             "id": "Activity_28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition/CIBIC+"
+            "definitionUri": "ActivityDefinition/cibic-"
           },
           {
             "id": "Activity_29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition/DAD"
+            "definitionUri": "ActivityDefinition/dad"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -686,7 +686,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-10",
+        "id": "scheduledactivityinstance-10",
         "title": "Screen Two",
         "type": {
           "coding": [
@@ -702,12 +702,12 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_14",
             "title": "Ambulatory ECG placed",
-            "definitionUri": "ActivityDefinition/Ambulatory ECG placed"
+            "definitionUri": "ActivityDefinition/ambulatory-ecg-placed"
           }
         ]
       }
@@ -716,7 +716,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-11",
+        "id": "scheduledactivityinstance-11",
         "title": "Dose",
         "type": {
           "coding": [
@@ -732,52 +732,52 @@
           {
             "id": "Activity_12",
             "title": "Patient randomised",
-            "definitionUri": "ActivityDefinition/Patient randomised"
+            "definitionUri": "ActivityDefinition/patient-randomised"
           },
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_15",
             "title": "Ambulatory ECG removed",
-            "definitionUri": "ActivityDefinition/Ambulatory ECG removed"
+            "definitionUri": "ActivityDefinition/ambulatory-ecg-removed"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition/Plasma Specimen (Xanomeline)"
+            "definitionUri": "ActivityDefinition/plasma-specimen--xanomeline-"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition/ADAS-Cog"
+            "definitionUri": "ActivityDefinition/adas-cog"
           },
           {
             "id": "Activity_28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition/CIBIC+"
+            "definitionUri": "ActivityDefinition/cibic-"
           },
           {
             "id": "Activity_29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition/DAD"
+            "definitionUri": "ActivityDefinition/dad"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -786,7 +786,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-12",
+        "id": "scheduledactivityinstance-12",
         "title": "Week 2",
         "type": {
           "coding": [
@@ -802,52 +802,52 @@
           {
             "id": "Activity_11",
             "title": "Apo E genotyping",
-            "definitionUri": "ActivityDefinition/Apo E genotyping"
+            "definitionUri": "ActivityDefinition/apo-e-genotyping"
           },
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition/Uninalysis"
+            "definitionUri": "ActivityDefinition/uninalysis"
           },
           {
             "id": "Activity_23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition/Plasma Specimen (Xanomeline)"
+            "definitionUri": "ActivityDefinition/plasma-specimen--xanomeline-"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -856,7 +856,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-13",
+        "id": "scheduledactivityinstance-13",
         "title": "Week 4",
         "type": {
           "coding": [
@@ -872,42 +872,42 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition/Plasma Specimen (Xanomeline)"
+            "definitionUri": "ActivityDefinition/plasma-specimen--xanomeline-"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -916,7 +916,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-14",
+        "id": "scheduledactivityinstance-14",
         "title": "Week 6",
         "type": {
           "coding": [
@@ -932,42 +932,42 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition/Plasma Specimen (Xanomeline)"
+            "definitionUri": "ActivityDefinition/plasma-specimen--xanomeline-"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -976,7 +976,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-15",
+        "id": "scheduledactivityinstance-15",
         "title": "Week 8",
         "type": {
           "coding": [
@@ -992,52 +992,52 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition/ADAS-Cog"
+            "definitionUri": "ActivityDefinition/adas-cog"
           },
           {
             "id": "Activity_28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition/CIBIC+"
+            "definitionUri": "ActivityDefinition/cibic-"
           },
           {
             "id": "Activity_29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition/DAD"
+            "definitionUri": "ActivityDefinition/dad"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1046,7 +1046,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-16",
+        "id": "scheduledactivityinstance-16",
         "title": "Week NPI",
         "type": {
           "coding": [
@@ -1062,7 +1062,7 @@
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1071,7 +1071,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-17",
+        "id": "scheduledactivityinstance-17",
         "title": "Week 12",
         "type": {
           "coding": [
@@ -1087,47 +1087,47 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition/Uninalysis"
+            "definitionUri": "ActivityDefinition/uninalysis"
           },
           {
             "id": "Activity_23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition/Plasma Specimen (Xanomeline)"
+            "definitionUri": "ActivityDefinition/plasma-specimen--xanomeline-"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1136,7 +1136,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-18",
+        "id": "scheduledactivityinstance-18",
         "title": "Week 12 NPI",
         "type": {
           "coding": [
@@ -1152,7 +1152,7 @@
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1161,7 +1161,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-19",
+        "id": "scheduledactivityinstance-19",
         "title": "Week 16",
         "type": {
           "coding": [
@@ -1177,52 +1177,52 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition/ADAS-Cog"
+            "definitionUri": "ActivityDefinition/adas-cog"
           },
           {
             "id": "Activity_28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition/CIBIC+"
+            "definitionUri": "ActivityDefinition/cibic-"
           },
           {
             "id": "Activity_29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition/DAD"
+            "definitionUri": "ActivityDefinition/dad"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1231,7 +1231,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-20",
+        "id": "scheduledactivityinstance-20",
         "title": "Week 16 NPI",
         "type": {
           "coding": [
@@ -1247,7 +1247,7 @@
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1256,7 +1256,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-21",
+        "id": "scheduledactivityinstance-21",
         "title": "Week 20",
         "type": {
           "coding": [
@@ -1272,42 +1272,42 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition/Plasma Specimen (Xanomeline)"
+            "definitionUri": "ActivityDefinition/plasma-specimen--xanomeline-"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1316,7 +1316,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-22",
+        "id": "scheduledactivityinstance-22",
         "title": "Week 20 NPI",
         "type": {
           "coding": [
@@ -1332,7 +1332,7 @@
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1341,7 +1341,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-23",
+        "id": "scheduledactivityinstance-23",
         "title": "Week 24",
         "type": {
           "coding": [
@@ -1357,57 +1357,57 @@
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition/Uninalysis"
+            "definitionUri": "ActivityDefinition/uninalysis"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition/ADAS-Cog"
+            "definitionUri": "ActivityDefinition/adas-cog"
           },
           {
             "id": "Activity_28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition/CIBIC+"
+            "definitionUri": "ActivityDefinition/cibic-"
           },
           {
             "id": "Activity_29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition/DAD"
+            "definitionUri": "ActivityDefinition/dad"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }
@@ -1416,7 +1416,7 @@
       "fullUrl": "https://www.example.com/Composition/1234B",
       "resource": {
         "resourceType": "PlanDefinition",
-        "id": "ScheduledActivityInstance-24",
+        "id": "scheduledactivityinstance-24",
         "title": "Week 26",
         "type": {
           "coding": [
@@ -1432,47 +1432,47 @@
           {
             "id": "Activity_7",
             "title": "Physical examination",
-            "definitionUri": "ActivityDefinition/Physical examination"
+            "definitionUri": "ActivityDefinition/physical-examination"
           },
           {
             "id": "Activity_13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+            "definitionUri": "ActivityDefinition/vital-signs---temperature"
           },
           {
             "id": "Activity_16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition/ECG"
+            "definitionUri": "ActivityDefinition/ecg"
           },
           {
             "id": "Activity_19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition/Concomitant medications"
+            "definitionUri": "ActivityDefinition/concomitant-medications"
           },
           {
             "id": "Activity_20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition/Hematology"
+            "definitionUri": "ActivityDefinition/hematology"
           },
           {
             "id": "Activity_21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition/Chemistry"
+            "definitionUri": "ActivityDefinition/chemistry"
           },
           {
             "id": "Activity_25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition/Study drug"
+            "definitionUri": "ActivityDefinition/study-drug"
           },
           {
             "id": "Activity_26",
             "title": "TTS Acceptability Survey",
-            "definitionUri": "ActivityDefinition/TTS Acceptability Survey"
+            "definitionUri": "ActivityDefinition/tts-acceptability-survey"
           },
           {
             "id": "Activity_30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition/NPI-X"
+            "definitionUri": "ActivityDefinition/npi-x"
           }
         ]
       }

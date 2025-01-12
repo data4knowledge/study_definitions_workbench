@@ -1,6 +1,6 @@
 {
   "resourceType": "PlanDefinition",
-  "id": "ScheduledActivityInstance-9",
+  "id": "scheduledactivityinstance-9",
   "title": "Screen One",
   "type": {
     "coding": [
@@ -16,117 +16,117 @@
     {
       "id": "Activity_1",
       "title": "Informed consent",
-      "definitionUri": "ActivityDefinition/Informed consent"
+      "definitionUri": "ActivityDefinition/informed-consent"
     },
     {
       "id": "Activity_2",
       "title": "Inclusion and exclusion criteria",
-      "definitionUri": "ActivityDefinition/Inclusion/exclusion criteria"
+      "definitionUri": "ActivityDefinition/inclusion-exclusion-criteria"
     },
     {
       "id": "Activity_3",
       "title": "Patient number assigned",
-      "definitionUri": "ActivityDefinition/Patient number assigned"
+      "definitionUri": "ActivityDefinition/patient-number-assigned"
     },
     {
       "id": "Activity_4",
       "title": "Demographics",
-      "definitionUri": "ActivityDefinition/Demographics"
+      "definitionUri": "ActivityDefinition/demographics"
     },
     {
       "id": "Activity_5",
       "title": "Hachinski Ischemic Scale",
-      "definitionUri": "ActivityDefinition/Hachinski"
+      "definitionUri": "ActivityDefinition/hachinski"
     },
     {
       "id": "Activity_6",
       "title": "MMSE",
-      "definitionUri": "ActivityDefinition/MMSE"
+      "definitionUri": "ActivityDefinition/mmse"
     },
     {
       "id": "Activity_7",
       "title": "Physical examination",
-      "definitionUri": "ActivityDefinition/Physical examination"
+      "definitionUri": "ActivityDefinition/physical-examination"
     },
     {
       "id": "Activity_8",
       "title": "Medical history",
-      "definitionUri": "ActivityDefinition/Medical history"
+      "definitionUri": "ActivityDefinition/medical-history"
     },
     {
       "id": "Activity_9",
       "title": "Habits",
-      "definitionUri": "ActivityDefinition/Habits"
+      "definitionUri": "ActivityDefinition/habits"
     },
     {
       "id": "Activity_10",
       "title": "Chest X-ray",
-      "definitionUri": "ActivityDefinition/Chest X-ray"
+      "definitionUri": "ActivityDefinition/chest-x-ray"
     },
     {
       "id": "Activity_13",
       "title": "Vital Signs and Temperature",
-      "definitionUri": "ActivityDefinition/Vital signs / Temperature"
+      "definitionUri": "ActivityDefinition/vital-signs---temperature"
     },
     {
       "id": "Activity_16",
       "title": "ECG",
-      "definitionUri": "ActivityDefinition/ECG"
+      "definitionUri": "ActivityDefinition/ecg"
     },
     {
       "id": "Activity_17",
       "title": "Placebo TTS test",
-      "definitionUri": "ActivityDefinition/Placebo TTS test"
+      "definitionUri": "ActivityDefinition/placebo-tts-test"
     },
     {
       "id": "Activity_18",
       "title": "CT scan",
-      "definitionUri": "ActivityDefinition/CT scan"
+      "definitionUri": "ActivityDefinition/ct-scan"
     },
     {
       "id": "Activity_19",
       "title": "Concomitant medications",
-      "definitionUri": "ActivityDefinition/Concomitant medications"
+      "definitionUri": "ActivityDefinition/concomitant-medications"
     },
     {
       "id": "Activity_20",
       "title": "Hematology",
-      "definitionUri": "ActivityDefinition/Hematology"
+      "definitionUri": "ActivityDefinition/hematology"
     },
     {
       "id": "Activity_21",
       "title": "Chemistry",
-      "definitionUri": "ActivityDefinition/Chemistry"
+      "definitionUri": "ActivityDefinition/chemistry"
     },
     {
       "id": "Activity_22",
       "title": "Uninalysis",
-      "definitionUri": "ActivityDefinition/Uninalysis"
+      "definitionUri": "ActivityDefinition/uninalysis"
     },
     {
       "id": "Activity_24",
       "title": "Hemoglobin A1C",
-      "definitionUri": "ActivityDefinition/Hemoglobin A1C"
+      "definitionUri": "ActivityDefinition/hemoglobin-a1c"
     },
     {
       "id": "Activity_27",
       "title": "ADAS-Cog",
-      "definitionUri": "ActivityDefinition/ADAS-Cog"
+      "definitionUri": "ActivityDefinition/adas-cog"
     },
     {
       "id": "Activity_28",
       "title": "CIBIC+",
-      "definitionUri": "ActivityDefinition/CIBIC+"
+      "definitionUri": "ActivityDefinition/cibic-"
     },
     {
       "id": "Activity_29",
       "title": "DAD",
-      "definitionUri": "ActivityDefinition/DAD"
+      "definitionUri": "ActivityDefinition/dad"
     },
     {
       "id": "Activity_30",
       "title": "NPI-X",
-      "definitionUri": "ActivityDefinition/NPI-X"
+      "definitionUri": "ActivityDefinition/npi-x"
     }
   ]
 }
