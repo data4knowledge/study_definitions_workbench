@@ -1,12 +1,11 @@
 import json
 import pytest
-from tests.mocks.general_mocks import mock_called, mock_parameters_correct
+from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import *
 from tests.mocks.fastapi_mocks import *
 from tests.mocks.utility_mocks import *
 from tests.mocks.usdm_json_mocks import *
 from tests.mocks.fhir_version_mocks import *
-from sqlalchemy.orm import Session
 
 
 @pytest.fixture

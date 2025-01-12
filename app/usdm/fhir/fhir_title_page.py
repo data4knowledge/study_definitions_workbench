@@ -3,7 +3,6 @@ import warnings
 import dateutil.parser as parser
 from bs4 import BeautifulSoup
 from d4kms_generic import application_logger
-from usdm_excel.iso_3166 import ISO3166
 from app.utility.address_service import AddressService
 
 
@@ -99,10 +98,10 @@ class FHIRTitlePage:
                 for table in soup(["table"]):
                     title = self._table_get_row(table, "Full Title")
                     if title:
-                        application_logger.debug(f"Found M11 title page table")
+                        application_logger.debug("Found M11 title page table")
                         # print(f"TABLE: {table}")
                         return table
-        application_logger.warning(f"Cannot locate M11 title page table!")
+        application_logger.warning("Cannot locate M11 title page table!")
         return None
 
     def _table_get_row(self, table, key: str) -> str:

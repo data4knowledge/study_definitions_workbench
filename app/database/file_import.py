@@ -116,7 +116,7 @@ class FileImport(FileImportBase):
             session.commit()
             return 1
         except Exception as e:
-            application_logger.exception(f"Failed to delete file import record", e)
+            application_logger.exception("Failed to delete file import record", e)
             return 0
 
     def update_status(self, status: str, session: Session) -> "FileImport":

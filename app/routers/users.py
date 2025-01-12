@@ -41,7 +41,7 @@ def user_display_name(
     use_user = updated_user if updated_user else user
     data = {"validation": {"user": validation}}
     return templates.TemplateResponse(
-        request, f"users/partials/display_name.html", {"user": use_user, "data": data}
+        request, "users/partials/display_name.html", {"user": use_user, "data": data}
     )
 
 
@@ -60,7 +60,7 @@ def user_endpoint(
         "validation": {"endpoint": validation},
     }
     return templates.TemplateResponse(
-        request, f"users/partials/endpoint.html", {"user": user, "data": data}
+        request, "users/partials/endpoint.html", {"user": user, "data": data}
     )
 
 
@@ -76,5 +76,5 @@ def user_endpoint(
         "validation": {"endpoint": Endpoint.valid()},
     }
     return templates.TemplateResponse(
-        request, f"users/partials/endpoint.html", {"user": user, "data": data}
+        request, "users/partials/endpoint.html", {"user": user, "data": data}
     )

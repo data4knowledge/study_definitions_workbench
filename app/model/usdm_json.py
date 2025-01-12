@@ -411,7 +411,7 @@ class USDMJson:
     def _get_number(self, narrative_content: dict):
         try:
             return int(narrative_content["sectionNumber"])
-        except Exception as e:
+        except Exception:
             return 0
 
     def _get_level(self, narrative_content: dict):
@@ -577,7 +577,7 @@ class USDMJson:
                 # for item in warning_list:
                 #  errors_and_logging.debug(f"Warning raised within Soup package, processing '{text}'\nMessage returned '{item.message}'")
             return result
-        except Exception as e:
+        except Exception:
             # errors_and_logging.exception(f"Parsing '{text}' with soup", e)
             return None
 

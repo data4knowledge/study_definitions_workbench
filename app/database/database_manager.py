@@ -32,7 +32,7 @@ class DatabaseManager:
             database_tables.Base.metadata.create_all(bind=engine)
             application_logger.info("Database created")
             return True
-        except FileExistsError as e:
+        except FileExistsError:
             application_logger.info("Database dir exists")
             database_tables.Base.metadata.create_all(bind=engine)
             return False

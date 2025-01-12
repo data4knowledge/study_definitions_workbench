@@ -79,7 +79,7 @@ async def get_study_design_timeline_soa(
             {
                 "user": user,
                 "data": {
-                    "error": f"Error downloading the requested FHIR SoA message file"
+                    "error": "Error downloading the requested FHIR SoA message file"
                 },
             },
         )

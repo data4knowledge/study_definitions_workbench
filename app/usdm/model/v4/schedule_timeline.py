@@ -3,7 +3,6 @@ from usdm_model.timing import Timing
 from usdm_model.schedule_timeline import ScheduleTimeline
 from usdm_model.study_design import StudyDesign
 from usdm_model.scheduled_instance import ScheduledActivityInstance
-from d4kms_generic.logger import application_logger
 
 
 def first_timepoint(self: ScheduleTimeline) -> ScheduledActivityInstance:
@@ -89,14 +88,14 @@ def soa(self: ScheduleTimeline, study_design: StudyDesign) -> list:
     lines.append("<thead>")
     lines.append('<tr class="table-active">')
     epochs = [[i, len([*group])] for i, group in groupby(results[0])]
-    text = f'<td><p class="m-0 p-0"><small>&nbsp;</small></p></td>'
+    text = '<td><p class="m-0 p-0"><small>&nbsp;</small></p></td>'
     for epoch in epochs[1:]:
         text += f'<td class="text-center" colspan="{epoch[1]}"><p class="m-0 p-0"><small>{epoch[0]}</small></p></td>'
     lines.append(text)
     lines.append("</tr>")
     for result in results[1:4]:
         lines.append('<tr class="table-active">')
-        lines.append(f'<td><p class="m-0 p-0"><small>&nbsp;</small></p></td>')
+        lines.append('<td><p class="m-0 p-0"><small>&nbsp;</small></p></td>')
         for cell in result[1:]:
             lines.append(
                 f'<td class="text-center"><p class="m-0 p-0"><small>{cell}</small></p></td>'

@@ -1,4 +1,3 @@
-import re
 import pytest
 from tests.files.files import *
 from tests.helpers.helpers import fix_uuid, fix_iso_dates

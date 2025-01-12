@@ -1,4 +1,3 @@
-from d4kms_generic import application_logger
 
 
 class RawListItem:

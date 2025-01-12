@@ -27,7 +27,6 @@ from usdm_excel.globals import Globals
 from uuid import uuid4
 from usdm_info import (
     __model_version__ as usdm_version,
-    __package_version__ as system_version,
 )
 from d4kms_generic import application_logger
 from app.model.m11_protocol.m11_title_page import M11TitlePage
@@ -84,7 +83,7 @@ class M11ToUSDM:
             ).to_json()
         except Exception as e:
             application_logger.exception(
-                f"Exception raised parsing M11 content. See logs for more details", e
+                "Exception raised parsing M11 content. See logs for more details", e
             )
             return None
 
@@ -136,7 +135,7 @@ class M11ToUSDM:
                         previous, local_index, level + 1, doc_version, study_version
                     )
                 else:
-                    application_logger.error(f"No previous set processing sections")
+                    application_logger.error("No previous set processing sections")
                     local_index += 1
             elif section.level < level:
                 return local_index

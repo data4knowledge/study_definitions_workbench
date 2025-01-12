@@ -16,7 +16,6 @@ from fhir.resources.bundle import Bundle
 from fhir.resources.composition import CompositionSection
 from usdm_info import (
     __model_version__ as usdm_version,
-    __package_version__ as system_version,
 )
 from app import SYSTEM_NAME, VERSION
 from app.model.file_handling.data_files import DataFiles
@@ -58,7 +57,7 @@ class FromFHIRV1:
             ).to_json()
         except Exception as e:
             self._errors_and_logging.exception(
-                f"Exception raised parsing FHIR content. See logs for more details", e
+                "Exception raised parsing FHIR content. See logs for more details", e
             )
             return None
 

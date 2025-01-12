@@ -5,7 +5,7 @@ from playwright.sync_api import Playwright, expect
 from app.__init__ import VERSION
 
 # url = f"https://d4k-sdw-staging.fly.dev"
-url = f"http://localhost:8000"
+url = "http://localhost:8000"
 
 
 @pytest.fixture(scope="session", autouse=True)

@@ -1,4 +1,3 @@
-import traceback
 
 from usdm_model.study import Study as USDMStudy
 from usdm_model.study_version import StudyVersion as USDMStudyVersion

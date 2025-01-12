@@ -1,5 +1,4 @@
 import pytest
-from app.database.version import Version
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import *
 from tests.mocks.fastapi_mocks import *

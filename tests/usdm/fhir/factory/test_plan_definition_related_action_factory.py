@@ -2,8 +2,6 @@ from app.usdm.fhir.factory.plan_definition_related_action_factory import (
     PlanDefinitionRelatedActionFactory,
 )
 from tests.usdm.fhir.factory.dict_result import DictResult
-from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactory
-from fhir.resources.coding import Coding
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 

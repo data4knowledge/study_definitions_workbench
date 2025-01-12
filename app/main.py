@@ -1,5 +1,4 @@
 from fastapi import (
-    Form,
     Depends,
     FastAPI,
     Request,
@@ -23,7 +22,6 @@ from app.utility.background import *
 from app.utility.upload import *
 from app.utility.template_methods import *
 from app.model.usdm_json import USDMJson
-from app.database.file_import import FileImport
 from app import VERSION, SYSTEM_NAME
 from app.dependencies.fhir_version import check_fhir_version
 from app.utility.fhir_transmit import run_fhir_transmit
@@ -125,7 +123,7 @@ async def login(request: Request):
         return RedirectResponse("/index")
     else:
         if (
-            not "id_token" in request.session
+            "id_token" not in request.session
         ):  # it could be userinfo instead of id_token
             return await authorisation.login(request, "callback")
         return RedirectResponse("/index")
@@ -701,7 +699,7 @@ async def export_json(request: Request, id: int, session: Session = Depends(get_
             "errors/error.html",
             {
                 "user": user,
-                "data": {"error": f"Error downloading the requested JSON file"},
+                "data": {"error": "Error downloading the requested JSON file"},
             },
         )
 
@@ -721,7 +719,7 @@ async def export_protocol(
             "errors/error.html",
             {
                 "user": user,
-                "data": {"error": f"Error downloading the requested PDF file"},
+                "data": {"error": "Error downloading the requested PDF file"},
             },
         )
 
@@ -797,7 +795,7 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
         )
         return response
     else:
-        await connection_manager.error(f"Operation request denied", str(user.id))
+        await connection_manager.error("Operation request denied", str(user.id))
         application_logger.error(
             f"User with id '{user.id}', email '{user.email}' attempted to debug the database!"
         )
@@ -827,7 +825,7 @@ async def debug_level(
             },
         )
     else:
-        await connection_manager.error(f"Operation request denied", str(user.id))
+        await connection_manager.error("Operation request denied", str(user.id))
         application_logger.error(
             f"User with id '{user.id}', email '{user.email}' attempted to change debug level!"
         )

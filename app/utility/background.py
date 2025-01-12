@@ -4,7 +4,6 @@ import asyncio
 from app.database.database import SessionLocal
 from d4kms_generic import application_logger
 from usdm_db import USDMDb
-from usdm_db import USDMDb, Wrapper
 from app.model.file_handling.data_files import DataFiles
 from app.database.file_import import FileImport
 from app.database.study import Study
@@ -13,7 +12,6 @@ from app.model.m11_protocol.m11_protocol import M11Protocol
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app.model.connection_manager import connection_manager
 from app import VERSION, SYSTEM_NAME
-from sqlalchemy.orm import Session
 from app.model.object_path import ObjectPath
 
 
@@ -40,7 +38,7 @@ async def process_excel(uuid, user: User) -> None:
         file_import.update_status("Successful", session)
         session.close()
         await connection_manager.success(
-            f"Import of Excel workbook completed sucessfully", str(user.id)
+            "Import of Excel workbook completed sucessfully", str(user.id)
         )
     except Exception as e:
         if file_import:
@@ -48,7 +46,7 @@ async def process_excel(uuid, user: User) -> None:
         application_logger.exception(f"Exception '{e}' raised processing Excel file", e)
         session.close()
         await connection_manager.error(
-            f"Error encountered importing Excel workbook", str(user.id)
+            "Error encountered importing Excel workbook", str(user.id)
         )
 
 
@@ -72,7 +70,7 @@ async def process_word(uuid, user: User) -> None:
         file_import.update_status("Successful", session)
         session.close()
         await connection_manager.success(
-            f"Import of M11 document completed sucessfully", str(user.id)
+            "Import of M11 document completed sucessfully", str(user.id)
         )
     except Exception as e:
         if file_import:
@@ -80,7 +78,7 @@ async def process_word(uuid, user: User) -> None:
         application_logger.exception(f"Exception '{e}' raised processing Word file", e)
         session.close()
         await connection_manager.error(
-            f"Error encountered importing M11 document", str(user.id)
+            "Error encountered importing M11 document", str(user.id)
         )
 
 
@@ -105,7 +103,7 @@ async def process_fhir_v1(uuid, user: User) -> None:
         file_import.update_status("Successful", session)
         session.close()
         await connection_manager.success(
-            f"Import of FHIR message completed succesfully", str(user.id)
+            "Import of FHIR message completed succesfully", str(user.id)
         )
     except Exception as e:
         if file_import:
@@ -115,7 +113,7 @@ async def process_fhir_v1(uuid, user: User) -> None:
         )
         session.close()
         await connection_manager.error(
-            f"Error encountered importing FHIR message", str(user.id)
+            "Error encountered importing FHIR message", str(user.id)
         )
 
 
@@ -142,7 +140,7 @@ def _study_parameters(json_str: str, type: str) -> dict:
             "sponsor": version.sponsor_name(),
         }
     except Exception as e:
-        application_logger.exception(f"Exception raised extracting study parameters", e)
+        application_logger.exception("Exception raised extracting study parameters", e)
         return None
 
 

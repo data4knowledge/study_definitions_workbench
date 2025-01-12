@@ -4,7 +4,6 @@ from fhir.resources.identifier import Identifier
 from fhir.resources.composition import Composition
 from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.reference import Reference
-from uuid import uuid4
 import datetime
 
 
@@ -30,7 +29,7 @@ class ToFHIRV1(ToFHIR):
                     None,
                 )
                 more = True if content else False
-            type_code = CodeableConcept(text=f"EvidenceReport")
+            type_code = CodeableConcept(text="EvidenceReport")
             date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
             author = Reference(display="USDM")
             composition = Composition(
@@ -57,7 +56,7 @@ class ToFHIRV1(ToFHIR):
             return bundle.json()
         except Exception as e:
             self._errors_and_logging.exception(
-                f"Exception raised generating FHIR content. See logs for more details",
+                "Exception raised generating FHIR content. See logs for more details",
                 e,
             )
             return None

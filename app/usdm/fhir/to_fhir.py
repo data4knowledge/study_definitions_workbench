@@ -6,9 +6,7 @@ from usdm_db.document.utility import get_soup
 from fhir.resources.composition import CompositionSection
 from fhir.resources.narrative import Narrative
 from fhir.resources.codeableconcept import CodeableConcept
-from usdm_model.code import Code as USDMCode
 from usdm_model.study_title import StudyTitle as USDMStudyTitle
-from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
 from uuid import uuid4
 
 
@@ -196,7 +194,7 @@ class ToFHIR:
                     ref.attrs = {}
             except Exception as e:
                 self._errors_and_logging.exception(
-                    f"Exception raised cleaning 'ol' tags", e
+                    "Exception raised cleaning 'ol' tags", e
                 )
         # Styles
         for ref in soup("style"):
@@ -204,7 +202,7 @@ class ToFHIR:
                 ref.extract()
             except Exception as e:
                 self._errors_and_logging.exception(
-                    f"Exception raised cleaning 'script' tags", e
+                    "Exception raised cleaning 'script' tags", e
                 )
         # Images
         # for ref in soup('img'):
@@ -219,7 +217,7 @@ class ToFHIR:
                     ref.extract()
             except Exception as e:
                 self._errors_and_logging.exception(
-                    f"Exception raised cleaning empty 'p' tags", e
+                    "Exception raised cleaning empty 'p' tags", e
                 )
         after = str(soup)
         # if before != after:

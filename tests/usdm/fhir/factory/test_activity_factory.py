@@ -1,4 +1,3 @@
-import pytest
 from app.usdm.fhir.factory.activity_factory import ActivityDefinitionFactory
 from fhir.resources.activitydefinition import ActivityDefinition
 from tests.mocks.fhir_factory_mocks import mock_handle_exception

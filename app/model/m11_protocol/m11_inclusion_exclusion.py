@@ -1,6 +1,5 @@
 from usdm_excel.globals import Globals
 from app.model.raw_docx.raw_docx import RawDocx
-from app.model.raw_docx.raw_table import RawTable
 from d4kms_generic import application_logger
 from app.model.m11_protocol.m11_utility import *
 
@@ -23,10 +22,10 @@ class M11InclusionExclusion:
                     self.inclusion.append(item.to_html())
             else:
                 application_logger.error(
-                    f"Failed to find a list in section 5.2 in M11 document"
+                    "Failed to find a list in section 5.2 in M11 document"
                 )
         else:
-            application_logger.error(f"Failed to find section 5.2 in M11 document")
+            application_logger.error("Failed to find section 5.2 in M11 document")
 
         section = self._raw_docx.target_document.section_by_number("5.3")
         if section:
@@ -36,7 +35,7 @@ class M11InclusionExclusion:
                     self.exclusion.append(item.to_html())
             else:
                 application_logger.error(
-                    f"Failed to find a list in section 5.3 in M11 document"
+                    "Failed to find a list in section 5.3 in M11 document"
                 )
         else:
-            application_logger.error(f"Failed to find section 5.3 in M11 document")
+            application_logger.error("Failed to find section 5.3 in M11 document")

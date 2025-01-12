@@ -1,12 +1,11 @@
 from app.usdm.fhir.factory.identifier_factory import IdentifierFactory
 from tests.usdm.fhir.factory.dict_result import DictResult
-from usdm_model.code import Code
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 
 
 def test_identifier():
-    params = {"system": "urn:ietf:rfc:3986", "value": f"urn:uuid:1234-5678.91011"}
+    params = {"system": "urn:ietf:rfc:3986", "value": "urn:uuid:1234-5678.91011"}
     expected = {
         "system": "urn:ietf:rfc:3986",
         "value": "urn:uuid:1234-5678.91011",

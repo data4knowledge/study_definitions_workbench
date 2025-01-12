@@ -7,7 +7,6 @@ from app.database.database_tables import Study as StudyDB, Version as VersionDB
 from app.database.version import Version
 from app.database.user import User
 from app.database.file_import import FileImport
-from app.database.database import engine
 from d4kms_generic import application_logger
 
 
@@ -161,7 +160,7 @@ class Study(StudyBase):
             session.commit()
             return 1
         except Exception as e:
-            application_logger.exception(f"Failed to delete study record", e)
+            application_logger.exception("Failed to delete study record", e)
             return 0
 
     def file_imports(self, session: Session) -> dict:

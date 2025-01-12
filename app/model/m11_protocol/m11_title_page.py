@@ -3,7 +3,6 @@ import dateutil.parser as parser
 from app.model.raw_docx.raw_docx import RawDocx
 
 # from app.model.raw_docx.raw_table import RawTable
-from usdm_model.code import Code
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
 from d4kms_generic import application_logger
@@ -229,9 +228,9 @@ class M11TitlePage:
         for table in section.tables():
             title = table_get_row(table, "Full Title")
             if title:
-                application_logger.debug(f"Found M11 title page table")
+                application_logger.debug("Found M11 title page table")
                 return table
-        application_logger.warning(f"Cannot locate M11 title page table!")
+        application_logger.warning("Cannot locate M11 title page table!")
         return None
 
     def _preserve_original(self, original_parts, value):

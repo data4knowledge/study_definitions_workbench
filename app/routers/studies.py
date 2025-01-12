@@ -14,7 +14,6 @@ from app.dependencies.utility import transmit_role_enabled, user_details
 from app.dependencies.templates import templates
 from app.utility.template_methods import restructure_study_list
 from app.dependencies.fhir_version import fhir_versions
-from d4kms_generic.logger import application_logger
 
 router = APIRouter(
     prefix="/studies", tags=["studies"], dependencies=[Depends(protect_endpoint)]

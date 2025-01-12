@@ -17,7 +17,7 @@ class PFDAFiles:
                 application_logger.info(f"pFDA file list response: {response}")
                 return True, {"files": response["files"]}, ""
         except Exception as e:
-            application_logger.exception(f"pFDA exception", e)
+            application_logger.exception("pFDA exception", e)
             return (
                 False,
                 {},
@@ -30,7 +30,7 @@ class PFDAFiles:
             "pfda",
             "download",
             uid,
-            f"-output",
+            "-output",
             f"{target}",
             "-json",
             "-overwrite",

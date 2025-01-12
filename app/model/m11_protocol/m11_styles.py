@@ -41,7 +41,7 @@ class M11Styles:
                     item.add_class(header[1])
         else:
             application_logger.error(
-                f"Failed to find first  (header) section in M11 document"
+                "Failed to find first  (header) section in M11 document"
             )
 
     def _decode_trial_design_summary(self):
@@ -57,7 +57,7 @@ class M11Styles:
                         item.add_span(design_item[0], design_item[1])
             else:
                 application_logger.error(
-                    f"Failed to find any tables in section 1.1.2 in M11 document"
+                    "Failed to find any tables in section 1.1.2 in M11 document"
                 )
         else:
-            application_logger.error(f"Failed to find section 1.1.2 in M11 document")
+            application_logger.error("Failed to find section 1.1.2 in M11 document")

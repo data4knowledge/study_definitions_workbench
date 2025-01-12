@@ -92,7 +92,7 @@ class Endpoint(EndpointBase):
         try:
             http_url_adapter.validate_python(endpoint)
             endpoint_valiadation = True
-        except Exception as e:
+        except Exception:
             endpoint_valiadation = False
         type_valiadation = type in ["FHIR"]
         validation = {

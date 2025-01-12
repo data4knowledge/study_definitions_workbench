@@ -1,4 +1,3 @@
-import pytest
 from app.database.version import Version
 from app.database.user import User
 from app.database.study import Study

@@ -12,9 +12,7 @@ from fhir.resources.extension import Extension
 from fhir.resources.researchstudy import ResearchStudyAssociatedParty
 from fhir.resources.researchstudy import ResearchStudyProgressStatus
 from fhir.resources.organization import Organization as FHIROrganization
-from fhir.resources.extendedcontactdetail import ExtendedContactDetail
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
-from fhir.resources.fhirprimitiveextension import FHIRPrimitiveExtension
 from fhir.resources.group import Group
 from usdm_model.code import Code as USDMCode
 
@@ -53,7 +51,7 @@ class ToFHIRV2(ToFHIR):
                 section = self._content_to_section(content)
                 if section:
                     sections.append(section)
-            type_code = CodeableConcept(text=f"EvidenceReport")
+            type_code = CodeableConcept(text="EvidenceReport")
             date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
             author = Reference(display="USDM")
             self._entries.append(
@@ -95,7 +93,7 @@ class ToFHIRV2(ToFHIR):
             return bundle.json()
         except Exception as e:
             self._errors_and_logging.exception(
-                f"Exception raised generating FHIR content. See logs for more details",
+                "Exception raised generating FHIR content. See logs for more details",
                 e,
             )
             return None
@@ -359,7 +357,7 @@ class ToFHIRV2(ToFHIR):
                 }
                 research_study.objective.append(item)
             except Exception as e:
-                application_logger.exception(f"Exception in method _estimands", e)
+                application_logger.exception("Exception in method _estimands", e)
 
     def _treatment(
         self, research_study: ResearchStudy, treatment: USDMStudyIntervention
@@ -527,7 +525,7 @@ class ToFHIRV2(ToFHIR):
     def _amendment_ext(self, version: USDMStudyVersion):
         source = version.amendments[0]
         amendment = Extension(
-            url=f"http://example.org/fhir/extension/studyAmendment", extension=[]
+            url="http://example.org/fhir/extension/studyAmendment", extension=[]
         )
         ext = self._extension_string(
             "amendmentNumber", value=self._title_page["amendment_identifier"]

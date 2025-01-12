@@ -1,4 +1,3 @@
-import pytest
 from app.model.unified_diff.unified_diff import UnifiedDiff, Hunk, LineRange
 
 

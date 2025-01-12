@@ -1,7 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from app.database.database_tables import TransmissionTable
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
 
 
 class TransmissionBase(BaseModel):

@@ -1,7 +1,5 @@
 from usdm_excel.globals import Globals
 from app.model.raw_docx.raw_docx import RawDocx
-from app.model.raw_docx.raw_table import RawTable
-from d4kms_generic import application_logger
 from app.model.m11_protocol.m11_utility import *
 
 

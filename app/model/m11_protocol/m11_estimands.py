@@ -67,7 +67,7 @@ class M11IEstimands:
                                     objective["i_event"] = item.cells[0].to_html()
                                     objective["strategy"] = item.cells[1].to_html()
                                     application_logger.info(
-                                        f"Found estimands event and strategy"
+                                        "Found estimands event and strategy"
                                     )
                             objectives.append(objective)
                         section_number += 1

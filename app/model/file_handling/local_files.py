@@ -17,7 +17,7 @@ class LocalFiles:
             os.mkdir(application_configuration.local_file_path)
             application_logger.info("Localfiles dir created")
             return True
-        except FileExistsError as e:
+        except FileExistsError:
             application_logger.info("Localfiles dir exists")
         except Exception as e:
             application_logger.exception(

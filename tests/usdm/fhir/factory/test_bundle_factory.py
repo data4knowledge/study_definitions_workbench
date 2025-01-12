@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime
 from zoneinfo import ZoneInfo
 from app.usdm.fhir.factory.bundle_factory import BundleFactory
 from tests.usdm.fhir.factory.dict_result import DictResult
@@ -10,7 +10,7 @@ from tests.mocks.general_mocks import mock_called
 def test_bundle():
     date_obj = datetime(2024, 12, 31, 0, 0, tzinfo=ZoneInfo(key="Europe/Amsterdam"))
     date_str = date_obj.isoformat()
-    identifier = Identifier(system="urn:ietf:rfc:3986", value=f"urn:uuid:1234-5678")
+    identifier = Identifier(system="urn:ietf:rfc:3986", value="urn:uuid:1234-5678")
     params = {
         "entry": [],
         "type": "document",

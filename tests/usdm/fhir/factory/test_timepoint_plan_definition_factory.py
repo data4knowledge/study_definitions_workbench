@@ -11,7 +11,7 @@ from tests.files.files import *
 from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 
-PATH = f"tests/test_files/fhir_v2/to/"
+PATH = "tests/test_files/fhir_v2/to/"
 SAVE = True
 
 
@@ -23,7 +23,7 @@ def test_timeline_plan_definition():
     result = TimepointPlanDefinitionFactory(sd, tp)
     assert result.item is not None
     result_dict = DictResult(result.item)
-    assert result_dict.results_match_file(PATH, f"pilot_fhir_soa_tppd.json", SAVE)
+    assert result_dict.results_match_file(PATH, "pilot_fhir_soa_tppd.json", SAVE)
 
 
 def test_timeline_plan_definition_error(mocker):

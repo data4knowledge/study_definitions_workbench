@@ -5,10 +5,8 @@ from d4kms_generic import application_logger
 from app.model.connection_manager import connection_manager
 from app.database.user import User
 from app.database.endpoint import Endpoint
-from sqlalchemy.orm import Session
 from app.database.transmission import Transmission
 from app.model.usdm_json import USDMJson
-from app.database.database_manager import DatabaseManager as DBM
 from app.utility.fhir_service import FHIRService
 
 

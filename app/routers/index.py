@@ -1,5 +1,5 @@
 import json
-from fastapi import APIRouter, Form, Depends, Request
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from app.database.study import Study
 from app.database.user import User
@@ -9,7 +9,6 @@ from app.dependencies.dependency import protect_endpoint
 from app.dependencies.templates import templates
 from app.dependencies.utility import transmit_role_enabled, user_details
 from app.dependencies.fhir_version import fhir_versions
-from d4kms_generic.logger import application_logger
 
 COOKIE = "index_filter"
 

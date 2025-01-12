@@ -43,7 +43,7 @@ class RawDocx:
     def _organise_dir(self):
         try:
             os.mkdir(self.image_path)
-        except FileExistsError as e:
+        except FileExistsError:
             pass
         except Exception as e:
             application_logger.exception("Failed to create image directory", e)
@@ -59,10 +59,10 @@ class RawDocx:
                 elif isinstance(block_item, Table):
                     self._process_table(block_item, target_section)
                 else:
-                    application_logger.warning(f"Ignoring element")
+                    application_logger.warning("Ignoring element")
                     raise ValueError
         except Exception as e:
-            application_logger.exception(f"Exception raised processing document", e)
+            application_logger.exception("Exception raised processing document", e)
 
     def _extract_images(self):
         # Extract images to image dir
@@ -88,7 +88,7 @@ class RawDocx:
         elif isinstance(parent, _Cell):
             parent_elm = parent._tc
         else:
-            raise ValueError(f"something's not right with the parent")
+            raise ValueError("something's not right with the parent")
 
         for child in parent_elm.iterchildren():
             if isinstance(child, CT_P):
@@ -125,7 +125,7 @@ class RawDocx:
                         # Bottom method seems to have a bug.
                         # See https://github.com/python-openxml/python-docx/issues/1433
                         b = x.bottom
-                    except Exception as e:
+                    except Exception:
                         b = t + 1
                     h_span = r - l
                     v_span = b - t
@@ -142,7 +142,7 @@ class RawDocx:
                     if isinstance(block_item, Paragraph):
                         self._process_cell(block_item, target_cell)
                     elif isinstance(block_item, Table):
-                        raise self.LogicError(f"Table within table detected")
+                        raise self.LogicError("Table within table detected")
                         _process_table(block_item, target_cell)
                     elif isinstance(block_item, etree._Element):
                         # print(f"TAG: {block_item.tag}")
@@ -211,13 +211,13 @@ class RawDocx:
             try:
                 level = int(text[0:2])
                 return True, level
-            except Exception as e:
+            except Exception:
                 return True, 0
         if re.match("^Heading \d", text):
             try:
                 level = int(text[8])
                 return True, level
-            except Exception as e:
+            except Exception:
                 return True, 0
         return False, 0
 

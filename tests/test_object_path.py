@@ -1,4 +1,3 @@
-import pytest
 from app.model.object_path import ObjectPath
 
 

@@ -15,7 +15,7 @@ class LineRange:
     def _to_int(self, text: str) -> int:
         try:
             return int(text)
-        except Exception as e:
+        except Exception:
             return 1
 
 
@@ -85,7 +85,7 @@ class UnifiedDiff:
         # print(f"UD: Processing...")
         self._hunks = []
         hunk = None
-        application_logger.debug(f"Unified diff processing ...")
+        application_logger.debug("Unified diff processing ...")
         for text in difflib.unified_diff(old_data, new_data):
             application_logger.debug(f"Unified diff text '{text}'")
             # print(f"UD: {text}")
@@ -100,11 +100,11 @@ class UnifiedDiff:
                 if hunk:
                     hunk.add(text)
                 else:
-                    application_logger.error(f"Detected diff line with no hunk")
+                    application_logger.error("Detected diff line with no hunk")
 
     def to_html(self):
         lines = []
-        lines.append(f'<table class="table responsive w-auto">')
+        lines.append('<table class="table responsive w-auto">')
         for index, hunk in enumerate(self._hunks):
             header = f"""<tr class="m-0 p-0">
         <td class="col-auto text-center table-primary m-0 p-0" colspan="2">...</td>

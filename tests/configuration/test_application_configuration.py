@@ -1,4 +1,3 @@
-import pytest
 from app.configuration.configuration import Configuration
 from tests.mocks.general_mocks import *
 

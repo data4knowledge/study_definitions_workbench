@@ -43,7 +43,7 @@ class M11IAmendment:
             self._reasons(table)
             self.summary = table_get_row_html(table, "Amendment Summary")
             if self.summary:
-                application_logger.info(f"Amendment summary found")
+                application_logger.info("Amendment summary found")
             self.safety_impact, self.safety_impact_reason = self._impact(
                 table,
                 "Is this amendment likely to have a substantial impact on the safety",

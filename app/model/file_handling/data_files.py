@@ -3,7 +3,6 @@ import json
 import csv
 import shutil
 import yaml
-from pathlib import Path
 from uuid import uuid4
 from d4kms_generic import application_logger
 from app.configuration.configuration import application_configuration
@@ -143,7 +142,7 @@ class DataFiles:
             os.mkdir(dir)
             application_logger.info("Datafiles dir created")
             return True
-        except FileExistsError as e:
+        except FileExistsError:
             application_logger.info("Datafiles dir exists")
         except Exception as e:
             application_logger.exception(
@@ -229,7 +228,7 @@ class DataFiles:
                 f.write(contents)
             return full_path
         except Exception as e:
-            application_logger.exception(f"Exception saving source file", e)
+            application_logger.exception("Exception saving source file", e)
 
     def _save_image_file(self, contents, filename):
         try:
@@ -237,7 +236,7 @@ class DataFiles:
             with open(full_path, "wb") as f:
                 f.write(contents)
         except Exception as e:
-            application_logger.exception(f"Exception saving source file", e)
+            application_logger.exception("Exception saving source file", e)
 
     def _save_json_file(self, contents, filename):
         try:
@@ -246,7 +245,7 @@ class DataFiles:
                 f.write(json.dumps(json.loads(contents), indent=2))
             return full_path
         except Exception as e:
-            application_logger.exception(f"Exception saving results file", e)
+            application_logger.exception("Exception saving results file", e)
 
     def _save_yaml_file(self, contents, filename):
         try:
@@ -255,7 +254,7 @@ class DataFiles:
                 yaml.dump(contents, f, default_flow_style=False)
             return full_path
         except Exception as e:
-            application_logger.exception(f"Exception saving results file", e)
+            application_logger.exception("Exception saving results file", e)
 
     def _save_pdf_file(self, contents, filename):
         try:
@@ -264,7 +263,7 @@ class DataFiles:
                 f.write(contents)
             return full_path
         except Exception as e:
-            application_logger.exception(f"Exception saving PDF file", e)
+            application_logger.exception("Exception saving PDF file", e)
 
     def _save_html_file(self, contents, filename):
         try:
@@ -273,7 +272,7 @@ class DataFiles:
                 f.write(contents)
             return full_path
         except Exception as e:
-            application_logger.exception(f"Exception saving timeline file", e)
+            application_logger.exception("Exception saving timeline file", e)
 
     def _save_csv_file(self, contents, filename):
         if not contents:
@@ -288,7 +287,7 @@ class DataFiles:
                 writer.writerows(contents)
             return full_path
         except Exception as e:
-            application_logger.exception(f"Exception saving error file", e)
+            application_logger.exception("Exception saving error file", e)
 
     def _create_dir(self):
         try:
