@@ -7,30 +7,57 @@ from fhir.resources.reference import Reference
 from uuid import uuid4
 import datetime
 
+
 class ToFHIRV1(ToFHIR):
+    class LogicError(Exception):
+        pass
 
-  class LogicError(Exception):
-    pass
-
-  def to_fhir(self):
-    try:
-      sections = []
-      content = self.protocol_document_version.contents[0]
-      more = True
-      while more:
-        section = self._content_to_section(content)
-        if section:
-          sections.append(section)
-        content = next((x for x in self.protocol_document_version.contents if x.id == content.nextId), None)
-        more = True if content else False
-      type_code = CodeableConcept(text=f"EvidenceReport")
-      date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
-      author = Reference(display="USDM")
-      composition = Composition(title=self.doc_title, type=type_code, section=sections, date=date, status="preliminary", author=[author])
-      identifier = Identifier(system='urn:ietf:rfc:3986', value=f'urn:uuid:{self._uuid}')
-      bundle_entry = BundleEntry(resource=composition, fullUrl="https://www.example.com/Composition/1234")
-      bundle = Bundle(id=None, entry=[bundle_entry], type="document", identifier=identifier, timestamp=date)
-      return bundle.json()
-    except Exception as e:
-      self._errors_and_logging.exception(f"Exception raised generating FHIR content. See logs for more details", e)
-      return None
+    def to_fhir(self):
+        try:
+            sections = []
+            content = self.protocol_document_version.contents[0]
+            more = True
+            while more:
+                section = self._content_to_section(content)
+                if section:
+                    sections.append(section)
+                content = next(
+                    (
+                        x
+                        for x in self.protocol_document_version.contents
+                        if x.id == content.nextId
+                    ),
+                    None,
+                )
+                more = True if content else False
+            type_code = CodeableConcept(text=f"EvidenceReport")
+            date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
+            author = Reference(display="USDM")
+            composition = Composition(
+                title=self.doc_title,
+                type=type_code,
+                section=sections,
+                date=date,
+                status="preliminary",
+                author=[author],
+            )
+            identifier = Identifier(
+                system="urn:ietf:rfc:3986", value=f"urn:uuid:{self._uuid}"
+            )
+            bundle_entry = BundleEntry(
+                resource=composition, fullUrl="https://www.example.com/Composition/1234"
+            )
+            bundle = Bundle(
+                id=None,
+                entry=[bundle_entry],
+                type="document",
+                identifier=identifier,
+                timestamp=date,
+            )
+            return bundle.json()
+        except Exception as e:
+            self._errors_and_logging.exception(
+                f"Exception raised generating FHIR content. See logs for more details",
+                e,
+            )
+            return None

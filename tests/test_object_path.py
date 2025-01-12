@@ -1,24 +1,29 @@
 import pytest
 from app.model.object_path import ObjectPath
 
-class KlassA():
-  a_a: str
-  a_b: str
-  a_c: str
 
-class KlassB():
-  b_a: str
-  b_b: KlassA
+class KlassA:
+    a_a: str
+    a_b: str
+    a_c: str
 
-class KlassC():
-  c_a: str
-  c_b: KlassB
 
-class Root():
-  r_a: str
-  r_b: int
-  r_c: list[KlassA]
-  r_d: KlassC
+class KlassB:
+    b_a: str
+    b_b: KlassA
+
+
+class KlassC:
+    c_a: str
+    c_b: KlassB
+
+
+class Root:
+    r_a: str
+    r_b: int
+    r_c: list[KlassA]
+    r_d: KlassC
+
 
 a1 = KlassA()
 a1.a_a = "Hello Klass A 1"
@@ -48,23 +53,27 @@ root.r_b = 6543
 root.r_c = [a1, a3, a4]
 root.r_d = c1
 
+
 def test_1():
-  x = ObjectPath(root)
-  assert x.get('r_b') == 6543
+    x = ObjectPath(root)
+    assert x.get("r_b") == 6543
+
 
 def test_2():
-  x = ObjectPath(root)
-  assert x.get('r_d/c_a') == "Klass C"
+    x = ObjectPath(root)
+    assert x.get("r_d/c_a") == "Klass C"
+
 
 def test_3():
-  x = ObjectPath(root)
-  assert x.get('r_c[1]/a_a') == "Hello Klass A 3"
+    x = ObjectPath(root)
+    assert x.get("r_c[1]/a_a") == "Hello Klass A 3"
+
 
 def test_4():
-  x = ObjectPath(root)
-  assert x.get('r_d/c_b/b_b/a_a') == "Hello Klass A 2"
+    x = ObjectPath(root)
+    assert x.get("r_d/c_b/b_b/a_a") == "Hello Klass A 2"
+
 
 def test_5():
-  x = ObjectPath(root)
-  assert x.get("r_c[@a_c='W']/a_b") == 1000
-
+    x = ObjectPath(root)
+    assert x.get("r_c[@a_c='W']/a_b") == 1000
