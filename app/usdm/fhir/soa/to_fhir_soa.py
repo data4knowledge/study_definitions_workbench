@@ -47,8 +47,12 @@ class ToFHIRSoA:
             rs = ResearchStudyFactory(self._study, self._extra)
             entries.append(
                 BundleEntryFactory(
+                    request={
+                        "method": "POST",
+                        "url": "ResearchStudy",
+                    },
                     resource=rs.item,
-                    fullUrl="https://www.example.com/Composition/1234A",
+                    fullUrl="https://www.example.com/rs",
                 ).item
             )
 
@@ -56,40 +60,53 @@ class ToFHIRSoA:
             tlpd = TimelinePlanDefinitionFactory(self._timeline)
             entries.append(
                 BundleEntryFactory(
+                    request={
+                        "method": "POST",
+                        "url": "PlanDefinition",
+                    },
                     resource=tlpd.item,
-                    fullUrl="https://www.example.com/Composition/1234B",
+                    fullUrl="https://www.example.com/pd/tl",
                 ).item
             )
 
             # Add timepoint plan definitions for the activities
-            for tp in self._timeline.instances:
+            for index, tp in enumerate(self._timeline.instances):
                 tppd = TimepointPlanDefinitionFactory(self._study_design, tp)
                 entries.append(
                     BundleEntryFactory(
+                        request={
+                            "method": "POST",
+                            "url": "PlanDefinition",
+                        },
                         resource=tppd.item,
-                        fullUrl="https://www.example.com/Composition/1234B",
+                        fullUrl=f"https://www.example.com/pd/tp/{index}",
                     ).item
                 )
 
             # Add activity definitions for each activit
             activity_list = self._study_design.activity_list()
-            for activity in activity_list:
+            for index, activity in enumerate(activity_list):
+                id=f"ActivityDefinition-{ActivityDefinitionFactory.fix_id(activity.name)}"
                 ad = ActivityDefinitionFactory(
-                    id=f"ActivityDefinition-{ActivityDefinitionFactory.fix_id(activity.name)}",
+                    id=id,
                     status="active",
                     description=activity.description,
                 )
                 entries.append(
                     BundleEntryFactory(
+                        request={
+                            "method": "POST",
+                            "url": "ActivityDefinition",
+                        },
                         resource=ad.item,
-                        fullUrl="https://www.example.com/Composition/1234B",
+                        fullUrl=f"https://www.example.com/ad/{index}",
                     ).item
                 )
 
             # Build the final bundle
             bundle = BundleFactory(
                 entry=entries,
-                type="document",
+                type="transaction",
                 identifier=identifier.item,
                 timestamp=date,
             )

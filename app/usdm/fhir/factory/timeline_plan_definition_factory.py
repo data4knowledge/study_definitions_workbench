@@ -59,7 +59,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
         timepoints = timeline.timepoint_list()
         for timepoint in timepoints:
             action = PlanDefinitionActionFactory(
-                id=timepoint.id,
+                id=self.fix_id(timepoint.id),
                 title=timepoint.label_name(),
                 definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
                 relatedAction=[self._related_action(timeline, timepoint)],
@@ -75,7 +75,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
         timing: Timing = timeline.find_timing_from(timepoint.id)
         offset = ISO8601ToUCUM.convert(timing.value)
         related = PlanDefinitionRelatedActionFactory(
-            targetId=self.fix_id(timing.id),
+            targetId=self.fix_id(timing.relativeToScheduledInstanceId),
             relationship=CDISCFHIR.from_c201264(timing.type),
             offsetDuration=offset,
             extension=[],
