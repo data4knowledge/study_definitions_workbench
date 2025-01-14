@@ -32,7 +32,7 @@
       "relatedAction": [
         {
           "targetId": "timing-1",
-          "relationship": "Before",
+          "relationship": "before",
           "offsetDuration": {
             "value": 2,
             "unit": "w",
@@ -51,7 +51,7 @@
             null
           ],
           "targetId": "timing-2",
-          "relationship": "Before",
+          "relationship": "before",
           "offsetDuration": {
             "value": 2,
             "unit": "d",
@@ -67,7 +67,7 @@
       "relatedAction": [
         {
           "targetId": "timing-3",
-          "relationship": "Fixed Reference",
+          "relationship": "concurrent",
           "offsetDuration": {
             "value": 1,
             "unit": "d",
@@ -99,7 +99,7 @@
             }
           ],
           "targetId": "timing-4",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 2,
             "unit": "w",
@@ -131,7 +131,7 @@
             }
           ],
           "targetId": "timing-5",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 4,
             "unit": "w",
@@ -163,7 +163,7 @@
             }
           ],
           "targetId": "timing-6",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 6,
             "unit": "w",
@@ -195,7 +195,7 @@
             }
           ],
           "targetId": "timing-7",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 8,
             "unit": "w",
@@ -211,7 +211,7 @@
       "relatedAction": [
         {
           "targetId": "timing-8",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 2,
             "unit": "w",
@@ -243,7 +243,7 @@
             }
           ],
           "targetId": "timing-9",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 12,
             "unit": "w",
@@ -259,7 +259,7 @@
       "relatedAction": [
         {
           "targetId": "timing-10",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 2,
             "unit": "w",
@@ -291,7 +291,7 @@
             }
           ],
           "targetId": "timing-11",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 16,
             "unit": "w",
@@ -307,7 +307,7 @@
       "relatedAction": [
         {
           "targetId": "timing-12",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 2,
             "unit": "w",
@@ -339,7 +339,7 @@
             }
           ],
           "targetId": "timing-13",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 20,
             "unit": "w",
@@ -355,7 +355,7 @@
       "relatedAction": [
         {
           "targetId": "timing-14",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 2,
             "unit": "w",
@@ -387,7 +387,7 @@
             }
           ],
           "targetId": "timing-15",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 24,
             "unit": "w",
@@ -419,7 +419,7 @@
             }
           ],
           "targetId": "timing-16",
-          "relationship": "After",
+          "relationship": "after",
           "offsetDuration": {
             "value": 26,
             "unit": "w",
