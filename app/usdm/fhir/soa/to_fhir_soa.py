@@ -85,7 +85,7 @@ class ToFHIRSoA:
                         fullUrl="https://www.example.com/Composition/1234B",
                     ).item
                 )
-                
+
             # Build the final bundle
             bundle = BundleFactory(
                 entry=entries,

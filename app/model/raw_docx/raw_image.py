@@ -22,4 +22,6 @@ class RawImage:
                 return f"""<p style="color:red">Note: Unable to process embedded image of type '{file_extension}', image ignored.</p>"""
         except Exception as e:
             application_logger.exception("Exception converting image", e)
-            return """<p style="color:red">Note: Error encountered processing image.</p>"""
+            return (
+                """<p style="color:red">Note: Error encountered processing image.</p>"""
+            )

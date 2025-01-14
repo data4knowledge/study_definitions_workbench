@@ -1,4 +1,3 @@
-
 from app.usdm.fhir.factory.base_factory import BaseFactory
 from fhir.resources.identifier import Identifier
 

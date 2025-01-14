@@ -15,7 +15,6 @@ class BaseFactory:
 
     @staticmethod
     def fix_id(value: str) -> str:
-        result = re.sub('[^0-9a-zA-Z]', '-', value)
+        result = re.sub("[^0-9a-zA-Z]", "-", value)
         # result = value.replace("_", "-")
         return result.lower()
-
