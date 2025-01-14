@@ -13,4 +13,9 @@ class ISO8601ToUCUM:
             result = match.groupdict()
             result["unit"] = result["unit"].lower()
             result["system"] = "http://unitsofmeasure.org"
+        match = re.search(r"^PT(?P<value>\d+)H", value)
+        if match:
+            result = match.groupdict()
+            result["unit"] = "h"
+            result["system"] = "http://unitsofmeasure.org"
         return result

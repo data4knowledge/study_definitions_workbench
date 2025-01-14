@@ -163,7 +163,21 @@
             "relatedAction": [
               {
                 "extension": [
-                  null
+                  {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
+                    "valueRange": {
+                      "low": {
+                        "value": 4,
+                        "unit": "h",
+                        "system": "http://unitsofmeasure.org"
+                      },
+                      "high": {
+                        "value": 0,
+                        "unit": "h",
+                        "system": "http://unitsofmeasure.org"
+                      }
+                    }
+                  }
                 ],
                 "targetId": "timing-2",
                 "relationship": "before",
@@ -199,6 +213,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 3,
@@ -231,6 +246,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 3,
@@ -263,6 +279,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 3,
@@ -295,6 +312,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 3,
@@ -343,6 +361,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 4,
@@ -391,6 +410,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 4,
@@ -439,6 +459,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 4,
@@ -487,6 +508,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 4,
@@ -519,6 +541,7 @@
               {
                 "extension": [
                   {
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                     "valueRange": {
                       "low": {
                         "value": 3,

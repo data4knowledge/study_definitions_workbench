@@ -87,7 +87,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
                         "low": ISO8601ToUCUM.convert(timing.windowLower),
                         "high": ISO8601ToUCUM.convert(timing.windowUpper),
                     },
-                    "url": "http://hl7.org/fhir/StructureDefinition/timing-window"
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa"
                 }
             )
             related.item.extension.append(window.item)

@@ -17,6 +17,11 @@ def test_convert():
         "unit": "y",
         "value": "123",
     }
+    assert ISO8601ToUCUM.convert("PT15H") == {
+        "system": "http://unitsofmeasure.org",
+        "unit": "h",
+        "value": "15",
+    }
 
 
 def test_convert_error():
