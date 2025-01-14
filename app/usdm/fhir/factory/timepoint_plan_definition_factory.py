@@ -53,7 +53,7 @@ class TimepointPlanDefinitionFactory(BaseFactory):
         for id in timepoint.activityIds:
             activity = activities[id]
             action = PlanDefinitionActionFactory(
-                id=activity.id,
+                id=self.fix_id(activity.id),
                 title=activity.label_name(),
                 definitionUri=f"ActivityDefinition-{self.fix_id(activity.name)}",
             )

@@ -52,9 +52,10 @@ class ResearchStudyFactory(BaseFactory):
 
             # Trial Acronym
             acronym = self._version.acronym()  # self._get_title('Study Acronym')
-            self.item.label.append(
-                LabelTypeFactory(usdm_code=acronym.type, text=acronym.text).item
-            )
+            if acronym:
+                self.item.label.append(
+                    LabelTypeFactory(usdm_code=acronym.type, text=acronym.text).item
+                )
 
             # Sponsor Protocol Identifier
             for identifier in self._version.studyIdentifiers:
@@ -75,7 +76,9 @@ class ResearchStudyFactory(BaseFactory):
             self.item.version = self._version.versionIdentifier
 
             # Version Date
-            self.item.date = self._version.approval_date_value()
+            date_value = self._version.approval_date_value()
+            if date_value:
+                self.item.date = date_value
 
             # Amendment Identifier
             identifier_code = CodeableConceptFactory(text="Amendment Identifier")

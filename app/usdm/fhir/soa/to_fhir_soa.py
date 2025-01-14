@@ -86,9 +86,8 @@ class ToFHIRSoA:
             # Add activity definitions for each activit
             activity_list = self._study_design.activity_list()
             for index, activity in enumerate(activity_list):
-                id=f"ActivityDefinition-{ActivityDefinitionFactory.fix_id(activity.name)}"
                 ad = ActivityDefinitionFactory(
-                    id=id,
+                    id=f"{ActivityDefinitionFactory.fix_id(activity.id)}",
                     status="active",
                     description=activity.description,
                 )
