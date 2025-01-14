@@ -7,6 +7,7 @@ from app.model.usdm_json import USDMJson
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import user_details, transmit_role_enabled
 from app.dependencies.templates import templates
+from app.utility.fhir_transmit import run_fhir_soa_transmit
 
 router = APIRouter(
     prefix="/versions",
@@ -69,7 +70,7 @@ async def get_study_design_timeline_soa(
 ):
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
-    full_path, filename, media_type = usdm.fhir_soa_data(timeline_id)
+    full_path, filename, media_type = usdm.fhir_soa(timeline_id)
     if full_path:
         return FileResponse(path=full_path, filename=filename, media_type=media_type)
     else:
@@ -98,7 +99,7 @@ async def get_study_design_timeline_soa(
     session: Session = Depends(get_db),
 ):
     user, present_in_db = user_details(request, session)
-    # run_fhir_transmit(id, endpoint_id, version, user)
+    run_fhir_soa_transmit(version_id, endpoint_id, timeline_id, user)
     return RedirectResponse(
         f"/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa"
     )

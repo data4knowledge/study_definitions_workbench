@@ -12,7 +12,6 @@ from bs4 import BeautifulSoup
 from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
 
-
 class USDMJson:
     def __init__(self, id: int, session: Session):
         self.id = id
@@ -51,14 +50,17 @@ class USDMJson:
         self._files.save("fhir_v2", data)
         return data
 
+    def fhir_soa(self, timeline_id: str):
+        data = self.fhir_soa_data(timeline_id)
+        fullpath, filename = self._files.save("fhir_soa", data)
+        return fullpath, filename, "text/plain"
+
     def fhir_soa_data(self, timeline_id: str):
         usdm = USDMDb()
         usdm.from_json(self._data)
         study = usdm.wrapper().study
         fhir = ToFHIRSoA(study, timeline_id, self.uuid, self._extra)
-        data = fhir.to_message()
-        fullpath, filename = self._files.save("fhir_soa", data)
-        return fullpath, filename, "text/plain"
+        return fhir.to_message()
 
     def json(self):
         fullpath, filename, exists = self._files.path("usdm")

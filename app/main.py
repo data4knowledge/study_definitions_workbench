@@ -24,7 +24,7 @@ from app.utility.template_methods import *
 from app.model.usdm_json import USDMJson
 from app import VERSION, SYSTEM_NAME
 from app.dependencies.fhir_version import check_fhir_version
-from app.utility.fhir_transmit import run_fhir_transmit
+from app.utility.fhir_transmit import run_fhir_m11_transmit
 from app.database.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 from app.model.file_handling.pfda_files import PFDAFiles
@@ -671,7 +671,7 @@ async def version_transmit(
     user, present_in_db = user_details(request, session)
     valid, description = check_fhir_version(version)
     if valid:
-        run_fhir_transmit(id, endpoint_id, version, user)
+        run_fhir_m11_transmit(id, endpoint_id, version, user)
         return RedirectResponse(f"/versions/{id}/summary")
     else:
         return templates.TemplateResponse(
