@@ -86,7 +86,8 @@ class TimelinePlanDefinitionFactory(BaseFactory):
                     "valueRange": {
                         "low": ISO8601ToUCUM.convert(timing.windowLower),
                         "high": ISO8601ToUCUM.convert(timing.windowUpper),
-                    }
+                    },
+                    "url": "http://hl7.org/fhir/StructureDefinition/timing-window"
                 }
             )
             related.item.extension.append(window.item)
