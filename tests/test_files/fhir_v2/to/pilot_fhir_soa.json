@@ -4,11 +4,11 @@
     "system": "urn:ietf:rfc:3986",
     "value": "urn:uuid:FAKE-UUID"
   },
-  "type": "document",
+  "type": "transaction",
   "timestamp": "2024-12-25:00:00:00.000000+00:00",
   "entry": [
     {
-      "fullUrl": "https://www.example.com/Composition/1234A",
+      "fullUrl": "https://www.example.com/rs",
       "resource": {
         "resourceType": "ResearchStudy",
         "identifier": [
@@ -109,10 +109,14 @@
             }
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "ResearchStudy"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tl",
       "resource": {
         "resourceType": "PlanDefinition",
         "identifier": [
@@ -142,11 +146,11 @@
         "purpose": "This is the main timeline for the study design.",
         "action": [
           {
-            "id": "ScheduledActivityInstance_9",
+            "id": "scheduledactivityinstance-9",
             "title": "Screen One",
             "relatedAction": [
               {
-                "targetId": "timing-1",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "before",
                 "offsetDuration": {
                   "value": 2,
@@ -158,7 +162,7 @@
             "definitionUri": "PlanDefinition-screen1"
           },
           {
-            "id": "ScheduledActivityInstance_10",
+            "id": "scheduledactivityinstance-10",
             "title": "Screen Two",
             "relatedAction": [
               {
@@ -179,7 +183,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-2",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "before",
                 "offsetDuration": {
                   "value": 2,
@@ -191,11 +195,11 @@
             "definitionUri": "PlanDefinition-screen2"
           },
           {
-            "id": "ScheduledActivityInstance_11",
+            "id": "scheduledactivityinstance-11",
             "title": "Dose",
             "relatedAction": [
               {
-                "targetId": "timing-3",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "concurrent",
                 "offsetDuration": {
                   "value": 1,
@@ -207,7 +211,7 @@
             "definitionUri": "PlanDefinition-dose"
           },
           {
-            "id": "ScheduledActivityInstance_12",
+            "id": "scheduledactivityinstance-12",
             "title": "Week 2",
             "relatedAction": [
               {
@@ -228,7 +232,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-4",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 2,
@@ -240,7 +244,7 @@
             "definitionUri": "PlanDefinition-wk2"
           },
           {
-            "id": "ScheduledActivityInstance_13",
+            "id": "scheduledactivityinstance-13",
             "title": "Week 4",
             "relatedAction": [
               {
@@ -261,7 +265,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-5",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 4,
@@ -273,7 +277,7 @@
             "definitionUri": "PlanDefinition-wk4"
           },
           {
-            "id": "ScheduledActivityInstance_14",
+            "id": "scheduledactivityinstance-14",
             "title": "Week 6",
             "relatedAction": [
               {
@@ -294,7 +298,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-6",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 6,
@@ -306,7 +310,7 @@
             "definitionUri": "PlanDefinition-wk6"
           },
           {
-            "id": "ScheduledActivityInstance_15",
+            "id": "scheduledactivityinstance-15",
             "title": "Week 8",
             "relatedAction": [
               {
@@ -327,7 +331,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-7",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 8,
@@ -339,11 +343,11 @@
             "definitionUri": "PlanDefinition-wk8"
           },
           {
-            "id": "ScheduledActivityInstance_16",
+            "id": "scheduledactivityinstance-16",
             "title": "Week NPI",
             "relatedAction": [
               {
-                "targetId": "timing-8",
+                "targetId": "scheduledactivityinstance-15",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 2,
@@ -355,7 +359,7 @@
             "definitionUri": "PlanDefinition-wk8n"
           },
           {
-            "id": "ScheduledActivityInstance_17",
+            "id": "scheduledactivityinstance-17",
             "title": "Week 12",
             "relatedAction": [
               {
@@ -376,7 +380,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-9",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 12,
@@ -388,11 +392,11 @@
             "definitionUri": "PlanDefinition-wk12"
           },
           {
-            "id": "ScheduledActivityInstance_18",
+            "id": "scheduledactivityinstance-18",
             "title": "Week 12 NPI",
             "relatedAction": [
               {
-                "targetId": "timing-10",
+                "targetId": "scheduledactivityinstance-17",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 2,
@@ -404,7 +408,7 @@
             "definitionUri": "PlanDefinition-wk12n"
           },
           {
-            "id": "ScheduledActivityInstance_19",
+            "id": "scheduledactivityinstance-19",
             "title": "Week 16",
             "relatedAction": [
               {
@@ -425,7 +429,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-11",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 16,
@@ -437,11 +441,11 @@
             "definitionUri": "PlanDefinition-wk16"
           },
           {
-            "id": "ScheduledActivityInstance_20",
+            "id": "scheduledactivityinstance-20",
             "title": "Week 16 NPI",
             "relatedAction": [
               {
-                "targetId": "timing-12",
+                "targetId": "scheduledactivityinstance-19",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 2,
@@ -453,7 +457,7 @@
             "definitionUri": "PlanDefinition-wk16n"
           },
           {
-            "id": "ScheduledActivityInstance_21",
+            "id": "scheduledactivityinstance-21",
             "title": "Week 20",
             "relatedAction": [
               {
@@ -474,7 +478,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-13",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 20,
@@ -486,11 +490,11 @@
             "definitionUri": "PlanDefinition-wk20"
           },
           {
-            "id": "ScheduledActivityInstance_22",
+            "id": "scheduledactivityinstance-22",
             "title": "Week 20 NPI",
             "relatedAction": [
               {
-                "targetId": "timing-14",
+                "targetId": "scheduledactivityinstance-21",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 2,
@@ -502,7 +506,7 @@
             "definitionUri": "PlanDefinition-wk20n"
           },
           {
-            "id": "ScheduledActivityInstance_23",
+            "id": "scheduledactivityinstance-23",
             "title": "Week 24",
             "relatedAction": [
               {
@@ -523,7 +527,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-15",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 24,
@@ -535,7 +539,7 @@
             "definitionUri": "PlanDefinition-wk24"
           },
           {
-            "id": "ScheduledActivityInstance_24",
+            "id": "scheduledactivityinstance-24",
             "title": "Week 26",
             "relatedAction": [
               {
@@ -556,7 +560,7 @@
                     }
                   }
                 ],
-                "targetId": "timing-16",
+                "targetId": "scheduledactivityinstance-11",
                 "relationship": "after",
                 "offsetDuration": {
                   "value": 26,
@@ -568,10 +572,14 @@
             "definitionUri": "PlanDefinition-wk26"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/0",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-9",
@@ -703,10 +711,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/1",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-10",
@@ -733,10 +745,14 @@
             "definitionUri": "ActivityDefinition-ambulatory-ecg-placed"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/2",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-11",
@@ -803,10 +819,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/3",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-12",
@@ -873,10 +893,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/4",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-13",
@@ -933,10 +957,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/5",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-14",
@@ -993,10 +1021,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/6",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-15",
@@ -1063,10 +1095,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/7",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-16",
@@ -1088,10 +1124,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/8",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-17",
@@ -1153,10 +1193,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/9",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-18",
@@ -1178,10 +1222,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/10",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-19",
@@ -1248,10 +1296,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/11",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-20",
@@ -1273,10 +1325,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/12",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-21",
@@ -1333,10 +1389,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/13",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-22",
@@ -1358,10 +1418,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/14",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-23",
@@ -1433,10 +1497,14 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/pd/tp/15",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-24",
@@ -1498,330 +1566,478 @@
             "definitionUri": "ActivityDefinition-npi-x"
           }
         ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "PlanDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/0",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-informed-consent",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/1",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-inclusion-exclusion-criteria",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/2",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-patient-number-assigned",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/3",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-demographics",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/4",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-hachinski",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/5",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-mmse",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/6",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-physical-examination",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/7",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-medical-history",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/8",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-habits",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/9",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-chest-x-ray",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/10",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-apo-e-genotyping",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/11",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-patient-randomised",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/12",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-vital-signs---temperature",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/13",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-ambulatory-ecg-placed",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/14",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-ambulatory-ecg-removed",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/15",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-ecg",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/16",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-placebo-tts-test",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/17",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-ct-scan",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/18",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-concomitant-medications",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/19",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-hematology",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/20",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-chemistry",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/21",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-uninalysis",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/22",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-plasma-specimen--xanomeline-",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/23",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-hemoglobin-a1c",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/24",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-study-drug",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/25",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-tts-acceptability-survey",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/26",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-adas-cog",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/27",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-cibic-",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/28",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-dad",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/29",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-npi-x",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/30",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-adverse-events",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/31",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-check-adverse-events",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/32",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-supine",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/33",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-vital-signs-supine",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/34",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-stand",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     },
     {
-      "fullUrl": "https://www.example.com/Composition/1234B",
+      "fullUrl": "https://www.example.com/ad/35",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "ActivityDefinition-vital-signs-standing",
         "status": "active",
         "description": ""
+      },
+      "request": {
+        "method": "POST",
+        "url": "ActivityDefinition"
       }
     }
   ]
