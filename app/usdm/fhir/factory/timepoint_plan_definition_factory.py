@@ -56,7 +56,7 @@ class TimepointPlanDefinitionFactory(BaseFactory):
             action = PlanDefinitionActionFactory(
                 id=self.fix_id(activity.id),
                 title=activity.label_name(),
-                definitionUri=f"ActivityDefinition-{self.fix_id(activity.name)}",
+                definitionCanonical=f"http://hl7.org/fhir/uv/vulcan-schedule/ActivityDefinition/{self.fix_id(activity.name)}",
             )
             results.append(action.item)
         return results

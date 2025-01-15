@@ -79,7 +79,7 @@ class ToFHIRSoA:
                             "url": "PlanDefinition",
                         },
                         resource=tppd.item,
-                        fullUrl=f"https://www.example.com/pd/tp/{index}",
+                        fullUrl=URNUUID.generate(),
                     ).item
                 )
 
@@ -88,6 +88,7 @@ class ToFHIRSoA:
             for index, activity in enumerate(activity_list):
                 ad = ActivityDefinitionFactory(
                     id=f"{ActivityDefinitionFactory.fix_id(activity.id)}",
+                    url=f"http://hl7.org/fhir/uv/vulcan-schedule/ActivityDefinition/{ActivityDefinitionFactory.fix_id(activity.name)}",
                     status="active",
                     description=activity.description,
                 )
@@ -98,7 +99,7 @@ class ToFHIRSoA:
                             "url": "ActivityDefinition",
                         },
                         resource=ad.item,
-                        fullUrl=f"https://www.example.com/ad/{index}",
+                        fullUrl=URNUUID.generate(),
                     ).item
                 )
 
