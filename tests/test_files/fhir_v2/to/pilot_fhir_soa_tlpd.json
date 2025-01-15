@@ -23,7 +23,7 @@
       }
     ]
   },
-  "status": "draft",
+  "status": "active",
   "purpose": "This is the main timeline for the study design.",
   "action": [
     {
@@ -40,7 +40,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-screen1"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/screen1"
     },
     {
       "id": "scheduledactivityinstance-10",
@@ -73,23 +73,12 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-screen2"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/screen2"
     },
     {
       "id": "scheduledactivityinstance-11",
       "title": "Dose",
-      "relatedAction": [
-        {
-          "targetId": "scheduledactivityinstance-11",
-          "relationship": "concurrent",
-          "offsetDuration": {
-            "value": 1,
-            "unit": "d",
-            "system": "http://unitsofmeasure.org"
-          }
-        }
-      ],
-      "definitionUri": "PlanDefinition-dose"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/dose"
     },
     {
       "id": "scheduledactivityinstance-12",
@@ -122,7 +111,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk2"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk2"
     },
     {
       "id": "scheduledactivityinstance-13",
@@ -155,7 +144,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk4"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk4"
     },
     {
       "id": "scheduledactivityinstance-14",
@@ -188,7 +177,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk6"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk6"
     },
     {
       "id": "scheduledactivityinstance-15",
@@ -221,7 +210,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk8"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk8"
     },
     {
       "id": "scheduledactivityinstance-16",
@@ -237,7 +226,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk8n"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk8n"
     },
     {
       "id": "scheduledactivityinstance-17",
@@ -270,7 +259,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk12"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk12"
     },
     {
       "id": "scheduledactivityinstance-18",
@@ -286,7 +275,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk12n"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk12n"
     },
     {
       "id": "scheduledactivityinstance-19",
@@ -319,7 +308,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk16"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk16"
     },
     {
       "id": "scheduledactivityinstance-20",
@@ -335,7 +324,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk16n"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk16n"
     },
     {
       "id": "scheduledactivityinstance-21",
@@ -368,7 +357,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk20"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk20"
     },
     {
       "id": "scheduledactivityinstance-22",
@@ -384,7 +373,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk20n"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk20n"
     },
     {
       "id": "scheduledactivityinstance-23",
@@ -417,7 +406,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk24"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk24"
     },
     {
       "id": "scheduledactivityinstance-24",
@@ -450,7 +439,7 @@
           }
         }
       ],
-      "definitionUri": "PlanDefinition-wk26"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk26"
     }
   ]
 }

@@ -8,7 +8,7 @@
   "timestamp": "2024-12-25:00:00:00.000000+00:00",
   "entry": [
     {
-      "fullUrl": "https://www.example.com/rs",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ResearchStudy",
         "identifier": [
@@ -65,7 +65,7 @@
           }
         ],
         "date": "2006-06-01",
-        "status": "draft",
+        "status": "active",
         "phase": {
           "coding": [
             {
@@ -116,7 +116,7 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tl",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "identifier": [
@@ -142,7 +142,7 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "This is the main timeline for the study design.",
         "action": [
           {
@@ -159,7 +159,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-screen1"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/screen1"
           },
           {
             "id": "scheduledactivityinstance-10",
@@ -192,23 +192,12 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-screen2"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/screen2"
           },
           {
             "id": "scheduledactivityinstance-11",
             "title": "Dose",
-            "relatedAction": [
-              {
-                "targetId": "scheduledactivityinstance-11",
-                "relationship": "concurrent",
-                "offsetDuration": {
-                  "value": 1,
-                  "unit": "d",
-                  "system": "http://unitsofmeasure.org"
-                }
-              }
-            ],
-            "definitionUri": "PlanDefinition-dose"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/dose"
           },
           {
             "id": "scheduledactivityinstance-12",
@@ -241,7 +230,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk2"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk2"
           },
           {
             "id": "scheduledactivityinstance-13",
@@ -274,7 +263,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk4"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk4"
           },
           {
             "id": "scheduledactivityinstance-14",
@@ -307,7 +296,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk6"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk6"
           },
           {
             "id": "scheduledactivityinstance-15",
@@ -340,7 +329,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk8"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk8"
           },
           {
             "id": "scheduledactivityinstance-16",
@@ -356,7 +345,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk8n"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk8n"
           },
           {
             "id": "scheduledactivityinstance-17",
@@ -389,7 +378,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk12"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk12"
           },
           {
             "id": "scheduledactivityinstance-18",
@@ -405,7 +394,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk12n"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk12n"
           },
           {
             "id": "scheduledactivityinstance-19",
@@ -438,7 +427,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk16"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk16"
           },
           {
             "id": "scheduledactivityinstance-20",
@@ -454,7 +443,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk16n"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk16n"
           },
           {
             "id": "scheduledactivityinstance-21",
@@ -487,7 +476,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk20"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk20"
           },
           {
             "id": "scheduledactivityinstance-22",
@@ -503,7 +492,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk20n"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk20n"
           },
           {
             "id": "scheduledactivityinstance-23",
@@ -536,7 +525,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk24"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk24"
           },
           {
             "id": "scheduledactivityinstance-24",
@@ -569,7 +558,7 @@
                 }
               }
             ],
-            "definitionUri": "PlanDefinition-wk26"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk26"
           }
         ]
       },
@@ -579,10 +568,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/0",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-9",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/screen1",
         "title": "Screen One",
         "type": {
           "coding": [
@@ -592,123 +582,123 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-1",
             "title": "Informed consent",
-            "definitionUri": "ActivityDefinition-informed-consent"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/informed-consent"
           },
           {
             "id": "activity-2",
             "title": "Inclusion and exclusion criteria",
-            "definitionUri": "ActivityDefinition-inclusion-exclusion-criteria"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/inclusion-exclusion-criteria"
           },
           {
             "id": "activity-3",
             "title": "Patient number assigned",
-            "definitionUri": "ActivityDefinition-patient-number-assigned"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/patient-number-assigned"
           },
           {
             "id": "activity-4",
             "title": "Demographics",
-            "definitionUri": "ActivityDefinition-demographics"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/demographics"
           },
           {
             "id": "activity-5",
             "title": "Hachinski Ischemic Scale",
-            "definitionUri": "ActivityDefinition-hachinski"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hachinski"
           },
           {
             "id": "activity-6",
             "title": "MMSE",
-            "definitionUri": "ActivityDefinition-mmse"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/mmse"
           },
           {
             "id": "activity-7",
             "title": "Physical examination",
-            "definitionUri": "ActivityDefinition-physical-examination"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/physical-examination"
           },
           {
             "id": "activity-8",
             "title": "Medical history",
-            "definitionUri": "ActivityDefinition-medical-history"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/medical-history"
           },
           {
             "id": "activity-9",
             "title": "Habits",
-            "definitionUri": "ActivityDefinition-habits"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/habits"
           },
           {
             "id": "activity-10",
             "title": "Chest X-ray",
-            "definitionUri": "ActivityDefinition-chest-x-ray"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chest-x-ray"
           },
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-17",
             "title": "Placebo TTS test",
-            "definitionUri": "ActivityDefinition-placebo-tts-test"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/placebo-tts-test"
           },
           {
             "id": "activity-18",
             "title": "CT scan",
-            "definitionUri": "ActivityDefinition-ct-scan"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ct-scan"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition-uninalysis"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/uninalysis"
           },
           {
             "id": "activity-24",
             "title": "Hemoglobin A1C",
-            "definitionUri": "ActivityDefinition-hemoglobin-a1c"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hemoglobin-a1c"
           },
           {
             "id": "activity-27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition-adas-cog"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog"
           },
           {
             "id": "activity-28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition-cibic-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic"
           },
           {
             "id": "activity-29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition-dad"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -718,10 +708,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/1",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-10",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/screen2",
         "title": "Screen Two",
         "type": {
           "coding": [
@@ -731,18 +722,18 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-14",
             "title": "Ambulatory ECG placed",
-            "definitionUri": "ActivityDefinition-ambulatory-ecg-placed"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ambulatory-ecg-placed"
           }
         ]
       },
@@ -752,10 +743,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/2",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-11",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/dose",
         "title": "Dose",
         "type": {
           "coding": [
@@ -765,58 +757,58 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-12",
             "title": "Patient randomised",
-            "definitionUri": "ActivityDefinition-patient-randomised"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/patient-randomised"
           },
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-15",
             "title": "Ambulatory ECG removed",
-            "definitionUri": "ActivityDefinition-ambulatory-ecg-removed"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ambulatory-ecg-removed"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition-plasma-specimen--xanomeline-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition-adas-cog"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog"
           },
           {
             "id": "activity-28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition-cibic-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic"
           },
           {
             "id": "activity-29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition-dad"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -826,10 +818,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/3",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-12",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk2",
         "title": "Week 2",
         "type": {
           "coding": [
@@ -839,58 +832,58 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-11",
             "title": "Apo E genotyping",
-            "definitionUri": "ActivityDefinition-apo-e-genotyping"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/apo-e-genotyping"
           },
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition-uninalysis"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/uninalysis"
           },
           {
             "id": "activity-23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition-plasma-specimen--xanomeline-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -900,10 +893,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/4",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-13",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk4",
         "title": "Week 4",
         "type": {
           "coding": [
@@ -913,48 +907,48 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition-plasma-specimen--xanomeline-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -964,10 +958,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/5",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-14",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk6",
         "title": "Week 6",
         "type": {
           "coding": [
@@ -977,48 +972,48 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition-plasma-specimen--xanomeline-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1028,10 +1023,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/6",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-15",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk8",
         "title": "Week 8",
         "type": {
           "coding": [
@@ -1041,58 +1037,58 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition-adas-cog"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog"
           },
           {
             "id": "activity-28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition-cibic-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic"
           },
           {
             "id": "activity-29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition-dad"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1102,10 +1098,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/7",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-16",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk8n",
         "title": "Week NPI",
         "type": {
           "coding": [
@@ -1115,13 +1112,13 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1131,10 +1128,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/8",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-17",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk12",
         "title": "Week 12",
         "type": {
           "coding": [
@@ -1144,53 +1142,53 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition-uninalysis"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/uninalysis"
           },
           {
             "id": "activity-23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition-plasma-specimen--xanomeline-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1200,10 +1198,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/9",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-18",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk12n",
         "title": "Week 12 NPI",
         "type": {
           "coding": [
@@ -1213,13 +1212,13 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1229,10 +1228,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/10",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-19",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk16",
         "title": "Week 16",
         "type": {
           "coding": [
@@ -1242,58 +1242,58 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition-adas-cog"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog"
           },
           {
             "id": "activity-28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition-cibic-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic"
           },
           {
             "id": "activity-29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition-dad"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1303,10 +1303,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/11",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-20",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk16n",
         "title": "Week 16 NPI",
         "type": {
           "coding": [
@@ -1316,13 +1317,13 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1332,10 +1333,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/12",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-21",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk20",
         "title": "Week 20",
         "type": {
           "coding": [
@@ -1345,48 +1347,48 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-23",
             "title": "Plasma Specimen (Xanomeline)",
-            "definitionUri": "ActivityDefinition-plasma-specimen--xanomeline-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1396,10 +1398,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/13",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-22",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk20n",
         "title": "Week 20 NPI",
         "type": {
           "coding": [
@@ -1409,13 +1412,13 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1425,10 +1428,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/14",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-23",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk24",
         "title": "Week 24",
         "type": {
           "coding": [
@@ -1438,63 +1442,63 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-22",
             "title": "Uninalysis",
-            "definitionUri": "ActivityDefinition-uninalysis"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/uninalysis"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-27",
             "title": "ADAS-Cog",
-            "definitionUri": "ActivityDefinition-adas-cog"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog"
           },
           {
             "id": "activity-28",
             "title": "CIBIC+",
-            "definitionUri": "ActivityDefinition-cibic-"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic"
           },
           {
             "id": "activity-29",
             "title": "DAD",
-            "definitionUri": "ActivityDefinition-dad"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1504,10 +1508,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/pd/tp/15",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
         "id": "scheduledactivityinstance-24",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/wk26",
         "title": "Week 26",
         "type": {
           "coding": [
@@ -1517,53 +1522,53 @@
             }
           ]
         },
-        "status": "draft",
+        "status": "active",
         "purpose": "-",
         "action": [
           {
             "id": "activity-7",
             "title": "Physical examination",
-            "definitionUri": "ActivityDefinition-physical-examination"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/physical-examination"
           },
           {
             "id": "activity-13",
             "title": "Vital Signs and Temperature",
-            "definitionUri": "ActivityDefinition-vital-signs---temperature"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
           },
           {
             "id": "activity-16",
             "title": "ECG",
-            "definitionUri": "ActivityDefinition-ecg"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
           },
           {
             "id": "activity-19",
             "title": "Concomitant medications",
-            "definitionUri": "ActivityDefinition-concomitant-medications"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
           },
           {
             "id": "activity-20",
             "title": "Hematology",
-            "definitionUri": "ActivityDefinition-hematology"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
           },
           {
             "id": "activity-21",
             "title": "Chemistry",
-            "definitionUri": "ActivityDefinition-chemistry"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
           },
           {
             "id": "activity-25",
             "title": "Study drug record , Medications dispensed, Medications returned",
-            "definitionUri": "ActivityDefinition-study-drug"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug"
           },
           {
             "id": "activity-26",
             "title": "TTS Acceptability Survey",
-            "definitionUri": "ActivityDefinition-tts-acceptability-survey"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/tts-acceptability-survey"
           },
           {
             "id": "activity-30",
             "title": "NPI-X",
-            "definitionUri": "ActivityDefinition-npi-x"
+            "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
           }
         ]
       },
@@ -1573,10 +1578,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/0",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-1",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/informed-consent",
         "status": "active",
         "description": ""
       },
@@ -1586,10 +1592,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/1",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-2",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/inclusion-exclusion-criteria",
         "status": "active",
         "description": ""
       },
@@ -1599,10 +1606,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/2",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-3",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/patient-number-assigned",
         "status": "active",
         "description": ""
       },
@@ -1612,10 +1620,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/3",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-4",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/demographics",
         "status": "active",
         "description": ""
       },
@@ -1625,10 +1634,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/4",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-5",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hachinski",
         "status": "active",
         "description": ""
       },
@@ -1638,10 +1648,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/5",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-6",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/mmse",
         "status": "active",
         "description": ""
       },
@@ -1651,10 +1662,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/6",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-7",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/physical-examination",
         "status": "active",
         "description": ""
       },
@@ -1664,10 +1676,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/7",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-8",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/medical-history",
         "status": "active",
         "description": ""
       },
@@ -1677,10 +1690,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/8",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-9",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/habits",
         "status": "active",
         "description": ""
       },
@@ -1690,10 +1704,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/9",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-10",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chest-x-ray",
         "status": "active",
         "description": ""
       },
@@ -1703,10 +1718,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/10",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-11",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/apo-e-genotyping",
         "status": "active",
         "description": ""
       },
@@ -1716,10 +1732,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/11",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-12",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/patient-randomised",
         "status": "active",
         "description": ""
       },
@@ -1729,10 +1746,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/12",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-13",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature",
         "status": "active",
         "description": ""
       },
@@ -1742,10 +1760,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/13",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-14",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ambulatory-ecg-placed",
         "status": "active",
         "description": ""
       },
@@ -1755,10 +1774,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/14",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-15",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ambulatory-ecg-removed",
         "status": "active",
         "description": ""
       },
@@ -1768,10 +1788,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/15",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-16",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg",
         "status": "active",
         "description": ""
       },
@@ -1781,10 +1802,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/16",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-17",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/placebo-tts-test",
         "status": "active",
         "description": ""
       },
@@ -1794,10 +1816,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/17",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-18",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ct-scan",
         "status": "active",
         "description": ""
       },
@@ -1807,10 +1830,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/18",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-19",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications",
         "status": "active",
         "description": ""
       },
@@ -1820,10 +1844,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/19",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-20",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology",
         "status": "active",
         "description": ""
       },
@@ -1833,10 +1858,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/20",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-21",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry",
         "status": "active",
         "description": ""
       },
@@ -1846,10 +1872,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/21",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-22",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/uninalysis",
         "status": "active",
         "description": ""
       },
@@ -1859,10 +1886,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/22",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-23",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline",
         "status": "active",
         "description": ""
       },
@@ -1872,10 +1900,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/23",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-24",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hemoglobin-a1c",
         "status": "active",
         "description": ""
       },
@@ -1885,10 +1914,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/24",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-25",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug",
         "status": "active",
         "description": ""
       },
@@ -1898,10 +1928,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/25",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-26",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/tts-acceptability-survey",
         "status": "active",
         "description": ""
       },
@@ -1911,10 +1942,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/26",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-27",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog",
         "status": "active",
         "description": ""
       },
@@ -1924,10 +1956,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/27",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-28",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic",
         "status": "active",
         "description": ""
       },
@@ -1937,10 +1970,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/28",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-29",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad",
         "status": "active",
         "description": ""
       },
@@ -1950,10 +1984,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/29",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-30",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x",
         "status": "active",
         "description": ""
       },
@@ -1963,10 +1998,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/30",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-31",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adverse-events",
         "status": "active",
         "description": ""
       },
@@ -1976,10 +2012,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/31",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-32",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/check-adverse-events",
         "status": "active",
         "description": ""
       },
@@ -1989,10 +2026,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/32",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-33",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/supine",
         "status": "active",
         "description": ""
       },
@@ -2002,10 +2040,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/33",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-34",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-supine",
         "status": "active",
         "description": ""
       },
@@ -2015,10 +2054,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/34",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-35",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/stand",
         "status": "active",
         "description": ""
       },
@@ -2028,10 +2068,11 @@
       }
     },
     {
-      "fullUrl": "https://www.example.com/ad/35",
+      "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "ActivityDefinition",
         "id": "activity-36",
+        "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-standing",
         "status": "active",
         "description": ""
       },

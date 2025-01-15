@@ -21,7 +21,7 @@ def test_timeline_plan_definition():
     sd = _study_design(study)
     tl = _main_timeline(sd)
     tp = tl.instances[0]
-    result = TimepointPlanDefinitionFactory(sd, tp)
+    result = TimepointPlanDefinitionFactory(study, sd, tp)
     assert result.item is not None
     result_dict = DictResult(result.item)
     assert result_dict.results_match_file(PATH, "pilot_fhir_soa_tppd.json", SAVE)
@@ -29,7 +29,7 @@ def test_timeline_plan_definition():
 
 def test_timeline_plan_definition_error(mocker):
     he = mock_handle_exception(mocker)
-    result = TimepointPlanDefinitionFactory(None, None)
+    result = TimepointPlanDefinitionFactory(None, None, None)
     assert result.item is None
     assert mock_called(he)
 

@@ -17,7 +17,7 @@ SAVE = False
 
 def test_timeline_plan_definition():
     study = _setup()
-    result = TimelinePlanDefinitionFactory(_main_timeline(study))
+    result = TimelinePlanDefinitionFactory(study, _main_timeline(study))
     assert result.item is not None
     result_dict = DictResult(result.item)
     assert result_dict.results_match_file(PATH, "pilot_fhir_soa_tlpd.json", SAVE)
@@ -25,7 +25,7 @@ def test_timeline_plan_definition():
 
 def test_timeline_plan_definition_error(mocker):
     he = mock_handle_exception(mocker)
-    result = TimelinePlanDefinitionFactory(None)
+    result = TimelinePlanDefinitionFactory(None, None)
     assert result.item is None
     assert mock_called(he)
 
