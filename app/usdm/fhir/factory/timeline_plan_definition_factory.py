@@ -35,11 +35,9 @@ class TimelinePlanDefinitionFactory(BaseFactory):
                         ).item
                     ]
                 ).item,
-                #       date=
-                #       version=
                 purpose=timeline.description,
                 identifier=[self._identifier(timeline).item],
-                status="draft",
+                status="active",
                 action=self._actions(timeline),
             ).item
         except Exception as e:
@@ -61,9 +59,12 @@ class TimelinePlanDefinitionFactory(BaseFactory):
             action = PlanDefinitionActionFactory(
                 id=self.fix_id(timepoint.id),
                 title=timepoint.label_name(),
-                definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
-                relatedAction=[self._related_action(timeline, timepoint)],
+                #definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
+                definitionCanonical=f"http://hl7.org/fhir/uv/vulcan-schedule/PlanDefinition/{self.fix_id(timepoint.name)}",
+                relatedAction=[]
             )
+            if ra := self._related_action(timeline, timepoint):
+                action.item.relatedAction.append(ra)
             results.append(action.item)
         return results
 
@@ -71,8 +72,10 @@ class TimelinePlanDefinitionFactory(BaseFactory):
         self,
         timeline: ScheduleTimeline,
         timepoint: ScheduledDecisionInstance | ScheduledActivityInstance,
-    ) -> dict:
+    ) -> dict | None:
         timing: Timing = timeline.find_timing_from(timepoint.id)
+        if timing.type.decode == 'Fixed Reference':
+            return None
         offset = ISO8601ToUCUM.convert(timing.value)
         related = PlanDefinitionRelatedActionFactory(
             targetId=self.fix_id(timing.relativeToScheduledInstanceId),

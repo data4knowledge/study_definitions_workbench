@@ -24,7 +24,7 @@ class ResearchStudyFactory(BaseFactory):
 
             # Base instance
             self.item = ResearchStudy(
-                status="draft",
+                status="active",
                 identifier=[],
                 extension=[],
                 label=[],

@@ -18,7 +18,7 @@ from app.usdm.fhir.factory.timepoint_plan_definition_factory import (
 from app.usdm.fhir.factory.activity_definition_factory import ActivityDefinitionFactory
 from app.usdm.model.v4.study import *
 from app.usdm.model.v4.study_design import *
-
+from app.usdm.fhir.factory.urn_uuid import URNUUID
 
 class ToFHIRSoA:
     def __init__(self, study: Study, timeline_id: str, uuid: str, extra: dict = {}):
@@ -52,7 +52,7 @@ class ToFHIRSoA:
                         "url": "ResearchStudy",
                     },
                     resource=rs.item,
-                    fullUrl="https://www.example.com/rs",
+                    fullUrl=URNUUID.generate(),
                 ).item
             )
 
@@ -65,7 +65,7 @@ class ToFHIRSoA:
                         "url": "PlanDefinition",
                     },
                     resource=tlpd.item,
-                    fullUrl="https://www.example.com/pd/tl",
+                    fullUrl=URNUUID.generate(),
                 ).item
             )
 
