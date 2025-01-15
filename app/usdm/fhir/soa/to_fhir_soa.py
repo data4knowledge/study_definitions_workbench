@@ -19,6 +19,8 @@ from app.usdm.fhir.factory.activity_definition_factory import ActivityDefinition
 from app.usdm.model.v4.study import *
 from app.usdm.model.v4.study_design import *
 from app.usdm.fhir.factory.urn_uuid import URNUUID
+from app.usdm.fhir.factory.study_url import StudyUrl
+
 
 class ToFHIRSoA:
     def __init__(self, study: Study, timeline_id: str, uuid: str, extra: dict = {}):
@@ -37,6 +39,7 @@ class ToFHIRSoA:
         Build the FHIR SoA message
         """
         try:
+            base_url = StudyUrl.generate(self._study)
             entries = []
             date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
             identifier = IdentifierFactory(
@@ -88,7 +91,7 @@ class ToFHIRSoA:
             for index, activity in enumerate(activity_list):
                 ad = ActivityDefinitionFactory(
                     id=f"{ActivityDefinitionFactory.fix_id(activity.id)}",
-                    url=f"http://hl7.org/fhir/uv/vulcan-schedule/ActivityDefinition/{ActivityDefinitionFactory.fix_id(activity.name)}",
+                    url=f"{base_url}ActivityDefinition/{ActivityDefinitionFactory.fix_id(activity.name)}",
                     status="active",
                     description=activity.description,
                 )

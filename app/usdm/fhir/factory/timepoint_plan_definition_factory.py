@@ -5,6 +5,7 @@ from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactor
 from app.usdm.fhir.factory.plan_definition_action_factory import (
     PlanDefinitionActionFactory,
 )
+from usdm_model.study import Study
 from usdm_model.study_design import StudyDesign
 from usdm_model.scheduled_instance import (
     ScheduledActivityInstance,
@@ -12,15 +13,18 @@ from usdm_model.scheduled_instance import (
 )
 from app.usdm.model.v4.api_base_model import *
 from app.usdm.model.v4.study_design import *
+from app.usdm.fhir.factory.study_url import StudyUrl
 
 
 class TimepointPlanDefinitionFactory(BaseFactory):
     def __init__(
         self,
+        study: Study,
         study_design: StudyDesign,
         timepoint: ScheduledDecisionInstance | ScheduledActivityInstance,
     ):
         try:
+            base_url = StudyUrl.generate(study)
             self.item = PlanDefinitionFactory(
                 id=self.fix_id(timepoint.id),
                 title=timepoint.label_name(),
@@ -36,8 +40,8 @@ class TimepointPlanDefinitionFactory(BaseFactory):
                 #       version=
                 purpose=timepoint.description,
                 status="active",
-                url=f"http://hl7.org/fhir/uv/vulcan-schedule/PlanDefinition/{self.fix_id(timepoint.name)}",
-                action=self._actions(study_design, timepoint),
+                url=f"{base_url}PlanDefinition/{self.fix_id(timepoint.name)}",
+                action=self._actions(study_design, timepoint, base_url),
             ).item
         except Exception as e:
             self.item = None
@@ -47,6 +51,7 @@ class TimepointPlanDefinitionFactory(BaseFactory):
         self,
         study_design: StudyDesign,
         timepoint: ScheduledDecisionInstance | ScheduledActivityInstance,
+        base_url: str,
     ) -> list:
         results = []
         activity_list = study_design.activity_list()
@@ -56,7 +61,7 @@ class TimepointPlanDefinitionFactory(BaseFactory):
             action = PlanDefinitionActionFactory(
                 id=self.fix_id(activity.id),
                 title=activity.label_name(),
-                definitionCanonical=f"http://hl7.org/fhir/uv/vulcan-schedule/ActivityDefinition/{self.fix_id(activity.name)}",
+                definitionCanonical=f"{base_url}ActivityDefinition/{self.fix_id(activity.name)}",
             )
             results.append(action.item)
         return results

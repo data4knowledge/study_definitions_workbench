@@ -20,11 +20,12 @@ from usdm_model.timing import Timing
 from app.usdm.model.v4.api_base_model import *
 from app.usdm.model.v4.schedule_timeline import *
 from app.usdm.fhir.factory.cdisc_fhir import CDISCFHIR
-    
+from app.usdm.fhir.factory.study_url import StudyUrl
 
 class TimelinePlanDefinitionFactory(BaseFactory):
-    def __init__(self, timeline: ScheduleTimeline):
+    def __init__(self, study: Study, timeline: ScheduleTimeline):
         try:
+            base_url = StudyUrl.generate(study)
             self.item = PlanDefinitionFactory(
                 title=timeline.label_name(),
                 type=CodeableConceptFactory(
@@ -38,7 +39,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
                 purpose=timeline.description,
                 identifier=[self._identifier(timeline).item],
                 status="active",
-                action=self._actions(timeline),
+                action=self._actions(timeline, base_url),
             ).item
         except Exception as e:
             self.item = None
@@ -52,7 +53,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
         identifier = IdentifierFactory(value=timeline.name, use="usual", type=type.item)
         return identifier
 
-    def _actions(self, timeline: ScheduleTimeline) -> list:
+    def _actions(self, timeline: ScheduleTimeline, base_url: str) -> list:
         results = []
         timepoints = timeline.timepoint_list()
         for timepoint in timepoints:
@@ -60,7 +61,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
                 id=self.fix_id(timepoint.id),
                 title=timepoint.label_name(),
                 #definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
-                definitionCanonical=f"http://hl7.org/fhir/uv/vulcan-schedule/PlanDefinition/{self.fix_id(timepoint.name)}",
+                definitionCanonical=f"{base_url}PlanDefinition/{self.fix_id(timepoint.name)}",
                 relatedAction=[]
             )
             if ra := self._related_action(timeline, timepoint):
