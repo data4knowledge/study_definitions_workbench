@@ -1,5 +1,6 @@
 {
   "resourceType": "Bundle",
+  "id": "study-cdisc-pilot-lzzt",
   "identifier": {
     "system": "urn:ietf:rfc:3986",
     "value": "urn:uuid:FAKE-UUID"
@@ -64,6 +65,11 @@
             "value": "Xanomeline (LY246708)"
           }
         ],
+        "protocol": [
+          {
+            "reference": "PlanDefinition/scheduletimeline-4"
+          }
+        ],
         "date": "2006-06-01",
         "status": "active",
         "phase": {
@@ -111,7 +117,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ResearchStudy"
       }
     },
@@ -119,6 +125,7 @@
       "fullUrl": "urn:uuid:FAKE-UUID",
       "resource": {
         "resourceType": "PlanDefinition",
+        "id": "scheduletimeline-4",
         "identifier": [
           {
             "use": "usual",
@@ -563,7 +570,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -703,7 +710,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -738,7 +745,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -813,7 +820,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -888,7 +895,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -953,7 +960,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1018,7 +1025,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1093,7 +1100,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1123,7 +1130,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1193,7 +1200,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1223,7 +1230,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1298,7 +1305,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1328,7 +1335,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1393,7 +1400,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1423,7 +1430,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1503,7 +1510,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1573,7 +1580,7 @@
         ]
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "PlanDefinition"
       }
     },
@@ -1583,11 +1590,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-1",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/informed-consent",
+        "name": "Informed consent",
+        "title": "Informed consent",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1597,11 +1606,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-2",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/inclusion-exclusion-criteria",
+        "name": "Inclusion/exclusion criteria",
+        "title": "Inclusion and exclusion criteria",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1611,11 +1622,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-3",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/patient-number-assigned",
+        "name": "Patient number assigned",
+        "title": "Patient number assigned",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1625,11 +1638,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-4",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/demographics",
+        "name": "Demographics",
+        "title": "Demographics",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1639,11 +1654,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-5",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hachinski",
+        "name": "Hachinski",
+        "title": "Hachinski Ischemic Scale",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1653,11 +1670,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-6",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/mmse",
+        "name": "MMSE",
+        "title": "MMSE",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1667,11 +1686,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-7",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/physical-examination",
+        "name": "Physical examination",
+        "title": "Physical examination",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1681,11 +1702,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-8",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/medical-history",
+        "name": "Medical history",
+        "title": "Medical history",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1695,11 +1718,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-9",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/habits",
+        "name": "Habits",
+        "title": "Habits",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1709,11 +1734,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-10",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chest-x-ray",
+        "name": "Chest X-ray",
+        "title": "Chest X-ray",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1723,11 +1750,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-11",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/apo-e-genotyping",
+        "name": "Apo E genotyping",
+        "title": "Apo E genotyping",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1737,11 +1766,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-12",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/patient-randomised",
+        "name": "Patient randomised",
+        "title": "Patient randomised",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1751,11 +1782,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-13",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature",
+        "name": "Vital signs / Temperature",
+        "title": "Vital Signs and Temperature",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1765,11 +1798,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-14",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ambulatory-ecg-placed",
+        "name": "Ambulatory ECG placed",
+        "title": "Ambulatory ECG placed",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1779,11 +1814,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-15",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ambulatory-ecg-removed",
+        "name": "Ambulatory ECG removed",
+        "title": "Ambulatory ECG removed",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1793,11 +1830,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-16",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg",
+        "name": "ECG",
+        "title": "ECG",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1807,11 +1846,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-17",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/placebo-tts-test",
+        "name": "Placebo TTS test",
+        "title": "Placebo TTS test",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1821,11 +1862,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-18",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ct-scan",
+        "name": "CT scan",
+        "title": "CT scan",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1835,11 +1878,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-19",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications",
+        "name": "Concomitant medications",
+        "title": "Concomitant medications",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1849,11 +1894,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-20",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology",
+        "name": "Hematology",
+        "title": "Hematology",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1863,11 +1910,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-21",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry",
+        "name": "Chemistry",
+        "title": "Chemistry",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1877,11 +1926,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-22",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/uninalysis",
+        "name": "Uninalysis",
+        "title": "Uninalysis",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1891,11 +1942,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-23",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/plasma-specimen-xanomeline",
+        "name": "Plasma Specimen (Xanomeline)",
+        "title": "Plasma Specimen (Xanomeline)",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1905,11 +1958,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-24",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hemoglobin-a1c",
+        "name": "Hemoglobin A1C",
+        "title": "Hemoglobin A1C",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1919,11 +1974,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-25",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/study-drug",
+        "name": "Study drug",
+        "title": "Study drug record , Medications dispensed, Medications returned",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1933,11 +1990,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-26",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/tts-acceptability-survey",
+        "name": "TTS Acceptability Survey",
+        "title": "TTS Acceptability Survey",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1947,11 +2006,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-27",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog",
+        "name": "ADAS-Cog",
+        "title": "ADAS-Cog",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1961,11 +2022,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-28",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic",
+        "name": "CIBIC+",
+        "title": "CIBIC+",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1975,11 +2038,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-29",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad",
+        "name": "DAD",
+        "title": "DAD",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -1989,11 +2054,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-30",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x",
+        "name": "NPI-X",
+        "title": "NPI-X",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -2003,11 +2070,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-31",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adverse-events",
+        "name": "Adverse events",
+        "title": "Adverse events",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -2017,11 +2086,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-32",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/check-adverse-events",
+        "name": "Check adverse events",
+        "title": "Check adverse events",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -2031,11 +2102,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-33",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/supine",
+        "name": "Supine",
+        "title": "Subject supine",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -2045,11 +2118,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-34",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-supine",
+        "name": "Vital Signs Supine",
+        "title": "Vital signs while supine",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -2059,11 +2134,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-35",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/stand",
+        "name": "Stand",
+        "title": "Subject Standing",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     },
@@ -2073,11 +2150,13 @@
         "resourceType": "ActivityDefinition",
         "id": "activity-36",
         "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-standing",
+        "name": "Vital Signs Standing",
+        "title": "Vital signs while standing",
         "status": "active",
         "description": ""
       },
       "request": {
-        "method": "POST",
+        "method": "PUT",
         "url": "ActivityDefinition"
       }
     }

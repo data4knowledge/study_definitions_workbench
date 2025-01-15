@@ -51,7 +51,7 @@ class ToFHIRSoA:
             entries.append(
                 BundleEntryFactory(
                     request={
-                        "method": "POST",
+                        "method": "PUT",
                         "url": "ResearchStudy",
                     },
                     resource=rs.item,
@@ -64,13 +64,14 @@ class ToFHIRSoA:
             entries.append(
                 BundleEntryFactory(
                     request={
-                        "method": "POST",
+                        "method": "PUT",
                         "url": "PlanDefinition",
                     },
                     resource=tlpd.item,
                     fullUrl=URNUUID.generate(),
                 ).item
             )
+            rs.item.protocol.append({'reference': f"PlanDefinition/{tlpd.item.id}"})
 
             # Add timepoint plan definitions for the activities
             for index, tp in enumerate(self._timeline.instances):
@@ -78,7 +79,7 @@ class ToFHIRSoA:
                 entries.append(
                     BundleEntryFactory(
                         request={
-                            "method": "POST",
+                            "method": "PUT",
                             "url": "PlanDefinition",
                         },
                         resource=tppd.item,
@@ -91,14 +92,16 @@ class ToFHIRSoA:
             for index, activity in enumerate(activity_list):
                 ad = ActivityDefinitionFactory(
                     id=f"{ActivityDefinitionFactory.fix_id(activity.id)}",
-                    url=f"{base_url}ActivityDefinition/{ActivityDefinitionFactory.fix_id(activity.name)}",
+                    name=activity.name,
+                    title=activity.label_name(),
+                    url=f"{base_url}/ActivityDefinition/{ActivityDefinitionFactory.fix_id(activity.name)}",
                     status="active",
                     description=activity.description,
                 )
                 entries.append(
                     BundleEntryFactory(
                         request={
-                            "method": "POST",
+                            "method": "PUT",
                             "url": "ActivityDefinition",
                         },
                         resource=ad.item,
@@ -108,6 +111,7 @@ class ToFHIRSoA:
 
             # Build the final bundle
             bundle = BundleFactory(
+                id=f"{BundleFactory.fix_id(self._study.name)}",
                 entry=entries,
                 type="transaction",
                 identifier=identifier.item,

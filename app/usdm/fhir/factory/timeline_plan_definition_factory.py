@@ -28,6 +28,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
         try:
             base_url = StudyUrl.generate(study)
             self.item = PlanDefinitionFactory(
+                id=self.fix_id(timeline.id),
                 title=timeline.label_name(),
                 type=CodeableConceptFactory(
                     coding=[
@@ -62,7 +63,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
                 id=self.fix_id(timepoint.id),
                 title=timepoint.label_name(),
                 #definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
-                definitionCanonical=f"{base_url}PlanDefinition/{self.fix_id(timepoint.name)}",
+                definitionCanonical=f"{base_url}/PlanDefinition/{self.fix_id(timepoint.name)}",
                 relatedAction=[]
             )
             if ra := self._related_action(timeline, timepoint):

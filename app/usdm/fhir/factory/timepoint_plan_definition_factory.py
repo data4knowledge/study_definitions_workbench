@@ -40,7 +40,7 @@ class TimepointPlanDefinitionFactory(BaseFactory):
                 #       version=
                 purpose=timepoint.description,
                 status="active",
-                url=f"{base_url}PlanDefinition/{self.fix_id(timepoint.name)}",
+                url=f"{base_url}/PlanDefinition/{self.fix_id(timepoint.name)}",
                 action=self._actions(study_design, timepoint, base_url),
             ).item
         except Exception as e:
@@ -61,7 +61,7 @@ class TimepointPlanDefinitionFactory(BaseFactory):
             action = PlanDefinitionActionFactory(
                 id=self.fix_id(activity.id),
                 title=activity.label_name(),
-                definitionCanonical=f"{base_url}ActivityDefinition/{self.fix_id(activity.name)}",
+                definitionCanonical=f"{base_url}/ActivityDefinition/{self.fix_id(activity.name)}",
             )
             results.append(action.item)
         return results

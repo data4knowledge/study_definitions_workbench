@@ -33,6 +33,7 @@ class ResearchStudyFactory(BaseFactory):
                 objective=[],
                 comparisonGroup=[],
                 outcomeMeasure=[],
+                protocol=[],
             )
 
             # Sponsor Confidentiality Statememt
