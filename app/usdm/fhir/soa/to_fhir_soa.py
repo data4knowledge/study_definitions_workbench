@@ -60,7 +60,7 @@ class ToFHIRSoA:
             )
 
             # Add timeline plan definition, this is the overall timeline.
-            tlpd = TimelinePlanDefinitionFactory(self._timeline)
+            tlpd = TimelinePlanDefinitionFactory(self._study, self._timeline)
             entries.append(
                 BundleEntryFactory(
                     request={
@@ -74,7 +74,7 @@ class ToFHIRSoA:
 
             # Add timepoint plan definitions for the activities
             for index, tp in enumerate(self._timeline.instances):
-                tppd = TimepointPlanDefinitionFactory(self._study_design, tp)
+                tppd = TimepointPlanDefinitionFactory(self._study, self._study_design, tp)
                 entries.append(
                     BundleEntryFactory(
                         request={

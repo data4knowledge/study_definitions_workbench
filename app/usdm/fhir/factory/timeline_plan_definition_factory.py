@@ -17,6 +17,7 @@ from usdm_model.scheduled_instance import (
     ScheduledDecisionInstance,
 )
 from usdm_model.timing import Timing
+from usdm_model.study import Study
 from app.usdm.model.v4.api_base_model import *
 from app.usdm.model.v4.schedule_timeline import *
 from app.usdm.fhir.factory.cdisc_fhir import CDISCFHIR
