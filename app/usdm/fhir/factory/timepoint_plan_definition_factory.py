@@ -35,7 +35,8 @@ class TimepointPlanDefinitionFactory(BaseFactory):
                 #       date=
                 #       version=
                 purpose=timepoint.description,
-                status="draft",
+                status="active",
+                url=f"http://hl7.org/fhir/uv/vulcan-schedule/PlanDefinition/{self.fix_id(timepoint.name)}",
                 action=self._actions(study_design, timepoint),
             ).item
         except Exception as e:
