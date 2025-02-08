@@ -1,12 +1,5 @@
 import os
-from fastapi import (
-    Depends,
-    FastAPI,
-    Request,
-    WebSocket,
-    WebSocketDisconnect,
-    status,
-)
+from fastapi import Depends, FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from d4kms_generic import application_logger
@@ -18,8 +11,13 @@ from app.database.endpoint import Endpoint
 from app.database.user_endpoint import UserEndpoint
 from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
-from app.utility.background import *
-from app.utility.template_methods import *
+
+# from app.utility.template_methods import (
+#     server_name,
+#     single_multiple,
+#     restructure_study_list,
+#     title_page_study_list_headings,
+# )
 from app.model.usdm_json import USDMJson
 from app import VERSION, SYSTEM_NAME
 from app.dependencies.fhir_version import check_fhir_version
@@ -28,6 +26,7 @@ from app.database.database_manager import DatabaseManager as DBM
 from app.model.exceptions import FindException
 from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
+from app.model.file_handling.data_files import DataFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
 from app.routers import (

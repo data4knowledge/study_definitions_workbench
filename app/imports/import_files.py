@@ -1,19 +1,14 @@
-from app.routers.imports.file_handler import FileHandler
+from app.imports.file_handler import FileHandler
 from d4kms_generic import application_logger
-from app.utility.background import (
-    process_excel,
-    process_word,
-    process_fhir_v1,
-    run_background_task,
-)
-
+from app.imports.import_manager import execute_import
 
 class ImportFiles:
     TYPE_MAPPING = {
-        "Excel": ".xlsx",
-        "Word": ".docx",
-        "FHIR": ".json",
-        "USDM": ".json",
+        "xlsx": ".xlsx",
+        "docx": ".docx",
+        "fhir": ".json",
+        "usdm3": ".json",
+        "usdm4": ".json",
     }
 
     def __init__(self, type: str, source: str):
@@ -29,9 +24,9 @@ class ImportFiles:
             form = await request.form()
             main_file, image_files, messages = await files_handler.get_files(form)
             if main_file:
-                uuid = files_handler.save_files(main_file, image_files)
+                uuid = files_handler.save_files(main_file, image_files, self.type)
                 if uuid:
-                    run_background_task(process_excel, uuid, user)
+                    execute_import(self.type, uuid, user)
                     return templates.TemplateResponse(
                         "import/partials/upload_success.html",
                         {

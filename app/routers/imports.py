@@ -11,8 +11,8 @@ from app.dependencies.fhir_version import check_fhir_version
 from app.model.file_handling.data_files import DataFiles
 from d4kms_generic import application_logger
 from d4kms_ui.pagination import Pagination
-from app.utility.upload import *
 from app.database.file_import import FileImport
+from app.imports.import_files import ImportFiles
 from usdm_info import __model_version__ as usdm_version
 
 router = APIRouter(
@@ -87,7 +87,7 @@ async def import_m11(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await process_m11(request, templates, user, source)
+    return await ImportFiles("docx", source).process(request, templates, user)
 
 
 @router.post("/xl", dependencies=[Depends(protect_endpoint)])
@@ -95,7 +95,7 @@ async def import_xl(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await process_xl(request, templates, user, source)
+    return await ImportFiles("xlsx", source).process(request, templates, user)
 
 
 @router.post("/fhir", dependencies=[Depends(protect_endpoint)])
@@ -103,8 +103,22 @@ async def import_fhir(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await process_fhir(request, templates, user, source)
+    return await ImportFiles("fhir", source).process(request, templates, user)
 
+
+@router.post("/usdm3", dependencies=[Depends(protect_endpoint)])
+async def import_fhir(
+    request: Request, source: str = "browser", session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    return await ImportFiles("usdm3", source).process(request, templates, user)
+
+@router.post("/usdm4", dependencies=[Depends(protect_endpoint)])
+async def import_fhir(
+    request: Request, source: str = "browser", session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    return await ImportFiles("usdm4", source).process(request, templates, user)
 
 @router.get("/status", dependencies=[Depends(protect_endpoint)])
 async def import_status(

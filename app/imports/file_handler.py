@@ -24,10 +24,10 @@ class FileHandler:
         # print(f"GET XL FILES")
         return await self._files_method[self.source](form)
 
-    def save_files(self, main_file: dict, image_files: dict):
+    def save_files(self, main_file: dict, image_files: dict, type: str):
         files = DataFiles()
         uuid = files.new()
-        saved_full_path, saved_filename = self._save_file(files, main_file, "xlsx")
+        saved_full_path, saved_filename = self._save_file(files, main_file, type)
         for image_file in image_files:
             saved_full_path, saved_filename = self._save_file(
                 files, image_file, "image"
@@ -122,7 +122,7 @@ class FileHandler:
             )
         return main_file, image_files
 
-    def _save_file(files: DataFiles, main_file: dict, type: str) -> tuple[str, str]:
+    def _save_file(self, files: DataFiles, main_file: dict, type: str) -> tuple[str, str]:
         filename = main_file["filename"]
         contents = main_file["contents"]
         return files.save(type, contents, filename)

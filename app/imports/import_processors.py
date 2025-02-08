@@ -16,22 +16,17 @@ from app.model.object_path import ObjectPath
 
 
 class ImportProcessorBase:
-    def __init__(self, type: str) -> None:
+    def __init__(self, type: str, full_path: str) -> None:
         self.usdm = None
         self.errors = None
         self.extra = self._blank_extra()
         self.type = type
+        self.full_path = full_path
 
     async def process(self) -> None:
         pass
 
-    def save(self):
-        if self.errors:
-            self.files.save("errors", self.errors)
-        self.files.save("usdm", self.usdm)
-        self.files.save("extra", self.extra)
-
-    def _study_parameters(self, type: str) -> dict:
+    def _study_parameters(self) -> dict:
         try:
             data = json.loads(self.usdm)
             db = USDMDb()
@@ -54,11 +49,11 @@ class ImportProcessorBase:
             )
             return None
 
-    def _get_parameter(object_path: ObjectPath, path: str) -> str:
+    def _get_parameter(self, object_path: ObjectPath, path: str) -> str:
         value = object_path.get(path)
         return value if value else ""
 
-    def _blank_extra():
+    def _blank_extra(self):
         return {
             "amendment": {
                 "amendment_details": "",
@@ -92,25 +87,23 @@ class ImportProcessorBase:
 
 
 class ImportExcel(ImportProcessorBase):
-    def __init__(self) -> None:
-        super().__init__("USDM_XLSX")
+    def __init__(self, type: str, full_path: str) -> None:
+        super().__init__(type, full_path)
 
     async def process(self) -> None:
-        full_path, filename, exists = self.files.path("xlsx")
         db = USDMDb()
-        self.errors = db.from_excel(full_path)
+        self.errors = db.from_excel(self.full_path)
         self.file_import.update_status("Saving", self.session)
         self.usdm = db.to_json()
         return self._study_parameters()
 
 
 class ImportWord(ImportProcessorBase):
-    def __init__(self) -> None:
-        super().__init__("USDM_DOCX")
+    def __init__(self, type: str, full_path: str) -> None:
+        super().__init__(type, full_path)
 
     async def process(self) -> None:
-        full_path, filename, exists = self.files.path("docx")
-        m11 = M11Protocol(full_path, SYSTEM_NAME, VERSION)
+        m11 = M11Protocol(self.full_path, SYSTEM_NAME, VERSION)
         await m11.process()
         self.usdm = m11.to_usdm()
         self.extra = m11.extra()
@@ -118,8 +111,8 @@ class ImportWord(ImportProcessorBase):
 
 
 class ImportFhirV1(ImportProcessorBase):
-    def __init__(self) -> None:
-        super().__init__("USDM_FHIR_V1")
+    def __init__(self, type: str, full_path: str) -> None:
+        super().__init__(type, full_path)
 
     async def process(self) -> None:
         fhir = FromFHIRV1(self.uuid)
@@ -128,16 +121,16 @@ class ImportFhirV1(ImportProcessorBase):
 
 
 class ImportUSDM3(ImportProcessorBase):
-    def __init__(self) -> None:
-        super().__init__("USDM_USDM3")
+    def __init__(self, type: str, full_path: str) -> None:
+        super().__init__(type, full_path)
 
     async def process(self) -> None:
         pass
 
 
 class ImportUSDM4(ImportProcessorBase):
-    def __init__(self) -> None:
-        super().__init__("USDM_USDM4")
+    def __init__(self, type: str, full_path: str) -> None:
+        super().__init__(type, full_path)
 
     async def process(self) -> None:
         pass
