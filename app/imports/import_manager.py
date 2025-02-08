@@ -65,16 +65,16 @@ class ImportManager:
         self.main_file_ext = self.mapping[type]["main_file_ext"]
         self.images = self.mapping[type]["images"]
         self.files = None
+        self.uuid = None
 
     def save_files(self, main_file: dict, image_files: dict) -> str:
-        uuid = None
         if main_file:
             self.files = DataFiles()
-            uuid = self.files.new()
-            self._save_file(self.files, main_file, self.main_file_type)
+            self.uuid = self.files.new()
+            self._save_file(main_file, self.main_file_type)
             for image_file in image_files:
-                self._save_file(self.files, image_file, "image")
-        return uuid
+                self._save_file(image_file, "image")
+        return self.uuid
 
     async def process(self) -> None:
         try:
