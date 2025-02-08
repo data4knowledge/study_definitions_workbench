@@ -1,6 +1,6 @@
 import os
 import json
-from fastapi import File
+from fastapi import File, Request
 from starlette.datastructures import FormData
 from app.model.file_handling.data_files import DataFiles
 from app.model.file_handling.pfda_files import PFDAFiles
@@ -8,9 +8,9 @@ from app.model.file_handling.local_files import LocalFiles
 from d4kms_generic import application_logger
 
 
-class FileHandler:
-    def __init__(self, single_file: bool, image_files: bool, ext: str, source: str):
-        self.single_file = single_file
+class FormHandler:
+    def __init__(self, request: Request, image_files: bool, ext: str, source: str):
+        self.request = request
         self.image_files = image_files
         self.ext = ext if ext.startswith(".") else "." + ext
         self.source = source
@@ -20,19 +20,9 @@ class FileHandler:
             "os": self._get_files_os,
         }
 
-    async def get_files(self, form: File):
-        # print(f"GET XL FILES")
+    async def get_files(self):
+        form = await self.request.form()
         return await self._files_method[self.source](form)
-
-    def save_files(self, main_file: dict, image_files: dict, type: str):
-        files = DataFiles()
-        uuid = files.new()
-        saved_full_path, saved_filename = self._save_file(files, main_file, type)
-        for image_file in image_files:
-            saved_full_path, saved_filename = self._save_file(
-                files, image_file, "image"
-            )
-        return uuid
 
     async def _get_files_browser(self, form: File):
         # print(f"GET XL FILES")
@@ -121,8 +111,3 @@ class FileHandler:
                 f"File '{filename}' was ignored, not '{self.ext}' file{' or image file' if self.image_files else ''}"
             )
         return main_file, image_files
-
-    def _save_file(self, files: DataFiles, main_file: dict, type: str) -> tuple[str, str]:
-        filename = main_file["filename"]
-        contents = main_file["contents"]
-        return files.save(type, contents, filename)

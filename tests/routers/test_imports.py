@@ -77,7 +77,7 @@ def test_import_usdm4(mocker, monkeypatch):
         "pfda": False,
         "source": "os",
     }
-    response = client.get("/import/usdm4")
+    response = client.get("/import/usdm")
     assert response.status_code == 200
     assert '<h4 class="card-title">Import USDM JSON</h4>' in response.text
     assert f"Import for USDM version {usdm_version}" in response.text

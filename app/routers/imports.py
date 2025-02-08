@@ -12,7 +12,8 @@ from app.model.file_handling.data_files import DataFiles
 from d4kms_generic import application_logger
 from d4kms_ui.pagination import Pagination
 from app.database.file_import import FileImport
-from app.imports.import_files import ImportFiles
+from app.imports.request_handler import RequestHandler
+from app.imports.import_manager import ImportManager
 from usdm_info import __model_version__ as usdm_version
 
 router = APIRouter(
@@ -33,14 +34,14 @@ def import_usdm3(request: Request, session: Session = Depends(get_db)):
     )
 
 
-@router.get("/usdm4", dependencies=[Depends(protect_endpoint)])
+@router.get("/usdm", dependencies=[Depends(protect_endpoint)])
 def import_usdm4(request: Request, session: Session = Depends(get_db)):
     return _import_setup(
         request,
         session,
         "json",
         False,
-        "/import/usdm4",
+        "/import/usdm",
         "import/import_json.html",
         {"version": usdm_version},
     )
@@ -87,7 +88,9 @@ async def import_m11(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await ImportFiles("docx", source).process(request, templates, user)
+    return await RequestHandler(ImportManager.M11_DOCX, source).process(
+        request, templates, user
+    )
 
 
 @router.post("/xl", dependencies=[Depends(protect_endpoint)])
@@ -95,7 +98,9 @@ async def import_xl(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await ImportFiles("xlsx", source).process(request, templates, user)
+    return await RequestHandler(ImportManager.USDM_EXCEL, source).process(
+        request, templates, user
+    )
 
 
 @router.post("/fhir", dependencies=[Depends(protect_endpoint)])
@@ -103,7 +108,9 @@ async def import_fhir(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await ImportFiles("fhir", source).process(request, templates, user)
+    return await RequestHandler(ImportManager.FHIR_V1_JSON, source).process(
+        request, templates, user
+    )
 
 
 @router.post("/usdm3", dependencies=[Depends(protect_endpoint)])
@@ -111,14 +118,20 @@ async def import_fhir(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await ImportFiles("usdm3", source).process(request, templates, user)
+    return await RequestHandler(ImportManager.USDM3_JSON, source).process(
+        request, templates, user
+    )
 
-@router.post("/usdm4", dependencies=[Depends(protect_endpoint)])
+
+@router.post("/usdm", dependencies=[Depends(protect_endpoint)])
 async def import_fhir(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await ImportFiles("usdm4", source).process(request, templates, user)
+    return await RequestHandler(ImportManager.USDM_JSON, source).process(
+        request, templates, user
+    )
+
 
 @router.get("/status", dependencies=[Depends(protect_endpoint)])
 async def import_status(
