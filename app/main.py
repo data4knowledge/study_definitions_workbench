@@ -1,3 +1,4 @@
+import os
 from fastapi import (
     Depends,
     FastAPI,
@@ -19,7 +20,6 @@ from app.database.user_endpoint import UserEndpoint
 from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
 from app.utility.background import *
-from app.utility.upload import *
 from app.utility.template_methods import *
 from app.model.usdm_json import USDMJson
 from app import VERSION, SYSTEM_NAME
@@ -39,6 +39,7 @@ from app.routers import (
     studies,
     index,
     version_timelines,
+    imports
 )
 from app.dependencies.dependency import (
     set_middleware_secret,
@@ -72,7 +73,7 @@ app.include_router(version_timelines.router)
 app.include_router(studies.router)
 app.include_router(help.router)
 app.include_router(index.router)
-app.include_router(index.router)
+app.include_router(imports.router)
 
 
 @app.exception_handler(Exception)
@@ -148,133 +149,6 @@ def file_list(request: Request, dir: str, url: str, session: Session = Depends(g
         application_logger.error(message)
         return templates.TemplateResponse(
             request, "errors/partials/error.html", {"data": {"error": message}}
-        )
-
-
-@app.get("/import/m11", dependencies=[Depends(protect_endpoint)])
-def import_m11(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
-    data = application_configuration.file_picker
-    data["dir"] = LocalFiles().root if data["os"] else ""
-    data["required_ext"] = "docx"
-    data["other_files"] = False
-    data["url"] = "/import/m11"
-    return templates.TemplateResponse(
-        request, "import/import_m11.html", {"user": user, "data": data}
-    )
-
-
-@app.get("/import/xl", dependencies=[Depends(protect_endpoint)])
-def import_xl(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
-    data = application_configuration.file_picker
-    data["dir"] = LocalFiles().root if data["os"] else ""
-    data["required_ext"] = "xlsx"
-    data["other_files"] = True
-    data["url"] = "/import/xl"
-    return templates.TemplateResponse(
-        request, "import/import_xl.html", {"user": user, "data": data}
-    )
-
-
-@app.get("/import/fhir", dependencies=[Depends(protect_endpoint)])
-def import_fhir(request: Request, version: str, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
-    valid, description = check_fhir_version(version)
-    if valid:
-        data = application_configuration.file_picker
-        data["version"] = version
-        data["description"] = description
-        data["dir"] = LocalFiles().root if data["os"] else ""
-        data["required_ext"] = "json"
-        data["other_files"] = False
-        data["url"] = "/import/fhir"
-        return templates.TemplateResponse(
-            request, "import/import_fhir.html", {"user": user, "data": data}
-        )
-    else:
-        message = f"Invalid FHIR version '{version}'"
-        application_logger.error(message)
-        return templates.TemplateResponse(
-            request, "errors/error.html", {"user": user, "data": {"error": message}}
-        )
-
-
-@app.post("/import/m11", dependencies=[Depends(protect_endpoint)])
-async def import_m11(
-    request: Request, source: str = "browser", session: Session = Depends(get_db)
-):
-    user, present_in_db = user_details(request, session)
-    return await process_m11(request, templates, user, source)
-
-
-@app.post("/import/xl", dependencies=[Depends(protect_endpoint)])
-async def import_xl(
-    request: Request, source: str = "browser", session: Session = Depends(get_db)
-):
-    user, present_in_db = user_details(request, session)
-    return await process_xl(request, templates, user, source)
-
-
-@app.post("/import/fhir", dependencies=[Depends(protect_endpoint)])
-async def import_fhir(
-    request: Request, source: str = "browser", session: Session = Depends(get_db)
-):
-    user, present_in_db = user_details(request, session)
-    return await process_fhir(request, templates, user, source)
-
-
-@app.get("/import/status", dependencies=[Depends(protect_endpoint)])
-async def import_status(
-    request: Request,
-    page: int,
-    size: int,
-    filter: str = "",
-    session: Session = Depends(get_db),
-):
-    user, present_in_db = user_details(request, session)
-    data = {"page": page, "size": size, "filter": filter}
-    return templates.TemplateResponse(
-        request, "import/status.html", {"user": user, "data": data}
-    )
-
-
-@app.get("/import/status/data", dependencies=[Depends(protect_endpoint)])
-async def import_status_data(
-    request: Request,
-    page: int,
-    size: int,
-    filter: str = "",
-    session: Session = Depends(get_db),
-):
-    user, present_in_db = user_details(request, session)
-    data = FileImport.page(page, size, user.id, session)
-    pagination = Pagination(data, "/import/status/data")
-    return templates.TemplateResponse(
-        request,
-        "import/partials/status.html",
-        {"user": user, "pagination": pagination, "data": data},
-    )
-
-
-@app.get("/import/{id}/errors", dependencies=[Depends(protect_endpoint)])
-async def import_errors(request: Request, id: str, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
-    data = FileImport.find(id, session)
-    files = DataFiles(data.uuid)
-    fullpath, filename, exists = files.path("errors")
-    if exists:
-        return FileResponse(path=fullpath, filename=filename, media_type="text/plain")
-    else:
-        return templates.TemplateResponse(
-            request,
-            "errors/error.html",
-            {
-                "user": user,
-                "data": {
-                    "error": "Something went wrong downloading the errors file for the import"
-                },
-            },
         )
 
 
