@@ -324,19 +324,19 @@ def factory_version() -> Version:
     return Version(**{"version": "1", "id": 1, "import_id": 1, "study_id": 1})
 
 
-def factory_file_import() -> FileImport:
-    return FileImport(
-        **{
-            "filepath": "filepath",
-            "filename": "filename",
-            "type": "XXX",
-            "status": "Done",
-            "uuid": "1234-5678",
-            "id": 1,
-            "user_id": 1,
-            "created": datetime.datetime.now(),
-        }
-    )
+# def factory_file_import() -> FileImport:
+#     return FileImport(
+#         **{
+#             "filepath": "filepath",
+#             "filename": "filename",
+#             "type": "XXX",
+#             "status": "Done",
+#             "uuid": "1234-5678",
+#             "id": 1,
+#             "user_id": 1,
+#             "created": datetime.datetime.now(),
+#         }
+#     )
 
 
 def factory_endpoint() -> FileImport:

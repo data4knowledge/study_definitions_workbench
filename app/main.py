@@ -10,7 +10,6 @@ from fastapi import (
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from d4kms_generic import application_logger
-from d4kms_ui.pagination import Pagination
 from app.database.database import get_db
 from app.database.user import User
 from app.database.version import Version

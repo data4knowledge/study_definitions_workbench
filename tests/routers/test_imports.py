@@ -1,18 +1,9 @@
 import pytest
-import datetime
-from app.database.user import User
-from app.database.study import Study
-from app.database.version import Version
-from app.database.file_import import FileImport
-from app.database.endpoint import Endpoint
 from app.configuration.configuration import application_configuration
-from tests.mocks.fastapi_mocks import *
-from tests.mocks.usdm_json_mocks import *
-from tests.mocks.file_mocks import *
-from tests.mocks.general_mocks import *
-from tests.mocks.fhir_version_mocks import *
-from tests.mocks.user_mocks import *
-
+from tests.mocks.file_mocks import protect_endpoint, mock_client, mock_async_client
+from tests.mocks.general_mocks import mock_called
+from tests.mocks.user_mocks import mock_user_check_exists
+from tests.mocks.factory_mocks import factory_file_import
 
 @pytest.fixture
 def anyio_backend():
