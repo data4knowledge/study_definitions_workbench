@@ -6,6 +6,7 @@ from tests.mocks.user_mocks import mock_user_check_exists
 from tests.mocks.factory_mocks import factory_file_import
 from usdm_info import __model_version__ as usdm_version
 
+
 @pytest.fixture
 def anyio_backend():
     return "asyncio"
@@ -62,10 +63,7 @@ def test_import_usdm3(mocker, monkeypatch):
     print(f"RESPONSE: {response.text}")
     assert response.status_code == 200
     assert '<h4 class="card-title">Import USDM JSON</h4>' in response.text
-    assert (
-        "Import for USDM version 3.0.0"
-        in response.text
-    )
+    assert "Import for USDM version 3.0.0" in response.text
     assert mock_called(uc)
 
 
@@ -82,10 +80,7 @@ def test_import_usdm4(mocker, monkeypatch):
     response = client.get("/import/usdm4")
     assert response.status_code == 200
     assert '<h4 class="card-title">Import USDM JSON</h4>' in response.text
-    assert (
-        f"Import for USDM version {usdm_version}"
-        in response.text
-    )
+    assert f"Import for USDM version {usdm_version}" in response.text
     assert mock_called(uc)
 
 

@@ -1,0 +1,143 @@
+import json
+import threading
+import asyncio
+from app.database.database import SessionLocal
+from d4kms_generic import application_logger
+from usdm_db import USDMDb
+from app.model.file_handling.data_files import DataFiles
+from app.database.file_import import FileImport
+from app.database.study import Study
+from app.database.user import User
+from app.model.m11_protocol.m11_protocol import M11Protocol
+from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
+from app.model.connection_manager import connection_manager
+from app import VERSION, SYSTEM_NAME
+from app.model.object_path import ObjectPath
+
+
+class ImportProcessorBase:
+    def __init__(self, type: str) -> None:
+        self.usdm = None
+        self.errors = None
+        self.extra = self._blank_extra()
+        self.type = type
+
+    async def process(self) -> None:
+        pass
+
+    def save(self):
+        if self.errors:
+            self.files.save("errors", self.errors)
+        self.files.save("usdm", self.usdm)
+        self.files.save("extra", self.extra)
+
+    def _study_parameters(self, type: str) -> dict:
+        try:
+            data = json.loads(self.usdm)
+            db = USDMDb()
+            db.from_json(data)
+            object_path = ObjectPath(db.wrapper())
+            version = db.wrapper().study.first_version()
+            return {
+                "name": f"{self._get_parameter(object_path, 'study/name')}-{self.type}",
+                "phase": self._get_parameter(
+                    object_path, "study/versions[0]/studyPhase/standardCode/decode"
+                ),
+                "full_title": version.official_title_text(),
+                "sponsor_identifier": version.sponsor_identifier_text(),
+                "nct_identifier": version.nct_identifier(),
+                "sponsor": version.sponsor_name(),
+            }
+        except Exception as e:
+            application_logger.exception(
+                "Exception raised extracting study parameters", e
+            )
+            return None
+
+    def _get_parameter(object_path: ObjectPath, path: str) -> str:
+        value = object_path.get(path)
+        return value if value else ""
+
+    def _blank_extra():
+        return {
+            "amendment": {
+                "amendment_details": "",
+                "robustness_impact": False,
+                "robustness_impact_reason": "",
+                "safety_impact": False,
+                "safety_impact_reason": "",
+            },
+            "miscellaneous": {
+                "medical_expert_contact": "",
+                "sae_reporting_method": "",
+                "sponsor_signatory": "",
+            },
+            "title_page": {
+                "amendment_details": "",
+                "amendment_identifier": "",
+                "amendment_scope": "",
+                "compound_codes": "",
+                "compound_names": "",
+                "manufacturer_name_and_address": "",
+                "medical_expert_contact": "",
+                "original_protocol": "",
+                "regulatory_agency_identifiers": "",
+                "sae_reporting_method": "",
+                "sponsor_approval_date": "",
+                "sponsor_confidentiality": "",
+                "sponsor_name_and_address": "",
+                "sponsor_signatory": "",
+            },
+        }
+
+
+class ImportExcel(ImportProcessorBase):
+    def __init__(self) -> None:
+        super().__init__("USDM_XLSX")
+
+    async def process(self) -> None:
+        full_path, filename, exists = self.files.path("xlsx")
+        db = USDMDb()
+        self.errors = db.from_excel(full_path)
+        self.file_import.update_status("Saving", self.session)
+        self.usdm = db.to_json()
+        return self._study_parameters()
+
+
+class ImportWord(ImportProcessorBase):
+    def __init__(self) -> None:
+        super().__init__("USDM_DOCX")
+
+    async def process(self) -> None:
+        full_path, filename, exists = self.files.path("docx")
+        m11 = M11Protocol(full_path, SYSTEM_NAME, VERSION)
+        await m11.process()
+        self.usdm = m11.to_usdm()
+        self.extra = m11.extra()
+        return self._study_parameters()
+
+
+class ImportFhirV1(ImportProcessorBase):
+    def __init__(self) -> None:
+        super().__init__("USDM_FHIR_V1")
+
+    async def process(self) -> None:
+        fhir = FromFHIRV1(self.uuid)
+        usdm_json = await fhir.to_usdm()
+        return self._study_parameters()
+
+
+class ImportUSDM3(ImportProcessorBase):
+    def __init__(self) -> None:
+        super().__init__("USDM_USDM3")
+
+    async def process(self) -> None:
+        pass
+
+
+class ImportUSDM4(ImportProcessorBase):
+    def __init__(self) -> None:
+        super().__init__("USDM_USDM4")
+
+    async def process(self) -> None:
+        pass
