@@ -5,6 +5,9 @@ from app.model.m11_protocol.m11_protocol import M11Protocol
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app import VERSION, SYSTEM_NAME
 from app.model.object_path import ObjectPath
+from app.model.file_handling.data_files import DataFiles
+from usdm4 import USDM4
+from usdm4.api.wrapper import Convert
 
 
 class ImportProcessorBase:
@@ -120,9 +123,21 @@ class ImportUSDM3(ImportProcessorBase):
         pass
 
 
-class ImportUSDM4(ImportProcessorBase):
-    def __init__(self, type: str, full_path: str) -> None:
-        super().__init__(type, full_path)
-
+class ImportUSDM3(ImportProcessorBase):
     async def process(self) -> None:
-        pass
+        data_files = DataFiles(self.uuid)
+        usdm3 = data_files.read("usdm")
+        data = json.loads(usdm3)
+        self.usdm = Convert.convert(data).to_json()
+        return self._study_parameters()
+
+
+class ImportUSDM(ImportProcessorBase):
+    async def process(self) -> None:
+        data_files = DataFiles(self.uuid)
+        file_path = data_files.path("usdm")
+        self.usdm = data_files.read("usdm")
+        # usdm = USDM4()
+        # results = usdm.validate(file_path)
+        return self._study_parameters()
+
