@@ -1,3 +1,5 @@
+import asyncio
+import threading
 from app.database.database import SessionLocal
 from d4kms_generic import application_logger
 from app.model.file_handling.data_files import DataFiles
@@ -54,7 +56,7 @@ class ImportManager:
             file_import.update_status("Saving", session)
             self.processor.save()
             Study.study_and_version(parameters, self.user, file_import, session)
-            file_import.update_status("Successful", session)
+            file_import.update_status("Success", session)
             session.close()
             await connection_manager.success(
                 "Import completed sucessfully", str(self.user.id)
