@@ -14,16 +14,17 @@ from d4kms_generic import application_logger
 from d4kms_ui.pagination import Pagination
 from app.utility.upload import *
 from app.database.file_import import FileImport
+from usdm_info import __model_version__ as usdm_version
 
 router = APIRouter(prefix="/import", tags=["import"], dependencies=[Depends(protect_endpoint)])
 
 @router.get("/usdm3", dependencies=[Depends(protect_endpoint)])
 def import_usdm3(request: Request, session: Session = Depends(get_db)):
-    return _import_setup(request, session, "json", False, "/import/usdm3", "import/import_json.html")
+    return _import_setup(request, session, "json", False, "/import/usdm3", "import/import_json.html", {"version": "3.0.0"})
 
 @router.get("/usdm4", dependencies=[Depends(protect_endpoint)])
 def import_usdm4(request: Request, session: Session = Depends(get_db)):
-    return _import_setup(request, session, "json", False, "/import/usdm4", "import/import_json.html")
+    return _import_setup(request, session, "json", False, "/import/usdm4", "import/import_json.html", {"version": usdm_version})
 
 @router.get("/m11", dependencies=[Depends(protect_endpoint)])
 def import_m11(request: Request, session: Session = Depends(get_db)):
@@ -38,16 +39,7 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
     user, present_in_db = user_details(request, session)
     valid, description = check_fhir_version(version)
     if valid:
-        data = application_configuration.file_picker
-        data["version"] = version
-        data["description"] = description
-        data["dir"] = LocalFiles().root if data["os"] else ""
-        data["required_ext"] = "json"
-        data["other_files"] = False
-        data["url"] = "/import/fhir"
-        return templates.TemplateResponse(
-            request, "import/import_fhir.html", {"user": user, "data": data}
-        )
+        return _import_setup(request, session, "json", False, "/import/fhir", "import/import_fhir.html", {"version": version, "description": description})
     else:
         message = f"Invalid FHIR version '{version}'"
         application_logger.error(message)
@@ -133,9 +125,10 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
 
 
 @staticmethod
-def _import_setup(request: Request, session: Session, ext: str, other_file: bool, data_url: str, page_html: str):
+def _import_setup(request: Request, session: Session, ext: str, other_file: bool, data_url: str, page_html: str, extra_data: dict = {}):
     user, present_in_db = user_details(request, session)
     data = application_configuration.file_picker
+    data.update(extra_data)
     data["dir"] = LocalFiles().root if data["os"] else ""
     data["required_ext"] = ext
     data["other_files"] = other_file
