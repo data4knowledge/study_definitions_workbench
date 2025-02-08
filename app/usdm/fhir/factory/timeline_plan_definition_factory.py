@@ -23,6 +23,7 @@ from app.usdm.model.v4.schedule_timeline import *
 from app.usdm.fhir.factory.cdisc_fhir import CDISCFHIR
 from app.usdm.fhir.factory.study_url import StudyUrl
 
+
 class TimelinePlanDefinitionFactory(BaseFactory):
     def __init__(self, study: Study, timeline: ScheduleTimeline):
         try:
@@ -62,9 +63,9 @@ class TimelinePlanDefinitionFactory(BaseFactory):
             action = PlanDefinitionActionFactory(
                 id=self.fix_id(timepoint.id),
                 title=timepoint.label_name(),
-                #definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
+                # definitionUri=f"PlanDefinition-{self.fix_id(timepoint.name)}",
                 definitionCanonical=f"{base_url}/PlanDefinition/{self.fix_id(timepoint.name)}",
-                relatedAction=[]
+                relatedAction=[],
             )
             if ra := self._related_action(timeline, timepoint):
                 action.item.relatedAction.append(ra)
@@ -77,7 +78,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
         timepoint: ScheduledDecisionInstance | ScheduledActivityInstance,
     ) -> dict | None:
         timing: Timing = timeline.find_timing_from(timepoint.id)
-        if timing.type.decode == 'Fixed Reference':
+        if timing.type.decode == "Fixed Reference":
             return None
         offset = ISO8601ToUCUM.convert(timing.value)
         related = PlanDefinitionRelatedActionFactory(
@@ -93,7 +94,7 @@ class TimelinePlanDefinitionFactory(BaseFactory):
                         "low": ISO8601ToUCUM.convert(timing.windowLower),
                         "high": ISO8601ToUCUM.convert(timing.windowUpper),
                     },
-                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa"
+                    "url": "http://hl7.org/fhir/uv/vulcan-schedule/StructureDefinition/AcceptableOffsetRangeSoa",
                 }
             )
             related.item.extension.append(window.item)

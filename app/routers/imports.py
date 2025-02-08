@@ -16,30 +16,65 @@ from app.utility.upload import *
 from app.database.file_import import FileImport
 from usdm_info import __model_version__ as usdm_version
 
-router = APIRouter(prefix="/import", tags=["import"], dependencies=[Depends(protect_endpoint)])
+router = APIRouter(
+    prefix="/import", tags=["import"], dependencies=[Depends(protect_endpoint)]
+)
+
 
 @router.get("/usdm3", dependencies=[Depends(protect_endpoint)])
 def import_usdm3(request: Request, session: Session = Depends(get_db)):
-    return _import_setup(request, session, "json", False, "/import/usdm3", "import/import_json.html", {"version": "3.0.0"})
+    return _import_setup(
+        request,
+        session,
+        "json",
+        False,
+        "/import/usdm3",
+        "import/import_json.html",
+        {"version": "3.0.0"},
+    )
+
 
 @router.get("/usdm4", dependencies=[Depends(protect_endpoint)])
 def import_usdm4(request: Request, session: Session = Depends(get_db)):
-    return _import_setup(request, session, "json", False, "/import/usdm4", "import/import_json.html", {"version": usdm_version})
+    return _import_setup(
+        request,
+        session,
+        "json",
+        False,
+        "/import/usdm4",
+        "import/import_json.html",
+        {"version": usdm_version},
+    )
+
 
 @router.get("/m11", dependencies=[Depends(protect_endpoint)])
 def import_m11(request: Request, session: Session = Depends(get_db)):
-    return _import_setup(request, session, "docx", False, "/import/m11", "import/import_m11.html")
+    return _import_setup(
+        request, session, "docx", False, "/import/m11", "import/import_m11.html"
+    )
+
 
 @router.get("/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
-    return _import_setup(request, session, "xlsx", True, "/import/xl", "import/import_xl.html")
+    return _import_setup(
+        request, session, "xlsx", True, "/import/xl", "import/import_xl.html"
+    )
+
 
 @router.get("/fhir", dependencies=[Depends(protect_endpoint)])
 def import_fhir(request: Request, version: str, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
     valid, description = check_fhir_version(version)
     if valid:
-        return _import_setup(request, session, "json", False, "/import/fhir", "import/import_fhir.html", {"version": version, "description": description})
+        return _import_setup(
+            request,
+            session,
+            "json",
+            False,
+            "/import/fhir",
+            "import/import_fhir.html",
+            {"version": version, "description": description},
+        )
     else:
         message = f"Invalid FHIR version '{version}'"
         application_logger.error(message)
@@ -47,12 +82,14 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
             request, "errors/error.html", {"user": user, "data": {"error": message}}
         )
 
+
 @router.post("/m11", dependencies=[Depends(protect_endpoint)])
 async def import_m11(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
     return await process_m11(request, templates, user, source)
+
 
 @router.post("/xl", dependencies=[Depends(protect_endpoint)])
 async def import_xl(
@@ -125,7 +162,15 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
 
 
 @staticmethod
-def _import_setup(request: Request, session: Session, ext: str, other_file: bool, data_url: str, page_html: str, extra_data: dict = {}):
+def _import_setup(
+    request: Request,
+    session: Session,
+    ext: str,
+    other_file: bool,
+    data_url: str,
+    page_html: str,
+    extra_data: dict = {},
+):
     user, present_in_db = user_details(request, session)
     data = application_configuration.file_picker
     data.update(extra_data)
@@ -133,7 +178,4 @@ def _import_setup(request: Request, session: Session, ext: str, other_file: bool
     data["required_ext"] = ext
     data["other_files"] = other_file
     data["url"] = data_url
-    return templates.TemplateResponse(
-        request, page_html, {"user": user, "data": data}
-    )
-
+    return templates.TemplateResponse(request, page_html, {"user": user, "data": data})

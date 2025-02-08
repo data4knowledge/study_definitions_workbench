@@ -71,11 +71,13 @@ class ToFHIRSoA:
                     fullUrl=URNUUID.generate(),
                 ).item
             )
-            rs.item.protocol.append({'reference': f"PlanDefinition/{tlpd.item.id}"})
+            rs.item.protocol.append({"reference": f"PlanDefinition/{tlpd.item.id}"})
 
             # Add timepoint plan definitions for the activities
             for index, tp in enumerate(self._timeline.instances):
-                tppd = TimepointPlanDefinitionFactory(self._study, self._study_design, tp)
+                tppd = TimepointPlanDefinitionFactory(
+                    self._study, self._study_design, tp
+                )
                 entries.append(
                     BundleEntryFactory(
                         request={

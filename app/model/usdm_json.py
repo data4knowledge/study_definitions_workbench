@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
 
+
 class USDMJson:
     def __init__(self, id: int, session: Session):
         self.id = id

@@ -13,6 +13,7 @@ from tests.mocks.general_mocks import *
 from tests.mocks.fhir_version_mocks import *
 from tests.mocks.user_mocks import *
 
+
 @pytest.fixture
 def anyio_backend():
     return "asyncio"
@@ -170,4 +171,3 @@ def mock_data_file_path_error(mocker):
     mock = mocker.patch("app.model.file_handling.data_files.DataFiles.path")
     mock.side_effect = [("", "", False)]
     return mock
-

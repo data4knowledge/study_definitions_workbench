@@ -39,7 +39,7 @@ from app.routers import (
     studies,
     index,
     version_timelines,
-    imports
+    imports,
 )
 from app.dependencies.dependency import (
     set_middleware_secret,

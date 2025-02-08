@@ -20,6 +20,7 @@ def run_fhir_m11_transmit(
     )
     t.start()
 
+
 def run_fhir_soa_transmit(
     version_id: int, endpoint_id: int, timeline_id: str, user: User
 ) -> None:
@@ -29,21 +30,36 @@ def run_fhir_soa_transmit(
     )
     t.start()
 
-async def fhir_m11_transmit(version_id: int, endpoint_id: int, version: str, user: User) -> None:
+
+async def fhir_m11_transmit(
+    version_id: int, endpoint_id: int, version: str, user: User
+) -> None:
     session = SessionLocal()
     usdm = USDMJson(version_id, session)
     details = usdm.study_version()
     data = usdm.fhir_data(version)
-    await fhir_transmit('M11', version_id, endpoint_id, data, details, user, session)
+    await fhir_transmit("M11", version_id, endpoint_id, data, details, user, session)
 
-async def fhir_soa_transmit(version_id: int, endpoint_id: int, timeline_id: str, user: User) -> None:
+
+async def fhir_soa_transmit(
+    version_id: int, endpoint_id: int, timeline_id: str, user: User
+) -> None:
     session = SessionLocal()
     usdm = USDMJson(version_id, session)
     details = usdm.study_version()
     data = usdm.fhir_soa_data(timeline_id)
-    await fhir_transmit('SoA', version_id, endpoint_id, data, details, user, session)
+    await fhir_transmit("SoA", version_id, endpoint_id, data, details, user, session)
 
-async def fhir_transmit(type: str, version_id: int, endpoint_id: int, data: str, details: dict, user: User, session: Session) -> None:
+
+async def fhir_transmit(
+    type: str,
+    version_id: int,
+    endpoint_id: int,
+    data: str,
+    details: dict,
+    user: User,
+    session: Session,
+) -> None:
     ERROR_LEN = 100
     try:
         # session = SessionLocal()
@@ -66,9 +82,7 @@ async def fhir_transmit(type: str, version_id: int, endpoint_id: int, data: str,
         server = FHIRService(endpoint.endpoint)
         response = await server.post("Bundle", data, 30.0)
         if response["success"]:
-            message = (
-                f"Succesful transmission of FHIR {type} message: {response['data']['id']}"
-            )
+            message = f"Succesful transmission of FHIR {type} message: {response['data']['id']}"
         else:
             error_text = (
                 f"{response['message'][0:ERROR_LEN]} ..."
