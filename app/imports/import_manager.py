@@ -109,7 +109,7 @@ class ImportManager:
         except Exception as e:
             if file_import:
                 file_import.update_status("Exception", session)
-            application_logger.exception(f"Exception raised processing import", e)
+            application_logger.exception("Exception raised processing import", e)
             session.close()
             await connection_manager.error(
                 "Error encountered importing", str(self.user.id)

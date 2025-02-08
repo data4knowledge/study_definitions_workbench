@@ -35,7 +35,7 @@ def import_usdm3(request: Request, session: Session = Depends(get_db)):
 
 
 @router.get("/usdm", dependencies=[Depends(protect_endpoint)])
-def import_usdm4(request: Request, session: Session = Depends(get_db)):
+def import_usdm(request: Request, session: Session = Depends(get_db)):
     return _import_setup(
         request,
         session,
@@ -84,7 +84,7 @@ def import_fhir(request: Request, version: str, session: Session = Depends(get_d
 
 
 @router.post("/m11", dependencies=[Depends(protect_endpoint)])
-async def import_m11(
+async def import_m11_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
@@ -94,7 +94,7 @@ async def import_m11(
 
 
 @router.post("/xl", dependencies=[Depends(protect_endpoint)])
-async def import_xl(
+async def import_xl_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
@@ -104,7 +104,7 @@ async def import_xl(
 
 
 @router.post("/fhir", dependencies=[Depends(protect_endpoint)])
-async def import_fhir(
+async def import_fhir_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
@@ -114,7 +114,7 @@ async def import_fhir(
 
 
 @router.post("/usdm3", dependencies=[Depends(protect_endpoint)])
-async def import_fhir(
+async def import_usdm3_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
@@ -124,7 +124,7 @@ async def import_fhir(
 
 
 @router.post("/usdm", dependencies=[Depends(protect_endpoint)])
-async def import_fhir(
+async def import_usdm_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)

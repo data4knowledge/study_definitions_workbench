@@ -31,7 +31,7 @@ class RequestHandler:
                     },
                 )
             else:
-                messages.append("Failed to process the Excel file")
+                messages.append("Failed to process the import file(s)")
                 return templates.TemplateResponse(
                     "import/partials/upload_fail.html",
                     {

@@ -1,16 +1,8 @@
 import json
-import threading
-import asyncio
-from app.database.database import SessionLocal
 from d4kms_generic import application_logger
 from usdm_db import USDMDb
-from app.model.file_handling.data_files import DataFiles
-from app.database.file_import import FileImport
-from app.database.study import Study
-from app.database.user import User
 from app.model.m11_protocol.m11_protocol import M11Protocol
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
-from app.model.connection_manager import connection_manager
 from app import VERSION, SYSTEM_NAME
 from app.model.object_path import ObjectPath
 
@@ -116,7 +108,7 @@ class ImportFhirV1(ImportProcessorBase):
 
     async def process(self) -> None:
         fhir = FromFHIRV1(self.uuid)
-        usdm_json = await fhir.to_usdm()
+        self.usdm = await fhir.to_usdm()
         return self._study_parameters()
 
 
