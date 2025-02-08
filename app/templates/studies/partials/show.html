@@ -25,12 +25,14 @@
       {% endif %}            
       <span class="badge rounded-pill bg-info">{{study['phase']}}</span>
       <span class="badge rounded-pill bg-info">{{vtext}}</span>  
-      {% if study['import_type'] == "DOCX" %}
+      {% if study['import_type'] in ["DOCX", "M11_DOCX"] %}
         <span class="badge rounded-pill bg-primary">M11 Document</span>
-      {% elif study['import_type'] == "XLSX" %}
+      {% elif study['import_type'] in ["XLSX", "USDM_EXCEL"] %}
         <span class="badge rounded-pill bg-success">USDM Excel</span>
-      {% else %}
+      {% elif study['import_type'] in ["FHIR", "FHIR_V1_JSON", "FHIR_V2_JSON"] %}
         <span class="badge rounded-pill fhir">FHIR</span>
+      {% elif study['import_type'] in ["USDM3_JSON", "USDM_JSON"] %}
+        <span class="badge rounded-pill usdm">USDM</span>
       {% endif %}            
       
     </div>
