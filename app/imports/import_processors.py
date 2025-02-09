@@ -108,14 +108,14 @@ class ImportFhirV1(ImportProcessorBase):
 class ImportUSDM3(ImportProcessorBase):
     async def process(self) -> None:
         data_files = DataFiles(self.uuid)
-        file_path = data_files.path("usdm")
+        full_path, filename, exists = data_files.path("usdm")
         usdm4 = USDM4()
-        wrapper = usdm4.convert(file_path)
+        wrapper = usdm4.convert(full_path)
         self.usdm = wrapper.to_json()
         data_files.save("usdm", self.usdm)
-        file_path = data_files.path("usdm")
-        results: RulesValidationResults= usdm4.validate(file_path)
-        self.errors = results.to_csv()
+        full_path, filename, exists = data_files.path("usdm")
+        results: RulesValidationResults= usdm4.validate(full_path)
+        self.errors = results.to_dict()
         data_files.save("errors", self.errors)
         return self._study_parameters()
 
@@ -123,11 +123,13 @@ class ImportUSDM3(ImportProcessorBase):
 class ImportUSDM(ImportProcessorBase):
     async def process(self) -> None:
         data_files = DataFiles(self.uuid)
-        file_path = data_files.path("usdm")
+        full_path, filename, exists = data_files.path("usdm")
         self.usdm = data_files.read("usdm")
+        print(f"FILE PATH: {full_path}")
         usdm4 = USDM4()
-        results: RulesValidationResults = usdm4.validate(file_path)
-        self.errors = results.to_csv()
+        results: RulesValidationResults = usdm4.validate(full_path)
+        self.errors = results.to_dict()
+        print(f"ERRORS: {self.errors}")
         data_files.save("errors", self.errors)
         return self._study_parameters()
 
