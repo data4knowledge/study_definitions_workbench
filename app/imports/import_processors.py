@@ -6,16 +6,15 @@ from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app import VERSION, SYSTEM_NAME
 from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
-from usdm4 import USDM4
-from usdm4.api.wrapper import Convert
-
+from usdm4 import USDM4, RulesValidationResults
 
 class ImportProcessorBase:
-    def __init__(self, type: str, full_path: str) -> None:
+    def __init__(self, type: str, uuid: str, full_path: str) -> None:
         self.usdm = None
         self.errors = None
         self.extra = self._blank_extra()
         self.type = type
+        self.uuid = uuid
         self.full_path = full_path
 
     async def process(self) -> None:
@@ -82,9 +81,6 @@ class ImportProcessorBase:
 
 
 class ImportExcel(ImportProcessorBase):
-    def __init__(self, type: str, full_path: str) -> None:
-        super().__init__(type, full_path)
-
     async def process(self) -> None:
         db = USDMDb()
         self.errors = db.from_excel(self.full_path)
@@ -94,9 +90,6 @@ class ImportExcel(ImportProcessorBase):
 
 
 class ImportWord(ImportProcessorBase):
-    def __init__(self, type: str, full_path: str) -> None:
-        super().__init__(type, full_path)
-
     async def process(self) -> None:
         m11 = M11Protocol(self.full_path, SYSTEM_NAME, VERSION)
         await m11.process()
@@ -106,9 +99,6 @@ class ImportWord(ImportProcessorBase):
 
 
 class ImportFhirV1(ImportProcessorBase):
-    def __init__(self, type: str, full_path: str) -> None:
-        super().__init__(type, full_path)
-
     async def process(self) -> None:
         fhir = FromFHIRV1(self.uuid)
         self.usdm = await fhir.to_usdm()
@@ -116,19 +106,17 @@ class ImportFhirV1(ImportProcessorBase):
 
 
 class ImportUSDM3(ImportProcessorBase):
-    def __init__(self, type: str, full_path: str) -> None:
-        super().__init__(type, full_path)
-
-    async def process(self) -> None:
-        pass
-
-
-class ImportUSDM3(ImportProcessorBase):
     async def process(self) -> None:
         data_files = DataFiles(self.uuid)
-        usdm3 = data_files.read("usdm")
-        data = json.loads(usdm3)
-        self.usdm = Convert.convert(data).to_json()
+        file_path = data_files.path("usdm")
+        usdm4 = USDM4()
+        wrapper = usdm4.convert(file_path)
+        self.usdm = wrapper.to_json()
+        data_files.save("usdm", self.usdm)
+        file_path = data_files.path("usdm")
+        results: RulesValidationResults= usdm4.validate(file_path)
+        self.errors = results.to_csv()
+        data_files.save("errors", self.errors)
         return self._study_parameters()
 
 
@@ -137,7 +125,9 @@ class ImportUSDM(ImportProcessorBase):
         data_files = DataFiles(self.uuid)
         file_path = data_files.path("usdm")
         self.usdm = data_files.read("usdm")
-        # usdm = USDM4()
-        # results = usdm.validate(file_path)
+        usdm4 = USDM4()
+        results: RulesValidationResults = usdm4.validate(file_path)
+        self.errors = results.to_csv()
+        data_files.save("errors", self.errors)
         return self._study_parameters()
 

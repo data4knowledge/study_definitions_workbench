@@ -7,10 +7,15 @@
 {% endblock %}
 
 {% block main_content %}
+  {% set url = data['url'] ~ "?version=" ~ data['version']%}
+  {% set title = "Import USDM JSON" %}
+  {% set subtitle = "Import for USDM version " ~ data['version'] ~ " '.json' file" %}
+  {% set text = "Select a single USDM file" %}
+  {% set disable = False %}
   {% if data['pfda'] or data['os'] %}
     <div class="mt-3 row row-cols-2">
       <div class="col">
-        {% with url="/import/fhir?version=" ~ data['version'], title="Import USDM JSON", subtitle="Import for USDM version " ~ data['version'] ~ " '.json' file", text="Select a single USDM file", data=data %}
+        {% with url=url, title=title, subtitle=subtitle, text=text, data=data %}
           {% include "import/partials/other_file_select.html" %}
         {% endwith %}
       </div>
@@ -18,7 +23,7 @@
   {% else %}
     <div class="mt-3 row row-cols-2">
       <div class="col">
-        {% with url="/import/fhir?version=" ~ data['version'], title="Import USDM JSON", subtitle="Import for USDM version " ~ data['version'] ~ " '.json' file", text="Select a single USDM file", disable=False %}
+        {% with url=url, title=title, subtitle=subtitle, text=text, disable=disable %}
           {% include "import/partials/browser_file_select.html" %}
         {% endwith %}
       </div>

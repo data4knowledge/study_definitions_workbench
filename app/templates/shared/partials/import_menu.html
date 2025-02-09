@@ -3,10 +3,10 @@
     <i class="bi bi-box-arrow-in-down me-2"></i>Import
   </a>
   <div class="dropdown-menu">
-    <a class="dropdown-item" href="/import/usdm3">USDM v3 (.json)</a>
-    <a class="dropdown-item" href="/import/usdm">USDM v3.6 (.json)</a>
     <a class="dropdown-item" href="/import/xl">USDM Excel (.xlsx)</a>
     <a class="dropdown-item" href="/import/m11">M11 Document (.docx)</a>
+    <a class="dropdown-item" href="/import/usdm3">USDM v3 (.json)</a>
+    <a class="dropdown-item" href="/import/usdm">USDM v3.6 (.json)</a>
     {% for version in data['fhir']['versions'] %}
       {% set title = "M11 FHIR v" ~ version %}
       {% set desc = fhir_version_description(version) %}

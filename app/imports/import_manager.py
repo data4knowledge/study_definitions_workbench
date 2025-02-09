@@ -12,7 +12,7 @@ from app.imports.import_processors import (
     ImportWord,
     ImportFhirV1,
     ImportUSDM3,
-    ImportUSDM4,
+    ImportUSDM,
     ImportProcessorBase,
 )
 
@@ -52,7 +52,7 @@ class ImportManager:
                 "images": False,
             },
             self.USDM_JSON: {
-                "processor": ImportUSDM4,
+                "processor": ImportUSDM,
                 "main_file_type": "usdm",
                 "main_file_ext": ".json",
                 "images": False,
@@ -90,7 +90,7 @@ class ImportManager:
                 self.user.id,
                 session,
             )
-            processor: ImportProcessorBase = self.processor(self.type, full_path)
+            processor: ImportProcessorBase = self.processor(self.type, self.uuid, full_path)
             parameters = await processor.process()
 
             file_import.update_status("Saving", session)
