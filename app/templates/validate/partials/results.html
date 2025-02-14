@@ -1,0 +1,38 @@
+
+{% block main_content %}
+<div class="mt-3 row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Rule</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Exception</th>
+                        <th scope="col">Message</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">Klass</th>
+                        <th scope="col">Attribute</th>
+                        <th scope="col">Path</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data['errors']: %}
+                    <tr>
+                        <td>{{item['rule_id']}}</td>
+                        <td>{{item['status']}}</td>
+                        <td>{{item['exception']}}</td>
+                        <td>{{item['message']}}</td>
+                        <td>{{item['level']}}</td>
+                        <td>{{item['klass']}}</td>
+                        <td>{{item['attribute']}}</td>
+                        <td>{{item['path']}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

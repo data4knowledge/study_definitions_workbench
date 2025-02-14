@@ -14,6 +14,9 @@
   {% with data=data %}
     {% include "shared/partials/import_menu.html" %}
   {% endwith %} 
+  {% with %}
+    {% include "shared/partials/validate_menu.html" %}
+  {% endwith %} 
   <div id="selectMenu">
     {% with data='' %}
       {% include "shared/partials/select_menu.html" %}
