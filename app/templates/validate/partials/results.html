@@ -8,7 +8,6 @@
                     <tr>
                         <th scope="col">Rule</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Exception</th>
                         <th scope="col">Message</th>
                         <th scope="col">Level</th>
                         <th scope="col">Klass</th>
@@ -18,16 +17,21 @@
                 </thead>
                 <tbody>
                     {% for item in data['errors']: %}
-                    <tr>
-                        <td>{{item['rule_id']}}</td>
-                        <td>{{item['status']}}</td>
-                        <td>{{item['exception']}}</td>
-                        <td>{{item['message']}}</td>
-                        <td>{{item['level']}}</td>
-                        <td>{{item['klass']}}</td>
-                        <td>{{item['attribute']}}</td>
-                        <td>{{item['path']}}</td>
-                    </tr>
+                        {% if item['status'] not in ['Not Implemented', 'Success'] %}
+                            <tr>
+                                <td>{{item['rule_id']}}</td>
+                                <td>{{item['status']}}</td>
+                                {% if item['exception'] %}
+                                    <td colspan="5">{{item['exception']}}</td>
+                                {% else %}
+                                  <td>{{item['message']}}</td>
+                                  <td>{{item['level']}}</td>
+                                  <td>{{item['klass']}}</td>
+                                  <td>{{item['attribute']}}</td>
+                                  <td>{{item['path']}}</td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>

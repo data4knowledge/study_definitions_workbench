@@ -98,17 +98,15 @@ async def _process(
         source,
     )
     main_file, image_files, messages = await form_handler.get_files()
-    print(f"MAIN FILE: {main_file['filename']}")
+    #print(f"MAIN FILE: {main_file['filename']}")
     if main_file:
-        print(f"Processing file")
         files = DataFiles()
         uuid = files.new()
         files.save("usdm", main_file["contents"], main_file["filename"])
         full_path, filename, exists = files.path("usdm")
         results: RulesValidationResults = usdm.validate(full_path)
         errors = results.to_dict()
-        print(f"Errors: {errors}")
-        files.save("errors", errors)
+        files.delete()
     else:
         print(f"Messages: {messages}")
         errors = []

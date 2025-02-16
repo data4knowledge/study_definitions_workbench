@@ -209,7 +209,7 @@ class DataFiles:
         path = self._dir_path()
         try:
             shutil.rmtree(path)
-            application_logger.info("Deleted study dir '{path}'")
+            application_logger.info(f"Deleted study dir '{path}'")
             return True
         except Exception as e:
             application_logger.exception(f"Exception deleting study dir '{path}'", e)
