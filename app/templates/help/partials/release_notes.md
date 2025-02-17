@@ -1,6 +1,7 @@
 <h5>Release 0.31.0-beta.4, 2025-01-15</h5>
 
 - HL7 Virtual Connectathon 2025, working version
+- USDM v3 and v4 [v3.6] validation
 
 <h5>Release 0.30.0, 2024-12-22</h5>
 
