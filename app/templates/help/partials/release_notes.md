@@ -1,6 +1,6 @@
-<h5>Release 0.31.0, 2025-NN-NN</h5>
+<h5>Release 0.31.0-beta.4, 2025-01-15</h5>
 
-- Ready for next release
+- HL7 Virtual Connectathon 2025, working version
 
 <h5>Release 0.30.0, 2024-12-22</h5>
 
