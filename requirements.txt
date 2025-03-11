@@ -11,6 +11,7 @@ fhir.resources==7.1.0
 usdm==0.53.0
 pytest==8.2.2
 pytest-mock==3.14.0
+pytest-cov==4.1.0
 beautifulsoup4==4.12.3
 playwright==1.48.0
 pytest-playwright==0.5.2
