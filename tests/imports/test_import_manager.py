@@ -235,7 +235,7 @@ class TestImportManager:
             mock_file_import.return_value.update_status.assert_any_call("Create", mock_session_local.return_value)
             mock_file_import.return_value.update_status.assert_any_call("Success", mock_session_local.return_value)
             mock_connection_manager.success.assert_called_once_with(
-                "Import of filename.ext completed sucessfully", str(mock_user.id)
+                "Import of 'filename.ext' completed sucessfully", str(mock_user.id)
             )
             mock_session_local.return_value.close.assert_called_once()
 
@@ -273,7 +273,7 @@ class TestImportManager:
             mock_file_import.return_value.update_status.assert_any_call("Create", mock_session_local.return_value)
             mock_file_import.return_value.update_status.assert_any_call("Success", mock_session_local.return_value)
             mock_connection_manager.success.assert_called_once_with(
-                "Import of filename.ext completed sucessfully", str(mock_user.id)
+                "Import of 'filename.ext' completed sucessfully", str(mock_user.id)
             )
             mock_session_local.return_value.close.assert_called_once()
 
@@ -306,7 +306,7 @@ class TestImportManager:
             )
             mock_logger.exception.assert_called_once()
             mock_connection_manager.error.assert_called_once_with(
-                "Exception encountered importing filename.ext", str(mock_user.id)
+                "Exception encountered importing 'filename.ext'", str(mock_user.id)
             )
             mock_session_local.return_value.close.assert_called_once()
 

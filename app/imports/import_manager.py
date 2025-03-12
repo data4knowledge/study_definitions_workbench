@@ -104,13 +104,13 @@ class ImportManager:
                 file_import.update_status("Success", session)
                 session.close()
                 await connection_manager.success(
-                    f"Import of {filename} completed sucessfully", str(self.user.id)
+                    f"Import of '{filename}' completed sucessfully", str(self.user.id)
                 )
             else:
                 file_import.update_status("Exception", session)
                 session.close()
                 await connection_manager.error(
-                    f"Error encountered importing {filename}, {processor.fatal_error}", str(self.user.id)
+                    f"Error encountered importing '{filename}', {processor.fatal_error}", str(self.user.id)
                 )
         except Exception as e:
             if file_import:
@@ -118,7 +118,7 @@ class ImportManager:
             application_logger.exception("Exception raised processing import", e)
             session.close()
             await connection_manager.error(
-                f"Exception encountered importing {filename}", str(self.user.id)
+                f"Exception encountered importing '{filename}'", str(self.user.id)
             )
 
     def _save_file(self, file_details: dict, file_type: str) -> tuple[str, str]:
