@@ -44,6 +44,18 @@ def mock_from_fhir_v1():
 
 
 @pytest.fixture
+def mock_usdm3():
+    """Mock the USDM3 class."""
+    with patch("app.imports.import_processors.USDM3") as mock:
+        instance = mock.return_value
+        instance.convert.return_value = MagicMock()
+        instance.convert.return_value.to_json.return_value = '{"study": {"name": "test-study"}}'
+        instance.validate.return_value = MagicMock()
+        instance.validate.return_value.to_dict.return_value = {"errors": []}
+        yield mock
+
+
+@pytest.fixture
 def mock_usdm4():
     """Mock the USDM4 class."""
     with patch("app.imports.import_processors.USDM4") as mock:
@@ -201,7 +213,7 @@ class TestImportExcel:
         result = await processor.process()
         
         # Assert
-        assert result == processor._study_parameters()
+        assert result == True
         # USDMDb is called multiple times: once in process() and again in _study_parameters()
         assert mock_usdm_db.call_count >= 1
         mock_usdm_db.return_value.from_excel.assert_called_once_with("/path/to/file")
@@ -224,7 +236,7 @@ class TestImportWord:
         result = await processor.process()
         
         # Assert
-        assert result == processor._study_parameters()
+        assert result == True
         mock_m11_protocol.assert_called_once()
         mock_m11_protocol.return_value.process.assert_called_once()
         mock_m11_protocol.return_value.to_usdm.assert_called_once()
@@ -246,7 +258,7 @@ class TestImportFhirV1:
         result = await processor.process()
         
         # Assert
-        assert result == processor._study_parameters()
+        assert result == True
         mock_from_fhir_v1.assert_called_once_with("test-uuid")
         mock_from_fhir_v1.return_value.to_usdm.assert_called_once()
         # The to_usdm method is mocked to return a string directly, not a coroutine
@@ -257,7 +269,7 @@ class TestImportUSDM3:
     """Tests for the ImportUSDM3 class."""
 
     @pytest.mark.asyncio
-    async def test_process(self, mock_data_files, mock_usdm4):
+    async def test_process(self, mock_data_files, mock_usdm3, mock_usdm4):
         """Test process method."""
         # Setup
         processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
@@ -266,9 +278,11 @@ class TestImportUSDM3:
         result = await processor.process()
         
         # Assert
-        assert result == processor._study_parameters()
+        assert result == True
         mock_data_files.assert_called_once_with("test-uuid")
         mock_data_files.return_value.path.assert_called_with("usdm")
+        mock_usdm3.assert_called_once()
+        mock_usdm3.return_value.validate.assert_called_once_with("/path/to/file")
         mock_usdm4.assert_called_once()
         mock_usdm4.return_value.convert.assert_called_once_with("/path/to/file")
         mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
@@ -276,8 +290,33 @@ class TestImportUSDM3:
         # regardless of the order
         mock_data_files.return_value.save.assert_any_call("usdm", processor.usdm)
         mock_data_files.return_value.save.assert_any_call("errors", processor.errors)
-        assert processor.usdm == mock_usdm4.return_value.convert.return_value.to_json.return_value
-        assert processor.errors == mock_usdm4.return_value.validate.return_value.to_dict.return_value
+        assert processor.usdm == mock_usdm3.return_value.convert.return_value.to_json.return_value
+        assert processor.errors == mock_usdm3.return_value.validate.return_value.to_dict.return_value
+        assert processor.success == True
+        assert processor.fatal_error == None
+
+
+    @pytest.mark.asyncio
+    async def test_process_error(self, mock_data_files, mock_usdm3):
+        """Test process method."""
+        instance = mock_usdm3.return_value
+        instance.validate.return_value.passed_or_not_implemented = lambda: False
+        instance.validate.return_value.to_dict.return_value = {"errors": [{"status": "Failure"}]}
+
+        # Setup
+        processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
+        
+        # Execute with patch to avoid file not found error
+        with patch("usdm4.USDM4.convert") as mock_convert:
+            result = await processor.process()
+        
+        # Assert
+        assert result == False
+        mock_data_files.assert_called_once_with("test-uuid")
+        mock_usdm3.assert_called_once()
+        mock_usdm3.return_value.validate.assert_called_once_with("/path/to/file")
+        assert processor.success == False
+        assert processor.fatal_error == "USDM v3 validation failed. Check the file using the validate functionality"
 
 
 class TestImportUSDM:
@@ -293,7 +332,7 @@ class TestImportUSDM:
         result = await processor.process()
         
         # Assert
-        assert result == processor._study_parameters()
+        assert result == True
         mock_data_files.assert_called_once_with("test-uuid")
         mock_data_files.return_value.path.assert_called_with("usdm")
         mock_data_files.return_value.read.assert_called_once_with("usdm")
@@ -302,3 +341,24 @@ class TestImportUSDM:
         mock_data_files.return_value.save.assert_any_call("errors", processor.errors)
         assert processor.usdm == mock_data_files.return_value.read.return_value
         assert processor.errors == mock_usdm4.return_value.validate.return_value.to_dict.return_value
+
+    @pytest.mark.asyncio
+    async def test_process_error(self, mock_data_files, mock_usdm4):
+        """Test process method."""
+        instance = mock_usdm4.return_value
+        instance.validate.return_value.passed_or_not_implemented = lambda: False
+        instance.validate.return_value.to_dict.return_value = {"errors": [{"status": "Failure"}]}
+
+        # Setup
+        processor = ImportUSDM("USDM_JSON", "test-uuid", "/path/to/file")
+        
+        # Execute
+        result = await processor.process()
+        
+        # Assert
+        assert result == False
+        mock_data_files.assert_called_once_with("test-uuid")
+        mock_usdm4.assert_called_once()
+        mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
+        assert processor.success == False
+        assert processor.fatal_error == "USDM v4 validation failed. Check the file using the validate functionality"

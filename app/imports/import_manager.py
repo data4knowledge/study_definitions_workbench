@@ -91,28 +91,34 @@ class ImportManager:
                 session,
             )
             processor: ImportProcessorBase = self.processor(self.type, self.uuid, full_path)
-            parameters = await processor.process()
+            result = await processor.process()
+            if result:
+                file_import.update_status("Saving", session)
+                if processor.errors:
+                    self.files.save("errors", processor.errors)
+                self.files.save("usdm", processor.usdm)
+                self.files.save("extra", processor.extra)
 
-            file_import.update_status("Saving", session)
-            if processor.errors:
-                self.files.save("errors", processor.errors)
-            self.files.save("usdm", processor.usdm)
-            self.files.save("extra", processor.extra)
-
-            file_import.update_status("Create", session)
-            Study.study_and_version(parameters, self.user, file_import, session)
-            file_import.update_status("Success", session)
-            session.close()
-            await connection_manager.success(
-                "Import completed sucessfully", str(self.user.id)
-            )
+                file_import.update_status("Create", session)
+                Study.study_and_version(processor.study_parameters, self.user, file_import, session)
+                file_import.update_status("Success", session)
+                session.close()
+                await connection_manager.success(
+                    f"Import of {filename} completed sucessfully", str(self.user.id)
+                )
+            else:
+                file_import.update_status("Exception", session)
+                session.close()
+                await connection_manager.error(
+                    f"Error encountered importing {filename}, {processor.fatal_error}", str(self.user.id)
+                )
         except Exception as e:
             if file_import:
                 file_import.update_status("Exception", session)
             application_logger.exception("Exception raised processing import", e)
             session.close()
             await connection_manager.error(
-                "Error encountered importing", str(self.user.id)
+                f"Exception encountered importing {filename}", str(self.user.id)
             )
 
     def _save_file(self, file_details: dict, file_type: str) -> tuple[str, str]:

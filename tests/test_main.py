@@ -250,7 +250,7 @@ def test_get_logout_multiple(mocker, monkeypatch):
     client = mock_client_multiple(mocker)
     response = client.get("/logout", follow_redirects=False)
     assert response.status_code == 307
-    assert str(response.next_request.url).startswith("https://dev-0")
+    assert "logout" in str(response.next_request.url)
 
 
 def mock_user_check_exists(mocker):

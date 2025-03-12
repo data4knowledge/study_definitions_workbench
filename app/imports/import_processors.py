@@ -6,12 +6,16 @@ from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app import VERSION, SYSTEM_NAME
 from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
-from usdm4 import USDM4, RulesValidationResults
+from usdm4 import USDM4
+from usdm3 import USDM3, RulesValidationResults
 
 class ImportProcessorBase:
     def __init__(self, type: str, uuid: str, full_path: str) -> None:
         self.usdm = None
         self.errors = None
+        self.study_paramters = None
+        self.fatal_error = None
+        self.success = True
         self.extra = self._blank_extra()
         self.type = type
         self.uuid = uuid
@@ -81,12 +85,13 @@ class ImportProcessorBase:
 
 
 class ImportExcel(ImportProcessorBase):
-    async def process(self) -> None:
+    async def process(self) -> bool:
         db = USDMDb()
         self.errors = db.from_excel(self.full_path)
         self.file_import.update_status("Saving", self.session)
         self.usdm = db.to_json()
-        return self._study_parameters()
+        self.study_parameters = self._study_parameters()
+        return True
 
 
 class ImportWord(ImportProcessorBase):
@@ -95,41 +100,56 @@ class ImportWord(ImportProcessorBase):
         await m11.process()
         self.usdm = m11.to_usdm()
         self.extra = m11.extra()
-        return self._study_parameters()
+        self.study_parameters = self._study_parameters()
+        return True
 
 
 class ImportFhirV1(ImportProcessorBase):
     async def process(self) -> None:
         fhir = FromFHIRV1(self.uuid)
         self.usdm = await fhir.to_usdm()
-        return self._study_parameters()
+        self.study_parameters = self._study_parameters()
+        return True
 
 
 class ImportUSDM3(ImportProcessorBase):
     async def process(self) -> None:
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
-        usdm4 = USDM4()
-        wrapper = usdm4.convert(full_path)
-        self.usdm = wrapper.to_json()
-        data_files.save("usdm", self.usdm)
-        full_path, filename, exists = data_files.path("usdm")
-        results: RulesValidationResults= usdm4.validate(full_path)
-        self.errors = results.to_dict()
-        data_files.save("errors", self.errors)
-        return self._study_parameters()
-
+        usdm3 = USDM3()
+        results: RulesValidationResults= usdm3.validate(full_path)
+        if results.passed_or_not_implemented():
+            usdm4 = USDM4()
+            wrapper = usdm4.convert(full_path)
+            self.usdm = wrapper.to_json()
+            data_files.save("usdm", self.usdm)
+            full_path, filename, exists = data_files.path("usdm")
+            results: RulesValidationResults= usdm4.validate(full_path)
+            if results.passed_or_not_implemented():
+                self.errors = results.to_dict()
+                data_files.save("errors", self.errors)
+                self.study_parameters = self._study_parameters()
+            else:
+                self.success = False
+                self.fatal_error = "USDM v4 validation failed. Check the file using the validate functionality"
+        else:
+            self.success = False
+            self.fatal_error = "USDM v3 validation failed. Check the file using the validate functionality"
+        return self.success
 
 class ImportUSDM(ImportProcessorBase):
     async def process(self) -> None:
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
         self.usdm = data_files.read("usdm")
-        print(f"FILE PATH: {full_path}")
         usdm4 = USDM4()
         results: RulesValidationResults = usdm4.validate(full_path)
-        self.errors = results.to_dict()
-        print(f"ERRORS: {self.errors}")
-        data_files.save("errors", self.errors)
-        return self._study_parameters()
+        if results.passed_or_not_implemented():
+            self.errors = results.to_dict()
+            data_files.save("errors", self.errors)
+            self.study_parameters = self._study_parameters()
+        else:
+            self.success = False
+            self.fatal_error = "USDM v4 validation failed. Check the file using the validate functionality"
+        return self.success
 
