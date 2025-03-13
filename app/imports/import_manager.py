@@ -101,8 +101,8 @@ class ImportManager:
             self.files = DataFiles()
             self.uuid = self.files.new()
             self.original_filename = main_file["filename"]
-            print(f"********** Original filename: {self.original_filename}")
-            print(f"********** Main file type: {self.main_file_type}")
+            #print(f"********** Original filename: {self.original_filename}")
+            #print(f"********** Main file type: {self.main_file_type}")
             self._save_file(main_file, self.main_file_type)
             for image_file in image_files:
                 self._save_file(image_file, "image")
@@ -113,7 +113,7 @@ class ImportManager:
             session = SessionLocal()
             file_import = None
             full_path, filename, exists = self.files.path(self.main_file_type)
-            print(f"********** Original filename: {self.original_filename}")
+            #print(f"********** Original filename: {self.original_filename}")
             file_import = FileImport.create(
                 full_path,
                 self.original_filename,

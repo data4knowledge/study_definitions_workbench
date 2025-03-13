@@ -159,7 +159,7 @@ async def import_status_data(
     user, present_in_db = user_details(request, session)
     data = FileImport.page(page, size, user.id, session)
     pagination = Pagination(data, "/import/status/data")
-    print(f"********** Data: {data}")
+    #print(f"********** Data: {data}")
     return templates.TemplateResponse(
         request,
         "import/partials/status.html",
