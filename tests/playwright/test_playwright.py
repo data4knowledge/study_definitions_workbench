@@ -609,6 +609,59 @@ def test_filter(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+@pytest.mark.playwright
+def test_import_usdm(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    page.get_by_role("button", name=" Import").click()
+    expect(page.get_by_role("link", name="USDM v3 (.json)")).to_be_visible()
+    expect(page.get_by_role("link", name="USDM v3.6 (.json)")).to_be_visible()
+    page.get_by_role("button", name=" Import").click()
+
+    load_usdm(page, path, "tests/test_files/usdm/v3-0.json", "v3.0", "Success: Import of")
+    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("link", name="Import Status").click()
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name=" Errors File").click()
+    download = download_info.value
+    page.get_by_role("link", name=" Back").click()
+
+    load_usdm(page, path, "tests/test_files/usdm/v3-6.json", "v3.6", "Success: Import of")
+
+    context.close()
+    browser.close()
+
+@pytest.mark.playwright
+def test_import_usdm_errors(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    load_usdm(page, path, "tests/test_files/usdm/v3-0.json", "v3.0", "Error: Error encountered")
+    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("link", name="Import Status").click()
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name=" Errors File").click()
+    download = download_info.value
+    page.get_by_role("link", name=" Back").click()
+
+    load_usdm(page, path, "tests/test_files/usdm/v3-6.json", "v3.6", "Error: Error encountered")
+
+    context.close()
+    browser.close()
+
 
 def username():
     se = ServiceEnvironment()
@@ -659,6 +712,21 @@ def load_fhir(page, root_path, filepath):
     page.get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+    page.set_input_files("#files", os.path.join(root_path, filepath))
+    page.locator("text = Upload File(s)").last.click()
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
+
+
+def load_usdm(page, root_path, filepath, version, result):
+    _load_usdm(page, root_path, filepath, "Success: Import of")
+
+def load_usdm_error(page, root_path, filepath, version, result):
+    _load_usdm(page, root_path, filepath, "Success: Import of")
+
+def _load_usdm(page, root_path, filepath, version, result):
+    page.get_by_role("link").first.click()
+    page.get_by_role("button", name=" Import").click()
+    page.get_by_role(f"link", name="USDM v{version} (.json)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
     expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)

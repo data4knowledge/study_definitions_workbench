@@ -193,3 +193,4 @@ pytest_playwright_gen.sh
 ~$*.xlsx
 ~$*.pptx
 tests/test_files/mount/database/test_database.db-journal
+playwright_generator.sh
