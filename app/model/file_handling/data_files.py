@@ -276,9 +276,7 @@ class DataFiles:
 
     def _save_csv_file(self, contents, filename):
         if not contents:
-            contents = [
-                {"message": "No errors"}
-            ]
+            contents = [{"message": "No errors"}]
         try:
             full_path = self._file_path(filename)
             with open(full_path, "w", newline="") as file:

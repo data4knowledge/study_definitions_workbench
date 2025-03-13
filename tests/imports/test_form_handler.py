@@ -71,7 +71,7 @@ class TestFormHandler:
         """Test initialization of FormHandler."""
         request = MagicMock(spec=Request)
         handler = FormHandler(request, True, ".xlsx", "browser")
-        
+
         assert handler.request == request
         assert handler.image_files is True
         assert handler.ext == ".xlsx"
@@ -84,7 +84,7 @@ class TestFormHandler:
         """Test initialization with extension without dot."""
         request = MagicMock(spec=Request)
         handler = FormHandler(request, True, "xlsx", "browser")
-        
+
         assert handler.ext == ".xlsx"
 
     @pytest.mark.parametrize(
@@ -92,19 +92,30 @@ class TestFormHandler:
         [
             (".xlsx", True, False, "File 'test.xlsx' accepted"),
             (".png", False, True, "Image file 'test.png' accepted"),
-            (".txt", False, False, "File 'test.txt' was ignored, not '.xlsx' file or image file"),
+            (
+                ".txt",
+                False,
+                False,
+                "File 'test.txt' was ignored, not '.xlsx' file or image file",
+            ),
             (".txt", False, False, "File 'test.txt' was ignored, not '.xlsx' file"),
         ],
     )
-    def test_handle_file(self, file_extension, is_main_file, is_image_file, expected_message, mock_logger):
+    def test_handle_file(
+        self, file_extension, is_main_file, is_image_file, expected_message, mock_logger
+    ):
         """Test _handle_file method with different file types."""
         request = MagicMock(spec=Request)
         handler = FormHandler(request, is_image_file, ".xlsx", "browser")
-        
+
         messages = []
-        main_file = None if not is_main_file else {"filename": "existing.xlsx", "contents": b"existing content"}
+        main_file = (
+            None
+            if not is_main_file
+            else {"filename": "existing.xlsx", "contents": b"existing content"}
+        )
         image_files = []
-        
+
         result_main_file, result_image_files = handler._handle_file(
             file_extension,
             "test",
@@ -112,19 +123,24 @@ class TestFormHandler:
             b"file content",
             messages,
             main_file,
-            image_files
+            image_files,
         )
-        
+
         # Check messages
         if file_extension == ".xlsx":
             assert messages == ["File 'test.xlsx' accepted"]
-            assert result_main_file == {"filename": "test.xlsx", "contents": b"file content"}
+            assert result_main_file == {
+                "filename": "test.xlsx",
+                "contents": b"file content",
+            }
             assert result_image_files == []
             mock_logger.info.assert_called_once_with("Processing upload file 'test'")
         elif file_extension == ".png" and is_image_file:
             assert messages == ["Image file 'test.png' accepted"]
             assert result_main_file == main_file
-            assert result_image_files == [{"filename": "test.png", "contents": b"file content"}]
+            assert result_image_files == [
+                {"filename": "test.png", "contents": b"file content"}
+            ]
             mock_logger.info.assert_called_once_with("Processing upload file 'test'")
         else:
             assert messages[0].startswith("File 'test.txt' was ignored")
@@ -133,18 +149,20 @@ class TestFormHandler:
             mock_logger.info.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_get_files_browser(self, mock_request, mock_upload_file, mock_image_file, mock_logger):
+    async def test_get_files_browser(
+        self, mock_request, mock_upload_file, mock_image_file, mock_logger
+    ):
         """Test _get_files_browser method."""
         # Setup
         form = MagicMock()
         form.getlist.return_value = [mock_upload_file, mock_image_file]
         mock_request.form.return_value = form
-        
+
         handler = FormHandler(mock_request, True, ".xlsx", "browser")
-        
+
         # Execute
         main_file, image_files, messages = await handler._get_files_browser(form)
-        
+
         # Assert
         assert main_file == {"filename": "test.xlsx", "contents": b"file content"}
         assert len(image_files) == 1
@@ -161,20 +179,26 @@ class TestFormHandler:
         form = MagicMock()
         form.getlist.return_value = ['["file1", "file2"]']
         mock_request.form.return_value = form
-        
+
         # Mock json.loads to return a list of file paths
-        with patch('json.loads', return_value=["file1", "file2"]):
+        with patch("json.loads", return_value=["file1", "file2"]):
             # Mock _handle_file to return the expected values
-            with patch.object(FormHandler, '_handle_file') as mock_handle_file:
-                mock_handle_file.return_value = ({"filename": "test.xlsx", "contents": b"file content"}, [])
-                
+            with patch.object(FormHandler, "_handle_file") as mock_handle_file:
+                mock_handle_file.return_value = (
+                    {"filename": "test.xlsx", "contents": b"file content"},
+                    [],
+                )
+
                 handler = FormHandler(mock_request, True, ".xlsx", "os")
-                
+
                 # Execute
                 main_file, image_files, messages = await handler._get_files_os(form)
-                
+
                 # Assert
-                assert main_file == {"filename": "test.xlsx", "contents": b"file content"}
+                assert main_file == {
+                    "filename": "test.xlsx",
+                    "contents": b"file content",
+                }
                 assert image_files == []
                 assert mock_handle_file.call_count == 2
 
@@ -185,20 +209,26 @@ class TestFormHandler:
         form = MagicMock()
         form.getlist.return_value = ['["file1", "file2"]']
         mock_request.form.return_value = form
-        
+
         # Mock json.loads to return a list of file paths
-        with patch('json.loads', return_value=["file1", "file2"]):
+        with patch("json.loads", return_value=["file1", "file2"]):
             # Mock _handle_file to return the expected values
-            with patch.object(FormHandler, '_handle_file') as mock_handle_file:
-                mock_handle_file.return_value = ({"filename": "test.xlsx", "contents": b"file content"}, [])
-                
+            with patch.object(FormHandler, "_handle_file") as mock_handle_file:
+                mock_handle_file.return_value = (
+                    {"filename": "test.xlsx", "contents": b"file content"},
+                    [],
+                )
+
                 handler = FormHandler(mock_request, True, ".xlsx", "pfda")
-                
+
                 # Execute
                 main_file, image_files, messages = await handler._get_files_pfda(form)
-                
+
                 # Assert
-                assert main_file == {"filename": "test.xlsx", "contents": b"file content"}
+                assert main_file == {
+                    "filename": "test.xlsx",
+                    "contents": b"file content",
+                }
                 assert image_files == []
                 assert mock_handle_file.call_count == 2
 
@@ -208,16 +238,18 @@ class TestFormHandler:
         # Setup
         form = MagicMock()
         mock_request.form = AsyncMock(return_value=form)
-        
+
         # Create a handler with a mocked _get_files_browser method
-        with patch.object(FormHandler, '_get_files_browser', new_callable=AsyncMock) as mock_get_files:
+        with patch.object(
+            FormHandler, "_get_files_browser", new_callable=AsyncMock
+        ) as mock_get_files:
             mock_get_files.return_value = ({"filename": "test.xlsx"}, [], ["message"])
-            
+
             handler = FormHandler(mock_request, True, ".xlsx", "browser")
-            
+
             # Execute
             main_file, image_files, messages = await handler.get_files()
-            
+
             # Assert
             assert main_file == {"filename": "test.xlsx"}
             assert image_files == []

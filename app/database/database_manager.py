@@ -1,6 +1,6 @@
 import os
 from app.database import database_tables
-from app.database.database import engine
+from app.database.database import engine, SessionLocal
 from app.database.database_tables import (
     Study as StudyDB,
     Version as VersionDB,
@@ -19,11 +19,10 @@ from app.configuration.configuration import application_configuration
 
 
 class DatabaseManager:
-    def __init__(self, session: Session):
-        self.session = session
+    def __init__(self):
+        self.session = SessionLocal()
 
-    @classmethod
-    def check(cls):
+    def check(self):
         dir = application_configuration.database_path
         application_logger.info("Checking database dir exists")
         try:
@@ -55,3 +54,23 @@ class DatabaseManager:
     def clear_users(self):
         self.session.query(UserDB).delete()
         self.session.commit()
+
+    def migrate(self):
+        version = self._get_version()
+        print(f"VERSION: {version}")
+        if version != 31:  # Do it anyway
+            cursor = self.session.connection().connection.cursor()
+            new_types = (
+                {"old": "", "new": "1111"},
+                {"old": "XLSX", "new": "USDM_EXCEL"},
+                {"old": "FHIR_V1", "new": "FHIR_V1_JSON"},
+                {"old": "DOCX", "new": "M11_DOCX"},
+            )
+            cursor.executemany("UPDATE import SET type=:new WHERE type=:old", new_types)
+            cursor.execute("pragma user_version = 31")
+            self.session.commit()
+
+    def _get_version(self):
+        cursor = self.session.connection().connection.cursor()
+        cursor.execute("pragma user_version")
+        return cursor.fetchone()[0]

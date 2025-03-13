@@ -25,13 +25,15 @@
       {% endif %}            
       <span class="badge rounded-pill bg-info">{{study['phase']}}</span>
       <span class="badge rounded-pill bg-info">{{vtext}}</span>  
-      {% if study['import_type'] in ["DOCX", "M11_DOCX"] %}
+      {% if is_m11_docx_import(study['import_type']) %}
         <span class="badge rounded-pill bg-primary">M11 Document</span>
-      {% elif study['import_type'] in ["XLSX", "USDM_EXCEL"] %}
+      {% elif is_usdm_excel_import(study['import_type']) %}
         <span class="badge rounded-pill bg-success">USDM Excel</span>
-      {% elif study['import_type'] in ["FHIR", "FHIR_V1_JSON", "FHIR_V2_JSON"] %}
+      {% elif is_fhir_v1_import(study['import_type']) %}
         <span class="badge rounded-pill fhir">FHIR</span>
-      {% elif study['import_type'] in ["USDM3_JSON", "USDM_JSON"] %}
+      {% elif is_usdm3_json_import(study['import_type']) %}
+        <span class="badge rounded-pill usdm">USDM</span>
+      {% elif is_usdm4_json_import(study['import_type']) %}
         <span class="badge rounded-pill usdm">USDM</span>
       {% endif %}            
       

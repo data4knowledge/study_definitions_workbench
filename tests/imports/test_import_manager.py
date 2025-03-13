@@ -11,7 +11,7 @@ from app.imports.import_processors import (
     ImportWord,
     ImportFhirV1,
     ImportUSDM3,
-    ImportUSDM,
+    ImportUSDM4,
 )
 
 
@@ -138,13 +138,47 @@ class TestImportManager:
         assert manager.images is False
 
         # Test with USDM_JSON
-        manager = ImportManager(mock_user, ImportManager.USDM_JSON)
+        manager = ImportManager(mock_user, ImportManager.USDM4_JSON)
         assert manager.user == mock_user
-        assert manager.type == ImportManager.USDM_JSON
-        assert manager.processor == ImportUSDM
+        assert manager.type == ImportManager.USDM4_JSON
+        assert manager.processor == ImportUSDM4
         assert manager.main_file_type == "usdm"
         assert manager.main_file_ext == ".json"
         assert manager.images is False
+
+    def test_file_types(self):
+        assert ImportManager.is_m11_docx_import("M11_DOCX")
+        assert ImportManager.is_usdm_excel_import("USDM_EXCEL")
+        assert ImportManager.is_fhir_v1_import("FHIR_V1_JSON")
+        assert ImportManager.is_usdm3_json_import("USDM3_JSON")
+        assert ImportManager.is_usdm4_json_import("USDM4_JSON")
+        assert not ImportManager.is_m11_docx_import("USDM_EXCEL")
+        assert not ImportManager.is_usdm_excel_import("M11_DOCX")
+        assert not ImportManager.is_fhir_v1_import("USDM3_JSON")
+        assert not ImportManager.is_usdm3_json_import("FHIR_V1_JSON")
+        assert not ImportManager.is_usdm4_json_import("USDM_EXCEL")
+
+    @classmethod
+    def is_usdm_excel_import(cls, value: str) -> bool:
+        return value == cls.USDM_EXCEL
+
+    @classmethod
+    def is_fhir_v1_import(cls, value: str) -> bool:
+        return value == cls.FHIR_V1_JSON
+
+    @classmethod
+    def is_usdm3_json_import(cls, value: str) -> bool:
+        return value == cls.USDM3_JSON
+
+    @classmethod
+    def is_usdm4_json_import(cls, value: str) -> bool:
+        return value == cls.USDM4_JSON
+        """Test file types."""
+        assert ImportManager.USDM_EXCEL == "USDM_EXCEL"
+        assert ImportManager.M11_DOCX == "M11_DOCX"
+        assert ImportManager.FHIR_V1_JSON == "FHIR_V1_JSON"
+        assert ImportManager.USDM3_JSON == "USDM3_JSON"
+        assert ImportManager.USDM4_JSON == "USDM4_JSON"
 
     def test_save_files(self, mock_user, mock_data_files):
         """Test save_files method."""
@@ -216,7 +250,10 @@ class TestImportManager:
     ):
         """Test process method with successful execution."""
         # Setup
-        with patch("app.imports.import_manager.ImportExcel", return_value=mock_import_processor.return_value):
+        with patch(
+            "app.imports.import_manager.ImportExcel",
+            return_value=mock_import_processor.return_value,
+        ):
             manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
             manager.files = mock_data_files.return_value
             manager.uuid = "test-uuid"
@@ -228,12 +265,22 @@ class TestImportManager:
             mock_session_local.assert_called_once()
             mock_file_import.create.assert_called_once()
             mock_import_processor.return_value.process.assert_called_once()
-            manager.files.save.assert_any_call("usdm", mock_import_processor.return_value.usdm)
-            manager.files.save.assert_any_call("extra", mock_import_processor.return_value.extra)
+            manager.files.save.assert_any_call(
+                "usdm", mock_import_processor.return_value.usdm
+            )
+            manager.files.save.assert_any_call(
+                "extra", mock_import_processor.return_value.extra
+            )
             mock_study.study_and_version.assert_called_once()
-            mock_file_import.return_value.update_status.assert_any_call("Saving", mock_session_local.return_value)
-            mock_file_import.return_value.update_status.assert_any_call("Create", mock_session_local.return_value)
-            mock_file_import.return_value.update_status.assert_any_call("Success", mock_session_local.return_value)
+            mock_file_import.return_value.update_status.assert_any_call(
+                "Saving", mock_session_local.return_value
+            )
+            mock_file_import.return_value.update_status.assert_any_call(
+                "Create", mock_session_local.return_value
+            )
+            mock_file_import.return_value.update_status.assert_any_call(
+                "Success", mock_session_local.return_value
+            )
             mock_connection_manager.success.assert_called_once_with(
                 "Import of 'filename.ext' completed sucessfully", str(mock_user.id)
             )
@@ -252,7 +299,10 @@ class TestImportManager:
     ):
         """Test process method with errors."""
         # Setup
-        with patch("app.imports.import_manager.ImportExcel", return_value=mock_import_processor.return_value):
+        with patch(
+            "app.imports.import_manager.ImportExcel",
+            return_value=mock_import_processor.return_value,
+        ):
             manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
             manager.files = mock_data_files.return_value
             manager.uuid = "test-uuid"
@@ -265,13 +315,25 @@ class TestImportManager:
             mock_session_local.assert_called_once()
             mock_file_import.create.assert_called_once()
             mock_import_processor.return_value.process.assert_called_once()
-            manager.files.save.assert_any_call("errors", mock_import_processor.return_value.errors)
-            manager.files.save.assert_any_call("usdm", mock_import_processor.return_value.usdm)
-            manager.files.save.assert_any_call("extra", mock_import_processor.return_value.extra)
+            manager.files.save.assert_any_call(
+                "errors", mock_import_processor.return_value.errors
+            )
+            manager.files.save.assert_any_call(
+                "usdm", mock_import_processor.return_value.usdm
+            )
+            manager.files.save.assert_any_call(
+                "extra", mock_import_processor.return_value.extra
+            )
             mock_study.study_and_version.assert_called_once()
-            mock_file_import.return_value.update_status.assert_any_call("Saving", mock_session_local.return_value)
-            mock_file_import.return_value.update_status.assert_any_call("Create", mock_session_local.return_value)
-            mock_file_import.return_value.update_status.assert_any_call("Success", mock_session_local.return_value)
+            mock_file_import.return_value.update_status.assert_any_call(
+                "Saving", mock_session_local.return_value
+            )
+            mock_file_import.return_value.update_status.assert_any_call(
+                "Create", mock_session_local.return_value
+            )
+            mock_file_import.return_value.update_status.assert_any_call(
+                "Success", mock_session_local.return_value
+            )
             mock_connection_manager.success.assert_called_once_with(
                 "Import of 'filename.ext' completed sucessfully", str(mock_user.id)
             )
@@ -290,7 +352,9 @@ class TestImportManager:
         """Test process method with exception."""
         # Setup
         with patch("app.imports.import_manager.ImportExcel") as mock_processor:
-            mock_processor.return_value.process.side_effect = Exception("Test exception")
+            mock_processor.return_value.process.side_effect = Exception(
+                "Test exception"
+            )
             manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
             manager.files = mock_data_files.return_value
             manager.uuid = "test-uuid"

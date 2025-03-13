@@ -13,6 +13,7 @@ from app.database.user import User
 from app.imports.form_handler import FormHandler
 from usdm4 import USDM4, RulesValidationResults
 from usdm3 import USDM3
+
 router = APIRouter(
     prefix="/validate", tags=["validate"], dependencies=[Depends(protect_endpoint)]
 )
@@ -49,9 +50,7 @@ async def validate_usdm3_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await _process(
-        request, user, USDM3(), source
-    )
+    return await _process(request, user, USDM3(), source)
 
 
 @router.post("/usdm", dependencies=[Depends(protect_endpoint)])
@@ -59,9 +58,7 @@ async def validate_usdm_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await _process(
-        request, user, USDM4(), source
-    )
+    return await _process(request, user, USDM4(), source)
 
 
 @staticmethod
@@ -85,12 +82,7 @@ def _validate_setup(
 
 
 @staticmethod
-async def _process(
-    request: Request,
-    user: User,
-    usdm: USDM3 | USDM4,
-    source: str
-):
+async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: str):
     form_handler = FormHandler(
         request,
         False,
@@ -98,7 +90,7 @@ async def _process(
         source,
     )
     main_file, image_files, messages = await form_handler.get_files()
-    #print(f"MAIN FILE: {main_file['filename']}")
+    # print(f"MAIN FILE: {main_file['filename']}")
     if main_file:
         files = DataFiles()
         uuid = files.new()
@@ -114,11 +106,12 @@ async def _process(
     return templates.TemplateResponse(
         request,
         "validate/partials/results.html",
-        {"user": user, "data": 
-            {
+        {
+            "user": user,
+            "data": {
                 "filename": main_file,
                 "messages": messages,
                 "errors": errors,
-            }
+            },
         },
     )

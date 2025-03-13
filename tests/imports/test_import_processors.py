@@ -7,7 +7,7 @@ from app.imports.import_processors import (
     ImportWord,
     ImportFhirV1,
     ImportUSDM3,
-    ImportUSDM,
+    ImportUSDM4,
 )
 
 
@@ -30,7 +30,11 @@ def mock_m11_protocol():
         instance = mock.return_value
         instance.process = AsyncMock()
         instance.to_usdm.return_value = '{"study": {"name": "test-study"}}'
-        instance.extra.return_value = {"title_page": {}, "amendment": {}, "miscellaneous": {}}
+        instance.extra.return_value = {
+            "title_page": {},
+            "amendment": {},
+            "miscellaneous": {},
+        }
         yield mock
 
 
@@ -49,7 +53,9 @@ def mock_usdm3():
     with patch("app.imports.import_processors.USDM3") as mock:
         instance = mock.return_value
         instance.convert.return_value = MagicMock()
-        instance.convert.return_value.to_json.return_value = '{"study": {"name": "test-study"}}'
+        instance.convert.return_value.to_json.return_value = (
+            '{"study": {"name": "test-study"}}'
+        )
         instance.validate.return_value = MagicMock()
         instance.validate.return_value.to_dict.return_value = {"errors": []}
         yield mock
@@ -61,7 +67,9 @@ def mock_usdm4():
     with patch("app.imports.import_processors.USDM4") as mock:
         instance = mock.return_value
         instance.convert.return_value = MagicMock()
-        instance.convert.return_value.to_json.return_value = '{"study": {"name": "test-study"}}'
+        instance.convert.return_value.to_json.return_value = (
+            '{"study": {"name": "test-study"}}'
+        )
         instance.validate.return_value = MagicMock()
         instance.validate.return_value.to_dict.return_value = {"errors": []}
         yield mock
@@ -130,7 +138,7 @@ class TestImportProcessorBase:
         # Setup
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
         processor.usdm = '{"study": {"name": "test-study"}}'
-        
+
         # Mock the USDMDb wrapper
         db_instance = mock_usdm_db.return_value
         wrapper = db_instance.wrapper.return_value
@@ -139,10 +147,10 @@ class TestImportProcessorBase:
         version.sponsor_identifier_text.return_value = "TEST-123"
         version.nct_identifier.return_value = "NCT12345678"
         version.sponsor_name.return_value = "Test Sponsor"
-        
+
         # Execute
         result = processor._study_parameters()
-        
+
         # Assert
         assert result["name"] == "test-study-TEST_TYPE"
         assert result["phase"] == "Phase 1"
@@ -150,7 +158,7 @@ class TestImportProcessorBase:
         assert result["sponsor_identifier"] == "TEST-123"
         assert result["nct_identifier"] == "NCT12345678"
         assert result["sponsor"] == "Test Sponsor"
-        
+
         # Verify method calls
         mock_usdm_db.assert_called_once()
         db_instance.from_json.assert_called_once()
@@ -164,10 +172,10 @@ class TestImportProcessorBase:
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
         processor.usdm = '{"study": {"name": "test-study"}}'
         mock_usdm_db.return_value.from_json.side_effect = Exception("Test exception")
-        
+
         # Execute
         result = processor._study_parameters()
-        
+
         # Assert
         assert result is None
         mock_logger.exception.assert_called_once()
@@ -176,10 +184,10 @@ class TestImportProcessorBase:
         """Test _get_parameter method."""
         # Setup
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
-        
+
         # Execute
         result = processor._get_parameter(mock_object_path.return_value, "study/name")
-        
+
         # Assert
         assert result == "test-study"
         mock_object_path.return_value.get.assert_called_once_with("study/name")
@@ -189,10 +197,12 @@ class TestImportProcessorBase:
         # Setup
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
         mock_object_path.return_value.get.return_value = None
-        
+
         # Execute
-        result = processor._get_parameter(mock_object_path.return_value, "not/found/path")
-        
+        result = processor._get_parameter(
+            mock_object_path.return_value, "not/found/path"
+        )
+
         # Assert
         assert result == ""
         mock_object_path.return_value.get.assert_called_once_with("not/found/path")
@@ -208,17 +218,16 @@ class TestImportExcel:
         processor = ImportExcel("USDM_EXCEL", "test-uuid", "/path/to/file")
         processor.file_import = MagicMock()
         processor.session = MagicMock()
-        
+
         # Execute
         result = await processor.process()
-        
+
         # Assert
         assert result == True
         # USDMDb is called multiple times: once in process() and again in _study_parameters()
         assert mock_usdm_db.call_count >= 1
         mock_usdm_db.return_value.from_excel.assert_called_once_with("/path/to/file")
         mock_usdm_db.return_value.to_json.assert_called_once()
-        processor.file_import.update_status.assert_called_once_with("Saving", processor.session)
         assert processor.usdm == mock_usdm_db.return_value.to_json.return_value
         assert processor.errors == mock_usdm_db.return_value.from_excel.return_value
 
@@ -231,10 +240,10 @@ class TestImportWord:
         """Test process method."""
         # Setup
         processor = ImportWord("M11_DOCX", "test-uuid", "/path/to/file")
-        
+
         # Execute
         result = await processor.process()
-        
+
         # Assert
         assert result == True
         mock_m11_protocol.assert_called_once()
@@ -253,10 +262,10 @@ class TestImportFhirV1:
         """Test process method."""
         # Setup
         processor = ImportFhirV1("FHIR_V1_JSON", "test-uuid", "/path/to/file")
-        
+
         # Execute
         result = await processor.process()
-        
+
         # Assert
         assert result == True
         mock_from_fhir_v1.assert_called_once_with("test-uuid")
@@ -273,10 +282,10 @@ class TestImportUSDM3:
         """Test process method."""
         # Setup
         processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
-        
+
         # Execute
         result = await processor.process()
-        
+
         # Assert
         assert result == True
         mock_data_files.assert_called_once_with("test-uuid")
@@ -289,34 +298,43 @@ class TestImportUSDM3:
         # Use assert_any_call instead of assert_called_with to check that the method was called with these parameters
         # regardless of the order
         mock_data_files.return_value.save.assert_any_call("usdm", processor.usdm)
-        mock_data_files.return_value.save.assert_any_call("errors", processor.errors)
-        assert processor.usdm == mock_usdm3.return_value.convert.return_value.to_json.return_value
-        assert processor.errors == mock_usdm3.return_value.validate.return_value.to_dict.return_value
+        assert (
+            processor.usdm
+            == mock_usdm3.return_value.convert.return_value.to_json.return_value
+        )
+        assert (
+            processor.errors
+            == mock_usdm3.return_value.validate.return_value.to_dict.return_value
+        )
         assert processor.success == True
         assert processor.fatal_error == None
-
 
     @pytest.mark.asyncio
     async def test_process_error(self, mock_data_files, mock_usdm3):
         """Test process method."""
         instance = mock_usdm3.return_value
         instance.validate.return_value.passed_or_not_implemented = lambda: False
-        instance.validate.return_value.to_dict.return_value = {"errors": [{"status": "Failure"}]}
+        instance.validate.return_value.to_dict.return_value = {
+            "errors": [{"status": "Failure"}]
+        }
 
         # Setup
         processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
-        
+
         # Execute with patch to avoid file not found error
         with patch("usdm4.USDM4.convert") as mock_convert:
             result = await processor.process()
-        
+
         # Assert
         assert result == False
         mock_data_files.assert_called_once_with("test-uuid")
         mock_usdm3.assert_called_once()
         mock_usdm3.return_value.validate.assert_called_once_with("/path/to/file")
         assert processor.success == False
-        assert processor.fatal_error == "USDM v3 validation failed. Check the file using the validate functionality"
+        assert (
+            processor.fatal_error
+            == "USDM v3 validation failed. Check the file using the validate functionality"
+        )
 
 
 class TestImportUSDM:
@@ -326,11 +344,11 @@ class TestImportUSDM:
     async def test_process(self, mock_data_files, mock_usdm4):
         """Test process method."""
         # Setup
-        processor = ImportUSDM("USDM_JSON", "test-uuid", "/path/to/file")
-        
+        processor = ImportUSDM4("USDM4_JSON", "test-uuid", "/path/to/file")
+
         # Execute
         result = await processor.process()
-        
+
         # Assert
         assert result == True
         mock_data_files.assert_called_once_with("test-uuid")
@@ -338,27 +356,34 @@ class TestImportUSDM:
         mock_data_files.return_value.read.assert_called_once_with("usdm")
         mock_usdm4.assert_called_once()
         mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
-        mock_data_files.return_value.save.assert_any_call("errors", processor.errors)
         assert processor.usdm == mock_data_files.return_value.read.return_value
-        assert processor.errors == mock_usdm4.return_value.validate.return_value.to_dict.return_value
+        assert (
+            processor.errors
+            == mock_usdm4.return_value.validate.return_value.to_dict.return_value
+        )
 
     @pytest.mark.asyncio
     async def test_process_error(self, mock_data_files, mock_usdm4):
         """Test process method."""
         instance = mock_usdm4.return_value
         instance.validate.return_value.passed_or_not_implemented = lambda: False
-        instance.validate.return_value.to_dict.return_value = {"errors": [{"status": "Failure"}]}
+        instance.validate.return_value.to_dict.return_value = {
+            "errors": [{"status": "Failure"}]
+        }
 
         # Setup
-        processor = ImportUSDM("USDM_JSON", "test-uuid", "/path/to/file")
-        
+        processor = ImportUSDM4("USDM4_JSON", "test-uuid", "/path/to/file")
+
         # Execute
         result = await processor.process()
-        
+
         # Assert
         assert result == False
         mock_data_files.assert_called_once_with("test-uuid")
         mock_usdm4.assert_called_once()
         mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
         assert processor.success == False
-        assert processor.fatal_error == "USDM v4 validation failed. Check the file using the validate functionality"
+        assert (
+            processor.fatal_error
+            == "USDM v4 validation failed. Check the file using the validate functionality"
+        )

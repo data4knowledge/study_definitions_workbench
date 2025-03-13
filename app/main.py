@@ -11,13 +11,6 @@ from app.database.endpoint import Endpoint
 from app.database.user_endpoint import UserEndpoint
 from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
-
-# from app.utility.template_methods import (
-#     server_name,
-#     single_multiple,
-#     restructure_study_list,
-#     title_page_study_list_headings,
-# )
 from app.model.usdm_json import USDMJson
 from app import VERSION, SYSTEM_NAME
 from app.dependencies.fhir_version import check_fhir_version
@@ -53,7 +46,9 @@ from app.configuration.configuration import application_configuration
 DataFiles.clean_and_tidy()
 DataFiles.check()
 LocalFiles.check()
-DBM.check()
+database_manager = DBM()
+database_manager.check()
+database_manager.migrate()
 
 app = FastAPI(
     title=SYSTEM_NAME,

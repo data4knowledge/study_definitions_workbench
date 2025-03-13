@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
 from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
+from app.imports.import_manager import ImportManager
 
 
 class USDMJson:
@@ -20,7 +21,11 @@ class USDMJson:
         file_import = FileImport.find(version.import_id, session)
         self.uuid = file_import.uuid
         self.type = file_import.type
-        self.m11 = True if self.type == "DOCX" or self.type == "FHIR V1" else False
+        self.m11 = (
+            True
+            if self.type in [ImportManager.M11_DOCX, ImportManager.FHIR_V1_JSON]
+            else False
+        )
         self._files = DataFiles(file_import.uuid)
         self._data = self._get_usdm()
         self._extra = self._get_extra()

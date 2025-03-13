@@ -12,7 +12,7 @@ from app.imports.import_processors import (
     ImportWord,
     ImportFhirV1,
     ImportUSDM3,
-    ImportUSDM,
+    ImportUSDM4,
     ImportProcessorBase,
 )
 
@@ -23,7 +23,7 @@ class ImportManager:
     FHIR_V1_JSON = "FHIR_V1_JSON"
     # FHIR_V2_JSON = "FHIR_V2_JSON"
     USDM3_JSON = "USDM3_JSON"
-    USDM_JSON = "USDM_JSON"
+    USDM4_JSON = "USDM4_JSON"
 
     def __init__(self, user: User, type: str) -> None:
         self.mapping = {
@@ -51,8 +51,8 @@ class ImportManager:
                 "main_file_ext": ".json",
                 "images": False,
             },
-            self.USDM_JSON: {
-                "processor": ImportUSDM,
+            self.USDM4_JSON: {
+                "processor": ImportUSDM4,
                 "main_file_type": "usdm",
                 "main_file_ext": ".json",
                 "images": False,
@@ -73,8 +73,28 @@ class ImportManager:
         return [
             cls.USDM_EXCEL,
             cls.USDM3_JSON,
-            cls.USDM_JSON,
+            cls.USDM4_JSON,
         ]
+
+    @classmethod
+    def is_m11_docx_import(cls, value: str) -> bool:
+        return value == cls.M11_DOCX
+
+    @classmethod
+    def is_usdm_excel_import(cls, value: str) -> bool:
+        return value == cls.USDM_EXCEL
+
+    @classmethod
+    def is_fhir_v1_import(cls, value: str) -> bool:
+        return value == cls.FHIR_V1_JSON
+
+    @classmethod
+    def is_usdm3_json_import(cls, value: str) -> bool:
+        return value == cls.USDM3_JSON
+
+    @classmethod
+    def is_usdm4_json_import(cls, value: str) -> bool:
+        return value == cls.USDM4_JSON
 
     def save_files(self, main_file: dict, image_files: dict) -> str:
         if main_file:
@@ -82,6 +102,7 @@ class ImportManager:
             self.uuid = self.files.new()
             self.original_filename = main_file["filename"]
             print(f"********** Original filename: {self.original_filename}")
+            print(f"********** Main file type: {self.main_file_type}")
             self._save_file(main_file, self.main_file_type)
             for image_file in image_files:
                 self._save_file(image_file, "image")
@@ -102,7 +123,9 @@ class ImportManager:
                 self.user.id,
                 session,
             )
-            processor: ImportProcessorBase = self.processor(self.type, self.uuid, full_path)
+            processor: ImportProcessorBase = self.processor(
+                self.type, self.uuid, full_path
+            )
             result = await processor.process()
             if processor.errors:
                 self.files.save("errors", processor.errors)
@@ -111,7 +134,9 @@ class ImportManager:
                 self.files.save("usdm", processor.usdm)
                 self.files.save("extra", processor.extra)
                 file_import.update_status("Create", session)
-                Study.study_and_version(processor.study_parameters, self.user, file_import, session)
+                Study.study_and_version(
+                    processor.study_parameters, self.user, file_import, session
+                )
                 file_import.update_status("Success", session)
                 session.close()
                 await connection_manager.success(
@@ -121,7 +146,8 @@ class ImportManager:
                 file_import.update_status("Failed", session)
                 session.close()
                 await connection_manager.error(
-                    f"Error encountered importing '{filename}', {processor.fatal_error}", str(self.user.id)
+                    f"Error encountered importing '{filename}', {processor.fatal_error}",
+                    str(self.user.id),
                 )
         except Exception as e:
             if file_import:

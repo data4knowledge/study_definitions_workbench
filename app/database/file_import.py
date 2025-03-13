@@ -84,7 +84,7 @@ class FileImport(FileImportBase):
         results = []
         for db_item in data:
             record = db_item.__dict__
-            #record["filename"] = os.path.basename(record["filepath"])
+            # record["filename"] = os.path.basename(record["filepath"])
             results.append(db_item.__dict__)
         result = {
             "items": results,
