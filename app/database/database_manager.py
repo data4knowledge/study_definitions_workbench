@@ -19,8 +19,8 @@ from app.configuration.configuration import application_configuration
 
 
 class DatabaseManager:
-    def __init__(self):
-        self.session = SessionLocal()
+    def __init__(self, session: Session = None):
+        self.session: Session = session if session else SessionLocal()
 
     def check(self):
         dir = application_configuration.database_path

@@ -109,7 +109,7 @@ def test_load_m11(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/m11/RadVax/RadVax.docx")
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of 'RadVax.docx'")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
     expect(
         page.get_by_text(
@@ -137,7 +137,7 @@ def test_load_excel(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/excel/pilot.xlsx")
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of Excel")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of 'pilot.xlsx'")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
     expect(
         page.get_by_text(
@@ -166,7 +166,7 @@ def test_load_fhir_v1(playwright: Playwright) -> None:
         os.path.join(path, "tests/test_files/fhir_v1/from/ASP8062_fhir_m11.json"),
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of FHIR")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of 'fhir.json'")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
     expect(
         page.get_by_text(
@@ -290,10 +290,10 @@ def test_export_import(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx")
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
 
-    page.get_by_role("link", name=" View Details").click()
+    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
@@ -306,7 +306,7 @@ def test_export_import(playwright: Playwright) -> None:
         os.path.join(path, "tests/test_files/fhir_v1/from/WA42380_fhir_m11.json"),
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of FHIR")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
 
     expect(page.locator("#card_1_div")).to_contain_text(
@@ -368,7 +368,7 @@ def test_selection_list(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx")
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
 
     page.get_by_role("button", name=" Import").click()
@@ -377,7 +377,7 @@ def test_selection_list(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/m11/ASP8062/ASP8062.docx")
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
 
     page.locator("#card_1_div").get_by_role("button", name=" Select").click()
@@ -643,7 +643,7 @@ def load_excel(page, root_path, filepath):
     page.get_by_role("link", name="USDM Excel (.xlsx)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of Excel")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
 
 
 def load_m11(page, root_path, filepath):
@@ -652,7 +652,7 @@ def load_m11(page, root_path, filepath):
     page.get_by_role("link", name="M11 Document (.docx)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of M11")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
 
 
 def load_fhir(page, root_path, filepath):
@@ -661,7 +661,7 @@ def load_fhir(page, root_path, filepath):
     page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of FHIR")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
 
 
 def delete_db(page):

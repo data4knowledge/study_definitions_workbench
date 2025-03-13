@@ -105,7 +105,7 @@ class TestImportManager:
         assert manager.type == ImportManager.USDM_EXCEL
         assert manager.processor == ImportExcel
         assert manager.main_file_type == "xlsx"
-        assert manager.main_file_ext == ".json"
+        assert manager.main_file_ext == ".xlsx"
         assert manager.images is True
         assert manager.files is None
         assert manager.uuid is None

@@ -30,7 +30,7 @@ class ImportManager:
             self.USDM_EXCEL: {
                 "processor": ImportExcel,
                 "main_file_type": "xlsx",
-                "main_file_ext": ".json",
+                "main_file_ext": ".xlsx",
                 "images": True,
             },
             self.M11_DOCX: {
