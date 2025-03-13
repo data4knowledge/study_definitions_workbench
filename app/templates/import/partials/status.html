@@ -23,7 +23,7 @@
             <td>{{item['filename']}}</td>
             <td>{{item['status']}}</td>
             <td>
-              {% if item['type'] == "XLSX" %}
+              {% if item['type'] in imports_with_errors() %}
                 <a href="/import/{{item['id']}}/errors" class="btn btn-sm btn-outline-primary rounded-5" title="Download errors file">
                   <i class="me-1 bi bi-bug"></i>Errors File
                 </a>  

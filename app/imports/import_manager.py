@@ -66,11 +66,22 @@ class ImportManager:
         self.images = self.mapping[type]["images"]
         self.files = None
         self.uuid = None
+        self.original_filename = None
+
+    @classmethod
+    def imports_with_errors(cls) -> list[str]:
+        return [
+            cls.USDM_EXCEL,
+            cls.USDM3_JSON,
+            cls.USDM_JSON,
+        ]
 
     def save_files(self, main_file: dict, image_files: dict) -> str:
         if main_file:
             self.files = DataFiles()
             self.uuid = self.files.new()
+            self.original_filename = main_file["filename"]
+            print(f"********** Original filename: {self.original_filename}")
             self._save_file(main_file, self.main_file_type)
             for image_file in image_files:
                 self._save_file(image_file, "image")
@@ -81,9 +92,10 @@ class ImportManager:
             session = SessionLocal()
             file_import = None
             full_path, filename, exists = self.files.path(self.main_file_type)
+            print(f"********** Original filename: {self.original_filename}")
             file_import = FileImport.create(
                 full_path,
-                filename,
+                self.original_filename,
                 "Processing",
                 self.type,
                 self.uuid,
@@ -92,13 +104,12 @@ class ImportManager:
             )
             processor: ImportProcessorBase = self.processor(self.type, self.uuid, full_path)
             result = await processor.process()
+            if processor.errors:
+                self.files.save("errors", processor.errors)
             if result:
                 file_import.update_status("Saving", session)
-                if processor.errors:
-                    self.files.save("errors", processor.errors)
                 self.files.save("usdm", processor.usdm)
                 self.files.save("extra", processor.extra)
-
                 file_import.update_status("Create", session)
                 Study.study_and_version(processor.study_parameters, self.user, file_import, session)
                 file_import.update_status("Success", session)
@@ -107,7 +118,7 @@ class ImportManager:
                     f"Import of '{filename}' completed sucessfully", str(self.user.id)
                 )
             else:
-                file_import.update_status("Exception", session)
+                file_import.update_status("Failed", session)
                 session.close()
                 await connection_manager.error(
                     f"Error encountered importing '{filename}', {processor.fatal_error}", str(self.user.id)
