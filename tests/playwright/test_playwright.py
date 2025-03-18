@@ -109,7 +109,9 @@ def test_load_m11(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/m11/RadVax/RadVax.docx")
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of 'RadVax.docx'")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of 'RadVax.docx'")).to_be_visible(
+        timeout=30_000
+    )
     page.get_by_role("link").first.click()
     expect(
         page.get_by_text(
@@ -137,7 +139,9 @@ def test_load_excel(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/excel/pilot.xlsx")
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of 'pilot.xlsx'")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of 'pilot.xlsx'")).to_be_visible(
+        timeout=30_000
+    )
     page.get_by_role("link").first.click()
     expect(
         page.get_by_text(
@@ -166,7 +170,9 @@ def test_load_fhir_v1(playwright: Playwright) -> None:
         os.path.join(path, "tests/test_files/fhir_v1/from/ASP8062_fhir_m11.json"),
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of 'fhir.json'")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of 'fhir.json'")).to_be_visible(
+        timeout=30_000
+    )
     page.get_by_role("link").first.click()
     expect(
         page.get_by_text(
@@ -473,6 +479,7 @@ def test_import_usdm_menus(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+
 @pytest.mark.playwright
 def test_import_usdm(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
@@ -484,7 +491,9 @@ def test_import_usdm(playwright: Playwright) -> None:
     login(page)
     delete_db(page)
 
-    load_usdm(page, path, "tests/test_files/usdm3/no_errors.json", "3", "Success: Import of")
+    load_usdm(
+        page, path, "tests/test_files/usdm3/no_errors.json", "3", "Success: Import of"
+    )
 
     page.get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
@@ -494,10 +503,13 @@ def test_import_usdm(playwright: Playwright) -> None:
     download = download_info.value
     page.get_by_role("link", name=" Back").click()
 
-    load_usdm(page, path, "tests/test_files/usdm4/no_errors.json", "3.6", "Success: Import of")
+    load_usdm(
+        page, path, "tests/test_files/usdm4/no_errors.json", "3.6", "Success: Import of"
+    )
 
     context.close()
     browser.close()
+
 
 @pytest.mark.playwright
 def test_import_usdm_errors(playwright: Playwright) -> None:
@@ -510,7 +522,13 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     login(page)
     delete_db(page)
 
-    load_usdm(page, path, "tests/test_files/usdm3/errors.json", "3", "Error: Error encountered")
+    load_usdm(
+        page,
+        path,
+        "tests/test_files/usdm3/errors.json",
+        "3",
+        "Error: Error encountered",
+    )
 
     page.get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
@@ -520,10 +538,17 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     download = download_info.value
     page.get_by_role("link", name=" Back").click()
 
-    load_usdm(page, path, "tests/test_files/usdm4/errors.json", "3.6", "Error: Error encountered")
+    load_usdm(
+        page,
+        path,
+        "tests/test_files/usdm4/errors.json",
+        "3.6",
+        "Error: Error encountered",
+    )
 
     context.close()
     browser.close()
+
 
 # ---------------------------------------------------------
 # Add tests before here and leave the following to run last
@@ -681,7 +706,6 @@ def test_filter(playwright: Playwright) -> None:
     browser.close()
 
 
-
 def username():
     se = ServiceEnvironment()
     value = se.get("USERNAME")
@@ -689,7 +713,8 @@ def username():
 
 
 def display_name():
-    return username().split('@')[0]
+    return username().split("@")[0]
+
 
 def password():
     se = ServiceEnvironment()
