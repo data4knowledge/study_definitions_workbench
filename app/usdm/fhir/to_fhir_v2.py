@@ -29,8 +29,8 @@ from usdm_model.study_design import StudyDesign as USDMStudyDesign
 from usdm_model.eligibility_criterion import EligibilityCriterion
 from uuid import uuid4
 from d4kms_generic import application_logger
-from app.usdm.model.v4.study_version import *
-from app.usdm.model.v4.study_identifier import *
+from usdm4.api.study_version import *
+from usdm4.api.identifier import *
 import datetime
 
 

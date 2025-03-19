@@ -3,8 +3,8 @@ from tests.files.files import *
 from tests.helpers.helpers import fix_uuid, fix_iso_dates
 from app.usdm.fhir.soa.to_fhir_soa import ToFHIRSoA
 from usdm_db import USDMDb
-from app.usdm.model.v4.study import *
-from app.usdm.model.v4.study_design import *
+from usdm4.api.study import *
+from usdm4.api.study_design import *
 
 WRITE_FILE = False
 

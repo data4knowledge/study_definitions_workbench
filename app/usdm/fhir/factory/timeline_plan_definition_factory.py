@@ -18,8 +18,8 @@ from usdm_model.scheduled_instance import (
 )
 from usdm_model.timing import Timing
 from usdm_model.study import Study
-from app.usdm.model.v4.api_base_model import *
-from app.usdm.model.v4.schedule_timeline import *
+from usdm4.api.api_base_model import *
+from usdm4.api.schedule_timeline import *
 from app.usdm.fhir.factory.cdisc_fhir import CDISCFHIR
 from app.usdm.fhir.factory.study_url import StudyUrl
 

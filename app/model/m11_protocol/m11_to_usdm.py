@@ -35,7 +35,7 @@ from app.model.m11_protocol.m11_estimands import M11IEstimands
 from app.model.m11_protocol.m11_amendment import M11IAmendment
 from app.model.m11_protocol.m11_sections import M11Sections
 from app.model.m11_protocol.m11_utility import *
-from app.usdm.model.v4.address import Address
+from usdm4.api.address import Address
 
 
 class M11ToUSDM:

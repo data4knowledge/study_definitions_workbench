@@ -1,7 +1,7 @@
 from usdm_model.study import Study as USDMStudy
 from usdm_model.study_version import StudyVersion as USDMStudyVersion
-from app.usdm.model.v4.study_version import *
-from app.usdm.model.v4.study_identifier import *
+from usdm4.api.study_version import *
+from usdm4.api.identifier import *
 from fhir.resources.researchstudy import ResearchStudy
 from app.usdm.fhir.factory.base_factory import BaseFactory
 from app.usdm.fhir.factory.extension_factory import ExtensionFactory

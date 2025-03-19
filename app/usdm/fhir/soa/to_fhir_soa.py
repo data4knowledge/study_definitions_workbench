@@ -16,8 +16,8 @@ from app.usdm.fhir.factory.timepoint_plan_definition_factory import (
     TimepointPlanDefinitionFactory,
 )
 from app.usdm.fhir.factory.activity_definition_factory import ActivityDefinitionFactory
-from app.usdm.model.v4.study import *
-from app.usdm.model.v4.study_design import *
+from usdm4.api.study import *
+from usdm4.api.study_design import *
 from app.usdm.fhir.factory.urn_uuid import URNUUID
 from app.usdm.fhir.factory.study_url import StudyUrl
 

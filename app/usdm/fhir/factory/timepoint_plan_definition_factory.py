@@ -11,8 +11,8 @@ from usdm_model.scheduled_instance import (
     ScheduledActivityInstance,
     ScheduledDecisionInstance,
 )
-from app.usdm.model.v4.api_base_model import *
-from app.usdm.model.v4.study_design import *
+from usdm4.api.api_base_model import *
+from usdm4.api.study_design import *
 from app.usdm.fhir.factory.study_url import StudyUrl
 
 
