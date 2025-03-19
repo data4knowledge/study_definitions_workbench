@@ -28,7 +28,7 @@ def test_address():
         "country": "USA",
         "district": "district",
         "id": "Addr_1",
-        "lines": ["Line 1"],
+        "line": ["Line 1"],
         "postalCode": "postal code",
         "state": "state",
         "text": "line 1, city, district, state, postal code, USA",
