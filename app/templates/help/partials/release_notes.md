@@ -1,3 +1,7 @@
+<h5>Release 0.32.0, 2025-03-nn</h5>
+
+- Add USDM 3.11 support (issue 23)
+
 <h5>Release 0.31.0, 2025-03-18</h5>
 
 - HL7 Virtual Connectathon 2025, working version (issue 21)
