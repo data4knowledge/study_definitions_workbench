@@ -1,6 +1,6 @@
 import re
 from usdm_excel.globals import Globals
-from usdm_model.geographic_scope import SubjectEnrollment
+from usdm_model.subject_enrollment import SubjectEnrollment
 from usdm_model.quantity import Quantity
 from app.model.raw_docx.raw_docx import RawDocx
 from app.model.raw_docx.raw_table import RawTable
