@@ -12,8 +12,9 @@ class AddressFactory(BaseFactory):
             for k, v in address_dict.items():
                 if v:
                     result[k] = v
-            if "line" in result:
-                result["line"] = [result["line"]]
+            if "lines" in result:
+                result["line"] = result["lines"]
+                result.pop("lines")
             if "country" in result:
                 result["country"] = address.country.decode
             self.item = AddressType(**result)

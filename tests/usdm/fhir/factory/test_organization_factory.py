@@ -68,6 +68,7 @@ def _expected():
                     "country": "Denmark",
                     "district": "district",
                     "postalCode": "postal_code",
+                    "line": ["line"],
                     "state": "state",
                     "text": "line, city, district, state, postal_code, Denmark",
                 },
