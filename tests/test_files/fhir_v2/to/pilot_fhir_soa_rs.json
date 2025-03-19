@@ -31,7 +31,7 @@
         "coding": [
           {
             "system": "http://www.cdisc.org",
-            "version": "2023-12-15",
+            "version": "2024-09-27",
             "code": "C94108",
             "display": "Study Acronym"
           }
@@ -44,7 +44,7 @@
         "coding": [
           {
             "system": "http://www.cdisc.org",
-            "version": "2023-12-15",
+            "version": "2024-09-27",
             "code": "C99905x1",
             "display": "Brief Study Title"
           }
@@ -59,7 +59,7 @@
     "coding": [
       {
         "system": "http://www.cdisc.org",
-        "version": "2023-12-15",
+        "version": "2024-09-27",
         "code": "C15601",
         "display": "Phase II Trial"
       }

@@ -11,15 +11,14 @@ from app.usdm.fhir.factory.plan_definition_related_action_factory import (
 )
 from app.usdm.fhir.factory.extension_factory import ExtensionFactory
 from app.usdm.fhir.factory.iso8601_ucum import ISO8601ToUCUM
-from usdm_model.schedule_timeline import ScheduleTimeline
-from usdm_model.scheduled_instance import (
+from usdm4.api.schedule_timeline import ScheduleTimeline
+from usdm4.api.timing import Timing
+from usdm4.api.study import Study
+from usdm4.api.schedule_timeline import (
     ScheduledActivityInstance,
     ScheduledDecisionInstance,
+    ScheduleTimeline,
 )
-from usdm_model.timing import Timing
-from usdm_model.study import Study
-from usdm4.api.api_base_model import *
-from usdm4.api.schedule_timeline import *
 from app.usdm.fhir.factory.cdisc_fhir import CDISCFHIR
 from app.usdm.fhir.factory.study_url import StudyUrl
 

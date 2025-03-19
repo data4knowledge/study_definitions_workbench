@@ -5,14 +5,12 @@ from app.usdm.fhir.factory.codeable_concept_factory import CodeableConceptFactor
 from app.usdm.fhir.factory.plan_definition_action_factory import (
     PlanDefinitionActionFactory,
 )
-from usdm_model.study import Study
-from usdm_model.study_design import StudyDesign
-from usdm_model.scheduled_instance import (
+from usdm4.api.study import Study
+from usdm4.api.study_design import StudyDesign
+from usdm4.api.scheduled_instance import (
     ScheduledActivityInstance,
     ScheduledDecisionInstance,
 )
-from usdm4.api.api_base_model import *
-from usdm4.api.study_design import *
 from app.usdm.fhir.factory.study_url import StudyUrl
 
 

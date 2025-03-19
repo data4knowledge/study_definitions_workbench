@@ -1,7 +1,6 @@
-from usdm_model.study import Study as USDMStudy
-from usdm_model.study_version import StudyVersion as USDMStudyVersion
-from usdm4.api.study_version import *
-from usdm4.api.identifier import *
+from usdm4.api.study import Study as USDMStudy
+from usdm4.api.study_version import StudyVersion as USDMStudyVersion
+from usdm4.api.identifier import StudyIdentifier
 from fhir.resources.researchstudy import ResearchStudy
 from app.usdm.fhir.factory.base_factory import BaseFactory
 from app.usdm.fhir.factory.extension_factory import ExtensionFactory
@@ -19,7 +18,8 @@ class ResearchStudyFactory(BaseFactory):
             self._title_page = extra["title_page"]
             # self._miscellaneous = extra['miscellaneous']
             # self._amendment = extra['amendment']
-            self._version: USDMStudyVersion = study.versions[0]
+            self._version: USDMStudyVersion = study.first_version()
+            self._study_design = self._version.studyDesigns[0]
             self._organizations: dict = self._version.organization_map()
 
             # Base instance
@@ -100,7 +100,7 @@ class ResearchStudyFactory(BaseFactory):
             x = self._title_page["compound_names"]
 
             # Trial Phase
-            phase = self._version.phase()
+            phase = self._study_design.phase()
             phase_code = CodingFactory(
                 system=phase.codeSystem,
                 version=phase.codeSystemVersion,

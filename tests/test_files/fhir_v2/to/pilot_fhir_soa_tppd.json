@@ -1,7 +1,7 @@
 {
   "resourceType": "PlanDefinition",
   "id": "scheduledactivityinstance-9",
-  "url": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/PlanDefinition/screen1",
+  "url": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/PlanDefinition/screen1",
   "title": "Screen One",
   "type": {
     "coding": [
@@ -17,117 +17,117 @@
     {
       "id": "activity-1",
       "title": "Informed consent",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/informed-consent"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/informed-consent"
     },
     {
       "id": "activity-2",
       "title": "Inclusion and exclusion criteria",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/inclusion-exclusion-criteria"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/inclusion-exclusion-criteria"
     },
     {
       "id": "activity-3",
       "title": "Patient number assigned",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/patient-number-assigned"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/patient-number-assigned"
     },
     {
       "id": "activity-4",
       "title": "Demographics",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/demographics"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/demographics"
     },
     {
       "id": "activity-5",
       "title": "Hachinski Ischemic Scale",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hachinski"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/hachinski"
     },
     {
       "id": "activity-6",
       "title": "MMSE",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/mmse"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/mmse"
     },
     {
       "id": "activity-7",
       "title": "Physical examination",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/physical-examination"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/physical-examination"
     },
     {
       "id": "activity-8",
       "title": "Medical history",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/medical-history"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/medical-history"
     },
     {
       "id": "activity-9",
       "title": "Habits",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/habits"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/habits"
     },
     {
       "id": "activity-10",
       "title": "Chest X-ray",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chest-x-ray"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/chest-x-ray"
     },
     {
       "id": "activity-13",
       "title": "Vital Signs and Temperature",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/vital-signs-temperature"
     },
     {
       "id": "activity-16",
       "title": "ECG",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ecg"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/ecg"
     },
     {
       "id": "activity-17",
       "title": "Placebo TTS test",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/placebo-tts-test"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/placebo-tts-test"
     },
     {
       "id": "activity-18",
       "title": "CT scan",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/ct-scan"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/ct-scan"
     },
     {
       "id": "activity-19",
       "title": "Concomitant medications",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/concomitant-medications"
     },
     {
       "id": "activity-20",
       "title": "Hematology",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hematology"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/hematology"
     },
     {
       "id": "activity-21",
       "title": "Chemistry",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/chemistry"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/chemistry"
     },
     {
       "id": "activity-22",
       "title": "Uninalysis",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/uninalysis"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/uninalysis"
     },
     {
       "id": "activity-24",
       "title": "Hemoglobin A1C",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/hemoglobin-a1c"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/hemoglobin-a1c"
     },
     {
       "id": "activity-27",
       "title": "ADAS-Cog",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/adas-cog"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/adas-cog"
     },
     {
       "id": "activity-28",
       "title": "CIBIC+",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/cibic"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/cibic"
     },
     {
       "id": "activity-29",
       "title": "DAD",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/dad"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/dad"
     },
     {
       "id": "activity-30",
       "title": "NPI-X",
-      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/study-cdisc-pilot-lzzt/ActivityDefinition/npi-x"
+      "definitionCanonical": "http://d4k.dk/fhir/vulcan-soa/cdisc-pilot-lzzt/ActivityDefinition/npi-x"
     }
   ]
 }
