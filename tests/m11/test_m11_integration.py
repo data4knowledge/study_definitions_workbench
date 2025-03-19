@@ -5,7 +5,7 @@ from app.model.file_handling.data_files import DataFiles
 from app.model.m11_protocol.m11_protocol import M11Protocol
 from app import VERSION, SYSTEM_NAME
 
-WRITE_FILE = False
+WRITE_FILE = True
 
 
 @pytest.fixture

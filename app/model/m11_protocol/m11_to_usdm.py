@@ -6,7 +6,7 @@ from usdm_model.study_title import StudyTitle
 from usdm_model.study_definition_document import StudyDefinitionDocument
 from usdm_model.study_definition_document_version import StudyDefinitionDocumentVersion
 from usdm_model.population_definition import StudyDesignPopulation
-from usdm_model.eligibility_criterion import EligibilityCriterion
+from usdm_model.eligibility_criterion import EligibilityCriterion, EligibilityCriterionItem
 from usdm_model.identifier import StudyIdentifier
 from usdm_model.organization import Organization
 
@@ -272,7 +272,7 @@ class M11ToUSDM:
             },
             self._id_manager,
         )
-        population = self._population()
+        population, ec_items = self._population()
         objectives, estimands, interventions = self._objectives()
         study_design = model_instance(
             StudyDesign,
@@ -293,9 +293,9 @@ class M11ToUSDM:
             self._id_manager,
         )
         sponsor_address = self._title_page.sponsor_address
-        # print(f"INTERVENTIONS: {interventions}")
         address = model_instance(Address, sponsor_address, self._id_manager)
         address.set_text()
+        print(f"ADDRESS: {address}")
         organization = model_instance(
             Organization,
             {
@@ -326,6 +326,7 @@ class M11ToUSDM:
             "studyPhase": self._title_page.trial_phase,
             "organizations": [organization],
             "amendments": self._get_amendments(),
+            "eligibilityCriterionItems": ec_items
         }
         study_version = model_instance(StudyVersion, params, self._id_manager)
         study = model_instance(
@@ -420,6 +421,7 @@ class M11ToUSDM:
     def _population(self):
         # print(f"POPULATION")
         results = []
+        ec_results = []
         inc = cdisc_ct_code(
             "C25532", "INCLUSION", self._cdisc_ct_library, self._id_manager
         )
@@ -432,7 +434,15 @@ class M11ToUSDM:
                 "name": f"INC{index + 1}",
                 "label": f"Inclusion {index + 1} ",
                 "description": "",
-                "text": text,
+                "text": text
+            }
+            ec_item = model_instance(EligibilityCriterionItem, params, self._id_manager)
+            ec_results.append(ec_item)
+            params = {
+                "name": f"INC{index + 1}",
+                "label": f"Inclusion {index + 1} ",
+                "description": "",
+                "criterionItemId": ec_item.id,
                 "category": inc,
                 "identifier": f"{index + 1}",
             }
@@ -445,7 +455,15 @@ class M11ToUSDM:
                 "name": f"EXC{index + 1}",
                 "label": f"Exclusion {index + 1} ",
                 "description": "",
-                "text": text,
+                "text": text
+            }
+            ec_item = model_instance(EligibilityCriterionItem, params, self._id_manager)
+            ec_results.append(ec_item)
+            params = {
+                "name": f"EXC{index + 1}",
+                "label": f"Exclusion {index + 1} ",
+                "description": "",
+                "criterionItemId": ec_item.id,
                 "category": exc,
                 "identifier": f"{index + 1}",
             }
@@ -459,7 +477,7 @@ class M11ToUSDM:
             "includesHealthySubjects": True,
             "criteria": results,
         }
-        return model_instance(StudyDesignPopulation, params, self._id_manager)
+        return model_instance(StudyDesignPopulation, params, self._id_manager), ec_item
 
     def _get_amendments(self):
         reason = []
