@@ -2,7 +2,7 @@ import pytest
 from tests.files.files import *
 from tests.helpers.helpers import fix_uuid, fix_iso_dates
 from app.usdm.fhir.soa.to_fhir_soa import ToFHIRSoA
-from usdm_db import USDMDb
+from usdm4 import USDM4
 from usdm4.api.study import *
 from usdm4.api.study_design import *
 
@@ -19,9 +19,9 @@ async def _run_test_to(name, save=False):
     mode = "to"
     filename = f"{name}_usdm.json"
     contents = json.loads(read_json(_full_path(filename, version, mode)))
-    usdm = USDMDb()
-    usdm.from_json(contents)
-    study = usdm.wrapper().study
+    usdm = USDM4()
+    wrapper = usdm.from_json(contents)
+    study = wrapper.study
     extra = read_yaml(_full_path(f"{name}_extra.yaml", version, mode))
     study_version = study.first_version()
     study_design = study_version.studyDesigns[0]

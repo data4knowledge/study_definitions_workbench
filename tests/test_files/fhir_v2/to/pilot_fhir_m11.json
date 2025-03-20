@@ -34,7 +34,7 @@
           {
             "address": {
               "id": "Address_1",
-              "text": "Lilly Corporate Ctr, Indianapolis, IN, 4628, United States of America",
+              "text": "Lilly Corporate Ctr, Indianapolis, , IN, 4628, United States of America",
               "line": [
                 "Lilly Corporate Ctr"
               ],
@@ -60,7 +60,7 @@
                   "coding": [
                     {
                       "system": "http://www.cdisc.org",
-                      "version": "2023-12-15",
+                      "version": "2024-09-27",
                       "code": "C99904x3",
                       "display": "IRB/IEC Feedback"
                     }
@@ -73,7 +73,7 @@
                   "coding": [
                     {
                       "system": "http://www.cdisc.org",
-                      "version": "2023-12-15",
+                      "version": "2024-09-27",
                       "code": "C17649",
                       "display": "Other"
                     }
@@ -115,7 +115,7 @@
               "coding": [
                 {
                   "system": "http://www.cdisc.org",
-                  "version": "2023-12-15",
+                  "version": "2024-09-27",
                   "code": "C94108",
                   "display": "Study Acronym"
                 }
@@ -128,7 +128,7 @@
               "coding": [
                 {
                   "system": "http://www.cdisc.org",
-                  "version": "2023-12-15",
+                  "version": "2024-09-27",
                   "code": "C99905x1",
                   "display": "Brief Study Title"
                 }
@@ -142,7 +142,7 @@
           "coding": [
             {
               "system": "http://www.cdisc.org",
-              "version": "2023-12-15",
+              "version": "2024-09-27",
               "code": "C15601",
               "display": "Phase II Trial"
             }
@@ -169,7 +169,63 @@
           "eligibility": {
             "reference": "Group/FAKE-UUID"
           }
-        }
+        },
+        "comparisonGroup": [
+          {
+            "linkId": "StudyIntervention-1",
+            "name": "Treatment Group",
+            "intendedExposure": {
+              "display": "Xinomiline"
+            },
+            "observedGroup": {
+              "display": "Not Availabe"
+            }
+          }
+        ],
+        "objective": [
+          {
+            "type": {
+              "coding": {
+                "system": "http://www.cdisc.org",
+                "version": "2024-09-27",
+                "code": "C85826",
+                "display": "Primary Objective"
+              }
+            },
+            "description": "Main objective",
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "populationLevelSummary",
+                    "valueId": "Estimand-1"
+                  },
+                  {
+                    "url": "endpoint-outcomeMeasure",
+                    "valueId": "Endpoint-1"
+                  },
+                  {
+                    "url": "populationLevelSummary",
+                    "valueString": "Group mean changes from baseline in the primary efficacy parameters"
+                  }
+                ],
+                "url": "http://example.org/fhir/extension/estimand"
+              }
+            ]
+          }
+        ],
+        "outcomeMeasure": [
+          {
+            "extension": [
+              {
+                "url": "http://example.org/fhir/extension/linkId",
+                "valueId": "Endpoint-1"
+              }
+            ],
+            "name": "Endpoint",
+            "description": "Alzheimer's Disease Assessment Scale - Cognitive Subscale, total of 11 items [ADAS-Cog (11)] at Week 24"
+          }
+        ]
       }
     },
     {
