@@ -6,7 +6,7 @@ from usdm4 import USDM4
 from usdm4.api.study import *
 from usdm4.api.study_design import *
 
-WRITE_FILE = False
+WRITE_FILE = True
 
 
 @pytest.fixture

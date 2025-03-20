@@ -266,6 +266,7 @@ class FromFHIRV1:
                 "studyCells": [],
                 "epochs": [],
                 "population": empty_population,
+                "studyPhase": self._phase(self._title_page.trial_phase),
             },
         )
         self._title_page.sponsor_address["country"] = self._iso3166_decode(
@@ -298,7 +299,6 @@ class FromFHIRV1:
             "studyDesigns": [study_design],
             "documentVersionIds": [protocol_document_version.id],
             "studyIdentifiers": [identifier],
-            "studyPhase": self._phase(self._title_page.trial_phase),
             "organizations": [organization],
             "narrativeContentItems": ncis,
         }

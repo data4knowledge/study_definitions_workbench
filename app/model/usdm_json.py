@@ -62,9 +62,9 @@ class USDMJson:
         return fullpath, filename, "text/plain"
 
     def fhir_soa_data(self, timeline_id: str):
-        usdm = USDMDb()
-        usdm.from_json(self._data)
-        study = usdm.wrapper().study
+        usdm = USDM4()
+        wrapper = usdm.from_json(self._data)
+        study = wrapper.study
         fhir = ToFHIRSoA(study, timeline_id, self.uuid, self._extra)
         return fhir.to_message()
 
@@ -80,9 +80,9 @@ class USDMJson:
         return fullpath, filename, "text/plain"
 
     def wrapper(self) -> Wrapper:
-        usdm = USDMDb()
-        usdm.from_json(self._data)
-        return usdm.wrapper()
+        usdm = USDM4()
+        wrapper = usdm.from_json(self._data)
+        return wrapper
 
     def extra(self) -> dict:
         return self._extra
@@ -103,13 +103,16 @@ class USDMJson:
             result["identifiers"][org["type"]["decode"]] = org["name"]
         for title in version["titles"]:
             result["titles"][title["type"]["decode"]] = title["text"]
+        phases = []
         for design in version["studyDesigns"]:
             result["study_designs"][design["id"]] = {
                 "id": design["id"],
                 "name": design["name"],
                 "label": design["label"],
             }
-        result["phase"] = version["studyPhase"]
+            phase = design["studyPhase"]["standardCode"]["decode"]
+            phases.append(phase)           
+        result["phase"] = ','.join(phases)
         return result
 
     def study_design_overall_parameters(self, id: str):
@@ -141,9 +144,9 @@ class USDMJson:
             # result['trial_types'] = self._set_trial_types(id)
             # result['trial_intent'] = self._set_trial_intent_types(id)
             result["intervention_model"] = (
-                design["interventionModel"]["decode"]
-                if design["interventionModel"]
-                else "[Intervention Model]"
+                design["model"]["decode"]
+                if design["model"]
+                else "[interventional model]"
             )
             result["population_age"] = (
                 self._population_age(design)
@@ -222,7 +225,8 @@ class USDMJson:
                 "interventions": [],
                 "text": text if text else "[Trial Interventions]",
             }
-            for intervention in design["studyInterventions"]:
+            for int_id in design["studyInterventionIds"]:
+                intervention = self._find_intervention(self._data["study"]["versions"][0], int_id)
                 # print(f"R1:")
                 record = {}
                 record["arm"] = self._arm_from_intervention(design, intervention["id"])
@@ -233,6 +237,9 @@ class USDMJson:
         else:
             return None
 
+    def _find_intervention(self, version: dict, id: str) -> dict:
+        return next((x for x in version["studyInterventions"] if x["id"] == id), None)
+    
     def study_design_estimands(self, id: str):
         design = self._study_design(id)
         # print(f"ESTIMANDS: {'design' if design else ''}")

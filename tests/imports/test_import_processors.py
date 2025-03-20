@@ -133,16 +133,17 @@ class TestImportProcessorBase:
         assert "miscellaneous" in extra
         assert "title_page" in extra
 
-    def test_study_parameters(self, mock_usdm_db, mock_object_path):
+    def test_study_parameters(self, mock_usdm4, mock_object_path):
         """Test _study_parameters method."""
         # Setup
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
-        processor.usdm = '{"study": {"name": "test-study"}}'
+        processor.usdm = '{"study": {"name": "test-study"}, "usdmVersion": "1.0"}'
 
         # Mock the USDMDb wrapper
-        db_instance = mock_usdm_db.return_value
+        db_instance = mock_usdm4.return_value
         wrapper = db_instance.wrapper.return_value
-        version = wrapper.study.first_version.return_value
+        study = wrapper.study.return_value
+        version = study.first_version.return_value
         version.official_title_text.return_value = "Test Study Title"
         version.sponsor_identifier_text.return_value = "TEST-123"
         version.nct_identifier.return_value = "NCT12345678"
@@ -150,6 +151,7 @@ class TestImportProcessorBase:
 
         # Execute
         result = processor._study_parameters()
+        print(f"RESULT: {result}")
 
         # Assert
         assert result["name"] == "test-study-TEST_TYPE"

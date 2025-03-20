@@ -28,10 +28,10 @@ class ImportProcessorBase:
     def _study_parameters(self) -> dict:
         try:
             data = json.loads(self.usdm)
-            db = USDMDb()
-            db.from_json(data)
-            object_path = ObjectPath(db.wrapper())
-            version = db.wrapper().study.first_version()
+            db = USDM4()
+            wrapper = db.from_json(data)
+            object_path = ObjectPath(wrapper)
+            version = wrapper.study.first_version()
             return {
                 "name": f"{self._get_parameter(object_path, 'study/name')}-{self.type}",
                 "phase": self._get_parameter(

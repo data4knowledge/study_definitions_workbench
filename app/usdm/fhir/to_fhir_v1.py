@@ -1,10 +1,10 @@
+import datetime
 from app.usdm.fhir.to_fhir import ToFHIR
 from fhir.resources.bundle import Bundle, BundleEntry
 from fhir.resources.identifier import Identifier
 from fhir.resources.composition import Composition
 from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.reference import Reference
-import datetime
 
 
 class ToFHIRV1(ToFHIR):
@@ -18,6 +18,7 @@ class ToFHIRV1(ToFHIR):
             more = True
             while more:
                 section = self._content_to_section(content)
+                print(f"SECTION: {section.code}")
                 if section:
                     sections.append(section)
                 content = next(
@@ -30,13 +31,15 @@ class ToFHIRV1(ToFHIR):
                 )
                 more = True if content else False
             type_code = CodeableConcept(text="EvidenceReport")
-            date = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
+            date_now = datetime.datetime.now(tz=datetime.timezone.utc)
+            date_str = date_now.isoformat()
+            print(f"DATE: {type(date_now)}, {date_str}")
             author = Reference(display="USDM")
             composition = Composition(
                 title=self.doc_title,
                 type=type_code,
                 section=sections,
-                date=date,
+                date=date_str,
                 status="preliminary",
                 author=[author],
             )
@@ -51,7 +54,7 @@ class ToFHIRV1(ToFHIR):
                 entry=[bundle_entry],
                 type="document",
                 identifier=identifier,
-                timestamp=date,
+                timestamp=date_str,
             )
             return bundle.json()
         except Exception as e:
