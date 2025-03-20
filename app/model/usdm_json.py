@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
 from app.imports.import_manager import ImportManager
-
+from usdm4 import USDM4
 
 class USDMJson:
     def __init__(self, id: int, session: Session):
@@ -40,17 +40,17 @@ class USDMJson:
 
     def fhir_v1_data(self):
         # print(f"FHIR: VER 1 DATA")
-        usdm = USDMDb()
-        usdm.from_json(self._data)
-        study = usdm.wrapper().study
+        usdm = USDM4()
+        wrapper = usdm.from_json(self._data)
+        study = wrapper.study
         fhir = ToFHIRV1(study, self.uuid, self._extra)
         return fhir.to_fhir()
 
     def fhir_v2_data(self):
         # print(f"FHIR: VER 2 DATA")
-        usdm = USDMDb()
-        usdm.from_json(self._data)
-        study = usdm.wrapper().study
+        usdm = USDM4()
+        wrapper = usdm.from_json(self._data)
+        study = wrapper.study
         fhir = ToFHIRV2(study, self.uuid, self._extra)
         data = fhir.to_fhir()
         self._files.save("fhir_v2", data)

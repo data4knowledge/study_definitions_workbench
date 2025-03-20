@@ -1,8 +1,10 @@
 import warnings
+import datetime
+from uuid import uuid4
 from bs4 import BeautifulSoup
 from app.usdm.fhir.to_fhir import ToFHIR
 from fhir.resources.bundle import Bundle, BundleEntry
-from fhir.resources.identifier import Identifier
+from fhir.resources.identifier import Identifier as FHIRIdentifier
 from fhir.resources.composition import Composition
 from fhir.resources.codeableconcept import CodeableConcept
 from fhir.resources.coding import Coding
@@ -14,24 +16,18 @@ from fhir.resources.researchstudy import ResearchStudyProgressStatus
 from fhir.resources.organization import Organization as FHIROrganization
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
 from fhir.resources.group import Group
-from usdm_model.code import Code as USDMCode
-
-# from usdm_model.study_title import StudyTitle as USDMStudyTitle
-from usdm_model.endpoint import Endpoint as USDMEndpoint
-
-# from usdm_model.estimand import Estimand as USDMEstimand
-from usdm_model.study_intervention import StudyIntervention as USDMStudyIntervention
-from usdm_model.governance_date import GovernanceDate as USDMGovernanceDate
-from usdm_model.organization import Organization as USDMOrganization
-from usdm_model.address import Address as USDMAddress
-from usdm_model.study_version import StudyVersion as USDMStudyVersion
-from usdm_model.study_design import StudyDesign as USDMStudyDesign
-from usdm_model.eligibility_criterion import EligibilityCriterion
-from uuid import uuid4
 from d4kms_generic import application_logger
+from usdm4.api.code import Code as USDMCode
+from usdm4.api.endpoint import Endpoint as USDMEndpoint
+from usdm4.api.study_intervention import StudyIntervention as USDMStudyIntervention
+from usdm4.api.governance_date import GovernanceDate as USDMGovernanceDate
+from usdm4.api.organization import Organization as USDMOrganization
+from usdm4.api.address import Address as USDMAddress
+from usdm4.api.study_version import StudyVersion as USDMStudyVersion
+from usdm4.api.study_design import StudyDesign as USDMStudyDesign
+from usdm4.api.eligibility_criterion import EligibilityCriterion
 from usdm4.api.study_version import *
 from usdm4.api.identifier import *
-import datetime
 
 
 class ToFHIRV2(ToFHIR):
@@ -75,7 +71,7 @@ class ToFHIRV2(ToFHIR):
             self._entries.append(
                 {"item": ie, "url": "https://www.example.com/Composition/1234X1"}
             )
-            identifier = Identifier(
+            identifier = FHIRIdentifier(
                 system="urn:ietf:rfc:3986", value=f"urn:uuid:{self._uuid}"
             )
             entries = []
@@ -100,8 +96,8 @@ class ToFHIRV2(ToFHIR):
 
     def _inclusion_exclusion_critieria(self):
         version = self.study_version
-        criteria = version.criterion_map()
-        design = version.studyDesigns[0]
+        design = self.study_design
+        criteria = design.criterion_map()
         all_of = self._extension_string(
             "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.combinationMethod",
             "all-of",
@@ -119,6 +115,7 @@ class ToFHIRV2(ToFHIR):
         return group
 
     def _criterion(self, criterion: EligibilityCriterion, collection: list):
+        version = self.study_version
         code = CodeableConcept(
             extension=[
                 {
@@ -141,23 +138,25 @@ class ToFHIRV2(ToFHIR):
         #   exclude = True if criterion.category.code == 'C25370' else False
         #   collection.append({'extension': outer, 'code': code, 'valueCodeableConcept': value, 'exclude': exclude})
 
-        soup = self._get_soup(criterion.text)
-        cleaned_text = soup.get_text()
+        criterion_item = version.criterion_item(criterion.criterionItemId)
+        if criterion_item:
+            soup = self._get_soup(criterion_item.text)
+            cleaned_text = soup.get_text()
 
-        outer = self._extension_markdown_wrapper_2(
-            "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
-            cleaned_text,
-            None,
-        )
-        exclude = True if criterion.category.code == "C25370" else False
-        collection.append(
-            {
-                "extension": outer,
-                "code": code,
-                "valueCodeableConcept": value,
-                "exclude": exclude,
-            }
-        )
+            outer = self._extension_markdown_wrapper_2(
+                "http://hl7.org/fhir/6.0/StructureDefinition/extension-Group.characteristic.description",
+                cleaned_text,
+                None,
+            )
+            exclude = True if criterion.category.code == "C25370" else False
+            collection.append(
+                {
+                    "extension": outer,
+                    "code": code,
+                    "valueCodeableConcept": value,
+                    "exclude": exclude,
+                }
+            )
 
     def _research_study(self, group_id: str) -> ResearchStudy:
         version = self.study_version
@@ -339,7 +338,7 @@ class ToFHIRV2(ToFHIR):
                 if pls_ext:
                     ext.extension.append(pls_ext)
                 pls_ext = self._extension_codeable_text(
-                    "populationLevelSummary", objective["summary"].summaryMeasure
+                    "populationLevelSummary", objective["summary"].populationSummary
                 )
                 if pls_ext:
                     ext.extension.append(pls_ext)
@@ -400,7 +399,7 @@ class ToFHIRV2(ToFHIR):
     #   return None
 
     def _phase(self):
-        return self.study_version.studyPhase.standardCode
+        return self.study_design.studyPhase.standardCode
 
     def _document_date(self) -> USDMGovernanceDate:
         dates = self.study_version.dateValues
@@ -426,9 +425,9 @@ class ToFHIRV2(ToFHIR):
                 }
                 estimand = self._estimand_for(design, endpoint)
                 if estimand:
-                    result["population"] = estimand.analysisPopulation
+                    result["population"] = self.study_design.find_analysis_population(estimand.analysisPopulationId)
                     # print(f"ESTIMAND ID: {estimand.interventionId}")
-                    intervention = self._intervention(design, estimand.interventionId)
+                    intervention = self.study_version.intervention(estimand.interventionIds[0])
                     result["treatment"] = intervention if intervention else None
                     result["summary"] = estimand
                     result["events"] = []
@@ -438,9 +437,6 @@ class ToFHIRV2(ToFHIR):
                 results.append(result)
         print(f"OBJECIVE: {results[0].keys()}")
         return results
-
-    def _intervention(self, design: USDMStudyDesign, id: str) -> USDMStudyIntervention:
-        return next((x for x in design.studyInterventions if x.id == id), None)
 
     def _estimand_for(self, design: USDMStudyDesign, endpoint: USDMEndpoint):
         return next(
@@ -473,8 +469,9 @@ class ToFHIRV2(ToFHIR):
         for k, v in x.items():
             if v:
                 y[k] = v
-        if "line" in y:
-            y["line"] = [y["line"]]
+        if "lines" in y:
+            y["line"] = y["lines"]
+            y.pop("lines")
         if "country" in y:
             y["country"] = address.country.decode
         result = AddressType(y)

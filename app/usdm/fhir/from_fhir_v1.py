@@ -1,17 +1,19 @@
-from usdm_model.wrapper import Wrapper
-from usdm_model.study import Study
-from usdm_model.study_design import StudyDesign
-from usdm_model.study_version import StudyVersion
-from usdm_model.study_title import StudyTitle
-from usdm_model.study_definition_document import StudyDefinitionDocument
-from usdm_model.study_definition_document_version import StudyDefinitionDocumentVersion
-from usdm_model.code import Code
-from usdm_model.alias_code import AliasCode
-from usdm_model.identifier import StudyIdentifier
-from usdm_model.organization import Organization
-
-# from usdm_model.address import Address
-from usdm_model.narrative_content import NarrativeContent, NarrativeContentItem
+from usdm4.api.wrapper import Wrapper
+from usdm4.api.study import Study
+from usdm4.api.study_design import InterventionalStudyDesign
+from usdm4.api.study_version import StudyVersion
+from usdm4.api.study_title import StudyTitle
+from usdm4.api.study_definition_document import StudyDefinitionDocument
+from usdm4.api.study_definition_document_version import StudyDefinitionDocumentVersion
+from usdm4.api.code import Code
+from usdm4.api.alias_code import AliasCode
+from usdm4.api.identifier import StudyIdentifier
+from usdm4.api.organization import Organization
+from usdm4.api.narrative_content import NarrativeContent, NarrativeContentItem
+from usdm4.api.governance_date import GovernanceDate
+from usdm4.api.geographic_scope import GeographicScope
+from usdm4.api.address import Address
+from usdm4.api.population_definition import StudyDesignPopulation
 from fhir.resources.bundle import Bundle
 from fhir.resources.composition import CompositionSection
 from usdm_info import (
@@ -22,11 +24,8 @@ from app.model.file_handling.data_files import DataFiles
 from app.usdm.fhir.fhir_title_page import FHIRTitlePage
 from d4kms_generic.logger import application_logger
 from app.model.m11_protocol.m11_utility import language_code
-from usdm_model.governance_date import GovernanceDate
-from usdm_model.geographic_scope import GeographicScope
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
-from usdm4.api.address import Address
 
 
 class FromFHIRV1:
@@ -246,18 +245,27 @@ class FromFHIRV1:
         # Build
         intervention_model_code = self._cdisc_ct_code("C82639", "Parallel Study")
         sponsor_code = self._cdisc_ct_code("C70793", "Clinical Study Sponsor")
+        empty_population = self._model_instance(
+            StudyDesignPopulation,
+            {
+                "name": "Study Design Population",
+                "label": "Study Population",
+                "description": "Empty population details",
+                "includesHealthySubjects": True,
+            },
+        )
         study_design = self._model_instance(
-            StudyDesign,
+            InterventionalStudyDesign,
             {
                 "name": "Study Design",
                 "label": "",
                 "description": "",
                 "rationale": "[Not Found]",
-                "interventionModel": intervention_model_code,
+                "model": intervention_model_code,
                 "arms": [],
                 "studyCells": [],
                 "epochs": [],
-                "population": None,
+                "population": empty_population,
             },
         )
         self._title_page.sponsor_address["country"] = self._iso3166_decode(
@@ -347,11 +355,15 @@ class FromFHIRV1:
         return study.documentedBy.versions[0]
 
     def _model_instance(self, cls, params):
-        params["id"] = (
-            params["id"] if "id" in params else self._id_manager.build_id(cls)
-        )
-        params["instanceType"] = cls.__name__
-        return cls(**params)
+        try:
+            params["id"] = (
+                params["id"] if "id" in params else self._id_manager.build_id(cls)
+            )
+            params["instanceType"] = cls.__name__
+            return cls(**params)
+        except Exception as e:
+            application_logger.exception(f"Failed to create model instance of class {cls}\nparams: {params}\n Exception: {e.errors()}", e)
+            raise
 
     def _double_link(self, items, prev, next):
         for idx, item in enumerate(items):

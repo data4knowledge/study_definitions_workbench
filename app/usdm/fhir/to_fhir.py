@@ -1,13 +1,13 @@
-from usdm_model.study import Study
-from usdm_model.narrative_content import NarrativeContent
+from uuid import uuid4
+from usdm4.api.study import Study
+from usdm4.api.narrative_content import NarrativeContent
+from usdm4.api.study_title import StudyTitle as USDMStudyTitle
 from usdm_db.cross_reference import CrossReference
 from usdm_db.errors_and_logging.errors_and_logging import ErrorsAndLogging
 from usdm_db.document.utility import get_soup
 from fhir.resources.composition import CompositionSection
 from fhir.resources.narrative import Narrative
 from fhir.resources.codeableconcept import CodeableConcept
-from usdm_model.study_title import StudyTitle as USDMStudyTitle
-from uuid import uuid4
 
 
 class ToFHIR:
@@ -18,6 +18,7 @@ class ToFHIR:
 
     def __init__(self, study: Study, uuid: uuid4, extra: dict = {}):
         self.study = study
+        print(f"KLASS: {type(self.study)}")
         self._uuid = uuid
         self._title_page = extra["title_page"]
         self._miscellaneous = extra["miscellaneous"]
@@ -25,7 +26,9 @@ class ToFHIR:
         self._errors_and_logging = ErrorsAndLogging()
         self._cross_ref = CrossReference(study, self._errors_and_logging)
         self.study_version = study.versions[0]
+        print(f"KLASS: {type(self.study_version)}")
         self.study_design = self.study_version.studyDesigns[0]
+        print(f"KLASS: {type(self.study_design)}")
         self.protocol_document_version = self.study.documentedBy[0].versions[0]
         self.doc_title = self._get_official_title()
 
