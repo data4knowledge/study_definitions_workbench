@@ -1,7 +1,7 @@
 import re
 from usdm_excel.globals import Globals
-from usdm_model.subject_enrollment import SubjectEnrollment
-from usdm_model.quantity import Quantity
+from usdm4.api.subject_enrollment import SubjectEnrollment
+from usdm4.api.quantity import Quantity
 from app.model.raw_docx.raw_docx import RawDocx
 from app.model.raw_docx.raw_table import RawTable
 from app.model.raw_docx.raw_section import RawSection

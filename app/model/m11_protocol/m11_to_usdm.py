@@ -1,27 +1,25 @@
-from usdm_model.wrapper import Wrapper
-from usdm_model.study import Study
-from usdm_model.study_design import StudyDesign
-from usdm_model.study_version import StudyVersion
-from usdm_model.study_title import StudyTitle
-from usdm_model.study_definition_document import StudyDefinitionDocument
-from usdm_model.study_definition_document_version import StudyDefinitionDocumentVersion
-from usdm_model.population_definition import StudyDesignPopulation
-from usdm_model.eligibility_criterion import EligibilityCriterion, EligibilityCriterionItem
-from usdm_model.identifier import StudyIdentifier
-from usdm_model.organization import Organization
-
-# from usdm_model.address import Address
-from usdm_model.narrative_content import NarrativeContent, NarrativeContentItem
-from usdm_model.study_amendment import StudyAmendment
-from usdm_model.study_amendment_reason import StudyAmendmentReason
-from usdm_model.endpoint import Endpoint
-from usdm_model.objective import Objective
-from usdm_model.analysis_population import AnalysisPopulation
-from usdm_model.intercurrent_event import IntercurrentEvent
-from usdm_model.study_intervention import StudyIntervention
-from usdm_model.estimand import Estimand
-from usdm_model.governance_date import GovernanceDate
-from usdm_model.geographic_scope import GeographicScope
+from usdm4.api.wrapper import Wrapper
+from usdm4.api.study import Study
+from usdm4.api.study_design import InterventionalStudyDesign
+from usdm4.api.study_version import StudyVersion
+from usdm4.api.study_title import StudyTitle
+from usdm4.api.study_definition_document import StudyDefinitionDocument
+from usdm4.api.study_definition_document_version import StudyDefinitionDocumentVersion
+from usdm4.api.population_definition import StudyDesignPopulation
+from usdm4.api.eligibility_criterion import EligibilityCriterion, EligibilityCriterionItem
+from usdm4.api.identifier import StudyIdentifier
+from usdm4.api.organization import Organization
+from usdm4.api.narrative_content import NarrativeContent, NarrativeContentItem
+from usdm4.api.study_amendment import StudyAmendment
+from usdm4.api.study_amendment_reason import StudyAmendmentReason
+from usdm4.api.endpoint import Endpoint
+from usdm4.api.objective import Objective
+from usdm4.api.analysis_population import AnalysisPopulation
+from usdm4.api.intercurrent_event import IntercurrentEvent
+from usdm4.api.study_intervention import StudyIntervention
+from usdm4.api.estimand import Estimand
+from usdm4.api.governance_date import GovernanceDate
+from usdm4.api.geographic_scope import GeographicScope
 
 from usdm_excel.globals import Globals
 from uuid import uuid4
@@ -273,15 +271,15 @@ class M11ToUSDM:
             self._id_manager,
         )
         population, ec_items = self._population()
-        objectives, estimands, interventions = self._objectives()
+        objectives, estimands, interventions, analysis_populations = self._objectives()
         study_design = model_instance(
-            StudyDesign,
+            InterventionalStudyDesign,
             {
                 "name": "Study Design",
                 "label": "",
                 "description": "",
                 "rationale": "XXX",
-                "interventionModel": intervention_model_code,
+                "model": intervention_model_code,
                 "arms": [],
                 "studyCells": [],
                 "epochs": [],
@@ -289,6 +287,8 @@ class M11ToUSDM:
                 "objectives": objectives,
                 "estimands": estimands,
                 "studyInterventions": interventions,
+                "analysisPopulations": analysis_populations,
+                "studyPhase": self._title_page.trial_phase,
             },
             self._id_manager,
         )
@@ -323,7 +323,6 @@ class M11ToUSDM:
             "studyDesigns": [study_design],
             "documentVersionIds": [protocol_document_version.id],
             "studyIdentifiers": [identifier],
-            "studyPhase": self._title_page.trial_phase,
             "organizations": [organization],
             "amendments": self._get_amendments(),
             "eligibilityCriterionItems": ec_items
@@ -348,6 +347,7 @@ class M11ToUSDM:
         objs = []
         ests = []
         treatments = []
+        analysis_populations = []
         primary_o = cdisc_ct_code(
             "C85826", "Primary Objective", self._cdisc_ct_library, self._id_manager
         )
@@ -388,15 +388,16 @@ class M11ToUSDM:
             params = {
                 "name": f"Event {index + 1}",
                 "description": objective["i_event"],
+                "text": objective["i_event"],
                 "strategy": objective["strategy"],
             }
             ie = model_instance(IntercurrentEvent, params, self._id_manager)
             params = {
                 "name": f"Analysis Population {index + 1}",
                 "text": objective["population"],
-                "text": objective["population"],
             }
             ap = model_instance(AnalysisPopulation, params, self._id_manager)
+            analysis_populations.append(ap)
             params = {
                 "name": f"Study Intervention {index + 1}",
                 "text": objective["treatment"],
@@ -409,14 +410,14 @@ class M11ToUSDM:
             params = {
                 "name": f"Estimand {index + 1}",
                 "intercurrentEvents": [ie],
-                "analysisPopulation": ap,
+                "analysisPopulationId": ap.id,
                 "variableOfInterestId": ep.id,
-                "interventionId": treatment.id,
-                "summaryMeasure": objective["population_summary"],
+                "interventionIds": [treatment.id],
+                "populationSummary": objective["population_summary"],
             }
             est = model_instance(Estimand, params, self._id_manager)
             ests.append(est)
-        return objs, ests, treatments
+        return objs, ests, treatments, analysis_populations
 
     def _population(self):
         # print(f"POPULATION")
@@ -477,10 +478,16 @@ class M11ToUSDM:
             "includesHealthySubjects": True,
             "criteria": results,
         }
-        return model_instance(StudyDesignPopulation, params, self._id_manager), ec_item
+        return model_instance(StudyDesignPopulation, params, self._id_manager), ec_results
 
     def _get_amendments(self):
         reason = []
+        global_code = cdisc_ct_code(
+            "C68846", "Global", self._cdisc_ct_library, self._id_manager
+        )
+        global_scope = model_instance(
+            GeographicScope, {"type": global_code}, self._id_manager
+        )
         for item in [self._amendment.primary_reason, self._amendment.secondary_reason]:
             params = {"code": item["code"], "otherReason": item["other_reason"]}
             reason.append(
@@ -495,6 +502,7 @@ class M11ToUSDM:
             "primaryReason": reason[0],
             "secondaryReasons": [reason[1]],
             "enrollments": [self._amendment.enrollment],
+            "geographicScopes": [global_scope]
         }
         return [model_instance(StudyAmendment, params, self._id_manager)]
 

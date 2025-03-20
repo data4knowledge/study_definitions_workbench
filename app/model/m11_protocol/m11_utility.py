@@ -1,6 +1,6 @@
 from app.model.raw_docx.raw_table import RawTable
-from usdm_model.code import Code
-from usdm_model.alias_code import AliasCode
+from usdm4.api.code import Code
+from usdm4.api.alias_code import AliasCode
 from usdm_excel.id_manager import IdManager
 from usdm_excel.cdisc_ct_library import CDISCCTLibrary
 from usdm_excel.iso_3166 import ISO3166
@@ -35,10 +35,13 @@ def table_get_row_html(table: RawTable, key: str) -> str:
 
 
 def model_instance(cls, params: dict, id_manager: IdManager) -> object:
-    params["id"] = params["id"] if "id" in params else id_manager.build_id(cls)
-    params["instanceType"] = cls.__name__
-    return cls(**params)
-
+    try:
+        params["id"] = params["id"] if "id" in params else id_manager.build_id(cls)
+        params["instanceType"] = cls.__name__
+        return cls(**params)
+    except Exception as e:
+        application_logger.exception(f"Failed to create model instance of class {cls}\nparams: {params}\n Exception: {e.errors()}", e)
+        raise
 
 def cdisc_ct_code(
     code: str, decode: str, ct_library: CDISCCTLibrary, id_manager: IdManager
