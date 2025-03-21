@@ -18,7 +18,6 @@ class ToFHIRV1(ToFHIR):
             more = True
             while more:
                 section = self._content_to_section(content)
-                print(f"SECTION: {section.code}")
                 if section:
                     sections.append(section)
                 content = next(
@@ -33,7 +32,6 @@ class ToFHIRV1(ToFHIR):
             type_code = CodeableConcept(text="EvidenceReport")
             date_now = datetime.datetime.now(tz=datetime.timezone.utc)
             date_str = date_now.isoformat()
-            print(f"DATE: {type(date_now)}, {date_str}")
             author = Reference(display="USDM")
             composition = Composition(
                 title=self.doc_title,
