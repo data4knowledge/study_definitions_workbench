@@ -200,5 +200,10 @@ class M11IAmendment:
         quantity = model_instance(
             Quantity, {"value": value, "unit": unit_alias}, self._id_manager
         )
-        params = {"name": "GLOBAL_ENROLLMENT", "type": global_code, "code": None, "quantity": quantity}
+        params = {
+            "name": "GLOBAL_ENROLLMENT",
+            "type": global_code,
+            "code": None,
+            "quantity": quantity,
+        }
         return model_instance(SubjectEnrollment, params, self._id_manager)

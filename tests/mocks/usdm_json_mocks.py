@@ -46,12 +46,12 @@ def mock_usdm_study_version(mocker, path="app.main"):
             "titles": {"Official Study Title": "The Offical Study Title For Test"},
             "study_designs": {
                 "xxx": {
-                    "id": "2", 
-                    "name": "design name", 
-                    "label": "design label", 
+                    "id": "2",
+                    "name": "design name",
+                    "label": "design label",
                 }
             },
-            "phase": "Phase For Test"
+            "phase": "Phase For Test",
         }
     ]
     return mock

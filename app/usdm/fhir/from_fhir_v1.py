@@ -362,7 +362,10 @@ class FromFHIRV1:
             params["instanceType"] = cls.__name__
             return cls(**params)
         except Exception as e:
-            application_logger.exception(f"Failed to create model instance of class {cls}\nparams: {params}\n Exception: {e.errors()}", e)
+            application_logger.exception(
+                f"Failed to create model instance of class {cls}\nparams: {params}\n Exception: {e.errors()}",
+                e,
+            )
             raise
 
     def _double_link(self, items, prev, next):

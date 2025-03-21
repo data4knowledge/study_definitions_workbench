@@ -425,9 +425,13 @@ class ToFHIRV2(ToFHIR):
                 }
                 estimand = self._estimand_for(design, endpoint)
                 if estimand:
-                    result["population"] = self.study_design.find_analysis_population(estimand.analysisPopulationId)
+                    result["population"] = self.study_design.find_analysis_population(
+                        estimand.analysisPopulationId
+                    )
                     # print(f"ESTIMAND ID: {estimand.interventionId}")
-                    intervention = self.study_version.intervention(estimand.interventionIds[0])
+                    intervention = self.study_version.intervention(
+                        estimand.interventionIds[0]
+                    )
                     result["treatment"] = intervention if intervention else None
                     result["summary"] = estimand
                     result["events"] = []

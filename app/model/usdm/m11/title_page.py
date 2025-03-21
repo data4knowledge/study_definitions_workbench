@@ -22,7 +22,9 @@ class USDMM11TitlePage:
         self.amendment_details = title_page["amendment_details"]
         self.compound_codes = title_page["compound_codes"]
         self.compound_names = title_page["compound_names"]
-        self.trial_phase = ', '.join([x.studyPhase.standardCode.decode for x in study_version.studyDesigns])
+        self.trial_phase = ", ".join(
+            [x.studyPhase.standardCode.decode for x in study_version.studyDesigns]
+        )
         self.short_title = study_version.short_title_text()
         self.sponsor_name = study_version.sponsor_name()
         self.sponsor_address = study_version.sponsor_address()

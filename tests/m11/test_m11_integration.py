@@ -7,6 +7,7 @@ from app import VERSION, SYSTEM_NAME
 
 WRITE_FILE = False
 
+
 @pytest.fixture
 def anyio_backend():
     return "asyncio"
@@ -23,7 +24,7 @@ async def _run_test(dir, name, save=False):
     await m11.process()
     result = m11.to_usdm()
     result = replace_uuid(result)
-    #print(f"MATCH: {result[10:70]}")
+    # print(f"MATCH: {result[10:70]}")
     pretty_result = json.dumps(json.loads(result), indent=2)
     result_filename = filename = f"{name}_usdm.json"
     if save:

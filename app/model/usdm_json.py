@@ -14,6 +14,7 @@ from usdm_model.wrapper import Wrapper
 from app.imports.import_manager import ImportManager
 from usdm4 import USDM4
 
+
 class USDMJson:
     def __init__(self, id: int, session: Session):
         self.id = id
@@ -111,8 +112,8 @@ class USDMJson:
                 "label": design["label"],
             }
             phase = design["studyPhase"]["standardCode"]["decode"]
-            phases.append(phase)           
-        result["phase"] = ','.join(phases)
+            phases.append(phase)
+        result["phase"] = ",".join(phases)
         return result
 
     def study_design_overall_parameters(self, id: str):
@@ -226,7 +227,9 @@ class USDMJson:
                 "text": text if text else "[Trial Interventions]",
             }
             for int_id in design["studyInterventionIds"]:
-                intervention = self._find_intervention(self._data["study"]["versions"][0], int_id)
+                intervention = self._find_intervention(
+                    self._data["study"]["versions"][0], int_id
+                )
                 # print(f"R1:")
                 record = {}
                 record["arm"] = self._arm_from_intervention(design, intervention["id"])
@@ -239,7 +242,7 @@ class USDMJson:
 
     def _find_intervention(self, version: dict, id: str) -> dict:
         return next((x for x in version["studyInterventions"] if x["id"] == id), None)
-    
+
     def study_design_estimands(self, id: str):
         design = self._study_design(id)
         # print(f"ESTIMANDS: {'design' if design else ''}")

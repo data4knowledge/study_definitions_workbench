@@ -6,7 +6,10 @@ from usdm4.api.study_title import StudyTitle
 from usdm4.api.study_definition_document import StudyDefinitionDocument
 from usdm4.api.study_definition_document_version import StudyDefinitionDocumentVersion
 from usdm4.api.population_definition import StudyDesignPopulation
-from usdm4.api.eligibility_criterion import EligibilityCriterion, EligibilityCriterionItem
+from usdm4.api.eligibility_criterion import (
+    EligibilityCriterion,
+    EligibilityCriterionItem,
+)
 from usdm4.api.identifier import StudyIdentifier
 from usdm4.api.organization import Organization
 from usdm4.api.narrative_content import NarrativeContent, NarrativeContentItem
@@ -325,7 +328,7 @@ class M11ToUSDM:
             "studyIdentifiers": [identifier],
             "organizations": [organization],
             "amendments": self._get_amendments(),
-            "eligibilityCriterionItems": ec_items
+            "eligibilityCriterionItems": ec_items,
         }
         study_version = model_instance(StudyVersion, params, self._id_manager)
         study = model_instance(
@@ -435,7 +438,7 @@ class M11ToUSDM:
                 "name": f"INC{index + 1}",
                 "label": f"Inclusion {index + 1} ",
                 "description": "",
-                "text": text
+                "text": text,
             }
             ec_item = model_instance(EligibilityCriterionItem, params, self._id_manager)
             ec_results.append(ec_item)
@@ -456,7 +459,7 @@ class M11ToUSDM:
                 "name": f"EXC{index + 1}",
                 "label": f"Exclusion {index + 1} ",
                 "description": "",
-                "text": text
+                "text": text,
             }
             ec_item = model_instance(EligibilityCriterionItem, params, self._id_manager)
             ec_results.append(ec_item)
@@ -478,7 +481,9 @@ class M11ToUSDM:
             "includesHealthySubjects": True,
             "criteria": results,
         }
-        return model_instance(StudyDesignPopulation, params, self._id_manager), ec_results
+        return model_instance(
+            StudyDesignPopulation, params, self._id_manager
+        ), ec_results
 
     def _get_amendments(self):
         reason = []
@@ -502,7 +507,7 @@ class M11ToUSDM:
             "primaryReason": reason[0],
             "secondaryReasons": [reason[1]],
             "enrollments": [self._amendment.enrollment],
-            "geographicScopes": [global_scope]
+            "geographicScopes": [global_scope],
         }
         return [model_instance(StudyAmendment, params, self._id_manager)]
 

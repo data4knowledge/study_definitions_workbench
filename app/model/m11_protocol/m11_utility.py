@@ -40,8 +40,12 @@ def model_instance(cls, params: dict, id_manager: IdManager) -> object:
         params["instanceType"] = cls.__name__
         return cls(**params)
     except Exception as e:
-        application_logger.exception(f"Failed to create model instance of class {cls}\nparams: {params}\n Exception: {e.errors()}", e)
+        application_logger.exception(
+            f"Failed to create model instance of class {cls}\nparams: {params}\n Exception: {e.errors()}",
+            e,
+        )
         raise
+
 
 def cdisc_ct_code(
     code: str, decode: str, ct_library: CDISCCTLibrary, id_manager: IdManager

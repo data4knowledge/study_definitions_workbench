@@ -26,9 +26,9 @@ class ToFHIR:
         self._errors_and_logging = ErrorsAndLogging()
         self._cross_ref = CrossReference(study, self._errors_and_logging)
         self.study_version = study.versions[0]
-        #print(f"KLASS: {type(self.study_version)}")
+        # print(f"KLASS: {type(self.study_version)}")
         self.study_design = self.study_version.studyDesigns[0]
-        #print(f"KLASS: {type(self.study_design)}")
+        # print(f"KLASS: {type(self.study_design)}")
         self.protocol_document_version = self.study.documentedBy[0].versions[0]
         self.doc_title = self._get_official_title()
 
