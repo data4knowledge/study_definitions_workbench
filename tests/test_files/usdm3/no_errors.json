@@ -46,6 +46,19 @@
             "name": "Study Design",
             "label": "",
             "description": "",
+            "studyPhase": {
+              "id": "AliasCode_1",
+              "standardCode": {
+                "id": "Code_4",
+                "code": "C15601",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2023-12-15",
+                "decode": "Phase II Trial",
+                "instanceType": "Code"
+              },
+              "standardCodeAliases": [],
+              "instanceType": "AliasCode"
+            },    
             "trialIntentTypes": [],
             "trialTypes": [],
             "therapeuticAreas": [],

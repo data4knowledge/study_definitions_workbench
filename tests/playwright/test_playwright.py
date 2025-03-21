@@ -473,7 +473,7 @@ def test_import_usdm_menus(playwright: Playwright) -> None:
 
     page.get_by_role("button", name=" Import").click()
     expect(page.get_by_role("link", name="USDM v3 (.json)")).to_be_visible()
-    expect(page.get_by_role("link", name="USDM v3.6 (.json)")).to_be_visible()
+    expect(page.get_by_role("link", name="USDM v4 (.json)")).to_be_visible()
     page.get_by_role("button", name=" Import").click()
 
     context.close()
@@ -504,7 +504,7 @@ def test_import_usdm(playwright: Playwright) -> None:
     page.get_by_role("link", name=" Back").click()
 
     load_usdm(
-        page, path, "tests/test_files/usdm4/no_errors.json", "3.6", "Success: Import of"
+        page, path, "tests/test_files/usdm4/no_errors.json", "4", "Success: Import of"
     )
 
     context.close()
@@ -542,7 +542,7 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
         page,
         path,
         "tests/test_files/usdm4/errors.json",
-        "3.6",
+        "4",
         "Error: Error encountered",
     )
 
@@ -636,7 +636,7 @@ def test_filter(playwright: Playwright) -> None:
     # Check sponsor menu
     page.get_by_role("button", name=" Sponsors").click()
     expect(page.get_by_text("Astellas Pharma", exact=True)).to_be_visible()
-    expect(page.get_by_text("Eli Lilly", exact=True)).to_be_visible()
+    expect(page.get_by_text("LILLY", exact=True)).to_be_visible()
     expect(page.get_by_text("University of Pennsylvania", exact=True)).to_be_visible()
     page.get_by_role("button", name=" Sponsors").click()
 

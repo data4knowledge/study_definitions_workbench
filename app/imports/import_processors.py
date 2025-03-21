@@ -34,9 +34,10 @@ class ImportProcessorBase:
             version = wrapper.study.first_version()
             return {
                 "name": f"{self._get_parameter(object_path, 'study/name')}-{self.type}",
-                "phase": self._get_parameter(
-                    object_path, "study/versions[0]/studyPhase/standardCode/decode"
-                ),
+#                "phase": self._get_parameter(
+#                    object_path, "study/versions[0]/studyPhase/standardCode/decode"
+#                ),
+                "phase": version.phases(),
                 "full_title": version.official_title_text(),
                 "sponsor_identifier": version.sponsor_identifier_text(),
                 "nct_identifier": version.nct_identifier(),

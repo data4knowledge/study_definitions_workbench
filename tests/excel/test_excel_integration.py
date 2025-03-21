@@ -13,7 +13,7 @@ def _run_test(name, save=False):
     errors = db.from_excel(_full_path(filename))
     result = db.to_json()
     pretty_result = json.dumps(json.loads(result), indent=2)
-    result_filename = filename = f"{name}-usdm.json"
+    result_filename = filename = f"{name}_usdm.json"
     if save:
         write_json(_full_path(result_filename), result)
     expected = read_json(_full_path(result_filename))
