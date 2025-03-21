@@ -45,9 +45,13 @@ def mock_usdm_study_version(mocker, path="app.main"):
             "identifiers": {"Clinical Study Sponsor": "Identifier For Test"},
             "titles": {"Official Study Title": "The Offical Study Title For Test"},
             "study_designs": {
-                "xxx": {"id": "2", "name": "design name", "label": "design label"}
+                "xxx": {
+                    "id": "2", 
+                    "name": "design name", 
+                    "label": "design label", 
+                }
             },
-            "phase": {"standardCode": {"decode": "Phase For Test"}},
+            "phase": "Phase For Test"
         }
     ]
     return mock

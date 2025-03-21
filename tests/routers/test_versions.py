@@ -69,9 +69,9 @@ def test_version_history(mocker, monkeypatch):
     uji = mock_usdm_json_init(mocker)
     response = client.get("/versions/1/history")
     assert response.status_code == 200
-    assert '<h5 class="card-title">Version History</h5>' in response.text
+    assert '<h5 class="card-title">Version History: The Offical Study Title For Test</h5>' in response.text
     assert (
-        ' <h6 class="card-subtitle mb-2 text-muted">Title: The Offical Study Title For Test | Sponsor: Identifier For Test| Phase: Phase For Test | Identifier:</h6>'
+        '<h6 class="card-subtitle mb-2 text-muted">Sponsor: Identifier For Test | Phase: Phase For Test | Identifier:  | Version: 1</h6>'
         in response.text
     )
     assert mock_called(uc)
