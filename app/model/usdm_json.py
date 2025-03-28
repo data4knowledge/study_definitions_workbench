@@ -244,6 +244,7 @@ class USDMJson:
         return next((x for x in version["studyInterventions"] if x["id"] == id), None)
 
     def study_design_estimands(self, id: str):
+        version = self._data["study"]["versions"][0]
         design = self._study_design(id)
         # print(f"ESTIMANDS: {'design' if design else ''}")
         if design:
@@ -263,10 +264,10 @@ class USDMJson:
                 record = {}
                 # print(f"R1:")
                 record["treatment"] = self._intervention(
-                    design, estimand["interventionId"]
+                    version, estimand["interventionIds"]
                 )
-                record["summary_measure"] = estimand["summaryMeasure"]
-                record["analysis_population"] = estimand["analysisPopulation"]
+                record["summary_measure"] = estimand["populationSummary"]
+                record["analysis_population"] = estimand["analysisPopulationId"]
                 record["intercurrent_events"] = estimand["intercurrentEvents"]
                 record["objective"], record["endpoint"] = (
                     self._objective_endpoint_from_estimand(
@@ -361,10 +362,10 @@ class USDMJson:
     def protocol_sections(self):
         document = self._document()
         if document:
-            # print("A")
+            print("A")
             sections = []
             narrative_content = self._first_narrative_content(document)
-            # print(f"B {narrative_content}")
+            print(f"B {narrative_content}")
             while narrative_content:
                 sections.append(narrative_content)
                 narrative_content = self._find_narrative_content(
@@ -467,11 +468,14 @@ class USDMJson:
     def _find_narrative_content(self, document: dict, id: str) -> dict:
         return next((x for x in document["contents"] if x["id"] == id), None)
 
-    def _intervention(self, study_design: dict, intervention_id: str) -> dict:
+    def _intervention(self, study_version: dict, intervention_ids: list) -> dict:
+        if len(intervention_ids) == 0:
+            return None
+        intervention_id = intervention_ids[0]
         return next(
             (
                 x
-                for x in study_design["studyInterventions"]
+                for x in study_version["studyInterventions"]
                 if x["id"] == intervention_id
             ),
             None,
@@ -490,10 +494,11 @@ class USDMJson:
         return next((x for x in objective["endpoints"] if x["id"] == endpoint_id), None)
 
     def _arm_from_intervention(self, study_design: dict, intervention_id: str) -> dict:
+        version = self._data["study"]["versions"][0]
         element = next(
             (
                 x
-                for x in study_design["studyInterventions"]
+                for x in version["studyInterventions"]
                 if x["id"] == intervention_id
             ),
             None,
@@ -614,9 +619,10 @@ class USDMJson:
         # print(f"ITEM: {item}")
         return (
             {
-                "min": int(item["minValue"]),
-                "max": int(item["maxValue"]),
-                "unit": item["unit"]["decode"],
+                "min": int(item["minValue"]["value"]),
+                "min_unit": item["minValue"]["unit"]["standardCode"]["decode"],
+                "max": int(item["maxValue"]["value"]),
+                "max_unit": item["maxValue"]["unit"]["standardCode"]["decode"],
             }
             if item
             else {"min": 100, "max": 0, "unit": "Year"}
@@ -624,13 +630,18 @@ class USDMJson:
 
     def _population_recruitment(self, study_design: dict) -> dict:
         population = study_design["population"]
-        enroll = population["plannedEnrollmentNumber"]
-        complete = population["plannedCompletionNumber"]
-        return (
-            {"enroll": int(enroll["maxValue"]), "complete": int(complete["maxValue"])}
-            if enroll and complete
-            else {"enroll": 0, "complete": "0"}
-        )
+        enroll = self._range_or_quantity(population, "plannedEnrollmentNumber")
+        complete = self._range_or_quantity(population, "plannedCompletionNumber")
+        return {"enroll": int(enroll), "complete": int(complete)}
+
+    def _range_or_quantity(seæf, data: dict, attribute_name: dict) -> dict:
+        quanity_name = f"{attribute_name}Quantity"
+        range_name = f"{attribute_name}Range"
+        if data[quanity_name]:
+            return data[quanity_name]["value"]
+        if data[range_name]:
+            return data[range_name]["maxValue"]
+        return ""
 
     def _get_usdm(self):
         fullpath, filename, exists = self._files.path("usdm")
