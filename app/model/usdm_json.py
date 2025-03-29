@@ -435,7 +435,9 @@ class USDMJson:
 
     def _get_level(self, narrative_content: dict):
         section_number = narrative_content["sectionNumber"]
-        if section_number.lower().startswith("appendix"):
+        if section_number is None:
+            result = 1
+        elif section_number.lower().startswith("appendix"):
             result = 1
         else:
             text = (
@@ -558,7 +560,7 @@ class USDMJson:
         document = self._document()
         if document:
             return next(
-                (x for x in document["contents"] if x["sectionNumber"] == number), None
+                (x for x in document["contents"] if x["sectionNumber"] is not None and x["sectionNumber"] == number), None
             )
         return None
 
@@ -569,7 +571,7 @@ class USDMJson:
                 (
                     x
                     for x in document["contents"]
-                    if title.upper() in x["sectionTitle"].upper()
+                    if x["sectionTitle"] is not None and title.upper() in x["sectionTitle"].upper()
                 ),
                 None,
             )
@@ -632,6 +634,7 @@ class USDMJson:
         population = study_design["population"]
         enroll = self._range_or_quantity(population, "plannedEnrollmentNumber")
         complete = self._range_or_quantity(population, "plannedCompletionNumber")
+        print(f"ENORLL: {enroll}, {complete}")
         return {"enroll": int(enroll), "complete": int(complete)}
 
     def _range_or_quantity(seæf, data: dict, attribute_name: dict) -> dict:
@@ -641,7 +644,7 @@ class USDMJson:
             return data[quanity_name]["value"]
         if data[range_name]:
             return data[range_name]["maxValue"]
-        return ""
+        return "0"
 
     def _get_usdm(self):
         fullpath, filename, exists = self._files.path("usdm")
