@@ -6,7 +6,7 @@ from usdm4 import USDM4
 from usdm4.api.study import *
 from usdm4.api.study_design import *
 
-WRITE_FILE = True
+SAVE = False
 
 
 @pytest.fixture
@@ -44,4 +44,4 @@ def _full_path(filename, version, mode):
 
 @pytest.mark.anyio
 async def test_from_fhir_v1_ASP8062():
-    await _run_test_to("pilot", WRITE_FILE)
+    await _run_test_to("pilot", SAVE)

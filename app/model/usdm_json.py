@@ -498,11 +498,7 @@ class USDMJson:
     def _arm_from_intervention(self, study_design: dict, intervention_id: str) -> dict:
         version = self._data["study"]["versions"][0]
         element = next(
-            (
-                x
-                for x in version["studyInterventions"]
-                if x["id"] == intervention_id
-            ),
+            (x for x in version["studyInterventions"] if x["id"] == intervention_id),
             None,
         )
         if element:
@@ -560,7 +556,12 @@ class USDMJson:
         document = self._document()
         if document:
             return next(
-                (x for x in document["contents"] if x["sectionNumber"] is not None and x["sectionNumber"] == number), None
+                (
+                    x
+                    for x in document["contents"]
+                    if x["sectionNumber"] is not None and x["sectionNumber"] == number
+                ),
+                None,
             )
         return None
 
@@ -571,7 +572,8 @@ class USDMJson:
                 (
                     x
                     for x in document["contents"]
-                    if x["sectionTitle"] is not None and title.upper() in x["sectionTitle"].upper()
+                    if x["sectionTitle"] is not None
+                    and title.upper() in x["sectionTitle"].upper()
                 ),
                 None,
             )

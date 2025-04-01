@@ -17,5 +17,5 @@ playwright==1.48.0
 pytest-playwright==0.5.2
 auth0-python==4.7.2
 ruff==0.9.1
-usdm4==0.3.1
-usdm3==0.3.4
+usdm4==0.4.0
+usdm3==0.4.0

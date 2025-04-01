@@ -7,7 +7,7 @@ from app.usdm.fhir.to_fhir_v2 import ToFHIRV2
 from app.model.file_handling.data_files import DataFiles
 from usdm4 import USDM4
 
-WRITE_FILE = True
+SAVE = False
 
 
 @pytest.fixture
@@ -79,34 +79,34 @@ def _full_path(filename, version, mode):
 
 @pytest.mark.anyio
 async def test_from_fhir_v1_ASP8062():
-    await _run_test_from_v1("ASP8062", WRITE_FILE)
+    await _run_test_from_v1("ASP8062", SAVE)
 
 
 @pytest.mark.anyio
 async def test_from_fhir_v1_DEUCRALIP():
-    await _run_test_from_v1("DEUCRALIP", WRITE_FILE)
+    await _run_test_from_v1("DEUCRALIP", SAVE)
 
 
 @pytest.mark.anyio
 async def test_from_fhir_v1_IGBJ():
-    await _run_test_from_v1("IGBJ", WRITE_FILE)
+    await _run_test_from_v1("IGBJ", SAVE)
 
 
 @pytest.mark.anyio
 async def test_to_fhir_v1_pilot():
-    await _run_test_to_v1("pilot", WRITE_FILE)
+    await _run_test_to_v1("pilot", SAVE)
 
 
 @pytest.mark.anyio
 async def test_to_fhir_v1_ASP8062():
-    await _run_test_to_v1("ASP8062", WRITE_FILE)
+    await _run_test_to_v1("ASP8062", SAVE)
 
 
 @pytest.mark.anyio
 async def test_to_fhir_v2_pilot():
-    await _run_test_to_v2("pilot", WRITE_FILE)
+    await _run_test_to_v2("pilot", SAVE)
 
 
 @pytest.mark.anyio
 async def test_to_fhir_v2_ASP8062():
-    await _run_test_to_v2("ASP8062", WRITE_FILE)
+    await _run_test_to_v2("ASP8062", SAVE)

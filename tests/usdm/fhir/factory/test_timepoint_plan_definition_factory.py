@@ -14,7 +14,7 @@ from tests.mocks.fhir_factory_mocks import mock_handle_exception
 from tests.mocks.general_mocks import mock_called
 
 PATH = "tests/test_files/fhir_v2/to/"
-SAVE = True
+SAVE = False
 
 
 def test_timeline_plan_definition():
