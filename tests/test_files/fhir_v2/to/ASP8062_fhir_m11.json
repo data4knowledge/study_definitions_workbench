@@ -5,7 +5,7 @@
     "value": "urn:uuid:FAKE-UUID"
   },
   "type": "document",
-  "timestamp": "2024-12-25:00:00:00.000000+00:00",
+  "timestamp": "2024-12-25T00:00:00.000000+00:00",
   "entry": [
     {
       "fullUrl": "https://www.example.com/Composition/1234B",
@@ -15,7 +15,7 @@
         "type": {
           "text": "EvidenceReport"
         },
-        "date": "2024-12-25:00:00:00.000000+00:00",
+        "date": "2024-12-25T00:00:00.000000+00:00",
         "author": [
           {
             "display": "USDM"
@@ -48,47 +48,6 @@
       "fullUrl": "https://www.example.com/Composition/1234A",
       "resource": {
         "resourceType": "ResearchStudy",
-        "extension": [
-          {
-            "extension": [
-              {
-                "url": "amendmentNumber",
-                "valueString": "1.1"
-              },
-              {
-                "url": "scope",
-                "valueString": "Local US\n"
-              },
-              {
-                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/primaryReason",
-                "valueCodeableConcept": {
-                  "coding": [
-                    {
-                      "system": "http://www.cdisc.org",
-                      "version": "2023-12-15",
-                      "code": "C17649",
-                      "display": "Other"
-                    }
-                  ]
-                }
-              },
-              {
-                "url": "http://hl7.org/fhir/uv/ebm/StructureDefinition/secondaryReason",
-                "valueCodeableConcept": {
-                  "coding": [
-                    {
-                      "system": "http://www.cdisc.org",
-                      "version": "2023-12-15",
-                      "code": "C48660",
-                      "display": "Not Applicable"
-                    }
-                  ]
-                }
-              }
-            ],
-            "url": "http://example.org/fhir/extension/studyAmendment"
-          }
-        ],
         "identifier": [
           {
             "type": {
@@ -113,7 +72,7 @@
               "coding": [
                 {
                   "system": "http://www.cdisc.org",
-                  "version": "2023-12-15",
+                  "version": "2024-09-27",
                   "code": "C94108",
                   "display": "Study Acronym"
                 }
@@ -126,7 +85,7 @@
               "coding": [
                 {
                   "system": "http://www.cdisc.org",
-                  "version": "2023-12-15",
+                  "version": "2024-09-27",
                   "code": "C99905x1",
                   "display": "Brief Study Title"
                 }
@@ -141,7 +100,7 @@
           "coding": [
             {
               "system": "http://www.cdisc.org",
-              "version": "2023-12-15",
+              "version": "2024-09-27",
               "code": "C15600",
               "display": "Phase I Trial"
             }
@@ -184,105 +143,7 @@
           "eligibility": {
             "reference": "Group/FAKE-UUID"
           }
-        },
-        "comparisonGroup": [
-          {
-            "linkId": "StudyIntervention-1",
-            "name": "Treatment Group",
-            "intendedExposure": {
-              "display": null
-            },
-            "observedGroup": {
-              "display": "Not Availabe"
-            }
-          },
-          {
-            "linkId": "StudyIntervention-2",
-            "name": "Treatment Group",
-            "intendedExposure": {
-              "display": null
-            },
-            "observedGroup": {
-              "display": "Not Availabe"
-            }
-          }
-        ],
-        "objective": [
-          {
-            "type": {
-              "coding": {
-                "system": "http://www.cdisc.org",
-                "version": "2023-12-15",
-                "code": "C85826",
-                "display": "Primary Objective"
-              }
-            },
-            "description": null,
-            "extension": [
-              {
-                "extension": [
-                  {
-                    "url": "populationLevelSummary",
-                    "valueId": "Estimand-1"
-                  },
-                  {
-                    "url": "endpoint-outcomeMeasure",
-                    "valueId": "Endpoint-1"
-                  }
-                ],
-                "url": "http://example.org/fhir/extension/estimand"
-              }
-            ]
-          },
-          {
-            "type": {
-              "coding": {
-                "system": "http://www.cdisc.org",
-                "version": "2023-12-15",
-                "code": "C85826",
-                "display": "Primary Objective"
-              }
-            },
-            "description": null,
-            "extension": [
-              {
-                "extension": [
-                  {
-                    "url": "populationLevelSummary",
-                    "valueId": "Estimand-2"
-                  },
-                  {
-                    "url": "endpoint-outcomeMeasure",
-                    "valueId": "Endpoint-2"
-                  }
-                ],
-                "url": "http://example.org/fhir/extension/estimand"
-              }
-            ]
-          }
-        ],
-        "outcomeMeasure": [
-          {
-            "extension": [
-              {
-                "url": "http://example.org/fhir/extension/linkId",
-                "valueId": "Endpoint-1"
-              }
-            ],
-            "name": "Endpoint",
-            "description": ""
-          },
-          {
-            "extension": [
-              {
-                "url": "http://example.org/fhir/extension/linkId",
-                "valueId": "Endpoint-2"
-              }
-            ],
-            "name": "Endpoint",
-            "description": ""
-          }
-        ]
+        }
       }
     },
     {
