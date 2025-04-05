@@ -8,14 +8,15 @@ alembic==1.13.2
 python-docx==1.1.2
 docx2txt==0.8
 fhir.resources==7.1.0
-usdm==0.59.0
 pytest==8.2.2
 pytest-mock==3.14.0
 pytest-cov==4.1.0
+pytest-asyncio==0.26.0
 beautifulsoup4==4.12.3
 playwright==1.48.0
 pytest-playwright==0.5.2
 auth0-python==4.7.2
 ruff==0.9.1
-usdm4==0.4.0
+usdm==0.60.0
+usdm4==0.5.0
 usdm3==0.4.0

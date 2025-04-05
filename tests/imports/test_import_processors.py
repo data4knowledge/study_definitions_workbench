@@ -294,7 +294,7 @@ class TestImportUSDM3:
         mock_data_files.return_value.path.assert_called_with("usdm")
         mock_usdm3.assert_called_once()
         mock_usdm3.return_value.validate.assert_called_once_with("/path/to/file")
-        mock_usdm4.assert_called_once()
+        mock_usdm4.call_count == 2
         mock_usdm4.return_value.convert.assert_called_once_with("/path/to/file")
         mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
         # Use assert_any_call instead of assert_called_with to check that the method was called with these parameters
@@ -356,7 +356,7 @@ class TestImportUSDM:
         mock_data_files.assert_called_once_with("test-uuid")
         mock_data_files.return_value.path.assert_called_with("usdm")
         mock_data_files.return_value.read.assert_called_once_with("usdm")
-        mock_usdm4.assert_called_once()
+        mock_usdm4.call_count == 2
         mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
         assert processor.usdm == mock_data_files.return_value.read.return_value
         assert (
