@@ -1,4 +1,4 @@
-<h5>Release 0.32.0, 2025-03-nn</h5>
+<h5>Release 0.32.0, 2025-03-07</h5>
 
 - Add USDM 3.11 support (issue 23)
 
