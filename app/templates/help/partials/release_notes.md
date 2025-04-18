@@ -1,6 +1,7 @@
-<h5>Release 0.32.0, 2025-03-07</h5>
+<h5>Release 0.32.0, 2025-04-18</h5>
 
 - Add USDM 3.11 support (issue 23)
+- Add in USDM Excel export (issue 24)
 
 <h5>Release 0.31.0, 2025-03-18</h5>
 
