@@ -2,6 +2,7 @@
 
 - Add USDM 3.11 support (issue 23)
 - Add in USDM Excel export (issue 24)
+- Fix management authentication token issue (issue 25)
 
 <h5>Release 0.31.0, 2025-03-18</h5>
 
