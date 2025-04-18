@@ -190,6 +190,12 @@ class DataFiles:
                 exists = False
         return full_path, filename, exists
 
+    def generic_path(self, type):
+        filename = self._form_filename(type)
+        full_path = self._file_path(filename)
+        exists = os.path.exists(full_path)
+        return full_path, filename, exists
+
     def delete_all(self):
         try:
             for root, dirs, files in os.walk(self.dir):
