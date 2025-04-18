@@ -125,23 +125,23 @@ def test_privacy_splash_error(mocker, monkeypatch):
 
 # Mocks
 def mock_release_notes(mocker):
-    rn = mocker.patch("d4kms_ui.ReleaseNotes.__init__")
+    rn = mocker.patch("d4k_ms_ui.ReleaseNotes.__init__")
     rn.side_effect = [None]
-    rnn = mocker.patch("d4kms_ui.ReleaseNotes.notes")
+    rnn = mocker.patch("d4k_ms_ui.ReleaseNotes.notes")
     rnn.side_effect = ["Release Notes Test Testy"]
 
 
 def mock_examples(mocker):
-    mp = mocker.patch("d4kms_ui.MarkdownPage.__init__")
+    mp = mocker.patch("d4k_ms_ui.MarkdownPage.__init__")
     mp.side_effect = [None]
-    mpr = mocker.patch("d4kms_ui.MarkdownPage.read")
+    mpr = mocker.patch("d4k_ms_ui.MarkdownPage.read")
     mpr.side_effect = ["Examples Test Testy"]
 
 
 def mock_feedback(mocker):
-    mp = mocker.patch("d4kms_ui.MarkdownPage.__init__")
+    mp = mocker.patch("d4k_ms_ui.MarkdownPage.__init__")
     mp.side_effect = [None]
-    mpr = mocker.patch("d4kms_ui.MarkdownPage.read")
+    mpr = mocker.patch("d4k_ms_ui.MarkdownPage.read")
     mpr.side_effect = ["Feedback Test Testy Testy"]
 
 

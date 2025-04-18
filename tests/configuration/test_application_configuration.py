@@ -143,6 +143,6 @@ def test_single_3(mocker, monkeypatch):
 
 
 def mock_se_get(mocker, value):
-    mock = mocker.patch("d4kms_generic.service_environment.ServiceEnvironment.get")
+    mock = mocker.patch("d4k_ms_base.service_environment.ServiceEnvironment.get")
     mock.side_effect = value
     return mock

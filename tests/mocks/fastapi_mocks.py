@@ -20,8 +20,8 @@ def protect_endpoint():
 
 
 def mock_authorisation(mocker):
-    r = mocker.patch("d4kms_generic.auth0_service.Auth0Service.register")
-    mt = mocker.patch("d4kms_generic.auth0_service.Auth0Service.management_token")
+    r = mocker.patch("d4k_ms_auth.auth0_service.Auth0Service.register")
+    mt = mocker.patch("d4k_ms_auth.auth0_service.Auth0Service.management_token")
     r.side_effect = [[]]
     mt.side_effect = [[]]
     return r, mt
