@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from d4kms_generic.logger import application_logger
+from d4k_ms_base.logger import application_logger
 from app.configuration.configuration import application_configuration
 
 db_path = application_configuration.database_path

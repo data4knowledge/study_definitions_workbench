@@ -7,7 +7,7 @@ from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import admin_role_enabled
 from app.dependencies.templates import templates
-from d4kms_generic.logger import application_logger
+from d4k_ms_base.logger import application_logger
 
 router = APIRouter(
     prefix="/users", tags=["users"], dependencies=[Depends(protect_endpoint)]

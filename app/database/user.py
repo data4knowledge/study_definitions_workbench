@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 from app.database.database_tables import User as UserDB
 from app.model.exceptions import FindException
 from sqlalchemy.orm import Session
-from d4kms_generic.logger import application_logger
+from d4k_ms_base.logger import application_logger
 
 
 class UserBase(BaseModel):

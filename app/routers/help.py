@@ -2,8 +2,8 @@ import os
 from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
-from d4kms_ui.release_notes import ReleaseNotes
-from d4kms_ui.markdown_page import MarkdownPage
+from d4k_ms_ui.release_notes import ReleaseNotes
+from d4k_ms_ui.markdown_page import MarkdownPage
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import user_details

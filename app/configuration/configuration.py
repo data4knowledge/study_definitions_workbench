@@ -1,5 +1,5 @@
-from d4kms_generic import application_logger
-from d4kms_generic.service_environment import ServiceEnvironment
+from d4k_ms_base.logger import application_logger
+from d4k_ms_base.service_environment import ServiceEnvironment
 
 
 class Configuration:

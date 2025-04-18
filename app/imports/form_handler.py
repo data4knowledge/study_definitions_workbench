@@ -4,7 +4,7 @@ from fastapi import File, Request
 from starlette.datastructures import FormData
 from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 
 
 class FormHandler:

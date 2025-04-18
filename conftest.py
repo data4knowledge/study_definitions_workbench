@@ -2,7 +2,7 @@ import os
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from d4kms_generic.service_environment import ServiceEnvironment
+from d4k_ms_base.service_environment import ServiceEnvironment
 from app.database import database_tables
 
 

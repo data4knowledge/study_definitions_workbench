@@ -1,5 +1,5 @@
 import re
-from d4kms_generic.logger import application_logger
+from d4k_ms_base.logger import application_logger
 
 
 class BaseFactory:

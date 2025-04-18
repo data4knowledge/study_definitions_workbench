@@ -1,5 +1,5 @@
 import json
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from usdm_db import USDMDb
 from app.model.m11_protocol.m11_protocol import M11Protocol
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1

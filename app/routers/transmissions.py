@@ -5,7 +5,7 @@ from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import transmit_role_enabled, user_details
 from app.dependencies.templates import templates
 from app.database.transmission import Transmission
-from d4kms_ui.pagination import Pagination
+from d4k_ms_ui.pagination import Pagination
 
 router = APIRouter(
     prefix="/transmissions",

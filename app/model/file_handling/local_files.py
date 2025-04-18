@@ -2,7 +2,7 @@ import os
 import datetime
 import math
 from pathlib import Path
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.configuration.configuration import application_configuration
 
 

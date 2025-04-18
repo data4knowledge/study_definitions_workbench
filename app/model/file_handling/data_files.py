@@ -4,7 +4,7 @@ import csv
 import shutil
 import yaml
 from uuid import uuid4
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.configuration.configuration import application_configuration
 
 

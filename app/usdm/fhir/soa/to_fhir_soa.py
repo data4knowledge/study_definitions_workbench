@@ -1,5 +1,5 @@
 import datetime
-from d4kms_generic.logger import application_logger
+from d4k_ms_base.logger import application_logger
 from usdm_model.study import Study
 from usdm_model.study_version import StudyVersion
 from usdm_model.study_design import StudyDesign

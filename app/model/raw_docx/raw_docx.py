@@ -12,7 +12,7 @@ from app.model.raw_docx.raw_table import RawTable
 from app.model.raw_docx.raw_table_row import RawTableRow
 from app.model.raw_docx.raw_table_cell import RawTableCell
 from app.model.raw_docx.raw_image import RawImage
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from docx import Document as DocXProcessor
 from docx.document import Document
 from docx.oxml.table import CT_Tbl, CT_TcPr

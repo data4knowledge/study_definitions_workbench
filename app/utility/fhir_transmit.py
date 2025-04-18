@@ -1,7 +1,7 @@
 import asyncio
 import threading
 from app.database.database import SessionLocal
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.model.connection_manager import connection_manager
 from app.database.user import User
 from app.database.endpoint import Endpoint

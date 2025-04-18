@@ -4,7 +4,7 @@ from usdm4.api.alias_code import AliasCode
 from usdm_excel.id_manager import IdManager
 from usdm_excel.cdisc_ct_library import CDISCCTLibrary
 from usdm_excel.iso_3166 import ISO3166
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 
 
 def text_within(this_text, in_text):

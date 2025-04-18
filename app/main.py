@@ -2,7 +2,7 @@ import os
 from fastapi import Depends, FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.database.database import get_db
 from app.database.user import User
 from app.database.version import Version

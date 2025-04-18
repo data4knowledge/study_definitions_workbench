@@ -14,7 +14,7 @@ from app.database.database_tables import (
 )
 from app.model.file_handling.data_files import DataFiles
 from sqlalchemy.orm import Session
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.configuration.configuration import application_configuration
 
 

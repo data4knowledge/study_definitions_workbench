@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 from app.database.database_tables import FileImport as FileImportDB
-from d4kms_generic.logger import application_logger
+from d4k_ms_base.logger import application_logger
 
 
 class FileImportBase(BaseModel):

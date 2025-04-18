@@ -1,6 +1,6 @@
 from fastapi import Request
 from app.imports.form_handler import FormHandler
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.imports.import_manager import ImportManager, execute_import
 
 

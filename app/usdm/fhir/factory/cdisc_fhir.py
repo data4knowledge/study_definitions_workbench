@@ -1,5 +1,5 @@
 from usdm_model.code import Code
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 
 
 class CDISCFHIR:

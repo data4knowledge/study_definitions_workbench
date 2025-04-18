@@ -29,7 +29,7 @@ from uuid import uuid4
 from usdm_info import (
     __model_version__ as usdm_version,
 )
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.model.m11_protocol.m11_title_page import M11TitlePage
 from app.model.m11_protocol.m11_inclusion_exclusion import M11InclusionExclusion
 from app.model.m11_protocol.m11_estimands import M11IEstimands

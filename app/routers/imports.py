@@ -9,8 +9,8 @@ from app.configuration.configuration import application_configuration
 from app.model.file_handling.local_files import LocalFiles
 from app.dependencies.fhir_version import check_fhir_version
 from app.model.file_handling.data_files import DataFiles
-from d4kms_generic import application_logger
-from d4kms_ui.pagination import Pagination
+from d4k_ms_base.logger import application_logger
+from d4k_ms_ui.pagination import Pagination
 from app.database.file_import import FileImport
 from app.imports.request_handler import RequestHandler
 from app.imports.import_manager import ImportManager

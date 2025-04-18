@@ -1,4 +1,4 @@
-from d4kms_generic.service import Service
+from d4k_ms_base.service import Service
 from app.configuration.configuration import application_configuration
 
 

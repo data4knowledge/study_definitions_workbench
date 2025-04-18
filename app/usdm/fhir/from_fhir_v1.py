@@ -22,7 +22,7 @@ from usdm_info import (
 from app import SYSTEM_NAME, VERSION
 from app.model.file_handling.data_files import DataFiles
 from app.usdm.fhir.fhir_title_page import FHIRTitlePage
-from d4kms_generic.logger import application_logger
+from d4k_ms_base.logger import application_logger
 from app.model.m11_protocol.m11_utility import language_code
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals

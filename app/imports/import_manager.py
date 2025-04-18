@@ -1,7 +1,7 @@
 import asyncio
 import threading
 from app.database.database import SessionLocal
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from app.model.file_handling.data_files import DataFiles
 from app.database.file_import import FileImport
 from app.database.study import Study

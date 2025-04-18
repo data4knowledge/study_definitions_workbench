@@ -7,7 +7,7 @@ from app.database.database_tables import Study as StudyDB, Version as VersionDB
 from app.database.version import Version
 from app.database.user import User
 from app.database.file_import import FileImport
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 
 
 class StudyBase(BaseModel):

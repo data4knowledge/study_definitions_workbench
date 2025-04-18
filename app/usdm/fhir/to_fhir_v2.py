@@ -16,7 +16,7 @@ from fhir.resources.researchstudy import ResearchStudyProgressStatus
 from fhir.resources.organization import Organization as FHIROrganization
 from fhir.resources.fhirtypes import ResearchStudyLabelType, AddressType
 from fhir.resources.group import Group
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from usdm4.api.code import Code as USDMCode
 from usdm4.api.endpoint import Endpoint as USDMEndpoint
 from usdm4.api.study_intervention import StudyIntervention as USDMStudyIntervention

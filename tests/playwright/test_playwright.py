@@ -1,6 +1,6 @@
 import os
 import pytest
-from d4kms_generic.service_environment import ServiceEnvironment
+from d4k_ms_base.service_environment import ServiceEnvironment
 from playwright.sync_api import Playwright, expect
 from app.__init__ import VERSION
 

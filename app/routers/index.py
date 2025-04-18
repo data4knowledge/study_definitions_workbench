@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from app.database.study import Study
 from app.database.user import User
-from d4kms_ui.pagination import Pagination
+from d4k_ms_ui.pagination import Pagination
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.templates import templates

@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 
 _file_path = os.path.realpath(__file__)
 static_path = f"{str(Path(_file_path).parents[1])}/static"

@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from d4kms_generic import application_logger
+from d4k_ms_base.logger import application_logger
 from fastapi.templating import Jinja2Templates
 from app.utility.template_methods import (
     server_name,

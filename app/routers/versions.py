@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
-from d4kms_ui.pagination import Pagination
+from d4k_ms_ui.pagination import Pagination
 from app.database.user import User
 from app.database.version import Version
 from app.database.database import get_db
