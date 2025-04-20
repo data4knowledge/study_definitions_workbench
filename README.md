@@ -32,7 +32,7 @@ The following other environment varaibles are also required:
 
 # Fly Deployment
 
-## Deployment
+## Deployment - Old Method
 
 Deploy to fly.io using the following:
 
@@ -65,6 +65,9 @@ fly secrets set DATABASE_PATH="/mnt/<name>/database"
 fly secrets set DATABASE_NAME="production.db"
 fly secrets set DATAFILE_PATH="/mnt/<name>/datafiles"
 ```
+## Deplotment - New Method
+
+Use the updated .toml files to use Docker images. This makes the build process much less prone to errors.
 
 ## Separate Applications
 
@@ -106,7 +109,7 @@ The image can also be run. obviously, using Docker desktop. Set the environment 
 
 ````
 docker buildx create --name mybuilder --use
-docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:latest -t data4knowledge/sdw:<tag>> . --push
+docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:latest -t data4knowledge/sdw:<tag> . --push
 docker manifest inspect data4knowledge/sdw:<tag>  
 ```
 

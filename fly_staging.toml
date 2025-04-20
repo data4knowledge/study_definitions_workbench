@@ -9,17 +9,14 @@ kill_signal = 'SIGINT'
 kill_timeout = '5s'
 
 [build]
-  builder = 'paketobuildpacks/builder:full'
-
-[env]
-  PORT = '8080'
+  image = 'data4knowledge/sdw:0.32.0'
 
 [[mounts]]
   source = 'sdw_data_staging'
   destination = '/mnt/sdw_data_staging'
 
 [http_service]
-  internal_port = 8080
+  internal_port = 8000
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
