@@ -4,8 +4,10 @@ from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from app.database.version import Version
 from sqlalchemy.orm import Session
-#from app.imports.import_manager import ImportManager
+
+# from app.imports.import_manager import ImportManager
 from usdm4_excel import USDM4Excel
+
 
 class USDMDatabase:
     def __init__(self, id: int, session: Session):
@@ -20,8 +22,8 @@ class USDMDatabase:
         #     if self.type in [ImportManager.M11_DOCX, ImportManager.FHIR_V1_JSON]
         #     else False
         # )
-        #self._data = self._get_usdm()
-        #self._extra = self._get_extra()
+        # self._data = self._get_usdm()
+        # self._extra = self._get_extra()
 
     def excel(self):
         usdm_fullpath, _, _ = self._files.path("usdm")
@@ -29,7 +31,6 @@ class USDMDatabase:
         ue = USDM4Excel()
         ue.to_excel(usdm_fullpath, excel_fullpath)
         return excel_fullpath, excel_filename, "application/vnd.ms-excel"
-
 
     # def _get_usdm(self):
     #     fullpath, filename, exists = self._files.path("usdm")

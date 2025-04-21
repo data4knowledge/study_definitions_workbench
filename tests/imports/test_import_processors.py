@@ -138,20 +138,24 @@ class TestImportProcessorBase:
         # Setup
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
         processor.usdm = '{"study": {"name": "test-study"}, "usdmVersion": "1.0"}'
-        
+
         # Patch the _study_parameters method to return a known dictionary
-        with patch.object(ImportProcessorBase, '_study_parameters', return_value={
-            "name": "test-study-TEST_TYPE",
-            "phase": "X, Y",
-            "full_title": "Test Study Title",
-            "sponsor_identifier": "TEST-123",
-            "nct_identifier": "NCT12345678",
-            "sponsor": "Test Sponsor"
-        }):
+        with patch.object(
+            ImportProcessorBase,
+            "_study_parameters",
+            return_value={
+                "name": "test-study-TEST_TYPE",
+                "phase": "X, Y",
+                "full_title": "Test Study Title",
+                "sponsor_identifier": "TEST-123",
+                "nct_identifier": "NCT12345678",
+                "sponsor": "Test Sponsor",
+            },
+        ):
             # Execute
             result = processor._study_parameters()
             print(f"RESULT: {result}")
-            
+
             # Assert
             assert result["name"] == "test-study-TEST_TYPE"
             assert result["phase"] == "X, Y"

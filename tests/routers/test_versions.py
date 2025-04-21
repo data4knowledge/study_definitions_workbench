@@ -128,38 +128,49 @@ def test_export_excel_success(mocker, monkeypatch):
     # Create a mock response object
     mock_response = mocker.MagicMock()
     mock_response.status_code = 200
-    
+
     # Set up the test client
     client = mock_client(monkeypatch)
-    
+
     # Mock the dependencies
     mock_user_check = mock_user_check_exists(mocker)
-    mock_user_check.return_value = (mocker.MagicMock(), True)  # Return a mock user and True
-    
+    mock_user_check.return_value = (
+        mocker.MagicMock(),
+        True,
+    )  # Return a mock user and True
+
     # Mock USDMDatabase initialization and excel method
-    mock_usdm_db_init = mocker.patch("app.usdm_database.usdm_database.USDMDatabase.__init__")
+    mock_usdm_db_init = mocker.patch(
+        "app.usdm_database.usdm_database.USDMDatabase.__init__"
+    )
     mock_usdm_db_init.return_value = None
-    
-    mock_usdm_db_excel = mocker.patch("app.usdm_database.usdm_database.USDMDatabase.excel")
-    mock_usdm_db_excel.return_value = ("/path/to/excel.xlsx", "excel.xlsx", "application/vnd.ms-excel")
-    
+
+    mock_usdm_db_excel = mocker.patch(
+        "app.usdm_database.usdm_database.USDMDatabase.excel"
+    )
+    mock_usdm_db_excel.return_value = (
+        "/path/to/excel.xlsx",
+        "excel.xlsx",
+        "application/vnd.ms-excel",
+    )
+
     # Mock FileResponse to return our mock response
     mock_file_response = mocker.patch("app.routers.versions.FileResponse")
     mock_file_response.return_value = mock_response
-    
+
     # Call the endpoint
     response = client.get("/versions/1/export/excel")
-    
+
     # Verify the response
     assert response.status_code == 200
-    
+
     # Verify the mocks were called correctly
     mock_usdm_db_init.assert_called_once()
     mock_usdm_db_excel.assert_called_once()
     mock_file_response.assert_called_once_with(
-        path="/path/to/excel.xlsx", 
-        filename="excel.xlsx", 
-        media_type="application/vnd.ms-excel"
+        path="/path/to/excel.xlsx",
+        filename="excel.xlsx",
+        media_type="application/vnd.ms-excel",
     )
 
 
@@ -168,21 +179,25 @@ def test_export_excel_failure(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
-    
+
     # Mock USDMDatabase initialization and excel method
-    mock_usdm_db_init = mocker.patch("app.usdm_database.usdm_database.USDMDatabase.__init__")
+    mock_usdm_db_init = mocker.patch(
+        "app.usdm_database.usdm_database.USDMDatabase.__init__"
+    )
     mock_usdm_db_init.return_value = None
-    
+
     # Return None to simulate failure
-    mock_usdm_db_excel = mocker.patch("app.usdm_database.usdm_database.USDMDatabase.excel")
+    mock_usdm_db_excel = mocker.patch(
+        "app.usdm_database.usdm_database.USDMDatabase.excel"
+    )
     mock_usdm_db_excel.return_value = (None, None, None)
-    
+
     response = client.get("/versions/1/export/excel")
-    
+
     # Verify the response
     assert response.status_code == 200
     assert "Error downloading the requested Excel file" in response.text
-    
+
     # Verify the mocks were called correctly
     assert mock_called(uc)
     assert mock_called(mock_usdm_db_init)

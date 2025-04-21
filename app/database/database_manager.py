@@ -57,7 +57,7 @@ class DatabaseManager:
 
     def migrate(self):
         version = self._get_version()
-        #print(f"VERSION: {version}")
+        # print(f"VERSION: {version}")
         if version != 31:  # Do it anyway
             cursor = self.session.connection().connection.cursor()
             new_types = (

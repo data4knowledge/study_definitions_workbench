@@ -39,7 +39,7 @@ class ToFHIRV2(ToFHIR):
             self._entries = []
             sections = []
             root = self.protocol_document_version.contents[0]
-            #print(f"ROOT: {root}")
+            # print(f"ROOT: {root}")
             for id in root.childIds:
                 content = next(
                     (x for x in self.protocol_document_version.contents if x.id == id),
@@ -440,7 +440,7 @@ class ToFHIRV2(ToFHIR):
                         result["events"].append(event)
                 # print(f"OBJECIVE: {result}")
                 results.append(result)
-        #print(f"OBJECIVE: {results[0].keys()}")
+        # print(f"OBJECIVE: {results[0].keys()}")
         return results
 
     def _estimand_for(self, design: USDMStudyDesign, endpoint: USDMEndpoint):
