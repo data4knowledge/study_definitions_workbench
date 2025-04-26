@@ -1,16 +1,10 @@
 services:
   myapp:
-    image: data4knowledge/sdw:latest
+    image: data4knowledge/sdw:0.32.0
     ports:
       - "8000:8000"
-    environment:
-      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
-      AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
-      AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
-      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
-      SINGLE_USER: ${SINGLE_USER}
-      ROOT_URL: ${ROOT_URL}
-      FILE_PICKER: ${FILE_PICKER}
+    env_file:
+      - .docker_env  
     volumes:
       - sdw_data:/mount
 volumes:
