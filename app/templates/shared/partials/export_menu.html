@@ -8,8 +8,9 @@
       {% set desc = fhir_version_description(version) %}
       <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
     {% endfor %}
-    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/json">Download USDM (.json)</a>
-    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel">Download USDM Excel (.xlsx)</a>
+    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/json">Download USDM v4 (.json)</a>
+    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=4">Download USDM v4 format Excel (.xlsx)</a>
+    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=3">Download USDM v3 format Excel (.xlsx)</a>
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/protocol">Download Protocol (PDF)</a>
   </div>
 </li>

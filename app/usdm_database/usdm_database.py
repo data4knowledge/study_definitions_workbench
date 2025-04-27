@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 # from app.imports.import_manager import ImportManager
 from usdm4_excel import USDM4Excel
+from usdm3_excel import USDM3Excel
 
 
 class USDMDatabase:
@@ -25,10 +26,10 @@ class USDMDatabase:
         # self._data = self._get_usdm()
         # self._extra = self._get_extra()
 
-    def excel(self):
+    def excel(self, version: str="4"):
         usdm_fullpath, _, _ = self._files.path("usdm")
         excel_fullpath, excel_filename, _ = self._files.generic_path("xlsx")
-        ue = USDM4Excel()
+        ue = USDM3Excel() if version == "3" else USDM4Excel() 
         ue.to_excel(usdm_fullpath, excel_fullpath)
         return excel_fullpath, excel_filename, "application/vnd.ms-excel"
 
