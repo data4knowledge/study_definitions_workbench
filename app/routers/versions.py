@@ -78,7 +78,9 @@ async def get_version_history(
 
 
 @router.get("/{id}/export/excel")
-async def export_excel(request: Request, id: int, version: str="4", session: Session = Depends(get_db)):
+async def export_excel(
+    request: Request, id: int, version: str = "4", session: Session = Depends(get_db)
+):
     user, present_in_db = user_details(request, session)
     usdm_db = USDMDatabase(id, session)
     full_path, filename, media_type = usdm_db.excel(version)
@@ -90,6 +92,8 @@ async def export_excel(request: Request, id: int, version: str="4", session: Ses
             "errors/error.html",
             {
                 "user": user,
-                "data": {"error": "Error downloading the requested Excel (USDM v{version})format) file"},
+                "data": {
+                    "error": f"Error downloading the requested Excel (USDM v{version}) format file"
+                },
             },
         )

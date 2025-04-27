@@ -461,7 +461,7 @@ def test_soa_export(playwright: Playwright) -> None:
 
 
 @pytest.mark.playwright
-def test_excel_export(playwright: Playwright) -> None:
+def test_excel_v4_export(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -477,9 +477,40 @@ def test_excel_export(playwright: Playwright) -> None:
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     expect(page.locator("#navBarMain")).to_contain_text("Export")
     page.get_by_role("button", name=" Export").click()
-    expect(page.locator("#navBarMain")).to_contain_text("Download USDM Excel (.xlsx)")
+    expect(page.locator("#navBarMain")).to_contain_text(
+        "Download USDM v4 format Excel (.xlsx)"
+    )
     with page.expect_download() as download_info:
-        page.get_by_role("link", name="Download USDM Excel (.xlsx)").click()
+        page.get_by_role("link", name="Download USDM v4 format Excel (.xlsx)").click()
+    download = download_info.value
+    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
+def test_excel_v3_export(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    load_m11(page, path, "tests/test_files/m11/WA42380/WA42380.docx")
+
+    page.get_by_role("link").first.click()
+    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+    expect(page.locator("#navBarMain")).to_contain_text("Export")
+    page.get_by_role("button", name=" Export").click()
+    expect(page.locator("#navBarMain")).to_contain_text(
+        "Download USDM v3 format Excel (.xlsx)"
+    )
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="Download USDM v3 format Excel (.xlsx)").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
 
