@@ -2,7 +2,7 @@
 
 - Add USDM Export to V3 format files (issue 27)
 
-<h5>Release 0.32.0, 2025-04-18</h5>
+<h5>Release 0.33.0, 2025-04-18</h5>
 
 - Add USDM 3.11 support (issue 23)
 - Add in USDM Excel export (issue 24)
