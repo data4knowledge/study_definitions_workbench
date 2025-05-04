@@ -608,6 +608,70 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     browser.close()
 
 
+def test_import_status_and_diff(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    load_m11(page, path, "tests/test_files/m11/LZZT/LZZT.docx")
+    load_usdm(
+        page, path, "tests/test_files/usdm3/no_errors.json", "3", "Success: Import of"
+    )
+    load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
+    load_excel(page, path, "tests/test_files/excel/pilot_tweak.xlsx")
+
+    page.get_by_role("navigation").get_by_role("link").first.click()
+    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("link", name="Import Status").click()
+    expect(page.get_by_role("cell", name="LZZT.docx")).to_be_visible()
+    expect(page.get_by_role("cell", name="no_errors.json")).to_be_visible()
+    expect(page.get_by_role("cell", name="pilot.xlsx")).to_be_visible()
+    expect(page.get_by_role("cell", name="pilot_tweak.xlsx")).to_be_visible()
+    expect(page.get_by_text("No errors file available")).to_be_visible()
+
+    cell = page.locator("table > tbody > tr").nth(0).locator("td").nth(2)
+    expect(cell).to_contain_text("LZZT.docx")
+    cell = page.locator("table > tbody > tr").nth(1).locator("td").nth(2)
+    expect(cell).to_contain_text("no_errors.json")
+    cell = page.locator("table > tbody > tr").nth(2).locator("td").nth(2)
+    expect(cell).to_contain_text("pilot.xlsx")
+    cell = page.locator("table > tbody > tr").nth(3).locator("td").nth(2)
+    expect(cell).to_contain_text("pilot_tweak.xlsx")
+    with page.expect_download() as download_info:
+        cell = page.locator("table > tbody > tr").nth(1).locator("td").nth(4)
+        cell.get_by_role("link").click()
+    download = download_info.value
+    with page.expect_download() as download_info1:
+        cell = page.locator("table > tbody > tr").nth(3).locator("td").nth(4)
+        cell.get_by_role("link").click()
+    download = download_info1.value
+    page.get_by_role("link", name=" Back").click()
+    page.locator("#card_3_div").get_by_role("link", name=" View Details").click()
+    page.get_by_role("button", name=" Views").click()
+    page.get_by_role("link", name="Version History").click()
+    expect(page.get_by_role("cell", name="pilot.xlsx")).to_be_visible()
+    expect(page.get_by_role("cell", name="pilot_tweak.xlsx")).to_be_visible()
+    expect(page.get_by_role("link", name=" USDM JSON Diff")).to_be_visible()
+    page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL").get_by_role("link").click()
+    expect(page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")).to_be_visible()
+    page.get_by_role("link", name=" Back").click()
+    page.get_by_role("link", name=" USDM JSON Diff").click()
+    expect(page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")).to_be_visible()
+    expect(page.get_by_role("cell", name="\"text\": \"LZZT - NEW\"")).to_be_visible()
+    expect(page.get_by_role("cell", name="\"text\": \"New public title\"")).to_be_visible()
+    page.get_by_role("link", name=" Back").click()
+    page.get_by_role("navigation").get_by_role("link").first.click()
+
+    # ---------------------
+    context.close()
+    browser.close()
+
+
 # ---------------------------------------------------------
 # Add tests before here and leave the following to run last
 # ---------------------------------------------------------
