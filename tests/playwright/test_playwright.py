@@ -607,7 +607,7 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
-
+@pytest.mark.playwright
 def test_import_status_and_diff(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
