@@ -1,3 +1,7 @@
+<h5>Release 0.34.0, 2025-05-nn</h5>
+
+- Next issue
+
 <h5>Release 0.33.0, 2025-04-27</h5>
 
 - Add USDM Export to V3 format files (issue 27)
