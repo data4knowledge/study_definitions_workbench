@@ -3,8 +3,8 @@ import pytest
 from d4k_ms_base.service_environment import ServiceEnvironment
 from playwright.sync_api import Playwright, expect
 
-staging_url = f"https://d4k-sdw-staging.fly.dev"
-# prod_url = f"https://d4k-sdw.fly.dev"
+#site_url = f"https://d4k-sdw-staging.fly.dev"
+site_url = f"https://d4k-sdw.fly.dev"
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -20,7 +20,7 @@ def test_populate(playwright: Playwright) -> None:
     context = browser.new_context()
     page = context.new_page()
     path = filepath()
-    page.goto(staging_url)
+    page.goto(site_url)
 
     login(page)
     # delete_db(page)
