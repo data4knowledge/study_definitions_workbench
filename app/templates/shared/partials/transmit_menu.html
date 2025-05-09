@@ -10,7 +10,7 @@
         {% for version in data['fhir']['versions'] %}
           {% set title = "M11 FHIR v" ~ version %}
           {% set desc = fhir_version_description(version) %}
-          <a class="dropdown-item" href="/versions/{{data['version']['id']}}/transmit/{{item['id']}}?version=1">{{title}}, {{desc}} to {{item['name']}}</a>
+          <a class="dropdown-item" href="/versions/{{data['version']['id']}}/transmit/{{item['id']}}?version={{version}}">{{title}}, {{desc}} to {{item['name']}}</a>
         {% endfor %}
       {% endfor %}
     {% endif %}

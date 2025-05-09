@@ -37,6 +37,7 @@ async def fhir_m11_transmit(
     session = SessionLocal()
     usdm = USDMJson(version_id, session)
     details = usdm.study_version()
+    application_logger.info(f"M11 FHIR tx, version: {version}")
     data = usdm.fhir_data(version)
     await fhir_transmit("M11", version_id, endpoint_id, data, details, user, session)
 

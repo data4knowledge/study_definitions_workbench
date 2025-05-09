@@ -607,6 +607,7 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+
 @pytest.mark.playwright
 def test_import_status_and_diff(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
@@ -658,12 +659,16 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(page.get_by_role("cell", name="pilot_tweak.xlsx")).to_be_visible()
     expect(page.get_by_role("link", name=" USDM JSON Diff")).to_be_visible()
     page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL").get_by_role("link").click()
-    expect(page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")).to_be_visible()
+    expect(
+        page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")
+    ).to_be_visible()
     page.get_by_role("link", name=" Back").click()
     page.get_by_role("link", name=" USDM JSON Diff").click()
-    expect(page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")).to_be_visible()
-    expect(page.get_by_role("cell", name="\"text\": \"LZZT - NEW\"")).to_be_visible()
-    expect(page.get_by_role("cell", name="\"text\": \"New public title\"")).to_be_visible()
+    expect(
+        page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")
+    ).to_be_visible()
+    expect(page.get_by_role("cell", name='"text": "LZZT - NEW"')).to_be_visible()
+    expect(page.get_by_role("cell", name='"text": "New public title"')).to_be_visible()
     page.get_by_role("link", name=" Back").click()
     page.get_by_role("navigation").get_by_role("link").first.click()
 

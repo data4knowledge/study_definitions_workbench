@@ -18,7 +18,6 @@ class ToFHIR:
 
     def __init__(self, study: Study, uuid: uuid4, extra: dict = {}):
         self.study = study
-        print(f"KLASS: {type(self.study)}")
         self._uuid = uuid
         self._title_page = extra["title_page"]
         self._miscellaneous = extra["miscellaneous"]

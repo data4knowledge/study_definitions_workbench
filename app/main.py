@@ -499,6 +499,9 @@ async def export_fhir(
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     valid, description = check_fhir_version(version)
+    application_logger.info(
+        f"FHIR export requested, version '{version}: {description}'"
+    )
     if valid:
         full_path, filename, media_type = usdm.fhir(version.upper())
         if full_path:
@@ -539,6 +542,9 @@ async def version_transmit(
 ):
     user, present_in_db = user_details(request, session)
     valid, description = check_fhir_version(version)
+    application_logger.info(
+        f"FHIR message tx requested, version '{version}: {description}'"
+    )
     if valid:
         run_fhir_m11_transmit(id, endpoint_id, version, user)
         return RedirectResponse(f"/versions/{id}/summary")
