@@ -1,6 +1,7 @@
 FHIR_VERSIONS = {
     "1": "Dallas 2024 connectathon",
-    #  '2': "Atlanta 2024 connectathon"
+    '2': "Atlanta 2024 connectathon",
+    '3': "Madrid 2025 connectathon"
 }
 
 

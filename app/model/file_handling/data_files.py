@@ -44,6 +44,12 @@ class DataFiles:
                 "filename": "fhir_v2",
                 "extension": "json",
             },
+            "fhir_v3": {
+                "method": self._save_json_file,
+                "use_original": False,
+                "filename": "fhir_v3",
+                "extension": "json",
+            },
             "fhir_soa": {
                 "method": self._save_json_file,
                 "use_original": False,

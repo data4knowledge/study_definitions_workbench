@@ -5,6 +5,7 @@ from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from app.usdm.fhir.to_fhir_v1 import ToFHIRV1
 from app.usdm.fhir.to_fhir_v2 import ToFHIRV2
+from usdm_fhir import M11
 from app.usdm.fhir.soa.to_fhir_soa import ToFHIRSoA
 from app.database.version import Version
 from sqlalchemy.orm import Session
@@ -37,7 +38,15 @@ class USDMJson:
         return fullpath, filename, "text/plain"
 
     def fhir_data(self, version="1"):
-        return self.fhir_v2_data() if version.upper() == "2" else self.fhir_v1_data()
+        match version.upper():
+            case "1":
+                return self.fhir_v1_data()
+            case "2":
+                return self.fhir_v2_data()
+            case "3":
+                return self.fhir_v3_data()
+            case default:
+                return self.fhir_v1_data()
 
     def fhir_v1_data(self):
         # print(f"FHIR: VER 1 DATA")
@@ -55,6 +64,16 @@ class USDMJson:
         fhir = ToFHIRV2(study, self.uuid, self._extra)
         data = fhir.to_fhir()
         self._files.save("fhir_v2", data)
+        return data
+
+    def fhir_v3_data(self):
+        print(f"FHIR: VER 3 DATA")
+        usdm = USDM4()
+        wrapper = usdm.from_json(self._data)
+        study = wrapper.study
+        fhir = M11()
+        data = fhir.to_m11(study, self._extra)
+        self._files.save("fhir_v3", data)
         return data
 
     def fhir_soa(self, timeline_id: str):
