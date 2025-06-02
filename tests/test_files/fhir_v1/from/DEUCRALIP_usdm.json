@@ -140,10 +140,8 @@
               "label": "Study Population",
               "description": "Empty population details",
               "includesHealthySubjects": true,
-              "plannedEnrollmentNumberRange": null,
-              "plannedEnrollmentNumberQuantity": null,
-              "plannedCompletionNumberRange": null,
-              "plannedCompletionNumberQuantity": null,
+              "plannedEnrollmentNumber": null,
+              "plannedCompletionNumber": null,
               "plannedSex": [],
               "criterionIds": [],
               "plannedAge": null,
@@ -12050,18 +12048,18 @@
                 "instanceType": "NarrativeContent"
               }
             ],
-            "childIds": [],
             "notes": [],
             "instanceType": "StudyDefinitionDocumentVersion"
           }
         ],
+        "childIds": [],
         "notes": [],
         "instanceType": "StudyDefinitionDocument"
       }
     ],
     "instanceType": "Study"
   },
-  "usdmVersion": "3.11.0",
+  "usdmVersion": "4.0.0",
   "systemName": "d4k Study Definitions Workbench",
-  "systemVersion": "0.33.0"
+  "systemVersion": "0.34.0"
 }

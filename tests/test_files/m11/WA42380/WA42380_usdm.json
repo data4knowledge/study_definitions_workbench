@@ -18,6 +18,9 @@
           {
             "id": "StudyAmendment_1",
             "extensionAttributes": [],
+            "name": "AMENDMENT 1",
+            "label": null,
+            "description": null,
             "number": "1",
             "summary": "",
             "primaryReason": {
@@ -56,7 +59,7 @@
             "impacts": [],
             "geographicScopes": [
               {
-                "id": "GeographicScope_2",
+                "id": "GeographicScope_4",
                 "extensionAttributes": [],
                 "type": {
                   "id": "Code_27",
@@ -99,7 +102,21 @@
                   },
                   "instanceType": "Quantity"
                 },
-                "forGeographicScope": null,
+                "forGeographicScope": {
+                  "id": "GeographicScope_2",
+                  "extensionAttributes": [],
+                  "type": {
+                    "id": "Code_5",
+                    "extensionAttributes": [],
+                    "code": "C68846",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2024-09-27",
+                    "decode": "Global",
+                    "instanceType": "Code"
+                  },
+                  "code": null,
+                  "instanceType": "GeographicScope"
+                },
                 "forStudyCohortId": null,
                 "forStudySiteId": null,
                 "instanceType": "SubjectEnrollment"
@@ -165,10 +182,8 @@
               "label": "Study Population",
               "description": "",
               "includesHealthySubjects": true,
-              "plannedEnrollmentNumberRange": null,
-              "plannedEnrollmentNumberQuantity": null,
-              "plannedCompletionNumberRange": null,
-              "plannedCompletionNumberQuantity": null,
+              "plannedEnrollmentNumber": null,
+              "plannedCompletionNumber": null,
               "plannedSex": [],
               "criterionIds": [],
               "plannedAge": null,
@@ -3868,18 +3883,18 @@
                 "instanceType": "NarrativeContent"
               }
             ],
-            "childIds": [],
             "notes": [],
             "instanceType": "StudyDefinitionDocumentVersion"
           }
         ],
+        "childIds": [],
         "notes": [],
         "instanceType": "StudyDefinitionDocument"
       }
     ],
     "instanceType": "Study"
   },
-  "usdmVersion": "3.11.0",
+  "usdmVersion": "4.0.0",
   "systemName": "d4k Study Definitions Workbench",
-  "systemVersion": "0.33.0"
+  "systemVersion": "0.34.0"
 }

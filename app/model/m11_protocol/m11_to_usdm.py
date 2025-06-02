@@ -501,6 +501,7 @@ class M11ToUSDM:
         impact = self._amendment.safety_impact or self._amendment.robustness_impact
         # print(f"IMPACT: {impact}")
         params = {
+            "name": "AMENDMENT 1",
             "number": "1",
             "summary": self._amendment.summary,
             "substantialImpact": impact,

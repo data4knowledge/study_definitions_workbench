@@ -207,13 +207,13 @@ class RawDocx:
         return int(str(list_level[0])) if list_level else 0
 
     def _is_heading(self, text):
-        if re.match("^\d\dHeading \d", text):
+        if re.match(r"^\d\dHeading \d", text):
             try:
                 level = int(text[0:2])
                 return True, level
             except Exception:
                 return True, 0
-        if re.match("^Heading \d", text):
+        if re.match(r"^Heading \d", text):
             try:
                 level = int(text[8])
                 return True, level

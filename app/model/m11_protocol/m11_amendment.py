@@ -1,7 +1,8 @@
 import re
 from usdm_excel.globals import Globals
 from usdm4.api.subject_enrollment import SubjectEnrollment
-from usdm4.api.quantity import Quantity
+from usdm4.api.geographic_scope import GeographicScope
+from usdm4.api.quantity_range import Quantity
 from app.model.raw_docx.raw_docx import RawDocx
 from app.model.raw_docx.raw_table import RawTable
 from app.model.raw_docx.raw_section import RawSection
@@ -200,10 +201,16 @@ class M11IAmendment:
         quantity = model_instance(
             Quantity, {"value": value, "unit": unit_alias}, self._id_manager
         )
+        print(f"QUANTITY: {quantity}")
         params = {
-            "name": "GLOBAL_ENROLLMENT",
             "type": global_code,
             "code": None,
+        }
+        geo_scope = model_instance(GeographicScope, params, self._id_manager)
+        params = {
+            "name": "GLOBAL_ENROLLMENT",
+            "forGeographicScope": geo_scope,
             "quantity": quantity,
         }
         return model_instance(SubjectEnrollment, params, self._id_manager)
+
