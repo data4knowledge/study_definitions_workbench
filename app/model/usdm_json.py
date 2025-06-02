@@ -5,7 +5,7 @@ from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from app.usdm.fhir.to_fhir_v1 import ToFHIRV1
 from app.usdm.fhir.to_fhir_v2 import ToFHIRV2
-from usdm_fhir import M11
+from usdm4_fhir import M11
 from app.usdm.fhir.soa.to_fhir_soa import ToFHIRSoA
 from app.database.version import Version
 from sqlalchemy.orm import Session
