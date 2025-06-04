@@ -23,16 +23,14 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
     fv = mock_fhir_versions(mocker, "app.routers.versions")
-    # We could do better here but for now will do
-    # fvd = mock_fhir_version_description(mocker, 'app.main.templates')
     response = client.get("/versions/1/summary")
-    # print(f"RESPONSE: {response.text}")
+    #print(f"RESPONSE: {response.text}")
     assert response.status_code == 200
     assert (
         """<a class="dropdown-item" href="/transmissions/status?page=1&size=10">Transmission Status</a>"""
         in response.text
     )
-    assert """M11 FHIR v3, FHIR Version not supported""" in response.text
+    assert """M11 FHIR v1, Dallas 2024 connectathon (.json)""" in response.text
     assert mock_called(uc)
     assert mock_called(ift)
     assert mock_called(uji)
@@ -53,7 +51,7 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     # print(f"RESPONSE: {response.text}")
     assert response.status_code == 200
     assert """Transmission Status""" not in response.text
-    assert """M11 FHIR v3, FHIR Version not supported""" in response.text
+    assert """M11 FHIR v4, FHIR Version not supported""" in response.text
     assert mock_called(uc)
     assert mock_called(ift)
     assert mock_called(uji)
