@@ -89,7 +89,18 @@ docker build . -t data4knowledge/sdw:latest
 docker compose up   
 ```
 
-Set the environment variables using a ```.env``` file.
+Set the environment variables using a ```.docker_env``` file (this is named in the ```compose.yml``` file). Set the following environment variables
+
+- AUTH0_SESSION_SECRET
+- AUTH0_DOMAIN
+- AUTH0_AUDIENCE
+- AUTH0_CLIENT_ID
+- AUTH0_CLIENT_SECRET
+- AUTH0_MNGT_CLIENT_ID
+- AUTH0_MNGT_CLIENT_SECRET
+- SINGLE_USER
+- FILE_PICKER
+- ROOT_URL
 
 ## Build and Run using Docker
 
