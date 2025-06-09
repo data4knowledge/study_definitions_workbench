@@ -23,7 +23,7 @@ class ImportProcessorBase:
         self.full_path = full_path
 
     async def process(self) -> bool:
-        return True
+        return False
 
     def _study_parameters(self) -> dict | None:
         try:

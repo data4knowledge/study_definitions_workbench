@@ -123,7 +123,7 @@ class TestImportProcessorBase:
         """Test process method."""
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
         result = await processor.process()
-        assert result is None
+        assert not result
 
     def test_blank_extra(self):
         """Test _blank_extra method."""
