@@ -1,6 +1,11 @@
-<h5>Release 0.34.0, 2025-05-nn</h5>
+<h5>Release 0.35.0, 2025-06-nn</h5>
 
-- Next issue
+- Update to new USDM4_M11 package (issue 30)
+
+<h5>Release 0.34.0, 2025-06-08</h5>
+
+- Update for USDM v4 (issue 29)
+- Work for Madrid HL7 Connectathon (issue 28)
 
 <h5>Release 0.33.0, 2025-04-27</h5>
 
