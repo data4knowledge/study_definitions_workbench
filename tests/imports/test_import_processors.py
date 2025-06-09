@@ -1,5 +1,4 @@
 import pytest
-import json
 from unittest.mock import MagicMock, patch, AsyncMock
 from app.imports.import_processors import (
     ImportProcessorBase,
@@ -29,7 +28,9 @@ def mock_m11_protocol():
     with patch("app.imports.import_processors.USDM4M11") as mock:
         instance = mock.return_value
         instance.from_docx = AsyncMock()
-        instance.from_docx.return_value = '{"study": {"name": "test-study"}, "usdmVersion": "1.2.3"}'
+        instance.from_docx.return_value = (
+            '{"study": {"name": "test-study"}, "usdmVersion": "1.2.3"}'
+        )
         instance.extra.return_value = {
             "title_page": {},
             "amendment": {},

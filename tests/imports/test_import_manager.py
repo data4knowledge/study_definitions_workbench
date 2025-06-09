@@ -1,11 +1,7 @@
 import pytest
-import asyncio
 from unittest.mock import MagicMock, patch, AsyncMock
 from app.imports.import_manager import ImportManager, execute_import
 from app.database.user import User
-from app.database.file_import import FileImport
-from app.database.study import Study
-from app.model.file_handling.data_files import DataFiles
 from app.imports.import_processors import (
     ImportExcel,
     ImportWord,

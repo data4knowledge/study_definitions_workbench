@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from sqlalchemy.orm import Session
 from app.usdm_database.usdm_database import USDMDatabase
 from app.database.version import Version

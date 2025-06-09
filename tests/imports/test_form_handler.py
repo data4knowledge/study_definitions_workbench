@@ -1,5 +1,3 @@
-import os
-import json
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 from fastapi import Request

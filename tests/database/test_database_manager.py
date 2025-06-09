@@ -1,6 +1,4 @@
-import os
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from app.database.database_manager import DatabaseManager
 from app.database.database_tables import (
     Study as StudyDB,

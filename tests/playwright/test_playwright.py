@@ -894,7 +894,7 @@ def load_fhir(page, root_path, filepath):
 def load_usdm(page, root_path, filepath, version, result):
     page.get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
-    page.get_by_role(f"link", name=f"USDM v{version} (.json)").click()
+    page.get_by_role("link", name=f"USDM v{version} (.json)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
     expect(page.get_by_text(f"{result}")).to_be_visible(timeout=30_000)

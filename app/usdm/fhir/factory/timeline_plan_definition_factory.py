@@ -17,7 +17,6 @@ from usdm4.api.study import Study
 from usdm4.api.schedule_timeline import (
     ScheduledActivityInstance,
     ScheduledDecisionInstance,
-    ScheduleTimeline,
 )
 from app.usdm.fhir.factory.cdisc_fhir import CDISCFHIR
 from app.usdm.fhir.factory.study_url import StudyUrl

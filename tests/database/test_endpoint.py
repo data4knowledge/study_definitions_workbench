@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch, MagicMock
 from app.database.endpoint import Endpoint
 from app.database.database_tables import (

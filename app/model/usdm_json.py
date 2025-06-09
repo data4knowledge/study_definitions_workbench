@@ -67,7 +67,7 @@ class USDMJson:
         return data
 
     def fhir_v3_data(self):
-        print(f"FHIR: VER 3 DATA")
+        print("FHIR: VER 3 DATA")
         usdm = USDM4()
         wrapper = usdm.from_json(self._data)
         study = wrapper.study

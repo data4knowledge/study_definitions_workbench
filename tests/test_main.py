@@ -1,5 +1,4 @@
 import pytest
-import datetime
 from app.database.user import User
 from app.database.study import Study
 from app.database.version import Version

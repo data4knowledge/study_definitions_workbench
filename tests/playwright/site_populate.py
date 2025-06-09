@@ -3,7 +3,7 @@ import pytest
 from d4k_ms_base.service_environment import ServiceEnvironment
 from playwright.sync_api import Playwright, expect
 
-site_url = f"https://d4k-sdw-staging.fly.dev"
+site_url = "https://d4k-sdw-staging.fly.dev"
 # site_url = f"https://d4k-sdw.fly.dev"
 
 
@@ -106,11 +106,12 @@ def load_fhir(page, root_path, filepath):
 def load_usdm(page, root_path, filepath, version, result):
     home_page_wait(page)
     page.get_by_role("button", name=" Import").click()
-    page.get_by_role(f"link", name=f"USDM v{version} (.json)").click()
+    page.get_by_role("link", name=f"USDM v{version} (.json)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
     expect(page.get_by_text(f"{result}")).to_be_visible(timeout=60_000)
 
+
 def home_page_wait(page):
     page.get_by_role("link").first.click()
-    page.wait_for_load_state('domcontentloaded')
+    page.wait_for_load_state("domcontentloaded")

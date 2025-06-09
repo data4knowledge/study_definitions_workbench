@@ -1,11 +1,5 @@
-import os
-import json
-import csv
-import shutil
-import yaml
 import pytest
-from unittest.mock import mock_open, patch, MagicMock, call
-from uuid import uuid4
+from unittest.mock import mock_open
 
 from app.model.file_handling.data_files import DataFiles
 
