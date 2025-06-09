@@ -72,6 +72,7 @@ class ImportManager:
     def imports_with_errors(cls) -> list[str]:
         return [
             cls.USDM_EXCEL,
+            cls.M11_DOCX,
             cls.USDM3_JSON,
             cls.USDM4_JSON,
         ]

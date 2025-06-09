@@ -3,11 +3,11 @@ from d4k_ms_base.logger import application_logger
 from usdm_db import USDMDb
 from usdm4_m11 import USDM4M11
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
-from app import VERSION, SYSTEM_NAME
 from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
 from usdm4 import USDM4
 from usdm3 import USDM3, RulesValidationResults
+import simple_error_log as sel
 
 
 class ImportProcessorBase:
@@ -97,7 +97,7 @@ class ImportWord(ImportProcessorBase):
         m11 = USDM4M11()
         self.usdm = await m11.from_docx(self.full_path)
         self.extra = m11.extra()
-        self.errors = m11.errors
+        self.errors = m11.errors.dump(sel.Errors.INFO)
         self.study_parameters = self._study_parameters()
         return True
 
@@ -111,7 +111,7 @@ class ImportFhirV1(ImportProcessorBase):
 
 
 class ImportUSDM3(ImportProcessorBase):
-    async def process(self) ->bool:
+    async def process(self) -> bool:
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
         usdm3 = USDM3()
