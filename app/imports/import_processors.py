@@ -1,7 +1,7 @@
 import json
 from d4k_ms_base.logger import application_logger
 from usdm_db import USDMDb
-from app.model.m11_protocol.m11_protocol import M11Protocol
+from usdm4_m11 import USDM4M11
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app import VERSION, SYSTEM_NAME
 from app.model.object_path import ObjectPath
@@ -22,10 +22,10 @@ class ImportProcessorBase:
         self.uuid = uuid
         self.full_path = full_path
 
-    async def process(self) -> None:
-        pass
+    async def process(self) -> bool:
+        return True
 
-    def _study_parameters(self) -> dict:
+    def _study_parameters(self) -> dict | None:
         try:
             data = json.loads(self.usdm)
             db = USDM4()
@@ -34,9 +34,6 @@ class ImportProcessorBase:
             version = wrapper.study.first_version()
             return {
                 "name": f"{self._get_parameter(object_path, 'study/name')}-{self.type}",
-                #                "phase": self._get_parameter(
-                #                    object_path, "study/versions[0]/studyPhase/standardCode/decode"
-                #                ),
                 "phase": version.phases(),
                 "full_title": version.official_title_text(),
                 "sponsor_identifier": version.sponsor_identifier_text(),
@@ -90,24 +87,24 @@ class ImportExcel(ImportProcessorBase):
     async def process(self) -> bool:
         db = USDMDb()
         self.errors = db.from_excel(self.full_path)
-        # self.file_import.update_status("Saving", self.session)
         self.usdm = db.to_json()
         self.study_parameters = self._study_parameters()
         return True
 
 
 class ImportWord(ImportProcessorBase):
-    async def process(self) -> None:
-        m11 = M11Protocol(self.full_path, SYSTEM_NAME, VERSION)
-        await m11.process()
-        self.usdm = m11.to_usdm()
+    async def process(self) -> bool:
+        m11 = USDM4M11()
+        wrapper = await m11.from_docx(self.full_path)
+        self.usdm = wrapper.to_json()
         self.extra = m11.extra()
+        self.errors = m11.errors
         self.study_parameters = self._study_parameters()
         return True
 
 
 class ImportFhirV1(ImportProcessorBase):
-    async def process(self) -> None:
+    async def process(self) -> bool:
         fhir = FromFHIRV1(self.uuid)
         self.usdm = await fhir.to_usdm()
         self.study_parameters = self._study_parameters()
@@ -115,7 +112,7 @@ class ImportFhirV1(ImportProcessorBase):
 
 
 class ImportUSDM3(ImportProcessorBase):
-    async def process(self) -> None:
+    async def process(self) ->bool:
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
         usdm3 = USDM3()
@@ -141,7 +138,7 @@ class ImportUSDM3(ImportProcessorBase):
 
 
 class ImportUSDM4(ImportProcessorBase):
-    async def process(self) -> None:
+    async def process(self) -> bool:
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
         self.usdm = data_files.read("usdm")
