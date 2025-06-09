@@ -95,8 +95,7 @@ class ImportExcel(ImportProcessorBase):
 class ImportWord(ImportProcessorBase):
     async def process(self) -> bool:
         m11 = USDM4M11()
-        wrapper = await m11.from_docx(self.full_path)
-        self.usdm = wrapper.to_json()
+        self.usdm = await m11.from_docx(self.full_path)
         self.extra = m11.extra()
         self.errors = m11.errors
         self.study_parameters = self._study_parameters()

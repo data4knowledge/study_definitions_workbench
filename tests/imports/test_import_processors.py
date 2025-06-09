@@ -26,10 +26,10 @@ def mock_usdm_db():
 @pytest.fixture
 def mock_m11_protocol():
     """Mock the M11Protocol class."""
-    with patch("app.imports.import_processors.M11Protocol") as mock:
+    with patch("app.imports.import_processors.USDM4M11") as mock:
         instance = mock.return_value
-        instance.process = AsyncMock()
-        instance.to_usdm.return_value = '{"study": {"name": "test-study"}}'
+        instance.from_docx = AsyncMock()
+        instance.from_docx.return_value = '{"study": {"name": "test-study"}, "usdmVersion": "1.2.3"}'
         instance.extra.return_value = {
             "title_page": {},
             "amendment": {},
@@ -245,10 +245,9 @@ class TestImportWord:
         # Assert
         assert result == True
         mock_m11_protocol.assert_called_once()
-        mock_m11_protocol.return_value.process.assert_called_once()
-        mock_m11_protocol.return_value.to_usdm.assert_called_once()
+        mock_m11_protocol.return_value.from_docx.assert_called_once()
         mock_m11_protocol.return_value.extra.assert_called_once()
-        assert processor.usdm == mock_m11_protocol.return_value.to_usdm.return_value
+        assert processor.usdm == mock_m11_protocol.return_value.from_docx.return_value
         assert processor.extra == mock_m11_protocol.return_value.extra.return_value
 
 
