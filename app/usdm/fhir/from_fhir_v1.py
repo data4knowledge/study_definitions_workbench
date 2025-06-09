@@ -23,7 +23,6 @@ from app import SYSTEM_NAME, VERSION
 from app.model.file_handling.data_files import DataFiles
 from app.usdm.fhir.fhir_title_page import FHIRTitlePage
 from d4k_ms_base.logger import application_logger
-from app.model.m11_protocol.m11_utility import language_code
 from usdm_excel.iso_3166 import ISO3166
 from usdm_excel.globals import Globals
 
@@ -90,7 +89,7 @@ class FromFHIRV1:
             StudyDefinitionDocumentVersion,
             {"version": "1", "status": protocl_status_code},
         )
-        language = language_code("en", "English", self._id_manager)
+        language = self._language_code("en", "English")
         doc_type = self._cdisc_ct_code("C70817", "Protocol")
         protocl_document = self._model_instance(
             StudyDefinitionDocument,
@@ -348,6 +347,17 @@ class FromFHIRV1:
                 "decode": decode,
                 "codeSystem": "ISO 3166 1 alpha3",
                 "codeSystemVersion": "2020-08",
+            },
+        )
+
+    def _language_code(self, code, decode):
+        return self._model_instance(
+            Code,
+            {
+                "code": code,
+                "decode": decode,
+                "codeSystem": "ISO 639-1",
+                "codeSystemVersion": "2007",
             },
         )
 
