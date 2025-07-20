@@ -315,7 +315,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2020-08-18",
@@ -667,7 +667,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2021-03-19",
@@ -896,7 +896,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2021-08-31",
@@ -1137,7 +1137,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2022-03-18",
@@ -16014,7 +16014,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2020-05-12",
@@ -16049,7 +16049,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2020-08-18",
@@ -16084,7 +16084,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2021-03-19",
@@ -16119,7 +16119,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2021-08-31",
@@ -16154,7 +16154,7 @@
                   "code": "C132352",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Sponsor Approval Date",
+                  "decode": "Protocol Approval by Sponsor Date",
                   "instanceType": "Code"
                 },
                 "dateValue": "2022-03-18",
