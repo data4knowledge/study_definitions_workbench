@@ -1,9 +1,6 @@
-<h5>Release 0.35.0, 2025-06-nn</h5>
+<h5>Release 0.35.0, 2025-07-nn</h5>
 
-- Update for improved USDM package with CT (issue nn)
-
-<h5>Release 0.35.0, 2025-06-nn</h5>
-
+- Update for improved USDM package with CT (issue 33)
 - Update to new USDM4_M11 package (issue 30)
 
 <h5>Release 0.34.0, 2025-06-08</h5>
