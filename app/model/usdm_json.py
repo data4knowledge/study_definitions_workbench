@@ -603,16 +603,19 @@ class USDMJson:
         return next((x for x in version["studyDesigns"] if x["id"] == id), None)
 
     def _document(self) -> dict:
-        version = self._data["study"]["versions"][0]
-        id = version["documentVersionIds"][0]
-        return next(
-            (
-                x
-                for x in self._data["study"]["documentedBy"][0]["versions"]
-                if x["id"] == id
-            ),
-            None,
-        )
+        try:
+            version = self._data["study"]["versions"][0]
+            id = version["documentVersionIds"][0]
+            return next(
+                (
+                    x
+                    for x in self._data["study"]["documentedBy"][0]["versions"]
+                    if x["id"] == id
+                ),
+                None,
+            )
+        except Exception:
+            return None
 
     def _get_soup(self, text: str):
         try:
@@ -628,15 +631,19 @@ class USDMJson:
             return None
 
     def _population_age(self, study_design: dict) -> dict:
-        population = study_design["population"]
-        result = self._min_max(population["plannedAge"])
-        for cohort in population["cohorts"]:
-            cohort = self._min_max(population["plannedAge"])
-            if cohort["min"] < result["min"]:
-                result["min"] = cohort["min"]
-            if cohort["max"] > result["max"]:
-                result["max"] = cohort["max"]
-        return result
+        try:
+            population = study_design["population"]
+            result = self._min_max(population["plannedAge"])
+            for cohort in population["cohorts"]:
+                cohort = self._min_max(population["plannedAge"])
+                if cohort["min"] < result["min"]:
+                    result["min"] = cohort["min"]
+                if cohort["max"] > result["max"]:
+                    result["max"] = cohort["max"]
+            return result
+        except Exception:
+            return self._missing_ages()
+
 
     def _min_max(self, item) -> dict:
         # print(f"ITEM: {item}")
@@ -648,15 +655,21 @@ class USDMJson:
                 "max_unit": item["maxValue"]["unit"]["standardCode"]["decode"],
             }
             if item
-            else {"min": 100, "max": 0, "unit": "Year"}
+            else self._missing_ages()
         )
 
+    def _missing_ages(self):
+        return {"min": "[min age]", "max": "[max age]", "min_unit": "", "max_unit": ""}
+    
     def _population_recruitment(self, study_design: dict) -> dict:
-        population = study_design["population"]
-        enroll = self._range_or_quantity(population, "plannedEnrollmentNumber")
-        complete = self._range_or_quantity(population, "plannedCompletionNumber")
-        print(f"ENORLL: {enroll}, {complete}")
-        return {"enroll": int(enroll), "complete": int(complete)}
+        try:
+            population = study_design["population"]
+            enroll = self._range_or_quantity(population, "plannedEnrollmentNumber")
+            complete = self._range_or_quantity(population, "plannedCompletionNumber")
+            print(f"ENORLL: {enroll}, {complete}")
+            return {"enroll": int(enroll), "complete": int(complete)}
+        except Exception:
+            return {"enroll": "[Enrolled]", "complete": "[Complete]"}
 
     def _range_or_quantity(seæf, data: dict, attribute_name: dict) -> dict:
         quanity_name = f"{attribute_name}Quantity"
