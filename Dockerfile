@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.12
 ENV MNT_PATH="/mount"
 ENV DATABASE_PATH=/mount/database
 ENV DATABASE_NAME=/database.db
