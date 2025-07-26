@@ -23,7 +23,7 @@ usdm3==0.10.0
 usdm4_excel>=0.7.0
 usdm3_excel>=0.1.0
 usdm4_m11==0.3.0
-usdm4_fhir==0.2.0
+usdm4_fhir==0.3.0
 d4k-ms-base>=0.3.0
 d4k-ms-service>=0.2.0
 d4k-ms-auth>=0.4.0
