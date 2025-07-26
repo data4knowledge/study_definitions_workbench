@@ -29,7 +29,7 @@
               "code": {
                 "id": "Code_173",
                 "extensionAttributes": [],
-                "code": "C99904x13",
+                "code": "C207610",
                 "codeSystem": "http://www.cdisc.org",
                 "codeSystemVersion": "2024-09-27",
                 "decode": "Protocol Design Error",
@@ -45,10 +45,10 @@
                 "code": {
                   "id": "Code_174",
                   "extensionAttributes": [],
-                  "code": "C99904x12",
+                  "code": "C207603",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Inconsistency And/Or Error In The Protocol",
+                  "decode": "Inconsistency and/or Error In The Protocol",
                   "instanceType": "Code"
                 },
                 "otherReason": null,
@@ -239,7 +239,7 @@
                 "type": {
                   "id": "Code_191",
                   "extensionAttributes": [],
-                  "code": "C99912x4",
+                  "code": "C215668",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
                   "decode": "Study Data Robustness",
@@ -357,7 +357,7 @@
               "code": {
                 "id": "Code_177",
                 "extensionAttributes": [],
-                "code": "C99904x2",
+                "code": "C207608",
                 "codeSystem": "http://www.cdisc.org",
                 "codeSystemVersion": "2024-09-27",
                 "decode": "New Regulatory Guidance",
@@ -373,10 +373,10 @@
                 "code": {
                   "id": "Code_178",
                   "extensionAttributes": [],
-                  "code": "C99904x12",
+                  "code": "C207603",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Inconsistency And/Or Error In The Protocol",
+                  "decode": "Inconsistency and/or Error In The Protocol",
                   "instanceType": "Code"
                 },
                 "otherReason": null,
@@ -591,7 +591,7 @@
                 "type": {
                   "id": "Code_192",
                   "extensionAttributes": [],
-                  "code": "C99912x2",
+                  "code": "C215666",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
                   "decode": "Study Subject Rights",
@@ -709,7 +709,7 @@
               "code": {
                 "id": "Code_181",
                 "extensionAttributes": [],
-                "code": "C99904x7",
+                "code": "C207601",
                 "codeSystem": "http://www.cdisc.org",
                 "codeSystemVersion": "2024-09-27",
                 "decode": "Change In Strategy",
@@ -725,10 +725,10 @@
                 "code": {
                   "id": "Code_182",
                   "extensionAttributes": [],
-                  "code": "C99904x12",
+                  "code": "C207603",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Inconsistency And/Or Error In The Protocol",
+                  "decode": "Inconsistency and/or Error In The Protocol",
                   "instanceType": "Code"
                 },
                 "otherReason": null,
@@ -820,7 +820,7 @@
                 "type": {
                   "id": "Code_193",
                   "extensionAttributes": [],
-                  "code": "C99912x3",
+                  "code": "C215667",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
                   "decode": "Study Data Reliability",
@@ -938,7 +938,7 @@
               "code": {
                 "id": "Code_185",
                 "extensionAttributes": [],
-                "code": "C99904x11",
+                "code": "C207611",
                 "codeSystem": "http://www.cdisc.org",
                 "codeSystemVersion": "2024-09-27",
                 "decode": "Recruitment Difficulty",
@@ -954,10 +954,10 @@
                 "code": {
                   "id": "Code_186",
                   "extensionAttributes": [],
-                  "code": "C99904x12",
+                  "code": "C207603",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
-                  "decode": "Inconsistency And/Or Error In The Protocol",
+                  "decode": "Inconsistency and/or Error In The Protocol",
                   "instanceType": "Code"
                 },
                 "otherReason": null,
@@ -1033,7 +1033,7 @@
                 "type": {
                   "id": "Code_194",
                   "extensionAttributes": [],
-                  "code": "C99912x1",
+                  "code": "C215665",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2024-09-27",
                   "decode": "Study Subject Safety",
@@ -1271,7 +1271,7 @@
                 "code": "C98704",
                 "codeSystem": "http://www.cdisc.org",
                 "codeSystemVersion": "2024-09-27",
-                "decode": "ADAPTIVE",
+                "decode": "Adaptive Design",
                 "instanceType": "Code"
               }
             ],
@@ -4648,7 +4648,7 @@
                 "description": "Wilson's Disease",
                 "codes": [
                   {
-                    "id": "Code_534",
+                    "id": "Code_547",
                     "extensionAttributes": [],
                     "code": "88518009",
                     "codeSystem": "SNOMED",
@@ -4677,7 +4677,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_551",
+                  "id": "Code_564",
                   "extensionAttributes": [],
                   "code": "C85826",
                   "codeSystem": "http://www.cdisc.org",
@@ -4698,7 +4698,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_550",
+                      "id": "Code_563",
                       "extensionAttributes": [],
                       "code": "C94496",
                       "codeSystem": "http://www.cdisc.org",
@@ -4720,7 +4720,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_553",
+                  "id": "Code_566",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -4741,7 +4741,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_552",
+                      "id": "Code_565",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -4763,7 +4763,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_555",
+                  "id": "Code_568",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -4784,7 +4784,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_554",
+                      "id": "Code_567",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -4806,7 +4806,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_557",
+                  "id": "Code_570",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -4827,7 +4827,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_556",
+                      "id": "Code_569",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -4849,7 +4849,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_559",
+                  "id": "Code_572",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -4870,7 +4870,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_558",
+                      "id": "Code_571",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -4892,7 +4892,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_561",
+                  "id": "Code_574",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -4913,7 +4913,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_560",
+                      "id": "Code_573",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -4935,7 +4935,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_563",
+                  "id": "Code_576",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -4956,7 +4956,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_562",
+                      "id": "Code_575",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -4978,7 +4978,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_565",
+                  "id": "Code_578",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -4999,7 +4999,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_564",
+                      "id": "Code_577",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -5021,7 +5021,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_567",
+                  "id": "Code_580",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -5042,7 +5042,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_566",
+                      "id": "Code_579",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -5064,7 +5064,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_569",
+                  "id": "Code_582",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -5085,7 +5085,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_568",
+                      "id": "Code_581",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -5107,7 +5107,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_571",
+                  "id": "Code_584",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -5128,7 +5128,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_570",
+                      "id": "Code_583",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -5150,7 +5150,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_573",
+                  "id": "Code_586",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -5171,7 +5171,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_572",
+                      "id": "Code_585",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -5193,7 +5193,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_575",
+                  "id": "Code_588",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -5214,7 +5214,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_574",
+                      "id": "Code_587",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -5236,7 +5236,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_577",
+                  "id": "Code_590",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -5257,7 +5257,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_576",
+                      "id": "Code_589",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -5292,7 +5292,7 @@
               },
               "plannedSex": [
                 {
-                  "id": "Code_549",
+                  "id": "Code_562",
                   "extensionAttributes": [],
                   "code": "C49636",
                   "codeSystem": "http://www.cdisc.org",
@@ -5342,10 +5342,10 @@
                   "extensionAttributes": [],
                   "value": 18.0,
                   "unit": {
-                    "id": "AliasCode_110",
+                    "id": "AliasCode_113",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_547",
+                      "id": "Code_560",
                       "extensionAttributes": [],
                       "code": "C29848",
                       "codeSystem": "http://www.cdisc.org",
@@ -5363,10 +5363,10 @@
                   "extensionAttributes": [],
                   "value": 100.0,
                   "unit": {
-                    "id": "AliasCode_111",
+                    "id": "AliasCode_114",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_548",
+                      "id": "Code_561",
                       "extensionAttributes": [],
                       "code": "C29848",
                       "codeSystem": "http://www.cdisc.org",
@@ -9155,7 +9155,7 @@
                 "label": "Age criterion",
                 "description": "",
                 "category": {
-                  "id": "Code_578",
+                  "id": "Code_591",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9177,7 +9177,7 @@
                 "label": "Leipzig Criterion",
                 "description": "",
                 "category": {
-                  "id": "Code_579",
+                  "id": "Code_592",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9199,7 +9199,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_580",
+                  "id": "Code_593",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9221,7 +9221,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_581",
+                  "id": "Code_594",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9243,7 +9243,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_582",
+                  "id": "Code_595",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9265,7 +9265,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_583",
+                  "id": "Code_596",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9287,7 +9287,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_584",
+                  "id": "Code_597",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9309,7 +9309,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_585",
+                  "id": "Code_598",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9331,7 +9331,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_586",
+                  "id": "Code_599",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9353,7 +9353,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_587",
+                  "id": "Code_600",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9375,7 +9375,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_588",
+                  "id": "Code_601",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9397,7 +9397,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_589",
+                  "id": "Code_602",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -9419,7 +9419,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_590",
+                  "id": "Code_603",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9441,7 +9441,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_591",
+                  "id": "Code_604",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9463,7 +9463,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_592",
+                  "id": "Code_605",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9485,7 +9485,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_593",
+                  "id": "Code_606",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9507,7 +9507,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_594",
+                  "id": "Code_607",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9529,7 +9529,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_595",
+                  "id": "Code_608",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9551,7 +9551,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_596",
+                  "id": "Code_609",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9573,7 +9573,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_597",
+                  "id": "Code_610",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9595,7 +9595,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_598",
+                  "id": "Code_611",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9617,7 +9617,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_599",
+                  "id": "Code_612",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9639,7 +9639,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_600",
+                  "id": "Code_613",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9661,7 +9661,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_601",
+                  "id": "Code_614",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9683,7 +9683,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_602",
+                  "id": "Code_615",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9705,7 +9705,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_603",
+                  "id": "Code_616",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9727,7 +9727,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_604",
+                  "id": "Code_617",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9749,7 +9749,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_605",
+                  "id": "Code_618",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9771,7 +9771,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_606",
+                  "id": "Code_619",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9793,7 +9793,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_607",
+                  "id": "Code_620",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -9815,7 +9815,7 @@
                 "label": "",
                 "description": "",
                 "category": {
-                  "id": "Code_608",
+                  "id": "Code_621",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -11188,7 +11188,7 @@
             "label": "Sponsor",
             "description": "Sponsor role",
             "code": {
-              "id": "Code_610",
+              "id": "Code_623",
               "extensionAttributes": [],
               "code": "C70793",
               "codeSystem": "http://www.cdisc.org",
@@ -11423,7 +11423,7 @@
                 "label": "Site One",
                 "description": "Main Site",
                 "country": {
-                  "id": "Code_609",
+                  "id": "Code_622",
                   "extensionAttributes": [],
                   "code": "GBR",
                   "codeSystem": "ISO 3166 1 alpha3",
@@ -11445,16 +11445,16 @@
             "label": "ALXN1840",
             "description": "ALXN1840 (formerly WTX101)",
             "role": {
-              "id": "Code_540",
+              "id": "Code_553",
               "extensionAttributes": [],
               "code": "C41161",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2024-09-27",
-              "decode": "Experimental Intervention",
+              "decode": "Protocol Agent",
               "instanceType": "Code"
             },
             "type": {
-              "id": "Code_541",
+              "id": "Code_554",
               "extensionAttributes": [],
               "code": "C1909",
               "codeSystem": "http://www.cdisc.org",
@@ -11467,10 +11467,10 @@
               "extensionAttributes": [],
               "value": 1.0,
               "unit": {
-                "id": "AliasCode_105",
+                "id": "AliasCode_108",
                 "extensionAttributes": [],
                 "standardCode": {
-                  "id": "Code_542",
+                  "id": "Code_555",
                   "extensionAttributes": [],
                   "code": "C25301",
                   "codeSystem": "http://www.cdisc.org",
@@ -11485,7 +11485,7 @@
             },
             "codes": [
               {
-                "id": "Code_539",
+                "id": "Code_552",
                 "extensionAttributes": [],
                 "code": "ALXN1840",
                 "codeSystem": "SPONSOR",
@@ -11510,10 +11510,10 @@
                     "extensionAttributes": [],
                     "value": 28.0,
                     "unit": {
-                      "id": "AliasCode_101",
+                      "id": "AliasCode_104",
                       "extensionAttributes": [],
                       "standardCode": {
-                        "id": "Code_535",
+                        "id": "Code_548",
                         "extensionAttributes": [],
                         "code": "C25301",
                         "codeSystem": "http://www.cdisc.org",
@@ -11535,10 +11535,10 @@
                   "extensionAttributes": [],
                   "value": 15.0,
                   "unit": {
-                    "id": "AliasCode_102",
+                    "id": "AliasCode_105",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_536",
+                      "id": "Code_549",
                       "extensionAttributes": [],
                       "code": "C28253",
                       "codeSystem": "http://www.cdisc.org",
@@ -11552,10 +11552,10 @@
                   "instanceType": "Quantity"
                 },
                 "route": {
-                  "id": "AliasCode_103",
+                  "id": "AliasCode_106",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_537",
+                    "id": "Code_550",
                     "extensionAttributes": [],
                     "code": "C38288",
                     "codeSystem": "http://www.cdisc.org",
@@ -11567,10 +11567,10 @@
                   "instanceType": "AliasCode"
                 },
                 "frequency": {
-                  "id": "AliasCode_104",
+                  "id": "AliasCode_107",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_538",
+                    "id": "Code_551",
                     "extensionAttributes": [],
                     "code": "C25473",
                     "codeSystem": "http://www.cdisc.org",
@@ -11601,10 +11601,10 @@
                     "extensionAttributes": [],
                     "value": 11.0,
                     "unit": {
-                      "id": "AliasCode_106",
+                      "id": "AliasCode_109",
                       "extensionAttributes": [],
                       "standardCode": {
-                        "id": "Code_543",
+                        "id": "Code_556",
                         "extensionAttributes": [],
                         "code": "C25301",
                         "codeSystem": "http://www.cdisc.org",
@@ -11626,10 +11626,10 @@
                   "extensionAttributes": [],
                   "value": 30.0,
                   "unit": {
-                    "id": "AliasCode_107",
+                    "id": "AliasCode_110",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_544",
+                      "id": "Code_557",
                       "extensionAttributes": [],
                       "code": "C28253",
                       "codeSystem": "http://www.cdisc.org",
@@ -11643,10 +11643,10 @@
                   "instanceType": "Quantity"
                 },
                 "route": {
-                  "id": "AliasCode_108",
+                  "id": "AliasCode_111",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_545",
+                    "id": "Code_558",
                     "extensionAttributes": [],
                     "code": "C38288",
                     "codeSystem": "http://www.cdisc.org",
@@ -11658,10 +11658,10 @@
                   "instanceType": "AliasCode"
                 },
                 "frequency": {
-                  "id": "AliasCode_109",
+                  "id": "AliasCode_112",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_546",
+                    "id": "Code_559",
                     "extensionAttributes": [],
                     "code": "C25473",
                     "codeSystem": "http://www.cdisc.org",
@@ -11697,7 +11697,7 @@
             "reference": "/mdr/bc/packages/2025-04-01/biomedicalconcepts/C69260",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_27",
+                "id": "BiomedicalConceptProperty_30",
                 "extensionAttributes": [],
                 "name": "Numeric Age for Data Tabulation",
                 "label": "Numeric Age for Data Tabulation",
@@ -11706,10 +11706,10 @@
                 "datatype": "decimal",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_38",
+                  "id": "AliasCode_41",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_414",
+                    "id": "Code_427",
                     "extensionAttributes": [],
                     "code": "C170981",
                     "codeSystem": "http://www.cdisc.org",
@@ -11724,7 +11724,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_28",
+                "id": "BiomedicalConceptProperty_31",
                 "extensionAttributes": [],
                 "name": "Age Unit",
                 "label": "Age Unit",
@@ -11733,10 +11733,10 @@
                 "datatype": "string",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_39",
+                  "id": "AliasCode_42",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_415",
+                    "id": "Code_428",
                     "extensionAttributes": [],
                     "code": "C50400",
                     "codeSystem": "http://www.cdisc.org",
@@ -11751,7 +11751,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_29",
+                "id": "BiomedicalConceptProperty_32",
                 "extensionAttributes": [],
                 "name": "Collection Date Time",
                 "label": "Collection Date Time",
@@ -11760,10 +11760,10 @@
                 "datatype": "datetime",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_40",
+                  "id": "AliasCode_43",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_416",
+                    "id": "Code_429",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -11779,10 +11779,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_41",
+              "id": "AliasCode_44",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_417",
+                "id": "Code_430",
                 "extensionAttributes": [],
                 "code": "C69260",
                 "codeSystem": "http://www.cdisc.org",
@@ -11805,7 +11805,7 @@
             "reference": "/mdr/bc/packages/2025-04-01/biomedicalconcepts/C28421",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_30",
+                "id": "BiomedicalConceptProperty_33",
                 "extensionAttributes": [],
                 "name": "Sex",
                 "label": "Sex",
@@ -11814,13 +11814,13 @@
                 "datatype": "string",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_22",
+                    "id": "ResponseCode_32",
                     "extensionAttributes": [],
                     "name": "RC_C20197",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_418",
+                      "id": "Code_431",
                       "extensionAttributes": [],
                       "code": "C20197",
                       "codeSystem": "http://www.cdisc.org",
@@ -11831,13 +11831,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_23",
+                    "id": "ResponseCode_33",
                     "extensionAttributes": [],
                     "name": "RC_C16576",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_419",
+                      "id": "Code_432",
                       "extensionAttributes": [],
                       "code": "C16576",
                       "codeSystem": "http://www.cdisc.org",
@@ -11849,10 +11849,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_42",
+                  "id": "AliasCode_45",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_420",
+                    "id": "Code_433",
                     "extensionAttributes": [],
                     "code": "C28421",
                     "codeSystem": "http://www.cdisc.org",
@@ -11867,7 +11867,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_31",
+                "id": "BiomedicalConceptProperty_34",
                 "extensionAttributes": [],
                 "name": "Collection Date Time",
                 "label": "Collection Date Time",
@@ -11876,10 +11876,10 @@
                 "datatype": "datetime",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_43",
+                  "id": "AliasCode_46",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_421",
+                    "id": "Code_434",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -11895,10 +11895,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_44",
+              "id": "AliasCode_47",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_422",
+                "id": "Code_435",
                 "extensionAttributes": [],
                 "code": "C28421",
                 "codeSystem": "http://www.cdisc.org",
@@ -11923,7 +11923,7 @@
             "reference": "/mdr/bc/packages/2025-04-01/biomedicalconcepts/C17049",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_32",
+                "id": "BiomedicalConceptProperty_35",
                 "extensionAttributes": [],
                 "name": "Race",
                 "label": "Race",
@@ -11932,10 +11932,10 @@
                 "datatype": "string",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_45",
+                  "id": "AliasCode_48",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_423",
+                    "id": "Code_436",
                     "extensionAttributes": [],
                     "code": "C17049",
                     "codeSystem": "http://www.cdisc.org",
@@ -11950,7 +11950,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_33",
+                "id": "BiomedicalConceptProperty_36",
                 "extensionAttributes": [],
                 "name": "Collection Date Time",
                 "label": "Collection Date Time",
@@ -11959,10 +11959,10 @@
                 "datatype": "datetime",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_46",
+                  "id": "AliasCode_49",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_424",
+                    "id": "Code_437",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -11978,10 +11978,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_47",
+              "id": "AliasCode_50",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_425",
+                "id": "Code_438",
                 "extensionAttributes": [],
                 "code": "C17049",
                 "codeSystem": "http://www.cdisc.org",
@@ -12008,7 +12008,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2025-04-01/datasetspecializations/ETHNIC",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_34",
+                "id": "BiomedicalConceptProperty_37",
                 "extensionAttributes": [],
                 "name": "ETHNIC",
                 "label": "ETHNIC",
@@ -12017,10 +12017,10 @@
                 "datatype": "text",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_48",
+                  "id": "AliasCode_51",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_426",
+                    "id": "Code_439",
                     "extensionAttributes": [],
                     "code": "C16564",
                     "codeSystem": "http://www.cdisc.org",
@@ -12035,7 +12035,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_35",
+                "id": "BiomedicalConceptProperty_38",
                 "extensionAttributes": [],
                 "name": "DMDTC",
                 "label": "DMDTC",
@@ -12044,10 +12044,10 @@
                 "datatype": "datetime",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_49",
+                  "id": "AliasCode_52",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_427",
+                    "id": "Code_440",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -12063,10 +12063,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_50",
+              "id": "AliasCode_53",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_428",
+                "id": "Code_441",
                 "extensionAttributes": [],
                 "code": "C16564",
                 "codeSystem": "http://www.cdisc.org",
@@ -12092,7 +12092,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2024-12-16/datasetspecializations/WEIGHT",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_36",
+                "id": "BiomedicalConceptProperty_39",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -12101,10 +12101,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_51",
+                  "id": "AliasCode_54",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_429",
+                    "id": "Code_442",
                     "extensionAttributes": [],
                     "code": "C25208",
                     "codeSystem": "http://www.cdisc.org",
@@ -12119,7 +12119,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_37",
+                "id": "BiomedicalConceptProperty_40",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -12128,10 +12128,10 @@
                 "datatype": "float",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_52",
+                  "id": "AliasCode_55",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_430",
+                    "id": "Code_443",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -12146,7 +12146,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_38",
+                "id": "BiomedicalConceptProperty_41",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -12155,13 +12155,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_24",
+                    "id": "ResponseCode_34",
                     "extensionAttributes": [],
                     "name": "RC_C48531",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_431",
+                      "id": "Code_444",
                       "extensionAttributes": [],
                       "code": "C48531",
                       "codeSystem": "http://www.cdisc.org",
@@ -12172,13 +12172,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_25",
+                    "id": "ResponseCode_35",
                     "extensionAttributes": [],
                     "name": "RC_C48155",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_432",
+                      "id": "Code_445",
                       "extensionAttributes": [],
                       "code": "C48155",
                       "codeSystem": "http://www.cdisc.org",
@@ -12189,13 +12189,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_26",
+                    "id": "ResponseCode_36",
                     "extensionAttributes": [],
                     "name": "RC_C28252",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_433",
+                      "id": "Code_446",
                       "extensionAttributes": [],
                       "code": "C28252",
                       "codeSystem": "http://www.cdisc.org",
@@ -12207,10 +12207,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_53",
+                  "id": "AliasCode_56",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_434",
+                    "id": "Code_447",
                     "extensionAttributes": [],
                     "code": "C48208",
                     "codeSystem": "http://www.cdisc.org",
@@ -12225,7 +12225,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_39",
+                "id": "BiomedicalConceptProperty_42",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -12234,10 +12234,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_54",
+                  "id": "AliasCode_57",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_435",
+                    "id": "Code_448",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -12253,10 +12253,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_55",
+              "id": "AliasCode_58",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_436",
+                "id": "Code_449",
                 "extensionAttributes": [],
                 "code": "C25208",
                 "codeSystem": "http://www.cdisc.org",
@@ -12282,7 +12282,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2024-12-16/datasetspecializations/HEIGHT",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_40",
+                "id": "BiomedicalConceptProperty_43",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -12291,10 +12291,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_56",
+                  "id": "AliasCode_59",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_437",
+                    "id": "Code_450",
                     "extensionAttributes": [],
                     "code": "C25347",
                     "codeSystem": "http://www.cdisc.org",
@@ -12309,7 +12309,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_41",
+                "id": "BiomedicalConceptProperty_44",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -12318,10 +12318,10 @@
                 "datatype": "float",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_57",
+                  "id": "AliasCode_60",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_438",
+                    "id": "Code_451",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -12336,7 +12336,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_42",
+                "id": "BiomedicalConceptProperty_45",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -12345,13 +12345,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_27",
+                    "id": "ResponseCode_37",
                     "extensionAttributes": [],
                     "name": "RC_C49668",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_439",
+                      "id": "Code_452",
                       "extensionAttributes": [],
                       "code": "C49668",
                       "codeSystem": "http://www.cdisc.org",
@@ -12362,13 +12362,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_28",
+                    "id": "ResponseCode_38",
                     "extensionAttributes": [],
                     "name": "RC_C48500",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_440",
+                      "id": "Code_453",
                       "extensionAttributes": [],
                       "code": "C48500",
                       "codeSystem": "http://www.cdisc.org",
@@ -12379,13 +12379,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_29",
+                    "id": "ResponseCode_39",
                     "extensionAttributes": [],
                     "name": "RC_C41139",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_441",
+                      "id": "Code_454",
                       "extensionAttributes": [],
                       "code": "C41139",
                       "codeSystem": "http://www.cdisc.org",
@@ -12397,10 +12397,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_58",
+                  "id": "AliasCode_61",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_442",
+                    "id": "Code_455",
                     "extensionAttributes": [],
                     "code": "C168688",
                     "codeSystem": "http://www.cdisc.org",
@@ -12415,7 +12415,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_43",
+                "id": "BiomedicalConceptProperty_46",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -12424,10 +12424,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_59",
+                  "id": "AliasCode_62",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_443",
+                    "id": "Code_456",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -12443,10 +12443,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_60",
+              "id": "AliasCode_63",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_444",
+                "id": "Code_457",
                 "extensionAttributes": [],
                 "code": "C25347",
                 "codeSystem": "http://www.cdisc.org",
@@ -12473,7 +12473,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2024-12-16/datasetspecializations/BMI",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_44",
+                "id": "BiomedicalConceptProperty_47",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -12482,10 +12482,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_61",
+                  "id": "AliasCode_64",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_445",
+                    "id": "Code_458",
                     "extensionAttributes": [],
                     "code": "C16358",
                     "codeSystem": "http://www.cdisc.org",
@@ -12500,7 +12500,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_45",
+                "id": "BiomedicalConceptProperty_48",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -12509,10 +12509,10 @@
                 "datatype": "float",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_62",
+                  "id": "AliasCode_65",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_446",
+                    "id": "Code_459",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -12527,7 +12527,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_46",
+                "id": "BiomedicalConceptProperty_49",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -12536,13 +12536,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_30",
+                    "id": "ResponseCode_40",
                     "extensionAttributes": [],
                     "name": "RC_C49671",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_447",
+                      "id": "Code_460",
                       "extensionAttributes": [],
                       "code": "C49671",
                       "codeSystem": "http://www.cdisc.org",
@@ -12553,13 +12553,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_31",
+                    "id": "ResponseCode_41",
                     "extensionAttributes": [],
                     "name": "RC_C67334",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_448",
+                      "id": "Code_461",
                       "extensionAttributes": [],
                       "code": "C67334",
                       "codeSystem": "http://www.cdisc.org",
@@ -12571,10 +12571,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_63",
+                  "id": "AliasCode_66",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_449",
+                    "id": "Code_462",
                     "extensionAttributes": [],
                     "code": "C42575",
                     "codeSystem": "http://www.cdisc.org",
@@ -12589,7 +12589,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_47",
+                "id": "BiomedicalConceptProperty_50",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -12598,10 +12598,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_64",
+                  "id": "AliasCode_67",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_450",
+                    "id": "Code_463",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -12617,10 +12617,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_65",
+              "id": "AliasCode_68",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_451",
+                "id": "Code_464",
                 "extensionAttributes": [],
                 "code": "C16358",
                 "codeSystem": "http://www.cdisc.org",
@@ -12646,7 +12646,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2024-12-16/datasetspecializations/TEMP",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_48",
+                "id": "BiomedicalConceptProperty_51",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -12655,10 +12655,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_66",
+                  "id": "AliasCode_69",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_452",
+                    "id": "Code_465",
                     "extensionAttributes": [],
                     "code": "C174446",
                     "codeSystem": "http://www.cdisc.org",
@@ -12673,7 +12673,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_49",
+                "id": "BiomedicalConceptProperty_52",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -12682,10 +12682,10 @@
                 "datatype": "float",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_67",
+                  "id": "AliasCode_70",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_453",
+                    "id": "Code_466",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -12700,7 +12700,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_50",
+                "id": "BiomedicalConceptProperty_53",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -12709,13 +12709,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_32",
+                    "id": "ResponseCode_42",
                     "extensionAttributes": [],
                     "name": "RC_C42559",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_454",
+                      "id": "Code_467",
                       "extensionAttributes": [],
                       "code": "C42559",
                       "codeSystem": "http://www.cdisc.org",
@@ -12726,13 +12726,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_33",
+                    "id": "ResponseCode_43",
                     "extensionAttributes": [],
                     "name": "RC_C44277",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_455",
+                      "id": "Code_468",
                       "extensionAttributes": [],
                       "code": "C44277",
                       "codeSystem": "http://www.cdisc.org",
@@ -12743,13 +12743,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_34",
+                    "id": "ResponseCode_44",
                     "extensionAttributes": [],
                     "name": "RC_C42537",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_456",
+                      "id": "Code_469",
                       "extensionAttributes": [],
                       "code": "C42537",
                       "codeSystem": "http://www.cdisc.org",
@@ -12761,10 +12761,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_68",
+                  "id": "AliasCode_71",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_457",
+                    "id": "Code_470",
                     "extensionAttributes": [],
                     "code": "C44276",
                     "codeSystem": "http://www.cdisc.org",
@@ -12779,7 +12779,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_51",
+                "id": "BiomedicalConceptProperty_54",
                 "extensionAttributes": [],
                 "name": "VSLOC",
                 "label": "VSLOC",
@@ -12788,13 +12788,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_35",
+                    "id": "ResponseCode_45",
                     "extensionAttributes": [],
                     "name": "RC_C12674",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_458",
+                      "id": "Code_471",
                       "extensionAttributes": [],
                       "code": "C12674",
                       "codeSystem": "http://www.cdisc.org",
@@ -12805,13 +12805,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_36",
+                    "id": "ResponseCode_46",
                     "extensionAttributes": [],
                     "name": "RC_C12394",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_459",
+                      "id": "Code_472",
                       "extensionAttributes": [],
                       "code": "C12394",
                       "codeSystem": "http://www.cdisc.org",
@@ -12822,13 +12822,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_37",
+                    "id": "ResponseCode_47",
                     "extensionAttributes": [],
                     "name": "RC_C89803",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_460",
+                      "id": "Code_473",
                       "extensionAttributes": [],
                       "code": "C89803",
                       "codeSystem": "http://www.cdisc.org",
@@ -12839,13 +12839,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_38",
+                    "id": "ResponseCode_48",
                     "extensionAttributes": [],
                     "name": "RC_C12421",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_461",
+                      "id": "Code_474",
                       "extensionAttributes": [],
                       "code": "C12421",
                       "codeSystem": "http://www.cdisc.org",
@@ -12856,13 +12856,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_39",
+                    "id": "ResponseCode_49",
                     "extensionAttributes": [],
                     "name": "RC_C12390",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_462",
+                      "id": "Code_475",
                       "extensionAttributes": [],
                       "code": "C12390",
                       "codeSystem": "http://www.cdisc.org",
@@ -12874,10 +12874,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_69",
+                  "id": "AliasCode_72",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_463",
+                    "id": "Code_476",
                     "extensionAttributes": [],
                     "code": "C13717",
                     "codeSystem": "http://www.cdisc.org",
@@ -12892,7 +12892,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_52",
+                "id": "BiomedicalConceptProperty_55",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -12901,10 +12901,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_70",
+                  "id": "AliasCode_73",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_464",
+                    "id": "Code_477",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -12920,10 +12920,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_71",
+              "id": "AliasCode_74",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_465",
+                "id": "Code_478",
                 "extensionAttributes": [],
                 "code": "C174446",
                 "codeSystem": "http://www.cdisc.org",
@@ -12949,7 +12949,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2025-04-01/datasetspecializations/HR",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_53",
+                "id": "BiomedicalConceptProperty_56",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -12958,10 +12958,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_72",
+                  "id": "AliasCode_75",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_466",
+                    "id": "Code_479",
                     "extensionAttributes": [],
                     "code": "C49677",
                     "codeSystem": "http://www.cdisc.org",
@@ -12976,7 +12976,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_54",
+                "id": "BiomedicalConceptProperty_57",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -12985,10 +12985,10 @@
                 "datatype": "integer",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_73",
+                  "id": "AliasCode_76",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_467",
+                    "id": "Code_480",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -13003,7 +13003,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_55",
+                "id": "BiomedicalConceptProperty_58",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -13012,10 +13012,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_74",
+                  "id": "AliasCode_77",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_468",
+                    "id": "Code_481",
                     "extensionAttributes": [],
                     "code": "C73688",
                     "codeSystem": "http://www.cdisc.org",
@@ -13030,7 +13030,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_56",
+                "id": "BiomedicalConceptProperty_59",
                 "extensionAttributes": [],
                 "name": "VSPOS",
                 "label": "VSPOS",
@@ -13039,13 +13039,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_40",
+                    "id": "ResponseCode_50",
                     "extensionAttributes": [],
                     "name": "RC_C62165",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_469",
+                      "id": "Code_482",
                       "extensionAttributes": [],
                       "code": "C62165",
                       "codeSystem": "http://www.cdisc.org",
@@ -13056,13 +13056,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_41",
+                    "id": "ResponseCode_51",
                     "extensionAttributes": [],
                     "name": "RC_C111310",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_470",
+                      "id": "Code_483",
                       "extensionAttributes": [],
                       "code": "C111310",
                       "codeSystem": "http://www.cdisc.org",
@@ -13073,13 +13073,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_42",
+                    "id": "ResponseCode_52",
                     "extensionAttributes": [],
                     "name": "RC_C62122",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_471",
+                      "id": "Code_484",
                       "extensionAttributes": [],
                       "code": "C62122",
                       "codeSystem": "http://www.cdisc.org",
@@ -13090,13 +13090,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_43",
+                    "id": "ResponseCode_53",
                     "extensionAttributes": [],
                     "name": "RC_C62166",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_472",
+                      "id": "Code_485",
                       "extensionAttributes": [],
                       "code": "C62166",
                       "codeSystem": "http://www.cdisc.org",
@@ -13107,13 +13107,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_44",
+                    "id": "ResponseCode_54",
                     "extensionAttributes": [],
                     "name": "RC_C62167",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_473",
+                      "id": "Code_486",
                       "extensionAttributes": [],
                       "code": "C62167",
                       "codeSystem": "http://www.cdisc.org",
@@ -13125,10 +13125,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_75",
+                  "id": "AliasCode_78",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_474",
+                    "id": "Code_487",
                     "extensionAttributes": [],
                     "code": "C62164",
                     "codeSystem": "http://www.cdisc.org",
@@ -13143,7 +13143,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_57",
+                "id": "BiomedicalConceptProperty_60",
                 "extensionAttributes": [],
                 "name": "VSLOC",
                 "label": "VSLOC",
@@ -13152,13 +13152,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_45",
+                    "id": "ResponseCode_55",
                     "extensionAttributes": [],
                     "name": "RC_C12681",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_475",
+                      "id": "Code_488",
                       "extensionAttributes": [],
                       "code": "C12681",
                       "codeSystem": "http://www.cdisc.org",
@@ -13169,13 +13169,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_46",
+                    "id": "ResponseCode_56",
                     "extensionAttributes": [],
                     "name": "RC_C12687",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_476",
+                      "id": "Code_489",
                       "extensionAttributes": [],
                       "code": "C12687",
                       "codeSystem": "http://www.cdisc.org",
@@ -13186,13 +13186,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_47",
+                    "id": "ResponseCode_57",
                     "extensionAttributes": [],
                     "name": "RC_C12691",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_477",
+                      "id": "Code_490",
                       "extensionAttributes": [],
                       "code": "C12691",
                       "codeSystem": "http://www.cdisc.org",
@@ -13203,13 +13203,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_48",
+                    "id": "ResponseCode_58",
                     "extensionAttributes": [],
                     "name": "RC_C32478",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_478",
+                      "id": "Code_491",
                       "extensionAttributes": [],
                       "code": "C32478",
                       "codeSystem": "http://www.cdisc.org",
@@ -13220,13 +13220,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_49",
+                    "id": "ResponseCode_59",
                     "extensionAttributes": [],
                     "name": "RC_C12715",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_479",
+                      "id": "Code_492",
                       "extensionAttributes": [],
                       "code": "C12715",
                       "codeSystem": "http://www.cdisc.org",
@@ -13237,13 +13237,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_50",
+                    "id": "ResponseCode_60",
                     "extensionAttributes": [],
                     "name": "RC_C12838",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_480",
+                      "id": "Code_493",
                       "extensionAttributes": [],
                       "code": "C12838",
                       "codeSystem": "http://www.cdisc.org",
@@ -13255,10 +13255,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_76",
+                  "id": "AliasCode_79",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_481",
+                    "id": "Code_494",
                     "extensionAttributes": [],
                     "code": "C13717",
                     "codeSystem": "http://www.cdisc.org",
@@ -13273,7 +13273,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_58",
+                "id": "BiomedicalConceptProperty_61",
                 "extensionAttributes": [],
                 "name": "VSLAT",
                 "label": "VSLAT",
@@ -13282,13 +13282,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_51",
+                    "id": "ResponseCode_61",
                     "extensionAttributes": [],
                     "name": "RC_C25229",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_482",
+                      "id": "Code_495",
                       "extensionAttributes": [],
                       "code": "C25229",
                       "codeSystem": "http://www.cdisc.org",
@@ -13299,13 +13299,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_52",
+                    "id": "ResponseCode_62",
                     "extensionAttributes": [],
                     "name": "RC_C25228",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_483",
+                      "id": "Code_496",
                       "extensionAttributes": [],
                       "code": "C25228",
                       "codeSystem": "http://www.cdisc.org",
@@ -13317,10 +13317,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_77",
+                  "id": "AliasCode_80",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_484",
+                    "id": "Code_497",
                     "extensionAttributes": [],
                     "code": "C25185",
                     "codeSystem": "http://www.cdisc.org",
@@ -13335,7 +13335,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_59",
+                "id": "BiomedicalConceptProperty_62",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -13344,10 +13344,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_78",
+                  "id": "AliasCode_81",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_485",
+                    "id": "Code_498",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -13363,10 +13363,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_79",
+              "id": "AliasCode_82",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_486",
+                "id": "Code_499",
                 "extensionAttributes": [],
                 "code": "C49677",
                 "codeSystem": "http://www.cdisc.org",
@@ -13393,7 +13393,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2024-12-16/datasetspecializations/RESP",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_60",
+                "id": "BiomedicalConceptProperty_63",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -13402,10 +13402,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_80",
+                  "id": "AliasCode_83",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_487",
+                    "id": "Code_500",
                     "extensionAttributes": [],
                     "code": "C49678",
                     "codeSystem": "http://www.cdisc.org",
@@ -13420,7 +13420,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_61",
+                "id": "BiomedicalConceptProperty_64",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -13429,10 +13429,10 @@
                 "datatype": "integer",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_81",
+                  "id": "AliasCode_84",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_488",
+                    "id": "Code_501",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -13447,7 +13447,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_62",
+                "id": "BiomedicalConceptProperty_65",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -13456,10 +13456,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_82",
+                  "id": "AliasCode_85",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_489",
+                    "id": "Code_502",
                     "extensionAttributes": [],
                     "code": "C73688",
                     "codeSystem": "http://www.cdisc.org",
@@ -13474,7 +13474,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_63",
+                "id": "BiomedicalConceptProperty_66",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -13483,10 +13483,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_83",
+                  "id": "AliasCode_86",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_490",
+                    "id": "Code_503",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -13502,10 +13502,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_84",
+              "id": "AliasCode_87",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_491",
+                "id": "Code_504",
                 "extensionAttributes": [],
                 "code": "C49678",
                 "codeSystem": "http://www.cdisc.org",
@@ -13531,7 +13531,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2025-04-01/datasetspecializations/SYSBP",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_64",
+                "id": "BiomedicalConceptProperty_67",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -13540,10 +13540,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_85",
+                  "id": "AliasCode_88",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_492",
+                    "id": "Code_505",
                     "extensionAttributes": [],
                     "code": "C25298",
                     "codeSystem": "http://www.cdisc.org",
@@ -13558,7 +13558,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_65",
+                "id": "BiomedicalConceptProperty_68",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -13567,10 +13567,10 @@
                 "datatype": "integer",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_86",
+                  "id": "AliasCode_89",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_493",
+                    "id": "Code_506",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -13585,7 +13585,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_66",
+                "id": "BiomedicalConceptProperty_69",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -13594,10 +13594,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_87",
+                  "id": "AliasCode_90",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_494",
+                    "id": "Code_507",
                     "extensionAttributes": [],
                     "code": "C49669",
                     "codeSystem": "http://www.cdisc.org",
@@ -13612,7 +13612,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_67",
+                "id": "BiomedicalConceptProperty_70",
                 "extensionAttributes": [],
                 "name": "VSPOS",
                 "label": "VSPOS",
@@ -13621,13 +13621,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_53",
+                    "id": "ResponseCode_63",
                     "extensionAttributes": [],
                     "name": "RC_C62165",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_495",
+                      "id": "Code_508",
                       "extensionAttributes": [],
                       "code": "C62165",
                       "codeSystem": "http://www.cdisc.org",
@@ -13638,13 +13638,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_54",
+                    "id": "ResponseCode_64",
                     "extensionAttributes": [],
                     "name": "RC_C111310",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_496",
+                      "id": "Code_509",
                       "extensionAttributes": [],
                       "code": "C111310",
                       "codeSystem": "http://www.cdisc.org",
@@ -13655,13 +13655,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_55",
+                    "id": "ResponseCode_65",
                     "extensionAttributes": [],
                     "name": "RC_C62122",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_497",
+                      "id": "Code_510",
                       "extensionAttributes": [],
                       "code": "C62122",
                       "codeSystem": "http://www.cdisc.org",
@@ -13672,13 +13672,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_56",
+                    "id": "ResponseCode_66",
                     "extensionAttributes": [],
                     "name": "RC_C62166",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_498",
+                      "id": "Code_511",
                       "extensionAttributes": [],
                       "code": "C62166",
                       "codeSystem": "http://www.cdisc.org",
@@ -13689,13 +13689,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_57",
+                    "id": "ResponseCode_67",
                     "extensionAttributes": [],
                     "name": "RC_C62167",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_499",
+                      "id": "Code_512",
                       "extensionAttributes": [],
                       "code": "C62167",
                       "codeSystem": "http://www.cdisc.org",
@@ -13707,10 +13707,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_88",
+                  "id": "AliasCode_91",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_500",
+                    "id": "Code_513",
                     "extensionAttributes": [],
                     "code": "C62164",
                     "codeSystem": "http://www.cdisc.org",
@@ -13725,7 +13725,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_68",
+                "id": "BiomedicalConceptProperty_71",
                 "extensionAttributes": [],
                 "name": "VSLOC",
                 "label": "VSLOC",
@@ -13734,13 +13734,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_58",
+                    "id": "ResponseCode_68",
                     "extensionAttributes": [],
                     "name": "RC_C12681",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_501",
+                      "id": "Code_514",
                       "extensionAttributes": [],
                       "code": "C12681",
                       "codeSystem": "http://www.cdisc.org",
@@ -13751,13 +13751,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_59",
+                    "id": "ResponseCode_69",
                     "extensionAttributes": [],
                     "name": "RC_C12687",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_502",
+                      "id": "Code_515",
                       "extensionAttributes": [],
                       "code": "C12687",
                       "codeSystem": "http://www.cdisc.org",
@@ -13768,13 +13768,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_60",
+                    "id": "ResponseCode_70",
                     "extensionAttributes": [],
                     "name": "RC_C32478",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_503",
+                      "id": "Code_516",
                       "extensionAttributes": [],
                       "code": "C32478",
                       "codeSystem": "http://www.cdisc.org",
@@ -13785,13 +13785,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_61",
+                    "id": "ResponseCode_71",
                     "extensionAttributes": [],
                     "name": "RC_C12715",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_504",
+                      "id": "Code_517",
                       "extensionAttributes": [],
                       "code": "C12715",
                       "codeSystem": "http://www.cdisc.org",
@@ -13802,13 +13802,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_62",
+                    "id": "ResponseCode_72",
                     "extensionAttributes": [],
                     "name": "RC_C32608",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_505",
+                      "id": "Code_518",
                       "extensionAttributes": [],
                       "code": "C32608",
                       "codeSystem": "http://www.cdisc.org",
@@ -13819,13 +13819,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_63",
+                    "id": "ResponseCode_73",
                     "extensionAttributes": [],
                     "name": "RC_C12838",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_506",
+                      "id": "Code_519",
                       "extensionAttributes": [],
                       "code": "C12838",
                       "codeSystem": "http://www.cdisc.org",
@@ -13837,10 +13837,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_89",
+                  "id": "AliasCode_92",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_507",
+                    "id": "Code_520",
                     "extensionAttributes": [],
                     "code": "C13717",
                     "codeSystem": "http://www.cdisc.org",
@@ -13855,7 +13855,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_69",
+                "id": "BiomedicalConceptProperty_72",
                 "extensionAttributes": [],
                 "name": "VSLAT",
                 "label": "VSLAT",
@@ -13864,13 +13864,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_64",
+                    "id": "ResponseCode_74",
                     "extensionAttributes": [],
                     "name": "RC_C25229",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_508",
+                      "id": "Code_521",
                       "extensionAttributes": [],
                       "code": "C25229",
                       "codeSystem": "http://www.cdisc.org",
@@ -13881,13 +13881,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_65",
+                    "id": "ResponseCode_75",
                     "extensionAttributes": [],
                     "name": "RC_C25228",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_509",
+                      "id": "Code_522",
                       "extensionAttributes": [],
                       "code": "C25228",
                       "codeSystem": "http://www.cdisc.org",
@@ -13899,10 +13899,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_90",
+                  "id": "AliasCode_93",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_510",
+                    "id": "Code_523",
                     "extensionAttributes": [],
                     "code": "C25185",
                     "codeSystem": "http://www.cdisc.org",
@@ -13917,7 +13917,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_70",
+                "id": "BiomedicalConceptProperty_73",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -13926,10 +13926,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_91",
+                  "id": "AliasCode_94",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_511",
+                    "id": "Code_524",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -13945,10 +13945,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_92",
+              "id": "AliasCode_95",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_512",
+                "id": "Code_525",
                 "extensionAttributes": [],
                 "code": "C25298",
                 "codeSystem": "http://www.cdisc.org",
@@ -13974,7 +13974,7 @@
             "reference": "/mdr/specializations/sdtm/packages/2025-04-01/datasetspecializations/DIABP",
             "properties": [
               {
-                "id": "BiomedicalConceptProperty_71",
+                "id": "BiomedicalConceptProperty_74",
                 "extensionAttributes": [],
                 "name": "VSTESTCD",
                 "label": "VSTESTCD",
@@ -13983,10 +13983,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_93",
+                  "id": "AliasCode_96",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_513",
+                    "id": "Code_526",
                     "extensionAttributes": [],
                     "code": "C25299",
                     "codeSystem": "http://www.cdisc.org",
@@ -14001,7 +14001,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_72",
+                "id": "BiomedicalConceptProperty_75",
                 "extensionAttributes": [],
                 "name": "VSORRES",
                 "label": "VSORRES",
@@ -14010,10 +14010,10 @@
                 "datatype": "integer",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_94",
+                  "id": "AliasCode_97",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_514",
+                    "id": "Code_527",
                     "extensionAttributes": [],
                     "code": "C70856",
                     "codeSystem": "http://www.cdisc.org",
@@ -14028,7 +14028,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_73",
+                "id": "BiomedicalConceptProperty_76",
                 "extensionAttributes": [],
                 "name": "VSORRESU",
                 "label": "VSORRESU",
@@ -14037,10 +14037,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_95",
+                  "id": "AliasCode_98",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_515",
+                    "id": "Code_528",
                     "extensionAttributes": [],
                     "code": "C49669",
                     "codeSystem": "http://www.cdisc.org",
@@ -14055,7 +14055,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_74",
+                "id": "BiomedicalConceptProperty_77",
                 "extensionAttributes": [],
                 "name": "VSPOS",
                 "label": "VSPOS",
@@ -14064,13 +14064,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_66",
+                    "id": "ResponseCode_76",
                     "extensionAttributes": [],
                     "name": "RC_C62165",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_516",
+                      "id": "Code_529",
                       "extensionAttributes": [],
                       "code": "C62165",
                       "codeSystem": "http://www.cdisc.org",
@@ -14081,13 +14081,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_67",
+                    "id": "ResponseCode_77",
                     "extensionAttributes": [],
                     "name": "RC_C111310",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_517",
+                      "id": "Code_530",
                       "extensionAttributes": [],
                       "code": "C111310",
                       "codeSystem": "http://www.cdisc.org",
@@ -14098,13 +14098,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_68",
+                    "id": "ResponseCode_78",
                     "extensionAttributes": [],
                     "name": "RC_C62122",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_518",
+                      "id": "Code_531",
                       "extensionAttributes": [],
                       "code": "C62122",
                       "codeSystem": "http://www.cdisc.org",
@@ -14115,13 +14115,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_69",
+                    "id": "ResponseCode_79",
                     "extensionAttributes": [],
                     "name": "RC_C62166",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_519",
+                      "id": "Code_532",
                       "extensionAttributes": [],
                       "code": "C62166",
                       "codeSystem": "http://www.cdisc.org",
@@ -14132,13 +14132,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_70",
+                    "id": "ResponseCode_80",
                     "extensionAttributes": [],
                     "name": "RC_C62167",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_520",
+                      "id": "Code_533",
                       "extensionAttributes": [],
                       "code": "C62167",
                       "codeSystem": "http://www.cdisc.org",
@@ -14150,10 +14150,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_96",
+                  "id": "AliasCode_99",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_521",
+                    "id": "Code_534",
                     "extensionAttributes": [],
                     "code": "C62164",
                     "codeSystem": "http://www.cdisc.org",
@@ -14168,7 +14168,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_75",
+                "id": "BiomedicalConceptProperty_78",
                 "extensionAttributes": [],
                 "name": "VSLOC",
                 "label": "VSLOC",
@@ -14177,13 +14177,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_71",
+                    "id": "ResponseCode_81",
                     "extensionAttributes": [],
                     "name": "RC_C12681",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_522",
+                      "id": "Code_535",
                       "extensionAttributes": [],
                       "code": "C12681",
                       "codeSystem": "http://www.cdisc.org",
@@ -14194,13 +14194,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_72",
+                    "id": "ResponseCode_82",
                     "extensionAttributes": [],
                     "name": "RC_C12687",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_523",
+                      "id": "Code_536",
                       "extensionAttributes": [],
                       "code": "C12687",
                       "codeSystem": "http://www.cdisc.org",
@@ -14211,13 +14211,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_73",
+                    "id": "ResponseCode_83",
                     "extensionAttributes": [],
                     "name": "RC_C32478",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_524",
+                      "id": "Code_537",
                       "extensionAttributes": [],
                       "code": "C32478",
                       "codeSystem": "http://www.cdisc.org",
@@ -14228,13 +14228,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_74",
+                    "id": "ResponseCode_84",
                     "extensionAttributes": [],
                     "name": "RC_C12715",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_525",
+                      "id": "Code_538",
                       "extensionAttributes": [],
                       "code": "C12715",
                       "codeSystem": "http://www.cdisc.org",
@@ -14245,13 +14245,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_75",
+                    "id": "ResponseCode_85",
                     "extensionAttributes": [],
                     "name": "RC_C32608",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_526",
+                      "id": "Code_539",
                       "extensionAttributes": [],
                       "code": "C32608",
                       "codeSystem": "http://www.cdisc.org",
@@ -14262,13 +14262,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_76",
+                    "id": "ResponseCode_86",
                     "extensionAttributes": [],
                     "name": "RC_C12838",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_527",
+                      "id": "Code_540",
                       "extensionAttributes": [],
                       "code": "C12838",
                       "codeSystem": "http://www.cdisc.org",
@@ -14280,10 +14280,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_97",
+                  "id": "AliasCode_100",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_528",
+                    "id": "Code_541",
                     "extensionAttributes": [],
                     "code": "C13717",
                     "codeSystem": "http://www.cdisc.org",
@@ -14298,7 +14298,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_76",
+                "id": "BiomedicalConceptProperty_79",
                 "extensionAttributes": [],
                 "name": "VSLAT",
                 "label": "VSLAT",
@@ -14307,13 +14307,13 @@
                 "datatype": "",
                 "responseCodes": [
                   {
-                    "id": "ResponseCode_77",
+                    "id": "ResponseCode_87",
                     "extensionAttributes": [],
                     "name": "RC_C25229",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_529",
+                      "id": "Code_542",
                       "extensionAttributes": [],
                       "code": "C25229",
                       "codeSystem": "http://www.cdisc.org",
@@ -14324,13 +14324,13 @@
                     "instanceType": "ResponseCode"
                   },
                   {
-                    "id": "ResponseCode_78",
+                    "id": "ResponseCode_88",
                     "extensionAttributes": [],
                     "name": "RC_C25228",
                     "label": "",
                     "isEnabled": true,
                     "code": {
-                      "id": "Code_530",
+                      "id": "Code_543",
                       "extensionAttributes": [],
                       "code": "C25228",
                       "codeSystem": "http://www.cdisc.org",
@@ -14342,10 +14342,10 @@
                   }
                 ],
                 "code": {
-                  "id": "AliasCode_98",
+                  "id": "AliasCode_101",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_531",
+                    "id": "Code_544",
                     "extensionAttributes": [],
                     "code": "C25185",
                     "codeSystem": "http://www.cdisc.org",
@@ -14360,7 +14360,7 @@
                 "instanceType": "BiomedicalConceptProperty"
               },
               {
-                "id": "BiomedicalConceptProperty_77",
+                "id": "BiomedicalConceptProperty_80",
                 "extensionAttributes": [],
                 "name": "VSDTC",
                 "label": "VSDTC",
@@ -14369,10 +14369,10 @@
                 "datatype": "",
                 "responseCodes": [],
                 "code": {
-                  "id": "AliasCode_99",
+                  "id": "AliasCode_102",
                   "extensionAttributes": [],
                   "standardCode": {
-                    "id": "Code_532",
+                    "id": "Code_545",
                     "extensionAttributes": [],
                     "code": "C82515",
                     "codeSystem": "http://www.cdisc.org",
@@ -14388,10 +14388,10 @@
               }
             ],
             "code": {
-              "id": "AliasCode_100",
+              "id": "AliasCode_103",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_533",
+                "id": "Code_546",
                 "extensionAttributes": [],
                 "code": "C25299",
                 "codeSystem": "http://www.cdisc.org",
@@ -14414,7 +14414,7 @@
               "Adverse Event",
               "Solicited Adverse Event"
             ],
-            "reference": "/mdr/specializations/sdtm/packages/2025-04-01/datasetspecializations/AEPRESP",
+            "reference": "/mdr/specializations/sdtm/packages/2025-07-01/datasetspecializations/AEPRESP",
             "properties": [
               {
                 "id": "BiomedicalConceptProperty_1",
@@ -15485,13 +15485,266 @@
                 },
                 "notes": [],
                 "instanceType": "BiomedicalConceptProperty"
+              },
+              {
+                "id": "BiomedicalConceptProperty_27",
+                "extensionAttributes": [],
+                "name": "AEENRF",
+                "label": "AEENRF",
+                "isRequired": true,
+                "isEnabled": true,
+                "datatype": "text",
+                "responseCodes": [
+                  {
+                    "id": "ResponseCode_22",
+                    "extensionAttributes": [],
+                    "name": "RC_C25629",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_413",
+                      "extensionAttributes": [],
+                      "code": "C25629",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Prior",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_23",
+                    "extensionAttributes": [],
+                    "name": "RC_C25490",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_414",
+                      "extensionAttributes": [],
+                      "code": "C25490",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "During",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_24",
+                    "extensionAttributes": [],
+                    "name": "RC_C49640",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_415",
+                      "extensionAttributes": [],
+                      "code": "C49640",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "During or After",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_25",
+                    "extensionAttributes": [],
+                    "name": "RC_C38008",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_416",
+                      "extensionAttributes": [],
+                      "code": "C38008",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Post",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_26",
+                    "extensionAttributes": [],
+                    "name": "RC_C17998",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_417",
+                      "extensionAttributes": [],
+                      "code": "C17998",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Unknown",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  }
+                ],
+                "code": {
+                  "id": "AliasCode_37",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_418",
+                    "extensionAttributes": [],
+                    "code": "C82557",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2024-09-27",
+                    "decode": "End Relative to Reference Period",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "notes": [],
+                "instanceType": "BiomedicalConceptProperty"
+              },
+              {
+                "id": "BiomedicalConceptProperty_28",
+                "extensionAttributes": [],
+                "name": "AEENRTPT",
+                "label": "AEENRTPT",
+                "isRequired": true,
+                "isEnabled": true,
+                "datatype": "text",
+                "responseCodes": [
+                  {
+                    "id": "ResponseCode_27",
+                    "extensionAttributes": [],
+                    "name": "RC_C25629",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_419",
+                      "extensionAttributes": [],
+                      "code": "C25629",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Prior",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_28",
+                    "extensionAttributes": [],
+                    "name": "RC_C25456",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_420",
+                      "extensionAttributes": [],
+                      "code": "C25456",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Concurrent",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_29",
+                    "extensionAttributes": [],
+                    "name": "RC_C38008",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_421",
+                      "extensionAttributes": [],
+                      "code": "C38008",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Post",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_30",
+                    "extensionAttributes": [],
+                    "name": "RC_C53279",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_422",
+                      "extensionAttributes": [],
+                      "code": "C53279",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Continue",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  },
+                  {
+                    "id": "ResponseCode_31",
+                    "extensionAttributes": [],
+                    "name": "RC_C17998",
+                    "label": "",
+                    "isEnabled": true,
+                    "code": {
+                      "id": "Code_423",
+                      "extensionAttributes": [],
+                      "code": "C17998",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Unknown",
+                      "instanceType": "Code"
+                    },
+                    "instanceType": "ResponseCode"
+                  }
+                ],
+                "code": {
+                  "id": "AliasCode_38",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_424",
+                    "extensionAttributes": [],
+                    "code": "C82558",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2024-09-27",
+                    "decode": "End Relative to Reference Time Point",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "notes": [],
+                "instanceType": "BiomedicalConceptProperty"
+              },
+              {
+                "id": "BiomedicalConceptProperty_29",
+                "extensionAttributes": [],
+                "name": "AEENTPT",
+                "label": "AEENTPT",
+                "isRequired": true,
+                "isEnabled": true,
+                "datatype": "text",
+                "responseCodes": [],
+                "code": {
+                  "id": "AliasCode_39",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_425",
+                    "extensionAttributes": [],
+                    "code": "C82574",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2024-09-27",
+                    "decode": "Reference End Time Point End",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "notes": [],
+                "instanceType": "BiomedicalConceptProperty"
               }
             ],
             "code": {
-              "id": "AliasCode_37",
+              "id": "AliasCode_40",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_413",
+                "id": "Code_426",
                 "extensionAttributes": [],
                 "code": "C179175",
                 "codeSystem": "http://www.cdisc.org",
@@ -15969,7 +16222,7 @@
         "label": null,
         "description": null,
         "language": {
-          "id": "Code_611",
+          "id": "Code_624",
           "extensionAttributes": [],
           "code": "en",
           "codeSystem": "ISO",
@@ -15978,7 +16231,7 @@
           "instanceType": "Code"
         },
         "type": {
-          "id": "Code_612",
+          "id": "Code_625",
           "extensionAttributes": [],
           "code": "C12345",
           "codeSystem": "http://www.cdisc.org",
@@ -17793,5 +18046,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "CDISC USDM E2J",
-  "systemVersion": "0.62.0"
+  "systemVersion": "0.63.0"
 }
