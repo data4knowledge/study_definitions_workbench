@@ -1,3 +1,7 @@
+<h5>Release 0.35.1, 2025-07-26</h5>
+
+- Bug fix (issue 35)
+
 <h5>Release 0.35.0, 2025-07-26</h5>
 
 - Update to new USDM4_M11 package (issue 30)

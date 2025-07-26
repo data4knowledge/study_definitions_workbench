@@ -171,7 +171,7 @@ class USDMJson:
             result["population_age"] = (
                 self._population_age(design)
                 if design["population"]
-                else {"min": 0, "max": 0, "unit": ""}
+                else self._missing_ages()
             )
             result["population_type"] = (
                 "Adult" if result["population_age"]["min"] >= 18 else "Child"
@@ -659,7 +659,7 @@ class USDMJson:
         )
 
     def _missing_ages(self):
-        return {"min": "[min age]", "max": "[max age]", "min_unit": "", "max_unit": ""}
+        return {"min": 0, "max": 0, "min_unit": "", "max_unit": ""}
     
     def _population_recruitment(self, study_design: dict) -> dict:
         try:
