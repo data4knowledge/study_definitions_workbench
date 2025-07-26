@@ -126,6 +126,12 @@ docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:lat
 docker manifest inspect data4knowledge/sdw:<tag>  
 ```
 
+As an example, if no latest build then and building v0.1.0 it would be
+
+```
+docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:v0.1.0 . --push
+```
+
 ## Environment Variables with Docker Image
 
 The following environment variables need to be set (The remainder are set within the docker file itself):
