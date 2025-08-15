@@ -47,12 +47,25 @@ def import_usdm(request: Request, session: Session = Depends(get_db)):
     )
 
 
-@router.get("/m11", dependencies=[Depends(protect_endpoint)])
-def import_m11(request: Request, session: Session = Depends(get_db)):
+@router.get("/m11-docx", dependencies=[Depends(protect_endpoint)])
+def import_m11_docx(request: Request, session: Session = Depends(get_db)):
     return _import_setup(
-        request, session, "docx", False, "/import/m11", "import/import_m11.html"
+        request, session, "docx", False, "/import/m11", "import/import_m11_docx.html"
     )
 
+
+@router.get("/cpt-docx", dependencies=[Depends(protect_endpoint)])
+def import_cpt_docx(request: Request, session: Session = Depends(get_db)):
+    return _import_setup(
+        request, session, "docx", False, "/import/m11", "import/import_cpt_docx.html"
+    )
+
+
+@router.get("/legacy-pdf", dependencies=[Depends(protect_endpoint)])
+def import_legacy_docx(request: Request, session: Session = Depends(get_db)):
+    return _import_setup(
+        request, session, "pdf", False, "/import/m11", "import/import_legacy_pdf.html"
+    )
 
 @router.get("/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
@@ -89,6 +102,26 @@ async def import_m11_process(
 ):
     user, present_in_db = user_details(request, session)
     return await RequestHandler(ImportManager.M11_DOCX, source).process(
+        request, templates, user
+    )
+
+
+@router.post("/cpt-docx", dependencies=[Depends(protect_endpoint)])
+async def import_cpt_docx_process(
+    request: Request, source: str = "browser", session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    return await RequestHandler(ImportManager.CPT_DOCX, source).process(
+        request, templates, user
+    )
+
+
+@router.post("/legacy-pdf", dependencies=[Depends(protect_endpoint)])
+async def import_legacy_pdf__process(
+    request: Request, source: str = "browser", session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    return await RequestHandler(ImportManager.LEGACY_PDF, source).process(
         request, templates, user
     )
 

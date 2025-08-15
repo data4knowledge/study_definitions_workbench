@@ -2,6 +2,9 @@ import json
 from d4k_ms_base.logger import application_logger
 from usdm_db import USDMDb
 from usdm4_m11 import USDM4M11
+from usdm4_cpt import USDM4CPT
+from usdm4_legacy import USDM4Legacy
+from usdm4.api.wrapper import Wrapper
 from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
@@ -92,12 +95,34 @@ class ImportExcel(ImportProcessorBase):
         return True
 
 
-class ImportWord(ImportProcessorBase):
+class ImportM11(ImportProcessorBase):
     async def process(self) -> bool:
         m11 = USDM4M11()
         self.usdm = await m11.from_docx(self.full_path)
         self.extra = m11.extra()
         self.errors = m11.errors.dump(sel.Errors.INFO)
+        self.study_parameters = self._study_parameters()
+        return True
+
+
+class ImportCPT(ImportProcessorBase):
+    async def process(self) -> bool:
+        importer = USDM4CPT()
+        wrapper: Wrapper = importer.from_docx(self.full_path)
+        self.usdm = wrapper.to_json()
+        #self.extra = importer.extra()
+        self.errors = importer.errors.dump(sel.Errors.INFO)
+        self.study_parameters = self._study_parameters()
+        return True
+
+
+class ImportLegacy(ImportProcessorBase):
+    async def process(self) -> bool:
+        importer = USDM4Legacy()
+        wrapper: Wrapper = importer.from_pdf(self.full_path)
+        self.usdm = wrapper.to_json()
+        #self.extra = importer.extra()
+        self.errors = importer.errors.dump(sel.Errors.INFO)
         self.study_parameters = self._study_parameters()
         return True
 

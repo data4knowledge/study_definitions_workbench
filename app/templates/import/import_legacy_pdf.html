@@ -1,0 +1,27 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+
+{% block main_content %}
+  {% if data['pfda'] or data['os'] %}
+    <div class="mt-3 row row-cols-2">
+      <div class="col">
+        {% with url="/import/legacy/fileList", title="Import Legacy Protocol", subtitle="Import for a Legacy formatted '.pdf' file. This import takes a considerable anount of time to execute.", text="Select a single Legacy file", data=data %}
+          {% include "import/partials/other_file_select.html" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% else %}
+    <div class="mt-3 row row-cols-2">
+      <div class="col">
+        {% with url="/import/legacy-pdf", title="Import Legacy Protocol", subtitle="Import for a Legacy formatted '.pdf' file", text="Select a single Legacy file. This import takes a considerable anount of time to execute.", disable=False %}
+          {% include "import/partials/browser_file_select.html" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

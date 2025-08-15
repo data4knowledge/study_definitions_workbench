@@ -64,7 +64,7 @@ class DataFiles:
             },
             "protocol": {
                 "method": self._save_pdf_file,
-                "use_original": False,
+                "use_original": True,
                 "filename": "protocol",
                 "extension": "pdf",
             },

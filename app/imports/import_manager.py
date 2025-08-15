@@ -9,7 +9,9 @@ from app.database.user import User
 from app.model.connection_manager import connection_manager
 from app.imports.import_processors import (
     ImportExcel,
-    ImportWord,
+    ImportM11,
+    ImportCPT,
+    ImportLegacy,
     ImportFhirV1,
     ImportUSDM3,
     ImportUSDM4,
@@ -20,6 +22,8 @@ from app.imports.import_processors import (
 class ImportManager:
     USDM_EXCEL = "USDM_EXCEL"
     M11_DOCX = "M11_DOCX"
+    CPT_DOCX = "CPT_DOCX"
+    LEGACY_PDF = "LEGACY_PDF"
     FHIR_V1_JSON = "FHIR_V1_JSON"
     # FHIR_V2_JSON = "FHIR_V2_JSON"
     USDM3_JSON = "USDM3_JSON"
@@ -34,9 +38,21 @@ class ImportManager:
                 "images": True,
             },
             self.M11_DOCX: {
-                "processor": ImportWord,
+                "processor": ImportM11,
                 "main_file_type": "docx",
                 "main_file_ext": ".docx",
+                "images": False,
+            },
+            self.CPT_DOCX: {
+                "processor": ImportCPT,
+                "main_file_type": "docx",
+                "main_file_ext": ".docx",
+                "images": False,
+            },
+            self.LEGACY_PDF: {
+                "processor": ImportLegacy,
+                "main_file_type": "protocol",
+                "main_file_ext": ".pdf",
                 "images": False,
             },
             self.FHIR_V1_JSON: {
@@ -82,6 +98,14 @@ class ImportManager:
         return value == cls.M11_DOCX
 
     @classmethod
+    def is_cpt_docx_import(cls, value: str) -> bool:
+        return value == cls.CPT_DOCX
+
+    @classmethod
+    def is_legacy_pdf_import(cls, value: str) -> bool:
+        return value == cls.LEGACY_PDF
+
+    @classmethod
     def is_usdm_excel_import(cls, value: str) -> bool:
         return value == cls.USDM_EXCEL
 
@@ -102,8 +126,8 @@ class ImportManager:
             self.files = DataFiles()
             self.uuid = self.files.new()
             self.original_filename = main_file["filename"]
-            # print(f"********** Original filename: {self.original_filename}")
-            # print(f"********** Main file type: {self.main_file_type}")
+            print(f"********** Original filename: {self.original_filename}")
+            print(f"********** Main file type: {self.main_file_type}")
             self._save_file(main_file, self.main_file_type)
             for image_file in image_files:
                 self._save_file(image_file, "image")

@@ -1,3 +1,7 @@
+<h5>Release 0.36.0, 2025-07-26</h5>
+
+- Updates for CPT and Legacy protocol handling. This includes updates for DDF CT and code list C188724 (issue nn)
+
 <h5>Release 0.35.1, 2025-07-26</h5>
 
 - Bug fix (issue 35)

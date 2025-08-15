@@ -1,0 +1,27 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+
+{% block main_content %}
+  {% if data['pfda'] or data['os'] %}
+    <div class="mt-3 row row-cols-2">
+      <div class="col">
+        {% with url="/import/cpt/fileList", title="Import CPT Protocol", subtitle="Import for a CPT formatted '.docx' file", text="Select a single CPT file", data=data %}
+          {% include "import/partials/other_file_select.html" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% else %}
+    <div class="mt-3 row row-cols-2">
+      <div class="col">
+        {% with url="/import/cpt-docx", title="Import CPT Protocol", subtitle="Import for a CPT formatted '.docx' file", text="Select a single CPT file", disable=False %}
+          {% include "import/partials/browser_file_select.html" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
