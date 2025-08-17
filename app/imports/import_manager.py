@@ -89,6 +89,8 @@ class ImportManager:
         return [
             cls.USDM_EXCEL,
             cls.M11_DOCX,
+            cls.CPT_DOCX,
+            cls.LEGACY_PDF,
             cls.USDM3_JSON,
             cls.USDM4_JSON,
         ]

@@ -99,7 +99,7 @@ class ImportM11(ImportProcessorBase):
     async def process(self) -> bool:
         m11 = USDM4M11()
         self.usdm = await m11.from_docx(self.full_path)
-        self.extra = m11.extra()
+        self.extra = m11.extra
         self.errors = m11.errors.dump(sel.Errors.INFO)
         self.study_parameters = self._study_parameters()
         return True
@@ -110,7 +110,7 @@ class ImportCPT(ImportProcessorBase):
         importer = USDM4CPT()
         wrapper: Wrapper = importer.from_docx(self.full_path)
         self.usdm = wrapper.to_json()
-        #self.extra = importer.extra()
+        self.extra = importer.extra
         self.errors = importer.errors.dump(sel.Errors.INFO)
         self.study_parameters = self._study_parameters()
         return True
@@ -121,7 +121,7 @@ class ImportLegacy(ImportProcessorBase):
         importer = USDM4Legacy()
         wrapper: Wrapper = importer.from_pdf(self.full_path)
         self.usdm = wrapper.to_json()
-        #self.extra = importer.extra()
+        self.extra = importer.extra
         self.errors = importer.errors.dump(sel.Errors.INFO)
         self.study_parameters = self._study_parameters()
         return True
