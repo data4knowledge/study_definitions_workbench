@@ -98,10 +98,10 @@ class ImportExcel(ImportProcessorBase):
 class ImportM11(ImportProcessorBase):
     async def process(self) -> bool:
         m11 = USDM4M11()
-        self.usdm = await m11.from_docx(self.full_path)
+        self.usdm = m11.from_docx(self.full_path)
         self.extra = m11.extra
-        self.errors = m11.errors.to_dict(sel.Errors.INFO)
         self.study_parameters = self._study_parameters()
+        self.errors = m11.errors.to_dict(sel.Errors.INFO)
         return True
 
 
