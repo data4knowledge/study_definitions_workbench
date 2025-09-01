@@ -97,11 +97,14 @@ class ImportExcel(ImportProcessorBase):
 
 class ImportM11(ImportProcessorBase):
     async def process(self) -> bool:
-        m11 = USDM4M11()
-        self.usdm = m11.from_docx(self.full_path)
-        self.extra = m11.extra
-        self.study_parameters = self._study_parameters()
-        self.errors = m11.errors.to_dict(sel.Errors.INFO)
+        importer = USDM4M11()
+        wrapper: Wrapper = importer.from_docx(self.full_path)
+        print(f"ERRORS: {importer.errors.dump(sel.Errors.DEBUG)}")
+        if wrapper:
+            self.usdm = wrapper.to_json()
+            self.extra = importer.extra
+            self.study_parameters = self._study_parameters()
+        self.errors = importer.errors.to_dict(sel.Errors.INFO)
         return True
 
 
