@@ -42,7 +42,7 @@ def mock_usdm_study_version(mocker, path="app.main"):
         {
             "id": "1",
             "version_identifier": "1",
-            "identifiers": {"Clinical Study Sponsor": "Identifier For Test"},
+            "identifiers": {"Pharmaceutical Company": "Identifier For Test"},
             "titles": {"Official Study Title": "The Offical Study Title For Test"},
             "study_designs": {
                 "xxx": {
