@@ -123,6 +123,8 @@ Note: Don't use "latest" at the moment.
 ````
 docker buildx create --name mybuilder --use
 docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:latest -t data4knowledge/sdw:<tag> . --push
+OR
+docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:<tag> . --push
 docker manifest inspect data4knowledge/sdw:<tag>  
 ```
 
