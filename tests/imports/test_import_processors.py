@@ -1,9 +1,10 @@
 import pytest
 from unittest.mock import MagicMock, patch, AsyncMock
+from usdm4.api.wrapper import Wrapper
 from app.imports.import_processors import (
     ImportProcessorBase,
     ImportExcel,
-    ImportWord,
+    ImportM11,
     ImportFhirV1,
     ImportUSDM3,
     ImportUSDM4,
@@ -27,15 +28,16 @@ def mock_m11_protocol():
     """Mock the M11Protocol class."""
     with patch("app.imports.import_processors.USDM4M11") as mock:
         instance = mock.return_value
-        instance.from_docx = AsyncMock()
-        instance.from_docx.return_value = (
-            '{"study": {"name": "test-study"}, "usdmVersion": "1.2.3"}'
-        )
-        instance.extra.return_value = {
+        mock_wrapper = MagicMock()
+        mock_wrapper.to_json.return_value = '{"study": {"name": "test-study"}}'
+        instance.from_docx.return_value = mock_wrapper
+        instance.extra = {
             "title_page": {},
             "amendment": {},
             "miscellaneous": {},
         }
+        instance.errors.to_dict.return_value = {"errors": []}
+        instance.errors.dump.return_value = "No errors"
         yield mock
 
 
@@ -231,25 +233,27 @@ class TestImportExcel:
         assert processor.errors == mock_usdm_db.return_value.from_excel.return_value
 
 
-class TestImportWord:
-    """Tests for the ImportWord class."""
+class TestImportM11:
+    """Tests for the ImportM11 class."""
 
     @pytest.mark.asyncio
     async def test_process(self, mock_m11_protocol):
         """Test process method."""
         # Setup
-        processor = ImportWord("M11_DOCX", "test-uuid", "/path/to/file")
+        processor = ImportM11("M11_DOCX", "test-uuid", "/path/to/file")
 
-        # Execute
-        result = await processor.process()
+        # Mock the _study_parameters method to avoid the error with version.phases()
+        with patch.object(processor, '_study_parameters', return_value={"name": "test-study-M11_DOCX"}):
+            # Execute
+            result = await processor.process()
 
         # Assert
         assert result == True
         mock_m11_protocol.assert_called_once()
         mock_m11_protocol.return_value.from_docx.assert_called_once()
-        mock_m11_protocol.return_value.extra.assert_called_once()
-        assert processor.usdm == mock_m11_protocol.return_value.from_docx.return_value
-        assert processor.extra == mock_m11_protocol.return_value.extra.return_value
+        assert processor.usdm == mock_m11_protocol.return_value.from_docx.return_value.to_json.return_value
+        assert processor.extra == mock_m11_protocol.return_value.extra
+        assert processor.errors == mock_m11_protocol.return_value.errors.to_dict.return_value
 
 
 class TestImportFhirV1:

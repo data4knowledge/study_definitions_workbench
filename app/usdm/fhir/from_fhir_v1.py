@@ -243,7 +243,7 @@ class FromFHIRV1:
 
         # Build
         intervention_model_code = self._cdisc_ct_code("C82639", "Parallel Study")
-        sponsor_code = self._cdisc_ct_code("C70793", "Clinical Study Sponsor")
+        sponsor_code = self._cdisc_ct_code("C54149", "Pharmaceutical Company")
         empty_population = self._model_instance(
             StudyDesignPopulation,
             {

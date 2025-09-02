@@ -4,7 +4,7 @@ from app.imports.import_manager import ImportManager, execute_import
 from app.database.user import User
 from app.imports.import_processors import (
     ImportExcel,
-    ImportWord,
+    ImportM11,
     ImportFhirV1,
     ImportUSDM3,
     ImportUSDM4,
@@ -110,7 +110,7 @@ class TestImportManager:
         manager = ImportManager(mock_user, ImportManager.M11_DOCX)
         assert manager.user == mock_user
         assert manager.type == ImportManager.M11_DOCX
-        assert manager.processor == ImportWord
+        assert manager.processor == ImportM11
         assert manager.main_file_type == "docx"
         assert manager.main_file_ext == ".docx"
         assert manager.images is False
