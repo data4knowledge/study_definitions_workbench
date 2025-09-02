@@ -2961,10 +2961,10 @@
             "type": {
               "id": "Code_11",
               "extensionAttributes": [],
-              "code": "C70793",
+              "code": "C54149",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2024-09-27",
-              "decode": "Clinical Study Sponsor",
+              "decode": "Pharmaceutical Company",
               "instanceType": "Code"
             },
             "identifierScheme": "DUNS",
@@ -8830,5 +8830,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "d4k Study Definitions Workbench",
-  "systemVersion": "0.35.1"
+  "systemVersion": "0.36.0-alpha.1"
 }

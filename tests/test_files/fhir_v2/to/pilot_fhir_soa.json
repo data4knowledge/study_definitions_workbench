@@ -15,14 +15,14 @@
         "identifier": [
           {
             "type": {
-              "text": "Clinical Study Sponsor"
+              "text": "Pharmaceutical Company"
             },
             "system": "https://example.org/sponsor-identifier",
             "value": "H2Q-MC-LZZT"
           },
           {
             "type": {
-              "text": "Study Registry"
+              "text": "Clinical Study Registry"
             },
             "system": "https://example.org/sponsor-identifier",
             "value": "NCT12345678"
@@ -44,7 +44,7 @@
                 {
                   "system": "http://www.cdisc.org",
                   "version": "2024-09-27",
-                  "code": "C94108",
+                  "code": "C207646",
                   "display": "Study Acronym"
                 }
               ]
@@ -57,7 +57,7 @@
                 {
                   "system": "http://www.cdisc.org",
                   "version": "2024-09-27",
-                  "code": "C99905x1",
+                  "code": "C207615",
                   "display": "Brief Study Title"
                 }
               ]
