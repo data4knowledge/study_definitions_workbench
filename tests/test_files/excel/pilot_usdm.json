@@ -5953,10 +5953,10 @@
             "type": {
               "id": "Code_1",
               "extensionAttributes": [],
-              "code": "C70793",
+              "code": "C54149",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2024-09-27",
-              "decode": "Clinical Study Sponsor",
+              "decode": "Pharmaceutical Company",
               "instanceType": "Code"
             },
             "identifierScheme": "DUNS",
@@ -5997,7 +5997,7 @@
               "code": "C93453",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2024-09-27",
-              "decode": "Study Registry",
+              "decode": "Clinical Study Registry",
               "instanceType": "Code"
             },
             "identifierScheme": "USGOV",
@@ -6035,10 +6035,10 @@
             "type": {
               "id": "Code_5",
               "extensionAttributes": [],
-              "code": "C70793",
+              "code": "C21541",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2024-09-27",
-              "decode": "Clinical Study Sponsor",
+              "decode": "Healthcare Facility",
               "instanceType": "Code"
             },
             "identifierScheme": "DUNS",
@@ -16840,10 +16840,10 @@
         "type": {
           "id": "Code_694",
           "extensionAttributes": [],
-          "code": "C12345",
+          "code": "C70817",
           "codeSystem": "http://www.cdisc.org",
           "codeSystemVersion": "2024-09-27",
-          "decode": "Decode",
+          "decode": "Protocol",
           "instanceType": "Code"
         },
         "templateName": "LILLY",
@@ -18080,10 +18080,10 @@
         "type": {
           "id": "Code_700",
           "extensionAttributes": [],
-          "code": "C12345",
+          "code": "C70817",
           "codeSystem": "http://www.cdisc.org",
           "codeSystemVersion": "2024-09-27",
-          "decode": "Decode",
+          "decode": "Protocol",
           "instanceType": "Code"
         },
         "templateName": "M11",
@@ -20511,5 +20511,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "CDISC USDM E2J",
-  "systemVersion": "0.63.0"
+  "systemVersion": "0.64.0"
 }
