@@ -3,6 +3,7 @@ import pytest
 from tests.files.files import *
 from app.model.file_handling.data_files import DataFiles
 from usdm4_m11 import USDM4M11
+from usdm4.api.wrapper import Wrapper
 
 SAVE = False
 
@@ -20,7 +21,8 @@ async def _run_test(dir, name, save=False):
     files.save("docx", contents, filename)
     filepath, filename, media = files.path("docx")
     m11 = USDM4M11()
-    result = await m11.from_docx(filepath)
+    wrapper: Wrapper = m11.from_docx(filepath)
+    result = wrapper.to_json()
     result = replace_uuid(result)
     pretty_result = json.dumps(json.loads(result), indent=2)
     result_filename = filename = f"{name}_usdm.json"
