@@ -22,7 +22,7 @@ def test_import_m11(mocker, monkeypatch):
         "pfda": False,
         "source": "os",
     }
-    response = client.get("/import/m11")
+    response = client.get("/import/m11-docx")
     assert response.status_code == 200
     assert '<h4 class="card-title">Import M11 Protocol</h4>' in response.text
     assert """<p>Select a single M11 file</p>""" in response.text
