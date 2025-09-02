@@ -175,7 +175,7 @@ mount/datafiles/*/
 mount/localfiles/*
 
 # Test Database
-tests/test_files/mount/database/test_database.db
+tests/test_files/mount/database/*
 tests/test_files/mount/datafiles/*/
 tests/test_files/mount/localfiles/*/
 
