@@ -4,8 +4,8 @@ from usdm_db import USDMDb
 from usdm4_m11 import USDM4M11
 from usdm4_cpt import USDM4CPT
 from usdm4_legacy import USDM4Legacy
+from usdm4_fhir import M11
 from usdm4.api.wrapper import Wrapper
-from app.usdm.fhir.from_fhir_v1 import FromFHIRV1
 from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
 from usdm4 import USDM4
@@ -133,12 +133,38 @@ class ImportLegacy(ImportProcessorBase):
         return True
 
 
-class ImportFhirV1(ImportProcessorBase):
+class ImportFhirPRISM2(ImportProcessorBase):
     async def process(self) -> bool:
-        fhir = FromFHIRV1(self.uuid)
-        self.usdm = await fhir.to_usdm()
-        self.study_parameters = self._study_parameters()
-        return True
+        importer = M11()
+        wrapper: Wrapper = await importer.from_message(self.full_path)
+        if wrapper:
+            self.usdm = wrapper.to_json()
+            self.extra = importer.extra
+            self.study_parameters = self._study_parameters()
+            self.errors = importer.errors.to_dict(sel.Errors.INFO)
+            self.success = True
+        else:
+            self.success = False
+            self.errors = importer.errors.to_dict(sel.Errors.INFO)
+            self.fatal_error = "FHIR (PRISM2) import failed, check the error file"
+        return self.success
+
+
+class ImportFhirPRISM3(ImportProcessorBase):
+    async def process(self) -> bool:
+        importer = M11()
+        wrapper: Wrapper = await importer.from_message(self.full_path)
+        if wrapper:
+            self.usdm = wrapper.to_json()
+            self.extra = importer.extra
+            self.study_parameters = self._study_parameters()
+            self.errors = importer.errors.to_dict(sel.Errors.INFO)
+            self.success = True
+        else:
+            self.success = False
+            self.errors = importer.errors.to_dict(sel.Errors.INFO)
+            self.fatal_error = "FHIR (PRISM3) import failed, check the error file"
+        return self.success
 
 
 class ImportUSDM3(ImportProcessorBase):

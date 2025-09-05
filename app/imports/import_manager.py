@@ -12,7 +12,8 @@ from app.imports.import_processors import (
     ImportM11,
     ImportCPT,
     ImportLegacy,
-    ImportFhirV1,
+    ImportFhirPRISM2,
+    ImportFhirPRISM3,
     ImportUSDM3,
     ImportUSDM4,
     ImportProcessorBase,
@@ -24,8 +25,8 @@ class ImportManager:
     M11_DOCX = "M11_DOCX"
     CPT_DOCX = "CPT_DOCX"
     LEGACY_PDF = "LEGACY_PDF"
-    FHIR_V1_JSON = "FHIR_V1_JSON"
-    # FHIR_V2_JSON = "FHIR_V2_JSON"
+    FHIR_PRISM2_JSON = "FHIR_PRISM2_JSON"
+    FHIR_PRISM3_JSON = "FHIR_PRISM2_JSON"
     USDM3_JSON = "USDM3_JSON"
     USDM4_JSON = "USDM4_JSON"
 
@@ -55,8 +56,14 @@ class ImportManager:
                 "main_file_ext": ".pdf",
                 "images": False,
             },
-            self.FHIR_V1_JSON: {
-                "processor": ImportFhirV1,
+            self.FHIR_PRISM2_JSON: {
+                "processor": ImportFhirPrism2,
+                "main_file_type": "fhir",
+                "main_file_ext": ".json",
+                "images": False,
+            },
+            self.FHIR_PRISM3_JSON: {
+                "processor": ImportFhirPrism3,
                 "main_file_type": "fhir",
                 "main_file_ext": ".json",
                 "images": False,
@@ -93,6 +100,8 @@ class ImportManager:
             cls.LEGACY_PDF,
             cls.USDM3_JSON,
             cls.USDM4_JSON,
+            cls.FHIR_PRISM2_JSON,
+            cls.FHIR_PRISM3_JSON
         ]
 
     @classmethod
@@ -112,8 +121,12 @@ class ImportManager:
         return value == cls.USDM_EXCEL
 
     @classmethod
-    def is_fhir_v1_import(cls, value: str) -> bool:
-        return value == cls.FHIR_V1_JSON
+    def is_fhir_prism2_import(cls, value: str) -> bool:
+        return value == cls.FHIR_PRISM2_JSON
+
+    @classmethod
+    def is_fhir_prism3_import(cls, value: str) -> bool:
+        return value == cls.FHIR_PRISM3_JSON
 
     @classmethod
     def is_usdm3_json_import(cls, value: str) -> bool:

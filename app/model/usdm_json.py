@@ -3,10 +3,7 @@ import yaml
 import warnings
 from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
-from app.usdm.fhir.to_fhir_v1 import ToFHIRV1
-from app.usdm.fhir.to_fhir_v2 import ToFHIRV2
-from usdm4_fhir import M11
-from app.usdm.fhir.soa.to_fhir_soa import ToFHIRSoA
+from usdm4_fhir import M11 as FHIRM11
 from app.database.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
@@ -49,30 +46,30 @@ class USDMJson:
                 return self.fhir_v1_data()
 
     def fhir_v1_data(self):
-        # print(f"FHIR: VER 1 DATA")
+        print(f"FHIR: VER 1 DATA")
         usdm = USDM4()
         wrapper = usdm.from_json(self._data)
         study = wrapper.study
-        fhir = ToFHIRV1(study, self.uuid, self._extra)
-        return fhir.to_fhir()
+        fhir = FHIRM11(study, self._extra, FHIRM11.PRISM)
+        return fhir.to_message()
 
-    def fhir_v2_data(self):
-        # print(f"FHIR: VER 2 DATA")
-        usdm = USDM4()
-        wrapper = usdm.from_json(self._data)
-        study = wrapper.study
-        fhir = ToFHIRV2(study, self.uuid, self._extra)
-        data = fhir.to_fhir()
-        self._files.save("fhir_v2", data)
-        return data
+    # def fhir_v2_data(self):
+    #     # print(f"FHIR: VER 2 DATA")
+    #     usdm = USDM4()
+    #     wrapper = usdm.from_json(self._data)
+    #     study = wrapper.study
+    #     fhir = ToFHIRV2(study, self.uuid, self._extra)
+    #     data = fhir.to_fhir()
+    #     self._files.save("fhir_v2", data)
+    #     return data
 
     def fhir_v3_data(self):
         print("FHIR: VER 3 DATA")
         usdm = USDM4()
         wrapper = usdm.from_json(self._data)
         study = wrapper.study
-        fhir = M11()
-        data = fhir.to_m11(study, self._extra)
+        fhir = FHIRM11(study, self._extra, FHIRM11.MADRID)
+        data = fhir.to_message()
         self._files.save("fhir_v3", data)
         return data
 
