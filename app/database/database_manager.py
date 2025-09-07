@@ -57,8 +57,8 @@ class DatabaseManager:
 
     def migrate(self):
         version = self._get_version()
-        # print(f"VERSION: {version}")
-        if version != 31:  # Do it anyway
+        application_logger.info(f"Database version: v{version}")
+        if version < 31:  # Do it anyway
             cursor = self.session.connection().connection.cursor()
             new_types = (
                 {"old": "", "new": "1111"},
@@ -69,6 +69,18 @@ class DatabaseManager:
             cursor.executemany("UPDATE import SET type=:new WHERE type=:old", new_types)
             cursor.execute("pragma user_version = 31")
             self.session.commit()
+            application_logger.info("Database migrated to v31")
+        elif version == 31:
+            cursor = self.session.connection().connection.cursor()
+            new_types = (
+                {"old": "FHIR_V1_JSON", "new": "FHIR_PRISM2_JSON"},
+            )
+            cursor.executemany("UPDATE import SET type=:new WHERE type=:old", new_types)
+            cursor.execute("pragma user_version = 32")
+            self.session.commit()
+            application_logger.info("Database migrated to v32")
+        else:
+            application_logger.info("No database migration")
 
     def _get_version(self):
         cursor = self.session.connection().connection.cursor()
