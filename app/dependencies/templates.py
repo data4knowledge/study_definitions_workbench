@@ -7,7 +7,11 @@ from app.utility.template_methods import (
     single_multiple,
     title_page_study_list_headings,
 )
-from app.dependencies.fhir_version import fhir_version_description
+from app.dependencies.fhir_version import (
+    fhir_version_description, 
+    fhir_version_export, 
+    fhir_version_import
+)
 from app.imports.import_manager import ImportManager
 
 full_path = os.path.realpath(__file__)
@@ -18,6 +22,8 @@ application_logger.info(f"Template dir set to '{templates_path}'")
 templates.env.globals["server_name"] = server_name
 templates.env.globals["single_multiple"] = single_multiple
 templates.env.globals["fhir_version_description"] = fhir_version_description
+templates.env.globals["fhir_version_import"] = fhir_version_import
+templates.env.globals["fhir_version_export"] = fhir_version_export
 templates.env.globals["title_page_study_list_headings"] = title_page_study_list_headings
 templates.env.globals["imports_with_errors"] = ImportManager.imports_with_errors
 templates.env.globals["is_m11_docx_import"] = ImportManager.is_m11_docx_import

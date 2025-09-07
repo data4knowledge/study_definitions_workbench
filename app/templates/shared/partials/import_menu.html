@@ -10,9 +10,11 @@
     <a class="dropdown-item" href="/import/usdm3">USDM v3 (.json)</a>
     <a class="dropdown-item" href="/import/usdm">USDM v4 (.json)</a>
     {% for version in data['fhir']['versions'] %}
-      {% set title = "M11 FHIR" %}
-      {% set desc = fhir_version_description(version) %}
-      <a class="dropdown-item" href="/import/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
+      {% if fhir_version_import(version) %}    
+        {% set title = "M11 FHIR" %}
+        {% set desc = fhir_version_description(version) %}
+        <a class="dropdown-item" href="/import/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
+      {% endif %}
     {% endfor %}
     <a class="dropdown-item" href="/import/status?page=1&size=10">Import Status</a>
   </div>
