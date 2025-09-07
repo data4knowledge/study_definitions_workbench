@@ -138,10 +138,12 @@ async def import_xl_process(
 
 @router.post("/fhir", dependencies=[Depends(protect_endpoint)])
 async def import_fhir_process(
-    request: Request, source: str = "browser", session: Session = Depends(get_db)
+    request: Request, version: str, source: str = "browser", session: Session = Depends(get_db)
 ):
+    application_logger.info(f"FHIR version: {version}")
     user, present_in_db = user_details(request, session)
-    return await RequestHandler(ImportManager.FHIR_PRISM2_JSON, source).process(
+    request_version = ImportManager.FHIR_PRISM3_JSON if version == "p3" else ImportManager.FHIR_PRISM2_JSON
+    return await RequestHandler(request_version, source).process(
         request, templates, user
     )
 
