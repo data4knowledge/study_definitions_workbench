@@ -140,9 +140,9 @@ async def import_xl_process(
 async def import_fhir_process(
     request: Request, version: str, source: str = "browser", session: Session = Depends(get_db)
 ):
-    application_logger.info(f"FHIR version: {version}")
     user, present_in_db = user_details(request, session)
-    request_version = ImportManager.FHIR_PRISM3_JSON if version == "p3" else ImportManager.FHIR_PRISM2_JSON
+    request_version = ImportManager.FHIR_PRISM3_JSON if version == "prism3" else ImportManager.FHIR_PRISM2_JSON
+    application_logger.info(f"FHIR version: {version} -> {request_version}")
     return await RequestHandler(request_version, source).process(
         request, templates, user
     )

@@ -1,6 +1,7 @@
 FHIR_VERSIONS = {
-    "p2": "Dallas (PRISM 2)",
-    "p3": "Pittsburgh (PRISM 3)",
+    "prism2": "Dallas (PRISM 2)",
+    "madrid": "Madrid",
+    "prism3": "Pittsburgh (PRISM 3)",
 }
 
 

@@ -136,7 +136,7 @@ class ImportLegacy(ImportProcessorBase):
 class ImportFhirPRISM2(ImportProcessorBase):
     async def process(self) -> bool:
         importer = M11()
-        wrapper: Wrapper = await importer.from_message(self.full_path)
+        wrapper: Wrapper = await importer.from_message(self.full_path, M11.PRISM2)
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
@@ -153,7 +153,7 @@ class ImportFhirPRISM2(ImportProcessorBase):
 class ImportFhirPRISM3(ImportProcessorBase):
     async def process(self) -> bool:
         importer = M11()
-        wrapper: Wrapper = await importer.from_message(self.full_path)
+        wrapper: Wrapper = await importer.from_message(self.full_path, M11.PRISM3)
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
