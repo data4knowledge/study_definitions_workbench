@@ -141,7 +141,7 @@ async def import_fhir_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await RequestHandler(ImportManager.FHIR_V1_JSON, source).process(
+    return await RequestHandler(ImportManager.FHIR_PRISM2_JSON, source).process(
         request, templates, user
     )
 

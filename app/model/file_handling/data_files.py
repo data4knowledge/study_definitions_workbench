@@ -34,7 +34,7 @@ class DataFiles:
             },
             "fhir_prism2": {
                 "method": self._save_json_file,
-                "use_original": False,
+                "use_original": True,
                 "filename": "fhir_prism2",
                 "extension": "json",
             },
@@ -52,7 +52,7 @@ class DataFiles:
             },
             "fhir_prism3": {
                 "method": self._save_json_file,
-                "use_original": False,
+                "use_original": True,
                 "filename": "fhir_prism3",
                 "extension": "json",
             },

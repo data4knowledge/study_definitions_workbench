@@ -22,7 +22,7 @@ class USDMJson:
         self.type = file_import.type
         self.m11 = (
             True
-            if self.type in [ImportManager.M11_DOCX, ImportManager.FHIR_V1_JSON]
+            if self.type in [ImportManager.M11_DOCX, ImportManager.FHIR_PRISM2_JSON]
             else False
         )
         self._files = DataFiles(file_import.uuid)

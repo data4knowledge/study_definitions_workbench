@@ -58,13 +58,13 @@ class ImportManager:
             },
             self.FHIR_PRISM2_JSON: {
                 "processor": ImportFhirPRISM2,
-                "main_file_type": "fhir",
+                "main_file_type": "fhir_prism2",
                 "main_file_ext": ".json",
                 "images": False,
             },
             self.FHIR_PRISM3_JSON: {
                 "processor": ImportFhirPRISM3,
-                "main_file_type": "fhir",
+                "main_file_type": "fhir_prism3",
                 "main_file_ext": ".json",
                 "images": False,
             },
