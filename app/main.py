@@ -500,10 +500,10 @@ async def export_fhir(
     usdm = USDMJson(id, session)
     valid, description = check_fhir_version(version)
     application_logger.info(
-        f"FHIR export requested, version '{version}: {description}'"
+        f"FHIR export requested, version '{version}'"
     )
     if valid:
-        full_path, filename, media_type = usdm.fhir(version.upper())
+        full_path, filename, media_type = usdm.fhir(version)
         if full_path:
             return FileResponse(
                 path=full_path, filename=filename, media_type=media_type

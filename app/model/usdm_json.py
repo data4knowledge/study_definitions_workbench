@@ -29,29 +29,38 @@ class USDMJson:
         self._data = self._get_usdm()
         self._extra = self._get_extra()
 
-    def fhir(self, version="1"):
+    def fhir(self, version=FHIRM11.PRISM2):
+        print(f"VERSION FHIR: {version}")
         data = self.fhir_data(version)
-        fullpath, filename = self._files.save("fhir", data)
+        fullpath, filename = self._files.save(f"fhir_{version}", data)
         return fullpath, filename, "text/plain"
 
-    def fhir_data(self, version="1"):
-        match version.upper():
-            case "1":
-                return self.fhir_v1_data()
-            case "2":
-                return self.fhir_v2_data()
-            case "3":
-                return self.fhir_v3_data()
-            case default:
-                return self.fhir_v1_data()
-
-    def fhir_v1_data(self):
-        print(f"FHIR: VER 1 DATA")
+    def fhir_data(self, version=FHIRM11.PRISM2):
+        print(f"VERSION FHIR DATA: {version}")
+    #def fhir_data(self, version="1"):
+        # match version.upper():
+        #     case "1":
+        #         return self.fhir_v1_data()
+        #     case "2":
+        #         return self.fhir_v2_data()
+        #     case "3":
+        #         return self.fhir_v3_data()
+        #     case default:
+        #         return self.fhir_v1_data()
         usdm = USDM4()
         wrapper = usdm.from_json(self._data)
         study = wrapper.study
-        fhir = FHIRM11(study, self._extra, FHIRM11.PRISM)
-        return fhir.to_message()
+        fhir = FHIRM11()
+        data = fhir.to_message(study, self._extra, version)
+        return data
+
+    # def fhir_v1_data(self):
+    #     print(f"FHIR: VER 1 DATA")
+    #     usdm = USDM4()
+    #     wrapper = usdm.from_json(self._data)
+    #     study = wrapper.study
+    #     fhir = FHIRM11(study, self._extra, FHIRM11.PRISM)
+    #     return fhir.to_message()
 
     # def fhir_v2_data(self):
     #     # print(f"FHIR: VER 2 DATA")
@@ -63,15 +72,15 @@ class USDMJson:
     #     self._files.save("fhir_v2", data)
     #     return data
 
-    def fhir_v3_data(self):
-        print("FHIR: VER 3 DATA")
-        usdm = USDM4()
-        wrapper = usdm.from_json(self._data)
-        study = wrapper.study
-        fhir = FHIRM11(study, self._extra, FHIRM11.MADRID)
-        data = fhir.to_message()
-        self._files.save("fhir_v3", data)
-        return data
+    # def fhir_v3_data(self):
+    #     print("FHIR: VER 3 DATA")
+    #     usdm = USDM4()
+    #     wrapper = usdm.from_json(self._data)
+    #     study = wrapper.study
+    #     fhir = FHIRM11(study, self._extra, FHIRM11.MADRID)
+    #     data = fhir.to_message()
+    #     self._files.save("fhir_v3", data)
+    #     return data
 
     def fhir_soa(self, timeline_id: str):
         data = self.fhir_soa_data(timeline_id)

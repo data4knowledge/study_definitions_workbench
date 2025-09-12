@@ -4,9 +4,11 @@
   </a>
   <div class="dropdown-menu">
     {% for version in data['fhir']['versions'] %}
-      {% set title = "M11 FHIR v" ~ version %}
-      {% set desc = fhir_version_description(version) %}
-      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
+        {% if fhir_version_import(version) %} 
+            {% set title = "M11 FHIR" %}
+            {% set desc = fhir_version_description(version) %}
+            <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
+        {% endif %}
     {% endfor %}
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/json">Download USDM v4 (.json)</a>
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=4">Download USDM v4 format Excel (.xlsx)</a>

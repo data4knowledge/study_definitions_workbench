@@ -40,13 +40,13 @@ class DataFiles:
             },
             "fhir_atlanta": {
                 "method": self._save_json_file,
-                "use_original": False,
+                "use_original": True,
                 "filename": "fhir_atlanta",
                 "extension": "json",
             },
             "fhir_madrid": {
                 "method": self._save_json_file,
-                "use_original": False,
+                "use_original": True,
                 "filename": "fhir_madrid",
                 "extension": "json",
             },
@@ -174,6 +174,7 @@ class DataFiles:
             if self.media_type[type]["use_original"]
             else self._form_filename(type)
         )
+        filename = filename if filename else self._form_filename(type)
         full_path = self.media_type[type]["method"](contents, filename)
         return full_path, filename
 
