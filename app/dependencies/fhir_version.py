@@ -1,7 +1,7 @@
 FHIR_VERSIONS = {
-    "prism2": {"description": "Dallas (PRISM 2)", "import": True, "export": True},
-    "madrid": {"description": "Madrid", "import": False, "export": True},
-    "prism3": {"description": "Pittsburgh (PRISM 3)", "import": True, "export": True},
+    "prism2": {"description": "Dallas (PRISM 2)", "import": True, "export": True, "transmit": False},
+    "madrid": {"description": "Madrid", "import": False, "export": True, "transmit": False},
+    "prism3": {"description": "Pittsburgh (PRISM 3)", "import": False, "export": True, "transmit": True},
 }
 
 
@@ -21,3 +21,6 @@ def fhir_version_import(version: str) -> bool:
 
 def fhir_version_export(version: str) -> bool:
     return FHIR_VERSIONS[version]["export"] if version in FHIR_VERSIONS else False
+
+def fhir_version_transmit(version: str) -> bool:
+    return FHIR_VERSIONS[version]["transmit"] if version in FHIR_VERSIONS else False

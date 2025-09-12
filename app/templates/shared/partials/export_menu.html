@@ -4,16 +4,16 @@
   </a>
   <div class="dropdown-menu">
     {% for version in data['fhir']['versions'] %}
-        {% if fhir_version_import(version) %} 
+        {% if fhir_version_export(version) %}
             {% set title = "M11 FHIR" %}
             {% set desc = fhir_version_description(version) %}
             <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
         {% endif %}
     {% endfor %}
-    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/json">Download USDM v4 (.json)</a>
-    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=4">Download USDM v4 format Excel (.xlsx)</a>
-    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=3">Download USDM v3 format Excel (.xlsx)</a>
-    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/protocol">Download Protocol (PDF)</a>
+    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/json">USDM v4 (.json)</a>
+    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=4">USDM v4 format Excel (.xlsx)</a>
+    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=3">USDM v3 format Excel (.xlsx)</a>
+    <!--<a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/protocol">Protocol (PDF)</a>-->
   </div>
 </li>
 
