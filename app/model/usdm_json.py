@@ -4,6 +4,7 @@ import warnings
 from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from usdm4_fhir import M11 as FHIRM11
+from usdm4_fhir import SoA as FHIRSoA
 from app.database.version import Version
 from sqlalchemy.orm import Session
 from bs4 import BeautifulSoup
@@ -16,6 +17,7 @@ from usdm4 import USDM4
 class USDMJson:
     def __init__(self, id: int, session: Session):
         self.id = id
+        # print(f"ID: {id}")
         version = Version.find(id, session)
         file_import = FileImport.find(version.import_id, session)
         self.uuid = file_import.uuid
@@ -27,16 +29,17 @@ class USDMJson:
         )
         self._files = DataFiles(file_import.uuid)
         self._data = self._get_usdm()
+        # print(f"USDM JSON DATA: {self._data}")
         self._extra = self._get_extra()
 
     def fhir(self, version=FHIRM11.PRISM2):
-        print(f"VERSION FHIR: {version}")
+        # print(f"VERSION FHIR: {version}")
         data = self.fhir_data(version)
         fullpath, filename = self._files.save(f"fhir_{version}", data)
         return fullpath, filename, "text/plain"
 
     def fhir_data(self, version=FHIRM11.PRISM2):
-        print(f"VERSION FHIR DATA: {version}")
+        # print(f"VERSION FHIR DATA: {version}")
     #def fhir_data(self, version="1"):
         # match version.upper():
         #     case "1":
@@ -49,9 +52,12 @@ class USDMJson:
         #         return self.fhir_v1_data()
         usdm = USDM4()
         wrapper = usdm.from_json(self._data)
+        # print(f"WRAPPER: {wrapper}")
         study = wrapper.study
         fhir = FHIRM11()
         data = fhir.to_message(study, self._extra, version)
+        print(f"ERRORS: {fhir.errors.dump(0)}")
+        # print(f"DATA: {data}")
         return data
 
     # def fhir_v1_data(self):
@@ -91,7 +97,7 @@ class USDMJson:
         usdm = USDM4()
         wrapper = usdm.from_json(self._data)
         study = wrapper.study
-        fhir = ToFHIRSoA(study, timeline_id, self.uuid, self._extra)
+        fhir = FHIRSoA(study, timeline_id, self.uuid, self._extra)
         return fhir.to_message()
 
     def json(self):
@@ -387,10 +393,8 @@ class USDMJson:
     def protocol_sections(self):
         document = self._document()
         if document:
-            print("A")
             sections = []
             narrative_content = self._first_narrative_content(document)
-            print(f"B {narrative_content}")
             while narrative_content:
                 sections.append(narrative_content)
                 narrative_content = self._find_narrative_content(
@@ -672,7 +676,7 @@ class USDMJson:
             population = study_design["population"]
             enroll = self._range_or_quantity(population, "plannedEnrollmentNumber")
             complete = self._range_or_quantity(population, "plannedCompletionNumber")
-            print(f"ENORLL: {enroll}, {complete}")
+            # print(f"ENORLL: {enroll}, {complete}")
             return {"enroll": int(enroll), "complete": int(complete)}
         except Exception:
             return {"enroll": "[Enrolled]", "complete": "[Complete]"}

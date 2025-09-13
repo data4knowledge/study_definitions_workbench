@@ -76,7 +76,7 @@ async def fhir_transmit(
         endpoint = Endpoint.find(endpoint_id, session)
         application_logger.info(f"Sending FHIR message, endpoint '{endpoint}'")
         server = FHIRService(endpoint.endpoint)
-        response = await server.put("Bundle", data, 30.0)
+        response = await server.put("Bundle", data, 60.0)
         if response["success"]:
             message = f"Succesful transmission of FHIR {type} message: {response['data']['id']}"
         else:
