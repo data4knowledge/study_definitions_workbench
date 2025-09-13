@@ -63,13 +63,9 @@ async def fhir_transmit(
 ) -> None:
     ERROR_LEN = 100
     try:
-        # session = SessionLocal()
         application_logger.info(
             f"Sending FHIR message from version id '{version_id}' to endpoint id '{endpoint_id}'"
         )
-        # usdm = USDMJson(version_id, session)
-        # details = usdm.study_version()
-        # # print(f"DETAILS: {details}")
         tx = Transmission.create(
             version=version_id,
             study=details["titles"]["Official Study Title"],
@@ -77,11 +73,10 @@ async def fhir_transmit(
             user_id=user.id,
             session=session,
         )
-        # data = usdm.fhir_data(version)
         endpoint = Endpoint.find(endpoint_id, session)
         application_logger.info(f"Sending FHIR message, endpoint '{endpoint}'")
         server = FHIRService(endpoint.endpoint)
-        response = await server.post("Bundle", data, 30.0)
+        response = await server.put("Bundle", data, 30.0)
         if response["success"]:
             message = f"Succesful transmission of FHIR {type} message: {response['data']['id']}"
         else:
