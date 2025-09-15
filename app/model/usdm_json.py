@@ -132,7 +132,7 @@ class USDMJson:
         }
         for identifier in version["studyIdentifiers"]:
             org = orgs[identifier["scopeId"]]
-            result["identifiers"][org["type"]["decode"]] = org["name"]
+            result["identifiers"][org["type"]["decode"]] = org["label"]
         for title in version["titles"]:
             result["titles"][title["type"]["decode"]] = title["text"]
         phases = []
