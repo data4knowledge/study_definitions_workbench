@@ -41,7 +41,7 @@ class ImportProcessorBase:
                 "full_title": version.official_title_text(),
                 "sponsor_identifier": version.sponsor_identifier_text(),
                 "nct_identifier": version.nct_identifier(),
-                "sponsor": version.sponsor_name(),
+                "sponsor": version.sponsor_label(),
             }
         except Exception as e:
             application_logger.exception(
@@ -99,7 +99,7 @@ class ImportM11(ImportProcessorBase):
     async def process(self) -> bool:
         importer = USDM4M11()
         wrapper: Wrapper = importer.from_docx(self.full_path)
-        print(f"ERRORS: {importer.errors.dump(sel.Errors.DEBUG)}")
+        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
@@ -112,7 +112,7 @@ class ImportCPT(ImportProcessorBase):
     async def process(self) -> bool:
         importer = USDM4CPT()
         wrapper: Wrapper = importer.from_docx(self.full_path)
-        print(f"ERRORS: {importer.errors.dump(sel.Errors.DEBUG)}")
+        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
@@ -125,6 +125,7 @@ class ImportLegacy(ImportProcessorBase):
     async def process(self) -> bool:
         importer = USDM4Legacy()
         wrapper: Wrapper = importer.from_pdf(self.full_path)
+        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
@@ -137,10 +138,12 @@ class ImportFhirPRISM2(ImportProcessorBase):
     async def process(self) -> bool:
         importer = M11()
         wrapper: Wrapper = await importer.from_message(self.full_path, M11.PRISM2)
+        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
             self.study_parameters = self._study_parameters()
+            print(f"STUDY PARAMS: {self.study_parameters}")
             self.errors = importer.errors.to_dict(sel.Errors.INFO)
             self.success = True
         else:
@@ -154,6 +157,7 @@ class ImportFhirPRISM3(ImportProcessorBase):
     async def process(self) -> bool:
         importer = M11()
         wrapper: Wrapper = await importer.from_message(self.full_path, M11.PRISM3)
+        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
@@ -190,6 +194,7 @@ class ImportUSDM3(ImportProcessorBase):
             self.errors = results.to_dict()
             self.success = False
             self.fatal_error = "USDM v3 validation failed. Check the file using the validate functionality"
+        application_logger.info(self.errors.dump(sel.Errors.DEBUG))
         return self.success
 
 
@@ -200,6 +205,7 @@ class ImportUSDM4(ImportProcessorBase):
         self.usdm = data_files.read("usdm")
         usdm4 = USDM4()
         results: RulesValidationResults = usdm4.validate(full_path)
+        application_logger.info(results.dump(sel.Errors.DEBUG))
         self.errors = results.to_dict()
         # data_files.save("errors", self.errors)
         if results.passed_or_not_implemented():
