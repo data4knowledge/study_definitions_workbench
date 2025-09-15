@@ -32,7 +32,7 @@ async def get_version_summary(
             "versions": fhir_versions(),
         },
     }
-    print(f"DATA: {data}")
+    # print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "study_versions/summary.html", {"user": user, "data": data}
     )
