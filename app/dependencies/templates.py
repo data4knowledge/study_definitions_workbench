@@ -33,5 +33,6 @@ templates.env.globals["is_cpt_docx_import"] = ImportManager.is_cpt_docx_import
 templates.env.globals["is_legacy_pdf_import"] = ImportManager.is_legacy_pdf_import
 templates.env.globals["is_usdm_excel_import"] = ImportManager.is_usdm_excel_import
 templates.env.globals["is_fhir_prism2_import"] = ImportManager.is_fhir_prism2_import
+templates.env.globals["is_fhir_prism3_import"] = ImportManager.is_fhir_prism3_import
 templates.env.globals["is_usdm3_json_import"] = ImportManager.is_usdm3_json_import
 templates.env.globals["is_usdm4_json_import"] = ImportManager.is_usdm4_json_import
