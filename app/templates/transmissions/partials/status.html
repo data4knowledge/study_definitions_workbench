@@ -12,6 +12,7 @@
           <th scope="col">Study</th>
           <th scope="col">Version</th>
           <th scope="col">Status</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -21,6 +22,11 @@
             <td>{{item['study']}}</td>
             <td>{{item['version']}}</td>
             <td>{{item['status']}}</td>
+            <td>
+              {% if item['link'] %}
+                <a href="{{item['link']}}" target="_blank"><i class="bi bi-fire text-danger"></i></a>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>

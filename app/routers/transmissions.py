@@ -5,7 +5,9 @@ from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import transmit_role_enabled, user_details
 from app.dependencies.templates import templates
 from app.database.transmission import Transmission
+from app.utility.fhir_uuid import extract_uuid
 from d4k_ms_ui.pagination import Pagination
+from d4k_ms_base.service_environment import ServiceEnvironment
 
 router = APIRouter(
     prefix="/transmissions",
@@ -48,8 +50,18 @@ async def import_status(
     session: Session = Depends(get_db),
 ):
     user, present_in_db = user_details(request, session)
+    se = ServiceEnvironment()
+    username = se.get("ENDPOINT_USERNAME")
+    password = se.get("ENDPOINT_PASSWORD")
+
     if transmit_role_enabled(request):
         data = Transmission.page(page, size, user.id, session)
+        for item in data['items']:
+            item['link'] = None
+            if item['status'].startswith("Succesful transmission"):
+                uuid = extract_uuid(item['status'])
+                if uuid:
+                    item['link'] = f"https://vhewer.com/display-product?url=https://tbuofzdjhm.edge.aidbox.app/fhir/Bundle/{uuid}?_user={username}&_password={password}"
         pagination = Pagination(data, "/transmissions/status/data")
         return templates.TemplateResponse(
             request,
