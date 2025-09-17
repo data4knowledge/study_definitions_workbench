@@ -23,8 +23,8 @@
             <td>{{item['version']}}</td>
             <td>{{item['status']}}</td>
             <td>
-              {% if item['link'] %}
-                <a href="{{item['link']}}" target="_blank"><i class="bi bi-fire text-danger"></i></a>
+              {% if item['uuid'] %}
+                <a href="https://vhewer.com/study?url=%7bupd%7d/Bundle/{{item['uuid']}}" target="_blank"><i class="bi bi-fire text-danger"></i></a>
               {% endif %}
             </td>
           </tr>
