@@ -22,6 +22,7 @@ from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
 
+
 from app.routers import (
     transmissions,
     users,
@@ -577,7 +578,6 @@ async def export_json(request: Request, id: int, session: Session = Depends(get_
                 "data": {"error": "Error downloading the requested JSON file"},
             },
         )
-
 
 @app.get("/versions/{id}/export/protocol", dependencies=[Depends(protect_endpoint)])
 async def export_protocol(

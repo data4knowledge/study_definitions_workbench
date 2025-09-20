@@ -8,6 +8,8 @@ from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import user_details, transmit_role_enabled
 from app.dependencies.templates import templates
 from app.utility.fhir_transmit import run_fhir_soa_transmit
+from usdm4_pj import USDM4PJ 
+
 
 router = APIRouter(
     prefix="/versions",
@@ -85,6 +87,39 @@ async def get_study_design_timeline_soa(
             },
         )
 
+
+@router.get(
+    "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/pj", 
+    dependencies=[Depends(protect_endpoint)]
+)
+async def export_patient_journey(    request: Request,
+    version_id: int,
+    study_design_id: str,
+    timeline_id: str,
+    session: Session = Depends(get_db),
+):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(version_id, session)
+    df = usdm._files
+    full_path, filename, media_type = df.path("usdm")
+    if full_path:
+        pj = USDM4PJ()
+        pj.from_usdm4(full_path)
+        print(f"ERRORS: {pj.success}, {pj.fatal_error}, {pj._errors.dump(0)}")
+        data = pj.patient_journey
+        print(f"JSON: {data}")
+        pj_path, pj_filename = df.save("pj", data)
+        print(f"FILES: {pj_path}, {pj_filename}")
+        return FileResponse(path=pj_path, filename=pj_filename, media_type="text/plain")
+    else:
+        return templates.TemplateResponse(
+            request,
+            "errors/error.html",
+            {
+                "user": user,
+                "data": {"error": "Error downloading the requested JSON file"},
+            },
+        )
 
 @router.get(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/transmit/{endpoint_id}",

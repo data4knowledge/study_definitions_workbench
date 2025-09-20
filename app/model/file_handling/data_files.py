@@ -32,6 +32,12 @@ class DataFiles:
                 "filename": "usdm",
                 "extension": "json",
             },
+            "pj": {
+                "method": self._save_json_file,
+                "use_original": False,
+                "filename": "patient_journey",
+                "extension": "json",
+            },
             "fhir_prism2": {
                 "method": self._save_json_file,
                 "use_original": True,
