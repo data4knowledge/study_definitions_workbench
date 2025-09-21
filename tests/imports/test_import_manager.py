@@ -5,7 +5,7 @@ from app.database.user import User
 from app.imports.import_processors import (
     ImportExcel,
     ImportM11,
-    ImportFhirV1,
+    ImportFhirPRISM2,
     ImportUSDM3,
     ImportUSDM4,
 )
@@ -116,11 +116,11 @@ class TestImportManager:
         assert manager.images is False
 
         # Test with FHIR_V1_JSON
-        manager = ImportManager(mock_user, ImportManager.FHIR_V1_JSON)
+        manager = ImportManager(mock_user, ImportManager.FHIR_PRISM2_JSON)
         assert manager.user == mock_user
-        assert manager.type == ImportManager.FHIR_V1_JSON
-        assert manager.processor == ImportFhirV1
-        assert manager.main_file_type == "fhir"
+        assert manager.type == ImportManager.FHIR_PRISM2_JSON
+        assert manager.processor == ImportFhirPRISM2
+        assert manager.main_file_type == "fhir_prism2"
         assert manager.main_file_ext == ".json"
         assert manager.images is False
 
@@ -172,7 +172,7 @@ class TestImportManager:
         """Test file types."""
         assert ImportManager.USDM_EXCEL == "USDM_EXCEL"
         assert ImportManager.M11_DOCX == "M11_DOCX"
-        assert ImportManager.FHIR_V1_JSON == "FHIR_V1_JSON"
+        assert ImportManager.FHIR_PRISM2_JSON == "FHIR_V1_JSON"
         assert ImportManager.USDM3_JSON == "USDM3_JSON"
         assert ImportManager.USDM4_JSON == "USDM4_JSON"
 

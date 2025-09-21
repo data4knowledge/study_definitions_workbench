@@ -5,7 +5,7 @@ from app.imports.import_processors import (
     ImportProcessorBase,
     ImportExcel,
     ImportM11,
-    ImportFhirV1,
+    ImportFhirPRISM2,
     ImportUSDM3,
     ImportUSDM4,
 )
@@ -256,14 +256,14 @@ class TestImportM11:
         assert processor.errors == mock_m11_protocol.return_value.errors.to_dict.return_value
 
 
-class TestImportFhirV1:
-    """Tests for the ImportFhirV1 class."""
+class TestImportFhirPRISM2:
+    """Tests for the ImportFhirPRISM2 class."""
 
     @pytest.mark.asyncio
     async def test_process(self, mock_from_fhir_v1):
         """Test process method."""
         # Setup
-        processor = ImportFhirV1("FHIR_V1_JSON", "test-uuid", "/path/to/file")
+        processor = ImportFhirPRISM2("FHIR_V1_JSON", "test-uuid", "/path/to/file")
 
         # Execute
         result = await processor.process()
