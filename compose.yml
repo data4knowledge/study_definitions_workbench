@@ -1,5 +1,5 @@
 services:
-  myapp:
+  sdw:
     image: data4knowledge/sdw:0.36.0-alpha.2
     ports:
       - "8000:8000"
