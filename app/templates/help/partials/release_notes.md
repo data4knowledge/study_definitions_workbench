@@ -1,10 +1,16 @@
-<h5>Release 0.36.0-alpha.2, 2025-09-13</h5>
+<h5>Release 0.36.0-alpha.2, 2025-09-21</h5>
 
-- Alpha release for HL7 connectathon in Pittsburgh. 
+Alpha release:
+
+- Results from HL7 connectathon in Pittsburgh. (issue 38)
+- Further CPT and Legacy protocol updates. (issue 37)
+- Patient journey export.
 
 <h5>Release 0.36.0-alpha.1, 2025-09-02</h5>
 
-- Alpha release for CPT and Legacy protocol handling. This includes updates for DDF CT and code list C188724 (issue 37)
+Alpha release:
+
+- CPT and Legacy protocol handling. This includes updates for DDF CT and code list C188724 (issue 37)
 
 <h5>Release 0.35.1, 2025-07-26</h5>
 
