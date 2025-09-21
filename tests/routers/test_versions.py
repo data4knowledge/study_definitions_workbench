@@ -29,7 +29,7 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
         """<a class="dropdown-item" href="/transmissions/status?page=1&size=10">Transmission Status</a>"""
         in response.text
     )
-    assert """M11 FHIR v1, Dallas 2024 connectathon (.json)""" in response.text
+    assert """M11 FHIR, Dallas (PRISM 2) (.json)""" in response.text
     assert mock_called(uc)
     assert mock_called(ift)
     assert mock_called(uji)
@@ -50,7 +50,6 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     # print(f"RESPONSE: {response.text}")
     assert response.status_code == 200
     assert """Transmission Status""" not in response.text
-    assert """M11 FHIR v4, FHIR Version not supported""" in response.text
     assert mock_called(uc)
     assert mock_called(ift)
     assert mock_called(uji)

@@ -1,8 +1,7 @@
 TEST_FHIR_VERSIONS = {
-    "1": "Mock Connectathon 1",
-    "2": "Mock Connectathon 2",
-    "3": "Mock Connectathon 3",
-    "4": "Mock Connectathon 4",
+    "prism2": {"description": "Dallas (PRISM 2)", "import": True, "export": True, "transmit": False},
+    "madrid": {"description": "Madrid", "import": False, "export": True, "transmit": False},
+    "prism3": {"description": "Pittsburgh (PRISM 3)", "import": True, "export": True, "transmit": True},
 }
 
 

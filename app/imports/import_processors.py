@@ -194,7 +194,7 @@ class ImportUSDM3(ImportProcessorBase):
             self.errors = results.to_dict()
             self.success = False
             self.fatal_error = "USDM v3 validation failed. Check the file using the validate functionality"
-        application_logger.info(self.errors.dump(sel.Errors.DEBUG))
+        application_logger.info(self.errors)
         return self.success
 
 
