@@ -104,7 +104,7 @@ async def export_patient_journey(    request: Request,
     full_path, filename, media_type = df.path("usdm")
     if full_path:
         pj = USDM4PJ()
-        pj.from_usdm4(full_path)
+        pj.from_usdm4(full_path, validate=False)
         print(f"ERRORS: {pj.success}, {pj.fatal_error}, {pj._errors.dump(0)}")
         data = pj.patient_journey
         print(f"JSON: {data}")
