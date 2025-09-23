@@ -67,6 +67,7 @@ def import_legacy_docx(request: Request, session: Session = Depends(get_db)):
         request, session, "pdf", False, "/import/m11", "import/import_legacy_pdf.html"
     )
 
+
 @router.get("/xl", dependencies=[Depends(protect_endpoint)])
 def import_xl(request: Request, session: Session = Depends(get_db)):
     return _import_setup(
@@ -138,10 +139,17 @@ async def import_xl_process(
 
 @router.post("/fhir", dependencies=[Depends(protect_endpoint)])
 async def import_fhir_process(
-    request: Request, version: str, source: str = "browser", session: Session = Depends(get_db)
+    request: Request,
+    version: str,
+    source: str = "browser",
+    session: Session = Depends(get_db),
 ):
     user, present_in_db = user_details(request, session)
-    request_version = ImportManager.FHIR_PRISM3_JSON if version == "prism3" else ImportManager.FHIR_PRISM2_JSON
+    request_version = (
+        ImportManager.FHIR_PRISM3_JSON
+        if version == "prism3"
+        else ImportManager.FHIR_PRISM2_JSON
+    )
     application_logger.info(f"FHIR version: {version} -> {request_version}")
     return await RequestHandler(request_version, source).process(
         request, templates, user

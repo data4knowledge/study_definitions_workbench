@@ -72,9 +72,7 @@ class DatabaseManager:
             application_logger.info("Database migrated to v31")
         elif version == 31:
             cursor = self.session.connection().connection.cursor()
-            new_types = (
-                {"old": "FHIR_V1_JSON", "new": "FHIR_PRISM2_JSON"},
-            )
+            new_types = ({"old": "FHIR_V1_JSON", "new": "FHIR_PRISM2_JSON"},)
             cursor.executemany("UPDATE import SET type=:new WHERE type=:old", new_types)
             cursor.execute("pragma user_version = 32")
             self.session.commit()

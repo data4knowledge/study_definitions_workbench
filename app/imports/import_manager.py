@@ -101,7 +101,7 @@ class ImportManager:
             cls.USDM3_JSON,
             cls.USDM4_JSON,
             cls.FHIR_PRISM2_JSON,
-            cls.FHIR_PRISM3_JSON
+            cls.FHIR_PRISM3_JSON,
         ]
 
     @classmethod

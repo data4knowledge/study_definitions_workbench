@@ -25,7 +25,11 @@ class FHIRService(Service):
             headers = {"Content-Type": "application/json"}
             timeout = timeout if timeout else self.DEFAULT_TIMEOUT
             response = await self._client.put(
-                self._full_url(url), data=data, timeout=timeout, headers=headers, auth=(username, password)
+                self._full_url(url),
+                data=data,
+                timeout=timeout,
+                headers=headers,
+                auth=(username, password),
             )
             return (
                 self._success(response)

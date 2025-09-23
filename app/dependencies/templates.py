@@ -8,10 +8,10 @@ from app.utility.template_methods import (
     title_page_study_list_headings,
 )
 from app.dependencies.fhir_version import (
-    fhir_version_description, 
-    fhir_version_export, 
+    fhir_version_description,
+    fhir_version_export,
     fhir_version_import,
-    fhir_version_transmit
+    fhir_version_transmit,
 )
 from app.imports.import_manager import ImportManager
 

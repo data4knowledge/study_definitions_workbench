@@ -51,10 +51,10 @@ async def import_status(
     user, present_in_db = user_details(request, session)
     if transmit_role_enabled(request):
         data = Transmission.page(page, size, user.id, session)
-        for item in data['items']:
-            item['uuid'] = None
-            if item['status'].startswith("Succesful transmission"):
-                uuid = extract_uuid(item['status'])
+        for item in data["items"]:
+            item["uuid"] = None
+            if item["status"].startswith("Succesful transmission"):
+                uuid = extract_uuid(item["status"])
                 if uuid:
                     item["uuid"] = uuid
         pagination = Pagination(data, "/transmissions/status/data")

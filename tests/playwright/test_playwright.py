@@ -633,7 +633,7 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(page.get_by_role("cell", name="no_errors.json")).to_be_visible()
     expect(page.get_by_role("cell", name="pilot.xlsx")).to_be_visible()
     expect(page.get_by_role("cell", name="pilot_tweak.xlsx")).to_be_visible()
-    #expect(page.get_by_text("No errors file available")).to_be_visible()
+    # expect(page.get_by_text("No errors file available")).to_be_visible()
 
     cell = page.locator("table > tbody > tr").nth(0).locator("td").nth(2)
     expect(cell).to_contain_text("LZZT.docx")

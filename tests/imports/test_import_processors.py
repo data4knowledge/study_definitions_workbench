@@ -252,7 +252,9 @@ class TestImportM11:
         processor = ImportM11("M11_DOCX", "test-uuid", "/path/to/file")
 
         # Mock the _study_parameters method to avoid the error with version.phases()
-        with patch.object(processor, '_study_parameters', return_value={"name": "test-study-M11_DOCX"}):
+        with patch.object(
+            processor, "_study_parameters", return_value={"name": "test-study-M11_DOCX"}
+        ):
             # Execute
             result = await processor.process()
 
@@ -260,9 +262,15 @@ class TestImportM11:
         assert result == True
         mock_m11_protocol.assert_called_once()
         mock_m11_protocol.return_value.from_docx.assert_called_once()
-        assert processor.usdm == mock_m11_protocol.return_value.from_docx.return_value.to_json.return_value
+        assert (
+            processor.usdm
+            == mock_m11_protocol.return_value.from_docx.return_value.to_json.return_value
+        )
         assert processor.extra == mock_m11_protocol.return_value.extra
-        assert processor.errors == mock_m11_protocol.return_value.errors.to_dict.return_value
+        assert (
+            processor.errors
+            == mock_m11_protocol.return_value.errors.to_dict.return_value
+        )
 
 
 # class TestImportFhirPRISM2:

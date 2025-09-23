@@ -41,7 +41,7 @@ class USDMJson:
 
     def fhir_data(self, version=FHIRM11.PRISM2):
         # print(f"VERSION FHIR DATA: {version}")
-    #def fhir_data(self, version="1"):
+        # def fhir_data(self, version="1"):
         # match version.upper():
         #     case "1":
         #         return self.fhir_v1_data()
@@ -655,7 +655,6 @@ class USDMJson:
         except Exception:
             return self._missing_ages()
 
-
     def _min_max(self, item) -> dict:
         # print(f"ITEM: {item}")
         return (
@@ -671,7 +670,7 @@ class USDMJson:
 
     def _missing_ages(self):
         return {"min": 0, "max": 0, "min_unit": "", "max_unit": ""}
-    
+
     def _population_recruitment(self, study_design: dict) -> dict:
         try:
             population = study_design["population"]

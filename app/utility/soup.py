@@ -2,6 +2,7 @@ import warnings
 from bs4 import BeautifulSoup
 from d4k_ms_base.errors_and_logging import application_logger
 
+
 def get_soup(text: str):
     try:
         with warnings.catch_warnings(record=True) as warning_list:

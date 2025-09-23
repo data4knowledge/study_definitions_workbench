@@ -33,7 +33,7 @@ from app.routers import (
     version_timelines,
     imports,
     validate,
-    m11
+    m11,
 )
 from app.dependencies.dependency import (
     set_middleware_secret,
@@ -502,9 +502,7 @@ async def export_fhir(
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     valid, description = check_fhir_version(version)
-    application_logger.info(
-        f"FHIR export requested, version '{version}'"
-    )
+    application_logger.info(f"FHIR export requested, version '{version}'")
     if valid:
         full_path, filename, media_type = usdm.fhir(version)
         if full_path:
@@ -517,7 +515,9 @@ async def export_fhir(
                 "errors/error.html",
                 {
                     "user": user,
-                    "data": {"error": f"Error encounterd exporting study with id '{id}'."},
+                    "data": {
+                        "error": f"Error encounterd exporting study with id '{id}'."
+                    },
                 },
             )
     else:
@@ -580,6 +580,7 @@ async def export_json(request: Request, id: int, session: Session = Depends(get_
                 "data": {"error": "Error downloading the requested JSON file"},
             },
         )
+
 
 @app.get("/versions/{id}/export/protocol", dependencies=[Depends(protect_endpoint)])
 async def export_protocol(

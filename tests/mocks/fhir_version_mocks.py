@@ -1,7 +1,22 @@
 TEST_FHIR_VERSIONS = {
-    "prism2": {"description": "Dallas (PRISM 2)", "import": True, "export": True, "transmit": False},
-    "madrid": {"description": "Madrid", "import": False, "export": True, "transmit": False},
-    "prism3": {"description": "Pittsburgh (PRISM 3)", "import": True, "export": True, "transmit": True},
+    "prism2": {
+        "description": "Dallas (PRISM 2)",
+        "import": True,
+        "export": True,
+        "transmit": False,
+    },
+    "madrid": {
+        "description": "Madrid",
+        "import": False,
+        "export": True,
+        "transmit": False,
+    },
+    "prism3": {
+        "description": "Pittsburgh (PRISM 3)",
+        "import": True,
+        "export": True,
+        "transmit": True,
+    },
 }
 
 

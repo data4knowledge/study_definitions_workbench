@@ -8,7 +8,7 @@ from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import user_details, transmit_role_enabled
 from app.dependencies.templates import templates
 from app.utility.fhir_transmit import run_fhir_soa_transmit
-from usdm4_pj import USDM4PJ 
+from usdm4_pj import USDM4PJ
 
 
 router = APIRouter(
@@ -89,10 +89,11 @@ async def get_study_design_timeline_soa(
 
 
 @router.get(
-    "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/pj", 
-    dependencies=[Depends(protect_endpoint)]
+    "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/pj",
+    dependencies=[Depends(protect_endpoint)],
 )
-async def export_patient_journey(    request: Request,
+async def export_patient_journey(
+    request: Request,
     version_id: int,
     study_design_id: str,
     timeline_id: str,
@@ -120,6 +121,7 @@ async def export_patient_journey(    request: Request,
                 "data": {"error": "Error downloading the requested JSON file"},
             },
         )
+
 
 @router.get(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/transmit/{endpoint_id}",
