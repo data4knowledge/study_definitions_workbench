@@ -1,5 +1,5 @@
 <div id="specificationSection">
-    <h6 class="card-subtitle mb-2">M11 Template Specification</h6>
+    <h6 class="card-subtitle mb-2"><strong>Template Specification</strong></h6>
     {% set template = data["element"]["template"] %}
     <table class="table">
         <tr>
@@ -23,7 +23,7 @@
             </td>
         </tr>
     </table>
-    <h6 class="card-subtitle mt-2 mb-2">M11 Technical Specification</h6>
+    <h6 class="card-subtitle mt-2 mb-2"><strong>Technical Specification</strong>></h6>
     {% set technical = data["element"]["technical"] %}
     <table class="table">
         <tr>
@@ -34,18 +34,17 @@
         </tr>
             <td><p class="card-text">Definition</p></td>
             <td>
-                {% for item in technical["definition"] %}
-                    <table class="table">
+                <table class="table">
+                    {% for item in technical["definition"] %}
                         <tr>
-                            <td><p class="card-text"><p>C-Code</p></td>
-                            <td><p class="card-text text-muted">{{item["c_code"]}}</p></td>
+                            <td>
+                                <p class="card-text text-muted">
+                                    {{item["c_code"]}}: {{item["text"]}}
+                                </p>
+                            </td>
                         </tr>
-                        <tr>
-                            <td><p class="card-text"><p>Text</p></td>
-                            <td><p class="card-text text-muted">{{item["text"]}}</p></td>
-                        </tr>
-                    </table>
-                {% endfor %}
+                    {% endfor %}
+                </table>
             </td>
         </tr>
         <tr>
@@ -55,13 +54,13 @@
             </td>
         </tr>
         <tr>
-            <td><p class="card-text text-muted">Conformance</p></td>
+            <td><p class="card-text">Conformance</p></td>
             <td>
                 <p class="card-text text-muted">{{technical["conformance"]}}</p>
             </td>
         </tr>
         <tr>
-            <td><p class="card-text text-muted">Cardinality</p></td>
+            <td><p class="card-text">Cardinality</p></td>
             <td>
                 <p class="card-text text-muted">{{technical["cardinality"]}}</p>
             </td>
@@ -69,44 +68,48 @@
         <tr>
             <td><p class="card-text">Repeating</p></td>
             <td>
-                <p class="card-text">{{technical["repeating"]}}</p>
+                <p class="card-text text-muted">{{technical["repeating"]}}</p>
             </td>
         </tr>
         <tr>
             <td><p class="card-text">Relationship</p></td>
             <td>
-                <p class="card-text">{{technical["relationship"]}}</p>
+                <p class="card-text text-muted">{{technical["relationship"]}}</p>
             </td>
         </tr>
         <tr>
             <td><p class="card-text">Value</p></td>
             <td>
-                <p class="card-text">{{technical["value"]}}</p>
+                <p class="card-text text-muted">{{technical["value"]}}</p>
             </td>
         </tr>
         <tr>
             <td><p class="card-text">CT</p></td>
             <td>
-                <table class="table">
-                    <tr>
-                        <td><p class="card-text">C-Code</p></td>
-                        <td><p class="card-text">Preferred Term</p></td>
-                        <td><p class="card-text">Definition</p></td>
-                    </tr>
-                    {% for item in technical["ct"] %}
+                {% if technical["ct"] %}
+                    <table class="table">
                         <tr>
-                            <td>
-                                <p class="card-text">{{item["ncit_code"]}}</p>
-                            </td>           
-                            <td>
-                                <p class="card-text">{{item["preferred_term"]}}</p>
-                            </td>           
-                            <td>
-                                <p class="card-text">{{item["definition"]}}</p>
-                            </td>           
+                            <td><p class="card-text text-muted">C-Code</p></td>
+                            <td><p class="card-text text-muted">Preferred Term</p></td>
+                            <td><p class="card-text text-muted">Definition</p></td>
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for item in technical["ct"] %}
+                            <tr>
+                                <td>
+                                    <p class="card-text text-muted">{{item["ncit_code"]}}</p>
+                                </td>           
+                                <td>
+                                    <p class="card-text text-muted">{{item["preferred_term"]}}</p>
+                                </td>           
+                                <td>
+                                    <p class="card-text text-muted">{{item["definition"]}}</p>
+                                </td>           
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <p class="card-text text-muted"><i>None</i>></p>
+                {% endif %}
             </td>
         </tr>
     </table>
