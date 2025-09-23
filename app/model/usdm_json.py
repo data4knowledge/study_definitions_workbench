@@ -12,6 +12,7 @@ from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
 from app.imports.import_manager import ImportManager
 from usdm4 import USDM4
+from app.utility.soup import get_soup
 
 
 class USDMJson:
@@ -576,7 +577,7 @@ class USDMJson:
 
     def _image_in_section(self, section):
         text = self._section_item(section) if section else ""
-        soup = self._get_soup(text)
+        soup = get_soup(text)
         for ref in soup(["img"]):
             return ref
         return ""
@@ -627,18 +628,18 @@ class USDMJson:
         except Exception:
             return None
 
-    def _get_soup(self, text: str):
-        try:
-            with warnings.catch_warnings(record=True) as warning_list:
-                result = BeautifulSoup(text, "html.parser")
-            if warning_list:
-                pass
-                # for item in warning_list:
-                #  errors_and_logging.debug(f"Warning raised within Soup package, processing '{text}'\nMessage returned '{item.message}'")
-            return result
-        except Exception:
-            # errors_and_logging.exception(f"Parsing '{text}' with soup", e)
-            return None
+    # def _get_soup(self, text: str):
+    #     try:
+    #         with warnings.catch_warnings(record=True) as warning_list:
+    #             result = BeautifulSoup(text, "html.parser")
+    #         if warning_list:
+    #             pass
+    #             # for item in warning_list:
+    #             #  errors_and_logging.debug(f"Warning raised within Soup package, processing '{text}'\nMessage returned '{item.message}'")
+    #         return result
+    #     except Exception:
+    #         # errors_and_logging.exception(f"Parsing '{text}' with soup", e)
+    #         return None
 
     def _population_age(self, study_design: dict) -> dict:
         try:

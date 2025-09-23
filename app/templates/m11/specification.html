@@ -5,32 +5,22 @@
     {% include "shared/partials/environment.html" %}
   {% endwith %}    
 {% endblock %}
+{% block additional_css %}
+  {% with %}
+    {% include "shared/styles/m11.html" %}
+  {% endwith %}  
+{% endblock %}   
 {% block user_content %}
   {% with request=request, user=user %}
     {% include "shared/partials/user.html" %}
   {% endwith %}    
 {% endblock %}
 {% block menu_content %}
-  {% with data=data %}
-    {% include "shared/partials/import_menu.html" %}
-  {% endwith %} 
-  {% with %}
-    {% include "shared/partials/validate_menu.html" %}
-  {% endwith %} 
-  <div id="selectMenu">
-    {% with data='' %}
-      {% include "shared/partials/select_menu.html" %}
-    {% endwith %} 
-  </div>
-  {% with %}
-    {% include "shared/partials/m11_menu.html" %}
-  {% endwith %} 
-  
 {% endblock %}
 
 {% block main_content %}
   <div class="container-fluid">
-    <div id="data_div" class="container" hx-get="/index/page?page=1&size=12&initial=true" hx-trigger="load" hx-target="#data_div" hx-swap="outerHTML">
+    <div id="data_div" class="container" hx-get="/m11/specification_data" hx-trigger="load" hx-target="#data_div" hx-swap="outerHTML">
       {% with %}
         {% include "shared/partials/spinner.html" %}
       {% endwith %}            

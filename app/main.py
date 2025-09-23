@@ -33,6 +33,7 @@ from app.routers import (
     version_timelines,
     imports,
     validate,
+    m11
 )
 from app.dependencies.dependency import (
     set_middleware_secret,
@@ -70,6 +71,7 @@ app.include_router(help.router)
 app.include_router(index.router)
 app.include_router(imports.router)
 app.include_router(validate.router)
+app.include_router(m11.router)
 
 
 @app.exception_handler(Exception)

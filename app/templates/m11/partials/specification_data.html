@@ -1,0 +1,52 @@
+<div id="data_div" class="mt-3 row align-items-start">
+    <div class="col-6">
+        <div class="card rounded-3">
+            <div class="card-header">
+                <!-- Card Header -->
+                <div class="d-flex justify-content-between">
+                    <h6 class="card-subtitle mt-1">M11 Template By Section</h6>
+                    <div class="d-flex justify-right">
+                        <a class="link-dark" style="font-size: 14px;" data-bs-toggle="offcanvas"
+                            href="#sectionMenu" role="button">
+                            <i class="ps-2 bi bi-list"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            {% with data=data['section_list'] %}
+                {% include "versions/protocol/partials/menu.html" %}
+            {% endwith %}  
+
+            <!-- Card Body -->
+            <div class="card-body card-body-height">
+                <div class="outer-div">
+                    <div id="m11Section" class="extract-div mt-3 mb-3">
+                        <div class="overflow-auto section-div">
+                            {{data["template"]|safe}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="card rounded-3" style="height:80vh">
+            <div class="card-header">
+                <!-- Card Header -->
+                <div class="d-flex justify-content-between">
+                    <h6 class="card-subtitle mt-1">M11 Specification</h6>
+                </div>
+            </div>
+
+            <div class="card-body card-body-height">
+                <div id="specificationSection">
+                    <p class="card-text"><i>Specifcation data will appear here</i></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
