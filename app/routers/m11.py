@@ -49,7 +49,6 @@ def study_select(
     data["template"] = parse_elements(
         template, f"/m11/sections/{default_section}/elements"
     )
-    print(f"TEMPLATE: {data['template']}")
     return templates.TemplateResponse(
         request, "m11/partials/specification_data.html", {"user": user, "data": data}
     )
