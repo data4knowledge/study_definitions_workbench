@@ -1,0 +1,11 @@
+{% set element = data["element"]["template"] %}
+{% if element["optional"] %}
+    {% set klass = "link-primary" %}
+{% else %}
+    {% set klass = "link-secondary" %}
+{% endif %}
+<p class="">
+    <a href="#" hx-get="{{data['url']}}" hx-target="#specificationSection" hx-swap="outerHTML" class="{{klass}}">
+        {{element["short_name"]}}
+    </a>
+</p>

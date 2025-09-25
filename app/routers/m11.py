@@ -16,7 +16,7 @@ router = APIRouter(
 
 
 @router.get("/specification", dependencies=[Depends(protect_endpoint)])
-def study_select(
+def m11_spec(
     request: Request,
     session: Session = Depends(get_db),
 ):
@@ -34,7 +34,7 @@ def study_select(
 
 
 @router.get("/specification_data", dependencies=[Depends(protect_endpoint)])
-def study_select(
+def m11_spec_data(
     request: Request,
     session: Session = Depends(get_db),
 ):
@@ -55,9 +55,28 @@ def study_select(
 
 
 @router.get(
-    "/sections/{section}/elements/{element}", dependencies=[Depends(protect_endpoint)]
+    "/sections/{section}/elements/{element}/link", dependencies=[Depends(protect_endpoint)]
 )
-def study_select(
+def element_link(
+    request: Request,
+    section: str,
+    element: str,
+    session: Session = Depends(get_db),
+):
+    user, present_in_db = user_details(request, session)
+    data = {}
+    specification = Specification()
+    data["element"] = specification.element(section, element)
+    data["url"] = f"sections/{section}/elements/{element}/definition"
+    print(f"URL: {data['url']}")
+    return templates.TemplateResponse(
+        request, "m11/partials/element_link.html", {"user": user, "data": data}
+    )
+
+@router.get(
+    "/sections/{section}/elements/{element}/definition", dependencies=[Depends(protect_endpoint)]
+)
+def element_definition(
     request: Request,
     section: str,
     element: str,
@@ -68,5 +87,5 @@ def study_select(
     specification = Specification()
     data["element"] = specification.element(section, element)
     return templates.TemplateResponse(
-        request, "m11/partials/element_data.html", {"user": user, "data": data}
+        request, "m11/partials/element_definition.html", {"user": user, "data": data}
     )

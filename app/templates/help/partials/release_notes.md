@@ -1,3 +1,9 @@
+<h5>Release 0.36.0-alpha.3, 2025-09-21</h5>
+
+Alpha release:
+
+- Adding in M11 electronic specification (issue 39).
+
 <h5>Release 0.36.0-alpha.2, 2025-09-21</h5>
 
 Alpha release:
