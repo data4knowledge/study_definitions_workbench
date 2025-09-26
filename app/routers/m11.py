@@ -8,6 +8,7 @@ from app.dependencies.templates import templates
 from app.utility.template_methods import restructure_study_list
 from app.dependencies.fhir_version import fhir_versions
 from usdm4_m11.specification import Specification
+from usdm4_fhir.status.status import Status
 from app.m11.template import parse_elements
 
 router = APIRouter(
@@ -86,7 +87,8 @@ def element_definition(
     specification = Specification()
     data["element"] = specification.element(section, element)
     data["mapping"] = specification.mapping(section, element)
-    data["status"] = specification.status(section, element)
+    status = Status()
+    data["status"] = status.status(element)
     print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "m11/partials/element_definition.html", {"user": user, "data": data}

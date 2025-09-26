@@ -39,4 +39,16 @@
             {% endwith %}  
         </div>
     </div>
+    <div class="card data-panel mt-2">
+        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#status-div" style="cursor: pointer;">
+            <i class="bi bi-caret-down me-2"></i>Implementation Status
+        </div>
+        <div id="status-div" class="collapse">
+            {% with data = data["status"] %}
+                {% include "m11/partials/fhir_status.html" %}
+            {% endwith %}  
+        </div>
+    </div>
 </div>
+<h6 id="specification-card-header" class="card-subtitle mt-1" hx-swap-oob="true">M11 Specification: {{data["element"]["technical"]["name"]}}</h6>
+
