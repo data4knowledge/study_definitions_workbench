@@ -1,0 +1,24 @@
+<div class="card-body">
+    <table class="table">
+        <tr>
+            <td class="fit"><p class="card-text"><strong>Long Name</strong></p></td><td><p class="card-text text-muted">{{data["long_name"]}}</p></td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Short Name</strong></p></td><td><p class="card-text text-muted">{{data["short_name"]}}</p></td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Original Name</strong></p></td><td><p class="card-text text-muted">{{data["original_name"]}}</p></td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Optional</strong></p></td><td><p class="card-text text-muted">{{data["optional"]}}</p></td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Instructions</strong></p></td>
+            <td>
+                {% for item in data["instructions"] %}
+                    <p class="card-text text-danger">{{item}}</p>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+</div>

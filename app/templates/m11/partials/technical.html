@@ -1,0 +1,90 @@
+<div class="card-body">
+    <table class="table">
+        <tr>
+            <td class="fit"><p class="card-text"><strong>Name</strong></p></td><td><p class="card-text text-muted">{{data["name"]}}</p></td>
+        </tr>
+            <td><p class="card-text"><strong>Data Type</strong></p></td><td><p class="card-text text-muted">{{data["data_type"]}}</p></td>
+        </tr>
+        </tr>
+            <td><p class="card-text"><strong>Definition</strong></p></td>
+            <td>
+                <table class="table">
+                    {% for item in data["definition"] %}
+                        <tr>
+                            <td>
+                                <p class="card-text text-muted">
+                                    {{item["c_code"]}}: {{item["text"]}}
+                                </p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Guidance</strong></p></td>
+            <td>
+                <p class="card-text text-danger">{{data["guidance"]}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Conformance</strong></p></td>
+            <td>
+                <p class="card-text text-muted">{{data["conformance"]}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Cardinality</strong></p></td>
+            <td>
+                <p class="card-text text-muted">{{data["cardinality"]}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Repeating</strong></p></td>
+            <td>
+                <p class="card-text text-muted">{{data["repeating"]}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Relationship</strong></p></td>
+            <td>
+                <p class="card-text text-muted">{{data["relationship"]}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Value</strong></p></td>
+            <td>
+                <p class="card-text text-muted">{{data["value"]}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td><p class="card-text"><strong>Controlled Terms</strong></p></td>
+            <td>
+                {% if data["ct"] %}
+                    <table class="table table-striped">
+                        <tr>
+                            <td><strong>C-Code</strong></td>
+                            <td><strong>Preferred Term</strong></td>
+                            <td><strong>Definition</strong></td>
+                        </tr>
+                        {% for item in data["ct"] %}
+                            <tr>
+                                <td>
+                                    <p class="card-text text-muted">{{item["ncit_code"]}}</p>
+                                </td>           
+                                <td>
+                                    <p class="card-text text-muted">{{item["preferred_term"]}}</p>
+                                </td>           
+                                <td>
+                                    <p class="card-text text-muted">{{item["definition"]}}</p>
+                                </td>           
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <p class="card-text text-muted"><i>None</i>></p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
