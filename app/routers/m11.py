@@ -85,6 +85,9 @@ def element_definition(
     data = {}
     specification = Specification()
     data["element"] = specification.element(section, element)
+    data["mapping"] = specification.mapping(section, element)
+    data["status"] = specification.status(section, element)
+    print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "m11/partials/element_definition.html", {"user": user, "data": data}
     )

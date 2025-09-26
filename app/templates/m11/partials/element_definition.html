@@ -134,7 +134,7 @@
             <i class="bi bi-caret-down me-2"></i>USDM Mapping
         </div>
         <div id="usdm-div" class="collapse">
-            {% set usdm = data["usdm"] %}
+            {% set usdm = data["mapping"]["usdm"] %}
             {% with data=usdm %}
                 {% include "m11/partials/usdm_mapping.html" %}
             {% endwith %}  
@@ -145,7 +145,7 @@
             <i class="bi bi-caret-down me-2"></i>FHIR M11 Mapping
         </div>
         <div id="fhir-div" class="collapse">
-            {% set usdm = data["fhir"] %}
+            {% set usdm = data["mapping"]["fhir"] %}
             {% with data=usdm %}
                 {% include "m11/partials/fhir_mapping.html" %}
             {% endwith %}  

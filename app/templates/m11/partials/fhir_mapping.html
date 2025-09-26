@@ -1,11 +1,18 @@
+
 <div class="card-body">
-    <div class="mb-2" ><strong>Resource:</strong> ResearchStudy.extension[confidentialityStatement]</div>
-    <div class="mb-3">
-        <strong >Sample XML:</strong>
-        <div class="xml-code" >&lt;extension  url=$EBM_Conf&gt;
-    &lt;valueString value= %VALUE/&gt;
-&lt;/extension&gt;</div>
-    </div>
-    <div class="mb-2" ><strong>Example Value(s):</strong> %VALUE = &lt;All data is confidential&gt;</div>
+    <table class="table">
+        <tr>
+            <td><strong>Resource</strong> </td>
+            <td>{{data["Resource"]}}</td>
+        </tr>
+        <tr>
+            <td><strong>Sample XML</strong> </td>
+            <td><div class="xml-code" >{{data["Sample XML"]}}</div></td>
+        </tr>
+        <tr>
+            <td><strong>Example Value(s)</strong> </td>
+            <td>{{data["Example Values(s)"]}}</td>
+        </tr>
+    </table>
 </div>
     
