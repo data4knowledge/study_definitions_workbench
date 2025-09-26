@@ -1,116 +1,154 @@
-<div id="specificationSection">
-    <h6 class="card-subtitle mb-2"><strong>Template Specification</strong></h6>
-    {% set template = data["element"]["template"] %}
-    <table class="table">
-        <tr>
-            <td><p class="card-text">Long Name</p></td><td><p class="card-text text-muted">{{template["long_name"]}}</p></td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Short Name</p></td><td><p class="card-text text-muted">{{template["short_name"]}}</p></td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Original Name</p></td><td><p class="card-text text-muted">{{template["original_name"]}}</p></td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Optional</p></td><td><p class="card-text text-muted">{{template["optional"]}}</p></td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Instructions</p></td>
-            <td>
-                {% for item in template["instructions"] %}
-                    <p class="card-text text-danger">{{item}}</p>
-                {% endfor %}
-            </td>
-        </tr>
-    </table>
-    <h6 class="card-subtitle mt-2 mb-2"><strong>Technical Specification</strong>></h6>
-    {% set technical = data["element"]["technical"] %}
-    <table class="table">
-        <tr>
-            <td><p class="card-text">Name</p></td><td><p class="card-text text-muted">{{technical["name"]}}</p></td>
-        </tr>
-            <td><p class="card-text">Data Type</p></td><td><p class="card-text text-muted">{{technical["data_type"]}}</p></td>
-        </tr>
-        </tr>
-            <td><p class="card-text">Definition</p></td>
-            <td>
+<div id="specification-card">
+    <div class="card data-panel">
+        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#template-div" style="cursor: pointer;">
+            <i class="bi bi-caret-down me-2"></i>Template Specification
+        </div>
+        <div id="template-div" class="collapse">
+            <div class="card-body">
+                {% set template = data["element"]["template"] %}
                 <table class="table">
-                    {% for item in technical["definition"] %}
-                        <tr>
-                            <td>
-                                <p class="card-text text-muted">
-                                    {{item["c_code"]}}: {{item["text"]}}
-                                </p>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                    <tr>
+                        <td><p class="card-text">Long Name</p></td><td><p class="card-text text-muted">{{template["long_name"]}}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Short Name</p></td><td><p class="card-text text-muted">{{template["short_name"]}}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Original Name</p></td><td><p class="card-text text-muted">{{template["original_name"]}}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Optional</p></td><td><p class="card-text text-muted">{{template["optional"]}}</p></td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Instructions</p></td>
+                        <td>
+                            {% for item in template["instructions"] %}
+                                <p class="card-text text-danger">{{item}}</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
                 </table>
-            </td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Guidance</p></td>
-            <td>
-                <p class="card-text text-danger">{{technical["guidance"]}}</p>
-            </td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Conformance</p></td>
-            <td>
-                <p class="card-text text-muted">{{technical["conformance"]}}</p>
-            </td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Cardinality</p></td>
-            <td>
-                <p class="card-text text-muted">{{technical["cardinality"]}}</p>
-            </td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Repeating</p></td>
-            <td>
-                <p class="card-text text-muted">{{technical["repeating"]}}</p>
-            </td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Relationship</p></td>
-            <td>
-                <p class="card-text text-muted">{{technical["relationship"]}}</p>
-            </td>
-        </tr>
-        <tr>
-            <td><p class="card-text">Value</p></td>
-            <td>
-                <p class="card-text text-muted">{{technical["value"]}}</p>
-            </td>
-        </tr>
-        <tr>
-            <td><p class="card-text">CT</p></td>
-            <td>
-                {% if technical["ct"] %}
-                    <table class="table">
-                        <tr>
-                            <td><p class="card-text text-muted">C-Code</p></td>
-                            <td><p class="card-text text-muted">Preferred Term</p></td>
-                            <td><p class="card-text text-muted">Definition</p></td>
-                        </tr>
-                        {% for item in technical["ct"] %}
-                            <tr>
-                                <td>
-                                    <p class="card-text text-muted">{{item["ncit_code"]}}</p>
-                                </td>           
-                                <td>
-                                    <p class="card-text text-muted">{{item["preferred_term"]}}</p>
-                                </td>           
-                                <td>
-                                    <p class="card-text text-muted">{{item["definition"]}}</p>
-                                </td>           
-                            </tr>
-                        {% endfor %}
-                    </table>
-                {% else %}
-                    <p class="card-text text-muted"><i>None</i>></p>
-                {% endif %}
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+    </div>
+    <div class="card data-panel mt-2">
+        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#technical-div" style="cursor: pointer;">
+            <i class="bi bi-caret-down me-2"></i>Technical Specification
+        </div>
+        <div id="technical-div" class="collapse">
+            <div class="card-body">
+                {% set technical = data["element"]["technical"] %}
+                <table class="table">
+                    <tr>
+                        <td><p class="card-text">Name</p></td><td><p class="card-text text-muted">{{technical["name"]}}</p></td>
+                    </tr>
+                        <td><p class="card-text">Data Type</p></td><td><p class="card-text text-muted">{{technical["data_type"]}}</p></td>
+                    </tr>
+                    </tr>
+                        <td><p class="card-text">Definition</p></td>
+                        <td>
+                            <table class="table">
+                                {% for item in technical["definition"] %}
+                                    <tr>
+                                        <td>
+                                            <p class="card-text text-muted">
+                                                {{item["c_code"]}}: {{item["text"]}}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Guidance</p></td>
+                        <td>
+                            <p class="card-text text-danger">{{technical["guidance"]}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Conformance</p></td>
+                        <td>
+                            <p class="card-text text-muted">{{technical["conformance"]}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Cardinality</p></td>
+                        <td>
+                            <p class="card-text text-muted">{{technical["cardinality"]}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Repeating</p></td>
+                        <td>
+                            <p class="card-text text-muted">{{technical["repeating"]}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Relationship</p></td>
+                        <td>
+                            <p class="card-text text-muted">{{technical["relationship"]}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">Value</p></td>
+                        <td>
+                            <p class="card-text text-muted">{{technical["value"]}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p class="card-text">CT</p></td>
+                        <td>
+                            {% if technical["ct"] %}
+                                <table class="table">
+                                    <tr>
+                                        <td><p class="card-text text-muted">C-Code</p></td>
+                                        <td><p class="card-text text-muted">Preferred Term</p></td>
+                                        <td><p class="card-text text-muted">Definition</p></td>
+                                    </tr>
+                                    {% for item in technical["ct"] %}
+                                        <tr>
+                                            <td>
+                                                <p class="card-text text-muted">{{item["ncit_code"]}}</p>
+                                            </td>           
+                                            <td>
+                                                <p class="card-text text-muted">{{item["preferred_term"]}}</p>
+                                            </td>           
+                                            <td>
+                                                <p class="card-text text-muted">{{item["definition"]}}</p>
+                                            </td>           
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% else %}
+                                <p class="card-text text-muted"><i>None</i>></p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card data-panel mt-2">
+        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#usdm-div" style="cursor: pointer;">
+            <i class="bi bi-caret-down me-2"></i>USDM Mapping
+        </div>
+        <div id="usdm-div" class="collapse">
+            {% set usdm = data["usdm"] %}
+            {% with data=usdm %}
+                {% include "m11/partials/usdm_mapping.html" %}
+            {% endwith %}  
+        </div>
+    </div>
+    <div class="card data-panel mt-2">
+        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#fhir-div" style="cursor: pointer;">
+            <i class="bi bi-caret-down me-2"></i>FHIR M11 Mapping
+        </div>
+        <div id="fhir-div" class="collapse">
+            {% set usdm = data["fhir"] %}
+            {% with data=usdm %}
+                {% include "m11/partials/fhir_mapping.html" %}
+            {% endwith %}  
+        </div>
+    </div>
 </div>

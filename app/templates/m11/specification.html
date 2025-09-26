@@ -20,7 +20,7 @@
 
 {% block main_content %}
   <div class="container-fluid">
-    <div id="data_div" class="container" hx-get="/m11/specification_data" hx-trigger="load" hx-target="#data_div" hx-swap="outerHTML">
+    <div id="data-div" class="container" hx-get="/m11/specification_data" hx-trigger="load" hx-target="#data-div" hx-swap="outerHTML">
       {% with %}
         {% include "shared/partials/spinner.html" %}
       {% endwith %}            

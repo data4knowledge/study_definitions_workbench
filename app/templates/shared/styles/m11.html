@@ -1,90 +1,101 @@
 <style>
 
-  .outer-div {
-    background-color: #E6ECED;
-  }
+    .outer-div {
+        background-color: #E6ECED;
+    }
 
-  .document-div {
-    width: 900px; 
-    margin: 0 auto; 
-    background-color: white; 
-    padding-top: 10px; 
-    box-sizing: border-box; 
-    border: 1px solid #C6C6C6;
-  }
+    .document-div {
+        width: 900px; 
+        margin: 0 auto; 
+        background-color: white; 
+        padding-top: 10px; 
+        box-sizing: border-box; 
+        border: 1px solid #C6C6C6;
+    }
 
-  .section-div {
-    width: 90%; 
-    margin: 0 auto;
-    font:12pt 'Times New Roman';
-    padding-top: 60px;
-    margin-top: -60px;
-  }
+    .section-div {
+        width: 90%; 
+        margin: 0 auto;
+        font:12pt 'Times New Roman';
+        padding-top: 60px;
+        margin-top: -60px;
+    }
 
-  .extract-div {
-    width: 95%; 
-    margin: 0 auto;
-    font: 12pt 'Times New Roman'; 
-    background-color: white; 
-    padding-top: 10px; 
-    padding-bottom: 10px;
-    padding: vertical;
-    box-sizing: border-box; 
-    border: 1px solid #C6C6C6;
-  }
+    .extract-div {
+        width: 95%; 
+        margin: 0 auto;
+        font: 12pt 'Times New Roman'; 
+        background-color: white; 
+        padding-top: 10px; 
+        padding-bottom: 10px;
+        padding: vertical;
+        box-sizing: border-box; 
+        border: 1px solid #C6C6C6;
+    }
 
-  img {
-    max-width: 100%;
-    max-height: 100%;
-  }
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
 
-  .ich-m11-table { 
-    border: 1px solid black; 
-    border-collapse: collapse; 
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  .ich-m11-table thead, tbody, tfoot { vertical-align: top }
-  .ich-m11-table td, th, tr { vertical-align: inherit }
-  .ich-m11-table td { border: 1px solid black; padding: 8px; }
+    .ich-m11-table { 
+        border: 1px solid black; 
+        border-collapse: collapse; 
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .ich-m11-table thead, tbody, tfoot { vertical-align: top }
+    .ich-m11-table td, th, tr { vertical-align: inherit }
+    .ich-m11-table td { border: 1px solid black; padding: 8px; }
 
-  /* .document-div h1 { font-size: 16pt; font-weight: bold; }
-  .document-div h2 { font-size: 14pt; font-weight: bold; }
-  .document-div h3 { font-size: 12pt; font-weight: bold; }
-  .document-div h4 { font-size: 12pt; font-weight: bold; } */
+    .section-div h1 { font-size: 16pt; font-weight: bold; }
+    .section-div h2 { font-size: 14pt; font-weight: bold; }
+    .section-div h3 { font-size: 12pt; font-weight: bold; }
+    .section-div h4 { font-size: 12pt; font-weight: bold; }
 
-  .section-div h1 { font-size: 16pt; font-weight: bold; }
-  .section-div h2 { font-size: 14pt; font-weight: bold; }
-  .section-div h3 { font-size: 12pt; font-weight: bold; }
-  .section-div h4 { font-size: 12pt; font-weight: bold; }
+    .ich-m11-header-1 { font-size: 14pt; text-align: center }
+    .ich-m11-header-2 { font-size: 14pt; text-align: center }
+    .ich-m11-header-3 { font-size: 18pt; text-align: center; font-weight: bold; margin-top: 200px;}
+    .ich-m11-header-4 { font-size: 18pt; text-align: center; font-weight: bold; }
 
-  .ich-m11-header-1 { font-size: 14pt; text-align: center }
-  .ich-m11-header-2 { font-size: 14pt; text-align: center }
-  .ich-m11-header-3 { font-size: 18pt; text-align: center; font-weight: bold; margin-top: 200px;}
-  .ich-m11-header-4 { font-size: 18pt; text-align: center; font-weight: bold; }
+    .ich-m11-title-page-table { margin-top: 200px; border: none;}
+    .ich-m11-title-page-table td { border: none; }
+    .ich-m11-title-page-table td:first-child { font-weight: bold; }
 
-  .ich-m11-title-page-table { margin-top: 200px; border: none;}
-  .ich-m11-title-page-table td { border: none; }
-  .ich-m11-title-page-table td:first-child { font-weight: bold; }
+    .ich-m11-title-page-table-nmt { border: none; }
+    .ich-m11-title-page-table-nmt td { border: none; }
+    .ich-m11-title-page-table-nmt td:first-child { font-weight: bold; }
 
-  .ich-m11-title-page-table-nmt { border: none; }
-  .ich-m11-title-page-table-nmt td { border: none; }
-  .ich-m11-title-page-table-nmt td:first-child { font-weight: bold; }
+    p.ich-m11-template-optional { color: #3232F3}
+    a.ich-m11-template-optional { color: #3232F3}
+    a.ich-m11-template-required { color: #000000}
+  
+    .xml-code {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 1rem;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
 
-  .ich-m11-overall-design-table { 
-    border: 1px solid black; 
-    border-collapse: collapse; 
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  .ich-m11-overall-design-table thead, tbody, tfoot { vertical-align: top }
-  .ich-m11-overall-design-table td, th, tr { vertical-align: inherit }
-  .ich-m11-overall-design-table td { border: 1px solid black; padding: 8px; }
-  .ich-m11-overall-design-table td:nth-child(1) { font-weight: bold; }
-  .ich-m11-overall-design-table td:nth-child(3) { font-weight: bold; }
+    .ich-m11-overall-design-table { 
+        border: 1px solid black; 
+        border-collapse: collapse; 
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
 
-  .ich-m11-overall-design-title { font-weight: bold; }
+    .ich-m11-overall-design-table thead, tbody, tfoot { vertical-align: top }
+    .ich-m11-overall-design-table td, th, tr { vertical-align: inherit }
+    .ich-m11-overall-design-table td { border: 1px solid black; padding: 8px; }
+    .ich-m11-overall-design-table td:nth-child(1) { font-weight: bold; }
+    .ich-m11-overall-design-table td:nth-child(3) { font-weight: bold; }
+
+    .ich-m11-overall-design-title { font-weight: bold; }
 
 </style>

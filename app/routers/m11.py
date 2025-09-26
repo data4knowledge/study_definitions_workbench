@@ -68,7 +68,6 @@ def element_link(
     specification = Specification()
     data["element"] = specification.element(section, element)
     data["url"] = f"sections/{section}/elements/{element}/definition"
-    print(f"URL: {data['url']}")
     return templates.TemplateResponse(
         request, "m11/partials/element_link.html", {"user": user, "data": data}
     )
