@@ -8,7 +8,14 @@
 {% block additional_css %}
   {% with %}
     {% include "shared/styles/m11.html" %}
-  {% endwith %}  
+  {% endwith %}
+    <style>
+        .card-body-height { overflow-y: scroll; width: 100%; }
+        .table td.fit {
+            white-space: nowrap;
+            width: 1%;
+        }
+    </style>
 {% endblock %}   
 {% block user_content %}
   {% with request=request, user=user %}

@@ -1,37 +1,31 @@
 <div class="card-body">
-    <div class="mb-2"><strong>mappings:</strong></div>
-    <div class="ms-3">
-        <div class="mb-3 p-3 border rounded bg-light">
-            <h6 class="text-primary">Mapping 1:</h6>
-            <div class="mb-2"><strong>conditions:</strong></div>
-            <div class="ms-2">
-                <div class="mb-2 p-2 border rounded bg-white"><small class="text-muted">Condition 1:</small>
-                    <div class="ms-2"><strong>notes:</strong> Used to select the protocol document</div>
-                    <div class="ms-2"><strong>path:</strong>
-                        Study/@documentedBy/StudyDefinitionDocument/@type/Code/@code=&#x27;C70817&#x27;</div>
-                </div>
-                <div class="mb-2 p-2 border rounded bg-white"><small class="text-muted">Condition 2:</small>
-                    <div class="ms-2"><strong>notes:</strong> Used to select the correct section</div>
-                    <div class="ms-2"><strong>path:</strong>
-                        StudyVersion/@documentVersion/StudyProtocolDocumentVersion/@contents/NarrativeContent/@sectionNumber=&lt;desired
-                        section&gt;</div>
-                </div>
-            </div>
-            <div class="mb-2"><strong>standard_mapping:</strong></div>
-            <div class="ms-2">
-                <div><strong>category:</strong> Narrative Content</div>
-                <div><strong>name:</strong> Narrative Content Item</div>
-            </div>
-            <div class="mb-2"><strong>target:</strong></div>
-            <div class="ms-2">
-                <div><strong>notes:</strong> </div>
-                <div><strong>path:</strong>
-                    StudyVersion/@documentVersion/StudyProtocolDocumentVersion/@contents/NarrativeContent/@contentItem/NarrativeContentItem/@text
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mb-2"><strong>name:</strong> Sponsor Confidentiality Statement</div>
-    <div class="mb-2"><strong>notes:</strong> Do this via NarrativeContent but maybe a better mechanism could be
-        provided</div>
+    <table class="table">
+        <tr>
+            <td><strong>Name</strong></td>
+            <td>{{data["name"]}}</td>
+        </tr>
+        <tr>
+            <td><strong>Mappings</strong></td>
+            <td>
+                {% for mapping in data["mappings"] %}
+                    <div class="force-wrap">
+                        <strong>Path: </strong>{{mapping["target"]["path"]}}
+                    </div>
+                    {% for condition in mapping["conditions"] %}
+                        <div class="mt-2 p-2 border rounded bg-light">
+                            <div class="ms-2 force-wrap"><strong>Condition Path: </strong>{{condition["path"]}}</div>
+                            <div class="ms-2"><strong>Notes: </strong>{{condition["notes"]}}</div>
+                        </div>
+                    {% endfor %}                    
+                    <div class="mt-2">
+                        <strong>Notes: </strong>{{mapping["target"]["notes"]}}
+                    </div>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Notes</strong></td>
+            <td>{{data["notes"]}}</td>
+        </tr>
+    </table>
 </div>
