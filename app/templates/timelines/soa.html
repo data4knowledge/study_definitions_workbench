@@ -20,7 +20,8 @@
   <div class="mt-3 row">
     <div class="col-12">
       {% set title = "Schedule of Activities: " ~ data['timeline']['label'] %}
-      {% set subtitle = "Description: " ~ data['timeline']['description'] ~ " | Main: " ~ data['timeline']['mainTimeline'] ~ " | Name: " ~ data['timeline']['name'] %}
+      {% set timeline_title = "Main timeline" if data['timeline']['mainTimeline'] else "Secondary timeline" %}
+      {% set subtitle = data['timeline']['description'] ~ " | " ~ timeline_title %}
       {% with title=title, subtitle=subtitle %}
         {% include "shared/partials/header.html" %}
       {% endwith %}    
