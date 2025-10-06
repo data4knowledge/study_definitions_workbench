@@ -205,7 +205,7 @@ class ImportUSDM4(ImportProcessorBase):
         self.usdm = data_files.read("usdm")
         usdm4 = USDM4()
         results: RulesValidationResults = usdm4.validate(full_path)
-        application_logger.info(results.dump(sel.Errors.DEBUG))
+        # application_logger.info(results.to_dict(sel.Errors.DEBUG))
         self.errors = results.to_dict()
         # data_files.save("errors", self.errors)
         if results.passed_or_not_implemented():
