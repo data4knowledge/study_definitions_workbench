@@ -1,17 +1,16 @@
 import json
 import yaml
-import warnings
 from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from usdm4_fhir import M11 as FHIRM11
 from usdm4_fhir import SoA as FHIRSoA
 from app.database.version import Version
 from sqlalchemy.orm import Session
-from bs4 import BeautifulSoup
 from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
 from app.imports.import_manager import ImportManager
 from usdm4 import USDM4
+from usdm4_cpt.soa.soa import SoA
 from app.utility.soup import get_soup
 
 
@@ -335,13 +334,12 @@ class USDMJson:
             if design:
                 timeline = design.find_timeline(id)
                 if timeline:
-                    soa = timeline.soa(design)
                     result = {
                         "id": self.id,
                         "study_id": design.id,
                         "m11": self.m11,
                         "timeline": dict(timeline),
-                        "soa": soa,
+                        "soa": SoA().to_html(version, design, timeline),
                     }
                     return result
         return None
