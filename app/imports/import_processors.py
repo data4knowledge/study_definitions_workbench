@@ -6,6 +6,7 @@ from usdm4_cpt import USDM4CPT
 from usdm4_legacy import USDM4Legacy
 from usdm4_fhir import M11
 from usdm4.api.wrapper import Wrapper
+from usdm4.api.study_version import StudyVersion
 from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
 from usdm4 import USDM4
@@ -32,16 +33,17 @@ class ImportProcessorBase:
         try:
             data = json.loads(self.usdm)
             db = USDM4()
-            wrapper = db.from_json(data)
+            wrapper: Wrapper = db.from_json(data)
             object_path = ObjectPath(wrapper)
-            version = wrapper.study.first_version()
+            version: StudyVersion = wrapper.study.first_version()
+            print(f"STUDY VERSION: {type(version)}")
             return {
                 "name": f"{self._get_parameter(object_path, 'study/name')}-{self.type}",
                 "phase": version.phases(),
                 "full_title": version.official_title_text(),
                 "sponsor_identifier": version.sponsor_identifier_text(),
                 "nct_identifier": version.nct_identifier(),
-                "sponsor": version.sponsor_label(),
+                "sponsor": version.sponsor_label_name(),
             }
         except Exception as e:
             application_logger.exception(

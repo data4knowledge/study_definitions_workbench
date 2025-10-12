@@ -132,7 +132,7 @@ class USDMJson:
         }
         for identifier in version["studyIdentifiers"]:
             org = orgs[identifier["scopeId"]]
-            result["identifiers"][org["type"]["decode"]] = org["label"]
+            result["identifiers"][org["type"]["decode"]] = org["label"] if "label" in org else org["name"]
         for title in version["titles"]:
             result["titles"][title["type"]["decode"]] = title["text"]
         phases = []
@@ -140,7 +140,7 @@ class USDMJson:
             result["study_designs"][design["id"]] = {
                 "id": design["id"],
                 "name": design["name"],
-                "label": design["label"],
+                "label": design["label"] if "label" in design else design["name"],
             }
             phase = design["studyPhase"]["standardCode"]["decode"]
             phases.append(phase)
@@ -211,7 +211,7 @@ class USDMJson:
             result["arms"] = len(design["arms"]) if design["arms"] else "[Arms]"
             result["trial_blind_scheme"] = (
                 design["blindingSchema"]["standardCode"]["decode"]
-                if design["blindingSchema"]
+                if "blindingSchema" in design
                 else "[Trial Blind Schema]"
             )
             result["blinded_roles"] = self._set_blinded_roles(id)
@@ -257,15 +257,16 @@ class USDMJson:
                 "interventions": [],
                 "text": text if text else "[Trial Interventions]",
             }
-            for int_id in design["studyInterventionIds"]:
-                intervention = self._find_intervention(
-                    self._data["study"]["versions"][0], int_id
-                )
-                # print(f"R1:")
-                record = {}
-                record["arm"] = self._arm_from_intervention(design, intervention["id"])
-                record["intervention"] = intervention
-                result["interventions"].append(record)
+            if "studyInterventionIds" in design:
+                for int_id in design["studyInterventionIds"]:
+                    intervention = self._find_intervention(
+                        self._data["study"]["versions"][0], int_id
+                    )
+                    # print(f"R1:")
+                    record = {}
+                    record["arm"] = self._arm_from_intervention(design, intervention["id"])
+                    record["intervention"] = intervention
+                    result["interventions"].append(record)
             # print(f"INTERVENTIONS: {result}")
             return result
         else:
@@ -291,21 +292,22 @@ class USDMJson:
                 "estimands": [],
                 "text": text if text else "[Estimands]",
             }
-            for estimand in design["estimands"]:
-                record = {}
-                # print(f"R1:")
-                record["treatment"] = self._intervention(
-                    version, estimand["interventionIds"]
-                )
-                record["summary_measure"] = estimand["populationSummary"]
-                record["analysis_population"] = estimand["analysisPopulationId"]
-                record["intercurrent_events"] = estimand["intercurrentEvents"]
-                record["objective"], record["endpoint"] = (
-                    self._objective_endpoint_from_estimand(
-                        design, estimand["variableOfInterestId"]
+            if "estimands" in design:
+                for estimand in design["estimands"]:
+                    record = {}
+                    # print(f"R1:")
+                    record["treatment"] = self._intervention(
+                        version, estimand["interventionIds"]
                     )
-                )
-                result["estimands"].append(record)
+                    record["summary_measure"] = estimand["populationSummary"]
+                    record["analysis_population"] = estimand["analysisPopulationId"]
+                    record["intercurrent_events"] = estimand["intercurrentEvents"]
+                    record["objective"], record["endpoint"] = (
+                        self._objective_endpoint_from_estimand(
+                            design, estimand["variableOfInterestId"]
+                        )
+                    )
+                    result["estimands"].append(record)
             # print(f"ESTIMANDS: {result}")
             return result
         else:
@@ -566,7 +568,7 @@ class USDMJson:
     def _set_multiple(self, id: str, collection: str, missing: str) -> dict:
         design = self._study_design(id)
         result = {}
-        if design[collection]:
+        if collection in design:
             for item in design[collection]:
                 result[item["decode"]] = item["decode"]
         else:
