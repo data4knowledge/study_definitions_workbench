@@ -37,12 +37,12 @@ def test_get_study_design_soa(mocker, monkeypatch):
     ujs = mock_usdm_json_soa(mocker)
     response = client.get("/versions/1/studyDesigns/2/timelines/3/soa")
     assert response.status_code == 200
-    # print(f"RESULT: {response.text}")
+    print(f"RESULT: {response.text}")
     assert (
         '<h5 class="card-title">Schedule of Activities: SOA LABEL</h5>' in response.text
     )
     assert (
-        '<h6 class="card-subtitle mb-2 text-muted">Description: SOA Description | Main: False | Name: SoA Name</h6>'
+        '<h6 class="card-subtitle mb-2 text-muted">SOA Description | Secondary timeline</h6>'
         in response.text
     )
     assert mock_called(uji)

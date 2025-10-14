@@ -14,6 +14,7 @@ def mock_usdm_json_timelines(mocker, path="app.main"):
             {
                 "id": "3",
                 "name": "Special Timeline",
+                "label": "Special Timeline",
             }
         ],
     }
