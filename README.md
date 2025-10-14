@@ -118,7 +118,9 @@ The image can also be run. obviously, using Docker desktop. Set the environment 
 
 ## Multi Platform Builds
 
-Note: Don't use "latest" at the moment.
+Note: 
+- Don't use "latest" at the moment.
+- <tag> does NOT include a 'v'
 
 ````
 docker buildx create --name mybuilder --use
