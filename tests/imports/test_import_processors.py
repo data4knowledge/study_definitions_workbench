@@ -1,11 +1,9 @@
 import pytest
-from unittest.mock import MagicMock, patch, AsyncMock
-from usdm4.api.wrapper import Wrapper
+from unittest.mock import MagicMock, patch
 from app.imports.import_processors import (
     ImportProcessorBase,
     ImportExcel,
     ImportM11,
-    ImportFhirPRISM2,
     ImportUSDM3,
     ImportUSDM4,
 )

@@ -132,7 +132,9 @@ class USDMJson:
         }
         for identifier in version["studyIdentifiers"]:
             org = orgs[identifier["scopeId"]]
-            result["identifiers"][org["type"]["decode"]] = org["label"] if "label" in org else org["name"]
+            result["identifiers"][org["type"]["decode"]] = (
+                org["label"] if "label" in org else org["name"]
+            )
         for title in version["titles"]:
             result["titles"][title["type"]["decode"]] = title["text"]
         phases = []
@@ -211,7 +213,8 @@ class USDMJson:
             result["arms"] = len(design["arms"]) if design["arms"] else "[Arms]"
             result["trial_blind_scheme"] = (
                 design["blindingSchema"]["standardCode"]["decode"]
-                if "blindingSchema" in design
+                if ("blindingSchema" in design)
+                and ("standardCode" in design["blindingSchema"])
                 else "[Trial Blind Schema]"
             )
             result["blinded_roles"] = self._set_blinded_roles(id)
@@ -264,7 +267,9 @@ class USDMJson:
                     )
                     # print(f"R1:")
                     record = {}
-                    record["arm"] = self._arm_from_intervention(design, intervention["id"])
+                    record["arm"] = self._arm_from_intervention(
+                        design, intervention["id"]
+                    )
                     record["intervention"] = intervention
                     result["interventions"].append(record)
             # print(f"INTERVENTIONS: {result}")

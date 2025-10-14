@@ -2,7 +2,9 @@
 
 Alpha release:
 
-- Adding in M11 electronic specification (issue 39).
+- Adding in M11 electronic specification (issue 39, closing).
+- Results from HL7 connectathon in Pittsburgh. (issue 38, closing)
+- Further CPT and Legacy protocol updates. (issue 37, closing)
 
 <h5>Release 0.36.0-alpha.2, 2025-09-21</h5>
 

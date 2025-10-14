@@ -1,11 +1,9 @@
-from fastapi import APIRouter, Form, Depends, Request, status
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
-from app.database.version import Version
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import transmit_role_enabled, user_details
 from app.dependencies.templates import templates
-from app.utility.template_methods import restructure_study_list
 from app.dependencies.fhir_version import fhir_versions
 from usdm4_m11.specification import Specification
 from usdm4_fhir.status.status import Status
@@ -56,7 +54,8 @@ def m11_spec_data(
 
 
 @router.get(
-    "/sections/{section}/elements/{element}/link", dependencies=[Depends(protect_endpoint)]
+    "/sections/{section}/elements/{element}/link",
+    dependencies=[Depends(protect_endpoint)],
 )
 def element_link(
     request: Request,
@@ -73,8 +72,10 @@ def element_link(
         request, "m11/partials/element_link.html", {"user": user, "data": data}
     )
 
+
 @router.get(
-    "/sections/{section}/elements/{element}/definition", dependencies=[Depends(protect_endpoint)]
+    "/sections/{section}/elements/{element}/definition",
+    dependencies=[Depends(protect_endpoint)],
 )
 def element_definition(
     request: Request,
