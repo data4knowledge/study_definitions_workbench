@@ -1,3 +1,9 @@
+<h5>Release 0.36.0-alpha.4, 2025-10-14</h5>
+
+Alpha release:
+
+- Fix to USDM4_M11 and USDM4_FHIR and builds missed datafiles
+
 <h5>Release 0.36.0-alpha.3, 2025-10-14</h5>
 
 Alpha release:
