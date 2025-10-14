@@ -1,4 +1,4 @@
-<h5>Release 0.36.0-alpha.3, 2025-09-21</h5>
+<h5>Release 0.36.0-alpha.3, 2025-10-14</h5>
 
 Alpha release:
 
