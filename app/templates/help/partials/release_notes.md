@@ -1,3 +1,9 @@
+<h5>Release 0.36.0-alpha.6, 2025-10-15</h5>
+
+Alpha release:
+
+- Remove mapping status from M11 specification (issue 41)
+
 <h5>Release 0.36.0-alpha.5, 2025-10-15</h5>
 
 Alpha release:
