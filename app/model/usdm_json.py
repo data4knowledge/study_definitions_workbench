@@ -213,7 +213,8 @@ class USDMJson:
             result["arms"] = len(design["arms"]) if design["arms"] else "[Arms]"
             result["trial_blind_scheme"] = (
                 design["blindingSchema"]["standardCode"]["decode"]
-                if ("blindingSchema" in design)
+                if ("blindingSchema" in design) 
+                and design["blindingSchema"]
                 and ("standardCode" in design["blindingSchema"])
                 else "[Trial Blind Schema]"
             )
