@@ -1,3 +1,9 @@
+<h5>Release 0.36.0-alpha.5, 2025-10-15</h5>
+
+Alpha release:
+
+- Fix a few bugs (issue 40)
+
 <h5>Release 0.36.0-alpha.4, 2025-10-14</h5>
 
 Alpha release:
