@@ -7,7 +7,6 @@ def parse_elements(template: str, url: str) -> str:
     for ref in soup(["m11:element"]):
         attributes = ref.attrs
         id = ref.parent["id"]
-        print(f"ELEMENT NAME: {attributes['name']}")
         attrs = {
             "hx-get": f"{url}/{attributes['name']}/link",
             "hx-trigger": "load",
