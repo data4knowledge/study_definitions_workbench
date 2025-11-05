@@ -8,12 +8,21 @@
         </tr>
             <td><p class="card-text"><strong>Definition</strong></p></td>
             <td>
-                <table class="table">
+                <table class="table table-striped">
+                    <tr>
+                        <td class="fit"><strong>C-Code</strong></td>
+                        <td><strong>Definition</strong></td>
+                    </tr>
                     {% for item in data["definition"] %}
                         <tr>
                             <td>
                                 <p class="card-text text-muted">
-                                    {{item["c_code"]}}: {{item["text"]}}
+                                    {{item["c_code"]}}
+                                </p>
+                            </td>
+                            <td>
+                                <p class="card-text text-muted">
+                                    {{item["text"]}}
                                 </p>
                             </td>
                         </tr>
@@ -63,14 +72,14 @@
                 {% if data["ct"] %}
                     <table class="table table-striped">
                         <tr>
-                            <td><strong>C-Code</strong></td>
+                            <td class="fit"><strong>C-Code</strong></td>
                             <td><strong>Preferred Term</strong></td>
                             <td><strong>Definition</strong></td>
                         </tr>
-                        {% for item in data["ct"] %}
+                        {% for item in data["ct"]["items"] %}
                             <tr>
                                 <td>
-                                    <p class="card-text text-muted">{{item["ncit_code"]}}</p>
+                                    <p class="card-text text-muted">{{item["c_code"]}}</p>
                                 </td>           
                                 <td>
                                     <p class="card-text text-muted">{{item["preferred_term"]}}</p>

@@ -832,6 +832,31 @@ def test_filter(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+# Expects data from previous test
+@pytest.mark.playwright
+def test_m11(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto(url)
+
+    login(page)
+
+    page.get_by_role("button", name=" ICH M11").click()
+    page.get_by_role("link", name="M11 Specification").click()
+    page.get_by_role("link", name="Sponsor Confidentiality").click()
+    page.locator("#specification-card div").filter(has_text="Template Specification Long").locator("i").click()
+    expect(page.locator("#data-div")).to_contain_text("M11 Specification: Sponsor Confidentiality Statement")
+    expect(page.locator("#template-div")).to_contain_text("Enter Sponsor Confidentiality Statement")
+    page.locator("#specification-card i").nth(1).click()
+    expect(page.locator("#technical-div")).to_contain_text("Sponsor Confidentiality Statement")
+    page.locator("#specification-card div").filter(has_text="USDM Mapping Name Sponsor").locator("i").click()
+    expect(page.locator("#usdm-div")).to_contain_text("Sponsor Confidentiality Statement")
+    page.locator("#specification-card div").filter(has_text="FHIR M11 Mapping Resource").locator("i").click()
+    expect(page.locator("#fhir-div")).to_contain_text("ResearchStudy.extension[confidentialityStatement]")
+
+    context.close()
+    browser.close()
 
 def username():
     se = ServiceEnvironment()
@@ -859,8 +884,10 @@ def login(page):
     page.get_by_role("link", name="Click here to register or").click()
     page.get_by_label("Email address").click()
     page.get_by_label("Email address").fill(username())
-    page.get_by_label("Password").click()
-    page.get_by_label("Password").fill(password())
+    #page.get_by_label("Password *").click()
+    pwd = page.get_by_label("Password")
+    pwd.click()
+    pwd.fill(password())
     page.get_by_role("button", name="Continue", exact=True).click()
 
 
