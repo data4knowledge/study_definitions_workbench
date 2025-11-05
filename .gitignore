@@ -167,6 +167,8 @@ setup_env.sh
 .playwright_env
 .prism_env
 .env
+.single_env
+.docker_env
 install_local_d4kms.sh
 
 # Mount for DB and data files
@@ -186,6 +188,7 @@ xxx_*.*
 install_local_d4kms.sh
 test_server.sh
 dev_server.sh
+single_server.sh
 pytest_playwright_gen.sh
 
 # MS lock files
@@ -194,6 +197,4 @@ pytest_playwright_gen.sh
 ~$*.pptx
 tests/test_files/mount/database/test_database.db-journal
 playwright_generator.sh
-.docker_env
 playwright_record.sh
-
