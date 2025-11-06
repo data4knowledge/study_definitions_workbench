@@ -44,21 +44,17 @@
       </ul>
       <div class="tab-content mt-2">
         <div id="title_page_tab" class="tab-pane fade show active" role="tabpanel">
-          {% set title_map = title_page_study_list_headings() %}
-          {% set key = title_map[0][1][0] %}
-          {% set width = data[key]|length %}
+          {% set width = data["Full Title"]|length %}
           <div class="outer-div row mt-3">
             <div class="col-12 extract-div mt-3 mb-3">
               <div class="overflow-auto section-div">
                 <table class="ich-m11-title-page-table">
-                  {% for x in title_map %}
+                  {% for k, v in data.items() %}
                     <tr>
-                      <td>{{x[0]}}</td>
+                      <td>{{k}}</td>
                       {% for w in range(width) %}
                         <td>
-                          {% for element in x[1] %}
-                            {{data[element][w]}}<br/>
-                          {% endfor %}
+                          {{v[w]}}                          
                         </td>
                       {% endfor %}
                     </tr>

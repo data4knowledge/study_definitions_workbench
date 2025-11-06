@@ -2,11 +2,12 @@ from typing import Annotated
 from fastapi import APIRouter, Form, Depends, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
+from simple_error_log import Errors
+from usdm4_m11.data_view.data_view import DataView
 from app.database.study import Study
 from app.database.version import Version
 from app.database.file_import import FileImport
 from app.database.database import get_db
-from app.model.usdm.m11.title_page import USDMM11TitlePage
 from app.model.usdm_json import USDMJson
 from app.model.file_handling.data_files import DataFiles
 from app.dependencies.dependency import protect_endpoint
@@ -69,16 +70,15 @@ def study_list(
     request: Request, list_studies: str = None, session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    # print(f"STUDIES: {list_studies}")
     parts = list_studies.split(",") if list_studies else []
     data = []
     for id in parts:
         version = Version.find_latest_version(id, session)
         usdm = USDMJson(version.id, session)
-        m11 = USDMM11TitlePage(usdm.wrapper(), usdm.extra())
-        data.append(m11.__dict__)
+        errors = Errors()
+        m11 = DataView(usdm.wrapper(), errors)
+        data.append(m11.title_page())
     data = restructure_study_list(data)
-    # print(f"STUDY LIST: {data}")
     data["fhir"] = {
         "enabled": transmit_role_enabled(request),
         "versions": fhir_versions(),

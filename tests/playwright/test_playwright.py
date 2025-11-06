@@ -164,13 +164,13 @@ def test_load_fhir_v1(playwright: Playwright) -> None:
     login(page)
 
     page.get_by_role("button", name=" Import").click()
-    page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+    page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     page.set_input_files(
         "#files",
         os.path.join(path, "tests/test_files/fhir_v1/from/ASP8062_fhir_m11.json"),
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of 'fhir.json'")).to_be_visible(
+    expect(page.get_by_text("Success: Import of 'ASP8062_fhir_m11.json'")).to_be_visible(
         timeout=30_000
     )
     page.get_by_role("link").first.click()
@@ -302,11 +302,11 @@ def test_export_import(playwright: Playwright) -> None:
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+        page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     download = download_info.value
     page.get_by_role("navigation").get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
-    page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+    page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     page.set_input_files(
         "#files",
         os.path.join(path, "tests/test_files/fhir_v1/from/WA42380_fhir_m11.json"),

@@ -7,7 +7,38 @@
     "versions": [
       {
         "id": "StudyVersion_1",
-        "extensionAttributes": [],
+        "extensionAttributes": [
+          {
+            "id": "ExtensionAttribute_1",
+            "url": "www.d4k.dk/usdm/extensions/001",
+            "valueString": "This clinical study is being sponsored globally by F. Hoffmann-La Roche Ltd of Basel,\nSwitzerland. However, it may be implemented in individual countries by Roche's local affiliates,\nincluding Genentech, Inc. in the United States. The information contained in this document, especially\nany unpublished data, is the property of F. Hoffmann-La Roche Ltd (or under its control) and therefore\nis provided to you in confidence as an investigator, potential investigator, or consultant, for review by\nyou, your staff, and an applicable Ethics Committee or Institutional Review Board. It is understood that\nthis information will not be disclosed to others without written authorization from Roche except to the\nextent necessary to obtain informed consent from persons to whom the drug may be administered.",
+            "valueBoolean": null,
+            "valueInteger": null,
+            "valueId": null,
+            "valueQuantity": null,
+            "valueRange": null,
+            "valueCode": null,
+            "valueAliasCode": null,
+            "valueExtensionClass": null,
+            "extensionAttributes": [],
+            "instanceType": "ExtensionAttribute"
+          },
+          {
+            "id": "ExtensionAttribute_2",
+            "url": "www.d4k.dk/usdm/extensions/002",
+            "valueString": null,
+            "valueBoolean": false,
+            "valueInteger": null,
+            "valueId": null,
+            "valueQuantity": null,
+            "valueRange": null,
+            "valueCode": null,
+            "valueAliasCode": null,
+            "valueExtensionClass": null,
+            "extensionAttributes": [],
+            "instanceType": "ExtensionAttribute"
+          }
+        ],
         "versionIdentifier": "3",
         "rationale": "Not set",
         "documentVersionIds": [
@@ -4014,5 +4045,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 M11 Package",
-  "systemVersion": "0.6.1"
+  "systemVersion": "0.7.0"
 }

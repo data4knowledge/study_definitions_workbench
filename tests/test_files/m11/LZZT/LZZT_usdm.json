@@ -7,7 +7,38 @@
     "versions": [
       {
         "id": "StudyVersion_1",
-        "extensionAttributes": [],
+        "extensionAttributes": [
+          {
+            "id": "ExtensionAttribute_1",
+            "url": "www.d4k.dk/usdm/extensions/001",
+            "valueString": "",
+            "valueBoolean": null,
+            "valueInteger": null,
+            "valueId": null,
+            "valueQuantity": null,
+            "valueRange": null,
+            "valueCode": null,
+            "valueAliasCode": null,
+            "valueExtensionClass": null,
+            "extensionAttributes": [],
+            "instanceType": "ExtensionAttribute"
+          },
+          {
+            "id": "ExtensionAttribute_2",
+            "url": "www.d4k.dk/usdm/extensions/002",
+            "valueString": null,
+            "valueBoolean": false,
+            "valueInteger": null,
+            "valueId": null,
+            "valueQuantity": null,
+            "valueRange": null,
+            "valueCode": null,
+            "valueAliasCode": null,
+            "valueExtensionClass": null,
+            "extensionAttributes": [],
+            "instanceType": "ExtensionAttribute"
+          }
+        ],
         "versionIdentifier": "(c)",
         "rationale": "Not set",
         "documentVersionIds": [
@@ -4455,5 +4486,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 M11 Package",
-  "systemVersion": "0.6.1"
+  "systemVersion": "0.7.0"
 }
