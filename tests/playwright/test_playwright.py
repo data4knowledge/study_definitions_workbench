@@ -478,10 +478,10 @@ def test_excel_v4_export(playwright: Playwright) -> None:
     expect(page.locator("#navBarMain")).to_contain_text("Export")
     page.get_by_role("button", name=" Export").click()
     expect(page.locator("#navBarMain")).to_contain_text(
-        "Download USDM v4 format Excel (.xlsx)"
+        "USDM v4 format Excel (.xlsx)"
     )
     with page.expect_download() as download_info:
-        page.get_by_role("link", name="Download USDM v4 format Excel (.xlsx)").click()
+        page.get_by_role("link", name="USDM v4 format Excel (.xlsx)").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
 
@@ -507,10 +507,10 @@ def test_excel_v3_export(playwright: Playwright) -> None:
     expect(page.locator("#navBarMain")).to_contain_text("Export")
     page.get_by_role("button", name=" Export").click()
     expect(page.locator("#navBarMain")).to_contain_text(
-        "Download USDM v3 format Excel (.xlsx)"
+        "USDM v3 format Excel (.xlsx)"
     )
     with page.expect_download() as download_info:
-        page.get_by_role("link", name="Download USDM v3 format Excel (.xlsx)").click()
+        page.get_by_role("link", name="USDM v3 format Excel (.xlsx)").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
 
@@ -660,12 +660,12 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(page.get_by_role("link", name=" USDM JSON Diff")).to_be_visible()
     page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL").get_by_role("link").click()
     expect(
-        page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")
+        page.get_by_role("heading", name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2")
     ).to_be_visible()
     page.get_by_role("link", name=" Back").click()
     page.get_by_role("link", name=" USDM JSON Diff").click()
     expect(
-        page.get_by_role("heading", name="Sponsor: LILLY | Phase: Phase")
+        page.get_by_role("heading", name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2")
     ).to_be_visible()
     expect(page.get_by_role("cell", name='"text": "LZZT - NEW"')).to_be_visible()
     expect(page.get_by_role("cell", name='"text": "New public title"')).to_be_visible()
@@ -710,32 +710,32 @@ def test_pagination(playwright: Playwright) -> None:
     expect(
         page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")
     ).to_be_visible()
-    expect(page.get_by_role("button", name="«")).to_be_visible()
-    expect(page.get_by_role("button", name="1")).to_be_visible()
-    expect(page.get_by_role("button", name="2")).to_be_visible()
-    expect(page.get_by_role("button", name="»")).to_be_visible()
-    page.get_by_role("button", name="2").click()
+    expect(page.get_by_role("button", name="«", exact=True)).to_be_visible()
+    expect(page.get_by_role("button", name="1", exact=True)).to_be_visible()
+    expect(page.get_by_role("button", name="2", exact=True)).to_be_visible()
+    expect(page.get_by_role("button", name="»", exact=True)).to_be_visible()
+    page.get_by_role("button", name="2", exact=True).click()
     expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
     page.get_by_label("Items: 8 4 8 12 24 48").click()
     expect(page.get_by_label("Items: 8 4 8 12 24 48")).to_be_visible()
     page.get_by_label("Items: 8 4 8 12 24 48").click()
-    expect(page.get_by_role("button", name="«")).to_be_visible()
-    expect(page.get_by_role("button", name="1")).to_be_visible()
-    expect(page.get_by_role("button", name="2")).to_be_visible()
-    expect(page.get_by_role("button", name="»")).to_be_visible()
-    page.get_by_role("button", name="1").click()
+    expect(page.get_by_role("button", name="«", exact=True)).to_be_visible()
+    expect(page.get_by_role("button", name="1", exact=True)).to_be_visible()
+    expect(page.get_by_role("button", name="2", exact=True)).to_be_visible()
+    expect(page.get_by_role("button", name="»", exact=True)).to_be_visible()
+    page.get_by_role("button", name="1", exact=True).click()
     expect(
         page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")
     ).to_be_visible()
     # expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
-    page.get_by_role("button", name="»").click()
+    page.get_by_role("button", name="»", exact=True).click()
     expect(page.get_by_text("USDM Excel", exact=True)).to_be_visible()
-    page.get_by_role("button", name="«").click()
+    page.get_by_role("button", name="«", exact=True).click()
     expect(
         page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")
     ).to_be_visible()
     page.get_by_label("Items: 8 4 8 12 24 48").click()
-    page.get_by_role("link", name="48").click()
+    page.get_by_role("link", name="48", exact=True).click()
     page.get_by_label("Items: 48 4 8 12 24 48").click()
     expect(
         page.get_by_role("heading", name="University of Pennsylvania: IRB# 821403")
@@ -763,7 +763,8 @@ def test_filter(playwright: Playwright) -> None:
     # Check sponsor menu
     page.get_by_role("button", name=" Sponsors").click()
     expect(page.get_by_text("Astellas Pharma", exact=True)).to_be_visible()
-    expect(page.get_by_text("LILLY", exact=True)).to_be_visible()
+    expect(page.get_by_text("Eli Lilly", exact=True)).to_be_visible()
+    expect(page.get_by_text("Eli Lilly and Company", exact=True)).to_be_visible()
     expect(page.get_by_text("University of Pennsylvania", exact=True)).to_be_visible()
     page.get_by_role("button", name=" Sponsors").click()
 
@@ -912,7 +913,7 @@ def load_m11(page, root_path, filepath):
 def load_fhir(page, root_path, filepath):
     page.get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
-    page.get_by_role("link", name="M11 FHIR v1, Dallas 2024").click()
+    page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
     expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
