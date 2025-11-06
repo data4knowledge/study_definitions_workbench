@@ -1,6 +1,6 @@
 import os
 import pytest
-from d4k_ms_base.service_environment import ServiceEnvironment
+from dotenv import load_dotenv
 from playwright.sync_api import Playwright, expect
 from app.__init__ import VERSION
 
@@ -11,6 +11,7 @@ url = "http://localhost:8000"
 @pytest.fixture(scope="session", autouse=True)
 def setup():
     os.environ["PYTHON_ENVIRONMENT"] = "playwright"
+    load_dotenv(".playwright_env", override=True)
     yield
     os.environ["PYTHON_ENVIRONMENT"] = "development"
 
@@ -129,6 +130,7 @@ def test_load_excel(playwright: Playwright) -> None:
     context = browser.new_context()
     page = context.new_page()
     path = filepath()
+    
     page.goto(url)
 
     login(page)
@@ -860,8 +862,7 @@ def test_m11(playwright: Playwright) -> None:
     browser.close()
 
 def username():
-    se = ServiceEnvironment()
-    value = se.get("USERNAME")
+    value = os.environ["USERNAME"]
     return value
 
 
@@ -870,14 +871,12 @@ def display_name():
 
 
 def password():
-    se = ServiceEnvironment()
-    value = se.get("PASSWORD")
+    value = os.environ["PASSWORD"]
     return value
 
 
 def filepath():
-    se = ServiceEnvironment()
-    value = se.get("FILEPATH")
+    value = os.environ["FILEPATH"]
     return value
 
 
