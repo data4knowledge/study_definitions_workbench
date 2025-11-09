@@ -22,6 +22,10 @@ class USDMDatabase:
     def excel(self, version: str = "4"):
         usdm_fullpath, _, _ = self._files.path("usdm")
         excel_fullpath, excel_filename, _ = self._files.generic_path("xlsx")
-        ue = USDM3Excel() if version == "3" else USDM4Excel()
-        ue.to_excel(usdm_fullpath, excel_fullpath)
+        if version == "3":
+            ue = USDM3Excel()
+            ue.to_excel(usdm_fullpath, excel_fullpath)
+        else: 
+            ue = USDM4Excel()
+            ue.to_legacy_excel(usdm_fullpath, excel_fullpath) # Use old CDISC format for the while
         return excel_fullpath, excel_filename, "application/vnd.ms-excel"
