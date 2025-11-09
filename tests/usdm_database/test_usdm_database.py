@@ -68,7 +68,55 @@ class TestUSDMDatabase:
         FileImport.find.assert_called_once_with(123, mock_session)
         mock_data_files_init.assert_called_once_with("test-uuid")
 
-    def test_excel(
+    def test_usdm3_excel(
+        self, mocker, mock_session, mock_version, mock_file_import, mock_data_files
+    ):
+        """Test the excel method."""
+        # Mock Version.find and FileImport.find
+        mocker.patch("app.database.version.Version.find", return_value=mock_version)
+        mocker.patch(
+            "app.database.file_import.FileImport.find", return_value=mock_file_import
+        )
+
+        # Mock DataFiles constructor and instance
+        mocker.patch(
+            "app.model.file_handling.data_files.DataFiles.__init__", return_value=None
+        )
+        mocker.patch(
+            "app.model.file_handling.data_files.DataFiles.path",
+            return_value=("/path/to/usdm.json", "usdm.json", True),
+        )
+        mocker.patch(
+            "app.model.file_handling.data_files.DataFiles.generic_path",
+            return_value=("/path/to/excel.xlsx", "excel.xlsx", False),
+        )
+
+        # Mock USDM3Excel
+        mock_usdm3excel = MagicMock()
+        mock_usdm3excel_class = mocker.patch(
+            "app.usdm_database.usdm_database.USDM3Excel", return_value=mock_usdm3excel
+        )
+
+        # Create USDMDatabase instance
+        usdm_db = USDMDatabase(1, mock_session)
+
+        # Call the excel method
+        result = usdm_db.excel(version="3")
+
+        # Verify the result
+        assert result == (
+            "/path/to/excel.xlsx",
+            "excel.xlsx",
+            "application/vnd.ms-excel",
+        )
+
+        # Verify the mocks were called correctly
+        mock_usdm3excel_class.assert_called_once()
+        mock_usdm3excel.to_excel.assert_called_once_with(
+            "/path/to/usdm.json", "/path/to/excel.xlsx"
+        )
+
+    def test_usdm4_excel(
         self, mocker, mock_session, mock_version, mock_file_import, mock_data_files
     ):
         """Test the excel method."""
@@ -112,7 +160,7 @@ class TestUSDMDatabase:
 
         # Verify the mocks were called correctly
         mock_usdm4excel_class.assert_called_once()
-        mock_usdm4excel.to_excel.assert_called_once_with(
+        mock_usdm4excel.to_legacy_excel.assert_called_once_with(
             "/path/to/usdm.json", "/path/to/excel.xlsx"
         )
 
@@ -141,7 +189,7 @@ class TestUSDMDatabase:
 
         # Mock USDM4Excel to raise an exception
         mock_usdm4excel = MagicMock()
-        mock_usdm4excel.to_excel.side_effect = Exception("Test error")
+        mock_usdm4excel.to_legacy_excel.side_effect = Exception("Test error")
         mocker.patch(
             "app.usdm_database.usdm_database.USDM4Excel", return_value=mock_usdm4excel
         )
@@ -157,6 +205,6 @@ class TestUSDMDatabase:
         assert "Test error" in str(excinfo.value)
 
         # Verify the mocks were called correctly
-        mock_usdm4excel.to_excel.assert_called_once_with(
+        mock_usdm4excel.to_legacy_excel.assert_called_once_with(
             "/path/to/usdm.json", "/path/to/excel.xlsx"
         )
