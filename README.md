@@ -119,13 +119,10 @@ The image can also be run. obviously, using Docker desktop. Set the environment 
 ## Multi Platform Builds
 
 Note: 
-- Don't use "latest" at the moment.
+- Don't use "latest" at the moment. Put additional -t data4knowledge/sdw:<tag> within command detailed below
 - <tag> does NOT include a 'v'
 
 ````
-docker buildx create --name mybuilder --use
-docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:latest -t data4knowledge/sdw:<tag> . --push
-OR
 docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:<tag> . --push
 docker manifest inspect data4knowledge/sdw:<tag>  
 ```

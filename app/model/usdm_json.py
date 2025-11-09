@@ -3,7 +3,8 @@ import yaml
 from app.database.file_import import FileImport
 from app.model.file_handling.data_files import DataFiles
 from usdm4_fhir import M11 as FHIRM11
-#from usdm4_fhir import SoA as FHIRSoA
+
+# from usdm4_fhir import SoA as FHIRSoA
 from usdm4_fhir.soa.export.export_soa import ExportSoA as FHIRSoA
 from app.database.version import Version
 from sqlalchemy.orm import Session
@@ -214,7 +215,7 @@ class USDMJson:
             result["arms"] = len(design["arms"]) if design["arms"] else "[Arms]"
             result["trial_blind_scheme"] = (
                 design["blindingSchema"]["standardCode"]["decode"]
-                if ("blindingSchema" in design) 
+                if ("blindingSchema" in design)
                 and design["blindingSchema"]
                 and ("standardCode" in design["blindingSchema"])
                 else "[Trial Blind Schema]"

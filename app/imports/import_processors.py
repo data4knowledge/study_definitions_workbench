@@ -3,7 +3,8 @@ from d4k_ms_base.logger import application_logger
 from usdm_db import USDMDb
 from usdm4_m11 import USDM4M11
 from usdm4_cpt import USDM4CPT
-from usdm4_legacy import USDM4Legacy
+
+# from usdm4_legacy import USDM4Legacy
 from usdm4_fhir import M11
 from usdm4.api.wrapper import Wrapper
 from usdm4.api.study_version import StudyVersion
@@ -125,14 +126,15 @@ class ImportCPT(ImportProcessorBase):
 
 class ImportLegacy(ImportProcessorBase):
     async def process(self) -> bool:
-        importer = USDM4Legacy()
-        wrapper: Wrapper = importer.from_pdf(self.full_path)
-        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
-        if wrapper:
-            self.usdm = wrapper.to_json()
-            self.extra = importer.extra
-            self.study_parameters = self._study_parameters()
-        self.errors = importer.errors.to_dict(sel.Errors.INFO)
+        application_logger.info("Legacy import currently diabled")
+        # importer = USDM4Legacy()
+        # wrapper: Wrapper = importer.from_pdf(self.full_path)
+        # application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
+        # if wrapper:
+        #     self.usdm = wrapper.to_json()
+        #     self.extra = importer.extra
+        #     self.study_parameters = self._study_parameters()
+        # self.errors = importer.errors.to_dict(sel.Errors.INFO)
         return True
 
 

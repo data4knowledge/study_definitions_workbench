@@ -130,7 +130,7 @@ def test_load_excel(playwright: Playwright) -> None:
     context = browser.new_context()
     page = context.new_page()
     path = filepath()
-    
+
     page.goto(url)
 
     login(page)
@@ -172,9 +172,9 @@ def test_load_fhir_v1(playwright: Playwright) -> None:
         os.path.join(path, "tests/test_files/fhir_v1/from/ASP8062_fhir_m11.json"),
     )
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of 'ASP8062_fhir_m11.json'")).to_be_visible(
-        timeout=30_000
-    )
+    expect(
+        page.get_by_text("Success: Import of 'ASP8062_fhir_m11.json'")
+    ).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
     expect(
         page.get_by_text(
@@ -479,9 +479,7 @@ def test_excel_v4_export(playwright: Playwright) -> None:
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     expect(page.locator("#navBarMain")).to_contain_text("Export")
     page.get_by_role("button", name=" Export").click()
-    expect(page.locator("#navBarMain")).to_contain_text(
-        "USDM v4 format Excel (.xlsx)"
-    )
+    expect(page.locator("#navBarMain")).to_contain_text("USDM v4 format Excel (.xlsx)")
     with page.expect_download() as download_info:
         page.get_by_role("link", name="USDM v4 format Excel (.xlsx)").click()
     download = download_info.value
@@ -508,9 +506,7 @@ def test_excel_v3_export(playwright: Playwright) -> None:
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     expect(page.locator("#navBarMain")).to_contain_text("Export")
     page.get_by_role("button", name=" Export").click()
-    expect(page.locator("#navBarMain")).to_contain_text(
-        "USDM v3 format Excel (.xlsx)"
-    )
+    expect(page.locator("#navBarMain")).to_contain_text("USDM v3 format Excel (.xlsx)")
     with page.expect_download() as download_info:
         page.get_by_role("link", name="USDM v3 format Excel (.xlsx)").click()
     download = download_info.value
@@ -662,12 +658,18 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(page.get_by_role("link", name=" USDM JSON Diff")).to_be_visible()
     page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL").get_by_role("link").click()
     expect(
-        page.get_by_role("heading", name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2")
+        page.get_by_role(
+            "heading",
+            name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2",
+        )
     ).to_be_visible()
     page.get_by_role("link", name=" Back").click()
     page.get_by_role("link", name=" USDM JSON Diff").click()
     expect(
-        page.get_by_role("heading", name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2")
+        page.get_by_role(
+            "heading",
+            name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2",
+        )
     ).to_be_visible()
     expect(page.get_by_role("cell", name='"text": "LZZT - NEW"')).to_be_visible()
     expect(page.get_by_role("cell", name='"text": "New public title"')).to_be_visible()
@@ -835,6 +837,7 @@ def test_filter(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+
 # Expects data from previous test
 @pytest.mark.playwright
 def test_m11(playwright: Playwright) -> None:
@@ -848,18 +851,35 @@ def test_m11(playwright: Playwright) -> None:
     page.get_by_role("button", name=" ICH M11").click()
     page.get_by_role("link", name="M11 Specification").click()
     page.get_by_role("link", name="Sponsor Confidentiality").click()
-    page.locator("#specification-card div").filter(has_text="Template Specification Long").locator("i").click()
-    expect(page.locator("#data-div")).to_contain_text("M11 Specification: Sponsor Confidentiality Statement")
-    expect(page.locator("#template-div")).to_contain_text("Enter Sponsor Confidentiality Statement")
+    page.locator("#specification-card div").filter(
+        has_text="Template Specification Long"
+    ).locator("i").click()
+    expect(page.locator("#data-div")).to_contain_text(
+        "M11 Specification: Sponsor Confidentiality Statement"
+    )
+    expect(page.locator("#template-div")).to_contain_text(
+        "Enter Sponsor Confidentiality Statement"
+    )
     page.locator("#specification-card i").nth(1).click()
-    expect(page.locator("#technical-div")).to_contain_text("Sponsor Confidentiality Statement")
-    page.locator("#specification-card div").filter(has_text="USDM Mapping Name Sponsor").locator("i").click()
-    expect(page.locator("#usdm-div")).to_contain_text("Sponsor Confidentiality Statement")
-    page.locator("#specification-card div").filter(has_text="FHIR M11 Mapping Resource").locator("i").click()
-    expect(page.locator("#fhir-div")).to_contain_text("ResearchStudy.extension[confidentialityStatement]")
+    expect(page.locator("#technical-div")).to_contain_text(
+        "Sponsor Confidentiality Statement"
+    )
+    page.locator("#specification-card div").filter(
+        has_text="USDM Mapping Name Sponsor"
+    ).locator("i").click()
+    expect(page.locator("#usdm-div")).to_contain_text(
+        "Sponsor Confidentiality Statement"
+    )
+    page.locator("#specification-card div").filter(
+        has_text="FHIR M11 Mapping Resource"
+    ).locator("i").click()
+    expect(page.locator("#fhir-div")).to_contain_text(
+        "ResearchStudy.extension[confidentialityStatement]"
+    )
 
     context.close()
     browser.close()
+
 
 def username():
     value = os.environ["USERNAME"]

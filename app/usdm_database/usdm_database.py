@@ -25,7 +25,9 @@ class USDMDatabase:
         if version == "3":
             ue = USDM3Excel()
             ue.to_excel(usdm_fullpath, excel_fullpath)
-        else: 
+        else:
             ue = USDM4Excel()
-            ue.to_legacy_excel(usdm_fullpath, excel_fullpath) # Use old CDISC format for the while
+            ue.to_legacy_excel(
+                usdm_fullpath, excel_fullpath
+            )  # Use old CDISC format for the while
         return excel_fullpath, excel_filename, "application/vnd.ms-excel"

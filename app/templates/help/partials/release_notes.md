@@ -1,3 +1,9 @@
+<h5>Release 0.36.0-alpha.7, 2025-11-09</h5>
+
+Alpha release:
+
+- Legacy import disabled
+
 <h5>Release 0.36.0-alpha.6, 2025-11-09</h5>
 
 Alpha release:
