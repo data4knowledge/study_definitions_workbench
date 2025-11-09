@@ -1,8 +1,12 @@
-<h5>Release 0.36.0-alpha.6, 2025-10-15</h5>
+<h5>Release 0.36.0-alpha.6, 2025-11-09</h5>
 
 Alpha release:
 
 - Remove mapping status from M11 specification (issue 41)
+- Fix M11 menu (issue 42)
+- M11 spec updates(issue 43)
+- Updates to usdm3_excel to fix issues with export
+- Updates to usdm4_m11 and usdm4_fhir for PRISM
 
 <h5>Release 0.36.0-alpha.5, 2025-10-15</h5>
 
