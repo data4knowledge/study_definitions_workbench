@@ -8,7 +8,6 @@ usdm4_excel>=0.8.1
 usdm3_excel>=0.2.1
 usdm4_m11==0.7.1
 usdm4_cpt==0.3.0
-# usdm4_legacy>=0.1.0-alpha.3
 usdm4_fhir==0.6.0
 usdm4_pj==0.2.0
 d4k-ms-base>=0.4.0
@@ -16,8 +15,6 @@ d4k-ms-service>=0.2.0
 d4k-ms-auth>=0.5.0
 d4k-ms-ui>=0.2.0
 python-multipart>=0.0.20
-# Force docling version
-docling==2.43.0
 pytest==8.2.2
 pytest-mock==3.14.0
 pytest-cov==4.1.0
@@ -25,3 +22,4 @@ pytest-asyncio==0.26.0
 playwright==1.48.0
 pytest-playwright==0.5.2
 ruff==0.9.1
+jinja2==3.1.6
