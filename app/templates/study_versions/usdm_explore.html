@@ -1,0 +1,681 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+
+{% block main_content %}
+  {% set sponsor = data['version']['identifiers']['Pharmaceutical Company'] %}
+  <div class="mt-3 row">
+    <div class="col-12">
+      {% set subtitle = "Sponsor: " ~ sponsor ~ " | Phase: " ~ data['version']['phase'] ~ " | Identifier: "  ~ sponsor['studyIdentifier'] ~ " | Version: " ~ data['version']['version_identifier'] %}
+      {% with title="USDM JSON View", subtitle=subtitle %}
+        {% include "shared/partials/header.html" %}
+      {% endwith %}    
+    </div>
+  </div>
+  <div class="mt-3 row">
+    <div class="col-12">
+      <div class="card card-body rounded-3 h-100">
+        <div>
+            <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
+        </div>
+        <div class="controls">
+            <div class="control-group">
+                <label for="classSelector">Select Class:</label>
+                <select id="classSelector">
+                    <option value="">-- Choose a class --</option>
+                </select>
+                
+                <label for="instanceSelector" style="margin-left: 20px;">Select Instance:</label>
+                <select id="instanceSelector">
+                    <option value="">-- Choose an instance --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="breadcrumb" id="breadcrumb" style="display: none;">
+            <span id="breadcrumbContent"></span>
+        </div>
+        
+        <div class="viewer" id="viewer">
+            <div class="empty-state">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <p>Select a class and instance to explore the USDM data</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block additional_css %}
+  <link rel="stylesheet" href="/static/css/json-explorer.css">
+{% endblock %}   
+
+{% block additional_js %}
+    <script type="text/javascript">
+        // This would be populated by the Jinja2 template
+        // Example structure: { "Study": { "study_1": {...}, "study_2": {...} }, ... }
+        let rawJSON = document.getElementById('json_input').value
+        let usdmData = JSON.parse(rawJSON)
+        
+        // Track expanded instances
+        let expandedInstances = new Set();
+        let currentRootClass = null;
+        let currentRootId = null;
+
+        // Initialize the application
+        function init() {
+            populateClassSelector();
+            setupEventListeners();
+        }
+
+        function populateClassSelector() {
+            const classSelector = document.getElementById('classSelector');
+            const classes = Object.keys(usdmData).sort();
+            
+            classes.forEach(className => {
+                const option = document.createElement('option');
+                option.value = className;
+                option.textContent = className;
+                classSelector.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('classSelector').addEventListener('change', handleClassChange);
+            document.getElementById('instanceSelector').addEventListener('change', handleInstanceChange);
+        }
+
+        function handleClassChange(event) {
+            const className = event.target.value;
+            const instanceSelector = document.getElementById('instanceSelector');
+            
+            // Clear instance selector
+            instanceSelector.innerHTML = '<option value="">-- Choose an instance --</option>';
+            
+            if (className && usdmData[className]) {
+                const instances = Object.keys(usdmData[className]).sort();
+                instances.forEach(instanceId => {
+                    const option = document.createElement('option');
+                    option.value = instanceId;
+                    option.textContent = instanceId;
+                    instanceSelector.appendChild(option);
+                });
+                instanceSelector.disabled = false;
+            } else {
+                instanceSelector.disabled = true;
+            }
+            
+            // Clear viewer
+            clearViewer();
+        }
+
+        function handleInstanceChange(event) {
+            const instanceId = event.target.value;
+            const className = document.getElementById('classSelector').value;
+            
+            if (className && instanceId && usdmData[className] && usdmData[className][instanceId]) {
+                currentRootClass = className;
+                currentRootId = instanceId;
+                expandedInstances.clear();
+                displayInstance(usdmData[className][instanceId], className, instanceId, true);
+                updateBreadcrumb(className, instanceId);
+            } else {
+                clearViewer();
+            }
+        }
+
+        function clearViewer() {
+            const viewer = document.getElementById('viewer');
+            viewer.innerHTML = `
+                <div class="empty-state">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p>Select a class and instance to explore the USDM data</p>
+                </div>
+            `;
+            document.getElementById('breadcrumb').style.display = 'none';
+        }
+
+        function updateBreadcrumb(className, instanceId) {
+            const breadcrumb = document.getElementById('breadcrumb');
+            const breadcrumbContent = document.getElementById('breadcrumbContent');
+            breadcrumbContent.textContent = `${className} > ${instanceId}`;
+            breadcrumb.style.display = 'block';
+        }
+
+        function displayInstance(instance, className, instanceId, isRoot = false) {
+            const viewer = document.getElementById('viewer');
+            
+            if (isRoot) {
+                viewer.innerHTML = '';
+            }
+            
+            const instanceBox = document.createElement('div');
+            instanceBox.className = `instance-box ${isRoot ? 'root' : 'child'}`;
+            instanceBox.id = `box-${instanceId}`;
+            
+            const header = document.createElement('div');
+            header.className = 'instance-header';
+            header.innerHTML = `
+                <span class="instance-id">${instanceId}</span>
+                <span class="instance-type">${instance.instanceType || className}</span>
+            `;
+            instanceBox.appendChild(header);
+            
+            const grid = document.createElement('div');
+            grid.className = 'attribute-grid';
+            
+            // Sort attributes
+            const attributes = Object.keys(instance).sort();
+            
+            attributes.forEach(key => {
+                // Skip instanceType and Id/Ids attributes
+                if (key === 'instanceType' || key.endsWith('Id') || key.endsWith('Ids')) {
+                    return;
+                }
+                
+                const value = instance[key];
+                
+                const keyDiv = document.createElement('div');
+                keyDiv.className = 'attr-key';
+                keyDiv.textContent = key + ':';
+                grid.appendChild(keyDiv);
+                
+                const valueDiv = document.createElement('div');
+                valueDiv.className = 'attr-value';
+                
+                // Handle different value types
+                if (value === null || value === undefined) {
+                    valueDiv.className += ' null';
+                    valueDiv.textContent = 'null';
+                } else if (typeof value === 'boolean') {
+                    valueDiv.className += ' boolean';
+                    valueDiv.textContent = value.toString();
+                } else if (typeof value === 'number') {
+                    valueDiv.className += ' number';
+                    valueDiv.textContent = value.toString();
+                } else if (typeof value === 'string') {
+                    valueDiv.textContent = value;
+                } else if (Array.isArray(value)) {
+                    // Array of objects (child instances)
+                    const count = value.length;
+                    const btn = document.createElement('button');
+                    btn.className = 'link-button array';
+                    btn.innerHTML = `[${count} items] <span class="array-count">${count}</span>`;
+                    btn.onclick = () => toggleArrayExpansion(key, value, instanceId);
+                    valueDiv.appendChild(btn);
+                } else if (typeof value === 'object') {
+                    // Single nested object
+                    const btn = document.createElement('button');
+                    btn.className = 'link-button';
+                    btn.textContent = '→ View Object';
+                    btn.onclick = () => toggleObjectExpansion(key, value, instanceId);
+                    valueDiv.appendChild(btn);
+                }
+                
+                grid.appendChild(valueDiv);
+            });
+            
+            // Add links for Id and Ids attributes
+            attributes.forEach(key => {
+                if (key.endsWith('Id') && instance[key]) {
+                    const keyDiv = document.createElement('div');
+                    keyDiv.className = 'attr-key';
+                    keyDiv.textContent = key + ':';
+                    grid.appendChild(keyDiv);
+                    
+                    const valueDiv = document.createElement('div');
+                    valueDiv.className = 'attr-value';
+                    
+                    const refId = instance[key];
+                    const btn = document.createElement('button');
+                    btn.className = 'link-button';
+                    const expandKey = `${instanceId}-${key}`;
+                    btn.textContent = expandedInstances.has(expandKey) ? '▼ ' + refId : '→ ' + refId;
+                    btn.onclick = () => toggleReferenceExpansion(key, refId, instanceId);
+                    valueDiv.appendChild(btn);
+                    
+                    grid.appendChild(valueDiv);
+                } else if (key.endsWith('Ids') && Array.isArray(instance[key]) && instance[key].length > 0) {
+                    const keyDiv = document.createElement('div');
+                    keyDiv.className = 'attr-key';
+                    keyDiv.textContent = key + ':';
+                    grid.appendChild(keyDiv);
+                    
+                    const valueDiv = document.createElement('div');
+                    valueDiv.className = 'attr-value';
+                    
+                    const ids = instance[key];
+                    ids.forEach(refId => {
+                        const btn = document.createElement('button');
+                        btn.className = 'link-button';
+                        btn.style.marginRight = '5px';
+                        btn.style.marginBottom = '5px';
+                        const expandKey = `${instanceId}-${key}-${refId}`;
+                        btn.textContent = expandedInstances.has(expandKey) ? '▼ ' + refId : '→ ' + refId;
+                        btn.onclick = () => toggleReferenceExpansion(key, refId, instanceId);
+                        valueDiv.appendChild(btn);
+                    });
+                    
+                    grid.appendChild(valueDiv);
+                }
+            });
+            
+            instanceBox.appendChild(grid);
+            
+            if (isRoot) {
+                viewer.appendChild(instanceBox);
+            } else {
+                return instanceBox;
+            }
+        }
+
+        function toggleReferenceExpansion(attributeKey, refId, parentId) {
+            const expandKey = `${parentId}-${attributeKey}-${refId}`;
+            const containerId = `expanded-${expandKey}`;
+            
+            if (expandedInstances.has(expandKey)) {
+                // Collapse
+                expandedInstances.delete(expandKey);
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.remove();
+                }
+            } else {
+                // Expand
+                expandedInstances.add(expandKey);
+                
+                // Find the instance
+                const foundInstance = findInstanceById(refId);
+                if (foundInstance) {
+                    const { instance, className } = foundInstance;
+                    const instanceBox = displayInstance(instance, className, refId, false);
+                    instanceBox.id = containerId;
+                    
+                    // Add collapse button
+                    const collapseBtn = document.createElement('button');
+                    collapseBtn.className = 'collapse-button';
+                    collapseBtn.textContent = '✕ Collapse';
+                    collapseBtn.onclick = () => toggleReferenceExpansion(attributeKey, refId, parentId);
+                    instanceBox.querySelector('.instance-header').appendChild(collapseBtn);
+                    
+                    // Insert after parent
+                    const parentBox = document.getElementById(`box-${parentId}`);
+                    if (parentBox) {
+                        parentBox.after(instanceBox);
+                    }
+                }
+            }
+        }
+
+        function toggleArrayExpansion(attributeKey, arrayValue, parentId) {
+            const expandKey = `${parentId}-${attributeKey}-array`;
+            const containerId = `expanded-${expandKey}`;
+            
+            if (expandedInstances.has(expandKey)) {
+                // Collapse
+                expandedInstances.delete(expandKey);
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.remove();
+                }
+                // Update button state
+                updateArrayButton(parentId, attributeKey, false);
+            } else {
+                // Expand
+                expandedInstances.add(expandKey);
+                
+                // Create container for array items
+                const arrayContainer = document.createElement('div');
+                arrayContainer.id = containerId;
+                arrayContainer.style.marginLeft = '30px';
+                arrayContainer.style.marginTop = '10px';
+                
+                // Add each array item
+                arrayValue.forEach((item, index) => {
+                    if (typeof item === 'object' && item !== null) {
+                        // Create a unique ID for array items
+                        const arrayItemId = `${parentId}-${attributeKey}-${index}`;
+                        const instanceBox = document.createElement('div');
+                        instanceBox.className = 'instance-box child';
+                        instanceBox.id = `box-${arrayItemId}`;
+                        instanceBox.style.marginBottom = '15px';
+                        
+                        const header = document.createElement('div');
+                        header.className = 'instance-header';
+                        header.innerHTML = `
+                            <span class="instance-id">[${index}] ${item.id || item.name || ''}</span>
+                            <span class="instance-type">${item.instanceType || 'Object'}</span>
+                        `;
+                        instanceBox.appendChild(header);
+                        
+                        const grid = document.createElement('div');
+                        grid.className = 'attribute-grid';
+                        
+                        // Display object attributes
+                        const itemAttributes = Object.keys(item).sort();
+                        itemAttributes.forEach(itemKey => {
+                            // Skip instanceType and Id/Ids attributes for display
+                            if (itemKey === 'instanceType' || itemKey.endsWith('Id') || itemKey.endsWith('Ids')) {
+                                return;
+                            }
+                            
+                            const itemValue = item[itemKey];
+                            
+                            const keyDiv = document.createElement('div');
+                            keyDiv.className = 'attr-key';
+                            keyDiv.textContent = itemKey + ':';
+                            grid.appendChild(keyDiv);
+                            
+                            const valueDiv = document.createElement('div');
+                            valueDiv.className = 'attr-value';
+                            
+                            // Handle different value types
+                            if (itemValue === null || itemValue === undefined) {
+                                valueDiv.className += ' null';
+                                valueDiv.textContent = 'null';
+                            } else if (typeof itemValue === 'boolean') {
+                                valueDiv.className += ' boolean';
+                                valueDiv.textContent = itemValue.toString();
+                            } else if (typeof itemValue === 'number') {
+                                valueDiv.className += ' number';
+                                valueDiv.textContent = itemValue.toString();
+                            } else if (typeof itemValue === 'string') {
+                                valueDiv.textContent = itemValue;
+                            } else if (Array.isArray(itemValue)) {
+                                const count = itemValue.length;
+                                const btn = document.createElement('button');
+                                btn.className = 'link-button array';
+                                btn.innerHTML = `[${count} items] <span class="array-count">${count}</span>`;
+                                btn.onclick = () => toggleArrayExpansion(itemKey, itemValue, arrayItemId);
+                                valueDiv.appendChild(btn);
+                            } else if (typeof itemValue === 'object') {
+                                const btn = document.createElement('button');
+                                btn.className = 'link-button';
+                                btn.textContent = '→ View Object';
+                                btn.onclick = () => toggleObjectExpansion(itemKey, itemValue, arrayItemId);
+                                valueDiv.appendChild(btn);
+                            }
+                            
+                            grid.appendChild(valueDiv);
+                        });
+                        
+                        // Add links for Id and Ids attributes in array items
+                        itemAttributes.forEach(itemKey => {
+                            if (itemKey.endsWith('Id') && item[itemKey]) {
+                                const keyDiv = document.createElement('div');
+                                keyDiv.className = 'attr-key';
+                                keyDiv.textContent = itemKey + ':';
+                                grid.appendChild(keyDiv);
+                                
+                                const valueDiv = document.createElement('div');
+                                valueDiv.className = 'attr-value';
+                                
+                                const refId = item[itemKey];
+                                const btn = document.createElement('button');
+                                btn.className = 'link-button';
+                                const itemExpandKey = `${arrayItemId}-${itemKey}`;
+                                btn.textContent = expandedInstances.has(itemExpandKey) ? '▼ ' + refId : '→ ' + refId;
+                                btn.onclick = () => toggleReferenceExpansion(itemKey, refId, arrayItemId);
+                                valueDiv.appendChild(btn);
+                                
+                                grid.appendChild(valueDiv);
+                            } else if (itemKey.endsWith('Ids') && Array.isArray(item[itemKey]) && item[itemKey].length > 0) {
+                                const keyDiv = document.createElement('div');
+                                keyDiv.className = 'attr-key';
+                                keyDiv.textContent = itemKey + ':';
+                                grid.appendChild(keyDiv);
+                                
+                                const valueDiv = document.createElement('div');
+                                valueDiv.className = 'attr-value';
+                                
+                                const ids = item[itemKey];
+                                ids.forEach(refId => {
+                                    const btn = document.createElement('button');
+                                    btn.className = 'link-button';
+                                    btn.style.marginRight = '5px';
+                                    btn.style.marginBottom = '5px';
+                                    const itemExpandKey = `${arrayItemId}-${itemKey}-${refId}`;
+                                    btn.textContent = expandedInstances.has(itemExpandKey) ? '▼ ' + refId : '→ ' + refId;
+                                    btn.onclick = () => toggleReferenceExpansion(itemKey, refId, arrayItemId);
+                                    valueDiv.appendChild(btn);
+                                });
+                                
+                                grid.appendChild(valueDiv);
+                            }
+                        });
+                        
+                        instanceBox.appendChild(grid);
+                        arrayContainer.appendChild(instanceBox);
+                    } else {
+                        // Handle primitive values in array
+                        const primitiveDiv = document.createElement('div');
+                        primitiveDiv.style.padding = '5px 10px';
+                        primitiveDiv.style.marginBottom = '5px';
+                        primitiveDiv.style.background = '#f8f9fa';
+                        primitiveDiv.style.borderRadius = '4px';
+                        primitiveDiv.textContent = `[${index}]: ${item}`;
+                        arrayContainer.appendChild(primitiveDiv);
+                    }
+                });
+                
+                // Add collapse button at the top
+                const collapseHeader = document.createElement('div');
+                collapseHeader.style.marginBottom = '10px';
+                const collapseBtn = document.createElement('button');
+                collapseBtn.className = 'collapse-button';
+                collapseBtn.textContent = '✕ Collapse Array';
+                collapseBtn.onclick = () => toggleArrayExpansion(attributeKey, arrayValue, parentId);
+                collapseHeader.appendChild(collapseBtn);
+                arrayContainer.insertBefore(collapseHeader, arrayContainer.firstChild);
+                
+                // Insert after parent
+                const parentBox = document.getElementById(`box-${parentId}`);
+                if (parentBox) {
+                    parentBox.after(arrayContainer);
+                }
+                
+                // Update button state
+                updateArrayButton(parentId, attributeKey, true);
+            }
+        }
+
+        function toggleObjectExpansion(attributeKey, objValue, parentId) {
+            const expandKey = `${parentId}-${attributeKey}-object`;
+            const containerId = `expanded-${expandKey}`;
+            
+            if (expandedInstances.has(expandKey)) {
+                // Collapse
+                expandedInstances.delete(expandKey);
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.remove();
+                }
+                // Update button state
+                updateObjectButton(parentId, attributeKey, false);
+            } else {
+                // Expand
+                expandedInstances.add(expandKey);
+                
+                // Create container for object
+                const objectItemId = `${parentId}-${attributeKey}`;
+                const objectContainer = document.createElement('div');
+                objectContainer.id = `box-${objectItemId}`;
+                objectContainer.className = 'instance-box child';
+                objectContainer.style.marginLeft = '30px';
+                objectContainer.style.marginTop = '10px';
+                
+                const header = document.createElement('div');
+                header.className = 'instance-header';
+                header.innerHTML = `
+                    <span class="instance-id">${objValue.id || objValue.name || attributeKey}</span>
+                    <span class="instance-type">${objValue.instanceType || 'Object'}</span>
+                `;
+                objectContainer.appendChild(header);
+                
+                const grid = document.createElement('div');
+                grid.className = 'attribute-grid';
+                
+                // Display object attributes
+                const objAttributes = Object.keys(objValue).sort();
+                objAttributes.forEach(objKey => {
+                    // Skip instanceType and Id/Ids attributes for display
+                    if (objKey === 'instanceType' || objKey.endsWith('Id') || objKey.endsWith('Ids')) {
+                        return;
+                    }
+                    
+                    const value = objValue[objKey];
+                    
+                    const keyDiv = document.createElement('div');
+                    keyDiv.className = 'attr-key';
+                    keyDiv.textContent = objKey + ':';
+                    grid.appendChild(keyDiv);
+                    
+                    const valueDiv = document.createElement('div');
+                    valueDiv.className = 'attr-value';
+                    
+                    // Handle different value types
+                    if (value === null || value === undefined) {
+                        valueDiv.className += ' null';
+                        valueDiv.textContent = 'null';
+                    } else if (typeof value === 'boolean') {
+                        valueDiv.className += ' boolean';
+                        valueDiv.textContent = value.toString();
+                    } else if (typeof value === 'number') {
+                        valueDiv.className += ' number';
+                        valueDiv.textContent = value.toString();
+                    } else if (typeof value === 'string') {
+                        valueDiv.textContent = value;
+                    } else if (Array.isArray(value)) {
+                        const count = value.length;
+                        const btn = document.createElement('button');
+                        btn.className = 'link-button array';
+                        btn.innerHTML = `[${count} items] <span class="array-count">${count}</span>`;
+                        btn.onclick = () => toggleArrayExpansion(objKey, value, `${parentId}-${attributeKey}`);
+                        valueDiv.appendChild(btn);
+                    } else if (typeof value === 'object') {
+                        const btn = document.createElement('button');
+                        btn.className = 'link-button';
+                        btn.textContent = '→ View Object';
+                        btn.onclick = () => toggleObjectExpansion(objKey, value, `${parentId}-${attributeKey}`);
+                        valueDiv.appendChild(btn);
+                    }
+                    
+                    grid.appendChild(valueDiv);
+                });
+                
+                // Add links for Id and Ids attributes in object
+                objAttributes.forEach(objKey => {
+                    if (objKey.endsWith('Id') && objValue[objKey]) {
+                        const keyDiv = document.createElement('div');
+                        keyDiv.className = 'attr-key';
+                        keyDiv.textContent = objKey + ':';
+                        grid.appendChild(keyDiv);
+                        
+                        const valueDiv = document.createElement('div');
+                        valueDiv.className = 'attr-value';
+                        
+                        const refId = objValue[objKey];
+                        const btn = document.createElement('button');
+                        btn.className = 'link-button';
+                        const objExpandKey = `${parentId}-${attributeKey}-${objKey}`;
+                        btn.textContent = expandedInstances.has(objExpandKey) ? '▼ ' + refId : '→ ' + refId;
+                        btn.onclick = () => toggleReferenceExpansion(objKey, refId, `${parentId}-${attributeKey}`);
+                        valueDiv.appendChild(btn);
+                        
+                        grid.appendChild(valueDiv);
+                    } else if (objKey.endsWith('Ids') && Array.isArray(objValue[objKey]) && objValue[objKey].length > 0) {
+                        const keyDiv = document.createElement('div');
+                        keyDiv.className = 'attr-key';
+                        keyDiv.textContent = objKey + ':';
+                        grid.appendChild(keyDiv);
+                        
+                        const valueDiv = document.createElement('div');
+                        valueDiv.className = 'attr-value';
+                        
+                        const ids = objValue[objKey];
+                        ids.forEach(refId => {
+                            const btn = document.createElement('button');
+                            btn.className = 'link-button';
+                            btn.style.marginRight = '5px';
+                            btn.style.marginBottom = '5px';
+                            const objExpandKey = `${parentId}-${attributeKey}-${objKey}-${refId}`;
+                            btn.textContent = expandedInstances.has(objExpandKey) ? '▼ ' + refId : '→ ' + refId;
+                            btn.onclick = () => toggleReferenceExpansion(objKey, refId, `${parentId}-${attributeKey}`);
+                            valueDiv.appendChild(btn);
+                        });
+                        
+                        grid.appendChild(valueDiv);
+                    }
+                });
+                
+                objectContainer.appendChild(grid);
+                
+                // Add collapse button
+                const collapseBtn = document.createElement('button');
+                collapseBtn.className = 'collapse-button';
+                collapseBtn.textContent = '✕ Collapse';
+                collapseBtn.onclick = () => toggleObjectExpansion(attributeKey, objValue, parentId);
+                objectContainer.querySelector('.instance-header').appendChild(collapseBtn);
+                
+                // Insert after parent
+                const parentBox = document.getElementById(`box-${parentId}`);
+                if (parentBox) {
+                    parentBox.after(objectContainer);
+                }
+                
+                // Update button state
+                updateObjectButton(parentId, attributeKey, true);
+            }
+        }
+
+        // Helper function to update array button state
+        function updateArrayButton(parentId, attributeKey, isExpanded) {
+            const parentBox = document.getElementById(`box-${parentId}`);
+            if (parentBox) {
+                const buttons = parentBox.querySelectorAll('button.array');
+                buttons.forEach(btn => {
+                    if (btn.onclick.toString().includes(attributeKey)) {
+                        btn.className = isExpanded ? 'link-button array expanded' : 'link-button array';
+                    }
+                });
+            }
+        }
+
+        // Helper function to update object button state
+        function updateObjectButton(parentId, attributeKey, isExpanded) {
+            const parentBox = document.getElementById(`box-${parentId}`);
+            if (parentBox) {
+                const buttons = parentBox.querySelectorAll('button.link-button:not(.array)');
+                buttons.forEach(btn => {
+                    if (btn.onclick.toString().includes(attributeKey) && btn.textContent.includes('View Object')) {
+                        btn.textContent = isExpanded ? '▼ Hide Object' : '→ View Object';
+                    }
+                });
+            }
+        }
+
+        function findInstanceById(id) {
+            for (const className in usdmData) {
+                if (usdmData[className][id]) {
+                    return {
+                        instance: usdmData[className][id],
+                        className: className
+                    };
+                }
+            }
+            return null;
+        }
+
+        // Initialize on page load
+        init();
+    </script>
+{% endblock %}

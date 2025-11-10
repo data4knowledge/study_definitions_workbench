@@ -13,6 +13,7 @@
           <th scope="col">Import Type</th>
           <th scope="col">When</th>
           <th scope="col">USDM JSON</th>
+          <th scope="col">USDM JSON Explorer</th>
           <th scope="col">USDM JSON Difference</th>
         </tr>
       </thead>
@@ -25,6 +26,11 @@
             <td>{{item['import']['created']}}</td> 
             <td>
               <a href="/versions/{{item['id']}}/usdm" class="btn btn-sm btn-outline-primary rounded-5" title="View the USDM JSON">
+                <i class="me-1 bi bi-filetype-json"></i>USDM JSON
+              </a>  
+            </td>
+            <td>
+              <a href="/versions/{{item['id']}}/usdmExplore" class="btn btn-sm btn-outline-primary rounded-5" title="View the USDM JSON">
                 <i class="me-1 bi bi-filetype-json"></i>USDM JSON
               </a>  
             </td>

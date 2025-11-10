@@ -1,4 +1,5 @@
 import os
+import json
 from fastapi import Depends, FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -21,7 +22,7 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
-
+from usdm3.data_store.data_store import DataStore
 
 from app.routers import (
     transmissions,
@@ -161,6 +162,25 @@ async def get_version_usdm(
         request, "study_versions/usdm.html", {"user": user, "data": data}
     )
 
+
+@app.get("/versions/{id}/usdmExplore", dependencies=[Depends(protect_endpoint)])
+async def get_version_usdm(
+    request: Request, id: int, session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(id, session)
+    version = Version.find(id, session)
+    file_import = FileImport.find(version.import_id, session)
+    files = DataFiles(file_import.uuid)
+    fullpath, filename, exists = files.path("usdm")
+    datastore = DataStore(fullpath)
+    datastore.decompose()
+    datastore._klasses.pop("Wrapper")
+    raw_json = json.dumps(datastore._klasses)
+    data = {"version": usdm.study_version(), "version_id": id, "json": raw_json}
+    return templates.TemplateResponse(
+        request, "study_versions/usdm_explore.html", {"user": user, "data": data}
+    )
 
 @app.get("/versions/{id}/usdmDiff", dependencies=[Depends(protect_endpoint)])
 async def get_version_usdm_diff(
