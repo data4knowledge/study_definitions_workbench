@@ -87,7 +87,7 @@
     }
     
     .node.selected {
-        stroke: #ffc107;
+        stroke: #007bff;
         stroke-width: 4px;
     }
     
@@ -118,6 +118,15 @@
         user-select: none;
         text-anchor: middle;
         fill: #666;
+    }
+    
+    .edge-label {
+        font-size: 8px;
+        pointer-events: none;
+        user-select: none;
+        text-anchor: middle;
+        fill: #555;
+        font-style: italic;
     }
     
     .detail-attr {
@@ -194,6 +203,7 @@
         let simulation = null;
         let svg = null;
         let g = null;
+        let zoom = null;
         let expandedNodes = new Set();
         let selectedNode = null;
         
@@ -230,7 +240,7 @@
             g = svg.append("g");
             
             // Add zoom behavior
-            const zoom = d3.zoom()
+            zoom = d3.zoom()
                 .scaleExtent([0.1, 4])
                 .on("zoom", (event) => {
                     g.attr("transform", event.transform);
@@ -445,6 +455,14 @@
                 .join("line")
                 .attr("class", "link");
             
+            // Add edge labels
+            const edgeLabels = g.append("g")
+                .selectAll("text")
+                .data(links)
+                .join("text")
+                .attr("class", "edge-label")
+                .text(d => d.relationship);
+            
             // Draw nodes
             const node = g.append("g")
                 .selectAll("circle")
@@ -464,25 +482,13 @@
                     showNodeDetails(d);
                 });
             
-            // Add labels
-            const labels = g.append("g")
-                .selectAll("text")
-                .data(nodes)
-                .join("text")
-                .attr("class", "node-label")
-                .attr("dy", d => d.isRoot ? 30 : 25)
-                .text(d => {
-                    const maxLen = 20;
-                    return d.label.length > maxLen ? d.label.substring(0, maxLen) + '...' : d.label;
-                });
-            
-            // Add type labels
+            // Add type labels (class names only)
             const typeLabels = g.append("g")
                 .selectAll("text")
                 .data(nodes)
                 .join("text")
                 .attr("class", "node-type")
-                .attr("dy", d => d.isRoot ? 42 : 37)
+                .attr("dy", d => d.isRoot ? 30 : 25)
                 .text(d => d.type);
             
             // Update positions on tick
@@ -497,13 +503,13 @@
                     .attr("cx", d => d.x)
                     .attr("cy", d => d.y);
                 
-                labels
-                    .attr("x", d => d.x)
-                    .attr("y", d => d.y);
-                
                 typeLabels
                     .attr("x", d => d.x)
                     .attr("y", d => d.y);
+                
+                edgeLabels
+                    .attr("x", d => (d.source.x + d.target.x) / 2)
+                    .attr("y", d => (d.source.y + d.target.y) / 2);
             });
         }
         
@@ -608,15 +614,11 @@
         }
         
         function resetView() {
-            const width = document.getElementById('graphContainer').clientWidth;
-            const height = document.getElementById('graphContainer').clientHeight;
-            
-            svg.transition()
-                .duration(750)
-                .call(
-                    d3.zoom().transform,
-                    d3.zoomIdentity.translate(0, 0).scale(1)
-                );
+            if (svg && zoom) {
+                svg.transition()
+                    .duration(750)
+                    .call(zoom.transform, d3.zoomIdentity);
+            }
         }
         
         // Initialize on page load
