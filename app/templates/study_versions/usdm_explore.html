@@ -61,7 +61,7 @@
         </div>
         
         <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 0.9em; color: #666;">
-            <strong>Instructions:</strong> Click on nodes to expand their connections. Double-click to see full details. Drag nodes to rearrange. Scroll to zoom.
+            <strong>Instructions:</strong> Click on nodes to see full details. Double-click to expand their connections. Drag nodes to rearrange. Scroll to zoom.
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@
     .node {
         cursor: pointer;
         stroke: #000;
-        stroke-width: 2px;
+        stroke-width: 1px;
     }
     
     .node:hover {
@@ -83,7 +83,7 @@
     
     .node.expanded {
         stroke: #000;
-        stroke-width: 2px;
+        stroke-width: 1px;
     }
     
     .node.selected {
@@ -174,7 +174,7 @@
         color: #0d6efd;
     }
     
-    .expand-btn {
+    /* .expand-btn {
         background: #007bff;
         color: white;
         border: none;
@@ -183,7 +183,7 @@
         cursor: pointer;
         font-size: 0.8em;
         margin-top: 5px;
-    }
+    } */
     
     .expand-btn:hover {
         background: #0056b3;
@@ -475,11 +475,11 @@
                 .call(drag(simulation))
                 .on("click", function(event, d) {
                     event.stopPropagation();
-                    handleNodeClick(d);
+                    showNodeDetails(d);
                 })
                 .on("dblclick", function(event, d) {
                     event.stopPropagation();
-                    showNodeDetails(d);
+                    handleNodeClick(d);
                 });
             
             // Add type labels (class names only)
@@ -568,7 +568,7 @@
             });
             
             if (!node.expanded) {
-                html += '<button class="expand-btn" onclick="expandNodeFromDetails(\'' + node.id + '\')">Expand Connections</button>';
+                html += '<button class="btn btn-sm btn-outline-primary rounded-5" onclick="expandNodeFromDetails(\'' + node.id + '\')">Expand Connections</button>';
             }
             
             content.innerHTML = html;
