@@ -532,6 +532,12 @@
             selectedNode = node;
         }
         
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         function showNodeDetails(node) {
             const panel = document.getElementById('detailsPanel');
             const content = document.getElementById('detailsContent');
@@ -542,6 +548,14 @@
             const attributes = Object.keys(instance).sort();
             
             let html = '';
+            
+            // Display id first if it exists
+            if (instance.id) {
+                html += '<div class="detail-attr">';
+                html += '<div class="detail-key">id</div>';
+                html += `<div class="detail-value">${escapeHtml(instance.id)}</div>`;
+                html += '</div>';
+            }
             
             attributes.forEach(key => {
                 if (key === 'instanceType' || key === 'id') return;
@@ -557,7 +571,7 @@
                 } else if (typeof value === 'number') {
                     html += `<div class="detail-value number">${value}</div>`;
                 } else if (typeof value === 'string') {
-                    html += `<div class="detail-value">${value}</div>`;
+                    html += `<div class="detail-value">${escapeHtml(value)}</div>`;
                 } else if (Array.isArray(value)) {
                     html += `<div class="detail-value">Array[${value.length}]</div>`;
                 } else if (typeof value === 'object') {
@@ -576,7 +590,7 @@
             // Update panel title
             const panelTitle = document.getElementById('detailsPanelTitle');
             if (panelTitle) {
-                panelTitle.textContent = `${node.type}: ${node.id}`;
+                panelTitle.textContent = node.type;
             }
             
             highlightNode(node);
