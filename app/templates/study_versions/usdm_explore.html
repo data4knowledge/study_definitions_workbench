@@ -72,7 +72,7 @@
   <style>
     .node {
         cursor: pointer;
-        stroke: #fff;
+        stroke: #000;
         stroke-width: 2px;
     }
     
@@ -82,8 +82,8 @@
     }
     
     .node.expanded {
-        stroke: #28a745;
-        stroke-width: 3px;
+        stroke: #000;
+        stroke-width: 2px;
     }
     
     .node.selected {
@@ -452,7 +452,7 @@
                 .join("circle")
                 .attr("class", "node")
                 .attr("r", d => d.isRoot ? 20 : 15)
-                .attr("fill", d => colorScale(d.type))
+                .attr("fill", "#C0C0C0")
                 .classed("expanded", d => d.expanded)
                 .call(drag(simulation))
                 .on("click", function(event, d) {
