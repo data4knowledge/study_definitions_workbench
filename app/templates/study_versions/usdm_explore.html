@@ -116,9 +116,12 @@
     }
     
     .detail-attr {
-        margin-bottom: 12px;
-        padding-bottom: 8px;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
         border-bottom: 1px solid #eee;
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
     }
     
     .detail-attr:last-child {
@@ -129,13 +132,19 @@
         font-weight: 600;
         color: #555;
         font-size: 0.9em;
-        margin-bottom: 4px;
+        flex-shrink: 0;
+        width: 140px;
+    }
+    
+    .detail-key::after {
+        content: ':';
     }
     
     .detail-value {
         color: #333;
         font-size: 0.85em;
         word-break: break-word;
+        flex: 1;
     }
     
     .detail-value.null {
@@ -518,16 +527,13 @@
             
             panel.style.display = 'block';
             
-            let html = `<div style="margin-bottom: 15px;">
-                <div style="font-size: 1.1em; font-weight: 600; color: #007bff;">${node.label}</div>
-                <div style="font-size: 0.9em; color: #666;">${node.type}</div>
-            </div>`;
-            
             const instance = node.data;
             const attributes = Object.keys(instance).sort();
             
+            let html = '';
+            
             attributes.forEach(key => {
-                if (key === 'instanceType') return;
+                if (key === 'instanceType' || key === 'id') return;
                 
                 const value = instance[key];
                 html += '<div class="detail-attr">';
@@ -555,6 +561,13 @@
             }
             
             content.innerHTML = html;
+            
+            // Update panel title
+            const panelTitle = document.querySelector('#detailsPanel h5');
+            if (panelTitle) {
+                panelTitle.textContent = `${node.type}: ${node.id}`;
+            }
+            
             highlightNode(node);
         }
         
