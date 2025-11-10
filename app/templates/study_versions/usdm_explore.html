@@ -49,9 +49,11 @@
                 <svg id="graphSvg" style="width: 100%; height: 100%; display: none;"></svg>
             </div>
             
-            <div id="detailsPanel" style="width: 350px; border: 1px solid #ddd; border-radius: 4px; background: white; padding: 15px; overflow-y: auto; display: none;">
-                <h5 style="margin-top: 0; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 8px;">Node Details</h5>
-                <div id="detailsContent"></div>
+            <div id="detailsPanel" class="card rounded-3" style="width: 350px; overflow-y: auto; display: none;">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0" id="detailsPanelTitle">Node Details</h6>
+                </div>
+                <div class="card-body" id="detailsContent"></div>
             </div>
         </div>
         
@@ -563,7 +565,7 @@
             content.innerHTML = html;
             
             // Update panel title
-            const panelTitle = document.querySelector('#detailsPanel h5');
+            const panelTitle = document.getElementById('detailsPanelTitle');
             if (panelTitle) {
                 panelTitle.textContent = `${node.type}: ${node.id}`;
             }
