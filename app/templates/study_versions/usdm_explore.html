@@ -22,7 +22,7 @@
         <div>
             <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
         </div>
-        <div class="controls">
+        <div class="controls" style="margin-bottom: 15px;">
             <div class="control-group">
                 <label for="classSelector">Select Class:</label>
                 <select id="classSelector">
@@ -33,20 +33,30 @@
                 <select id="instanceSelector">
                     <option value="">-- Choose an instance --</option>
                 </select>
+                
+                <button id="resetZoom" style="margin-left: 20px; padding: 5px 15px;" disabled>Reset View</button>
             </div>
         </div>
 
-        <div class="breadcrumb" id="breadcrumb" style="display: none;">
-            <span id="breadcrumbContent"></span>
+        <div style="display: flex; gap: 15px; height: 800px;">
+            <div id="graphContainer" style="flex: 1; border: 1px solid #ddd; border-radius: 4px; background: #fafafa; position: relative;">
+                <div class="empty-state" id="emptyState" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p>Select a class and instance to explore the USDM data</p>
+                </div>
+                <svg id="graphSvg" style="width: 100%; height: 100%; display: none;"></svg>
+            </div>
+            
+            <div id="detailsPanel" style="width: 350px; border: 1px solid #ddd; border-radius: 4px; background: white; padding: 15px; overflow-y: auto; display: none;">
+                <h5 style="margin-top: 0; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 8px;">Node Details</h5>
+                <div id="detailsContent"></div>
+            </div>
         </div>
         
-        <div class="viewer" id="viewer">
-            <div class="empty-state">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <p>Select a class and instance to explore the USDM data</p>
-            </div>
+        <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 0.9em; color: #666;">
+            <strong>Instructions:</strong> Click on nodes to expand their connections. Double-click to see full details. Drag nodes to rearrange. Scroll to zoom.
         </div>
       </div>
     </div>
@@ -54,27 +64,135 @@
 {% endblock %}
 
 {% block additional_css %}
-  <link rel="stylesheet" href="/static/css/json-explorer.css">
+  <style>
+    .node {
+        cursor: pointer;
+        stroke: #fff;
+        stroke-width: 2px;
+    }
+    
+    .node:hover {
+        stroke: #333;
+        stroke-width: 3px;
+    }
+    
+    .node.expanded {
+        stroke: #28a745;
+        stroke-width: 3px;
+    }
+    
+    .node.selected {
+        stroke: #ffc107;
+        stroke-width: 4px;
+    }
+    
+    .link {
+        stroke: #999;
+        stroke-opacity: 0.6;
+        stroke-width: 1.5px;
+    }
+    
+    .link.highlighted {
+        stroke: #007bff;
+        stroke-opacity: 0.9;
+        stroke-width: 2.5px;
+    }
+    
+    .node-label {
+        font-size: 11px;
+        pointer-events: none;
+        user-select: none;
+        text-anchor: middle;
+        fill: #333;
+        font-weight: 500;
+    }
+    
+    .node-type {
+        font-size: 9px;
+        pointer-events: none;
+        user-select: none;
+        text-anchor: middle;
+        fill: #666;
+    }
+    
+    .detail-attr {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .detail-attr:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-key {
+        font-weight: 600;
+        color: #555;
+        font-size: 0.9em;
+        margin-bottom: 4px;
+    }
+    
+    .detail-value {
+        color: #333;
+        font-size: 0.85em;
+        word-break: break-word;
+    }
+    
+    .detail-value.null {
+        color: #999;
+        font-style: italic;
+    }
+    
+    .detail-value.boolean {
+        color: #d63384;
+    }
+    
+    .detail-value.number {
+        color: #0d6efd;
+    }
+    
+    .expand-btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.8em;
+        margin-top: 5px;
+    }
+    
+    .expand-btn:hover {
+        background: #0056b3;
+    }
+  </style>
 {% endblock %}   
 
 {% block additional_js %}
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type="text/javascript">
-        // This would be populated by the Jinja2 template
-        // Example structure: { "Study": { "study_1": {...}, "study_2": {...} }, ... }
-        let rawJSON = document.getElementById('json_input').value
-        let usdmData = JSON.parse(rawJSON)
+        let rawJSON = document.getElementById('json_input').value;
+        let usdmData = JSON.parse(rawJSON);
         
-        // Track expanded instances
-        let expandedInstances = new Set();
-        let currentRootClass = null;
-        let currentRootId = null;
-
-        // Initialize the application
+        // Graph state
+        let nodes = [];
+        let links = [];
+        let simulation = null;
+        let svg = null;
+        let g = null;
+        let expandedNodes = new Set();
+        let selectedNode = null;
+        
+        // Color scale for different node types
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        
+        // Initialize
         function init() {
             populateClassSelector();
             setupEventListeners();
+            setupSVG();
         }
-
+        
         function populateClassSelector() {
             const classSelector = document.getElementById('classSelector');
             const classes = Object.keys(usdmData).sort();
@@ -86,17 +204,31 @@
                 classSelector.appendChild(option);
             });
         }
-
+        
         function setupEventListeners() {
             document.getElementById('classSelector').addEventListener('change', handleClassChange);
             document.getElementById('instanceSelector').addEventListener('change', handleInstanceChange);
+            document.getElementById('resetZoom').addEventListener('click', resetView);
         }
-
+        
+        function setupSVG() {
+            svg = d3.select("#graphSvg");
+            g = svg.append("g");
+            
+            // Add zoom behavior
+            const zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on("zoom", (event) => {
+                    g.attr("transform", event.transform);
+                });
+            
+            svg.call(zoom);
+        }
+        
         function handleClassChange(event) {
             const className = event.target.value;
             const instanceSelector = document.getElementById('instanceSelector');
             
-            // Clear instance selector
             instanceSelector.innerHTML = '<option value="">-- Choose an instance --</option>';
             
             if (className && usdmData[className]) {
@@ -112,557 +244,117 @@
                 instanceSelector.disabled = true;
             }
             
-            // Clear viewer
-            clearViewer();
+            clearGraph();
         }
-
+        
         function handleInstanceChange(event) {
             const instanceId = event.target.value;
             const className = document.getElementById('classSelector').value;
             
             if (className && instanceId && usdmData[className] && usdmData[className][instanceId]) {
-                currentRootClass = className;
-                currentRootId = instanceId;
-                expandedInstances.clear();
-                displayInstance(usdmData[className][instanceId], className, instanceId, true);
-                updateBreadcrumb(className, instanceId);
+                initializeGraph(className, instanceId);
             } else {
-                clearViewer();
+                clearGraph();
             }
         }
-
-        function clearViewer() {
-            const viewer = document.getElementById('viewer');
-            viewer.innerHTML = `
-                <div class="empty-state">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                    <p>Select a class and instance to explore the USDM data</p>
-                </div>
-            `;
-            document.getElementById('breadcrumb').style.display = 'none';
-        }
-
-        function updateBreadcrumb(className, instanceId) {
-            const breadcrumb = document.getElementById('breadcrumb');
-            const breadcrumbContent = document.getElementById('breadcrumbContent');
-            breadcrumbContent.textContent = `${className} > ${instanceId}`;
-            breadcrumb.style.display = 'block';
-        }
-
-        function displayInstance(instance, className, instanceId, isRoot = false) {
-            const viewer = document.getElementById('viewer');
+        
+        function clearGraph() {
+            nodes = [];
+            links = [];
+            expandedNodes.clear();
+            selectedNode = null;
             
-            if (isRoot) {
-                viewer.innerHTML = '';
+            if (simulation) {
+                simulation.stop();
             }
             
-            const instanceBox = document.createElement('div');
-            instanceBox.className = `instance-box ${isRoot ? 'root' : 'child'}`;
-            instanceBox.id = `box-${instanceId}`;
+            g.selectAll("*").remove();
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('graphSvg').style.display = 'none';
+            document.getElementById('detailsPanel').style.display = 'none';
+            document.getElementById('resetZoom').disabled = true;
+        }
+        
+        function initializeGraph(className, instanceId) {
+            clearGraph();
             
-            const header = document.createElement('div');
-            header.className = 'instance-header';
-            header.innerHTML = `
-                <span class="instance-id">${instanceId}</span>
-                <span class="instance-type">${instance.instanceType || className}</span>
-            `;
-            instanceBox.appendChild(header);
+            const instance = usdmData[className][instanceId];
             
-            const grid = document.createElement('div');
-            grid.className = 'attribute-grid';
+            // Create root node
+            const rootNode = {
+                id: instanceId,
+                label: instanceId,
+                type: className,
+                data: instance,
+                expanded: false,
+                isRoot: true
+            };
             
-            // Sort attributes
-            const attributes = Object.keys(instance).sort();
+            nodes.push(rootNode);
+            expandedNodes.add(instanceId);
             
-            attributes.forEach(key => {
-                // Skip instanceType and Id/Ids attributes
-                if (key === 'instanceType' || key.endsWith('Id') || key.endsWith('Ids')) {
-                    return;
-                }
-                
-                const value = instance[key];
-                
-                const keyDiv = document.createElement('div');
-                keyDiv.className = 'attr-key';
-                keyDiv.textContent = key + ':';
-                grid.appendChild(keyDiv);
-                
-                const valueDiv = document.createElement('div');
-                valueDiv.className = 'attr-value';
-                
-                // Handle different value types
-                if (value === null || value === undefined) {
-                    valueDiv.className += ' null';
-                    valueDiv.textContent = 'null';
-                } else if (typeof value === 'boolean') {
-                    valueDiv.className += ' boolean';
-                    valueDiv.textContent = value.toString();
-                } else if (typeof value === 'number') {
-                    valueDiv.className += ' number';
-                    valueDiv.textContent = value.toString();
-                } else if (typeof value === 'string') {
-                    valueDiv.textContent = value;
-                } else if (Array.isArray(value)) {
-                    // Array of objects (child instances)
-                    const count = value.length;
-                    const btn = document.createElement('button');
-                    btn.className = 'link-button array';
-                    btn.innerHTML = `[${count} items] <span class="array-count">${count}</span>`;
-                    btn.onclick = () => toggleArrayExpansion(key, value, instanceId);
-                    valueDiv.appendChild(btn);
-                } else if (typeof value === 'object') {
-                    // Single nested object
-                    const btn = document.createElement('button');
-                    btn.className = 'link-button';
-                    btn.textContent = '→ View Object';
-                    btn.onclick = () => toggleObjectExpansion(key, value, instanceId);
-                    valueDiv.appendChild(btn);
-                }
-                
-                grid.appendChild(valueDiv);
-            });
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('graphSvg').style.display = 'block';
+            document.getElementById('resetZoom').disabled = false;
             
-            // Add links for Id and Ids attributes
-            attributes.forEach(key => {
+            updateGraph();
+        }
+        
+        function expandNode(node) {
+            if (expandedNodes.has(node.id)) {
+                return; // Already expanded
+            }
+            
+            expandedNodes.add(node.id);
+            node.expanded = true;
+            
+            const instance = node.data;
+            
+            // Find all reference attributes (ending with Id or Ids)
+            Object.keys(instance).forEach(key => {
                 if (key.endsWith('Id') && instance[key]) {
-                    const keyDiv = document.createElement('div');
-                    keyDiv.className = 'attr-key';
-                    keyDiv.textContent = key + ':';
-                    grid.appendChild(keyDiv);
-                    
-                    const valueDiv = document.createElement('div');
-                    valueDiv.className = 'attr-value';
-                    
                     const refId = instance[key];
-                    const btn = document.createElement('button');
-                    btn.className = 'link-button';
-                    const expandKey = `${instanceId}-${key}`;
-                    btn.textContent = expandedInstances.has(expandKey) ? '▼ ' + refId : '→ ' + refId;
-                    btn.onclick = () => toggleReferenceExpansion(key, refId, instanceId);
-                    valueDiv.appendChild(btn);
-                    
-                    grid.appendChild(valueDiv);
-                } else if (key.endsWith('Ids') && Array.isArray(instance[key]) && instance[key].length > 0) {
-                    const keyDiv = document.createElement('div');
-                    keyDiv.className = 'attr-key';
-                    keyDiv.textContent = key + ':';
-                    grid.appendChild(keyDiv);
-                    
-                    const valueDiv = document.createElement('div');
-                    valueDiv.className = 'attr-value';
-                    
-                    const ids = instance[key];
-                    ids.forEach(refId => {
-                        const btn = document.createElement('button');
-                        btn.className = 'link-button';
-                        btn.style.marginRight = '5px';
-                        btn.style.marginBottom = '5px';
-                        const expandKey = `${instanceId}-${key}-${refId}`;
-                        btn.textContent = expandedInstances.has(expandKey) ? '▼ ' + refId : '→ ' + refId;
-                        btn.onclick = () => toggleReferenceExpansion(key, refId, instanceId);
-                        valueDiv.appendChild(btn);
+                    addNodeAndLink(refId, node.id, key);
+                } else if (key.endsWith('Ids') && Array.isArray(instance[key])) {
+                    instance[key].forEach(refId => {
+                        addNodeAndLink(refId, node.id, key);
                     });
-                    
-                    grid.appendChild(valueDiv);
                 }
             });
             
-            instanceBox.appendChild(grid);
-            
-            if (isRoot) {
-                viewer.appendChild(instanceBox);
-            } else {
-                return instanceBox;
-            }
+            updateGraph();
         }
-
-        function toggleReferenceExpansion(attributeKey, refId, parentId) {
-            const expandKey = `${parentId}-${attributeKey}-${refId}`;
-            const containerId = `expanded-${expandKey}`;
+        
+        function addNodeAndLink(targetId, sourceId, relationship) {
+            // Check if node already exists
+            let targetNode = nodes.find(n => n.id === targetId);
             
-            if (expandedInstances.has(expandKey)) {
-                // Collapse
-                expandedInstances.delete(expandKey);
-                const container = document.getElementById(containerId);
-                if (container) {
-                    container.remove();
-                }
-            } else {
-                // Expand
-                expandedInstances.add(expandKey);
-                
-                // Find the instance
-                const foundInstance = findInstanceById(refId);
+            if (!targetNode) {
+                // Find the instance in usdmData
+                const foundInstance = findInstanceById(targetId);
                 if (foundInstance) {
-                    const { instance, className } = foundInstance;
-                    const instanceBox = displayInstance(instance, className, refId, false);
-                    instanceBox.id = containerId;
-                    
-                    // Add collapse button
-                    const collapseBtn = document.createElement('button');
-                    collapseBtn.className = 'collapse-button';
-                    collapseBtn.textContent = '✕ Collapse';
-                    collapseBtn.onclick = () => toggleReferenceExpansion(attributeKey, refId, parentId);
-                    instanceBox.querySelector('.instance-header').appendChild(collapseBtn);
-                    
-                    // Insert after parent
-                    const parentBox = document.getElementById(`box-${parentId}`);
-                    if (parentBox) {
-                        parentBox.after(instanceBox);
-                    }
+                    targetNode = {
+                        id: targetId,
+                        label: targetId,
+                        type: foundInstance.className,
+                        data: foundInstance.instance,
+                        expanded: false,
+                        isRoot: false
+                    };
+                    nodes.push(targetNode);
                 }
             }
-        }
-
-        function toggleArrayExpansion(attributeKey, arrayValue, parentId) {
-            const expandKey = `${parentId}-${attributeKey}-array`;
-            const containerId = `expanded-${expandKey}`;
             
-            if (expandedInstances.has(expandKey)) {
-                // Collapse
-                expandedInstances.delete(expandKey);
-                const container = document.getElementById(containerId);
-                if (container) {
-                    container.remove();
-                }
-                // Update button state
-                updateArrayButton(parentId, attributeKey, false);
-            } else {
-                // Expand
-                expandedInstances.add(expandKey);
-                
-                // Create container for array items
-                const arrayContainer = document.createElement('div');
-                arrayContainer.id = containerId;
-                arrayContainer.style.marginLeft = '30px';
-                arrayContainer.style.marginTop = '10px';
-                
-                // Add each array item
-                arrayValue.forEach((item, index) => {
-                    if (typeof item === 'object' && item !== null) {
-                        // Create a unique ID for array items
-                        const arrayItemId = `${parentId}-${attributeKey}-${index}`;
-                        const instanceBox = document.createElement('div');
-                        instanceBox.className = 'instance-box child';
-                        instanceBox.id = `box-${arrayItemId}`;
-                        instanceBox.style.marginBottom = '15px';
-                        
-                        const header = document.createElement('div');
-                        header.className = 'instance-header';
-                        header.innerHTML = `
-                            <span class="instance-id">[${index}] ${item.id || item.name || ''}</span>
-                            <span class="instance-type">${item.instanceType || 'Object'}</span>
-                        `;
-                        instanceBox.appendChild(header);
-                        
-                        const grid = document.createElement('div');
-                        grid.className = 'attribute-grid';
-                        
-                        // Display object attributes
-                        const itemAttributes = Object.keys(item).sort();
-                        itemAttributes.forEach(itemKey => {
-                            // Skip instanceType and Id/Ids attributes for display
-                            if (itemKey === 'instanceType' || itemKey.endsWith('Id') || itemKey.endsWith('Ids')) {
-                                return;
-                            }
-                            
-                            const itemValue = item[itemKey];
-                            
-                            const keyDiv = document.createElement('div');
-                            keyDiv.className = 'attr-key';
-                            keyDiv.textContent = itemKey + ':';
-                            grid.appendChild(keyDiv);
-                            
-                            const valueDiv = document.createElement('div');
-                            valueDiv.className = 'attr-value';
-                            
-                            // Handle different value types
-                            if (itemValue === null || itemValue === undefined) {
-                                valueDiv.className += ' null';
-                                valueDiv.textContent = 'null';
-                            } else if (typeof itemValue === 'boolean') {
-                                valueDiv.className += ' boolean';
-                                valueDiv.textContent = itemValue.toString();
-                            } else if (typeof itemValue === 'number') {
-                                valueDiv.className += ' number';
-                                valueDiv.textContent = itemValue.toString();
-                            } else if (typeof itemValue === 'string') {
-                                valueDiv.textContent = itemValue;
-                            } else if (Array.isArray(itemValue)) {
-                                const count = itemValue.length;
-                                const btn = document.createElement('button');
-                                btn.className = 'link-button array';
-                                btn.innerHTML = `[${count} items] <span class="array-count">${count}</span>`;
-                                btn.onclick = () => toggleArrayExpansion(itemKey, itemValue, arrayItemId);
-                                valueDiv.appendChild(btn);
-                            } else if (typeof itemValue === 'object') {
-                                const btn = document.createElement('button');
-                                btn.className = 'link-button';
-                                btn.textContent = '→ View Object';
-                                btn.onclick = () => toggleObjectExpansion(itemKey, itemValue, arrayItemId);
-                                valueDiv.appendChild(btn);
-                            }
-                            
-                            grid.appendChild(valueDiv);
-                        });
-                        
-                        // Add links for Id and Ids attributes in array items
-                        itemAttributes.forEach(itemKey => {
-                            if (itemKey.endsWith('Id') && item[itemKey]) {
-                                const keyDiv = document.createElement('div');
-                                keyDiv.className = 'attr-key';
-                                keyDiv.textContent = itemKey + ':';
-                                grid.appendChild(keyDiv);
-                                
-                                const valueDiv = document.createElement('div');
-                                valueDiv.className = 'attr-value';
-                                
-                                const refId = item[itemKey];
-                                const btn = document.createElement('button');
-                                btn.className = 'link-button';
-                                const itemExpandKey = `${arrayItemId}-${itemKey}`;
-                                btn.textContent = expandedInstances.has(itemExpandKey) ? '▼ ' + refId : '→ ' + refId;
-                                btn.onclick = () => toggleReferenceExpansion(itemKey, refId, arrayItemId);
-                                valueDiv.appendChild(btn);
-                                
-                                grid.appendChild(valueDiv);
-                            } else if (itemKey.endsWith('Ids') && Array.isArray(item[itemKey]) && item[itemKey].length > 0) {
-                                const keyDiv = document.createElement('div');
-                                keyDiv.className = 'attr-key';
-                                keyDiv.textContent = itemKey + ':';
-                                grid.appendChild(keyDiv);
-                                
-                                const valueDiv = document.createElement('div');
-                                valueDiv.className = 'attr-value';
-                                
-                                const ids = item[itemKey];
-                                ids.forEach(refId => {
-                                    const btn = document.createElement('button');
-                                    btn.className = 'link-button';
-                                    btn.style.marginRight = '5px';
-                                    btn.style.marginBottom = '5px';
-                                    const itemExpandKey = `${arrayItemId}-${itemKey}-${refId}`;
-                                    btn.textContent = expandedInstances.has(itemExpandKey) ? '▼ ' + refId : '→ ' + refId;
-                                    btn.onclick = () => toggleReferenceExpansion(itemKey, refId, arrayItemId);
-                                    valueDiv.appendChild(btn);
-                                });
-                                
-                                grid.appendChild(valueDiv);
-                            }
-                        });
-                        
-                        instanceBox.appendChild(grid);
-                        arrayContainer.appendChild(instanceBox);
-                    } else {
-                        // Handle primitive values in array
-                        const primitiveDiv = document.createElement('div');
-                        primitiveDiv.style.padding = '5px 10px';
-                        primitiveDiv.style.marginBottom = '5px';
-                        primitiveDiv.style.background = '#f8f9fa';
-                        primitiveDiv.style.borderRadius = '4px';
-                        primitiveDiv.textContent = `[${index}]: ${item}`;
-                        arrayContainer.appendChild(primitiveDiv);
-                    }
-                });
-                
-                // Add collapse button at the top
-                const collapseHeader = document.createElement('div');
-                collapseHeader.style.marginBottom = '10px';
-                const collapseBtn = document.createElement('button');
-                collapseBtn.className = 'collapse-button';
-                collapseBtn.textContent = '✕ Collapse Array';
-                collapseBtn.onclick = () => toggleArrayExpansion(attributeKey, arrayValue, parentId);
-                collapseHeader.appendChild(collapseBtn);
-                arrayContainer.insertBefore(collapseHeader, arrayContainer.firstChild);
-                
-                // Insert after parent
-                const parentBox = document.getElementById(`box-${parentId}`);
-                if (parentBox) {
-                    parentBox.after(arrayContainer);
-                }
-                
-                // Update button state
-                updateArrayButton(parentId, attributeKey, true);
-            }
-        }
-
-        function toggleObjectExpansion(attributeKey, objValue, parentId) {
-            const expandKey = `${parentId}-${attributeKey}-object`;
-            const containerId = `expanded-${expandKey}`;
-            
-            if (expandedInstances.has(expandKey)) {
-                // Collapse
-                expandedInstances.delete(expandKey);
-                const container = document.getElementById(containerId);
-                if (container) {
-                    container.remove();
-                }
-                // Update button state
-                updateObjectButton(parentId, attributeKey, false);
-            } else {
-                // Expand
-                expandedInstances.add(expandKey);
-                
-                // Create container for object
-                const objectItemId = `${parentId}-${attributeKey}`;
-                const objectContainer = document.createElement('div');
-                objectContainer.id = `box-${objectItemId}`;
-                objectContainer.className = 'instance-box child';
-                objectContainer.style.marginLeft = '30px';
-                objectContainer.style.marginTop = '10px';
-                
-                const header = document.createElement('div');
-                header.className = 'instance-header';
-                header.innerHTML = `
-                    <span class="instance-id">${objValue.id || objValue.name || attributeKey}</span>
-                    <span class="instance-type">${objValue.instanceType || 'Object'}</span>
-                `;
-                objectContainer.appendChild(header);
-                
-                const grid = document.createElement('div');
-                grid.className = 'attribute-grid';
-                
-                // Display object attributes
-                const objAttributes = Object.keys(objValue).sort();
-                objAttributes.forEach(objKey => {
-                    // Skip instanceType and Id/Ids attributes for display
-                    if (objKey === 'instanceType' || objKey.endsWith('Id') || objKey.endsWith('Ids')) {
-                        return;
-                    }
-                    
-                    const value = objValue[objKey];
-                    
-                    const keyDiv = document.createElement('div');
-                    keyDiv.className = 'attr-key';
-                    keyDiv.textContent = objKey + ':';
-                    grid.appendChild(keyDiv);
-                    
-                    const valueDiv = document.createElement('div');
-                    valueDiv.className = 'attr-value';
-                    
-                    // Handle different value types
-                    if (value === null || value === undefined) {
-                        valueDiv.className += ' null';
-                        valueDiv.textContent = 'null';
-                    } else if (typeof value === 'boolean') {
-                        valueDiv.className += ' boolean';
-                        valueDiv.textContent = value.toString();
-                    } else if (typeof value === 'number') {
-                        valueDiv.className += ' number';
-                        valueDiv.textContent = value.toString();
-                    } else if (typeof value === 'string') {
-                        valueDiv.textContent = value;
-                    } else if (Array.isArray(value)) {
-                        const count = value.length;
-                        const btn = document.createElement('button');
-                        btn.className = 'link-button array';
-                        btn.innerHTML = `[${count} items] <span class="array-count">${count}</span>`;
-                        btn.onclick = () => toggleArrayExpansion(objKey, value, `${parentId}-${attributeKey}`);
-                        valueDiv.appendChild(btn);
-                    } else if (typeof value === 'object') {
-                        const btn = document.createElement('button');
-                        btn.className = 'link-button';
-                        btn.textContent = '→ View Object';
-                        btn.onclick = () => toggleObjectExpansion(objKey, value, `${parentId}-${attributeKey}`);
-                        valueDiv.appendChild(btn);
-                    }
-                    
-                    grid.appendChild(valueDiv);
-                });
-                
-                // Add links for Id and Ids attributes in object
-                objAttributes.forEach(objKey => {
-                    if (objKey.endsWith('Id') && objValue[objKey]) {
-                        const keyDiv = document.createElement('div');
-                        keyDiv.className = 'attr-key';
-                        keyDiv.textContent = objKey + ':';
-                        grid.appendChild(keyDiv);
-                        
-                        const valueDiv = document.createElement('div');
-                        valueDiv.className = 'attr-value';
-                        
-                        const refId = objValue[objKey];
-                        const btn = document.createElement('button');
-                        btn.className = 'link-button';
-                        const objExpandKey = `${parentId}-${attributeKey}-${objKey}`;
-                        btn.textContent = expandedInstances.has(objExpandKey) ? '▼ ' + refId : '→ ' + refId;
-                        btn.onclick = () => toggleReferenceExpansion(objKey, refId, `${parentId}-${attributeKey}`);
-                        valueDiv.appendChild(btn);
-                        
-                        grid.appendChild(valueDiv);
-                    } else if (objKey.endsWith('Ids') && Array.isArray(objValue[objKey]) && objValue[objKey].length > 0) {
-                        const keyDiv = document.createElement('div');
-                        keyDiv.className = 'attr-key';
-                        keyDiv.textContent = objKey + ':';
-                        grid.appendChild(keyDiv);
-                        
-                        const valueDiv = document.createElement('div');
-                        valueDiv.className = 'attr-value';
-                        
-                        const ids = objValue[objKey];
-                        ids.forEach(refId => {
-                            const btn = document.createElement('button');
-                            btn.className = 'link-button';
-                            btn.style.marginRight = '5px';
-                            btn.style.marginBottom = '5px';
-                            const objExpandKey = `${parentId}-${attributeKey}-${objKey}-${refId}`;
-                            btn.textContent = expandedInstances.has(objExpandKey) ? '▼ ' + refId : '→ ' + refId;
-                            btn.onclick = () => toggleReferenceExpansion(objKey, refId, `${parentId}-${attributeKey}`);
-                            valueDiv.appendChild(btn);
-                        });
-                        
-                        grid.appendChild(valueDiv);
-                    }
-                });
-                
-                objectContainer.appendChild(grid);
-                
-                // Add collapse button
-                const collapseBtn = document.createElement('button');
-                collapseBtn.className = 'collapse-button';
-                collapseBtn.textContent = '✕ Collapse';
-                collapseBtn.onclick = () => toggleObjectExpansion(attributeKey, objValue, parentId);
-                objectContainer.querySelector('.instance-header').appendChild(collapseBtn);
-                
-                // Insert after parent
-                const parentBox = document.getElementById(`box-${parentId}`);
-                if (parentBox) {
-                    parentBox.after(objectContainer);
-                }
-                
-                // Update button state
-                updateObjectButton(parentId, attributeKey, true);
-            }
-        }
-
-        // Helper function to update array button state
-        function updateArrayButton(parentId, attributeKey, isExpanded) {
-            const parentBox = document.getElementById(`box-${parentId}`);
-            if (parentBox) {
-                const buttons = parentBox.querySelectorAll('button.array');
-                buttons.forEach(btn => {
-                    if (btn.onclick.toString().includes(attributeKey)) {
-                        btn.className = isExpanded ? 'link-button array expanded' : 'link-button array';
-                    }
+            // Add link if both nodes exist and link doesn't already exist
+            if (targetNode && !links.find(l => l.source.id === sourceId && l.target.id === targetId)) {
+                links.push({
+                    source: sourceId,
+                    target: targetId,
+                    relationship: relationship
                 });
             }
         }
-
-        // Helper function to update object button state
-        function updateObjectButton(parentId, attributeKey, isExpanded) {
-            const parentBox = document.getElementById(`box-${parentId}`);
-            if (parentBox) {
-                const buttons = parentBox.querySelectorAll('button.link-button:not(.array)');
-                buttons.forEach(btn => {
-                    if (btn.onclick.toString().includes(attributeKey) && btn.textContent.includes('View Object')) {
-                        btn.textContent = isExpanded ? '▼ Hide Object' : '→ View Object';
-                    }
-                });
-            }
-        }
-
+        
         function findInstanceById(id) {
             for (const className in usdmData) {
                 if (usdmData[className][id]) {
@@ -674,7 +366,202 @@
             }
             return null;
         }
-
+        
+        function updateGraph() {
+            const width = document.getElementById('graphContainer').clientWidth;
+            const height = document.getElementById('graphContainer').clientHeight;
+            
+            // Update simulation
+            if (simulation) {
+                simulation.stop();
+            }
+            
+            simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                .force("charge", d3.forceManyBody().strength(-400))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collision", d3.forceCollide().radius(40));
+            
+            // Clear and redraw
+            g.selectAll("*").remove();
+            
+            // Draw links
+            const link = g.append("g")
+                .selectAll("line")
+                .data(links)
+                .join("line")
+                .attr("class", "link");
+            
+            // Draw nodes
+            const node = g.append("g")
+                .selectAll("circle")
+                .data(nodes)
+                .join("circle")
+                .attr("class", "node")
+                .attr("r", d => d.isRoot ? 20 : 15)
+                .attr("fill", d => colorScale(d.type))
+                .classed("expanded", d => d.expanded)
+                .call(drag(simulation))
+                .on("click", function(event, d) {
+                    event.stopPropagation();
+                    handleNodeClick(d);
+                })
+                .on("dblclick", function(event, d) {
+                    event.stopPropagation();
+                    showNodeDetails(d);
+                });
+            
+            // Add labels
+            const labels = g.append("g")
+                .selectAll("text")
+                .data(nodes)
+                .join("text")
+                .attr("class", "node-label")
+                .attr("dy", d => d.isRoot ? 30 : 25)
+                .text(d => {
+                    const maxLen = 20;
+                    return d.label.length > maxLen ? d.label.substring(0, maxLen) + '...' : d.label;
+                });
+            
+            // Add type labels
+            const typeLabels = g.append("g")
+                .selectAll("text")
+                .data(nodes)
+                .join("text")
+                .attr("class", "node-type")
+                .attr("dy", d => d.isRoot ? 42 : 37)
+                .text(d => d.type);
+            
+            // Update positions on tick
+            simulation.on("tick", () => {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+                
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+                
+                labels
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+                
+                typeLabels
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+            });
+        }
+        
+        function handleNodeClick(node) {
+            expandNode(node);
+            highlightNode(node);
+        }
+        
+        function highlightNode(node) {
+            // Update visual state
+            g.selectAll(".node")
+                .classed("selected", d => d.id === node.id);
+            
+            // Highlight connected links
+            g.selectAll(".link")
+                .classed("highlighted", d => 
+                    d.source.id === node.id || d.target.id === node.id
+                );
+            
+            selectedNode = node;
+        }
+        
+        function showNodeDetails(node) {
+            const panel = document.getElementById('detailsPanel');
+            const content = document.getElementById('detailsContent');
+            
+            panel.style.display = 'block';
+            
+            let html = `<div style="margin-bottom: 15px;">
+                <div style="font-size: 1.1em; font-weight: 600; color: #007bff;">${node.label}</div>
+                <div style="font-size: 0.9em; color: #666;">${node.type}</div>
+            </div>`;
+            
+            const instance = node.data;
+            const attributes = Object.keys(instance).sort();
+            
+            attributes.forEach(key => {
+                if (key === 'instanceType') return;
+                
+                const value = instance[key];
+                html += '<div class="detail-attr">';
+                html += `<div class="detail-key">${key}</div>`;
+                
+                if (value === null || value === undefined) {
+                    html += '<div class="detail-value null">null</div>';
+                } else if (typeof value === 'boolean') {
+                    html += `<div class="detail-value boolean">${value}</div>`;
+                } else if (typeof value === 'number') {
+                    html += `<div class="detail-value number">${value}</div>`;
+                } else if (typeof value === 'string') {
+                    html += `<div class="detail-value">${value}</div>`;
+                } else if (Array.isArray(value)) {
+                    html += `<div class="detail-value">Array[${value.length}]</div>`;
+                } else if (typeof value === 'object') {
+                    html += '<div class="detail-value">Object {...}</div>';
+                }
+                
+                html += '</div>';
+            });
+            
+            if (!node.expanded) {
+                html += '<button class="expand-btn" onclick="expandNodeFromDetails(\'' + node.id + '\')">Expand Connections</button>';
+            }
+            
+            content.innerHTML = html;
+            highlightNode(node);
+        }
+        
+        window.expandNodeFromDetails = function(nodeId) {
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) {
+                expandNode(node);
+            }
+        };
+        
+        function drag(simulation) {
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+            
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+            
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+            
+            return d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended);
+        }
+        
+        function resetView() {
+            const width = document.getElementById('graphContainer').clientWidth;
+            const height = document.getElementById('graphContainer').clientHeight;
+            
+            svg.transition()
+                .duration(750)
+                .call(
+                    d3.zoom().transform,
+                    d3.zoomIdentity.translate(0, 0).scale(1)
+                );
+        }
+        
         // Initialize on page load
         init();
     </script>
