@@ -11,7 +11,7 @@
   <div class="mt-3 row">
     <div class="col-12">
       {% set subtitle = "Sponsor: " ~ sponsor ~ " | Phase: " ~ data['version']['phase'] ~ " | Identifier: "  ~ sponsor['studyIdentifier'] ~ " | Version: " ~ data['version']['version_identifier'] %}
-      {% with title="USDM JSON View", subtitle=subtitle %}
+      {% with title="USDM JSON Explorer", subtitle=subtitle %}
         {% include "shared/partials/header.html" %}
       {% endwith %}    
     </div>
@@ -34,7 +34,10 @@
                     <option value="">-- Choose an instance --</option>
                 </select>
                 
-                <button id="resetZoom" style="margin-left: 20px; padding: 5px 15px;" disabled>Reset View</button>
+                <button id="resetZoom" class="btn btn-sm btn-outline-primary rounded-5 ms-4" disabled>
+                    <i class="me-1 bi bi-x-circle"></i>Reset View
+                </button>
+
             </div>
         </div>
 
