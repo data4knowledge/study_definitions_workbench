@@ -291,17 +291,20 @@
             };
             
             nodes.push(rootNode);
-            expandedNodes.add(instanceId);
             
             document.getElementById('emptyState').style.display = 'none';
             document.getElementById('graphSvg').style.display = 'block';
             document.getElementById('resetZoom').disabled = false;
             
-            updateGraph();
+            // Automatically expand the root node to show first-level connections
+            expandNode(rootNode);
         }
         
         function expandNode(node) {
+            console.log('expandNode called for:', node.id, 'Already expanded?', expandedNodes.has(node.id));
+            
             if (expandedNodes.has(node.id)) {
+                console.log('Node already expanded, skipping');
                 return; // Already expanded
             }
             
@@ -309,18 +312,49 @@
             node.expanded = true;
             
             const instance = node.data;
+            let foundConnections = 0;
             
-            // Find all reference attributes (ending with Id or Ids)
+            // Find all reference attributes
             Object.keys(instance).forEach(key => {
-                if (key.endsWith('Id') && instance[key]) {
-                    const refId = instance[key];
-                    addNodeAndLink(refId, node.id, key);
-                } else if (key.endsWith('Ids') && Array.isArray(instance[key])) {
-                    instance[key].forEach(refId => {
+                const value = instance[key];
+                
+                // Skip instanceType
+                if (key === 'instanceType') {
+                    return;
+                }
+                
+                // Handle ID references (attributes ending with Id or Ids)
+                if (key.endsWith('Id') && value) {
+                    console.log('Found single ID reference:', key, '->', value);
+                    addNodeAndLink(value, node.id, key);
+                    foundConnections++;
+                } else if (key.endsWith('Ids') && Array.isArray(value)) {
+                    value.forEach(refId => {
+                        console.log('Found array ID reference:', key, '->', refId);
                         addNodeAndLink(refId, node.id, key);
+                        foundConnections++;
+                    });
+                } 
+                // Handle direct object references that have an 'id' property
+                else if (typeof value === 'object' && value !== null && value.id) {
+                    console.log('Found object reference:', key, '->', value.id);
+                    addNodeAndLink(value.id, node.id, key);
+                    foundConnections++;
+                }
+                // Handle arrays of objects that have 'id' properties
+                else if (Array.isArray(value) && value.length > 0 && value[0].id) {
+                    value.forEach(obj => {
+                        if (obj.id) {
+                            console.log('Found array object reference:', key, '->', obj.id);
+                            addNodeAndLink(obj.id, node.id, key);
+                            foundConnections++;
+                        }
                     });
                 }
             });
+            
+            console.log('Total connections found:', foundConnections);
+            console.log('Nodes after expansion:', nodes.length, 'Links:', links.length);
             
             updateGraph();
         }
@@ -346,7 +380,12 @@
             }
             
             // Add link if both nodes exist and link doesn't already exist
-            if (targetNode && !links.find(l => l.source.id === sourceId && l.target.id === targetId)) {
+            // Note: After D3 processes links, source/target become objects instead of IDs
+            if (targetNode && !links.find(l => {
+                const linkSourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                const linkTargetId = typeof l.target === 'object' ? l.target.id : l.target;
+                return linkSourceId === sourceId && linkTargetId === targetId;
+            })) {
                 links.push({
                     source: sourceId,
                     target: targetId,
