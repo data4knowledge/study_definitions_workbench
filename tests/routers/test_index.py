@@ -1,11 +1,12 @@
 import json
 import pytest
 from tests.mocks.general_mocks import mock_called
-from tests.mocks.user_mocks import *
-from tests.mocks.fastapi_mocks import *
-from tests.mocks.utility_mocks import *
-from tests.mocks.usdm_json_mocks import *
-from tests.mocks.fhir_version_mocks import *
+from tests.mocks.user_mocks import (
+    mock_user_check_exists,
+    mock_user_check_new,
+    mock_user_check_fail,
+)
+from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
 
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 import pytest
 from app.configuration.configuration import application_configuration
-from tests.mocks.file_mocks import protect_endpoint, mock_client, mock_async_client
+from tests.mocks.fastapi_mocks import protect_endpoint, mock_client, mock_async_client
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import mock_user_check_exists
 from tests.mocks.factory_mocks import factory_file_import

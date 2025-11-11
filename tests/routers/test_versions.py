@@ -1,12 +1,15 @@
 import pytest
 from app.database.version import Version
 from tests.mocks.general_mocks import mock_called
-from tests.mocks.user_mocks import *
-from tests.mocks.fastapi_mocks import *
-from tests.mocks.utility_mocks import *
-from tests.mocks.usdm_json_mocks import *
-from tests.mocks.fhir_version_mocks import *
-from tests.mocks.file_mocks import *
+from tests.mocks.user_mocks import mock_user_check_exists
+from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
+from tests.mocks.utility_mocks import (
+    mock_transmit_role_enabled_true,
+    mock_transmit_role_enabled_false,
+)
+from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_study_version
+from tests.mocks.fhir_version_mocks import mock_fhir_versions
+from tests.mocks.file_mocks import mock_file_import_find
 
 
 @pytest.fixture

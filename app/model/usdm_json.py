@@ -414,7 +414,7 @@ class USDMJson:
 
     def section(self, id):
         document = self._document()
-        version = self._data["study"]["versions"][0]
+        _ = self._data["study"]["versions"][0]
         if document:
             narrative_content = self._find_narrative_content(document, id)
             narrative_content["heading"], narrative_content["level"] = (
@@ -555,7 +555,7 @@ class USDMJson:
         return {"label": "[Not Found]", "type": {"decode": "[Not Found]"}}
 
     def _set_blinded_roles(self, id) -> dict:
-        design = self._study_design(id)
+        _ = self._study_design(id)
         result = {}
         # if design['maskingRoles']:
         #   for item in design['maskingRoles']:

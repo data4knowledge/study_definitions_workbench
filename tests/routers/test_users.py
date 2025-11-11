@@ -1,7 +1,14 @@
 import pytest
 from tests.mocks.general_mocks import mock_called
-from tests.mocks.user_mocks import *
-from tests.mocks.fastapi_mocks import *
+from tests.mocks.user_mocks import (
+    mock_user_endpoints_page,
+    mock_user_valid,
+    mock_endpoint_valid,
+    mock_user_update_display_name,
+    mock_endpoint_create,
+    mock_user_find,
+)
+from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
 
 
 @pytest.fixture

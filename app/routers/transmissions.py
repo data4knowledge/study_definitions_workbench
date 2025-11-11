@@ -41,7 +41,7 @@ async def import_status(
 
 
 @router.get("/status/data")
-async def import_status(
+async def import_status_data(
     request: Request,
     page: int,
     size: int,

@@ -46,7 +46,7 @@ def user_display_name(
 
 
 @router.post("/{id}/endpoint")
-def user_endpoint(
+def create_user_endpoint(
     request: Request,
     id: int,
     name: Annotated[str, Form()],
@@ -65,7 +65,7 @@ def user_endpoint(
 
 
 @router.delete("/{id}/endpoint/{endpoint_id}")
-def user_endpoint(
+def delete_user_endpoint(
     request: Request, id: int, endpoint_id: int, session: Session = Depends(get_db)
 ):
     user = User.find(id, session)

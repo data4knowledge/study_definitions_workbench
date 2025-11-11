@@ -63,7 +63,7 @@ async def get_study_design_timeline_soa(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/fhir",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_timeline_soa(
+async def get_study_design_timeline_export_fhir(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -127,7 +127,7 @@ async def export_patient_journey(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/transmit/{endpoint_id}",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_timeline_soa(
+async def get_study_design_timeline_transmit(
     request: Request,
     version_id: int,
     study_design_id: str,

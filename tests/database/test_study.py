@@ -65,7 +65,7 @@ def test_phases(db):
     assert results == ["Phase 1", "Phase 2", "Phase 3", "Phase 4"]
 
 
-def test_phases(db):
+def test_sponsors(db):
     _clean(db)
     user = _base_setup(db)
     results = Study.sponsors(user.id, db)

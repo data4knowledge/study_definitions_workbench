@@ -57,7 +57,7 @@ async def get_version_history(
 
 
 @router.get("/{id}/history/data")
-async def get_version_history(
+async def get_version_history_data(
     request: Request,
     id: int,
     page: int,

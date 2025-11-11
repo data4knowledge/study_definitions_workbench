@@ -1,5 +1,4 @@
 from app.configuration.configuration import Configuration
-from tests.mocks.general_mocks import *
 
 
 def test_multiple_browser(mocker, monkeypatch):
@@ -18,7 +17,7 @@ def test_multiple_browser(mocker, monkeypatch):
         ],
     )
     config = Configuration()
-    assert config.single_user == False
+    assert not config.single_user
     assert config.file_picker == {
         "browser": True,
         "os": False,
@@ -50,7 +49,7 @@ def test_single_os(mocker, monkeypatch):
         ],
     )
     config = Configuration()
-    assert config.single_user == True
+    assert config.single_user
     assert config.file_picker == {
         "browser": False,
         "os": True,
@@ -82,7 +81,7 @@ def test_single_1(mocker, monkeypatch):
         ],
     )
     config = Configuration()
-    assert config.single_user == True
+    assert config.single_user
 
 
 def test_single_2(mocker, monkeypatch):
@@ -101,7 +100,7 @@ def test_single_2(mocker, monkeypatch):
         ],
     )
     config = Configuration()
-    assert config.single_user == True
+    assert config.single_user
 
 
 def test_single_3(mocker, monkeypatch):
@@ -120,10 +119,10 @@ def test_single_3(mocker, monkeypatch):
         ],
     )
     config = Configuration()
-    assert config.single_user == True
+    assert config.single_user
 
 
-def test_single_3(mocker, monkeypatch):
+def test_single_4(mocker, monkeypatch):
     mock_se_get(
         mocker,
         [
@@ -139,7 +138,7 @@ def test_single_3(mocker, monkeypatch):
         ],
     )
     config = Configuration()
-    assert config.single_user == False
+    assert not config.single_user
 
 
 def mock_se_get(mocker, value):
