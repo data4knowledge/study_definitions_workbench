@@ -538,6 +538,73 @@
             return div.innerHTML;
         }
         
+        function parseUsdmReferences(text) {
+            // Regular expression to match <usdm:ref klass="..." id="..." attribute="..."></usdm:ref>
+            const regex = /<usdm:ref\s+klass="([^"]+)"\s+id="([^"]+)"\s+attribute="([^"]+)"\s*><\/usdm:ref>/g;
+            const references = [];
+            let match;
+            
+            while ((match = regex.exec(text)) !== null) {
+                references.push({
+                    klass: match[1],
+                    id: match[2],
+                    attribute: match[3],
+                    fullMatch: match[0]
+                });
+            }
+            
+            return references;
+        }
+        
+        function createReferenceButton(klass, id) {
+            return `<button class="btn btn-sm btn-outline-primary rounded-5 ms-1" onclick="navigateToInstance('${escapeHtml(klass)}', '${escapeHtml(id)}')" title="Navigate to ${escapeHtml(klass)}: ${escapeHtml(id)}">
+                <i class="bi bi-arrow-right-circle me-1"></i>${escapeHtml(id)}
+            </button>`;
+        }
+        
+        function processStringWithReferences(key, text) {
+            const references = parseUsdmReferences(text);
+            
+            if (references.length === 0) {
+                // No references found, return escaped text as-is
+                return escapeHtml(text);
+            }
+            
+            // Build HTML with text and buttons
+            let html = '<div>';
+            
+            // Display the text intact with all reference tags visible
+            html += '<div class="mb-2">' + escapeHtml(text) + '</div>';
+            
+            // Add buttons below for each reference found
+            if (references.length > 0) {
+                html += '<div class="mt-2">';
+                references.forEach(ref => {
+                    html += createReferenceButton(ref.klass, ref.id);
+                });
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            return html;
+        }
+        
+        window.navigateToInstance = function(klass, id) {
+            // Update the class selector
+            const classSelector = document.getElementById('classSelector');
+            classSelector.value = klass;
+            
+            // Trigger change event to populate instances
+            classSelector.dispatchEvent(new Event('change'));
+            
+            // Wait a moment for instances to populate, then select the instance
+            setTimeout(() => {
+                const instanceSelector = document.getElementById('instanceSelector');
+                instanceSelector.value = id;
+                instanceSelector.dispatchEvent(new Event('change'));
+            }, 100);
+        };
+        
         function showNodeDetails(node) {
             const panel = document.getElementById('detailsPanel');
             const content = document.getElementById('detailsContent');
@@ -571,7 +638,12 @@
                 } else if (typeof value === 'number') {
                     html += `<div class="detail-value number">${value}</div>`;
                 } else if (typeof value === 'string') {
-                    html += `<div class="detail-value">${escapeHtml(value)}</div>`;
+                    // Check if this is a "reference" or "text" field that might contain usdm:ref tags
+                    if (key.toLowerCase() === 'reference' || key.toLowerCase() === 'text') {
+                        html += `<div class="detail-value">${processStringWithReferences(key, value)}</div>`;
+                    } else {
+                        html += `<div class="detail-value">${escapeHtml(value)}</div>`;
+                    }
                 } else if (Array.isArray(value)) {
                     html += `<div class="detail-value">Array[${value.length}]</div>`;
                 } else if (typeof value === 'object') {
@@ -582,7 +654,7 @@
             });
             
             if (!node.expanded) {
-                html += '<button class="btn btn-sm btn-outline-primary rounded-5" onclick="expandNodeFromDetails(\'' + node.id + '\')">Expand Connections</button>';
+                html += '<button class="btn btn-sm btn-outline-primary rounded-5" onclick="expandNodeFromDetails(\'' + node.id + '\')"><i class="bi bi-arrows-angle-expand me-1"></i>Expand Connections</button>';
             }
             
             content.innerHTML = html;
