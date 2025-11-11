@@ -23,19 +23,19 @@
             <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
         </div>
         <div class="controls" style="margin-bottom: 15px;">
-            <div class="control-group">
-                <label for="classSelector">Select Class:</label>
-                <select id="classSelector">
+            <div class="input-group">
+                <label class="form-label" for="classSelector"><strong>Select Class:</strong></label>
+                <select class="form-select ms-4" id="classSelector">
                     <option value="">-- Choose a class --</option>
                 </select>
                 
-                <label for="instanceSelector" style="margin-left: 20px;">Select Instance:</label>
-                <select id="instanceSelector">
+                <label class="form-label ms-4" for="instanceSelector"><strong>Select Instance:</strong></label>
+                <select class="form-select ms-4" id="instanceSelector">
                     <option value="">-- Choose an instance --</option>
                 </select>
                 
                 <button id="resetZoom" class="btn btn-sm btn-outline-primary rounded-5 ms-4" disabled>
-                    <i class="me-1 bi bi-x-circle"></i>Reset View
+                    <i class="me-1 bi bi-x-circle"></i>Centre View
                 </button>
 
             </div>
