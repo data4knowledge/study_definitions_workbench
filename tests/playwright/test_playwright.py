@@ -656,7 +656,9 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(page.get_by_role("cell", name="pilot.xlsx")).to_be_visible()
     expect(page.get_by_role("cell", name="pilot_tweak.xlsx")).to_be_visible()
     expect(page.get_by_role("link", name=" USDM JSON Diff")).to_be_visible()
-    page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL").get_by_role("link").click()
+    row = page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL")
+    link = row.get_by_role("link", name=" USDM JSON Viewer").first
+    link.click()
     expect(
         page.get_by_role(
             "heading",
@@ -680,6 +682,33 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+
+@pytest.mark.playwright
+def test_json_explorer(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
+    page.get_by_role("link").first.click()
+    page.get_by_role("link", name=" View Details").click()
+
+    page.get_by_role("button", name=" Views").click()
+    page.get_by_role("link", name="Version History").click()
+    page.get_by_role("link", name=" USDM JSON Explorer").click()
+    page.get_by_label("Select Class:").select_option("Activity")
+    page.get_by_label("Select Instance:").select_option("Activity_1")
+    page.locator("circle").first.click()
+    expect(page.locator("#detailsPanelTitle")).to_contain_text("Activity")
+    expect(page.locator("#detailsContent")).to_contain_text("Activity_1")
+
+    context.close()
+    browser.close()
 
 # ---------------------------------------------------------
 # Add tests before here and leave the following to run last
