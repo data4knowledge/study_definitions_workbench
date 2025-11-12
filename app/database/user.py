@@ -151,5 +151,5 @@ class User(UserBase):
             "email": {"valid": True, "message": ""},
             "identifier": {"valid": True, "message": ""},
         }
-        valid = all(value["valid"] == True for value in validation.values())
+        valid = all(value["valid"] for value in validation.values())
         return valid, validation

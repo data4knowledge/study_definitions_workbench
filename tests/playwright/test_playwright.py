@@ -63,7 +63,7 @@ def test_logout(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    path = filepath()
+    # path = filepath()
     page.goto(url)
 
     login(page)
@@ -191,7 +191,7 @@ def test_help(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    path = filepath()
+    # path = filepath()
     page.goto(url)
 
     login(page)
@@ -232,7 +232,7 @@ def test_view_menu(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    path = filepath()
+    # path = filepath()
     page.goto(url)
 
     login(page)
@@ -305,7 +305,7 @@ def test_export_import(playwright: Playwright) -> None:
     page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
-    download = download_info.value
+    _ = download_info.value
     page.get_by_role("navigation").get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
@@ -338,7 +338,7 @@ def test_selection_menu(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    path = filepath()
+    # path = filepath()
     page.goto(url)
 
     login(page)
@@ -521,7 +521,7 @@ def test_import_usdm_menus(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    path = filepath()
+    # path = filepath()
     page.goto(url)
 
     login(page)
@@ -556,7 +556,7 @@ def test_import_usdm(playwright: Playwright) -> None:
     page.get_by_role("link", name="Import Status").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name=" Errors File").click()
-    download = download_info.value
+    _ = download_info.value
     page.get_by_role("link", name=" Back").click()
 
     load_usdm(
@@ -591,7 +591,7 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     page.get_by_role("link", name="Import Status").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name=" Errors File").click()
-    download = download_info.value
+    _ = download_info.value
     page.get_by_role("link", name=" Back").click()
 
     load_usdm(
@@ -644,11 +644,11 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     with page.expect_download() as download_info:
         cell = page.locator("table > tbody > tr").nth(1).locator("td").nth(4)
         cell.get_by_role("link").click()
-    download = download_info.value
+    _ = download_info.value
     with page.expect_download() as download_info1:
         cell = page.locator("table > tbody > tr").nth(3).locator("td").nth(4)
         cell.get_by_role("link").click()
-    download = download_info1.value
+    _ = download_info1.value
     page.get_by_role("link", name=" Back").click()
     page.locator("#card_3_div").get_by_role("link", name=" View Details").click()
     page.get_by_role("button", name=" Views").click()
@@ -656,7 +656,9 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(page.get_by_role("cell", name="pilot.xlsx")).to_be_visible()
     expect(page.get_by_role("cell", name="pilot_tweak.xlsx")).to_be_visible()
     expect(page.get_by_role("link", name=" USDM JSON Diff")).to_be_visible()
-    page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL").get_by_role("link").click()
+    row = page.get_by_role("row", name="1 pilot.xlsx USDM_EXCEL")
+    link = row.get_by_role("link", name=" USDM JSON Viewer").first
+    link.click()
     expect(
         page.get_by_role(
             "heading",
@@ -677,6 +679,34 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     page.get_by_role("navigation").get_by_role("link").first.click()
 
     # ---------------------
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
+def test_json_explorer(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
+    page.get_by_role("link").first.click()
+    page.get_by_role("link", name=" View Details").click()
+
+    page.get_by_role("button", name=" Views").click()
+    page.get_by_role("link", name="Version History").click()
+    page.get_by_role("link", name=" USDM JSON Explorer").click()
+    page.get_by_label("Select Class:").select_option("Activity")
+    page.get_by_label("Select Instance:").select_option("Activity_1")
+    page.locator("circle").first.click()
+    expect(page.locator("#detailsPanelTitle")).to_contain_text("Activity")
+    expect(page.locator("#detailsContent")).to_contain_text("Activity_1")
+
     context.close()
     browser.close()
 

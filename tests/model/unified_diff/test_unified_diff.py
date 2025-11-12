@@ -37,8 +37,8 @@ def test_hunk():
 
 def test_hunk_error(caplog):
     hunk = Hunk("@@ 1,xxx 1,9 @@")
-    assert hunk.old == None
-    assert hunk.new == None
+    assert hunk.old is None
+    assert hunk.new is None
     assert error_logged(caplog, "Failed to decode hunk header '@@ 1,xxx 1,9 @@'")
 
 

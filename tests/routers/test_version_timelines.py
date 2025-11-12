@@ -1,11 +1,13 @@
 import pytest
 from tests.mocks.general_mocks import mock_called
-from tests.mocks.user_mocks import *
-from tests.mocks.fastapi_mocks import *
-from tests.mocks.utility_mocks import *
-from tests.mocks.usdm_json_mocks import *
-from tests.mocks.fhir_version_mocks import *
-from tests.mocks.file_mocks import *
+from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
+from tests.mocks.usdm_json_mocks import (
+    mock_usdm_json_init,
+    mock_usdm_json_timelines,
+    mock_usdm_json_soa,
+    mock_usdm_json_fhir_soa,
+    mock_usdm_json_fhir_soa_error,
+)
 
 
 @pytest.fixture

@@ -382,11 +382,11 @@ class TestDataFiles:
     def test_clean_and_tidy_success(self, mock_config, mocker, mock_logger):
         """Test clean_and_tidy class method success."""
         # Set up the keep directories
-        keep_dirs = [
-            "/test/mount/path/data/file/path",
-            "/test/mount/path/database/path",
-            "/test/mount/path/local/file/path",
-        ]
+        # keep_dirs = [
+        #     "/test/mount/path/data/file/path",
+        #     "/test/mount/path/database/path",
+        #     "/test/mount/path/local/file/path",
+        # ]
 
         # Mock os.listdir
         mock_listdir = mocker.patch("os.listdir")

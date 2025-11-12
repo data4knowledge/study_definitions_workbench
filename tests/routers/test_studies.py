@@ -1,9 +1,16 @@
 import pytest
 from app.configuration.configuration import application_configuration
-from tests.mocks.general_mocks import *
-from tests.mocks.user_mocks import *
-from tests.mocks.fastapi_mocks import *
-from tests.mocks.file_mocks import *
+from tests.mocks.general_mocks import mock_called, error_logged
+from tests.mocks.user_mocks import mock_user_check_exists
+from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
+from tests.mocks.file_mocks import (
+    mock_file_import_find,
+    mock_file_import_delete,
+    mock_data_file_delete,
+    mock_local_files_dir,
+    mock_local_files_dir_error,
+)
+from tests.mocks.factory_mocks import factory_study
 
 
 @pytest.fixture

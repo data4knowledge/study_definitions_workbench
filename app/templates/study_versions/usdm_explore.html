@@ -1,0 +1,713 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+
+{% block main_content %}
+  {% set sponsor = data['version']['identifiers']['Pharmaceutical Company'] %}
+  <div class="mt-3 row">
+    <div class="col-12">
+      {% set subtitle = "Sponsor: " ~ sponsor ~ " | Phase: " ~ data['version']['phase'] ~ " | Identifier: "  ~ sponsor['studyIdentifier'] ~ " | Version: " ~ data['version']['version_identifier'] %}
+      {% with title="USDM JSON Explorer", subtitle=subtitle %}
+        {% include "shared/partials/header.html" %}
+      {% endwith %}    
+    </div>
+  </div>
+  <div class="mt-3 row">
+    <div class="col-12">
+      <div class="card card-body rounded-3 h-100">
+        <div>
+            <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
+        </div>
+        <div class="controls" style="margin-bottom: 15px;">
+            <div class="input-group">
+                <label class="form-label" for="classSelector"><strong>Select Class:</strong></label>
+                <select class="form-select ms-4" id="classSelector">
+                    <option value="">-- Choose a class --</option>
+                </select>
+                
+                <label class="form-label ms-4" for="instanceSelector"><strong>Select Instance:</strong></label>
+                <select class="form-select ms-4" id="instanceSelector">
+                    <option value="">-- Choose an instance --</option>
+                </select>
+                
+                <button id="resetZoom" class="btn btn-sm btn-outline-primary rounded-5 ms-4" disabled>
+                    <i class="me-1 bi bi-x-circle"></i>Centre View
+                </button>
+
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; height: 800px;">
+            <div id="graphContainer" style="flex: 1; border: 1px solid #ddd; border-radius: 4px; background: #fafafa; position: relative;">
+                <div class="empty-state" id="emptyState" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p>Select a class and instance to explore the USDM data</p>
+                </div>
+                <svg id="graphSvg" style="width: 100%; height: 100%; display: none;"></svg>
+            </div>
+            
+            <div id="detailsPanel" class="card rounded-3" style="width: 350px; overflow-y: auto; display: none;">
+                <div class="card-header">
+                    <h6 class="mb-0 card-title" id="detailsPanelTitle">Node Details</h6>
+                </div>
+                <div class="card-body" id="detailsContent"></div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 0.9em; color: #666;">
+            <strong>Instructions:</strong> Click on nodes to see full details. Double-click to expand their connections. Drag nodes to rearrange. Scroll to zoom.
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block additional_css %}
+  <style>
+    .node {
+        cursor: pointer;
+        stroke: #000;
+        stroke-width: 1px;
+    }
+    
+    .node:hover {
+        stroke: #333;
+        stroke-width: 3px;
+    }
+    
+    .node.expanded {
+        stroke: #000;
+        stroke-width: 1px;
+    }
+    
+    .node.selected {
+        stroke: #007bff;
+        stroke-width: 4px;
+    }
+    
+    .link {
+        stroke: #999;
+        stroke-opacity: 0.6;
+        stroke-width: 1.5px;
+    }
+    
+    .link.highlighted {
+        stroke: #007bff;
+        stroke-opacity: 0.9;
+        stroke-width: 2.5px;
+    }
+    
+    .node-label {
+        font-size: 11px;
+        pointer-events: none;
+        user-select: none;
+        text-anchor: middle;
+        fill: #333;
+        font-weight: 500;
+    }
+    
+    .node-type {
+        font-size: 9px;
+        pointer-events: none;
+        user-select: none;
+        text-anchor: middle;
+        fill: #666;
+    }
+    
+    .edge-label {
+        font-size: 8px;
+        pointer-events: none;
+        user-select: none;
+        text-anchor: middle;
+        fill: #555;
+        font-style: italic;
+    }
+    
+    .detail-attr {
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+    }
+    
+    .detail-attr:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-key {
+        font-weight: 600;
+        color: #555;
+        font-size: 0.9em;
+        flex-shrink: 0;
+        width: 140px;
+    }
+    
+    .detail-key::after {
+        content: ':';
+    }
+    
+    .detail-value {
+        color: #333;
+        font-size: 0.85em;
+        word-break: break-word;
+        flex: 1;
+    }
+    
+    .detail-value.null {
+        color: #999;
+        font-style: italic;
+    }
+    
+    .detail-value.boolean {
+        color: #d63384;
+    }
+    
+    .detail-value.number {
+        color: #0d6efd;
+    }
+    
+    /* .expand-btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.8em;
+        margin-top: 5px;
+    } */
+    
+    .expand-btn:hover {
+        background: #0056b3;
+    }
+  </style>
+{% endblock %}   
+
+{% block additional_js %}
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="text/javascript">
+        let rawJSON = document.getElementById('json_input').value;
+        let usdmData = JSON.parse(rawJSON);
+        
+        // Graph state
+        let nodes = [];
+        let links = [];
+        let simulation = null;
+        let svg = null;
+        let g = null;
+        let zoom = null;
+        let expandedNodes = new Set();
+        let selectedNode = null;
+        
+        // Color scale for different node types
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        
+        // Initialize
+        function init() {
+            populateClassSelector();
+            setupEventListeners();
+            setupSVG();
+        }
+        
+        function populateClassSelector() {
+            const classSelector = document.getElementById('classSelector');
+            const classes = Object.keys(usdmData).sort();
+            
+            classes.forEach(className => {
+                const option = document.createElement('option');
+                option.value = className;
+                option.textContent = className;
+                classSelector.appendChild(option);
+            });
+        }
+        
+        function setupEventListeners() {
+            document.getElementById('classSelector').addEventListener('change', handleClassChange);
+            document.getElementById('instanceSelector').addEventListener('change', handleInstanceChange);
+            document.getElementById('resetZoom').addEventListener('click', resetView);
+        }
+        
+        function setupSVG() {
+            svg = d3.select("#graphSvg");
+            g = svg.append("g");
+            
+            // Add zoom behavior
+            zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on("zoom", (event) => {
+                    g.attr("transform", event.transform);
+                });
+            
+            svg.call(zoom);
+        }
+        
+        function handleClassChange(event) {
+            const className = event.target.value;
+            const instanceSelector = document.getElementById('instanceSelector');
+            
+            instanceSelector.innerHTML = '<option value="">-- Choose an instance --</option>';
+            
+            if (className && usdmData[className]) {
+                const instances = Object.keys(usdmData[className]).sort();
+                instances.forEach(instanceId => {
+                    const option = document.createElement('option');
+                    option.value = instanceId;
+                    option.textContent = instanceId;
+                    instanceSelector.appendChild(option);
+                });
+                instanceSelector.disabled = false;
+            } else {
+                instanceSelector.disabled = true;
+            }
+            
+            clearGraph();
+        }
+        
+        function handleInstanceChange(event) {
+            const instanceId = event.target.value;
+            const className = document.getElementById('classSelector').value;
+            
+            if (className && instanceId && usdmData[className] && usdmData[className][instanceId]) {
+                initializeGraph(className, instanceId);
+            } else {
+                clearGraph();
+            }
+        }
+        
+        function clearGraph() {
+            nodes = [];
+            links = [];
+            expandedNodes.clear();
+            selectedNode = null;
+            
+            if (simulation) {
+                simulation.stop();
+            }
+            
+            g.selectAll("*").remove();
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('graphSvg').style.display = 'none';
+            document.getElementById('detailsPanel').style.display = 'none';
+            document.getElementById('resetZoom').disabled = true;
+        }
+        
+        function initializeGraph(className, instanceId) {
+            clearGraph();
+            
+            const instance = usdmData[className][instanceId];
+            
+            // Create root node
+            const rootNode = {
+                id: instanceId,
+                label: instanceId,
+                type: className,
+                data: instance,
+                expanded: false,
+                isRoot: true
+            };
+            
+            nodes.push(rootNode);
+            
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('graphSvg').style.display = 'block';
+            document.getElementById('resetZoom').disabled = false;
+            
+            // Automatically expand the root node to show first-level connections
+            expandNode(rootNode);
+        }
+        
+        function expandNode(node) {
+            console.log('expandNode called for:', node.id, 'Already expanded?', expandedNodes.has(node.id));
+            
+            if (expandedNodes.has(node.id)) {
+                console.log('Node already expanded, skipping');
+                return; // Already expanded
+            }
+            
+            expandedNodes.add(node.id);
+            node.expanded = true;
+            
+            const instance = node.data;
+            let foundConnections = 0;
+            
+            // Find all reference attributes
+            Object.keys(instance).forEach(key => {
+                const value = instance[key];
+                
+                // Skip instanceType
+                if (key === 'instanceType') {
+                    return;
+                }
+                
+                // Handle ID references (attributes ending with Id or Ids)
+                if (key.endsWith('Id') && value) {
+                    console.log('Found single ID reference:', key, '->', value);
+                    addNodeAndLink(value, node.id, key);
+                    foundConnections++;
+                } else if (key.endsWith('Ids') && Array.isArray(value)) {
+                    value.forEach(refId => {
+                        console.log('Found array ID reference:', key, '->', refId);
+                        addNodeAndLink(refId, node.id, key);
+                        foundConnections++;
+                    });
+                } 
+                // Handle direct object references that have an 'id' property
+                else if (typeof value === 'object' && value !== null && value.id) {
+                    console.log('Found object reference:', key, '->', value.id);
+                    addNodeAndLink(value.id, node.id, key);
+                    foundConnections++;
+                }
+                // Handle arrays of objects that have 'id' properties
+                else if (Array.isArray(value) && value.length > 0 && value[0].id) {
+                    value.forEach(obj => {
+                        if (obj.id) {
+                            console.log('Found array object reference:', key, '->', obj.id);
+                            addNodeAndLink(obj.id, node.id, key);
+                            foundConnections++;
+                        }
+                    });
+                }
+            });
+            
+            console.log('Total connections found:', foundConnections);
+            console.log('Nodes after expansion:', nodes.length, 'Links:', links.length);
+            
+            updateGraph();
+        }
+        
+        function addNodeAndLink(targetId, sourceId, relationship) {
+            // Check if node already exists
+            let targetNode = nodes.find(n => n.id === targetId);
+            
+            if (!targetNode) {
+                // Find the instance in usdmData
+                const foundInstance = findInstanceById(targetId);
+                if (foundInstance) {
+                    targetNode = {
+                        id: targetId,
+                        label: targetId,
+                        type: foundInstance.className,
+                        data: foundInstance.instance,
+                        expanded: false,
+                        isRoot: false
+                    };
+                    nodes.push(targetNode);
+                }
+            }
+            
+            // Add link if both nodes exist and link doesn't already exist
+            // Note: After D3 processes links, source/target become objects instead of IDs
+            if (targetNode && !links.find(l => {
+                const linkSourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                const linkTargetId = typeof l.target === 'object' ? l.target.id : l.target;
+                return linkSourceId === sourceId && linkTargetId === targetId;
+            })) {
+                links.push({
+                    source: sourceId,
+                    target: targetId,
+                    relationship: relationship
+                });
+            }
+        }
+        
+        function findInstanceById(id) {
+            for (const className in usdmData) {
+                if (usdmData[className][id]) {
+                    return {
+                        instance: usdmData[className][id],
+                        className: className
+                    };
+                }
+            }
+            return null;
+        }
+        
+        function updateGraph() {
+            const width = document.getElementById('graphContainer').clientWidth;
+            const height = document.getElementById('graphContainer').clientHeight;
+            
+            // Update simulation
+            if (simulation) {
+                simulation.stop();
+            }
+            
+            simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                .force("charge", d3.forceManyBody().strength(-400))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collision", d3.forceCollide().radius(40));
+            
+            // Clear and redraw
+            g.selectAll("*").remove();
+            
+            // Draw links
+            const link = g.append("g")
+                .selectAll("line")
+                .data(links)
+                .join("line")
+                .attr("class", "link");
+            
+            // Add edge labels
+            const edgeLabels = g.append("g")
+                .selectAll("text")
+                .data(links)
+                .join("text")
+                .attr("class", "edge-label")
+                .text(d => d.relationship);
+            
+            // Draw nodes
+            const node = g.append("g")
+                .selectAll("circle")
+                .data(nodes)
+                .join("circle")
+                .attr("class", "node")
+                .attr("r", d => d.isRoot ? 20 : 15)
+                .attr("fill", "#C0C0C0")
+                .classed("expanded", d => d.expanded)
+                .call(drag(simulation))
+                .on("click", function(event, d) {
+                    event.stopPropagation();
+                    showNodeDetails(d);
+                })
+                .on("dblclick", function(event, d) {
+                    event.stopPropagation();
+                    handleNodeClick(d);
+                });
+            
+            // Add type labels (class names only)
+            const typeLabels = g.append("g")
+                .selectAll("text")
+                .data(nodes)
+                .join("text")
+                .attr("class", "node-type")
+                .attr("dy", d => d.isRoot ? 30 : 25)
+                .text(d => d.type);
+            
+            // Update positions on tick
+            simulation.on("tick", () => {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+                
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+                
+                typeLabels
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+                
+                edgeLabels
+                    .attr("x", d => (d.source.x + d.target.x) / 2)
+                    .attr("y", d => (d.source.y + d.target.y) / 2);
+            });
+        }
+        
+        function handleNodeClick(node) {
+            expandNode(node);
+            highlightNode(node);
+        }
+        
+        function highlightNode(node) {
+            // Update visual state
+            g.selectAll(".node")
+                .classed("selected", d => d.id === node.id);
+            
+            // Highlight connected links
+            g.selectAll(".link")
+                .classed("highlighted", d => 
+                    d.source.id === node.id || d.target.id === node.id
+                );
+            
+            selectedNode = node;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function parseUsdmReferences(text) {
+            // Regular expression to match <usdm:ref klass="..." id="..." attribute="..."></usdm:ref>
+            const regex = /<usdm:ref\s+klass="([^"]+)"\s+id="([^"]+)"\s+attribute="([^"]+)"\s*><\/usdm:ref>/g;
+            const references = [];
+            let match;
+            
+            while ((match = regex.exec(text)) !== null) {
+                references.push({
+                    klass: match[1],
+                    id: match[2],
+                    attribute: match[3],
+                    fullMatch: match[0]
+                });
+            }
+            
+            return references;
+        }
+        
+        function createReferenceButton(klass, id) {
+            return `<button class="btn btn-sm btn-outline-primary rounded-5 ms-1" onclick="navigateToInstance('${escapeHtml(klass)}', '${escapeHtml(id)}')" title="Navigate to ${escapeHtml(klass)}: ${escapeHtml(id)}">
+                <i class="bi bi-arrow-right-circle me-1"></i>${escapeHtml(id)}
+            </button>`;
+        }
+        
+        function processStringWithReferences(key, text) {
+            const references = parseUsdmReferences(text);
+            
+            if (references.length === 0) {
+                // No references found, return escaped text as-is
+                return escapeHtml(text);
+            }
+            
+            // Build HTML with text and buttons
+            let html = '<div>';
+            
+            // Display the text intact with all reference tags visible
+            html += '<div class="mb-2">' + escapeHtml(text) + '</div>';
+            
+            // Add buttons below for each reference found
+            if (references.length > 0) {
+                html += '<div class="mt-2">';
+                references.forEach(ref => {
+                    html += createReferenceButton(ref.klass, ref.id);
+                });
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            return html;
+        }
+        
+        window.navigateToInstance = function(klass, id) {
+            // Update the class selector
+            const classSelector = document.getElementById('classSelector');
+            classSelector.value = klass;
+            
+            // Trigger change event to populate instances
+            classSelector.dispatchEvent(new Event('change'));
+            
+            // Wait a moment for instances to populate, then select the instance
+            setTimeout(() => {
+                const instanceSelector = document.getElementById('instanceSelector');
+                instanceSelector.value = id;
+                instanceSelector.dispatchEvent(new Event('change'));
+            }, 100);
+        };
+        
+        function showNodeDetails(node) {
+            const panel = document.getElementById('detailsPanel');
+            const content = document.getElementById('detailsContent');
+            
+            panel.style.display = 'block';
+            
+            const instance = node.data;
+            const attributes = Object.keys(instance).sort();
+            
+            let html = '';
+            
+            // Display id first if it exists
+            if (instance.id) {
+                html += '<div class="detail-attr">';
+                html += '<div class="detail-key">id</div>';
+                html += `<div class="detail-value">${escapeHtml(instance.id)}</div>`;
+                html += '</div>';
+            }
+            
+            attributes.forEach(key => {
+                if (key === 'instanceType' || key === 'id') return;
+                
+                const value = instance[key];
+                html += '<div class="detail-attr">';
+                html += `<div class="detail-key">${key}</div>`;
+                
+                if (value === null || value === undefined) {
+                    html += '<div class="detail-value null">null</div>';
+                } else if (typeof value === 'boolean') {
+                    html += `<div class="detail-value boolean">${value}</div>`;
+                } else if (typeof value === 'number') {
+                    html += `<div class="detail-value number">${value}</div>`;
+                } else if (typeof value === 'string') {
+                    // Check if this is a "reference" or "text" field that might contain usdm:ref tags
+                    if (key.toLowerCase() === 'reference' || key.toLowerCase() === 'text') {
+                        html += `<div class="detail-value">${processStringWithReferences(key, value)}</div>`;
+                    } else {
+                        html += `<div class="detail-value">${escapeHtml(value)}</div>`;
+                    }
+                } else if (Array.isArray(value)) {
+                    html += `<div class="detail-value">Array[${value.length}]</div>`;
+                } else if (typeof value === 'object') {
+                    html += '<div class="detail-value">Object {...}</div>';
+                }
+                
+                html += '</div>';
+            });
+            
+            if (!node.expanded) {
+                html += '<button class="btn btn-sm btn-outline-primary rounded-5" onclick="expandNodeFromDetails(\'' + node.id + '\')"><i class="bi bi-arrows-angle-expand me-1"></i>Expand Connections</button>';
+            }
+            
+            content.innerHTML = html;
+            
+            // Update panel title
+            const panelTitle = document.getElementById('detailsPanelTitle');
+            if (panelTitle) {
+                panelTitle.textContent = node.type;
+            }
+            
+            highlightNode(node);
+        }
+        
+        window.expandNodeFromDetails = function(nodeId) {
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) {
+                expandNode(node);
+            }
+        };
+        
+        function drag(simulation) {
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+            
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+            
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+            
+            return d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended);
+        }
+        
+        function resetView() {
+            if (svg && zoom) {
+                svg.transition()
+                    .duration(750)
+                    .call(zoom.transform, d3.zoomIdentity);
+            }
+        }
+        
+        // Initialize on page load
+        init();
+    </script>
+{% endblock %}

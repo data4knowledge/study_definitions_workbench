@@ -4,7 +4,7 @@ from app.database.file_import import FileImport
 from app.database.endpoint import Endpoint
 from app.database.study import Study
 from app.database.version import Version
-from tests.mocks.fastapi_mocks import *
+# from tests.mocks.fastapi_mocks import protect_endpoint, mock_authorisation, mock_client, mock_client_multiple, mock_async_client
 
 
 def factory_user() -> User:

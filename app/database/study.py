@@ -226,7 +226,7 @@ class Study(StudyBase):
                 if len(studies) == 1
                 else Study._generate_name(file_import.filename)
             )
-        except:
+        except Exception:
             return Study._generate_name(file_import.filename)
 
     @staticmethod

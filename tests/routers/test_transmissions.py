@@ -1,8 +1,11 @@
 import pytest
 from tests.mocks.general_mocks import mock_called
-from tests.mocks.user_mocks import *
-from tests.mocks.fastapi_mocks import *
-from tests.mocks.utility_mocks import *
+from tests.mocks.user_mocks import mock_user_check_exists
+from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
+from tests.mocks.utility_mocks import (
+    mock_transmit_role_enabled_true,
+    mock_transmit_role_enabled_false,
+)
 
 
 @pytest.fixture

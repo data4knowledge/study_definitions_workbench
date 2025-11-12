@@ -113,6 +113,6 @@ class Endpoint(EndpointBase):
                 "message": "Type should be 'FHIR'" if not type_valiadation else "",
             },
         }
-        valid = all(value["valid"] == True for value in validation.values())
+        valid = all(value["valid"] for value in validation.values())
         # print(f"ENDPOINT VALIDATION: {validation}")
         return valid, validation

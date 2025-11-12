@@ -57,7 +57,7 @@ def index_page(
 
 
 @router.post("/index/filter")
-def index_page(
+def index_filter(
     request: Request,
     filter_type: str,
     id: int,

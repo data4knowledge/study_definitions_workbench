@@ -1,4 +1,5 @@
-from tests.files.files import *
+import json
+from tests.files.files import read_json, write_json, read_excel
 from usdm_db import USDMDb
 from app.model.file_handling.data_files import DataFiles
 
@@ -9,10 +10,10 @@ def _run_test(name, save=False):
     filename = f"{name}.xlsx"
     contents = read_excel(_full_path(filename))
     files = DataFiles()
-    uuid = files.new()
+    _ = files.new()
     files.save("xlsx", contents, filename)
     db = USDMDb()
-    errors = db.from_excel(_full_path(filename))
+    _ = db.from_excel(_full_path(filename))
     result = db.to_json()
     pretty_result = json.dumps(json.loads(result), indent=2)
     result_filename = filename = f"{name}_usdm.json"

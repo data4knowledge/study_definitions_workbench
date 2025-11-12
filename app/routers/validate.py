@@ -93,7 +93,7 @@ async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: st
     # print(f"MAIN FILE: {main_file['filename']}")
     if main_file:
         files = DataFiles()
-        uuid = files.new()
+        _ = files.new()
         files.save("usdm", main_file["contents"], main_file["filename"])
         full_path, filename, exists = files.path("usdm")
         results: RulesValidationResults = usdm.validate(full_path)

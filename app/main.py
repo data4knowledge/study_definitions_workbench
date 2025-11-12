@@ -1,9 +1,11 @@
 import os
-from fastapi import Depends, FastAPI, Request, WebSocket, WebSocketDisconnect
+import json
+from fastapi import Depends, FastAPI, Request, WebSocket, WebSocketDisconnect, status
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from d4k_ms_base.logger import application_logger
 from app.database.database import get_db
+from app.database.study import Study
 from app.database.user import User
 from app.database.version import Version
 from app.database.file_import import FileImport
@@ -21,7 +23,7 @@ from app.model.file_handling.pfda_files import PFDAFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
 from app.model.unified_diff.unified_diff import UnifiedDiff
-
+from usdm3.data_store.data_store import DataStore
 
 from app.routers import (
     transmissions,
@@ -75,7 +77,7 @@ app.include_router(m11.router)
 
 
 @app.exception_handler(Exception)
-async def exception_callback(request: Request, e: Exception):
+async def exception_callback_general(request: Request, e: Exception):
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -84,7 +86,7 @@ async def exception_callback(request: Request, e: Exception):
 
 
 @app.exception_handler(FindException)
-async def exception_callback(request: Request, e: FindException):
+async def exception_callback_find(request: Request, e: FindException):
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -151,7 +153,7 @@ def file_list(request: Request, dir: str, url: str, session: Session = Depends(g
 
 
 @app.get("/versions/{id}/usdm", dependencies=[Depends(protect_endpoint)])
-async def get_version_usdm(
+async def get_version_usdm_view(
     request: Request, id: int, session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
@@ -159,6 +161,26 @@ async def get_version_usdm(
     data = {"version": usdm.study_version(), "version_id": id, "json": usdm._get_raw()}
     return templates.TemplateResponse(
         request, "study_versions/usdm.html", {"user": user, "data": data}
+    )
+
+
+@app.get("/versions/{id}/usdmExplore", dependencies=[Depends(protect_endpoint)])
+async def get_version_usdm_explore(
+    request: Request, id: int, session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(id, session)
+    version = Version.find(id, session)
+    file_import = FileImport.find(version.import_id, session)
+    files = DataFiles(file_import.uuid)
+    fullpath, filename, exists = files.path("usdm")
+    datastore = DataStore(fullpath)
+    datastore.decompose()
+    datastore._klasses.pop("Wrapper")
+    raw_json = json.dumps(datastore._klasses)
+    data = {"version": usdm.study_version(), "version_id": id, "json": raw_json}
+    return templates.TemplateResponse(
+        request, "study_versions/usdm_explore.html", {"user": user, "data": data}
     )
 
 
@@ -301,29 +323,6 @@ async def get_study_design_estimands(
     )
 
 
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_timelines(request: Request, version_id: int, study_design_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.timelines(study_design_id)
-#   return templates.TemplateResponse(request, "study_designs/partials/timelines.html", {'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.soa(study_design_id, timeline_id)
-#   return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
-
-# @app.get('/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/fhir_soa', dependencies=[Depends(protect_endpoint)])
-# async def get_study_design_timeline_soa(request: Request, version_id: int, study_design_id: str, timeline_id: str, session: Session = Depends(get_db)):
-#   user, present_in_db = user_details(request, session)
-#   usdm = USDMJson(version_id, session)
-#   data = usdm.soa(study_design_id, timeline_id)
-#   print("EXPORT SOA")
-#   return templates.TemplateResponse(request, "timelines/soa.html", {'user': user, 'data': data})
-
-
 @app.get("/versions/{id}/safety", dependencies=[Depends(protect_endpoint)])
 async def get_version_safety(
     request: Request, id: int, session: Session = Depends(get_db)
@@ -344,7 +343,7 @@ async def get_version_safety(
     "/versions/{version_id}/studyDesigns/{study_design_id}/safety",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_summary(
+async def get_study_design_safety(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -362,7 +361,7 @@ async def get_study_design_summary(
     "/versions/{version_id}/studyDesigns/{study_design_id}/aeSpecialInterest",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_estimands(
+async def get_study_design_ae_special_interest(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -383,7 +382,7 @@ async def get_study_design_estimands(
     "/versions/{version_id}/studyDesigns/{study_design_id}/safetyAssessments",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_estimands(
+async def get_study_design_safety_assessments(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -420,7 +419,7 @@ async def get_version_statistics(
     "/versions/{version_id}/studyDesigns/{study_design_id}/statistics",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_summary(
+async def get_study_design_statistics(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -438,7 +437,7 @@ async def get_study_design_summary(
     "/versions/{version_id}/studyDesigns/{study_design_id}/sampleSize",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_summary(
+async def get_study_design_sample_size(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -457,7 +456,7 @@ async def get_study_design_summary(
     "/versions/{version_id}/studyDesigns/{study_design_id}/analysisSets",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_summary(
+async def get_study_design_analysis_sets(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -478,7 +477,7 @@ async def get_study_design_summary(
     "/versions/{version_id}/studyDesigns/{study_design_id}/analysisObjective",
     dependencies=[Depends(protect_endpoint)],
 )
-async def get_study_design_summary(
+async def get_study_design_analysis_obj(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -661,7 +660,7 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
 
 
 @app.get("/database/debug", dependencies=[Depends(protect_endpoint)])
-async def database_clean(request: Request, session: Session = Depends(get_db)):
+async def database_debug(request: Request, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
     if admin_role_enabled(request):
         data = {}
@@ -734,5 +733,5 @@ async def callback(request: Request):
     try:
         await authorisation.save_token(request)
         return RedirectResponse("/index")
-    except:
+    except Exception:
         return RedirectResponse("/logout")
