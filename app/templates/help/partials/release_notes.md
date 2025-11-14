@@ -1,3 +1,11 @@
+<h5>Release 0.36.0-alpha.8, 2025-11-14</h5>
+
+Alpha release:
+
+- Add in USDM explorer (issue 44)
+- Fix Madrid export (issue 45)
+- New USDM4 release
+
 <h5>Release 0.36.0-alpha.7, 2025-11-09</h5>
 
 Alpha release:

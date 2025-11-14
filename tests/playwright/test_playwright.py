@@ -461,6 +461,40 @@ def test_soa_export(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+@pytest.mark.playwright
+def test_fhir_export(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
+
+    page.get_by_role("link").first.click()
+    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+    page.get_by_role("button", name=" Export").click()
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
+    download = download_info.value
+    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+    page.get_by_role("button", name=" Export").click()
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="M11 FHIR, Madrid (.").click()
+    download = download_info.value
+    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+    page.get_by_role("button", name=" Export").click()
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="M11 FHIR, Pittsburgh (PRISM 3").click()
+    download = download_info.value
+    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+
+    context.close()
+    browser.close()
+
 
 @pytest.mark.playwright
 def test_excel_v4_export(playwright: Playwright) -> None:
