@@ -461,6 +461,7 @@ def test_soa_export(playwright: Playwright) -> None:
     context.close()
     browser.close()
 
+
 @pytest.mark.playwright
 def test_fhir_export(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
