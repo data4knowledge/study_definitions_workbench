@@ -509,7 +509,7 @@ def test_fhir_export_madrid_word(playwright: Playwright) -> None:
     delete_db(page)
 
     load_m11(page, path, "tests/test_files/m11/LZZT/LZZT.docx")
-    
+
     page.get_by_role("link").first.click()
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     page.get_by_role("button", name=" Export").click()
