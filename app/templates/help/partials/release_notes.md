@@ -1,3 +1,9 @@
+<h5>Release 0.36.0-alpha.9, 2025-11-16</h5>
+
+Alpha release:
+
+- New usdm4_fhir version to fix Madird export issue
+
 <h5>Release 0.36.0-alpha.8, 2025-11-14</h5>
 
 Alpha release:

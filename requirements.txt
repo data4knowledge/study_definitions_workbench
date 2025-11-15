@@ -8,7 +8,7 @@ usdm4_excel>=0.8.1
 usdm3_excel>=0.2.1
 usdm4_m11==0.7.2
 usdm4_cpt==0.4.0
-usdm4_fhir==0.6.1
+usdm4_fhir==0.6.2
 usdm4_pj==0.2.0
 d4k-ms-base>=0.4.0
 d4k-ms-service>=0.2.0
