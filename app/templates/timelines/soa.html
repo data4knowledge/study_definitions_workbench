@@ -7,6 +7,9 @@
 {% endblock %}  
 {% block menu_content %}
   {% with data=data %}
+    {% include "shared/partials/soa_view_menu.html" %}
+  {% endwith %}
+  {% with data=data %}
     {% include "shared/partials/soa_export_menu.html" %}
   {% endwith %}
   {% if data['fhir']['enabled'] %}
