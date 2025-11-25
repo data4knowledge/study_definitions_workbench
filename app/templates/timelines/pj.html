@@ -45,25 +45,12 @@
 {% block additional_css %}
   <style>
       .visit-card {
-          margin-bottom: 30px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-          transition: transform 0.2s, box-shadow 0.2s;
-      }
-      
-      .visit-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-      }
-      
-      .card-header {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          font-weight: 600;
+          margin-bottom: 20px;
       }
       
       .visit-info {
           background-color: #f8f9fa;
-          border-left: 4px solid #667eea;
+          border-left: 3px solid #0d6efd;
           padding: 12px;
           margin-bottom: 15px;
           border-radius: 4px;
@@ -97,19 +84,18 @@
       }
       
       .activity-circle {
-          fill: #667eea;
-          stroke: #764ba2;
+          fill: #0d6efd;
+          stroke: #0b5ed7;
           stroke-width: 2;
-          transition: all 0.3s;
       }
       
       .activity-circle:hover {
-          fill: #764ba2;
+          fill: #0b5ed7;
           r: 10;
       }
       
       .activity-label {
-          fill: #2c3e50;
+          fill: #212529;
           font-size: 11px;
           font-weight: 500;
           text-anchor: middle;
@@ -118,8 +104,8 @@
       
       .timeline-path {
           fill: none;
-          stroke: #cbd5e0;
-          stroke-width: 2.5;
+          stroke: #dee2e6;
+          stroke-width: 2;
           stroke-dasharray: 4, 4;
       }
       
@@ -134,12 +120,12 @@
           position: absolute;
           background-color: white;
           border: 1px solid #dee2e6;
-          border-radius: 6px;
-          padding: 12px 15px;
+          border-radius: 4px;
+          padding: 10px 12px;
           pointer-events: none;
           opacity: 0;
-          transition: opacity 0.3s;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          transition: opacity 0.2s;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           max-width: 350px;
           z-index: 1000;
       }
@@ -151,9 +137,9 @@
       .tooltip-title {
           font-weight: 600;
           font-size: 14px;
-          color: #2c3e50;
-          margin-bottom: 8px;
-          border-bottom: 2px solid #667eea;
+          color: #212529;
+          margin-bottom: 6px;
+          border-bottom: 1px solid #dee2e6;
           padding-bottom: 4px;
       }
       
@@ -169,29 +155,13 @@
       
       .procedure-item:before {
           content: "•";
-          color: #667eea;
+          color: #0d6efd;
           font-weight: bold;
           margin-right: 8px;
           margin-left: -15px;
       }
-      
-      .page-header {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          padding: 40px 0;
-          margin-bottom: 40px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      }
-      
-      .badge-custom {
-          background-color: #667eea;
-          color: white;
-          padding: 6px 12px;
-          border-radius: 20px;
-          font-size: 0.85rem;
-      }
   </style>
-{% endblock %}   
+{% endblock %}
 
 {% block additional_js %}
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -431,4 +401,3 @@
         console.log(`Created ${visits.filter(v => v.title && v.title.trim() !== '').length} visit cards with activity timelines`);
     </script>
 {% endblock %}
-
