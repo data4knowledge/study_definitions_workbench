@@ -96,7 +96,7 @@
       
       .activity-label {
           fill: #212529;
-          font-size: 14px;
+          font-size: 14spx;
           font-weight: 500;
           text-anchor: middle;
           pointer-events: none;
@@ -176,7 +176,7 @@
             colWidth: 120,
             nodeSpacing: 70,
             nodesPerCol: 6,
-            margin: { top: 20, right: 30, bottom: 20, left: 80 }
+            margin: { top: 60, right: 30, bottom: 60, left: 80 }
         };
         
         // Get visits data
@@ -357,9 +357,25 @@
                 const currCol = Math.floor(curr.index / config.nodesPerCol);
                 
                 if (prevCol !== currCol) {
-                    // Create a curved transition between columns
-                    const midX = (prev.x + curr.x) / 2;
-                    path += ` C ${midX},${prev.y} ${midX},${curr.y} ${curr.x},${curr.y}`;
+                    // Create a semi-circular arc transition between columns
+                    const dx = curr.x - prev.x;
+                    const dy = curr.y - prev.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    // Determine curve direction based on whether we're at top or bottom
+                    // Even columns go down (top to bottom), odd columns go up (bottom to top)
+                    // When transitioning from even to odd column, we're at the bottom (curve down)
+                    // When transitioning from odd to even column, we're at the top (curve up)
+                    const isAtBottom = prevCol % 2 === 0;
+                    const curveDirection = isAtBottom ? 1 : -1;
+                    const offset = distance * 0.3 * curveDirection;
+                    
+                    const ctrl1X = prev.x + dx * 0.25;
+                    const ctrl1Y = prev.y + offset;
+                    const ctrl2X = prev.x + dx * 0.75;
+                    const ctrl2Y = curr.y + offset;
+                    
+                    path += ` C ${ctrl1X},${ctrl1Y} ${ctrl2X},${ctrl2Y} ${curr.x},${curr.y}`;
                 } else {
                     // Straight line within column
                     path += ` L ${curr.x},${curr.y}`;
