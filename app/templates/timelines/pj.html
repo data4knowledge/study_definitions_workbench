@@ -22,9 +22,8 @@
 {% block main_content %}
   <div class="mt-3 row">
     <div class="col-12">
-      {% set title = "Patient Journey: " ~ data['timeline']['label'] %}
-      {% set timeline_title = "Main timeline" if data['timeline']['mainTimeline'] else "Secondary timeline" %}
-      {% set subtitle = data['timeline']['description'] ~ " | " ~ timeline_title %}
+      {% set title = "Patient Journey" %}
+      {% set subtitle = "A detailed view of study visits and activities" %}
       {% with title=title, subtitle=subtitle %}
         {% include "shared/partials/header.html" %}
       {% endwith %}    
@@ -33,26 +32,11 @@
   <div class="mt-3 row">
     <div class="col-12">
       <div class="card card-body rounded-3 h-100">
-
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="container">
-            <h1 class="display-4 mb-2">Clinical Trial Visit Timeline</h1>
-            <p class="lead mb-0">Detailed view of study visits and activities</p>
+        <div>
+            <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
         </div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="container">
         <div id="visits-container"></div>
-    </div>
-    
-    <!-- Global Tooltip -->
-    <div class="tooltip" id="tooltip"></div>
-    
-
-
-
+        <div class="tooltip" id="tooltip"></div>
       </div>
     </div>
   </div>
@@ -213,10 +197,8 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type="text/javascript">
         let rawJSON = document.getElementById('json_input').value;
-        let usdmData = JSON.parse(rawJSON);
+        let data = JSON.parse(rawJSON);
     
-        // Data from Python
-        const data = {json_data};
         
         // Configuration for activity timelines
         const config = {
@@ -282,14 +264,14 @@
                 // Timeline container
                 const timelineContainer = document.createElement('div');
                 timelineContainer.className = 'timeline-container';
-                timelineContainer.id = `timeline-${{visitIndex}}`;
+                timelineContainer.id = `timeline-${visitIndex}`;
                 body.appendChild(timelineContainer);
                 
                 card.appendChild(body);
                 container.appendChild(card);
                 
                 // Create timeline for this visit's activities
-                createActivityTimeline(visit.activities || [], `timeline-${{visitIndex}}`);
+                createActivityTimeline(visit.activities || [], `timeline-${visitIndex}`);
             });
         }
         
@@ -424,7 +406,7 @@
             if (activity.procedures && activity.procedures.length > 0) {
                 html += '<div class="tooltip-content"><strong>Procedures:</strong></div>';
                 activity.procedures.forEach(proc => {
-                    html += `<div class="procedure-item">${{proc}}</div>`;
+                    html += `<div class="procedure-item">${proc}</div>`;
                 });
             }
             

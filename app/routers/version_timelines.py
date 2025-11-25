@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
@@ -53,7 +54,7 @@ async def get_study_design_timeline_soa(
     data = usdm.soa(study_design_id, timeline_id)
     data["fhir"] = {"enabled": transmit_role_enabled(request)}
     data["endpoints"] = User.endpoints_page(1, 100, user.id, session)
-    # print(f"DATA: {data}")
+    print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "timelines/soa.html", {"user": user, "data": data}
     )
@@ -75,7 +76,16 @@ async def export_patient_journey(
     full_path, filename, media_type = df.path("usdm")
     pj = USDM4PJ()
     pj.from_usdm4(full_path, validate=False)
-    data = pj.patient_journey
+    data = {
+        "id": version_id,
+        "study_id": study_design_id,
+        "timeline": {"id": timeline_id},
+        "fhir": {"enabled": transmit_role_enabled(request)},
+        "endpoints": User.endpoints_page(1, 100, user.id, session),
+        "json": pj.patient_journey
+    }
+  
+    print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "timelines/pj.html", {"user": user, "data": data}
     )
