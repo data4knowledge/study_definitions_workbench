@@ -58,6 +58,27 @@ async def get_study_design_timeline_soa(
         request, "timelines/soa.html", {"user": user, "data": data}
     )
 
+@router.get(
+    "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/pj",
+    dependencies=[Depends(protect_endpoint)],
+)
+async def export_patient_journey(
+    request: Request,
+    version_id: int,
+    study_design_id: str,
+    timeline_id: str,
+    session: Session = Depends(get_db),
+):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(version_id, session)
+    df = usdm._files
+    full_path, filename, media_type = df.path("usdm")
+    pj = USDM4PJ()
+    pj.from_usdm4(full_path, validate=False)
+    data = pj.patient_journey
+    return templates.TemplateResponse(
+        request, "timelines/pj.html", {"user": user, "data": data}
+    )
 
 @router.get(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/fhir",
