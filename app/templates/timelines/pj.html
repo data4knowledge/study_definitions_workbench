@@ -96,7 +96,7 @@
       
       .activity-label {
           fill: #212529;
-          font-size: 11px;
+          font-size: 14px;
           font-weight: 500;
           text-anchor: middle;
           pointer-events: none;
@@ -104,8 +104,8 @@
       
       .timeline-path {
           fill: none;
-          stroke: #dee2e6;
-          stroke-width: 2;
+          stroke: #626467;
+          stroke-width: 3;
           stroke-dasharray: 4, 4;
       }
       
@@ -205,7 +205,7 @@
                 header.innerHTML = `
                     <h4 class="mb-0">
                         <i class="bi bi-calendar-event"></i> Visit: ${visit.title}
-                        <span class="badge badge-custom float-end">Visit #${visitIndex + 1}</span>
+                        <span class="badge bg-primary float-end">Visit #${visitIndex + 1}</span>
                     </h4>
                 `;
                 card.appendChild(header);
