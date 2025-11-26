@@ -54,7 +54,7 @@ async def get_study_design_timeline_soa(
     data = usdm.soa(study_design_id, timeline_id)
     data["fhir"] = {"enabled": transmit_role_enabled(request)}
     data["endpoints"] = User.endpoints_page(1, 100, user.id, session)
-    print(f"DATA: {data}")
+    # print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "timelines/soa.html", {"user": user, "data": data}
     )
@@ -63,7 +63,7 @@ async def get_study_design_timeline_soa(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/pj",
     dependencies=[Depends(protect_endpoint)],
 )
-async def export_patient_journey(
+async def display_patient_journey(
     request: Request,
     version_id: int,
     study_design_id: str,
@@ -84,8 +84,7 @@ async def export_patient_journey(
         "endpoints": User.endpoints_page(1, 100, user.id, session),
         "json": pj.patient_journey
     }
-  
-    print(f"DATA: {data}")
+    # print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "timelines/pj.html", {"user": user, "data": data}
     )
