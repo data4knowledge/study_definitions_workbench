@@ -35,7 +35,10 @@
         <div>
             <input type="hidden" id="json_input"  name="json_input" value="{{data['json']}}"/>
         </div>
-        <div id="visits-container"></div>
+        <!-- Tab navigation -->
+        <ul class="nav nav-tabs" id="visitTabs" role="tablist"></ul>
+        <!-- Tab content -->
+        <div class="tab-content mt-3" id="visitTabContent"></div>
         <div class="tooltip" id="tooltip"></div>
       </div>
     </div>
@@ -44,10 +47,6 @@
 
 {% block additional_css %}
   <style>
-      .visit-card {
-          margin-bottom: 20px;
-      }
-      
       .visit-info {
           background-color: #f8f9fa;
           border-left: 3px solid #0d6efd;
@@ -68,6 +67,34 @@
       
       .info-value {
           color: #6c757d;
+      }
+
+      .nav-tabs {
+          border-bottom: 2px solid #dee2e6;
+      }
+
+      .nav-tabs .nav-link {
+          color: #495057;
+          font-weight: 500;
+          border: none;
+          border-bottom: 3px solid transparent;
+          padding: 12px 20px;
+          margin-bottom: -2px;
+      }
+
+      .nav-tabs .nav-link:hover {
+          border-bottom-color: #0d6efd;
+          background-color: transparent;
+      }
+
+      .nav-tabs .nav-link.active {
+          color: #0d6efd;
+          border-bottom-color: #0d6efd;
+          background-color: transparent;
+      }
+
+      .tab-pane {
+          padding: 20px 0;
       }
       
       .timeline-container {
@@ -185,63 +212,99 @@
         // Global tooltip
         const tooltip = d3.select("#tooltip");
         
-        // Create visit cards
-        function createVisitCards() {
-            const container = document.getElementById('visits-container');
+        // Create visit tabs
+        function createVisitTabs() {
+            const tabNav = document.getElementById('visitTabs');
+            const tabContent = document.getElementById('visitTabContent');
             
-            visits.forEach((visit, visitIndex) => {
-                // Skip visits without titles
-                if (!visit.title || visit.title.trim() === '') {
-                    return;
-                }
+            // Filter visits with titles
+            const validVisits = visits.filter(visit => visit.title && visit.title.trim() !== '');
+            
+            if (validVisits.length === 0) {
+                tabContent.innerHTML = '<div class="no-activities">No visits available</div>';
+                return;
+            }
+            
+            validVisits.forEach((visit, index) => {
+                const visitIndex = visits.indexOf(visit);
+                const isFirst = index === 0;
                 
-                // Create card
-                const card = document.createElement('div');
-                card.className = 'card visit-card';
-                
-                // Card header
-                const header = document.createElement('div');
-                header.className = 'card-header';
-                header.innerHTML = `
-                    <h4 class="mb-0">
-                        <i class="bi bi-calendar-event"></i> Visit: ${visit.title}
-                        <span class="badge bg-primary float-end">Visit #${visitIndex + 1}</span>
-                    </h4>
+                // Create tab button
+                const tabButton = document.createElement('li');
+                tabButton.className = 'nav-item';
+                tabButton.setAttribute('role', 'presentation');
+                tabButton.innerHTML = `
+                    <button class="nav-link ${isFirst ? 'active' : ''}" 
+                            id="visit-tab-${visitIndex}" 
+                            data-bs-toggle="tab" 
+                            data-bs-target="#visit-pane-${visitIndex}" 
+                            type="button" 
+                            role="tab" 
+                            aria-controls="visit-pane-${visitIndex}" 
+                            aria-selected="${isFirst ? 'true' : 'false'}">
+                        <i class="bi bi-calendar-event"></i> ${visit.title}
+                    </button>
                 `;
-                card.appendChild(header);
+                tabNav.appendChild(tabButton);
                 
-                // Card body
-                const body = document.createElement('div');
-                body.className = 'card-body';
+                // Create tab pane
+                const tabPane = document.createElement('div');
+                tabPane.className = `tab-pane fade ${isFirst ? 'show active' : ''}`;
+                tabPane.id = `visit-pane-${visitIndex}`;
+                tabPane.setAttribute('role', 'tabpanel');
+                tabPane.setAttribute('aria-labelledby', `visit-tab-${visitIndex}`);
                 
                 // Visit information
                 const info = document.createElement('div');
                 info.className = 'visit-info';
                 info.innerHTML = `
+                    <div class="info-item">
+                        <span class="info-label">Visit:</span>
+                        <span class="info-value">${visit.title}</span>
+                        <span class="badge bg-primary ms-2">Visit #${visitIndex + 1}</span>
+                    </div>
                     ${visit.type ? `<div class="info-item"><span class="info-label">Type:</span><span class="info-value">${visit.type}</span></div>` : ''}
                     ${visit.duration ? `<div class="info-item"><span class="info-label">Duration:</span><span class="info-value">${visit.duration}</span></div>` : ''}
                     ${visit.timing ? `<div class="info-item"><span class="info-label">Timing:</span><span class="info-value">${visit.timing}</span></div>` : ''}
                     ${visit.notes ? `<div class="info-item"><span class="info-label">Notes:</span><span class="info-value">${visit.notes}</span></div>` : ''}
                 `;
-                body.appendChild(info);
+                tabPane.appendChild(info);
                 
                 // Activities section header
                 const activitiesHeader = document.createElement('h6');
                 activitiesHeader.className = 'mt-3 mb-3';
                 activitiesHeader.innerHTML = '<strong>Activities Timeline</strong>';
-                body.appendChild(activitiesHeader);
+                tabPane.appendChild(activitiesHeader);
                 
                 // Timeline container
                 const timelineContainer = document.createElement('div');
                 timelineContainer.className = 'timeline-container';
                 timelineContainer.id = `timeline-${visitIndex}`;
-                body.appendChild(timelineContainer);
+                tabPane.appendChild(timelineContainer);
                 
-                card.appendChild(body);
-                container.appendChild(card);
+                tabContent.appendChild(tabPane);
                 
                 // Create timeline for this visit's activities
-                createActivityTimeline(visit.activities || [], `timeline-${visitIndex}`);
+                // Only render the first tab immediately, others will be rendered when clicked
+                if (isFirst) {
+                    createActivityTimeline(visit.activities || [], `timeline-${visitIndex}`);
+                }
+            });
+            
+            // Add event listener to render timelines when tabs are shown
+            const tabButtons = tabNav.querySelectorAll('button[data-bs-toggle="tab"]');
+            tabButtons.forEach((button, index) => {
+                button.addEventListener('shown.bs.tab', function (event) {
+                    const targetId = event.target.getAttribute('data-bs-target');
+                    const timelineId = targetId.replace('#visit-pane-', 'timeline-');
+                    const timelineContainer = document.getElementById(timelineId);
+                    
+                    // Only create timeline if it hasn't been created yet
+                    if (timelineContainer && timelineContainer.innerHTML === '') {
+                        const visitIndex = visits.indexOf(validVisits[index]);
+                        createActivityTimeline(validVisits[index].activities || [], timelineId);
+                    }
+                });
             });
         }
         
@@ -412,8 +475,8 @@
         }
         
         // Initialize
-        createVisitCards();
+        createVisitTabs();
         
-        console.log(`Created ${visits.filter(v => v.title && v.title.trim() !== '').length} visit cards with activity timelines`);
+        console.log(`Created ${visits.filter(v => v.title && v.title.trim() !== '').length} visit tabs with activity timelines`);
     </script>
 {% endblock %}
