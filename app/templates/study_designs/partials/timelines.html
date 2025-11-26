@@ -1,18 +1,31 @@
 <div>
-  {% if not data['m11'] %}
-    <ul class="list-group mt-3">
-      {% for timeline in data['timelines'] %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{timeline['label']}}
-        <a href="/versions/{{data['id']}}/studyDesigns/{{data['study_id']}}/timelines/{{timeline['id']}}/soa" class="btn btn-sm btn-outline-primary rounded-5">
-          <i class="bi bi-clock pe-2"></i>View
-        </a>  
-      </li>
-      {% endfor %}
+  <div class="mt-2">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+        <button class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#data_tab">Data View</button>
+        </li>
+        <li class="nav-item" role="presentation">
+        <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#document_tab">Document View</button>
+        </li>
     </ul>
-  {% else %}
-    {% with show_link=False %}
-      {% include "shared/partials/not_implemented.html" %}
-    {% endwith %}
-  {% endif %}
+  </div>
+  <div class="tab-content mt-2">
+    <div id="data_tab" class="tab-pane fade show active" role="tabpanel">
+      <ul class="list-group mt-3">
+        {% for timeline in data['timelines'] %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{timeline['label']}}
+          <a href="/versions/{{data['id']}}/studyDesigns/{{data['study_id']}}/timelines/{{timeline['id']}}/soa" class="btn btn-sm btn-outline-primary rounded-5">
+            <i class="bi bi-clock pe-2"></i>View
+          </a>  
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="document_tab" class="tab-pane fade" role="tabpanel">
+        {% with show_link=False %}
+            {% include "shared/partials/not_implemented.html" %}
+        {% endwith %}
+    </div>
+  </div>
 </div>
