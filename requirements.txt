@@ -2,7 +2,7 @@ uvicorn[standard]
 itsdangerous==2.2.0
 sqlalchemy==2.0.31   
 alembic==1.13.2
-usdm==0.64.0
+usdm==0.65.0
 usdm4==0.13.1
 usdm4_excel>=0.8.1
 usdm3_excel>=0.2.1
