@@ -1,4 +1,3 @@
-import json
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
@@ -10,6 +9,8 @@ from app.dependencies.utility import user_details, transmit_role_enabled
 from app.dependencies.templates import templates
 from app.utility.fhir_transmit import run_fhir_soa_transmit
 from usdm4_pj import USDM4PJ
+from usdm4 import USDM4
+from usdm4.expander.expander import Expander, Errors
 
 
 router = APIRouter(
@@ -59,6 +60,7 @@ async def get_study_design_timeline_soa(
         request, "timelines/soa.html", {"user": user, "data": data}
     )
 
+
 @router.get(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/pj",
     dependencies=[Depends(protect_endpoint)],
@@ -82,12 +84,60 @@ async def display_patient_journey(
         "timeline": {"id": timeline_id},
         "fhir": {"enabled": transmit_role_enabled(request)},
         "endpoints": User.endpoints_page(1, 100, user.id, session),
-        "json": pj.patient_journey
+        "json": pj.patient_journey,
     }
     # print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "timelines/pj.html", {"user": user, "data": data}
     )
+
+
+@router.get(
+    "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/expansion",
+    dependencies=[Depends(protect_endpoint)],
+)
+async def display_expansion(
+    request: Request,
+    version_id: int,
+    study_design_id: str,
+    timeline_id: str,
+    session: Session = Depends(get_db),
+):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(version_id, session)
+    df = usdm._files
+    full_path, filename, media_type = df.path("usdm")
+    usdm = USDM4()
+    errors = Errors()
+    wrapper = usdm.load(full_path, errors)
+    _, _, sd = wrapper.study_version_and_design(study_design_id)
+    if sd:
+        expander = Expander(sd, sd.main_timeline(), errors)
+        expander.process()
+        data = {
+            "id": version_id,
+            "study_id": study_design_id,
+            "timeline": {"id": timeline_id},
+            "fhir": {"enabled": transmit_role_enabled(request)},
+            "endpoints": User.endpoints_page(1, 100, user.id, session),
+            "json": expander.to_json(),
+        }
+        # print(f"DATA: {data}")
+        return templates.TemplateResponse(
+            request, "timelines/expand.html", {"user": user, "data": data}
+        )
+    else:
+        return templates.TemplateResponse(
+            request,
+            "errors/error.html",
+            {
+                "user": user,
+                "data": {
+                    "error": f"Error locating the study design with id '{study_design_id}'"
+                },
+            },
+        )
+
 
 @router.get(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/fhir",
@@ -116,6 +166,44 @@ async def get_study_design_timeline_export_fhir(
                 },
             },
         )
+
+
+@router.get(
+    "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/export/expansion",
+    dependencies=[Depends(protect_endpoint)],
+)
+async def export_expansion(
+    request: Request,
+    version_id: int,
+    study_design_id: str,
+    timeline_id: str,
+    session: Session = Depends(get_db),
+):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(version_id, session)
+    df = usdm._files
+    full_path, filename, media_type = df.path("usdm")
+    if full_path:
+        usdm = USDM4()
+        errors = Errors()
+        wrapper = usdm.load(full_path, errors)
+        s, v, sd = wrapper.study_version_and_design(study_design_id)
+        if sd:
+            expander = Expander(sd, sd.main_timeline(), errors)
+            expander.process()
+            # print(f"JSON: {data}")
+            filepath, filename = df.save("expansion", expander.to_json())
+            return FileResponse(
+                path=filepath, filename=filename, media_type="text/plain"
+            )
+    return templates.TemplateResponse(
+        request,
+        "errors/error.html",
+        {
+            "user": user,
+            "data": {"error": "Error downloading the requested JSON file"},
+        },
+    )
 
 
 @router.get(

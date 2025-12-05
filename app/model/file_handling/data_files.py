@@ -38,6 +38,12 @@ class DataFiles:
                 "filename": "patient_journey",
                 "extension": "json",
             },
+            "expansion": {
+                "method": self._save_json_file,
+                "use_original": False,
+                "filename": "expansion",
+                "extension": "json",
+            },
             "fhir_prism2": {
                 "method": self._save_json_file,
                 "use_original": True,
