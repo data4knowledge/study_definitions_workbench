@@ -124,7 +124,7 @@ async def display_expansion(
         }
         # print(f"DATA: {data}")
         return templates.TemplateResponse(
-            request, "timelines/expand.html", {"user": user, "data": data}
+            request, "timelines/expansion.html", {"user": user, "data": data}
         )
     else:
         return templates.TemplateResponse(
