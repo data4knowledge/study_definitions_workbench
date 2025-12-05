@@ -12,7 +12,14 @@ from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
 from app.imports.import_manager import ImportManager
 from usdm4 import USDM4
+from usdm4.api.study import Study
+from usdm4.api.study_design import StudyDesign
+from usdm4.api.study_version import StudyVersion
+from usdm4.api.study_definition_document import StudyDefinitionDocument, StudyDefinitionDocumentVersion
 from usdm4_cpt.soa.soa import SoA
+from usdm4_cpt.document_view.document_view import DocumentView as CPTDocumentView
+from usdm4_m11.document_view.document_view import DocumentView as M11DocumentView
+from simple_error_log import Errors
 from app.utility.soup import get_soup
 
 
@@ -41,17 +48,6 @@ class USDMJson:
         return fullpath, filename, "text/plain"
 
     def fhir_data(self, version=FHIRM11.PRISM2):
-        # print(f"VERSION FHIR DATA: {version}")
-        # def fhir_data(self, version="1"):
-        # match version.upper():
-        #     case "1":
-        #         return self.fhir_v1_data()
-        #     case "2":
-        #         return self.fhir_v2_data()
-        #     case "3":
-        #         return self.fhir_v3_data()
-        #     case default:
-        #         return self.fhir_v1_data()
         usdm = USDM4()
         wrapper = usdm.from_json(self._data)
         # print(f"WRAPPER: {wrapper}")
@@ -61,34 +57,6 @@ class USDMJson:
         print(f"ERRORS: {fhir.errors.dump(0)}")
         # print(f"DATA: {data}")
         return data
-
-    # def fhir_v1_data(self):
-    #     print(f"FHIR: VER 1 DATA")
-    #     usdm = USDM4()
-    #     wrapper = usdm.from_json(self._data)
-    #     study = wrapper.study
-    #     fhir = FHIRM11(study, self._extra, FHIRM11.PRISM)
-    #     return fhir.to_message()
-
-    # def fhir_v2_data(self):
-    #     # print(f"FHIR: VER 2 DATA")
-    #     usdm = USDM4()
-    #     wrapper = usdm.from_json(self._data)
-    #     study = wrapper.study
-    #     fhir = ToFHIRV2(study, self.uuid, self._extra)
-    #     data = fhir.to_fhir()
-    #     self._files.save("fhir_v2", data)
-    #     return data
-
-    # def fhir_v3_data(self):
-    #     print("FHIR: VER 3 DATA")
-    #     usdm = USDM4()
-    #     wrapper = usdm.from_json(self._data)
-    #     study = wrapper.study
-    #     fhir = FHIRM11(study, self._extra, FHIRM11.MADRID)
-    #     data = fhir.to_message()
-    #     self._files.save("fhir_v3", data)
-    #     return data
 
     def fhir_soa(self, timeline_id: str):
         data = self.fhir_soa_data(timeline_id)
@@ -321,20 +289,42 @@ class USDMJson:
         else:
             return None
 
-    def timelines(self, id: str):
-        wrapper = self.wrapper()
-        version = wrapper.study.first_version()
-        if version:
-            design = version.find_study_design(id)
-            if design:
-                result = {
-                    "id": self.id,
-                    "study_id": design.id,
-                    "m11": self.m11,
-                    "timelines": [x.model_dump() for x in design.scheduleTimelines],
-                }
-                return result
-        return None
+    def schedule_of_activities(self, id: str):
+        usdm = USDM4()
+        errors = Errors()
+        wrapper: Wrapper = usdm.loadd(self._data, errors)
+        study: Study
+        version: StudyVersion
+        design: StudyDesign
+        study, version, design = wrapper.study_version_and_design(id)
+        if study and version and design:
+            soas = []
+            documents = version.documents(study.document_map())
+            for doc_info in documents:
+                dv = None
+                doc: StudyDefinitionDocument = doc_info["document"]
+                doc_version: StudyDefinitionDocumentVersion = doc_info["version"]
+                print(f"TEMPLATE: {doc.templateName}")
+                if doc.templateName.upper() == "CPT":
+                    dv = CPTDocumentView(version, doc_version, errors)
+                elif doc.templateName.upper() == "M11":
+                    dv = M11DocumentView(version, doc_version, errors)        
+                if dv:
+                    soas.append({"template": doc.templateName, "soa": dv.schedule_of_activities()})
+            print(f"SoAs: {len(soas)}")
+            return {
+                "id": self.id,
+                "study_id": design.id,
+                "data": [x.model_dump() for x in design.scheduleTimelines],
+                "documents": soas
+            }
+        return {
+            "id": self.id,
+            "study_id": design.id,
+            "data": [],
+            "document": []
+        }
+
 
     def soa(self, study_id: str, id: str):
         wrapper = self.wrapper()

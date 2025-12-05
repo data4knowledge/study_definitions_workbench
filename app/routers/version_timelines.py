@@ -31,7 +31,7 @@ async def get_study_design_timelines(
 ):
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
-    data = usdm.timelines(study_design_id)
+    data = usdm.schedule_of_activities(study_design_id)
     # print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "study_designs/partials/timelines.html", {"user": user, "data": data}
