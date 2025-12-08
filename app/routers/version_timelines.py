@@ -87,7 +87,7 @@ async def display_patient_journey(
             "endpoints": User.endpoints_page(1, 100, user.id, session),
             "json": pj.simple_view(full_path, study_design_id),
         }
-        print(f"DATA: {data}\n\n{errors.dump(0)}")
+        # print(f"DATA: {data}\n\n{errors.dump(0)}")
         return templates.TemplateResponse(
             request, "timelines/pj.html", {"user": user, "data": data}
         )
@@ -127,7 +127,7 @@ async def display_expansion(
             "endpoints": User.endpoints_page(1, 100, user.id, session),
             "json": pj.expanded_view(full_path, study_design_id),
         }
-        print(f"DATA: {data}\n\n{errors.dump(0)}")
+        # print(f"DATA: {data}\n\n{errors.dump(0)}")
         return templates.TemplateResponse(
             request, "timelines/expansion.html", {"user": user, "data": data}
         )
