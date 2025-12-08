@@ -76,19 +76,28 @@ async def display_patient_journey(
     usdm = USDMJson(version_id, session)
     df = usdm._files
     full_path, filename, media_type = df.path("usdm")
-    pj = USDM4PJ()
-    pj.from_usdm4(full_path, validate=False)
-    data = {
-        "id": version_id,
-        "study_id": study_design_id,
-        "timeline": {"id": timeline_id},
-        "fhir": {"enabled": transmit_role_enabled(request)},
-        "endpoints": User.endpoints_page(1, 100, user.id, session),
-        "json": pj.patient_journey,
-    }
-    # print(f"DATA: {data}")
+    if full_path:
+        errors = Errors()
+        pj = USDM4PJ(errors)
+        data = {
+            "id": version_id,
+            "study_id": study_design_id,
+            "timeline": {"id": timeline_id},
+            "fhir": {"enabled": transmit_role_enabled(request)},
+            "endpoints": User.endpoints_page(1, 100, user.id, session),
+            "json": pj.simple_view(full_path, study_design_id),
+        }
+        print(f"DATA: {data}\n\n{errors.dump(0)}")
+        return templates.TemplateResponse(
+            request, "timelines/pj.html", {"user": user, "data": data}
+        )
     return templates.TemplateResponse(
-        request, "timelines/pj.html", {"user": user, "data": data}
+        request,
+        "errors/error.html",
+        {
+            "user": user,
+            "data": {"error": "Error locating the USDM file"},
+        },
     )
 
 
@@ -107,36 +116,29 @@ async def display_expansion(
     usdm = USDMJson(version_id, session)
     df = usdm._files
     full_path, filename, media_type = df.path("usdm")
-    usdm = USDM4()
-    errors = Errors()
-    wrapper = usdm.load(full_path, errors)
-    _, _, sd = wrapper.study_version_and_design(study_design_id)
-    if sd:
-        expander = Expander(sd, sd.main_timeline(), errors)
-        expander.process()
+    if full_path:    
+        errors = Errors()
+        pj = USDM4PJ(errors)
         data = {
             "id": version_id,
             "study_id": study_design_id,
             "timeline": {"id": timeline_id},
             "fhir": {"enabled": transmit_role_enabled(request)},
             "endpoints": User.endpoints_page(1, 100, user.id, session),
-            "json": expander.to_json(),
+            "json": pj.expanded_view(full_path, study_design_id),
         }
-        # print(f"DATA: {data}")
+        print(f"DATA: {data}\n\n{errors.dump(0)}")
         return templates.TemplateResponse(
             request, "timelines/expansion.html", {"user": user, "data": data}
         )
-    else:
-        return templates.TemplateResponse(
-            request,
-            "errors/error.html",
-            {
-                "user": user,
-                "data": {
-                    "error": f"Error locating the study design with id '{study_design_id}'"
-                },
-            },
-        )
+    return templates.TemplateResponse(
+        request,
+        "errors/error.html",
+        {
+            "user": user,
+            "data": {"error": "Error locating the USDM file"},
+        },
+    )
 
 
 @router.get(
@@ -184,18 +186,12 @@ async def export_expansion(
     df = usdm._files
     full_path, filename, media_type = df.path("usdm")
     if full_path:
-        usdm = USDM4()
         errors = Errors()
-        wrapper = usdm.load(full_path, errors)
-        s, v, sd = wrapper.study_version_and_design(study_design_id)
-        if sd:
-            expander = Expander(sd, sd.main_timeline(), errors)
-            expander.process()
-            # print(f"JSON: {data}")
-            filepath, filename = df.save("expansion", expander.to_json())
-            return FileResponse(
-                path=filepath, filename=filename, media_type="text/plain"
-            )
+        pj = USDM4PJ(errors)
+        filepath, filename = df.save("expansion", pj.expanded_view(full_path, study_design_id))
+        return FileResponse(
+            path=filepath, filename=filename, media_type="text/plain"
+        )
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -222,14 +218,10 @@ async def export_patient_journey(
     df = usdm._files
     full_path, filename, media_type = df.path("usdm")
     if full_path:
-        pj = USDM4PJ()
-        pj.from_usdm4(full_path, validate=False)
-        print(f"ERRORS: {pj._errors.dump(0)}")
-        data = pj.patient_journey
-        # print(f"JSON: {data}")
-        pj_path, pj_filename = df.save("pj", data)
-        print(f"FILES: {pj_path}, {pj_filename}")
-        return FileResponse(path=pj_path, filename=pj_filename, media_type="text/plain")
+        errors = Errors()
+        pj = USDM4PJ(errors)
+        filepath, filename = df.save("pj", pj.simple_view(full_path, study_design_id))
+        return FileResponse(path=filepath, filename=filename, media_type="text/plain")
     else:
         return templates.TemplateResponse(
             request,
