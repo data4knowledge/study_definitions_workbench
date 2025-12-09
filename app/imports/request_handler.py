@@ -29,7 +29,7 @@ class RequestHandler:
                         "filename": main_file["filename"],
                         "messages": messages,
                         "route": "/index",
-                        "label": "Home"
+                        "label": "Home",
                     },
                 )
             else:

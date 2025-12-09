@@ -45,7 +45,9 @@ async def get_version_summary(
 
 
 @router.get("/{id}/load/{load_type}", dependencies=[Depends(protect_endpoint)])
-def import_xl(request: Request, id: str, load_type: str, session: Session = Depends(get_db)):
+def import_xl(
+    request: Request, id: str, load_type: str, session: Session = Depends(get_db)
+):
     user, present_in_db = user_details(request, session)
     data = application_configuration.file_picker
     data["dir"] = LocalFiles().root if data["os"] else ""
@@ -53,12 +55,18 @@ def import_xl(request: Request, id: str, load_type: str, session: Session = Depe
     data["other_files"] = False
     data["url"] = f"/versions/{id}/load/{load_type}"
     data["load_type"] = load_type
-    return templates.TemplateResponse(request, f"study_versions/load.html", {"user": user, "data": data})
+    return templates.TemplateResponse(
+        request, f"study_versions/load.html", {"user": user, "data": data}
+    )
 
 
 @router.post("/{id}/load/{load_type}", dependencies=[Depends(protect_endpoint)])
 async def import_xl_process(
-    request: Request, id: str, load_type: str, source: str = "browser", session: Session = Depends(get_db)
+    request: Request,
+    id: str,
+    load_type: str,
+    source: str = "browser",
+    session: Session = Depends(get_db),
 ):
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
@@ -81,7 +89,7 @@ async def import_xl_process(
                 "filename": main_file["filename"],
                 "messages": messages,
                 "route": f"/versions/{id}/summary",
-                "label": "Back to study"
+                "label": "Back to study",
             },
         )
     else:
@@ -95,6 +103,7 @@ async def import_xl_process(
                 "type": load_type,
             },
         )
+
 
 @router.get("/{id}/history")
 async def get_version_history(

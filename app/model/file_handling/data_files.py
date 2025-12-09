@@ -192,7 +192,9 @@ class DataFiles:
             self.uuid = None
         return self.uuid
 
-    def save(self, type: str, contents, filename: str = "") -> tuple[str | None, str | None]:
+    def save(
+        self, type: str, contents, filename: str = ""
+    ) -> tuple[str | None, str | None]:
         try:
             filename = (
                 filename
@@ -207,7 +209,7 @@ class DataFiles:
 
     def exists(self, type) -> bool:
         return os.path.exists(self._file_path(self._form_filename(type)))
-    
+
     def read(self, type) -> str | None:
         try:
             full_path = self._file_path(self._form_filename(type))
@@ -215,7 +217,7 @@ class DataFiles:
                 return stream.read()
         except Exception:
             return None
-        
+
     def path(self, type):
         exists = True
         if self.media_type[type]["use_original"]:

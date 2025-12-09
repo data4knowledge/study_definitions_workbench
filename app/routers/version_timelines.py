@@ -116,11 +116,15 @@ async def display_expansion(
     usdm = USDMJson(version_id, session)
     df = usdm._files
     usdm_full_path, _, _ = df.path("usdm")
-    if usdm_full_path:    
+    if usdm_full_path:
         costs_full_path = None
+        activities_full_path = None
         if df.exists("costs"):
-            costs_full_path, _, _ = df.path("costs") 
+            costs_full_path, _, _ = df.path("costs")
+        if df.exists("activities"):
+            activities_full_path, _, _ = df.path("activities")
         errors = Errors()
+        # print(f"ACT: {activities_full_path}")
         pj = USDM4PJ(errors)
         data = {
             "id": version_id,
@@ -128,7 +132,12 @@ async def display_expansion(
             "timeline": {"id": timeline_id},
             "fhir": {"enabled": transmit_role_enabled(request)},
             "endpoints": User.endpoints_page(1, 100, user.id, session),
-            "json": pj.expanded_view(usdm_full_path, study_design_id, costs_file_path=costs_full_path),
+            "json": pj.expanded_view(
+                usdm_full_path,
+                study_design_id,
+                costs_file_path=costs_full_path,
+                activities_file_path=activities_full_path,
+            ),
         }
         print(f"ERRORS: {errors.dump(0)}")
         return templates.TemplateResponse(
@@ -191,13 +200,21 @@ async def export_expansion(
     if full_path:
         costs_full_path = None
         if df.exists("costs"):
-            costs_full_path, _, _ = df.path("costs") 
+            costs_full_path, _, _ = df.path("costs")
+        if df.exists("activities"):
+            activities_full_path, _, _ = df.path("activities")
         errors = Errors()
         pj = USDM4PJ(errors)
-        filepath, filename = df.save("expansion", pj.expanded_view(full_path, study_design_id, costs_file_path=costs_full_path))
-        return FileResponse(
-            path=filepath, filename=filename, media_type="text/plain"
+        filepath, filename = df.save(
+            "expansion",
+            pj.expanded_view(
+                full_path,
+                study_design_id,
+                costs_file_path=costs_full_path,
+                activities_file_path=activities_full_path,
+            ),
         )
+        return FileResponse(path=filepath, filename=filename, media_type="text/plain")
     return templates.TemplateResponse(
         request,
         "errors/error.html",
