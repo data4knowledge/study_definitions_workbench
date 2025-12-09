@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, Request
-from fastapi.responses import FileResponse
+import yaml
+from fastapi import APIRouter, Depends, Request, status
+from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from d4k_ms_ui.pagination import Pagination
 from app.database.user import User
@@ -12,6 +13,11 @@ from app.dependencies.templates import templates
 from app.model.usdm_json import USDMJson
 from app.dependencies.fhir_version import fhir_versions
 from app.usdm_database.usdm_database import USDMDatabase
+from app.configuration.configuration import application_configuration
+from app.model.file_handling.local_files import LocalFiles
+from app.model.file_handling.data_files import DataFiles
+from app.imports.form_handler import FormHandler
+
 
 router = APIRouter(
     prefix="/versions", tags=["versions"], dependencies=[Depends(protect_endpoint)]
@@ -37,6 +43,58 @@ async def get_version_summary(
         request, "study_versions/summary.html", {"user": user, "data": data}
     )
 
+
+@router.get("/{id}/load/{load_type}", dependencies=[Depends(protect_endpoint)])
+def import_xl(request: Request, id: str, load_type: str, session: Session = Depends(get_db)):
+    user, present_in_db = user_details(request, session)
+    data = application_configuration.file_picker
+    data["dir"] = LocalFiles().root if data["os"] else ""
+    data["required_ext"] = "yaml"
+    data["other_files"] = False
+    data["url"] = f"/versions/{id}/load/{load_type}"
+    data["load_type"] = load_type
+    return templates.TemplateResponse(request, f"study_versions/load.html", {"user": user, "data": data})
+
+
+@router.post("/{id}/load/{load_type}", dependencies=[Depends(protect_endpoint)])
+async def import_xl_process(
+    request: Request, id: str, load_type: str, source: str = "browser", session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(id, session)
+    form_handler = FormHandler(
+        request,
+        False,
+        "yaml",
+        source,
+    )
+    main_file, _, messages = await form_handler.get_files()
+    df = DataFiles(usdm.uuid)
+    filename = main_file["filename"]
+    contents = yaml.safe_load(main_file["contents"].decode())
+    full_path, _ = df.save(load_type, contents, filename)
+    if full_path:
+        return templates.TemplateResponse(
+            "import/partials/upload_success.html",
+            {
+                "request": request,
+                "filename": main_file["filename"],
+                "messages": messages,
+                "route": f"/versions/{id}/summary",
+                "label": "Back to study"
+            },
+        )
+    else:
+        messages.append("Failed to save the load file")
+        return templates.TemplateResponse(
+            "import/partials/upload_fail.html",
+            {
+                "request": request,
+                "filename": main_file["filename"],
+                "messages": messages,
+                "type": load_type,
+            },
+        )
 
 @router.get("/{id}/history")
 async def get_version_history(

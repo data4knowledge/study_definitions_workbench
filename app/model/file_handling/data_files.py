@@ -104,6 +104,18 @@ class DataFiles:
                 "filename": "extra",
                 "extension": "yaml",
             },
+            "costs": {
+                "method": self._save_yaml_file,
+                "use_original": False,
+                "filename": "costs",
+                "extension": "yaml",
+            },
+            "activities": {
+                "method": self._save_yaml_file,
+                "use_original": False,
+                "filename": "activities",
+                "extension": "yaml",
+            },
         }
         self.uuid = uuid
         self.dir = application_configuration.data_file_path
@@ -180,21 +192,30 @@ class DataFiles:
             self.uuid = None
         return self.uuid
 
-    def save(self, type: str, contents, filename: str = "") -> tuple[str, str]:
-        filename = (
-            filename
-            if self.media_type[type]["use_original"]
-            else self._form_filename(type)
-        )
-        filename = filename if filename else self._form_filename(type)
-        full_path = self.media_type[type]["method"](contents, filename)
-        return full_path, filename
+    def save(self, type: str, contents, filename: str = "") -> tuple[str | None, str | None]:
+        try:
+            filename = (
+                filename
+                if self.media_type[type]["use_original"]
+                else self._form_filename(type)
+            )
+            filename = filename if filename else self._form_filename(type)
+            full_path = self.media_type[type]["method"](contents, filename)
+            return full_path, filename
+        except Exception:
+            return None, None
 
-    def read(self, type):
-        full_path = self._file_path(self._form_filename(type))
-        with open(full_path, "r") as stream:
-            return stream.read()
-
+    def exists(self, type) -> bool:
+        return os.path.exists(self._file_path(self._form_filename(type)))
+    
+    def read(self, type) -> str | None:
+        try:
+            full_path = self._file_path(self._form_filename(type))
+            with open(full_path, "r") as stream:
+                return stream.read()
+        except Exception:
+            return None
+        
     def path(self, type):
         exists = True
         if self.media_type[type]["use_original"]:
@@ -279,6 +300,7 @@ class DataFiles:
             application_logger.exception("Exception saving results file", e)
 
     def _save_yaml_file(self, contents, filename):
+        print("SAVE YAML")
         try:
             full_path = self._file_path(filename)
             with open(full_path, "w") as f:

@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
@@ -9,8 +10,7 @@ from app.dependencies.utility import user_details, transmit_role_enabled
 from app.dependencies.templates import templates
 from app.utility.fhir_transmit import run_fhir_soa_transmit
 from usdm4_pj import USDM4PJ
-from usdm4 import USDM4
-from usdm4.expander.expander import Expander, Errors
+from simple_error_log import Errors
 
 
 router = APIRouter(
@@ -115,8 +115,11 @@ async def display_expansion(
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     df = usdm._files
-    full_path, filename, media_type = df.path("usdm")
-    if full_path:    
+    usdm_full_path, _, _ = df.path("usdm")
+    if usdm_full_path:    
+        costs_full_path = None
+        if df.exists("costs"):
+            costs_full_path, _, _ = df.path("costs") 
         errors = Errors()
         pj = USDM4PJ(errors)
         data = {
@@ -125,9 +128,9 @@ async def display_expansion(
             "timeline": {"id": timeline_id},
             "fhir": {"enabled": transmit_role_enabled(request)},
             "endpoints": User.endpoints_page(1, 100, user.id, session),
-            "json": pj.expanded_view(full_path, study_design_id),
+            "json": pj.expanded_view(usdm_full_path, study_design_id, costs_file_path=costs_full_path),
         }
-        # print(f"DATA: {data}\n\n{errors.dump(0)}")
+        print(f"ERRORS: {errors.dump(0)}")
         return templates.TemplateResponse(
             request, "timelines/expansion.html", {"user": user, "data": data}
         )
@@ -186,9 +189,12 @@ async def export_expansion(
     df = usdm._files
     full_path, filename, media_type = df.path("usdm")
     if full_path:
+        costs_full_path = None
+        if df.exists("costs"):
+            costs_full_path, _, _ = df.path("costs") 
         errors = Errors()
         pj = USDM4PJ(errors)
-        filepath, filename = df.save("expansion", pj.expanded_view(full_path, study_design_id))
+        filepath, filename = df.save("expansion", pj.expanded_view(full_path, study_design_id, costs_file_path=costs_full_path))
         return FileResponse(
             path=filepath, filename=filename, media_type="text/plain"
         )

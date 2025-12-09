@@ -29,6 +29,9 @@
       {% include "shared/partials/transmit_menu.html" %}
     {% endwith %} 
   {% endif %} 
+  {% with data=data %}
+    {% include "shared/partials/load_menu.html" %}
+  {% endwith %}
 {% endblock %}
 
 {% block main_content %}
