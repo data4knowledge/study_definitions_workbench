@@ -1,0 +1,3937 @@
+{
+    "nodes": [
+        {
+            "id": "TP_1",
+            "tick": -1209600,
+            "time": "-2 weeks",
+            "label": "Screen One",
+            "encounter": "Screening 1",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Informed consent",
+                        "parent": "Screening",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Inclusion and exclusion criteria",
+                        "parent": "Screening",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Patient number assigned",
+                        "parent": "Screening",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Demographics",
+                        "parent": "Screening",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hachinski Ischemic Scale",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "MMSE",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Physical examination",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Medical history",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Habits",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chest X-ray",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Placebo TTS test",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "CT scan",
+                        "parent": "Safety",
+                        "procedures": [
+                            "CT Scan"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Uninalysis",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hemoglobin A1C",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ADAS-Cog",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "CIBIC+",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "DAD",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_3",
+            "tick": -1209300,
+            "time": "-2 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_5",
+            "tick": -1208640,
+            "time": "-2 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_7",
+            "tick": -1207800,
+            "time": "-2 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_8",
+            "tick": -172800,
+            "time": "-1 weeks, 5 days",
+            "label": "Screen Two",
+            "encounter": "Screening 2",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Ambulatory ECG placed",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_10",
+            "tick": -172500,
+            "time": "-1 weeks, 5 days, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_12",
+            "tick": -171840,
+            "time": "-1 weeks, 5 days, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_14",
+            "tick": -171000,
+            "time": "-1 weeks, 5 days, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_15",
+            "tick": 86400,
+            "time": "1 day",
+            "label": "Dose",
+            "encounter": "Baseline",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient randomised",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Ambulatory ECG removed",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Plasma Specimen (Xanomeline)",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ADAS-Cog",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "CIBIC+",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "DAD",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_17",
+            "tick": 86400,
+            "time": "1 day",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_77",
+            "tick": 86700,
+            "time": "1 day, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_79",
+            "tick": 87360,
+            "time": "1 day, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_81",
+            "tick": 88200,
+            "time": "1 day, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_19",
+            "tick": 172800,
+            "time": "2 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_21",
+            "tick": 259200,
+            "time": "3 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_23",
+            "tick": 345600,
+            "time": "4 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_25",
+            "tick": 432000,
+            "time": "5 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_27",
+            "tick": 518400,
+            "time": "6 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_29",
+            "tick": 604800,
+            "time": "1 week",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_31",
+            "tick": 691200,
+            "time": "1 week, 1 day",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_33",
+            "tick": 777600,
+            "time": "1 week, 2 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_35",
+            "tick": 864000,
+            "time": "1 week, 3 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_37",
+            "tick": 950400,
+            "time": "1 week, 4 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_39",
+            "tick": 1036800,
+            "time": "1 week, 5 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_41",
+            "tick": 1123200,
+            "time": "1 week, 6 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_43",
+            "tick": 1209600,
+            "time": "2 weeks",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_82",
+            "tick": 1209600,
+            "time": "2 weeks",
+            "label": "Week 2",
+            "encounter": "Week 2",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Apo E genotyping",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Uninalysis",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Plasma Specimen (Xanomeline)",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_84",
+            "tick": 1209900,
+            "time": "2 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_86",
+            "tick": 1210560,
+            "time": "2 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_88",
+            "tick": 1211400,
+            "time": "2 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_45",
+            "tick": 1296000,
+            "time": "2 weeks, 1 day",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_47",
+            "tick": 1382400,
+            "time": "2 weeks, 2 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_49",
+            "tick": 1468800,
+            "time": "2 weeks, 3 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_51",
+            "tick": 1555200,
+            "time": "2 weeks, 4 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_53",
+            "tick": 1641600,
+            "time": "2 weeks, 5 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_55",
+            "tick": 1728000,
+            "time": "2 weeks, 6 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_57",
+            "tick": 1814400,
+            "time": "3 weeks",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_59",
+            "tick": 1900800,
+            "time": "3 weeks, 1 day",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_61",
+            "tick": 1987200,
+            "time": "3 weeks, 2 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_63",
+            "tick": 2073600,
+            "time": "3 weeks, 3 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_65",
+            "tick": 2160000,
+            "time": "3 weeks, 4 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_67",
+            "tick": 2246400,
+            "time": "3 weeks, 5 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_69",
+            "tick": 2332800,
+            "time": "3 weeks, 6 days",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_71",
+            "tick": 2419200,
+            "time": "4 weeks",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_89",
+            "tick": 2419200,
+            "time": "4 weeks",
+            "label": "Week 4",
+            "encounter": "Week 4",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Plasma Specimen (Xanomeline)",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_90",
+            "tick": 2419200,
+            "time": "4 weeks",
+            "label": "Extra VS",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Extra VS procedures",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_94",
+            "tick": 2419500,
+            "time": "4 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_96",
+            "tick": 2420160,
+            "time": "4 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_98",
+            "tick": 2421000,
+            "time": "4 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_91",
+            "tick": 2422800,
+            "time": "4 weeks, 1 hour",
+            "label": "1 Hour Extra VS",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Extra VS procedures",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_92",
+            "tick": 2430000,
+            "time": "4 weeks, 3 hours",
+            "label": "2 Hour Extra VS",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Extra VS procedures",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_73",
+            "tick": 2505600,
+            "time": "4 weeks, 1 day",
+            "label": "Diary",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Patient Recorded Outcomes",
+                        "parent": null,
+                        "procedures": [
+                            "Patient-Reported Outcomes Measurement Information System",
+                            "EUROQOL EQ-5D-5L"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_99",
+            "tick": 3628800,
+            "time": "6 weeks",
+            "label": "Week 6",
+            "encounter": "Week 6",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Plasma Specimen (Xanomeline)",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_101",
+            "tick": 3629100,
+            "time": "6 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_103",
+            "tick": 3629760,
+            "time": "6 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_105",
+            "tick": 3630600,
+            "time": "6 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_106",
+            "tick": 4838400,
+            "time": "8 weeks",
+            "label": "Week 8",
+            "encounter": "Week 8",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ADAS-Cog",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "CIBIC+",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "DAD",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_108",
+            "tick": 4838700,
+            "time": "8 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_110",
+            "tick": 4839360,
+            "time": "8 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_112",
+            "tick": 4840200,
+            "time": "8 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_113",
+            "tick": 6048000,
+            "time": "10 weeks",
+            "label": "Week 8 NPI",
+            "encounter": "Week 8",
+            "activities": {
+                "items": [
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_114",
+            "tick": 7257600,
+            "time": "12 weeks",
+            "label": "Week 12",
+            "encounter": "Week 12",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Uninalysis",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Plasma Specimen (Xanomeline)",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_116",
+            "tick": 7257900,
+            "time": "12 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_118",
+            "tick": 7258560,
+            "time": "12 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_120",
+            "tick": 7259400,
+            "time": "12 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_121",
+            "tick": 8467200,
+            "time": "14 weeks",
+            "label": "Week 12 NPI",
+            "encounter": "Week 12",
+            "activities": {
+                "items": [
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_122",
+            "tick": 9676800,
+            "time": "16 weeks",
+            "label": "Week 16",
+            "encounter": "Week 16",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ADAS-Cog",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "CIBIC+",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "DAD",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_124",
+            "tick": 9677100,
+            "time": "16 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_126",
+            "tick": 9677760,
+            "time": "16 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_128",
+            "tick": 9678600,
+            "time": "16 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_129",
+            "tick": 10886400,
+            "time": "18 weeks",
+            "label": "Week 16 NPI",
+            "encounter": "Week 16",
+            "activities": {
+                "items": [
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_130",
+            "tick": 12096000,
+            "time": "20 weeks",
+            "label": "Week 20",
+            "encounter": "Week 20",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Plasma Specimen (Xanomeline)",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_132",
+            "tick": 12096300,
+            "time": "20 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_134",
+            "tick": 12096960,
+            "time": "20 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_136",
+            "tick": 12097800,
+            "time": "20 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_137",
+            "tick": 13305600,
+            "time": "22 weeks",
+            "label": "Week 20 NPI",
+            "encounter": "Week 20",
+            "activities": {
+                "items": [
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_138",
+            "tick": 14515200,
+            "time": "24 weeks",
+            "label": "Week 24",
+            "encounter": "Week 24",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Uninalysis",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ADAS-Cog",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "CIBIC+",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "DAD",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_140",
+            "tick": 14515500,
+            "time": "24 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_142",
+            "tick": 14516160,
+            "time": "24 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_144",
+            "tick": 14517000,
+            "time": "24 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_145",
+            "tick": 15724800,
+            "time": "26 weeks",
+            "label": "Week 26",
+            "encounter": "Week 26",
+            "activities": {
+                "items": [
+                    {
+                        "label": "Physical examination",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Vital Signs and Temperature",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "ECG",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Concomitant medications",
+                        "parent": "Safety",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Hematology",
+                        "parent": "Laboratory",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Chemistry",
+                        "parent": "Laboratory",
+                        "procedures": [
+                            "Alanine Aminotransferase Measurement",
+                            "Albumin Measurement",
+                            "Alkaline Phosphatase Measurement",
+                            "Aspartate Aminotransferase Measurement",
+                            "Creatinine Measurement",
+                            "Potassium Measurement",
+                            "Sodium Measurement"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "Study drug record , Medications dispensed, Medications returned",
+                        "parent": "Exposure",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "TTS Acceptability Survey",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    },
+                    {
+                        "label": "NPI-X",
+                        "parent": "Questionaires",
+                        "procedures": [],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_147",
+            "tick": 15725100,
+            "time": "26 weeks, 5 minutes",
+            "label": "Vital signs supine",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while supine",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_149",
+            "tick": 15725760,
+            "time": "26 weeks, 16 minutes",
+            "label": "Vital signs after 1 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        },
+        {
+            "id": "TP_151",
+            "tick": 15726600,
+            "time": "26 weeks, 30 minutes",
+            "label": "Vital signs after 3 min standing",
+            "encounter": null,
+            "activities": {
+                "items": [
+                    {
+                        "label": "Vital signs while standing",
+                        "parent": null,
+                        "procedures": [
+                            "Systolic blood pressure",
+                            "Diastolic blood pressure",
+                            "Heart Rate"
+                        ],
+                        "costs": {
+                            "burden_cost_no_overhead": 0,
+                            "burden_cost_overhead": 0,
+                            "burden_participant_time": 0,
+                            "burden_site_time": 0
+                        }
+                    }
+                ]
+            },
+            "edges": [],
+            "costs": {
+                "burden_cost_no_overhead": 0,
+                "burden_cost_overhead": 0,
+                "burden_participant_time": 0,
+                "burden_site_time": 0
+            }
+        }
+    ],
+    "cost": {
+        "burden_cost_no_overhead": 0,
+        "burden_cost_overhead": 0,
+        "burden_participant_time": 0,
+        "burden_site_time": 0
+    }
+}

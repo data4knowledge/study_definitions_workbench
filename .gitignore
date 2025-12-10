@@ -198,3 +198,6 @@ pytest_playwright_gen.sh
 tests/test_files/mount/database/test_database.db-journal
 playwright_generator.sh
 playwright_record.sh
+
+# VSCode
+.vscode
