@@ -199,6 +199,7 @@ async def export_expansion(
     full_path, filename, media_type = df.path("usdm")
     if full_path:
         costs_full_path = None
+        activities_full_path = None
         if df.exists("costs"):
             costs_full_path, _, _ = df.path("costs")
         if df.exists("activities"):
