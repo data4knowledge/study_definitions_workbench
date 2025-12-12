@@ -17,17 +17,17 @@ class ConnectionManager:
     async def success(self, message: str, user_id: str):
         websocket = self._get_connection(user_id)
         if websocket:
-            await websocket.send_text(self._to_html("Success:", "success", message))
+            await websocket.send_text(self._to_html(user_id, "Success:", "success", message))
 
     async def warning(self, message: str, user_id: str):
         websocket = self._get_connection(user_id)
         if websocket:
-            await websocket.send_text(self._to_html("Warning:", "warning", message))
+            await websocket.send_text(self._to_html(user_id,"Warning:", "warning", message))
 
     async def error(self, message: str, user_id: str):
         websocket = self.active_connections[user_id]
         if websocket:
-            await websocket.send_text(self._to_html("Error:", "danger", message))
+            await websocket.send_text(self._to_html(user_id,"Error:", "danger", message))
 
     async def broadcast(self, message: str):
         for user, connection in self.active_connections.items():
@@ -42,9 +42,9 @@ class ConnectionManager:
             )
             return None
 
-    def _to_html(self, prefix: str, status: str, message: str):
+    def _to_html(self, user_id: str, prefix: str, status: str, message: str):
         return f"""
-      <div id="alert_ws_div" hx-swap-oob="true">
+      <div id="alert_ws_div" hx-ext="ws" ws-connect="/alerts/{user_id}" hx-swap-oob="true">
         <div class="alert alert-dismissible alert-{status} mt-3">
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           <strong>{prefix}</strong>&nbsp;{message}
