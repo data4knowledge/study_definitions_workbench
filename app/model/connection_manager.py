@@ -17,17 +17,23 @@ class ConnectionManager:
     async def success(self, message: str, user_id: str):
         websocket = self._get_connection(user_id)
         if websocket:
-            await websocket.send_text(self._to_html(user_id, "Success:", "success", message))
+            await websocket.send_text(
+                self._to_html(user_id, "Success:", "success", message)
+            )
 
     async def warning(self, message: str, user_id: str):
         websocket = self._get_connection(user_id)
         if websocket:
-            await websocket.send_text(self._to_html(user_id,"Warning:", "warning", message))
+            await websocket.send_text(
+                self._to_html(user_id, "Warning:", "warning", message)
+            )
 
     async def error(self, message: str, user_id: str):
         websocket = self.active_connections[user_id]
         if websocket:
-            await websocket.send_text(self._to_html(user_id,"Error:", "danger", message))
+            await websocket.send_text(
+                self._to_html(user_id, "Error:", "danger", message)
+            )
 
     async def broadcast(self, message: str):
         for user, connection in self.active_connections.items():

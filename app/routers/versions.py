@@ -1,6 +1,6 @@
 import yaml
-from fastapi import APIRouter, Depends, Request, status
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from d4k_ms_ui.pagination import Pagination
 from app.database.user import User
@@ -56,7 +56,7 @@ def import_xl(
     data["url"] = f"/versions/{id}/load/{load_type}"
     data["load_type"] = load_type
     return templates.TemplateResponse(
-        request, f"study_versions/load.html", {"user": user, "data": data}
+        request, "study_versions/load.html", {"user": user, "data": data}
     )
 
 

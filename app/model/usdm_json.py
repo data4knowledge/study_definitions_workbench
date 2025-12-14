@@ -15,7 +15,10 @@ from usdm4 import USDM4
 from usdm4.api.study import Study
 from usdm4.api.study_design import StudyDesign
 from usdm4.api.study_version import StudyVersion
-from usdm4.api.study_definition_document import StudyDefinitionDocument, StudyDefinitionDocumentVersion
+from usdm4.api.study_definition_document import (
+    StudyDefinitionDocument,
+    StudyDefinitionDocumentVersion,
+)
 from usdm4_cpt.soa.soa import SoA
 from usdm4_cpt.document_view.document_view import DocumentView as CPTDocumentView
 from usdm4_m11.document_view.document_view import DocumentView as M11DocumentView
@@ -308,23 +311,22 @@ class USDMJson:
                 if doc.templateName.upper() == "CPT":
                     dv = CPTDocumentView(version, doc_version, errors)
                 elif doc.templateName.upper() == "M11":
-                    dv = M11DocumentView(version, doc_version, errors)        
+                    dv = M11DocumentView(version, doc_version, errors)
                 if dv:
-                    soas.append({"template": doc.templateName, "soa": dv.schedule_of_activities()})
+                    soas.append(
+                        {
+                            "template": doc.templateName,
+                            "soa": dv.schedule_of_activities(),
+                        }
+                    )
             print(f"SoAs: {len(soas)}")
             return {
                 "id": self.id,
                 "study_id": design.id,
                 "data": [x.model_dump() for x in design.scheduleTimelines],
-                "documents": soas
+                "documents": soas,
             }
-        return {
-            "id": self.id,
-            "study_id": design.id,
-            "data": [],
-            "document": []
-        }
-
+        return {"id": self.id, "study_id": design.id, "data": [], "document": []}
 
     def soa(self, study_id: str, id: str):
         wrapper = self.wrapper()

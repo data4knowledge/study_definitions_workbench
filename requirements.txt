@@ -3,13 +3,13 @@ itsdangerous==2.2.0
 sqlalchemy==2.0.31   
 alembic==1.13.2
 usdm==0.65.0
-usdm4==0.13.1
+usdm4==0.14.0
 usdm4_excel>=0.8.1
 usdm3_excel>=0.2.1
-usdm4_m11==0.7.2
-usdm4_cpt==0.4.0
+usdm4_m11==0.8.1
+usdm4_cpt==0.5.0
 usdm4_fhir==0.6.2
-usdm4_pj==0.2.0
+usdm4_pj==0.3.0
 d4k-ms-base>=0.4.0
 d4k-ms-service>=0.2.0
 d4k-ms-auth>=0.5.0
