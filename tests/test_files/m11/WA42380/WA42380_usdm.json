@@ -196,7 +196,7 @@
               "id": "AliasCode_2",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_58",
+                "id": "Code_63",
                 "extensionAttributes": [],
                 "code": "C15602",
                 "codeSystem": "http://www.cdisc.org",
@@ -377,6 +377,51 @@
                 "contactModes": [
                   {
                     "id": "Code_48",
+                    "extensionAttributes": [],
+                    "code": "C175574",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2025-03-28",
+                    "decode": "In Person",
+                    "instanceType": "Code"
+                  }
+                ],
+                "transitionStartRule": null,
+                "transitionEndRule": null,
+                "notes": [],
+                "instanceType": "Encounter"
+              },
+              {
+                "id": "Encounter_5",
+                "extensionAttributes": [],
+                "name": "ENCOUNTER-5",
+                "label": "2",
+                "description": "Encounter 2",
+                "type": {
+                  "id": "Code_49",
+                  "extensionAttributes": [],
+                  "code": "C25716",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2024-09-27",
+                  "decode": "Visit",
+                  "instanceType": "Code"
+                },
+                "previousId": null,
+                "nextId": null,
+                "scheduledAtId": null,
+                "environmentalSettings": [
+                  {
+                    "id": "Code_50",
+                    "extensionAttributes": [],
+                    "code": "C211570",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2025-03-28",
+                    "decode": "Clinic",
+                    "instanceType": "Code"
+                  }
+                ],
+                "contactModes": [
+                  {
+                    "id": "Code_51",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -1006,18 +1051,18 @@
                     "label": "-2 to 0",
                     "description": "Timing 1",
                     "type": {
-                      "id": "Code_49",
+                      "id": "Code_52",
                       "extensionAttributes": [],
-                      "code": "C201358",
+                      "code": "C201357",
                       "codeSystem": "http://www.cdisc.org",
                       "codeSystemVersion": "2024-09-27",
-                      "decode": "Fixed Reference Timing Type",
+                      "decode": "Before Timing Type",
                       "instanceType": "Code"
                     },
                     "value": "P2D",
                     "valueLabel": "-2 to 0",
                     "relativeToFrom": {
-                      "id": "Code_50",
+                      "id": "Code_53",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1026,7 +1071,7 @@
                       "instanceType": "Code"
                     },
                     "relativeFromScheduledInstanceId": "ScheduledActivityInstance_1",
-                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_1",
+                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_2",
                     "windowLower": "",
                     "windowUpper": "",
                     "windowLabel": "",
@@ -1039,18 +1084,18 @@
                     "label": "1",
                     "description": "Timing 2",
                     "type": {
-                      "id": "Code_51",
+                      "id": "Code_54",
                       "extensionAttributes": [],
-                      "code": "C201356",
+                      "code": "C201358",
                       "codeSystem": "http://www.cdisc.org",
                       "codeSystemVersion": "2024-09-27",
-                      "decode": "After Timing Type",
+                      "decode": "Fixed Reference Timing Type",
                       "instanceType": "Code"
                     },
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_52",
+                      "id": "Code_55",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1059,7 +1104,7 @@
                       "instanceType": "Code"
                     },
                     "relativeFromScheduledInstanceId": "ScheduledActivityInstance_2",
-                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_1",
+                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_2",
                     "windowLower": "",
                     "windowUpper": "",
                     "windowLabel": "",
@@ -1072,7 +1117,7 @@
                     "label": "1",
                     "description": "Timing 3",
                     "type": {
-                      "id": "Code_53",
+                      "id": "Code_56",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1083,7 +1128,7 @@
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_54",
+                      "id": "Code_57",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1092,7 +1137,7 @@
                       "instanceType": "Code"
                     },
                     "relativeFromScheduledInstanceId": "ScheduledActivityInstance_3",
-                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_1",
+                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_2",
                     "windowLower": "",
                     "windowUpper": "",
                     "windowLabel": "",
@@ -1105,7 +1150,7 @@
                     "label": "2",
                     "description": "Timing 4",
                     "type": {
-                      "id": "Code_55",
+                      "id": "Code_58",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1116,7 +1161,7 @@
                     "value": "P2D",
                     "valueLabel": "2",
                     "relativeToFrom": {
-                      "id": "Code_56",
+                      "id": "Code_59",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1125,7 +1170,40 @@
                       "instanceType": "Code"
                     },
                     "relativeFromScheduledInstanceId": "ScheduledActivityInstance_4",
-                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_1",
+                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_2",
+                    "windowLower": "",
+                    "windowUpper": "",
+                    "windowLabel": "",
+                    "instanceType": "Timing"
+                  },
+                  {
+                    "id": "Timing_5",
+                    "extensionAttributes": [],
+                    "name": "TIMING-4",
+                    "label": "2",
+                    "description": "Timing 5",
+                    "type": {
+                      "id": "Code_60",
+                      "extensionAttributes": [],
+                      "code": "C201356",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "After Timing Type",
+                      "instanceType": "Code"
+                    },
+                    "value": "P2D",
+                    "valueLabel": "2",
+                    "relativeToFrom": {
+                      "id": "Code_61",
+                      "extensionAttributes": [],
+                      "code": "C201355",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2024-09-27",
+                      "decode": "Start to Start",
+                      "instanceType": "Code"
+                    },
+                    "relativeFromScheduledInstanceId": "ScheduledActivityInstance_5",
+                    "relativeToScheduledInstanceId": "ScheduledActivityInstance_2",
                     "windowLower": "",
                     "windowUpper": "",
                     "windowLabel": "",
@@ -1139,7 +1217,7 @@
                     "name": "SAI-1",
                     "label": "-2 to 0",
                     "description": "Scheduled activity instance 1",
-                    "defaultConditionId": null,
+                    "defaultConditionId": "ScheduledActivityInstance_2",
                     "epochId": "StudyEpoch_1",
                     "instanceType": "ScheduledActivityInstance",
                     "timelineId": null,
@@ -1167,7 +1245,7 @@
                     "name": "SAI-2",
                     "label": "1",
                     "description": "Scheduled activity instance 2",
-                    "defaultConditionId": null,
+                    "defaultConditionId": "ScheduledActivityInstance_3",
                     "epochId": "StudyEpoch_2",
                     "instanceType": "ScheduledActivityInstance",
                     "timelineId": null,
@@ -1202,7 +1280,7 @@
                     "name": "SAI-3",
                     "label": "1",
                     "description": "Scheduled activity instance 3",
-                    "defaultConditionId": null,
+                    "defaultConditionId": "ScheduledActivityInstance_4",
                     "epochId": "StudyEpoch_3",
                     "instanceType": "ScheduledActivityInstance",
                     "timelineId": null,
@@ -1222,7 +1300,7 @@
                     "name": "SAI-4",
                     "label": "2",
                     "description": "Scheduled activity instance 4",
-                    "defaultConditionId": null,
+                    "defaultConditionId": "ScheduledActivityInstance_5",
                     "epochId": "StudyEpoch_3",
                     "instanceType": "ScheduledActivityInstance",
                     "timelineId": null,
@@ -1243,6 +1321,26 @@
                       "Activity_27"
                     ],
                     "encounterId": "Encounter_4"
+                  },
+                  {
+                    "id": "ScheduledActivityInstance_5",
+                    "extensionAttributes": [],
+                    "name": "SAI-5",
+                    "label": "2",
+                    "description": "Scheduled activity instance 5",
+                    "defaultConditionId": null,
+                    "epochId": "StudyEpoch_3",
+                    "instanceType": "ScheduledActivityInstance",
+                    "timelineId": null,
+                    "timelineExitId": "ScheduleTimelineExit_1",
+                    "activityIds": [
+                      "Activity_12",
+                      "Activity_13",
+                      "Activity_14",
+                      "Activity_22",
+                      "Activity_23"
+                    ],
+                    "encounterId": "Encounter_5"
                   }
                 ],
                 "plannedDuration": null,
@@ -1632,7 +1730,7 @@
             "instanceType": "InterventionalStudyDesign",
             "subTypes": [],
             "model": {
-              "id": "Code_57",
+              "id": "Code_62",
               "extensionAttributes": [],
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
@@ -3102,7 +3200,7 @@
           "decode": "Protocol",
           "instanceType": "Code"
         },
-        "templateName": "Legacy",
+        "templateName": "M11",
         "versions": [
           {
             "id": "StudyDefinitionDocumentVersion_1",
@@ -5432,5 +5530,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 M11 Package",
-  "systemVersion": "0.7.2"
+  "systemVersion": "0.8.1"
 }

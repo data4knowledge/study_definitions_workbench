@@ -5,20 +5,20 @@ def mock_usdm_json_init(mocker, path="app.main"):
 
 
 def mock_usdm_json_timelines(mocker, path="app.main"):
-    mock = mocker.patch(f"{path}.USDMJson.timelines")
+    mock = mocker.patch(f"{path}.USDMJson.schedule_of_activities")
     data = {
         "id": "1",
         "study_id": "2",
-        "m11": False,
-        "timelines": [
+        "data": [
             {
                 "id": "3",
                 "name": "Special Timeline",
                 "label": "Special Timeline",
             }
         ],
+        "documents": [],
     }
-    mock.side_effect = [data]
+    mock.return_value = data
     return mock
 
 

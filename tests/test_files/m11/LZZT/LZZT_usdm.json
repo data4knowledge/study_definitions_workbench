@@ -4839,7 +4839,7 @@
           "decode": "Protocol",
           "instanceType": "Code"
         },
-        "templateName": "Legacy",
+        "templateName": "M11",
         "versions": [
           {
             "id": "StudyDefinitionDocumentVersion_1",
@@ -6880,5 +6880,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 M11 Package",
-  "systemVersion": "0.7.2"
+  "systemVersion": "0.8.1"
 }

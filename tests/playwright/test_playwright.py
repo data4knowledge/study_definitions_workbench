@@ -104,7 +104,7 @@ def test_load_m11(playwright: Playwright) -> None:
 
     login(page)
 
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 Document (.docx)").click()
     page.set_input_files(
         "#files", os.path.join(path, "tests/test_files/m11/RadVax/RadVax.docx")
@@ -135,7 +135,7 @@ def test_load_excel(playwright: Playwright) -> None:
 
     login(page)
 
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="USDM Excel (.xlsx)").click()
     page.set_input_files(
         "#files", os.path.join(path, "tests/test_files/excel/pilot.xlsx")
@@ -165,7 +165,7 @@ def test_load_fhir_v1(playwright: Playwright) -> None:
 
     login(page)
 
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     page.set_input_files(
         "#files",
@@ -292,7 +292,7 @@ def test_export_import(playwright: Playwright) -> None:
     page.get_by_role("link", name=" Delete Database").click()
     page.get_by_role("link", name=" Home").click()
 
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 Document (.docx)").click()
     page.set_input_files(
         "#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx")
@@ -302,12 +302,12 @@ def test_export_import(playwright: Playwright) -> None:
     page.get_by_role("link").first.click()
 
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     _ = download_info.value
     page.get_by_role("navigation").get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     page.set_input_files(
         "#files",
@@ -370,7 +370,7 @@ def test_selection_list(playwright: Playwright) -> None:
     page.get_by_role("link", name=" Delete Database").click()
     page.get_by_role("link", name=" Home").click()
 
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 Document (.docx)").click()
     page.set_input_files(
         "#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx")
@@ -379,7 +379,7 @@ def test_selection_list(playwright: Playwright) -> None:
     expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
 
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 Document (.docx)").click()
     page.set_input_files(
         "#files", os.path.join(path, "tests/test_files/m11/ASP8062/ASP8062.docx")
@@ -451,7 +451,7 @@ def test_soa_export(playwright: Playwright) -> None:
         "Schedule of Activities: Main Timeline Back"
     )
     expect(page.locator("#navBarMain")).to_contain_text("Export")
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     expect(page.locator("#navBarMain")).to_contain_text("FHIR SoA message (.json)")
     with page.expect_download() as download_info:
         page.get_by_role("link", name="FHIR SoA message (.json)").click()
@@ -477,17 +477,17 @@ def test_fhir_export_madrid_excel(playwright: Playwright) -> None:
 
     page.get_by_role("link").first.click()
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Madrid (.").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Pittsburgh (PRISM 3").click()
     download = download_info.value
@@ -512,17 +512,17 @@ def test_fhir_export_madrid_word(playwright: Playwright) -> None:
 
     page.get_by_role("link").first.click()
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Madrid (.").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name="M11 FHIR, Pittsburgh (PRISM 3").click()
     download = download_info.value
@@ -548,7 +548,7 @@ def test_excel_v4_export(playwright: Playwright) -> None:
     page.get_by_role("link").first.click()
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     expect(page.locator("#navBarMain")).to_contain_text("Export")
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     expect(page.locator("#navBarMain")).to_contain_text("USDM v4 format Excel (.xlsx)")
     with page.expect_download() as download_info:
         page.get_by_role("link", name="USDM v4 format Excel (.xlsx)").click()
@@ -575,12 +575,67 @@ def test_excel_v3_export(playwright: Playwright) -> None:
     page.get_by_role("link").first.click()
     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
     expect(page.locator("#navBarMain")).to_contain_text("Export")
-    page.get_by_role("button", name=" Export").click()
+    page.get_by_role("button", name=" Export").click()
     expect(page.locator("#navBarMain")).to_contain_text("USDM v3 format Excel (.xlsx)")
     with page.expect_download() as download_info:
         page.get_by_role("link", name="USDM v3 format Excel (.xlsx)").click()
     download = download_info.value
     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
+def test_load_export_pj(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+    
+    login(page)
+    delete_db(page)
+
+    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("link", name="USDM Excel (.xlsx)").click()
+    page.set_input_files(
+        "#files", os.path.join(path, "tests/test_files/excel/pilot.xlsx")
+    )
+    page.locator("text = Upload File(s)").last.click()
+    expect(page.get_by_text("Success: Import of 'pilot.xlsx'")).to_be_visible(
+        timeout=30_000
+    )
+    page.get_by_role("link").first.click()
+    expect(
+        page.get_by_text(
+            "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease"
+        )
+    ).to_be_visible()
+
+    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+    page.locator("li").filter(has_text="Main Timeline View").get_by_role("link").click()
+    page.get_by_role("button", name=" Views").click()
+    page.get_by_role("link", name="Patient Journey: Simple").click()
+    page.get_by_role("tab", name=" Screen Two").click()
+    page.get_by_role("tab", name=" Dose").click()
+    page.get_by_role("tab", name=" Week 2", exact=True).click()
+    page.get_by_role("tab", name=" Week 4").click()
+    page.get_by_role("link", name=" Back").click()
+    page.get_by_role("button", name=" Views").click()
+    page.get_by_role("link", name="Patient Journey: Expanded").click()
+    expect(page.locator("#timeline-svg").get_by_text("Screen One")).to_be_visible()
+    page.get_by_role("link", name=" Back").click()
+
+    # Exports
+    page.get_by_role("button", name=" Export").click()
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="Patient Journey: Simple (.").click()
+    download = download_info.value
+    page.get_by_role("button", name=" Export").click()
+    with page.expect_download() as download1_info:
+        page.get_by_role("link", name="Patient Journey: Expanded (.").click()
+    download1 = download1_info.value
 
     context.close()
     browser.close()
@@ -597,10 +652,10 @@ def test_import_usdm_menus(playwright: Playwright) -> None:
     login(page)
     delete_db(page)
 
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     expect(page.get_by_role("link", name="USDM v3 (.json)")).to_be_visible()
     expect(page.get_by_role("link", name="USDM v4 (.json)")).to_be_visible()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
 
     context.close()
     browser.close()
@@ -622,7 +677,7 @@ def test_import_usdm(playwright: Playwright) -> None:
     )
 
     page.get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="Import Status").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name=" Errors File").click()
@@ -657,7 +712,7 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     )
 
     page.get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="Import Status").click()
     with page.expect_download() as download_info:
         page.get_by_role("link", name=" Errors File").click()
@@ -695,7 +750,7 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     load_excel(page, path, "tests/test_files/excel/pilot_tweak.xlsx")
 
     page.get_by_role("navigation").get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="Import Status").click()
     expect(page.get_by_role("cell", name="LZZT.docx")).to_be_visible()
     expect(page.get_by_role("cell", name="no_errors.json")).to_be_visible()
@@ -1013,7 +1068,7 @@ def login(page):
 
 def load_excel(page, root_path, filepath):
     page.get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="USDM Excel (.xlsx)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
@@ -1022,7 +1077,7 @@ def load_excel(page, root_path, filepath):
 
 def load_m11(page, root_path, filepath):
     page.get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 Document (.docx)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
@@ -1031,7 +1086,7 @@ def load_m11(page, root_path, filepath):
 
 def load_fhir(page, root_path, filepath):
     page.get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
@@ -1040,7 +1095,7 @@ def load_fhir(page, root_path, filepath):
 
 def load_usdm(page, root_path, filepath, version, result):
     page.get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name=f"USDM v{version} (.json)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
