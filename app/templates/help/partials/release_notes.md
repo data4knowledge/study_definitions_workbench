@@ -1,3 +1,17 @@
+<h5>Release 0.36.0-alpha.11, 2026-01-05</h5>
+
+Alpha release: Fix release notes, missed in last release.
+
+<h5>Release 0.36.0-alpha.10, 2026-01-05</h5>
+
+Alpha release:
+
+- Add in PJ Page / View (issue 47)
+- SoA Panel, doc & data tabs (issue 48)
+- Expansion Page / View (issue 49)
+- Additional files (issue 50)
+- Excel4 updates (issue 51)
+
 <h5>Release 0.36.0-alpha.9, 2025-11-16</h5>
 
 Alpha release:
