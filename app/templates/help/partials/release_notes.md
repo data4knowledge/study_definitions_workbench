@@ -1,3 +1,7 @@
+<h5>Release 0.36.0-alpha.12, 2026-01-14</h5>
+
+Alpha release: Add in HL7 virtual connectathon updates (issue 52).
+
 <h5>Release 0.36.0-alpha.11, 2026-01-05</h5>
 
 Alpha release: Fix release notes, missed in last release.
