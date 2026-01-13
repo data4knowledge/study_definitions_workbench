@@ -36,7 +36,13 @@
     <div class="col-12">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#title_page_tab">Title Page</button>
+          <button class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#title_page_tab">M11 Title Page</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#inclusion_tab">Inclusion Criteria</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#exclusion_tab">Exclusion Critieria</button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#amendment_tab">Amendments</button>
@@ -44,12 +50,12 @@
       </ul>
       <div class="tab-content mt-2">
         <div id="title_page_tab" class="tab-pane fade show active" role="tabpanel">
-          {% set width = data["Full Title"]|length %}
+          {% set width = data["m11_title_page"]["Full Title"]|length %}
           <div class="outer-div row mt-3">
             <div class="col-12 extract-div mt-3 mb-3">
               <div class="overflow-auto section-div">
                 <table class="ich-m11-title-page-table">
-                  {% for k, v in data.items() %}
+                  {% for k, v in data["m11_title_page"].items() %}
                     <tr>
                       <td>{{k}}</td>
                       {% for w in range(width) %}
@@ -63,6 +69,16 @@
               </div>
              </div>
           </div>  
+        </div>
+        <div id="inclusion_tab" class="tab-pane fade" role="tabpanel">
+          {% with data=data["inclusion"] %}
+            {% include "studies/partials/criteria.html" %}
+          {% endwith %}
+        </div>
+        <div id="exclusion_tab" class="tab-pane fade" role="tabpanel">
+          {% with data=data["exclusion"] %}
+            {% include "studies/partials/criteria.html" %}
+          {% endwith %}
         </div>
         <div id="amendment_tab" class="tab-pane fade" role="tabpanel">
           {% with show_link=False %}

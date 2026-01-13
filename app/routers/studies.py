@@ -3,6 +3,7 @@ from fastapi import APIRouter, Form, Depends, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from simple_error_log import Errors
+from usdm4.api.wrapper import Wrapper, Study, StudyVersion, StudyDesign
 from usdm4_m11.data_view.data_view import DataView
 from app.database.study import Study
 from app.database.version import Version
@@ -71,18 +72,25 @@ def study_list(
 ):
     user, present_in_db = user_details(request, session)
     parts = list_studies.split(",") if list_studies else []
-    data = []
+    data = {"m11_title_page": [], "inclusion": [], "exclusion": [], "amendments": []}
     for id in parts:
         version = Version.find_latest_version(id, session)
         usdm = USDMJson(version.id, session)
+        wrapper: Wrapper = usdm.wrapper()
+        study_version: StudyVersion = wrapper.first_version()
+        study_design: StudyDesign = study_version.studyDesigns[0]
         errors = Errors()
-        m11 = DataView(usdm.wrapper(), errors)
-        data.append(m11.title_page())
-    data = restructure_study_list(data)
+        m11 = DataView(wrapper, errors)
+        data["m11_title_page"].append(m11.title_page())
+        ie_map = study_version.eligibility_critieria_item_map()
+        data["inclusion"].append(study_design.inclusion_criteria(ie_map))
+        data["exclusion"].append(study_design.exclusion_criteria(ie_map))
+    data["m11_title_page"] = restructure_study_list(data["m11_title_page"])
     data["fhir"] = {
         "enabled": transmit_role_enabled(request),
         "versions": fhir_versions(),
     }
+    print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "studies/list.html", {"user": user, "data": data}
     )

@@ -1,0 +1,24 @@
+{% set width = data|length %}
+<div class="outer-div row mt-3">
+    <div class="col-12 extract-div mt-3 mb-3">
+        <div class="overflow-auto section-div">
+        <table class="table table-responsive">
+            <tr>
+            {% for w in range(width) %}
+                <td>
+                <table class="table table-responsive table-stripped">
+                    {% for i in data[w] %}
+                    <tr>
+                        <td>
+                        {{i["identifier"]}}: {{i["criterionItem"]["text"]|safe}}                          
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                </td>
+            {% endfor %}
+            </tr>
+        </table>
+        </div>
+    </div>
+</div>  
