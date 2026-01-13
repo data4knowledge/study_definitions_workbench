@@ -90,7 +90,7 @@ def study_list(
         "enabled": transmit_role_enabled(request),
         "versions": fhir_versions(),
     }
-    print(f"DATA: {data}")
+    # print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "studies/list.html", {"user": user, "data": data}
     )
