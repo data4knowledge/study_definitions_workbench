@@ -101,7 +101,7 @@ class ImportExcel(ImportProcessorBase):
 class ImportM11(ImportProcessorBase):
     async def process(self) -> bool:
         importer = USDM4M11()
-        wrapper: Wrapper = importer.from_docx(self.full_path)
+        wrapper: Wrapper = importer.from_docx(self.full_path, use_ai=True)
         application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
