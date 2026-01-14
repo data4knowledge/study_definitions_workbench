@@ -302,7 +302,7 @@ class DataFiles:
             application_logger.exception("Exception saving results file", e)
 
     def _save_yaml_file(self, contents, filename):
-        print("SAVE YAML")
+        # print("SAVE YAML")
         try:
             full_path = self._file_path(filename)
             with open(full_path, "w") as f:

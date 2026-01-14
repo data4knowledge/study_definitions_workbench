@@ -37,7 +37,7 @@ class ImportProcessorBase:
             wrapper: Wrapper = db.from_json(data)
             object_path = ObjectPath(wrapper)
             version: StudyVersion = wrapper.study.first_version()
-            print(f"STUDY VERSION: {type(version)}")
+            # print(f"STUDY VERSION: {type(version)}")
             return {
                 "name": f"{self._get_parameter(object_path, 'study/name')}-{self.type}",
                 "phase": version.phases(),
