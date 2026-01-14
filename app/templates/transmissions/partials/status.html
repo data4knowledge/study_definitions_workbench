@@ -13,6 +13,7 @@
           <th scope="col">Version</th>
           <th scope="col">Status</th>
           <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -24,7 +25,12 @@
             <td>{{item['status']}}</td>
             <td>
               {% if item['uuid'] %}
-                <a href="https://vhewer.com/study?url=%7bupd%7d/Bundle/{{item['uuid']}}" target="_blank"><i class="bi bi-fire text-danger"></i></a>
+                <a href="https://vhewer.com/study?url=%7bupd%7d/Bundle/{{item['uuid']}}" target="_blank"><i class="bi bi-fire text-danger" style="font-size: 1.5rem;"></i></a>
+              {% endif %}
+            </td>
+            <td>
+              {% if item['uuid'] %}
+                <a href="https://vhewer.com/?url=%7bupd%7d/Bundle/{{item['uuid']}}" target="_blank"><i class="bi bi-filetype-json text-danger" style="font-size: 1.5rem;"></i></a>
               {% endif %}
             </td>
           </tr>
