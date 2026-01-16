@@ -307,7 +307,7 @@ class USDMJson:
                 dv = None
                 doc: StudyDefinitionDocument = doc_info["document"]
                 doc_version: StudyDefinitionDocumentVersion = doc_info["version"]
-                print(f"TEMPLATE: {doc.templateName}")
+                # print(f"TEMPLATE: {doc.templateName}")
                 if doc.templateName.upper() == "CPT":
                     dv = CPTDocumentView(version, doc_version, errors)
                 elif doc.templateName.upper() == "M11":
