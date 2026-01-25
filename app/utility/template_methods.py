@@ -1,3 +1,4 @@
+import json
 from app.configuration.configuration import application_configuration
 from d4k_ms_base.logger import application_logger
 
@@ -27,30 +28,13 @@ def single_multiple() -> str:
     return "SINGLE" if application_configuration.single_user else "MULTIPLE"
 
 
-def restructure_study_list(data: list) -> dict:
+def restructure_study_list(data: list[dict]) -> dict:
     result = {}
-    for k in data[0].keys():
-        result[k] = tuple(d[k] for d in data)
+    first_with_keys = next((i for i, x in enumerate(data) if x is not None), None)
+    if first_with_keys is not None:
+        for k in data[first_with_keys].keys():
+            result[k] = tuple(d[k] for d in data)
     return result
 
-
-# def title_page_study_list_headings() -> list:
-#     return [
-#         ("Sponsor Confidentiality Statement", ["sponosr_confidentiality"]),
-#         ("Full Title:", ["full_title"]),
-#         ("Trial Acronym:", ["acronym"]),
-#         ("Sponsor Protocol Identifier:", ["sponsor_protocol_identifier"]),
-#         ("Original Protocol:", ["original_protocol"]),
-#         ("Version Number:", ["version_number"]),
-#         ("Version Date:", ["version_date"]),
-#         ("Amendment Identifier:", ["amendment_identifier"]),
-#         ("Amendment Scope:", ["amendment_scope"]),
-#         ("Compound Code(s):", ["compound_codes"]),
-#         ("Compound Name(s):", ["compound_names"]),
-#         ("Trial Phase:", ["trial_phase"]),
-#         ("Short Title:", ["short_title"]),
-#         ("Sponsor Name and Address:", ["sponsor_name", "sponsor_address"]),
-#         ("Manufacturer Name and Address:", ["manufacturer_name_and_address"]),
-#         ("Regulatory Agency Identifier Number(s):", ["regulatory_agency_identifiers"]),
-#         ("Sponsor Approval:", ["sponsor_approval_date"]),
-#     ]
+def convert_to_json(data) -> str:
+    return json.dumps(data, indent=2)

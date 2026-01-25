@@ -72,7 +72,7 @@ def study_list(
 ):
     user, present_in_db = user_details(request, session)
     parts = list_studies.split(",") if list_studies else []
-    data = {"m11_title_page": [], "inclusion": [], "exclusion": [], "amendments": []}
+    data = {"m11_title_page": [], "inclusion": [], "exclusion": [], "m11_amendment_details": []}
     for id in parts:
         version = Version.find_latest_version(id, session)
         usdm = USDMJson(version.id, session)
@@ -85,12 +85,14 @@ def study_list(
         ie_map = study_version.eligibility_critieria_item_map()
         data["inclusion"].append(study_design.inclusion_criteria(ie_map))
         data["exclusion"].append(study_design.exclusion_criteria(ie_map))
+        data["m11_amendment_details"].append(m11.amendment_details())
     data["m11_title_page"] = restructure_study_list(data["m11_title_page"])
+    data["m11_amendment_details"]= restructure_study_list(data["m11_amendment_details"])
     data["fhir"] = {
         "enabled": transmit_role_enabled(request),
         "versions": fhir_versions(),
     }
-    # print(f"DATA: {data}")
+    print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "studies/list.html", {"user": user, "data": data}
     )

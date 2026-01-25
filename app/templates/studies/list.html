@@ -45,7 +45,7 @@
           <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#exclusion_tab">Exclusion Critieria</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#amendment_tab">Amendments</button>
+          <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#amendment_tab">M11 Amendment Details</button>
         </li>
       </ul>
       <div class="tab-content mt-2">
@@ -81,9 +81,29 @@
           {% endwith %}
         </div>
         <div id="amendment_tab" class="tab-pane fade" role="tabpanel">
-          {% with show_link=False %}
-            {% include "shared/partials/not_implemented.html" %}
-          {% endwith %}
+          {% set width = data["m11_amendment_details"]["Current Amendment Enrollment"]|length %}
+          <div class="outer-div row mt-3">
+            <div class="col-12 extract-div mt-3 mb-3">
+              <div class="overflow-auto section-div">
+                <table class="table table-responsive table-striped">
+                  {% for k, v in data["m11_amendment_details"].items() %}
+                    <tr>
+                      <td>{{k}}</td>
+                      {% for w in range(width) %}
+                        <td>
+                          {% if k in ["Description of Change", "Brief Rationale for Change", "Section - and Name"] %}
+                            <pre>{{convert_to_json(v[w])}}</pre>
+                          {% else %}
+                            {{v[w]}}
+                          {% endif %}
+                        </td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </table>
+              </div>
+             </div>
+          </div>  
         </div>
       </div>
     </div>
