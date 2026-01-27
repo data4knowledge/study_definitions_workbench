@@ -23,6 +23,19 @@
       max-width: 12em; 
     }
     .ich-m11-title-page-table td { padding: 10px; }
+    .ich-m11-amendment-table { table-layout: fixed; width: 100%; }
+    .ich-m11-amendment-table td:first-child {
+      width: 12em;
+      min-width: 12em;
+      max-width: 12em;
+      font-weight: bold;
+    }
+    .ich-m11-amendment-table td {
+      max-width: 33.33%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      vertical-align: top;
+    }
   </style>
 {% endblock %}   
 {% block menu_content %}
@@ -85,7 +98,7 @@
           <div class="outer-div row mt-3">
             <div class="col-12 extract-div mt-3 mb-3">
               <div class="overflow-auto section-div">
-                <table class="table table-responsive table-striped">
+                <table class="table table-responsive table-striped ich-m11-amendment-table">
                   {% for k, v in data["m11_amendment_details"].items() %}
                     <tr>
                       <td>{{k}}</td>
