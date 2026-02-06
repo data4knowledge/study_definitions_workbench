@@ -105,7 +105,7 @@ class ImportM11(ImportProcessorBase):
         application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
-            self.extra = importer.extra
+            self.extra = self._blank_extra()
             self.study_parameters = self._study_parameters()
         self.errors = importer.errors.to_dict(sel.Errors.INFO)
         return True
@@ -164,7 +164,7 @@ class ImportFhirPRISM3(ImportProcessorBase):
         application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()
-            self.extra = importer.extra
+            self.extra = self._blank_extra()
             self.study_parameters = self._study_parameters()
             self.errors = importer.errors.to_dict(sel.Errors.INFO)
             self.success = True

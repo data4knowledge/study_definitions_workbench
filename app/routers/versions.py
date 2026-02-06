@@ -17,6 +17,9 @@ from app.configuration.configuration import application_configuration
 from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
 from app.imports.form_handler import FormHandler
+from usdm4_m11 import USDM4M11
+from usdm4_cpt import USDM4CPT
+from usdm4.api import Wrapper
 
 
 router = APIRouter(
@@ -32,6 +35,7 @@ async def get_version_summary(
     usdm = USDMJson(id, session)
     data = {
         "version": usdm.study_version(),
+        "templates": usdm.templates(),
         "endpoints": User.endpoints_page(1, 100, user.id, session),
         "fhir": {
             "enabled": transmit_role_enabled(request),
@@ -165,3 +169,66 @@ async def export_excel(
                 },
             },
         )
+
+
+@router.get("/{id}/protocol")
+async def protocol(request: Request, id: int, template: str, session: Session = Depends(get_db)):
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(id, session)
+    full_path, _, _ = usdm.json()
+    if full_path:
+        _, html = _generate_protocol(template, full_path, usdm)
+        data = {
+            "version": usdm.study_version(),
+            "document": html
+        }
+        return templates.TemplateResponse(
+           request, "study_versions/m11_protocol.html", {"user": user, "data": data}
+        )
+    else:
+        return templates.TemplateResponse(
+            request,
+            "errors/error.html",
+            {
+                "user": user,
+                "data": {"error": "Error locating the USDM JSON file"},
+            },
+        )
+
+
+@router.get("/{id}/protocol/export")
+async def export_protocol(
+    request: Request, id: int, template: str, session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    print(f"PROTOCOL EXPORT")
+    usdm = USDMJson(id, session)
+    full_path, _, _ = usdm.json()
+    file_type, html = _generate_protocol(template, full_path, usdm)
+    protocol_path, filename = usdm._files.save(file_type, html)
+    if protocol_path:
+        return FileResponse(path=protocol_path, filename=filename, media_type="text/html")
+    else:
+        return templates.TemplateResponse(
+            request,
+            "errors/error.html",
+            {
+                "user": user,
+                "data": {"error": f"Error downloading the requested protocol ({template}) file"},
+            },
+        )
+
+def _generate_protocol(template: str, full_path: str, usdm: USDMJson) -> tuple[str, str]: 
+    html = ""
+    file_type = ""
+    if template.upper() == "M11":
+        html = USDM4M11().to_html(full_path)
+        file_type = "m11-protocol"
+    elif template.upper() == "CPT":
+        html = USDM4CPT().to_html(full_path)
+        file_type = "cpt-protocol"
+    else:
+        wrapper: Wrapper = usdm.wrapper()
+        html = wrapper.to_html(template)
+        file_type = "other-protocol"
+    return file_type, html

@@ -12,8 +12,10 @@
     {% if view != 'statistics' %}  
       <a class="dropdown-item" href="/versions/{{data['version']['id']}}/statistics">Statistics View</a>
     {% endif %}  
-    {% if view != 'protocol' %}  
-      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/protocol">Protocol</a>
+    {% if view != 'protocol' %}
+      {% for template in data["templates"] %}
+        <a class="dropdown-item" href="/versions/{{data['version']['id']}}/protocol?template={{template}}">{{template}} Protocol</a>
+      {% endfor %}
     {% endif %}  
     {% if view != 'history' %}  
       <a class="dropdown-item" href="/versions/{{data['version']['id']}}/history">Version History</a>

@@ -28,6 +28,7 @@ from app.utility.soup import get_soup
 
 class USDMJson:
     def __init__(self, id: int, session: Session):
+        usdm4 = USDM4()
         self.id = id
         # print(f"ID: {id}")
         version = Version.find(id, session)
@@ -41,6 +42,8 @@ class USDMJson:
         )
         self._files = DataFiles(file_import.uuid)
         self._data = self._get_usdm()
+        errors = Errors()
+        self._wrapper: Wrapper = usdm4.loadd(self._data, errors)
         # print(f"USDM JSON DATA: {self._data}")
         self._extra = self._get_extra()
 
@@ -51,43 +54,34 @@ class USDMJson:
         return fullpath, filename, "text/plain"
 
     def fhir_data(self, version=FHIRM11.PRISM2):
-        usdm = USDM4()
-        wrapper = usdm.from_json(self._data)
-        # print(f"WRAPPER: {wrapper}")
-        study = wrapper.study
+        study: Study = self._wrapper.study
         fhir = FHIRM11()
         data = fhir.to_message(study, self._extra, version)
-        print(f"ERRORS: {fhir.errors.dump(0)}")
-        # print(f"DATA: {data}")
         return data
 
     def fhir_soa(self, timeline_id: str):
         data = self.fhir_soa_data(timeline_id)
         fullpath, filename = self._files.save("fhir_soa", data)
-        return fullpath, filename, "text/plain"
+        return fullpath, filename, "application/json"
 
     def fhir_soa_data(self, timeline_id: str):
-        usdm = USDM4()
-        wrapper = usdm.from_json(self._data)
-        study = wrapper.study
+        study: Study = self._wrapper.study
         fhir = FHIRSoA(study, timeline_id, self.uuid, self._extra)
         return fhir.to_message()
 
     def json(self):
         fullpath, filename, exists = self._files.path("usdm")
-        return fullpath, filename, "text/plain"
+        return fullpath, filename, "application/json"
 
-    def pdf(self):
-        usdm = USDMDb()
-        usdm.from_json(self._data)
-        data = usdm.to_pdf()
-        fullpath, filename, exists = self._files.save("protocol", data)
-        return fullpath, filename, "text/plain"
+    # def pdf(self):
+    #     usdm = USDMDb()
+    #     usdm.from_json(self._data)
+    #     data = usdm.to_pdf()
+    #     fullpath, filename, exists = self._files.save("protocol", data)
+    #     return fullpath, filename, "text/plain"
 
     def wrapper(self) -> Wrapper:
-        usdm = USDM4()
-        wrapper = usdm.from_json(self._data)
-        return wrapper
+        return self._wrapper
 
     def extra(self) -> dict:
         return self._extra
@@ -122,6 +116,10 @@ class USDMJson:
         result["phase"] = ",".join(phases)
         return result
 
+    def templates(self) -> list[str]:
+        study: Study = self._wrapper.study
+        return study.document_templates()
+    
     def study_design_overall_parameters(self, id: str):
         version = self._data["study"]["versions"][0]
         design = self._study_design(id)
@@ -293,13 +291,11 @@ class USDMJson:
             return None
 
     def schedule_of_activities(self, id: str):
-        usdm = USDM4()
         errors = Errors()
-        wrapper: Wrapper = usdm.loadd(self._data, errors)
         study: Study
         version: StudyVersion
         design: StudyDesign
-        study, version, design = wrapper.study_version_and_design(id)
+        study, version, design = self._wrapper.study_version_and_design(id)
         if study and version and design:
             soas = []
             documents = version.documents(study.document_map())
@@ -319,7 +315,7 @@ class USDMJson:
                             "soa": dv.schedule_of_activities(),
                         }
                     )
-            print(f"SoAs: {len(soas)}")
+            # print(f"SoAs: {len(soas)}")
             return {
                 "id": self.id,
                 "study_id": design.id,

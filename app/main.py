@@ -566,6 +566,7 @@ async def version_transmit(
 @app.get("/versions/{id}/export/json", dependencies=[Depends(protect_endpoint)])
 async def export_json(request: Request, id: int, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
+    print("EXPORT JSON")
     usdm = USDMJson(id, session)
     full_path, filename, media_type = usdm.json()
     if full_path:
@@ -579,57 +580,6 @@ async def export_json(request: Request, id: int, session: Session = Depends(get_
                 "data": {"error": "Error downloading the requested JSON file"},
             },
         )
-
-
-@app.get("/versions/{id}/export/protocol", dependencies=[Depends(protect_endpoint)])
-async def export_protocol(
-    request: Request, id: int, session: Session = Depends(get_db)
-):
-    user, present_in_db = user_details(request, session)
-    usdm = USDMJson(id, session)
-    full_path, filename, media_type = usdm.pdf()
-    if full_path:
-        return FileResponse(path=full_path, filename=filename, media_type=media_type)
-    else:
-        return templates.TemplateResponse(
-            request,
-            "errors/error.html",
-            {
-                "user": user,
-                "data": {"error": "Error downloading the requested PDF file"},
-            },
-        )
-
-
-@app.get("/versions/{id}/protocol", dependencies=[Depends(protect_endpoint)])
-async def protocol(request: Request, id: int, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
-    usdm = USDMJson(id, session)
-    data = {
-        "version": usdm.study_version(),
-        "sections": usdm.protocol_sections(),
-        "section_list": usdm.protocol_sections_list(),
-    }
-    # print(f"PROTOCOL SECTION: {data}")
-    response = templates.TemplateResponse(
-        request, "versions/protocol/show.html", {"data": data, "user": user}
-    )
-    return response
-
-
-@app.get(
-    "/versions/{id}/section/{section_id}", dependencies=[Depends(protect_endpoint)]
-)
-async def protocl_section(
-    request: Request, id: int, section_id: str, session: Session = Depends(get_db)
-):
-    user, present_in_db = user_details(request, session)
-    usdm = USDMJson(id, session)
-    data = {"section": usdm.section(section_id)}
-    response = templates.TemplateResponse(
-        request, "versions/protocol//partials/section.html", {"data": data}
-    )
-    return response
 
 
 @app.get("/database/clean", dependencies=[Depends(protect_endpoint)])

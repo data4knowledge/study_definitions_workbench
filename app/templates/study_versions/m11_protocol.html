@@ -1,0 +1,33 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
+  {% endwith %}    
+{% endblock %}
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}    
+{% endblock %}
+{% block additional_css %}
+  {% with %}
+    {% include "shared/styles/m11.html" %}
+  {% endwith %}  
+{% endblock %}   
+{% block menu_content %}
+  {% with view='protocol', data=data %}
+    {% include "shared/partials/version_view_menu.html" %}
+  {% endwith %} 
+  {% with data=data %}
+    {% include "shared/partials/section_menu.html" %}
+  {% endwith %}
+{% endblock %}  
+
+{% block main_content %}
+  <div class="outer-div row">
+    <div class="col-12 mt-3">
+      {{data["document"]|safe}}
+    </div>
+  </div>
+{% endblock %}

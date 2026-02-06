@@ -13,7 +13,9 @@
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/json">USDM v4 (.json)</a>
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=4">USDM v4 format Excel (.xlsx)</a>
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel?version=3">USDM v3 format Excel (.xlsx)</a>
-    <!--<a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/protocol">Protocol (PDF)</a>-->
+    {% for template in data["templates"] %}
+        <a class="dropdown-item" href="/versions/{{data['version']['id']}}/protocol/export?template={{template}}">{{template}} Protocol (.html)</a>
+      {% endfor %}
   </div>
 </li>
 

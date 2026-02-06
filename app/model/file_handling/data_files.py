@@ -86,10 +86,22 @@ class DataFiles:
                 "filename": "protocol",
                 "extension": "pdf",
             },
-            "highlight": {
+            "m11-protocol": {
                 "method": self._save_html_file,
                 "use_original": False,
-                "filename": "highlight",
+                "filename": "m11-protocol",
+                "extension": "html",
+            },
+            "cpt-protocol": {
+                "method": self._save_html_file,
+                "use_original": False,
+                "filename": "cpt-protocol",
+                "extension": "html",
+            },
+            "other-protocol": {
+                "method": self._save_html_file,
+                "use_original": False,
+                "filename": "other-protocol",
                 "extension": "html",
             },
             "image": {
