@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from d4k_ms_ui.pagination import Pagination
+from d4k_ms_base.logger import application_logger
 from app.database.user import User
 from app.database.version import Version
 from app.database.database import get_db
@@ -201,7 +202,7 @@ async def export_protocol(
     request: Request, id: int, template: str, session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    print(f"PROTOCOL EXPORT")
+    application_logger.info(f"PROTOCOL EXPORT") 
     usdm = USDMJson(id, session)
     full_path, _, _ = usdm.json()
     file_type, html = _generate_protocol(template, full_path, usdm)

@@ -566,11 +566,13 @@ async def version_transmit(
 @app.get("/versions/{id}/export/json", dependencies=[Depends(protect_endpoint)])
 async def export_json(request: Request, id: int, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
-    print("EXPORT JSON")
+    application_logger.info("EXPORT JSON")
     usdm = USDMJson(id, session)
     full_path, filename, media_type = usdm.json()
     if full_path:
-        return FileResponse(path=full_path, filename=filename, media_type=media_type)
+        response = FileResponse(path=full_path, filename=filename, media_type=media_type)
+        response.headers["Cache-Control"] = "no-store"
+        return response
     else:
         return templates.TemplateResponse(
             request,
