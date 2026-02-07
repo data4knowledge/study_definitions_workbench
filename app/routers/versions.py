@@ -184,7 +184,7 @@ async def protocol(request: Request, id: int, template: str, session: Session = 
             "document": html
         }
         return templates.TemplateResponse(
-           request, "study_versions/m11_protocol.html", {"user": user, "data": data}
+           request, "study_versions/protocol.html", {"user": user, "data": data}
         )
     else:
         return templates.TemplateResponse(
@@ -205,7 +205,7 @@ async def export_protocol(
     application_logger.info(f"PROTOCOL EXPORT") 
     usdm = USDMJson(id, session)
     full_path, _, _ = usdm.json()
-    file_type, html = _generate_protocol(template, full_path, usdm)
+    file_type, html = _generate_protocol(template, full_path, usdm, export=True )
     protocol_path, filename = usdm._files.save(file_type, html)
     if protocol_path:
         return FileResponse(path=protocol_path, filename=filename, media_type="text/html")
@@ -219,11 +219,16 @@ async def export_protocol(
             },
         )
 
-def _generate_protocol(template: str, full_path: str, usdm: USDMJson) -> tuple[str, str]: 
+def _generate_protocol(template: str, full_path: str, usdm: USDMJson, export: bool = False) -> tuple[str, str]:
     html = ""
     file_type = ""
     if template.upper() == "M11":
-        html = USDM4M11().to_html(full_path)
+        if export:
+            body = USDM4M11().to_html(full_path)
+            t = templates.get_template("study_versions/m11_protocol_export.html")
+            html = t.render({"content": body})
+        else:
+            html = USDM4M11().to_html(full_path)
         file_type = "m11-protocol"
     elif template.upper() == "CPT":
         html = USDM4CPT().to_html(full_path)
