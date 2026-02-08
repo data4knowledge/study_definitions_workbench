@@ -264,7 +264,7 @@ class TestImportM11:
             processor.usdm
             == mock_m11_protocol.return_value.from_docx.return_value.to_json.return_value
         )
-        assert processor.extra == mock_m11_protocol.return_value.extra
+        assert processor.extra == processor._blank_extra()
         assert (
             processor.errors
             == mock_m11_protocol.return_value.errors.to_dict.return_value

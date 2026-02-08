@@ -72,7 +72,7 @@ def test_index_page(mocker, monkeypatch):
     sp = mock_study_page(mocker)
     response = client.get("/index/page?page=2&size=10&initial=true")
     assert response.status_code == 200
-    assert """View Protocol""" in response.text
+    assert """View Details""" in response.text
     assert """A study for Z""" in response.text
     assert mock_called(sp)
     assert sp.mock_calls[0].args[0] == 2
@@ -88,7 +88,7 @@ def test_index_pagination(mocker, monkeypatch):
     response = client.get("/index/page?page=1&size=12&initial=true")
     # print(f"RESPONSE: {response.text}")
     assert response.status_code == 200
-    assert """View Protocol""" in response.text
+    assert """View Details""" in response.text
     assert """A study for X""" in response.text
     assert (
         """<a class="dropdown-item" href="#" hx-get="/index/page?page=1&amp;size=96" hx-trigger="click" hx-target="#data_div" hx-swap="outerHTML">96</a>"""

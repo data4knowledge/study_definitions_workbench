@@ -7,7 +7,7 @@ from tests.mocks.utility_mocks import (
     mock_transmit_role_enabled_true,
     mock_transmit_role_enabled_false,
 )
-from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_study_version
+from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_study_version, mock_usdm_json_templates
 from tests.mocks.fhir_version_mocks import mock_fhir_versions
 from tests.mocks.file_mocks import mock_file_import_find
 
@@ -24,6 +24,7 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
     ift = mock_transmit_role_enabled_true(mocker, "app.routers.versions")
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    ujt = mock_usdm_json_templates(mocker, "app.routers.versions")
     fv = mock_fhir_versions(mocker, "app.routers.versions")
     response = client.get("/versions/1/summary")
     # print(f"RESPONSE: {response.text}")
@@ -37,8 +38,9 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
     assert mock_called(ift)
     assert mock_called(uji)
     assert mock_called(usv)
+    assert mock_called(ujt)
     assert mock_called(fv)
-    assert_view_menu(response.text, "summary")
+    assert_view_menu(response.text, "summary", templates=["M11"])
 
 
 def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
@@ -48,6 +50,7 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     ift = mock_transmit_role_enabled_false(mocker, "app.routers.versions")
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    ujt = mock_usdm_json_templates(mocker, "app.routers.versions")
     fv = mock_fhir_versions(mocker, "app.routers.versions")
     response = client.get("/versions/1/summary")
     # print(f"RESPONSE: {response.text}")
@@ -57,8 +60,9 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     assert mock_called(ift)
     assert mock_called(uji)
     assert mock_called(usv)
+    assert mock_called(ujt)
     assert mock_called(fv)
-    assert_view_menu(response.text, "summary")
+    assert_view_menu(response.text, "summary", templates=["M11"])
 
 
 def test_version_history(mocker, monkeypatch):
@@ -205,7 +209,7 @@ def test_export_excel_failure(mocker, monkeypatch):
     assert mock_called(mock_usdm_db_excel)
 
 
-def assert_view_menu(text, type):
+def assert_view_menu(text, type, templates=None):
     if type != "summary":
         assert (
             '<a class="dropdown-item" href="/versions/1/summary">Summary View</a>'
@@ -220,11 +224,14 @@ def assert_view_menu(text, type):
             '<a class="dropdown-item" href="/versions/1/statistics">Statistics View</a>'
             in text
         )
-    if type != "protocol":
-        assert (
-            '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text
-        )
+    if type != "protocol" and templates:
+        for template in templates:
+            assert (
+                f'<a class="dropdown-item" href="/versions/1/protocol?template={template}">{template} Protocol</a>'
+                in text
+            )
     if type != "history":
         assert (
-            '<a class="dropdown-item" href="/versions/1/protocol">Protocol</a>' in text
+            '<a class="dropdown-item" href="/versions/1/history">Version History</a>'
+            in text
         )

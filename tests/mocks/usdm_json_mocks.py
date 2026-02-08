@@ -58,6 +58,12 @@ def mock_usdm_study_version(mocker, path="app.main"):
     return mock
 
 
+def mock_usdm_json_templates(mocker, path="app.main"):
+    mock = mocker.patch(f"{path}.USDMJson.templates")
+    mock.return_value = ["M11"]
+    return mock
+
+
 def mock_usdm_json_fhir_soa(mocker, path="app.main"):
     mock = mocker.patch(f"{path}.USDMJson.fhir_soa")
     mock.side_effect = [
