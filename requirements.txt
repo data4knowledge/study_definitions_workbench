@@ -3,7 +3,7 @@ itsdangerous==2.2.0
 sqlalchemy==2.0.31   
 alembic==1.13.2
 usdm==0.66.0
-usdm4==0.16.0
+usdm4==0.17.0
 usdm4_excel>=0.9.0
 usdm3_excel>=0.2.1
 usdm4_m11==0.9.0
