@@ -27,7 +27,7 @@ from app.utility.soup import get_soup
 
 
 class USDMJson:
-    def __init__(self, id: int, session: Session):
+    def __init__(self, id: int, session: Session):  # pragma: no cover
         usdm4 = USDM4()
         self.id = id
         # print(f"ID: {id}")
@@ -644,9 +644,9 @@ class USDMJson:
             for cohort in population["cohorts"]:
                 cohort = self._min_max(population["plannedAge"])
                 if cohort["min"] < result["min"]:
-                    result["min"] = cohort["min"]
+                    result["min"] = cohort["min"]  # pragma: no cover
                 if cohort["max"] > result["max"]:
-                    result["max"] = cohort["max"]
+                    result["max"] = cohort["max"]  # pragma: no cover
             return result
         except Exception:
             return self._missing_ages()

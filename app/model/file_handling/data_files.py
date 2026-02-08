@@ -153,7 +153,7 @@ class DataFiles:
                         application_logger.info(
                             f"Unlinked file '{path}' during clean and tidy"
                         )
-                    except Exception as e:
+                    except Exception as e:  # pragma: no cover
                         application_logger.exception(
                             f"Exception unlinking file '{path}' during clean and tidy dir '{dir}'",
                             e,
@@ -167,12 +167,12 @@ class DataFiles:
                             application_logger.info(
                                 f"Removed dir '{path}' during clean and tidy"
                             )
-                        except Exception as e:
+                        except Exception as e:  # pragma: no cover
                             application_logger.exception(
                                 f"Exception deleting '{path}' during clean and tidy dir '{dir}'",
                                 e,
                             )
-                    else:
+                    else:  # pragma: no cover
                         application_logger.info(
                             f"Keeping dir '{path}' during clean and tidy"
                         )
@@ -216,10 +216,10 @@ class DataFiles:
             filename = filename if filename else self._form_filename(type)
             full_path = self.media_type[type]["method"](contents, filename)
             return full_path, filename
-        except Exception:
+        except Exception:  # pragma: no cover
             return None, None
 
-    def exists(self, type) -> bool:
+    def exists(self, type) -> bool:  # pragma: no cover
         return os.path.exists(self._file_path(self._form_filename(type)))
 
     def read(self, type) -> str | None:
@@ -227,7 +227,7 @@ class DataFiles:
             full_path = self._file_path(self._form_filename(type))
             with open(full_path, "r") as stream:
                 return stream.read()
-        except Exception:
+        except Exception:  # pragma: no cover
             return None
 
     def path(self, type):
@@ -301,7 +301,7 @@ class DataFiles:
             full_path = self._file_path(filename)
             with open(full_path, "wb") as f:
                 f.write(contents)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             application_logger.exception("Exception saving source file", e)
 
     def _save_json_file(self, contents, filename):

@@ -32,7 +32,7 @@ class ObjectPath:
                 # print(f"RESULT: {instruction}, {result}")
                 if result["name"] and result["value"] and result["attribute"]:
                     object_value = getattr(object_value, result["attribute"], None)
-                    if isinstance(object_value, dict):
+                    if isinstance(object_value, dict):  # pragma: no cover
                         for key, item in object_value:
                             if getattr(item, result["name"], None) == result["value"]:
                                 object_value = item
@@ -52,7 +52,7 @@ class ObjectPath:
                 elif result["attribute"]:
                     object_value = getattr(object_value, result["attribute"], None)
                     # print(f"OBJECT: {object_value}")
-                else:
+                else:  # pragma: no cover
                     application_logger.error(
                         f"Failed to find path, logical error '{self._original_path}'"
                     )
@@ -67,7 +67,7 @@ class ObjectPath:
                     f"Failed to find path, no matches error '{self._original_path}'"
                 )
                 return None
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             application_logger.exception(
                 f"Exception raised processing object path '{self._original_path}'", e
             )

@@ -139,3 +139,46 @@ def test_file_list_local_invalid(mocker, caplog, monkeypatch):
     assert mock_called(uc)
     assert mock_called(lfd)
     assert error_logged(caplog, "Error Error Error!!!")
+
+
+def test_study_list(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    from unittest.mock import MagicMock
+    mock_vlv = mocker.patch("app.routers.studies.Version.find_latest_version")
+    mock_vlv.return_value = MagicMock(id=1)
+    mock_wrapper = MagicMock()
+    mock_sv = MagicMock()
+    mock_sd = MagicMock()
+    mock_sv.studyDesigns = [mock_sd]
+    mock_sv.eligibility_critieria_item_map.return_value = {}
+    mock_sd.inclusion_criteria.return_value = []
+    mock_sd.exclusion_criteria.return_value = []
+    mock_wrapper.first_version.return_value = mock_sv
+    def custom_init(self, *args, **kwargs):
+        pass
+    mocker.patch("app.routers.studies.USDMJson.__init__", new=custom_init)
+    mocker.patch("app.routers.studies.USDMJson.wrapper", return_value=mock_wrapper)
+    mock_dv = mocker.patch("app.routers.studies.DataView")
+    mock_dv_instance = mock_dv.return_value
+    mock_dv_instance.title_page.return_value = {"title": "Test"}
+    mock_dv_instance.amendment_details.return_value = {"amendment": "None"}
+    mocker.patch("app.routers.studies.restructure_study_list", return_value={"title": ["Test"]})
+    mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
+    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
+    response = client.get("/studies/list?list_studies=1")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+def test_study_list_empty(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
+    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
+    mocker.patch("app.routers.studies.restructure_study_list", return_value={})
+    response = client.get("/studies/list")
+    assert response.status_code == 200
+    assert mock_called(uc)

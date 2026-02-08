@@ -1,5 +1,7 @@
 import pytest
+from unittest.mock import MagicMock
 from app.database.version import Version
+from app.configuration.configuration import application_configuration
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import mock_user_check_exists
 from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
@@ -235,3 +237,163 @@ def assert_view_menu(text, type, templates=None):
             '<a class="dropdown-item" href="/versions/1/history">Version History</a>'
             in text
         )
+
+
+def test_import_xl_get(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    application_configuration.file_picker = {
+        "browser": False, "os": True, "pfda": False, "source": "os",
+    }
+    response = client.get("/versions/1/load/costs")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+def test_protocol_m11(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    uji = mock_usdm_json_init(mocker, "app.routers.versions")
+    usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
+        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
+    ))
+    mocker.patch("app.routers.versions.USDM4M11").return_value.to_html.return_value = "<p>Protocol</p>"
+    response = client.get("/versions/1/protocol?template=M11")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+def test_protocol_cpt(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    uji = mock_usdm_json_init(mocker, "app.routers.versions")
+    usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
+        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
+    ))
+    mocker.patch("app.routers.versions.USDM4CPT").return_value.to_html.return_value = "<p>CPT</p>"
+    response = client.get("/versions/1/protocol?template=CPT")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+def test_protocol_no_file(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    uji = mock_usdm_json_init(mocker, "app.routers.versions")
+    mocker.patch("app.routers.versions.USDMJson.json", return_value=("", "", ""))
+    response = client.get("/versions/1/protocol?template=M11")
+    assert response.status_code == 200
+    assert "Error locating the USDM JSON file" in response.text
+    assert mock_called(uc)
+
+
+def test_export_protocol_success(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    files_mock = MagicMock()
+    files_mock.save.return_value = ("tests/test_files/main/simple.txt", "simple.txt")
+    def custom_init(self, *args, **kwargs):
+        self._files = files_mock
+    mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
+    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
+        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
+    ))
+    mocker.patch("app.routers.versions.USDM4M11").return_value.to_html.return_value = "<p>Protocol</p>"
+    response = client.get("/versions/1/protocol/export?template=M11")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+def test_export_protocol_error(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    files_mock = MagicMock()
+    files_mock.save.return_value = ("", "")
+    def custom_init(self, *args, **kwargs):
+        self._files = files_mock
+    mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
+    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
+        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
+    ))
+    mocker.patch("app.routers.versions.USDM4M11").return_value.to_html.return_value = "<p>Protocol</p>"
+    response = client.get("/versions/1/protocol/export?template=M11")
+    assert response.status_code == 200
+    assert "Error downloading the requested protocol" in response.text
+    assert mock_called(uc)
+
+
+def test_protocol_other(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    uji = mock_usdm_json_init(mocker, "app.routers.versions")
+    usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
+        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
+    ))
+    mock_wrapper = MagicMock()
+    mock_wrapper.to_html.return_value = "<p>Other Protocol</p>"
+    mocker.patch("app.routers.versions.USDMJson.wrapper", return_value=mock_wrapper)
+    response = client.get("/versions/1/protocol?template=OTHER")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+@pytest.mark.anyio
+async def test_versions_post_load_success(mocker, monkeypatch):
+    from unittest.mock import AsyncMock
+    from tests.mocks.fastapi_mocks import mock_async_client
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    def custom_init(self, *args, **kwargs):
+        self.uuid = "test-uuid"
+    mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
+    fh = mocker.patch("app.routers.versions.FormHandler")
+    fh_instance = fh.return_value
+    fh_instance.get_files = AsyncMock(return_value=(
+        {"filename": "costs.yaml", "contents": b"key: value"},
+        None,
+        ["File accepted"],
+    ))
+    df = mocker.patch("app.routers.versions.DataFiles")
+    df_instance = df.return_value
+    df_instance.save.return_value = ("/tmp/costs.yaml", "costs.yaml")
+    mocker.patch("app.routers.versions.yaml.safe_load", return_value={"key": "value"})
+    response = await async_client.post("/versions/1/load/costs")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+@pytest.mark.anyio
+async def test_versions_post_load_failure(mocker, monkeypatch):
+    from unittest.mock import AsyncMock
+    from tests.mocks.fastapi_mocks import mock_async_client
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    def custom_init(self, *args, **kwargs):
+        self.uuid = "test-uuid"
+    mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
+    fh = mocker.patch("app.routers.versions.FormHandler")
+    fh_instance = fh.return_value
+    fh_instance.get_files = AsyncMock(return_value=(
+        {"filename": "costs.yaml", "contents": b"key: value"},
+        None,
+        [],
+    ))
+    df = mocker.patch("app.routers.versions.DataFiles")
+    df_instance = df.return_value
+    df_instance.save.return_value = (None, None)
+    mocker.patch("app.routers.versions.yaml.safe_load", return_value={"key": "value"})
+    response = await async_client.post("/versions/1/load/costs")
+    assert response.status_code == 200
+    assert mock_called(uc)

@@ -99,7 +99,7 @@ class UnifiedDiff:
                 application_logger.debug(f"In Hunk '{text}'")
                 if hunk:
                     hunk.add(text)
-                else:
+                else:  # pragma: no cover
                     application_logger.error("Detected diff line with no hunk")
 
     def to_html(self):

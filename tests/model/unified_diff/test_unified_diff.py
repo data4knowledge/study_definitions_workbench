@@ -76,6 +76,45 @@ def test_unified_diff_1(caplog):
     # print(f"HTML: {ud.to_html()}")
 
 
+def test_unified_diff_to_html():
+    old_lines = ["line 1", "line 2", "line 3"]
+    new_lines = ["line 1", "line 2 changed", "line 3"]
+    ud = UnifiedDiff(old_lines, new_lines)
+    html = ud.to_html()
+    assert "<table" in html
+    assert "</table>" in html
+    assert "<tr" in html
+
+
+def test_hunk_line_to_html_deleted():
+    from app.model.unified_diff.unified_diff import HunkLine
+    hl = HunkLine("-removed line", 5, None, "deleted")
+    html = hl.to_html()
+    assert "table-danger" in html
+    assert "removed line" in html
+
+
+def test_hunk_line_to_html_inserted():
+    from app.model.unified_diff.unified_diff import HunkLine
+    hl = HunkLine("+added line", None, 6, "inserted")
+    html = hl.to_html()
+    assert "table-success" in html
+    assert "added line" in html
+
+
+def test_hunk_line_to_html_nochange():
+    from app.model.unified_diff.unified_diff import HunkLine
+    hl = HunkLine(" unchanged", 5, 5, "nochange")
+    html = hl.to_html()
+    assert "unchanged" in html
+
+
+def test_hunk_set_type_error():
+    hunk = Hunk("@@ -1,3 +1,3 @@")
+    hunk.add("\\No newline at end of file")
+    assert hunk.lines[-1].type == "error"
+
+
 def error_logged(caplog, text):
     correct_level = caplog.records[-1].levelname == "ERROR"
     return text in caplog.records[-1].message and correct_level

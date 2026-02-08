@@ -1,9 +1,13 @@
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 from app.imports.import_processors import (
     ImportProcessorBase,
     ImportExcel,
     ImportM11,
+    ImportCPT,
+    ImportLegacy,
+    ImportFhirPRISM2,
+    ImportFhirPRISM3,
     ImportUSDM3,
     ImportUSDM4,
 )
@@ -41,12 +45,12 @@ def mock_m11_protocol():
 
 @pytest.fixture
 def mock_from_fhir_v1():
-    """Mock the FromFHIRV1 class."""
+    """Mock the M11 class for FHIR imports."""
     with patch("app.imports.import_processors.M11") as mock:
         instance = mock.return_value
         mock_wrapper = MagicMock()
         mock_wrapper.to_json.return_value = '{"study": {"name": "test-study"}}'
-        instance.from_message.return_value = mock_wrapper
+        instance.from_message = AsyncMock(return_value=mock_wrapper)
         instance.extra = {
             "title_page": {},
             "amendment": {},
@@ -269,6 +273,107 @@ class TestImportM11:
             processor.errors
             == mock_m11_protocol.return_value.errors.to_dict.return_value
         )
+
+
+class TestImportCPT:
+    """Tests for the ImportCPT class."""
+
+    @pytest.mark.asyncio
+    async def test_process(self):
+        mock_wrapper = MagicMock()
+        mock_wrapper.to_json.return_value = '{"study": {"name": "test-study"}}'
+        with patch("app.imports.import_processors.USDM4CPT") as mock_cpt:
+            instance = mock_cpt.return_value
+            instance.from_docx.return_value = mock_wrapper
+            instance.extra = {"title_page": {}, "amendment": {}, "miscellaneous": {}}
+            instance.errors.to_dict.return_value = {"errors": []}
+            instance.errors.dump.return_value = "No errors"
+            processor = ImportCPT("CPT_DOCX", "test-uuid", "/path/to/file")
+            with patch.object(processor, "_study_parameters", return_value={"name": "test"}):
+                result = await processor.process()
+        assert result
+        assert processor.usdm == '{"study": {"name": "test-study"}}'
+        assert processor.extra == instance.extra
+
+    @pytest.mark.asyncio
+    async def test_process_no_wrapper(self):
+        with patch("app.imports.import_processors.USDM4CPT") as mock_cpt:
+            instance = mock_cpt.return_value
+            instance.from_docx.return_value = None
+            instance.errors.to_dict.return_value = {"errors": []}
+            instance.errors.dump.return_value = "No errors"
+            processor = ImportCPT("CPT_DOCX", "test-uuid", "/path/to/file")
+            result = await processor.process()
+        assert result
+        assert processor.usdm is None
+
+
+class TestImportLegacy:
+    """Tests for the ImportLegacy class."""
+
+    @pytest.mark.asyncio
+    async def test_process(self):
+        processor = ImportLegacy("LEGACY_PDF", "test-uuid", "/path/to/file")
+        result = await processor.process()
+        assert result
+
+
+class TestImportFhirPRISM2:
+    """Tests for the ImportFhirPRISM2 class."""
+
+    @pytest.mark.asyncio
+    async def test_process_success(self, mock_from_fhir_v1):
+        processor = ImportFhirPRISM2("FHIR_PRISM2_JSON", "test-uuid", "/path/to/file")
+        with patch.object(processor, "_study_parameters", return_value={"name": "test"}):
+            result = await processor.process()
+        assert result
+        assert processor.success
+        assert processor.usdm == mock_from_fhir_v1.return_value.from_message.return_value.to_json.return_value
+
+    @pytest.mark.asyncio
+    async def test_process_failure(self):
+        with patch("app.imports.import_processors.M11") as mock_m11:
+            instance = mock_m11.return_value
+            instance.from_message = AsyncMock(return_value=None)
+            instance.errors.to_dict.return_value = {"errors": ["fail"]}
+            instance.errors.dump.return_value = "Error"
+            processor = ImportFhirPRISM2("FHIR_PRISM2_JSON", "test-uuid", "/path/to/file")
+            result = await processor.process()
+        assert not result
+        assert not processor.success
+        assert "PRISM2" in processor.fatal_error
+
+
+class TestImportFhirPRISM3:
+    """Tests for the ImportFhirPRISM3 class."""
+
+    @pytest.mark.asyncio
+    async def test_process_success(self):
+        mock_wrapper = MagicMock()
+        mock_wrapper.to_json.return_value = '{"study": {"name": "test-study"}}'
+        with patch("app.imports.import_processors.M11") as mock_m11:
+            instance = mock_m11.return_value
+            instance.from_message = AsyncMock(return_value=mock_wrapper)
+            instance.errors.to_dict.return_value = {"errors": []}
+            instance.errors.dump.return_value = "No errors"
+            processor = ImportFhirPRISM3("FHIR_PRISM3_JSON", "test-uuid", "/path/to/file")
+            with patch.object(processor, "_study_parameters", return_value={"name": "test"}):
+                result = await processor.process()
+        assert result
+        assert processor.success
+
+    @pytest.mark.asyncio
+    async def test_process_failure(self):
+        with patch("app.imports.import_processors.M11") as mock_m11:
+            instance = mock_m11.return_value
+            instance.from_message = AsyncMock(return_value=None)
+            instance.errors.to_dict.return_value = {"errors": ["fail"]}
+            instance.errors.dump.return_value = "Error"
+            processor = ImportFhirPRISM3("FHIR_PRISM3_JSON", "test-uuid", "/path/to/file")
+            result = await processor.process()
+        assert not result
+        assert not processor.success
+        assert "PRISM3" in processor.fatal_error
 
 
 # class TestImportFhirPRISM2:

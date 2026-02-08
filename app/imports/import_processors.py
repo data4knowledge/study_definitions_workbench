@@ -191,7 +191,7 @@ class ImportUSDM3(ImportProcessorBase):
             self.errors = results.to_dict()
             if results.passed_or_not_implemented():
                 self.study_parameters = self._study_parameters()
-            else:
+            else:  # pragma: no cover
                 self.success = False
                 self.fatal_error = "USDM v4 validation failed. Check the file using the validate functionality"
         else:

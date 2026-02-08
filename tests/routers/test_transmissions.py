@@ -59,3 +59,23 @@ def test_transmisison_status_data_not_authorised(mocker, monkeypatch):
     assert """User is not authorised to transmit FHIR messages.""" in response.text
     assert mock_called(uc)
     assert mock_called(ift)
+
+
+def test_transmission_status_data_with_uuid(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    ift = mock_transmit_role_enabled_true(mocker)
+    tp = mocker.patch("app.database.transmission.Transmission.page")
+    tp.return_value = {
+        "page": 1, "size": 10, "count": 1, "filter": "",
+        "items": [{
+            "status": "Succesful transmission 12345678-1234-1234-1234-123456789012",
+            "created": "2024-01-01",
+            "endpoint": "http://example.com",
+        }],
+    }
+    response = client.get("/transmissions/status/data?page=1&size=10")
+    assert response.status_code == 200
+    assert mock_called(uc)
+    assert mock_called(ift)

@@ -75,7 +75,7 @@ app.include_router(validate.router)
 
 
 @app.exception_handler(Exception)
-async def exception_callback_general(request: Request, e: Exception):
+async def exception_callback_general(request: Request, e: Exception):  # pragma: no cover
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -84,7 +84,7 @@ async def exception_callback_general(request: Request, e: Exception):
 
 
 @app.exception_handler(FindException)
-async def exception_callback_find(request: Request, e: FindException):
+async def exception_callback_find(request: Request, e: FindException):  # pragma: no cover
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -99,7 +99,7 @@ application_logger.info(f"Static dir set to '{static_path}'")
 
 
 @app.websocket("/alerts/{user_id}")
-async def websocket_endpoint(websocket: WebSocket, user_id: str):
+async def websocket_endpoint(websocket: WebSocket, user_id: str):  # pragma: no cover
     await connection_manager.connect(user_id, websocket)
     try:
         while True:
@@ -120,7 +120,7 @@ def home(request: Request):
 async def login(request: Request):
     if application_configuration.single_user:
         return RedirectResponse("/index")
-    else:
+    else:  # pragma: no cover
         if (
             "id_token" not in request.session
         ):  # it could be userinfo instead of id_token

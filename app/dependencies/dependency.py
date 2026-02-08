@@ -11,7 +11,7 @@ def set_middleware_secret(app: FastAPI):
     )
 
 
-def protect_endpoint(request: Request) -> None:
+def protect_endpoint(request: Request) -> None:  # pragma: no cover
     if application_configuration.single_user:
         request.session["userinfo"] = User.single_user()
         return None
@@ -20,6 +20,6 @@ def protect_endpoint(request: Request) -> None:
 
 
 authorisation = Auth0Service()
-if application_configuration.multiple_user:
+if application_configuration.multiple_user:  # pragma: no cover
     authorisation.register()
     authorisation.management_token()

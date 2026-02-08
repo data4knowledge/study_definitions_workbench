@@ -201,3 +201,124 @@ def mock_data_file_path_error(mocker):
     mock = mocker.patch("app.model.file_handling.data_files.DataFiles.path")
     mock.side_effect = [("", "", False)]
     return mock
+
+
+def test_import_cpt_docx(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    application_configuration.file_picker = {
+        "browser": False, "os": True, "pfda": False, "source": "os",
+    }
+    response = client.get("/import/cpt-docx")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+def test_import_legacy_pdf(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    application_configuration.file_picker = {
+        "browser": False, "os": True, "pfda": False, "source": "os",
+    }
+    response = client.get("/import/legacy-pdf")
+    assert response.status_code == 200
+    assert mock_called(uc)
+
+
+def test_import_fhir_valid(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    from tests.mocks.factory_mocks import factory_user
+    uc = mocker.patch("app.database.user.User.check")
+    uc.return_value = (factory_user(), True)
+    application_configuration.file_picker = {
+        "browser": False, "os": True, "pfda": False, "source": "os",
+    }
+    mocker.patch(
+        "app.routers.imports.check_fhir_version",
+        return_value=(True, "PRISM 2"),
+    )
+    response = client.get("/import/fhir?version=prism2")
+    assert response.status_code == 200
+    assert mock_called(uc, 2)
+
+
+def test_import_fhir_invalid(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    mocker.patch(
+        "app.routers.imports.check_fhir_version",
+        return_value=(False, ""),
+    )
+    response = client.get("/import/fhir?version=invalid")
+    assert response.status_code == 200
+    assert "Invalid FHIR version" in response.text
+    assert mock_called(uc)
+
+
+@pytest.mark.anyio
+async def test_import_cpt_docx_execute(mocker, monkeypatch):
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
+    pm.side_effect = ["<h1>Fake CPT Response</h1>"]
+    response = await async_client.post("/import/cpt-docx")
+    assert response.status_code == 200
+    assert mock_called(uc)
+    assert mock_called(pm)
+
+
+@pytest.mark.anyio
+async def test_import_legacy_pdf_execute(mocker, monkeypatch):
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
+    pm.side_effect = ["<h1>Fake Legacy Response</h1>"]
+    response = await async_client.post("/import/legacy-pdf")
+    assert response.status_code == 200
+    assert mock_called(uc)
+    assert mock_called(pm)
+
+
+@pytest.mark.anyio
+async def test_import_fhir_execute(mocker, monkeypatch):
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
+    pm.side_effect = ["<h1>Fake FHIR Response</h1>"]
+    response = await async_client.post("/import/fhir?version=prism3")
+    assert response.status_code == 200
+    assert mock_called(uc)
+    assert mock_called(pm)
+
+
+@pytest.mark.anyio
+async def test_import_usdm3_execute(mocker, monkeypatch):
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
+    pm.side_effect = ["<h1>Fake USDM3 Response</h1>"]
+    response = await async_client.post("/import/usdm3")
+    assert response.status_code == 200
+    assert mock_called(uc)
+    assert mock_called(pm)
+
+
+@pytest.mark.anyio
+async def test_import_usdm4_execute(mocker, monkeypatch):
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
+    pm.side_effect = ["<h1>Fake USDM4 Response</h1>"]
+    response = await async_client.post("/import/usdm")
+    assert response.status_code == 200
+    assert mock_called(uc)
+    assert mock_called(pm)

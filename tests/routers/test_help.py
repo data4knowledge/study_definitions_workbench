@@ -37,7 +37,7 @@ def test_feedback(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
     mock_feedback(mocker)
-    response = client.get("/help/examples")
+    response = client.get("/help/feedback")
     assert response.status_code == 200
     assert """Feedback Test Testy Testy""" in response.text
     assert mock_called(uc)
@@ -168,3 +168,19 @@ def mock_privacy(mocker):
         ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
     ]
     return mock
+
+
+def test_pdf_file_exists(mocker, monkeypatch):
+    from app.routers.help import _pdf
+    mocker.patch("os.path.isfile", return_value=True)
+    result = _pdf("test.pdf")
+    assert result[0] is not None
+    assert result[1] == "test.pdf"
+    assert result[2] == "text/plain"
+
+
+def test_pdf_file_not_exists(mocker, monkeypatch):
+    from app.routers.help import _pdf
+    mocker.patch("os.path.isfile", return_value=False)
+    result = _pdf("test.pdf")
+    assert result == (None, None, None)

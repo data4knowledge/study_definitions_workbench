@@ -36,6 +36,54 @@ def test_page_nth(db):
     assert len(results["items"]) == 5
 
 
+def test_find_exists(db):
+    _clean(db)
+    user, study = _base_setup(db)
+    _import_setup(db, 1, 1, user, study)
+    versions = db.query(VersionDB).all()
+    found = Version.find(versions[0].id, db)
+    assert found is not None
+    assert found.study_id == study.id
+
+
+def test_find_not_exists(db):
+    _clean(db)
+    assert Version.find(99999, db) is None
+
+
+def test_find_latest_version(db):
+    _clean(db)
+    user, study = _base_setup(db)
+    _import_setup(db, 1, 3, user, study)
+    latest = Version.find_latest_version(study.id, db)
+    assert latest is not None
+
+
+def test_find_latest_version_empty(db):
+    _clean(db)
+    user, study = _base_setup(db)
+    latest = Version.find_latest_version(study.id, db)
+    assert latest is None
+
+
+def test_version_count(db):
+    _clean(db)
+    user, study = _base_setup(db)
+    _import_setup(db, 1, 5, user, study)
+    count = Version.version_count(study.id, db)
+    assert count == 5
+
+
+def test_debug(db):
+    _clean(db)
+    user, study = _base_setup(db)
+    _import_setup(db, 1, 2, user, study)
+    result = Version.debug(db)
+    assert result["count"] == 2
+    assert len(result["items"]) == 2
+    assert "_sa_instance_state" not in result["items"][0]
+
+
 def _clean(db: Session):
     db.query(UserDB).delete()
     db.query(StudyDB).delete()

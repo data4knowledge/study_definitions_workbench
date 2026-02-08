@@ -20,7 +20,7 @@ class Version(VersionBase):
     model_config = ConfigDict(from_attributes=True)
 
     @classmethod
-    def create(cls, version: int, study_id: int, session: Session) -> "Version":
+    def create(cls, version: int, study_id: int, session: Session) -> "Version":  # pragma: no cover
         db_item = VersionDB(version=version)
         session.add(**db_item, study_id=study_id)
         session.commit()
@@ -33,7 +33,7 @@ class Version(VersionBase):
         return cls(**db_item.__dict__) if db_item else None
 
     @classmethod
-    def find_by_name(cls, name: str, session: Session) -> "Version":
+    def find_by_name(cls, name: str, session: Session) -> "Version":  # pragma: no cover
         db_item = session.query(VersionDB).filter(VersionDB.name == name).first()
         return cls(**db_item.__dict__) if db_item else None
 

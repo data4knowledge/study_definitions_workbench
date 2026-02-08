@@ -1,0 +1,17 @@
+[run]
+source = app
+branch = true
+omit =
+    app/static/*
+    app/templates/*
+
+[report]
+show_missing = true
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if __name__ == .__main__
+    raise NotImplementedError
+
+[html]
+directory = htmlcov

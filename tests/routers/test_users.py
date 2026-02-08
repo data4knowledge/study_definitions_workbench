@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import MagicMock
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import (
     mock_user_endpoints_page,
@@ -89,3 +90,17 @@ def test_user_endpoint(mocker, monkeypatch):
     assert """Enter a name for the server""" in response.text
     assert mock_called(uf)
     assert mock_called(ec)
+
+
+def test_delete_user_endpoint(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uf = mock_user_find(mocker)
+    ep_find = mocker.patch("app.database.endpoint.Endpoint.find")
+    ep_find.return_value = MagicMock()
+    ev = mock_endpoint_valid(mocker)
+    uep = mock_user_endpoints_page(mocker)
+    response = client.delete("/users/1/endpoint/1")
+    assert response.status_code == 200
+    assert mock_called(uf)
+    assert mock_called(ev)

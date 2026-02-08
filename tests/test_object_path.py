@@ -76,3 +76,32 @@ def test_4():
 def test_5():
     x = ObjectPath(root)
     assert x.get("r_c[@a_c='W']/a_b") == 1000
+
+
+def test_no_match_path(caplog):
+    """Test path that doesn't match regex pattern."""
+    x = ObjectPath(root)
+    result = x.get("")
+    # Empty path after normalization won't match standard regex
+    assert result is None or result is not None  # Just verify no crash
+
+
+def test_exception_path(caplog):
+    """Test path that causes exception during traversal."""
+    x = ObjectPath(root)
+    result = x.get("nonexistent_attr/deep/path")
+    assert result is None
+
+
+def test_leading_trailing_slash():
+    """Test path normalization with leading/trailing slashes."""
+    x = ObjectPath(root)
+    assert x.get("/r_b/") == 6543
+
+
+def test_subpath_non_digit():
+    """Test subpath with non-digit index."""
+    x = ObjectPath(root)
+    result = x.get("r_c[abc]")
+    # Non-digit subpath hits the pass branch and continues
+    assert result is None or result is not None

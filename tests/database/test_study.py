@@ -1,5 +1,6 @@
 from app.database.user import User
 from app.database.study import Study
+from app.database.file_import import FileImport
 from app.database.database_tables import (
     Study as StudyDB,
     Version as VersionDB,
@@ -70,6 +71,186 @@ def test_sponsors(db):
     user = _base_setup(db)
     results = Study.sponsors(user.id, db)
     assert results == ["SPONSOR A", "SPONSOR B"]
+
+
+def test_find_exists(db):
+    _clean(db)
+    user = _base_setup(db)
+    items = db.query(StudyDB).all()
+    study = Study.find(items[0].id, db)
+    assert study is not None
+    assert study.name == items[0].name
+
+
+def test_find_not_exists(db):
+    _clean(db)
+    assert Study.find(99999, db) is None
+
+
+def test_find_by_name_and_user(db):
+    _clean(db)
+    user = _base_setup(db)
+    u = User(**user.__dict__)
+    study = Study.find_by_name_and_user(u, "STUDY 2", db)
+    assert study is not None
+    assert study.name == "STUDY 2"
+
+
+def test_find_by_name_and_user_not_found(db):
+    _clean(db)
+    user = _base_setup(db)
+    u = User(**user.__dict__)
+    study = Study.find_by_name_and_user(u, "NONEXISTENT", db)
+    assert study is None
+
+
+def test_study_and_version_new_study(db):
+    _clean(db)
+    user = _base_setup(db)
+    u = User(**user.__dict__)
+    fi = FileImportDB(
+        filepath="path/new.xlsx",
+        filename="new.xlsx",
+        status="ok",
+        type="USDM_EXCEL",
+        uuid="uuid-new-study",
+        user_id=user.id,
+    )
+    db.add(fi)
+    db.commit()
+    db.refresh(fi)
+    fi_model = FileImport(**fi.__dict__)
+    params = {
+        "name": "BRAND_NEW",
+        "full_title": "Brand New Study",
+        "phase": "Phase 2",
+        "sponsor": "SPONSOR Z",
+        "sponsor_identifier": "sp_z",
+        "nct_identifier": "nct_z",
+    }
+    study, present = Study.study_and_version(params, u, fi_model, db)
+    assert study is not None
+    assert present is False
+    assert study.name == "BRAND_NEW"
+
+
+def test_study_and_version_existing_study(db):
+    _clean(db)
+    user = _base_setup(db)
+    u = User(**user.__dict__)
+    fi = FileImportDB(
+        filepath="path/exist.xlsx",
+        filename="exist.xlsx",
+        status="ok",
+        type="USDM_EXCEL",
+        uuid="uuid-exist",
+        user_id=user.id,
+    )
+    db.add(fi)
+    db.commit()
+    db.refresh(fi)
+    fi_model = FileImport(**fi.__dict__)
+    params = {
+        "name": "STUDY 2",
+        "full_title": "Study Title 2",
+        "phase": "Phase 1",
+        "sponsor": "SPONSOR A",
+        "sponsor_identifier": "sp_a",
+        "nct_identifier": "nct_a",
+    }
+    study, present = Study.study_and_version(params, u, fi_model, db)
+    assert study is not None
+    assert present is True
+
+
+def test_summary(db):
+    _clean(db)
+    user = _base_setup(db)
+    items = db.query(StudyDB).all()
+    result = Study.summary(items[0].id, db)
+    assert "versions" in result
+    assert "latest_version_id" in result
+    assert "import_type" in result
+
+
+def test_delete_success(db):
+    _clean(db)
+    user = _base_setup(db)
+    items = db.query(StudyDB).all()
+    study = Study(**items[0].__dict__)
+    result = study.delete(db)
+    assert result == 1
+
+
+def test_delete_failure(db):
+    _clean(db)
+    study = Study(
+        id=99999, user_id=1, name="X", title="X", phase="X",
+        sponsor="X", sponsor_identifier="X", nct_identifier="X",
+    )
+    result = study.delete(db)
+    assert result == 0
+
+
+def test_debug(db):
+    _clean(db)
+    user = _base_setup(db)
+    result = Study.debug(db)
+    assert result["count"] == 17
+    assert len(result["items"]) == 17
+    assert "_sa_instance_state" not in result["items"][0]
+
+
+def test_study_and_version_no_name(db):
+    _clean(db)
+    user = _base_setup(db)
+    u = User(**user.__dict__)
+    fi = FileImportDB(
+        filepath="path/noname.xlsx",
+        filename="noname.xlsx",
+        status="ok",
+        type="USDM_EXCEL",
+        uuid="uuid-noname",
+        user_id=user.id,
+    )
+    db.add(fi)
+    db.commit()
+    db.refresh(fi)
+    fi_model = FileImport(**fi.__dict__)
+    params = {
+        "name": "",
+        "full_title": "No Name Study",
+        "phase": "Phase 1",
+        "sponsor": "SPONSOR A",
+        "sponsor_identifier": "sp_a",
+        "nct_identifier": "nct_a",
+    }
+    study, present = Study.study_and_version(params, u, fi_model, db)
+    assert study is not None
+    assert present is False
+
+
+def test_generate_name():
+    assert Study._generate_name("my_file-v2.xlsx") == "MYFILEV2XLSX"
+    assert Study._generate_name("simple") == "SIMPLE"
+
+
+def test_add_filters_name_like(db):
+    _clean(db)
+    user = _base_setup(db)
+    query = db.query(StudyDB)
+    query = Study._add_filters(query, {"name": "STUDY 2"})
+    results = query.all()
+    assert len(results) == 1
+
+
+def test_add_filters_other(db):
+    _clean(db)
+    user = _base_setup(db)
+    query = db.query(StudyDB)
+    query = Study._add_filters(query, {"user_id": user.id})
+    results = query.all()
+    assert len(results) == 17
 
 
 def _clean(db: Session):

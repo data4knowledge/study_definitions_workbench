@@ -134,3 +134,45 @@ def test_clear_users(db):
 
     # Verify users were cleared
     assert db.query(UserDB).count() == 0
+
+
+def test_migrate_below_31(db):
+    """Test migration when version < 31."""
+    manager = DatabaseManager(session=db)
+    # Set version to 0
+    cursor = db.connection().connection.cursor()
+    cursor.execute("pragma user_version = 0")
+    db.commit()
+    manager.migrate()
+    # Verify version was updated to 31
+    version = manager._get_version()
+    assert version == 31
+
+
+def test_migrate_at_31(db):
+    """Test migration when version == 31."""
+    manager = DatabaseManager(session=db)
+    cursor = db.connection().connection.cursor()
+    cursor.execute("pragma user_version = 31")
+    db.commit()
+    manager.migrate()
+    version = manager._get_version()
+    assert version == 32
+
+
+def test_migrate_above_31(db):
+    """Test migration when version > 31 (no migration needed)."""
+    manager = DatabaseManager(session=db)
+    cursor = db.connection().connection.cursor()
+    cursor.execute("pragma user_version = 32")
+    db.commit()
+    manager.migrate()
+    version = manager._get_version()
+    assert version == 32
+
+
+def test_get_version(db):
+    """Test _get_version returns the current pragma version."""
+    manager = DatabaseManager(session=db)
+    version = manager._get_version()
+    assert isinstance(version, int)

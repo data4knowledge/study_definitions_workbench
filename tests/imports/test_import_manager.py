@@ -372,6 +372,40 @@ class TestImportManager:
             )
             mock_session_local.return_value.close.assert_called_once()
 
+    def test_imports_with_errors(self):
+        result = ImportManager.imports_with_errors()
+        assert ImportManager.USDM_EXCEL in result
+        assert ImportManager.M11_DOCX in result
+        assert len(result) == 8
+
+    @pytest.mark.asyncio
+    async def test_process_failure(
+        self,
+        mock_user,
+        mock_data_files,
+        mock_session_local,
+        mock_file_import,
+        mock_study,
+        mock_connection_manager,
+    ):
+        with patch("app.imports.import_manager.ImportExcel") as mock_processor:
+            mock_instance = mock_processor.return_value
+            mock_instance.process = AsyncMock(return_value=False)
+            mock_instance.success = False
+            mock_instance.fatal_error = "Import failed"
+            mock_instance.usdm = '{"study": {}}'
+            mock_instance.errors = []
+            mock_instance.extra = {}
+            mock_instance.study_parameters = {}
+            manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
+            manager.files = mock_data_files.return_value
+            manager.uuid = "test-uuid"
+            await manager.process()
+            mock_file_import.return_value.update_status.assert_any_call(
+                "Failed", mock_session_local.return_value
+            )
+            mock_connection_manager.error.assert_called_once()
+
     def test_save_file(self, mock_user, mock_data_files):
         """Test _save_file method."""
         # Setup

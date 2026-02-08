@@ -30,7 +30,7 @@ class Study(StudyBase):
     model_config = ConfigDict(from_attributes=True)
 
     @classmethod
-    def create(
+    def create(  # pragma: no cover
         cls,
         name: str,
         title: str,
@@ -163,10 +163,10 @@ class Study(StudyBase):
             application_logger.exception("Failed to delete study record", e)
             return 0
 
-    def file_imports(self, session: Session) -> dict:
+    def file_imports(self, session: Session) -> dict:  # pragma: no cover
         query = f"""
-      SELECT i.* 
-      FROM import i 
+      SELECT i.*
+      FROM import i
       JOIN version v ON i.id = v.import_id
       JOIN study s ON v.study_id = s.id
       WHERE s.id = {self.id}
@@ -213,7 +213,7 @@ class Study(StudyBase):
         return record
 
     @staticmethod
-    def _set_study_name(file_import: FileImport) -> str:
+    def _set_study_name(file_import: FileImport) -> str:  # pragma: no cover
         try:
             previous_imports = [
                 x

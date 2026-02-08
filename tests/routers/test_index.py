@@ -253,6 +253,19 @@ def mock_study_sponsors_many(mocker):
     return mock
 
 
+def test_index_page_with_cookie_filter(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    sp = mock_study_page(mocker)
+    cookie = base_cookie()
+    cookie["phase"][1]["selected"] = False
+    client.cookies = {"index_filter": json.dumps(cookie)}
+    response = client.get("/index/page?page=1&size=12")
+    assert response.status_code == 200
+    assert mock_called(sp)
+
+
 def base_cookie():
     return {
         "phase": [
