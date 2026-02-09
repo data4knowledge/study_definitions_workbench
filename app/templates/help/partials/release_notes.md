@@ -1,3 +1,7 @@
+<h5>Release 0.36.0-alpha.15, 2026-02-09</h5>
+
+Alpha release: PRISM bug fixes (issue 53).
+
 <h5>Release 0.36.0-alpha.14, 2026-02-09</h5>
 
 Alpha release: Fix build dependency issue.
