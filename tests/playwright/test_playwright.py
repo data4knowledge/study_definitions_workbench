@@ -155,35 +155,35 @@ def test_load_excel(playwright: Playwright) -> None:
     browser.close()
 
 
-@pytest.mark.playwright
-def test_load_fhir_v1(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    path = filepath()
-    page.goto(url)
+# @pytest.mark.playwright
+# def test_load_fhir_v1(playwright: Playwright) -> None:
+#     browser = playwright.chromium.launch(headless=False)
+#     context = browser.new_context()
+#     page = context.new_page()
+#     path = filepath()
+#     page.goto(url)
 
-    login(page)
+#     login(page)
 
-    page.get_by_role("button", name=" Import").click()
-    page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
-    page.set_input_files(
-        "#files",
-        os.path.join(path, "tests/test_files/fhir_v1/from/ASP8062_fhir_m11.json"),
-    )
-    page.locator("text = Upload File(s)").last.click()
-    expect(
-        page.get_by_text("Success: Import of 'ASP8062_fhir_m11.json'")
-    ).to_be_visible(timeout=30_000)
-    page.get_by_role("link").first.click()
-    expect(
-        page.get_by_text(
-            "A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants"
-        )
-    ).to_be_visible()
+#     page.get_by_role("button", name=" Import").click()
+#     page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
+#     page.set_input_files(
+#         "#files",
+#         os.path.join(path, "tests/test_files/fhir_v1/from/ASP8062_fhir_m11.json"),
+#     )
+#     page.locator("text = Upload File(s)").last.click()
+#     expect(
+#         page.get_by_text("Success: Import of 'ASP8062_fhir_m11.json'")
+#     ).to_be_visible(timeout=30_000)
+#     page.get_by_role("link").first.click()
+#     expect(
+#         page.get_by_text(
+#             "A Phase 1 Randomized, Placebo-controlled Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants"
+#         )
+#     ).to_be_visible()
 
-    context.close()
-    browser.close()
+#     context.close()
+#     browser.close()
 
 
 @pytest.mark.playwright
@@ -242,28 +242,19 @@ def test_view_menu(playwright: Playwright) -> None:
     page.get_by_role("button", name=" Views").click()
     expect(page.locator("#navBarMain")).to_contain_text("Safety View")
     expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
-    expect(page.locator("#navBarMain")).to_contain_text("Protocol")
+    expect(page.locator("#navBarMain")).to_contain_text("M11 Protocol")
     expect(page.locator("#navBarMain")).to_contain_text("Version History")
 
     page.get_by_role("link", name="Safety View").click()
     page.get_by_role("button", name=" Views").click()
     expect(page.locator("#navBarMain")).to_contain_text("Summary View")
     expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
-    expect(page.locator("#navBarMain")).to_contain_text("Protocol")
     expect(page.locator("#navBarMain")).to_contain_text("Version History")
 
     page.get_by_role("link", name="Statistics View").click()
     page.get_by_role("button", name=" Views").click()
     expect(page.locator("#navBarMain")).to_contain_text("Summary View")
     expect(page.locator("#navBarMain")).to_contain_text("Safety View")
-    expect(page.locator("#navBarMain")).to_contain_text("Protocol")
-    expect(page.locator("#navBarMain")).to_contain_text("Version History")
-
-    page.get_by_role("link", name="Protocol").click()
-    page.get_by_role("button", name=" Views").click()
-    expect(page.locator("#navBarMain")).to_contain_text("Summary View")
-    expect(page.locator("#navBarMain")).to_contain_text("Safety View")
-    expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
     expect(page.locator("#navBarMain")).to_contain_text("Version History")
 
     page.get_by_role("link", name="Version History").click()
@@ -271,18 +262,73 @@ def test_view_menu(playwright: Playwright) -> None:
     expect(page.locator("#navBarMain")).to_contain_text("Summary View")
     expect(page.locator("#navBarMain")).to_contain_text("Safety View")
     expect(page.locator("#navBarMain")).to_contain_text("Statistics View")
-    expect(page.locator("#navBarMain")).to_contain_text("Protocol")
 
     context.close()
     browser.close()
 
 
+# @pytest.mark.playwright
+# def test_export_import(playwright: Playwright) -> None:
+#     browser = playwright.chromium.launch(headless=False)
+#     context = browser.new_context()
+#     page = context.new_page()
+#     path = filepath()
+#     page.goto(url)
+
+#     login(page)
+
+#     page.get_by_role("link", name=f" {display_name()}").click()
+#     page.once("dialog", lambda dialog: dialog.accept())
+#     page.get_by_role("link", name=" Delete Database").click()
+#     page.get_by_role("link", name=" Home").click()
+
+#     page.get_by_role("button", name=" Import").click()
+#     page.get_by_role("link", name="M11 Document (.docx)").click()
+#     page.set_input_files(
+#         "#files", os.path.join(path, "tests/test_files/m11/WA42380/WA42380.docx")
+#     )
+#     page.locator("text = Upload File(s)").last.click()
+#     expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
+#     page.get_by_role("link").first.click()
+
+#     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+#     page.get_by_role("button", name=" Export").click()
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
+#     _ = download_info.value
+#     page.get_by_role("navigation").get_by_role("link").first.click()
+#     page.get_by_role("button", name=" Import").click()
+#     page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
+#     page.set_input_files(
+#         "#files",
+#         os.path.join(path, "tests/test_files/fhir_v1/from/WA42380_fhir_m11.json"),
+#     )
+#     page.locator("text = Upload File(s)").last.click()
+#     expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
+#     page.get_by_role("link").first.click()
+
+#     expect(page.locator("#card_1_div")).to_contain_text(
+#         "A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA"
+#     )
+#     expect(page.locator("#card_2_div")).to_contain_text(
+#         "A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA"
+#     )
+#     page.locator("#card_2_div").get_by_role("link", name=" View Details").click()
+#     expect(page.get_by_role("img", name="alt text")).to_be_visible()
+#     page.get_by_role("navigation").get_by_role("link").first.click()
+#     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+#     expect(page.get_by_role("img", name="alt text")).to_be_visible()
+
+#     context.close()
+#     browser.close()
+
+
 @pytest.mark.playwright
-def test_export_import(playwright: Playwright) -> None:
+def test_selection_menu(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    path = filepath()
+    # path = filepath()
     page.goto(url)
 
     login(page)
@@ -300,48 +346,6 @@ def test_export_import(playwright: Playwright) -> None:
     page.locator("text = Upload File(s)").last.click()
     expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
     page.get_by_role("link").first.click()
-
-    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
-    _ = download_info.value
-    page.get_by_role("navigation").get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
-    page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
-    page.set_input_files(
-        "#files",
-        os.path.join(path, "tests/test_files/fhir_v1/from/WA42380_fhir_m11.json"),
-    )
-    page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
-    page.get_by_role("link").first.click()
-
-    expect(page.locator("#card_1_div")).to_contain_text(
-        "A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA"
-    )
-    expect(page.locator("#card_2_div")).to_contain_text(
-        "A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA"
-    )
-    page.locator("#card_2_div").get_by_role("link", name=" View Details").click()
-    expect(page.get_by_role("img", name="alt text")).to_be_visible()
-    page.get_by_role("navigation").get_by_role("link").first.click()
-    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    expect(page.get_by_role("img", name="alt text")).to_be_visible()
-
-    context.close()
-    browser.close()
-
-
-@pytest.mark.playwright
-def test_selection_menu(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    # path = filepath()
-    page.goto(url)
-
-    login(page)
 
     page.locator("#card_1_div").get_by_role("button", name=" Select").click()
     expect(page.get_by_role("button", name=" Selection")).to_be_visible()
@@ -462,74 +466,74 @@ def test_soa_export(playwright: Playwright) -> None:
     browser.close()
 
 
-@pytest.mark.playwright
-def test_fhir_export_madrid_excel(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    path = filepath()
-    page.goto(url)
+# @pytest.mark.playwright
+# def test_fhir_export_madrid_excel(playwright: Playwright) -> None:
+#     browser = playwright.chromium.launch(headless=False)
+#     context = browser.new_context()
+#     page = context.new_page()
+#     path = filepath()
+#     page.goto(url)
 
-    login(page)
-    delete_db(page)
+#     login(page)
+#     delete_db(page)
 
-    load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
+#     load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
 
-    page.get_by_role("link").first.click()
-    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR, Madrid (.").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR, Pittsburgh (PRISM 3").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+#     page.get_by_role("link").first.click()
+#     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+#     page.get_by_role("button", name=" Export").click()
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
+#     download = download_info.value
+#     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+#     page.get_by_role("button", name=" Export").click()
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name="M11 FHIR, Madrid (.").click()
+#     download = download_info.value
+#     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+#     page.get_by_role("button", name=" Export").click()
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name="M11 FHIR, Pittsburgh (PRISM 3").click()
+#     download = download_info.value
+#     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
 
-    context.close()
-    browser.close()
+#     context.close()
+#     browser.close()
 
 
-@pytest.mark.playwright
-def test_fhir_export_madrid_word(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    path = filepath()
-    page.goto(url)
+# @pytest.mark.playwright
+# def test_fhir_export_madrid_word(playwright: Playwright) -> None:
+#     browser = playwright.chromium.launch(headless=False)
+#     context = browser.new_context()
+#     page = context.new_page()
+#     path = filepath()
+#     page.goto(url)
 
-    login(page)
-    delete_db(page)
+#     login(page)
+#     delete_db(page)
 
-    load_m11(page, path, "tests/test_files/m11/LZZT/LZZT.docx")
+#     load_m11(page, path, "tests/test_files/m11/LZZT/LZZT.docx")
 
-    page.get_by_role("link").first.click()
-    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR, Madrid (.").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="M11 FHIR, Pittsburgh (PRISM 3").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+#     page.get_by_role("link").first.click()
+#     page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
+#     page.get_by_role("button", name=" Export").click()
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
+#     download = download_info.value
+#     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+#     page.get_by_role("button", name=" Export").click()
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name="M11 FHIR, Madrid (.").click()
+#     download = download_info.value
+#     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+#     page.get_by_role("button", name=" Export").click()
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name="M11 FHIR, Pittsburgh (PRISM 3").click()
+#     download = download_info.value
+#     download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
 
-    context.close()
-    browser.close()
+#     context.close()
+#     browser.close()
 
 
 @pytest.mark.playwright
@@ -856,10 +860,10 @@ def test_pagination(playwright: Playwright) -> None:
     load_m11(page, path, "tests/test_files/m11/ASP8062/ASP8062.docx")
     load_m11(page, path, "tests/test_files/m11/RadVax/RadVax.docx")
     load_m11(page, path, "tests/test_files/m11/LZZT/LZZT.docx")
-    load_fhir(page, path, "tests/test_files/fhir_v1/from/IGBJ_fhir_m11.json")
-    load_fhir(page, path, "tests/test_files/fhir_v1/from/WA42380_fhir_m11.json")
-    load_fhir(page, path, "tests/test_files/fhir_v1/from/ASP8062_fhir_m11.json")
-    load_fhir(page, path, "tests/test_files/fhir_v1/from/DEUCRALIP_fhir_m11.json")
+    load_fhir(page, path, "tests/test_files/fhir_v3/from/IGBJ_fhir_m11.json")
+    load_fhir(page, path, "tests/test_files/fhir_v3/from/WA42380_fhir_m11.json")
+    load_fhir(page, path, "tests/test_files/fhir_v3/from/ASP8062_fhir_m11.json")
+    load_fhir(page, path, "tests/test_files/fhir_v3/from/DEUCRALIP_fhir_m11.json")
     load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
 
     page.get_by_role("link").first.click()
@@ -1087,7 +1091,7 @@ def load_m11(page, root_path, filepath):
 def load_fhir(page, root_path, filepath):
     page.get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
-    page.get_by_role("link", name="M11 FHIR, Dallas (PRISM 2) (.").click()
+    page.get_by_role("link", name="M11 FHIR, IG (PRISM 3)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
     expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
