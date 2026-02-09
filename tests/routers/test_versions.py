@@ -35,7 +35,7 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
         """<a class="dropdown-item" href="/transmissions/status?page=1&size=10">Transmission Status</a>"""
         in response.text
     )
-    assert """M11 FHIR, Dallas (PRISM 2) (.json)""" in response.text
+    assert """M11 FHIR, IG (PRISM 3) (.json)""" in response.text
     assert mock_called(uc)
     assert mock_called(ift)
     assert mock_called(uji)
@@ -80,7 +80,7 @@ def test_version_history(mocker, monkeypatch):
         in response.text
     )
     assert (
-        '<h6 class="card-subtitle mb-2 text-muted">Sponsor: Identifier For Test | Phase: Phase For Test | Identifier:  | Version: 1</h6>'
+        '<h6 class="card-subtitle mb-2 text-muted">Sponsor: Identifier For Test | Phase: Phase For Test | Identifier: STUDY-001 | Version: 1</h6>'
         in response.text
     )
     assert mock_called(uc)

@@ -43,8 +43,13 @@ def mock_usdm_study_version(mocker, path="app.main"):
         {
             "id": "1",
             "version_identifier": "1",
-            "identifiers": {"Pharmaceutical Company": "Identifier For Test"},
-            "titles": {"Official Study Title": "The Offical Study Title For Test"},
+            "identifiers": {
+                "C54149": {
+                    "label": "Identifier For Test",
+                    "identifier": "STUDY-001",
+                }
+            },
+            "titles": {"C207616": "The Offical Study Title For Test"},
             "study_designs": {
                 "xxx": {
                     "id": "2",

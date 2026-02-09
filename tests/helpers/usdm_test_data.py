@@ -16,21 +16,21 @@ def _build_version():
                 "id": "org-1",
                 "name": "Pharma Corp",
                 "label": "Pharma Label",
-                "type": {"decode": "Pharmaceutical Company"},
+                "type": {"code": "C54149", "decode": "Pharmaceutical Company"},
             },
             {
                 "id": "org-2",
                 "name": "Regulatory",
-                "type": {"decode": "Regulatory Authority"},
+                "type": {"code": "C188863", "decode": "Regulatory Agency"},
             },
         ],
         "studyIdentifiers": [
-            {"scopeId": "org-1"},
-            {"scopeId": "org-2"},
+            {"scopeId": "org-1", "text": "STUDY-001"},
+            {"scopeId": "org-2", "text": "REG-002"},
         ],
         "titles": [
-            {"type": {"decode": "Official Study Title"}, "text": "Test Study"},
-            {"type": {"decode": "Brief Title"}, "text": "Brief Test"},
+            {"type": {"code": "C207616", "decode": "Official Study Title"}, "text": "Test Study"},
+            {"type": {"code": "C207615", "decode": "Brief Study Title"}, "text": "Brief Test"},
         ],
         "studyDesigns": [_build_design()],
         "studyInterventions": [

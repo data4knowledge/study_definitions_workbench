@@ -597,7 +597,7 @@ def test_version_transmit_valid(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mocker.patch("app.main.run_fhir_m11_transmit")
-    response = client.get("/versions/1/transmit/2?version=prism2", follow_redirects=False)
+    response = client.get("/versions/1/transmit/2?version=prism3", follow_redirects=False)
     assert response.status_code == 307
 
 

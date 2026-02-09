@@ -13136,7 +13136,7 @@
               "coding": [
                 {
                   "system": "http://www.cdisc.org",
-                  "version": "2025-09-26",
+                  "version": "2024-09-27",
                   "code": "C207646",
                   "display": "Study Acronym"
                 }
@@ -13149,7 +13149,7 @@
               "coding": [
                 {
                   "system": "http://www.cdisc.org",
-                  "version": "2025-09-26",
+                  "version": "2024-09-27",
                   "code": "C207615",
                   "display": "Brief Study Title"
                 }

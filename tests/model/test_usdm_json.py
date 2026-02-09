@@ -30,20 +30,22 @@ class TestStudyVersion:
         result = usdm.study_version()
         assert result["id"] == 1
         assert result["version_identifier"] == "v1.0"
-        assert result["titles"]["Official Study Title"] == "Test Study"
-        assert result["titles"]["Brief Title"] == "Brief Test"
+        assert result["titles"]["C207616"] == "Test Study"
+        assert result["titles"]["C207615"] == "Brief Test"
         assert result["phase"] == "Phase III"
         assert "design-1" in result["study_designs"]
 
     def test_org_with_label(self):
         usdm = _build_usdm()
         result = usdm.study_version()
-        assert result["identifiers"]["Pharmaceutical Company"] == "Pharma Label"
+        assert result["identifiers"]["C54149"]["label"] == "Pharma Label"
+        assert result["identifiers"]["C54149"]["identifier"] == "STUDY-001"
 
     def test_org_without_label(self):
         usdm = _build_usdm()
         result = usdm.study_version()
-        assert result["identifiers"]["Regulatory Authority"] == "Regulatory"
+        assert result["identifiers"]["C188863"]["label"] == "Regulatory"
+        assert result["identifiers"]["C188863"]["identifier"] == "REG-002"
 
     def test_design_with_label(self):
         usdm = _build_usdm()

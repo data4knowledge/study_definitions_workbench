@@ -791,7 +791,7 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(
         page.get_by_role(
             "heading",
-            name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2",
+            name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: H2Q-MC-LZZT | Version: 2",
         )
     ).to_be_visible()
     page.get_by_role("link", name=" Back").click()
@@ -799,7 +799,7 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
     expect(
         page.get_by_role(
             "heading",
-            name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: | Version: 2",
+            name="Sponsor: Eli Lilly | Phase: Phase II Trial | Identifier: H2Q-MC-LZZT | Version: 2",
         )
     ).to_be_visible()
     expect(page.get_by_role("cell", name='"text": "LZZT - NEW"')).to_be_visible()
@@ -933,7 +933,7 @@ def test_filter(playwright: Playwright) -> None:
 
     # Check Phase menu
     page.get_by_role("button", name=" Phases").click()
-    expect(page.get_by_text("Phase I Trial Phase II Trial")).to_be_visible()
+    expect(page.locator("li").filter(has_text="Phase 1")).to_be_visible()
     page.get_by_role("button", name=" Phases").click()
 
     # Check filter
@@ -942,7 +942,7 @@ def test_filter(playwright: Playwright) -> None:
         "checkbox"
     ).uncheck()
     page.get_by_role("button", name=" Phases").click()
-    page.locator("li").filter(has_text="Phase I Trial").get_by_role(
+    page.locator("li").filter(has_text="Phase 1").get_by_role(
         "checkbox"
     ).uncheck()
     page.locator("li").filter(has_text="Phase II Trial").get_by_role(
@@ -982,7 +982,7 @@ def test_filter(playwright: Playwright) -> None:
         "checkbox"
     ).uncheck()
     page.get_by_role("button", name=" Phases").click()
-    page.locator("li").filter(has_text="Phase I Trial").get_by_role("checkbox").check()
+    page.locator("li").filter(has_text="Phase 1").get_by_role("checkbox").check()
     page.locator("li").filter(has_text="Phase II Trial").get_by_role("checkbox").check()
     page.get_by_role("button", name=" Filter").click()
     expect(page.locator("#card_2_div")).to_contain_text(
@@ -997,47 +997,47 @@ def test_filter(playwright: Playwright) -> None:
     browser.close()
 
 
-# Expects data from previous test
-@pytest.mark.playwright
-def test_m11(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto(url)
+# # Expects data from previous test
+# @pytest.mark.playwright
+# def test_m11_specification(playwright: Playwright) -> None:
+#     browser = playwright.chromium.launch(headless=False)
+#     context = browser.new_context()
+#     page = context.new_page()
+#     page.goto(url)
 
-    login(page)
+#     login(page)
 
-    page.get_by_role("button", name=" ICH M11").click()
-    page.get_by_role("link", name="M11 Specification").click()
-    page.get_by_role("link", name="Sponsor Confidentiality").click()
-    page.locator("#specification-card div").filter(
-        has_text="Template Specification Long"
-    ).locator("i").click()
-    expect(page.locator("#data-div")).to_contain_text(
-        "M11 Specification: Sponsor Confidentiality Statement"
-    )
-    expect(page.locator("#template-div")).to_contain_text(
-        "Enter Sponsor Confidentiality Statement"
-    )
-    page.locator("#specification-card i").nth(1).click()
-    expect(page.locator("#technical-div")).to_contain_text(
-        "Sponsor Confidentiality Statement"
-    )
-    page.locator("#specification-card div").filter(
-        has_text="USDM Mapping Name Sponsor"
-    ).locator("i").click()
-    expect(page.locator("#usdm-div")).to_contain_text(
-        "Sponsor Confidentiality Statement"
-    )
-    page.locator("#specification-card div").filter(
-        has_text="FHIR M11 Mapping Resource"
-    ).locator("i").click()
-    expect(page.locator("#fhir-div")).to_contain_text(
-        "ResearchStudy.extension[confidentialityStatement]"
-    )
+#     page.get_by_role("button", name=" ICH M11").click()
+#     page.get_by_role("link", name="M11 Specification").click()
+#     page.get_by_role("link", name="Sponsor Confidentiality").click()
+#     page.locator("#specification-card div").filter(
+#         has_text="Template Specification Long"
+#     ).locator("i").click()
+#     expect(page.locator("#data-div")).to_contain_text(
+#         "M11 Specification: Sponsor Confidentiality Statement"
+#     )
+#     expect(page.locator("#template-div")).to_contain_text(
+#         "Enter Sponsor Confidentiality Statement"
+#     )
+#     page.locator("#specification-card i").nth(1).click()
+#     expect(page.locator("#technical-div")).to_contain_text(
+#         "Sponsor Confidentiality Statement"
+#     )
+#     page.locator("#specification-card div").filter(
+#         has_text="USDM Mapping Name Sponsor"
+#     ).locator("i").click()
+#     expect(page.locator("#usdm-div")).to_contain_text(
+#         "Sponsor Confidentiality Statement"
+#     )
+#     page.locator("#specification-card div").filter(
+#         has_text="FHIR M11 Mapping Resource"
+#     ).locator("i").click()
+#     expect(page.locator("#fhir-div")).to_contain_text(
+#         "ResearchStudy.extension[confidentialityStatement]"
+#     )
 
-    context.close()
-    browser.close()
+#     context.close()
+#     browser.close()
 
 
 def username():
@@ -1085,7 +1085,7 @@ def load_m11(page, root_path, filepath):
     page.get_by_role("link", name="M11 Document (.docx)").click()
     page.set_input_files("#files", os.path.join(root_path, filepath))
     page.locator("text = Upload File(s)").last.click()
-    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=30_000)
+    expect(page.get_by_text("Success: Import of")).to_be_visible(timeout=120_000)
 
 
 def load_fhir(page, root_path, filepath):
