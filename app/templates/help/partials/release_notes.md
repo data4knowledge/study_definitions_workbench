@@ -1,3 +1,11 @@
+<h5>Release 0.36.0-alpha.14, 2026-02-09</h5>
+
+Alpha release: Fix build dependency issue.
+
+<h5>Release 0.36.0-alpha.13, 2026-02-09</h5>
+
+Version not used.
+
 <h5>Release 0.36.0-alpha.12, 2026-02-09</h5>
 
 Alpha release: Add in HL7 virtual connectathon updates (issue 52).
