@@ -289,7 +289,9 @@ class TestImportCPT:
             instance.errors.to_dict.return_value = {"errors": []}
             instance.errors.dump.return_value = "No errors"
             processor = ImportCPT("CPT_DOCX", "test-uuid", "/path/to/file")
-            with patch.object(processor, "_study_parameters", return_value={"name": "test"}):
+            with patch.object(
+                processor, "_study_parameters", return_value={"name": "test"}
+            ):
                 result = await processor.process()
         assert result
         assert processor.usdm == '{"study": {"name": "test-study"}}'
@@ -324,11 +326,16 @@ class TestImportFhirPRISM2:
     @pytest.mark.asyncio
     async def test_process_success(self, mock_from_fhir_v1):
         processor = ImportFhirPRISM2("FHIR_PRISM2_JSON", "test-uuid", "/path/to/file")
-        with patch.object(processor, "_study_parameters", return_value={"name": "test"}):
+        with patch.object(
+            processor, "_study_parameters", return_value={"name": "test"}
+        ):
             result = await processor.process()
         assert result
         assert processor.success
-        assert processor.usdm == mock_from_fhir_v1.return_value.from_message.return_value.to_json.return_value
+        assert (
+            processor.usdm
+            == mock_from_fhir_v1.return_value.from_message.return_value.to_json.return_value
+        )
 
     @pytest.mark.asyncio
     async def test_process_failure(self):
@@ -337,7 +344,9 @@ class TestImportFhirPRISM2:
             instance.from_message = AsyncMock(return_value=None)
             instance.errors.to_dict.return_value = {"errors": ["fail"]}
             instance.errors.dump.return_value = "Error"
-            processor = ImportFhirPRISM2("FHIR_PRISM2_JSON", "test-uuid", "/path/to/file")
+            processor = ImportFhirPRISM2(
+                "FHIR_PRISM2_JSON", "test-uuid", "/path/to/file"
+            )
             result = await processor.process()
         assert not result
         assert not processor.success
@@ -356,8 +365,12 @@ class TestImportFhirPRISM3:
             instance.from_message = AsyncMock(return_value=mock_wrapper)
             instance.errors.to_dict.return_value = {"errors": []}
             instance.errors.dump.return_value = "No errors"
-            processor = ImportFhirPRISM3("FHIR_PRISM3_JSON", "test-uuid", "/path/to/file")
-            with patch.object(processor, "_study_parameters", return_value={"name": "test"}):
+            processor = ImportFhirPRISM3(
+                "FHIR_PRISM3_JSON", "test-uuid", "/path/to/file"
+            )
+            with patch.object(
+                processor, "_study_parameters", return_value={"name": "test"}
+            ):
                 result = await processor.process()
         assert result
         assert processor.success
@@ -369,7 +382,9 @@ class TestImportFhirPRISM3:
             instance.from_message = AsyncMock(return_value=None)
             instance.errors.to_dict.return_value = {"errors": ["fail"]}
             instance.errors.dump.return_value = "Error"
-            processor = ImportFhirPRISM3("FHIR_PRISM3_JSON", "test-uuid", "/path/to/file")
+            processor = ImportFhirPRISM3(
+                "FHIR_PRISM3_JSON", "test-uuid", "/path/to/file"
+            )
             result = await processor.process()
         assert not result
         assert not processor.success

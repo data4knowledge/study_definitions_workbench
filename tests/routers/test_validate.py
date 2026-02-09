@@ -16,7 +16,10 @@ def test_validate_usdm3_get(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     application_configuration.file_picker = {
-        "browser": False, "os": True, "pfda": False, "source": "os",
+        "browser": False,
+        "os": True,
+        "pfda": False,
+        "source": "os",
     }
     response = client.get("/validate/usdm3")
     assert response.status_code == 200
@@ -27,7 +30,10 @@ def test_validate_usdm_get(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     application_configuration.file_picker = {
-        "browser": False, "os": True, "pfda": False, "source": "os",
+        "browser": False,
+        "os": True,
+        "pfda": False,
+        "source": "os",
     }
     response = client.get("/validate/usdm")
     assert response.status_code == 200
@@ -40,16 +46,22 @@ async def test_validate_usdm3_post(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     fh = mocker.patch("app.routers.validate.FormHandler")
     fh_instance = fh.return_value
-    fh_instance.get_files = AsyncMock(return_value=(
-        {"filename": "test.json", "contents": b'{"test": true}'},
-        [],
-        ["File accepted"],
-    ))
+    fh_instance.get_files = AsyncMock(
+        return_value=(
+            {"filename": "test.json", "contents": b'{"test": true}'},
+            [],
+            ["File accepted"],
+        )
+    )
     df = mocker.patch("app.routers.validate.DataFiles")
     df_instance = df.return_value
     df_instance.new.return_value = "test-uuid"
     df_instance.save.return_value = ("/tmp/test.json", "test.json")
-    df_instance.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", True)
+    df_instance.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        True,
+    )
     df_instance.delete.return_value = True
     usdm3 = mocker.patch("app.routers.validate.USDM3")
     usdm3_instance = usdm3.return_value
@@ -68,16 +80,22 @@ async def test_validate_usdm_post(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     fh = mocker.patch("app.routers.validate.FormHandler")
     fh_instance = fh.return_value
-    fh_instance.get_files = AsyncMock(return_value=(
-        {"filename": "test.json", "contents": b'{"test": true}'},
-        [],
-        ["File accepted"],
-    ))
+    fh_instance.get_files = AsyncMock(
+        return_value=(
+            {"filename": "test.json", "contents": b'{"test": true}'},
+            [],
+            ["File accepted"],
+        )
+    )
     df = mocker.patch("app.routers.validate.DataFiles")
     df_instance = df.return_value
     df_instance.new.return_value = "test-uuid"
     df_instance.save.return_value = ("/tmp/test.json", "test.json")
-    df_instance.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", True)
+    df_instance.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        True,
+    )
     df_instance.delete.return_value = True
     usdm4 = mocker.patch("app.routers.validate.USDM4")
     usdm4_instance = usdm4.return_value

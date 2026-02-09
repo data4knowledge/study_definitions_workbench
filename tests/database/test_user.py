@@ -125,12 +125,18 @@ def test_endpoints_page(db):
     _clean(db)
     user, _ = User.create("ident_ep", "ep@example.com", "EP User", db)
     Endpoint.create(
-        name="EP1", endpoint="https://ep1.test/api", type="FHIR",
-        user_id=user.id, session=db,
+        name="EP1",
+        endpoint="https://ep1.test/api",
+        type="FHIR",
+        user_id=user.id,
+        session=db,
     )
     Endpoint.create(
-        name="EP2", endpoint="https://ep2.test/api", type="FHIR",
-        user_id=user.id, session=db,
+        name="EP2",
+        endpoint="https://ep2.test/api",
+        type="FHIR",
+        user_id=user.id,
+        session=db,
     )
     result = User.endpoints_page(1, 10, user.id, db)
     assert result["count"] == 2

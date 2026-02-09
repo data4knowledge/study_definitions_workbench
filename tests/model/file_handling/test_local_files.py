@@ -1,10 +1,8 @@
-import os
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from app.model.file_handling.local_files import LocalFiles
 
 
 class TestLocalFilesCheck:
-
     @patch("app.model.file_handling.local_files.os.mkdir")
     def test_creates_dir(self, mock_mkdir):
         mock_mkdir.return_value = None
@@ -26,7 +24,6 @@ class TestLocalFilesCheck:
 
 
 class TestLocalFilesDir:
-
     @patch("app.model.file_handling.local_files.application_configuration")
     def test_dir_with_files(self, mock_config, tmp_path):
         mock_config.local_file_path = str(tmp_path)
@@ -94,7 +91,6 @@ class TestLocalFilesDir:
 
 
 class TestLocalFilesDownload:
-
     @patch("app.model.file_handling.local_files.application_configuration")
     def test_download(self, mock_config, tmp_path):
         mock_config.local_file_path = str(tmp_path)
@@ -108,7 +104,6 @@ class TestLocalFilesDownload:
 
 
 class TestSizeToString:
-
     @patch("app.model.file_handling.local_files.application_configuration")
     def test_zero(self, mock_config):
         mock_config.local_file_path = "/fake"

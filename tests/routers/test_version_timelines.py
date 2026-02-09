@@ -80,8 +80,10 @@ def test_get_study_design_fhir_soa_error(mocker, monkeypatch):
 
 def _mock_usdm_with_files(mocker, files_mock):
     """Mock USDMJson.__init__ so it only sets _files on the instance."""
+
     def custom_init(self, *args, **kwargs):
         self._files = files_mock
+
     mocker.patch("app.routers.version_timelines.USDMJson.__init__", new=custom_init)
 
 
@@ -89,9 +91,15 @@ def test_display_patient_journey(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     files_mock = MagicMock()
-    files_mock.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
+    files_mock.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        "text/plain",
+    )
     _mock_usdm_with_files(mocker, files_mock)
-    mocker.patch("app.routers.version_timelines.USDM4PJ").return_value.simple_view.return_value = {}
+    mocker.patch(
+        "app.routers.version_timelines.USDM4PJ"
+    ).return_value.simple_view.return_value = {}
     response = client.get("/versions/1/studyDesigns/d1/timelines/t1/pj")
     assert response.status_code == 200
 
@@ -111,10 +119,16 @@ def test_display_expansion(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     files_mock = MagicMock()
-    files_mock.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
+    files_mock.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        "text/plain",
+    )
     files_mock.exists.return_value = False
     _mock_usdm_with_files(mocker, files_mock)
-    mocker.patch("app.routers.version_timelines.USDM4PJ").return_value.expanded_view.return_value = {}
+    mocker.patch(
+        "app.routers.version_timelines.USDM4PJ"
+    ).return_value.expanded_view.return_value = {}
     response = client.get("/versions/1/studyDesigns/d1/timelines/t1/expansion")
     assert response.status_code == 200
 
@@ -123,10 +137,16 @@ def test_display_expansion_with_costs(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     files_mock = MagicMock()
-    files_mock.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
+    files_mock.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        "text/plain",
+    )
     files_mock.exists.return_value = True
     _mock_usdm_with_files(mocker, files_mock)
-    mocker.patch("app.routers.version_timelines.USDM4PJ").return_value.expanded_view.return_value = {}
+    mocker.patch(
+        "app.routers.version_timelines.USDM4PJ"
+    ).return_value.expanded_view.return_value = {}
     response = client.get("/versions/1/studyDesigns/d1/timelines/t1/expansion")
     assert response.status_code == 200
 
@@ -135,11 +155,17 @@ def test_export_expansion_with_costs(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     files_mock = MagicMock()
-    files_mock.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
+    files_mock.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        "text/plain",
+    )
     files_mock.exists.return_value = True
     files_mock.save.return_value = ("tests/test_files/main/simple.txt", "simple.txt")
     _mock_usdm_with_files(mocker, files_mock)
-    mocker.patch("app.routers.version_timelines.USDM4PJ").return_value.expanded_view.return_value = {}
+    mocker.patch(
+        "app.routers.version_timelines.USDM4PJ"
+    ).return_value.expanded_view.return_value = {}
     response = client.get("/versions/1/studyDesigns/d1/timelines/t1/export/expansion")
     assert response.status_code == 200
 
@@ -159,11 +185,17 @@ def test_export_expansion(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     files_mock = MagicMock()
-    files_mock.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
+    files_mock.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        "text/plain",
+    )
     files_mock.exists.return_value = False
     files_mock.save.return_value = ("tests/test_files/main/simple.txt", "simple.txt")
     _mock_usdm_with_files(mocker, files_mock)
-    mocker.patch("app.routers.version_timelines.USDM4PJ").return_value.expanded_view.return_value = {}
+    mocker.patch(
+        "app.routers.version_timelines.USDM4PJ"
+    ).return_value.expanded_view.return_value = {}
     response = client.get("/versions/1/studyDesigns/d1/timelines/t1/export/expansion")
     assert response.status_code == 200
 
@@ -183,10 +215,16 @@ def test_export_patient_journey(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     files_mock = MagicMock()
-    files_mock.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
+    files_mock.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        "text/plain",
+    )
     files_mock.save.return_value = ("tests/test_files/main/simple.txt", "simple.txt")
     _mock_usdm_with_files(mocker, files_mock)
-    mocker.patch("app.routers.version_timelines.USDM4PJ").return_value.simple_view.return_value = {}
+    mocker.patch(
+        "app.routers.version_timelines.USDM4PJ"
+    ).return_value.simple_view.return_value = {}
     response = client.get("/versions/1/studyDesigns/d1/timelines/t1/export/pj")
     assert response.status_code == 200
 

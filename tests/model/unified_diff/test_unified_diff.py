@@ -88,6 +88,7 @@ def test_unified_diff_to_html():
 
 def test_hunk_line_to_html_deleted():
     from app.model.unified_diff.unified_diff import HunkLine
+
     hl = HunkLine("-removed line", 5, None, "deleted")
     html = hl.to_html()
     assert "table-danger" in html
@@ -96,6 +97,7 @@ def test_hunk_line_to_html_deleted():
 
 def test_hunk_line_to_html_inserted():
     from app.model.unified_diff.unified_diff import HunkLine
+
     hl = HunkLine("+added line", None, 6, "inserted")
     html = hl.to_html()
     assert "table-success" in html
@@ -104,6 +106,7 @@ def test_hunk_line_to_html_inserted():
 
 def test_hunk_line_to_html_nochange():
     from app.model.unified_diff.unified_diff import HunkLine
+
     hl = HunkLine(" unchanged", 5, 5, "nochange")
     html = hl.to_html()
     assert "unchanged" in html

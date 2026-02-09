@@ -1,4 +1,3 @@
-import json
 import pytest
 import httpx
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -13,7 +12,6 @@ def service():
 
 
 class TestServiceInit:
-
     def test_strips_trailing_slash(self):
         with patch("app.utility.service.httpx.AsyncClient"):
             svc = Service("https://api.example.com/")
@@ -26,7 +24,6 @@ class TestServiceInit:
 
 
 class TestServiceGet:
-
     @pytest.mark.asyncio
     async def test_success(self, service):
         mock_response = MagicMock()
@@ -56,7 +53,6 @@ class TestServiceGet:
 
 
 class TestServicePost:
-
     @pytest.mark.asyncio
     async def test_success_200(self, service):
         mock_response = MagicMock()
@@ -103,7 +99,6 @@ class TestServicePost:
 
 
 class TestServiceFilePost:
-
     @pytest.mark.asyncio
     async def test_success(self, service):
         mock_response = MagicMock()
@@ -119,7 +114,9 @@ class TestServiceFilePost:
         mock_response.status_code = 201
         mock_response.text = '{"uploaded": true}'
         service._client.post = AsyncMock(return_value=mock_response)
-        result = await service.file_post("/upload", files={"file": b"data"}, data={"name": "test"})
+        result = await service.file_post(
+            "/upload", files={"file": b"data"}, data={"name": "test"}
+        )
         assert result["success"] is True
 
     @pytest.mark.asyncio
@@ -139,7 +136,6 @@ class TestServiceFilePost:
 
 
 class TestServiceDelete:
-
     @pytest.mark.asyncio
     async def test_success(self, service):
         mock_response = MagicMock()
@@ -166,7 +162,6 @@ class TestServiceDelete:
 
 
 class TestServiceStatus:
-
     @pytest.mark.asyncio
     async def test_status(self, service):
         mock_response = MagicMock()
@@ -178,7 +173,6 @@ class TestServiceStatus:
 
 
 class TestServiceFullUrl:
-
     def test_with_slash(self, service):
         assert service._full_url("/path") == "https://api.example.com/path"
 

@@ -6,27 +6,32 @@ from app.utility.fhir_service import FHIRService
 
 @pytest.fixture
 def fhir_service():
-    with patch("app.utility.fhir_service.ServiceEnvironment") as mock_se, \
-         patch("app.utility.service.httpx.AsyncClient"):
+    with (
+        patch("app.utility.fhir_service.ServiceEnvironment") as mock_se,
+        patch("app.utility.service.httpx.AsyncClient"),
+    ):
         mock_se_instance = MagicMock()
-        mock_se_instance.get.side_effect = lambda k: {"ENDPOINT_USERNAME": "user", "ENDPOINT_PASSWORD": "pass"}.get(k, "")
+        mock_se_instance.get.side_effect = lambda k: {
+            "ENDPOINT_USERNAME": "user",
+            "ENDPOINT_PASSWORD": "pass",
+        }.get(k, "")
         mock_se.return_value = mock_se_instance
         svc = FHIRService("https://fhir.example.com")
     return svc
 
 
 class TestFHIRServiceInit:
-
     def test_init(self):
-        with patch("app.utility.fhir_service.ServiceEnvironment") as mock_se, \
-             patch("app.utility.service.httpx.AsyncClient"):
+        with (
+            patch("app.utility.fhir_service.ServiceEnvironment") as mock_se,
+            patch("app.utility.service.httpx.AsyncClient"),
+        ):
             svc = FHIRService("https://fhir.example.com")
         assert svc.base_url == "https://fhir.example.com"
         assert svc._se is not None
 
 
 class TestFHIRServicePut:
-
     @pytest.mark.asyncio
     async def test_put_success_200(self, fhir_service):
         mock_response = MagicMock()
@@ -72,7 +77,6 @@ class TestFHIRServicePut:
 
 
 class TestFHIRServiceWrappers:
-
     @pytest.mark.asyncio
     async def test_bundle_list(self, fhir_service):
         mock_response = MagicMock()

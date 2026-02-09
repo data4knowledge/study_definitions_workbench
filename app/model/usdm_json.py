@@ -8,7 +8,6 @@ from usdm4_fhir import M11 as FHIRM11
 from usdm4_fhir.soa.export.export_soa import ExportSoA as FHIRSoA
 from app.database.version import Version
 from sqlalchemy.orm import Session
-from usdm_db import USDMDb
 from usdm_model.wrapper import Wrapper
 from app.imports.import_manager import ImportManager
 from usdm4 import USDM4
@@ -101,7 +100,7 @@ class USDMJson:
             org = orgs[identifier["scopeId"]]
             result["identifiers"][org["type"]["code"]] = {
                 "label": org["label"] if "label" in org else org["name"],
-                "identifier": identifier["text"]
+                "identifier": identifier["text"],
             }
         for title in version["titles"]:
             result["titles"][title["type"]["code"]] = title["text"]
@@ -120,7 +119,7 @@ class USDMJson:
     def templates(self) -> list[str]:
         study: Study = self._wrapper.study
         return study.document_templates()
-    
+
     def study_design_overall_parameters(self, id: str):
         version = self._data["study"]["versions"][0]
         design = self._study_design(id)

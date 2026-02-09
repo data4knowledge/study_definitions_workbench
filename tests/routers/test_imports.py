@@ -208,7 +208,10 @@ def test_import_cpt_docx(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
     application_configuration.file_picker = {
-        "browser": False, "os": True, "pfda": False, "source": "os",
+        "browser": False,
+        "os": True,
+        "pfda": False,
+        "source": "os",
     }
     response = client.get("/import/cpt-docx")
     assert response.status_code == 200
@@ -220,7 +223,10 @@ def test_import_legacy_pdf(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
     application_configuration.file_picker = {
-        "browser": False, "os": True, "pfda": False, "source": "os",
+        "browser": False,
+        "os": True,
+        "pfda": False,
+        "source": "os",
     }
     response = client.get("/import/legacy-pdf")
     assert response.status_code == 200
@@ -231,10 +237,14 @@ def test_import_fhir_valid(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     from tests.mocks.factory_mocks import factory_user
+
     uc = mocker.patch("app.database.user.User.check")
     uc.return_value = (factory_user(), True)
     application_configuration.file_picker = {
-        "browser": False, "os": True, "pfda": False, "source": "os",
+        "browser": False,
+        "os": True,
+        "pfda": False,
+        "source": "os",
     }
     mocker.patch(
         "app.routers.imports.check_fhir_version",

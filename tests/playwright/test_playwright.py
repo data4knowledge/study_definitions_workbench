@@ -597,7 +597,7 @@ def test_load_export_pj(playwright: Playwright) -> None:
     page = context.new_page()
     path = filepath()
     page.goto(url)
-    
+
     login(page)
     delete_db(page)
 
@@ -942,9 +942,7 @@ def test_filter(playwright: Playwright) -> None:
         "checkbox"
     ).uncheck()
     page.get_by_role("button", name=" Phases").click()
-    page.locator("li").filter(has_text="Phase 1").get_by_role(
-        "checkbox"
-    ).uncheck()
+    page.locator("li").filter(has_text="Phase 1").get_by_role("checkbox").uncheck()
     page.locator("li").filter(has_text="Phase II Trial").get_by_role(
         "checkbox"
     ).uncheck()

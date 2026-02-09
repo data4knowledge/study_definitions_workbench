@@ -185,8 +185,14 @@ def test_delete_success(db):
 def test_delete_failure(db):
     _clean(db)
     study = Study(
-        id=99999, user_id=1, name="X", title="X", phase="X",
-        sponsor="X", sponsor_identifier="X", nct_identifier="X",
+        id=99999,
+        user_id=1,
+        name="X",
+        title="X",
+        phase="X",
+        sponsor="X",
+        sponsor_identifier="X",
+        nct_identifier="X",
     )
     result = study.delete(db)
     assert result == 0

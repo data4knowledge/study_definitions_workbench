@@ -4,7 +4,6 @@ from app.model.file_handling.pfda_files import PFDAFiles
 
 
 class TestPFDAFilesDir:
-
     @patch("app.model.file_handling.pfda_files.subprocess.run")
     def test_dir_success(self, mock_run):
         mock_run.return_value = MagicMock(
@@ -17,9 +16,7 @@ class TestPFDAFilesDir:
 
     @patch("app.model.file_handling.pfda_files.subprocess.run")
     def test_dir_error_response(self, mock_run):
-        mock_run.return_value = MagicMock(
-            stdout=json.dumps({"error": "not found"})
-        )
+        mock_run.return_value = MagicMock(stdout=json.dumps({"error": "not found"}))
         pf = PFDAFiles()
         success, data, error = pf.dir("/")
         assert success is False
@@ -35,7 +32,6 @@ class TestPFDAFilesDir:
 
 
 class TestPFDAFilesDownload:
-
     @patch("builtins.open", create=True)
     @patch("app.model.file_handling.pfda_files.subprocess.run")
     def test_download(self, mock_run, mock_open, tmp_path):

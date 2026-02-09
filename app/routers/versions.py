@@ -173,18 +173,17 @@ async def export_excel(
 
 
 @router.get("/{id}/protocol")
-async def protocol(request: Request, id: int, template: str, session: Session = Depends(get_db)):
+async def protocol(
+    request: Request, id: int, template: str, session: Session = Depends(get_db)
+):
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     full_path, _, _ = usdm.json()
     if full_path:
         _, html = _generate_protocol(template, full_path, usdm)
-        data = {
-            "version": usdm.study_version(),
-            "document": html
-        }
+        data = {"version": usdm.study_version(), "document": html}
         return templates.TemplateResponse(
-           request, "study_versions/protocol.html", {"user": user, "data": data}
+            request, "study_versions/protocol.html", {"user": user, "data": data}
         )
     else:
         return templates.TemplateResponse(
@@ -202,24 +201,31 @@ async def export_protocol(
     request: Request, id: int, template: str, session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    application_logger.info(f"PROTOCOL EXPORT") 
+    application_logger.info("PROTOCOL EXPORT")
     usdm = USDMJson(id, session)
     full_path, _, _ = usdm.json()
-    file_type, html = _generate_protocol(template, full_path, usdm, export=True )
+    file_type, html = _generate_protocol(template, full_path, usdm, export=True)
     protocol_path, filename = usdm._files.save(file_type, html)
     if protocol_path:
-        return FileResponse(path=protocol_path, filename=filename, media_type="text/html")
+        return FileResponse(
+            path=protocol_path, filename=filename, media_type="text/html"
+        )
     else:
         return templates.TemplateResponse(
             request,
             "errors/error.html",
             {
                 "user": user,
-                "data": {"error": f"Error downloading the requested protocol ({template}) file"},
+                "data": {
+                    "error": f"Error downloading the requested protocol ({template}) file"
+                },
             },
         )
 
-def _generate_protocol(template: str, full_path: str, usdm: USDMJson, export: bool = False) -> tuple[str, str]:
+
+def _generate_protocol(
+    template: str, full_path: str, usdm: USDMJson, export: bool = False
+) -> tuple[str, str]:
     html = ""
     file_type = ""
     if template.upper() == "M11":

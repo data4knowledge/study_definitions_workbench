@@ -9,7 +9,11 @@ from tests.mocks.utility_mocks import (
     mock_transmit_role_enabled_true,
     mock_transmit_role_enabled_false,
 )
-from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_study_version, mock_usdm_json_templates
+from tests.mocks.usdm_json_mocks import (
+    mock_usdm_json_init,
+    mock_usdm_study_version,
+    mock_usdm_json_templates,
+)
 from tests.mocks.fhir_version_mocks import mock_fhir_versions
 from tests.mocks.file_mocks import mock_file_import_find
 
@@ -244,7 +248,10 @@ def test_import_xl_get(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
     application_configuration.file_picker = {
-        "browser": False, "os": True, "pfda": False, "source": "os",
+        "browser": False,
+        "os": True,
+        "pfda": False,
+        "source": "os",
     }
     response = client.get("/versions/1/load/costs")
     assert response.status_code == 200
@@ -257,10 +264,17 @@ def test_protocol_m11(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
-    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
-        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
-    ))
-    mocker.patch("app.routers.versions.USDM4M11").return_value.to_html.return_value = "<p>Protocol</p>"
+    mocker.patch(
+        "app.routers.versions.USDMJson.json",
+        return_value=(
+            "tests/test_files/main/simple.txt",
+            "simple.txt",
+            "application/json",
+        ),
+    )
+    mocker.patch(
+        "app.routers.versions.USDM4M11"
+    ).return_value.to_html.return_value = "<p>Protocol</p>"
     response = client.get("/versions/1/protocol?template=M11")
     assert response.status_code == 200
     assert mock_called(uc)
@@ -272,10 +286,17 @@ def test_protocol_cpt(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
-    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
-        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
-    ))
-    mocker.patch("app.routers.versions.USDM4CPT").return_value.to_html.return_value = "<p>CPT</p>"
+    mocker.patch(
+        "app.routers.versions.USDMJson.json",
+        return_value=(
+            "tests/test_files/main/simple.txt",
+            "simple.txt",
+            "application/json",
+        ),
+    )
+    mocker.patch(
+        "app.routers.versions.USDM4CPT"
+    ).return_value.to_html.return_value = "<p>CPT</p>"
     response = client.get("/versions/1/protocol?template=CPT")
     assert response.status_code == 200
     assert mock_called(uc)
@@ -299,13 +320,22 @@ def test_export_protocol_success(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     files_mock = MagicMock()
     files_mock.save.return_value = ("tests/test_files/main/simple.txt", "simple.txt")
+
     def custom_init(self, *args, **kwargs):
         self._files = files_mock
+
     mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
-    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
-        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
-    ))
-    mocker.patch("app.routers.versions.USDM4M11").return_value.to_html.return_value = "<p>Protocol</p>"
+    mocker.patch(
+        "app.routers.versions.USDMJson.json",
+        return_value=(
+            "tests/test_files/main/simple.txt",
+            "simple.txt",
+            "application/json",
+        ),
+    )
+    mocker.patch(
+        "app.routers.versions.USDM4M11"
+    ).return_value.to_html.return_value = "<p>Protocol</p>"
     response = client.get("/versions/1/protocol/export?template=M11")
     assert response.status_code == 200
     assert mock_called(uc)
@@ -317,13 +347,22 @@ def test_export_protocol_error(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     files_mock = MagicMock()
     files_mock.save.return_value = ("", "")
+
     def custom_init(self, *args, **kwargs):
         self._files = files_mock
+
     mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
-    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
-        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
-    ))
-    mocker.patch("app.routers.versions.USDM4M11").return_value.to_html.return_value = "<p>Protocol</p>"
+    mocker.patch(
+        "app.routers.versions.USDMJson.json",
+        return_value=(
+            "tests/test_files/main/simple.txt",
+            "simple.txt",
+            "application/json",
+        ),
+    )
+    mocker.patch(
+        "app.routers.versions.USDM4M11"
+    ).return_value.to_html.return_value = "<p>Protocol</p>"
     response = client.get("/versions/1/protocol/export?template=M11")
     assert response.status_code == 200
     assert "Error downloading the requested protocol" in response.text
@@ -336,9 +375,14 @@ def test_protocol_other(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
-    mocker.patch("app.routers.versions.USDMJson.json", return_value=(
-        "tests/test_files/main/simple.txt", "simple.txt", "application/json"
-    ))
+    mocker.patch(
+        "app.routers.versions.USDMJson.json",
+        return_value=(
+            "tests/test_files/main/simple.txt",
+            "simple.txt",
+            "application/json",
+        ),
+    )
     mock_wrapper = MagicMock()
     mock_wrapper.to_html.return_value = "<p>Other Protocol</p>"
     mocker.patch("app.routers.versions.USDMJson.wrapper", return_value=mock_wrapper)
@@ -351,19 +395,24 @@ def test_protocol_other(mocker, monkeypatch):
 async def test_versions_post_load_success(mocker, monkeypatch):
     from unittest.mock import AsyncMock
     from tests.mocks.fastapi_mocks import mock_async_client
+
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
+
     def custom_init(self, *args, **kwargs):
         self.uuid = "test-uuid"
+
     mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
     fh = mocker.patch("app.routers.versions.FormHandler")
     fh_instance = fh.return_value
-    fh_instance.get_files = AsyncMock(return_value=(
-        {"filename": "costs.yaml", "contents": b"key: value"},
-        None,
-        ["File accepted"],
-    ))
+    fh_instance.get_files = AsyncMock(
+        return_value=(
+            {"filename": "costs.yaml", "contents": b"key: value"},
+            None,
+            ["File accepted"],
+        )
+    )
     df = mocker.patch("app.routers.versions.DataFiles")
     df_instance = df.return_value
     df_instance.save.return_value = ("/tmp/costs.yaml", "costs.yaml")
@@ -377,19 +426,24 @@ async def test_versions_post_load_success(mocker, monkeypatch):
 async def test_versions_post_load_failure(mocker, monkeypatch):
     from unittest.mock import AsyncMock
     from tests.mocks.fastapi_mocks import mock_async_client
+
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
+
     def custom_init(self, *args, **kwargs):
         self.uuid = "test-uuid"
+
     mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
     fh = mocker.patch("app.routers.versions.FormHandler")
     fh_instance = fh.return_value
-    fh_instance.get_files = AsyncMock(return_value=(
-        {"filename": "costs.yaml", "contents": b"key: value"},
-        None,
-        [],
-    ))
+    fh_instance.get_files = AsyncMock(
+        return_value=(
+            {"filename": "costs.yaml", "contents": b"key: value"},
+            None,
+            [],
+        )
+    )
     df = mocker.patch("app.routers.versions.DataFiles")
     df_instance = df.return_value
     df_instance.save.return_value = (None, None)

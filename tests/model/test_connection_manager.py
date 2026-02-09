@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 from app.model.connection_manager import ConnectionManager
 
 
@@ -15,7 +15,6 @@ def mock_ws():
 
 
 class TestConnectionManager:
-
     @pytest.mark.asyncio
     async def test_connect(self, manager, mock_ws):
         await manager.connect("user1", mock_ws)

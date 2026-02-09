@@ -1,23 +1,35 @@
 import json
 from unittest.mock import MagicMock, patch
-from app.utility.template_methods import server_name, single_multiple, restructure_study_list, convert_to_json
+from app.utility.template_methods import (
+    server_name,
+    single_multiple,
+    restructure_study_list,
+    convert_to_json,
+)
 
 
 class TestServerName:
-
     def _make_request(self, url):
         request = MagicMock()
         request.base_url = url
         return request
 
     def test_staging(self):
-        assert server_name(self._make_request("https://staging.example.com")) == "STAGING"
+        assert (
+            server_name(self._make_request("https://staging.example.com")) == "STAGING"
+        )
 
     def test_training(self):
-        assert server_name(self._make_request("https://training.example.com")) == "TRAINING"
+        assert (
+            server_name(self._make_request("https://training.example.com"))
+            == "TRAINING"
+        )
 
     def test_production(self):
-        assert server_name(self._make_request("https://d4k-sdw.example.com")) == "PRODUCTION"
+        assert (
+            server_name(self._make_request("https://d4k-sdw.example.com"))
+            == "PRODUCTION"
+        )
 
     def test_development_localhost(self):
         assert server_name(self._make_request("http://localhost:8000")) == "DEVELOPMENT"
@@ -34,7 +46,6 @@ class TestServerName:
 
 
 class TestSingleMultiple:
-
     @patch("app.utility.template_methods.application_configuration")
     def test_single(self, mock_config):
         mock_config.single_user = True
@@ -47,7 +58,6 @@ class TestSingleMultiple:
 
 
 class TestRestructureStudyList:
-
     def test_basic(self):
         data = [{"a": 1, "b": 2}, {"a": 3, "b": 4}]
         result = restructure_study_list(data)
@@ -66,7 +76,6 @@ class TestRestructureStudyList:
 
 
 class TestConvertToJson:
-
     def test_basic(self):
         data = {"key": "value"}
         result = convert_to_json(data)

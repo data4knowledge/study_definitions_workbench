@@ -20,7 +20,9 @@ class Version(VersionBase):
     model_config = ConfigDict(from_attributes=True)
 
     @classmethod
-    def create(cls, version: int, study_id: int, session: Session) -> "Version":  # pragma: no cover
+    def create(
+        cls, version: int, study_id: int, session: Session
+    ) -> "Version":  # pragma: no cover
         db_item = VersionDB(version=version)
         session.add(**db_item, study_id=study_id)
         session.commit()

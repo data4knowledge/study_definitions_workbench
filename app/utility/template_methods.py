@@ -36,5 +36,6 @@ def restructure_study_list(data: list[dict]) -> dict:
             result[k] = tuple(d[k] for d in data)
     return result
 
+
 def convert_to_json(data) -> str:
     return json.dumps(data, indent=2)

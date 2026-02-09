@@ -20,7 +20,9 @@ def _setup_user(db: Session):
     return user
 
 
-def _create_transmission(db: Session, user, version=1, study="Study A", status="pending"):
+def _create_transmission(
+    db: Session, user, version=1, study="Study A", status="pending"
+):
     return Transmission.create(
         version=version,
         study=study,

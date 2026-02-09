@@ -13,7 +13,6 @@ from tests.mocks.fastapi_mocks import (
     protect_endpoint,
 )
 from tests.mocks.user_mocks import mock_user_check_exists
-from tests.mocks.general_mocks import mock_called
 from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_study_version
 # from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_json_timelines
 # from tests.mocks.file_mocks import mock_file_import_find, mock_file_import_delete, mock_data_file_delete, mock_local_files_dir, mock_local_files_dir_error
@@ -359,11 +358,13 @@ def factory_endpoint() -> FileImport:
 
 def _mock_usdm_init_with_attrs(mocker, path="app.main"):
     """Mock USDMJson.__init__ setting commonly accessed attributes."""
+
     def custom_init(self, *args, **kwargs):
         self.id = args[0] if args else 1
         self.m11 = True
         self.uuid = "test-uuid"
         self._files = MagicMock()
+
     mocker.patch(f"{path}.USDMJson.__init__", new=custom_init)
 
 
@@ -384,7 +385,10 @@ def test_study_design_overall_parameters(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.study_design_overall_parameters", return_value={"id": 1, "m11": True, "text": "Test"})
+    mocker.patch(
+        "app.main.USDMJson.study_design_overall_parameters",
+        return_value={"id": 1, "m11": True, "text": "Test"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/overallParameters")
     assert response.status_code == 200
 
@@ -394,7 +398,10 @@ def test_study_design_design_parameters(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.study_design_design_parameters", return_value={"id": 1, "m11": True, "arms": 2})
+    mocker.patch(
+        "app.main.USDMJson.study_design_design_parameters",
+        return_value={"id": 1, "m11": True, "arms": 2},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/designParameters")
     assert response.status_code == 200
 
@@ -404,7 +411,10 @@ def test_study_design_schema(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.study_design_schema", return_value={"id": 1, "m11": True, "image": "", "text": "Schema"})
+    mocker.patch(
+        "app.main.USDMJson.study_design_schema",
+        return_value={"id": 1, "m11": True, "image": "", "text": "Schema"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/schema")
     assert response.status_code == 200
 
@@ -414,7 +424,10 @@ def test_study_design_interventions(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.study_design_interventions", return_value={"id": 1, "m11": True, "interventions": [], "text": "Test"})
+    mocker.patch(
+        "app.main.USDMJson.study_design_interventions",
+        return_value={"id": 1, "m11": True, "interventions": [], "text": "Test"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/interventions")
     assert response.status_code == 200
 
@@ -424,7 +437,10 @@ def test_study_design_estimands(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.study_design_estimands", return_value={"id": 1, "m11": True, "estimands": [], "text": "Test"})
+    mocker.patch(
+        "app.main.USDMJson.study_design_estimands",
+        return_value={"id": 1, "m11": True, "estimands": [], "text": "Test"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/estimands")
     assert response.status_code == 200
 
@@ -434,7 +450,10 @@ def test_study_design_ae_special_interest(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.adverse_events_special_interest", return_value={"id": 1, "m11": True, "text": "AE"})
+    mocker.patch(
+        "app.main.USDMJson.adverse_events_special_interest",
+        return_value={"id": 1, "m11": True, "text": "AE"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/aeSpecialInterest")
     assert response.status_code == 200
 
@@ -444,7 +463,10 @@ def test_study_design_safety_assessments(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.safety_assessments", return_value={"id": 1, "m11": True, "text": "Safety"})
+    mocker.patch(
+        "app.main.USDMJson.safety_assessments",
+        return_value={"id": 1, "m11": True, "text": "Safety"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/safetyAssessments")
     assert response.status_code == 200
 
@@ -454,7 +476,10 @@ def test_study_design_sample_size(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.sample_size", return_value={"id": 1, "m11": True, "text": "100"})
+    mocker.patch(
+        "app.main.USDMJson.sample_size",
+        return_value={"id": 1, "m11": True, "text": "100"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/sampleSize")
     assert response.status_code == 200
 
@@ -464,7 +489,10 @@ def test_study_design_analysis_sets(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.analysis_sets", return_value={"id": 1, "m11": True, "text": "Sets"})
+    mocker.patch(
+        "app.main.USDMJson.analysis_sets",
+        return_value={"id": 1, "m11": True, "text": "Sets"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/analysisSets")
     assert response.status_code == 200
 
@@ -474,7 +502,10 @@ def test_study_design_analysis_objective(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.analysis_objectives", return_value={"id": 1, "m11": True, "text": "Obj"})
+    mocker.patch(
+        "app.main.USDMJson.analysis_objectives",
+        return_value={"id": 1, "m11": True, "text": "Obj"},
+    )
     response = client.get("/versions/1/studyDesigns/design-1/analysisObjective")
     assert response.status_code == 200
 
@@ -542,7 +573,10 @@ def test_export_fhir_success(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.fhir", return_value=("tests/test_files/main/simple.txt", "simple.txt", "text/plain"))
+    mocker.patch(
+        "app.main.USDMJson.fhir",
+        return_value=("tests/test_files/main/simple.txt", "simple.txt", "text/plain"),
+    )
     response = client.get("/versions/1/export/fhir?version=prism2")
     assert response.status_code == 200
 
@@ -573,7 +607,14 @@ def test_export_json_success(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.json", return_value=("tests/test_files/main/simple.txt", "simple.txt", "application/json"))
+    mocker.patch(
+        "app.main.USDMJson.json",
+        return_value=(
+            "tests/test_files/main/simple.txt",
+            "simple.txt",
+            "application/json",
+        ),
+    )
     response = client.get("/versions/1/export/json")
     assert response.status_code == 200
 
@@ -583,7 +624,9 @@ def test_export_json_no_file(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
-    mocker.patch("app.main.USDMJson.json", return_value=("", "file.json", "application/json"))
+    mocker.patch(
+        "app.main.USDMJson.json", return_value=("", "file.json", "application/json")
+    )
     response = client.get("/versions/1/export/json")
     assert response.status_code == 200
     assert "Error" in response.text
@@ -597,7 +640,9 @@ def test_version_transmit_valid(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mocker.patch("app.main.run_fhir_m11_transmit")
-    response = client.get("/versions/1/transmit/2?version=prism3", follow_redirects=False)
+    response = client.get(
+        "/versions/1/transmit/2?version=prism3", follow_redirects=False
+    )
     assert response.status_code == 307
 
 
@@ -699,7 +744,11 @@ async def test_callback_success(mocker, monkeypatch):
 
 @pytest.mark.anyio
 async def test_callback_exception(mocker, monkeypatch):
-    mocker.patch("app.main.authorisation.save_token", new_callable=AsyncMock, side_effect=Exception("fail"))
+    mocker.patch(
+        "app.main.authorisation.save_token",
+        new_callable=AsyncMock,
+        side_effect=Exception("fail"),
+    )
     async_client = mock_async_client(monkeypatch)
     response = await async_client.get("/callback")
     assert response.status_code == 307
@@ -721,7 +770,11 @@ def test_usdm_explore(mocker, monkeypatch):
     mock_fi.uuid = "test-uuid"
     mocker.patch("app.main.FileImport.find", return_value=mock_fi)
     mock_df = mocker.patch("app.main.DataFiles")
-    mock_df.return_value.path.return_value = ("tests/test_files/main/simple.txt", "simple.txt", True)
+    mock_df.return_value.path.return_value = (
+        "tests/test_files/main/simple.txt",
+        "simple.txt",
+        True,
+    )
     mock_ds = mocker.patch("app.main.DataStore")
     mock_ds_instance = MagicMock()
     mock_ds_instance._klasses = {"Wrapper": {}, "Study": {"data": "test"}}

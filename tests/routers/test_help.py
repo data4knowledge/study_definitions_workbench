@@ -172,6 +172,7 @@ def mock_privacy(mocker):
 
 def test_pdf_file_exists(mocker, monkeypatch):
     from app.routers.help import _pdf
+
     mocker.patch("os.path.isfile", return_value=True)
     result = _pdf("test.pdf")
     assert result[0] is not None
@@ -181,6 +182,7 @@ def test_pdf_file_exists(mocker, monkeypatch):
 
 def test_pdf_file_not_exists(mocker, monkeypatch):
     from app.routers.help import _pdf
+
     mocker.patch("os.path.isfile", return_value=False)
     result = _pdf("test.pdf")
     assert result == (None, None, None)

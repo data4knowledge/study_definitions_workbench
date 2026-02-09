@@ -2,7 +2,6 @@ from app.utility.fhir_uuid import extract_uuid
 
 
 class TestExtractUuid:
-
     def test_found(self):
         text = "Some text with uuid 12345678-1234-1234-1234-123456789abc in it"
         assert extract_uuid(text) == "12345678-1234-1234-1234-123456789abc"

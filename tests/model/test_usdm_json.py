@@ -1,7 +1,5 @@
 import copy
-import json
-import pytest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch
 from app.model.usdm_json import USDMJson
 from tests.helpers.usdm_test_data import build_usdm_data
 
@@ -24,7 +22,6 @@ def _build_usdm(data=None, m11=True, extra=None):
 
 
 class TestStudyVersion:
-
     def test_basic(self):
         usdm = _build_usdm()
         result = usdm.study_version()
@@ -75,7 +72,6 @@ class TestStudyVersion:
 
 
 class TestStudyDesignOverallParameters:
-
     def test_m11_with_section(self):
         usdm = _build_usdm()
         result = usdm.study_design_overall_parameters("design-1")
@@ -119,14 +115,18 @@ class TestStudyDesignOverallParameters:
 
     def test_population_age_child(self):
         data = build_usdm_data()
-        data["study"]["versions"][0]["studyDesigns"][0]["population"]["plannedAge"]["minValue"]["value"] = "5"
+        data["study"]["versions"][0]["studyDesigns"][0]["population"]["plannedAge"][
+            "minValue"
+        ]["value"] = "5"
         usdm = _build_usdm(data)
         result = usdm.study_design_overall_parameters("design-1")
         assert result["population_type"] == "Child"
 
     def test_adaptive_design(self):
         data = build_usdm_data()
-        data["study"]["versions"][0]["studyDesigns"][0]["characteristics"].append({"decode": "ADAPTIVE"})
+        data["study"]["versions"][0]["studyDesigns"][0]["characteristics"].append(
+            {"decode": "ADAPTIVE"}
+        )
         usdm = _build_usdm(data)
         result = usdm.study_design_overall_parameters("design-1")
         assert result["adaptive_design"] == "Yes"
@@ -157,7 +157,6 @@ class TestStudyDesignOverallParameters:
 
 
 class TestStudyDesignDesignParameters:
-
     def test_basic(self):
         usdm = _build_usdm()
         result = usdm.study_design_design_parameters("design-1")
@@ -209,7 +208,6 @@ class TestStudyDesignDesignParameters:
 
 
 class TestStudyDesignSchema:
-
     def test_m11_with_section(self):
         usdm = _build_usdm()
         result = usdm.study_design_schema("design-1")
@@ -246,7 +244,6 @@ class TestStudyDesignSchema:
 
 
 class TestStudyDesignInterventions:
-
     def test_with_intervention_ids(self):
         usdm = _build_usdm()
         result = usdm.study_design_interventions("design-1")
@@ -295,7 +292,6 @@ class TestStudyDesignInterventions:
 
 
 class TestStudyDesignEstimands:
-
     def test_basic(self):
         usdm = _build_usdm()
         result = usdm.study_design_estimands("design-1")
@@ -320,7 +316,9 @@ class TestStudyDesignEstimands:
 
     def test_empty_intervention_ids(self):
         data = build_usdm_data()
-        data["study"]["versions"][0]["studyDesigns"][0]["estimands"][0]["interventionIds"] = []
+        data["study"]["versions"][0]["studyDesigns"][0]["estimands"][0][
+            "interventionIds"
+        ] = []
         usdm = _build_usdm(data)
         result = usdm.study_design_estimands("design-1")
         assert result["estimands"][0]["treatment"] is None
@@ -341,18 +339,23 @@ class TestStudyDesignEstimands:
 
 
 class TestScheduleOfActivities:
-
     @patch("app.model.usdm_json.M11DocumentView")
     def test_success(self, mock_m11_dv):
         usdm = _build_usdm()
         mock_study = MagicMock()
         mock_version = MagicMock()
         mock_design = MagicMock()
-        usdm._wrapper.study_version_and_design.return_value = (mock_study, mock_version, mock_design)
+        usdm._wrapper.study_version_and_design.return_value = (
+            mock_study,
+            mock_version,
+            mock_design,
+        )
         mock_doc = MagicMock()
         mock_doc.templateName = "M11"
         mock_doc_version = MagicMock()
-        mock_version.documents.return_value = [{"document": mock_doc, "version": mock_doc_version}]
+        mock_version.documents.return_value = [
+            {"document": mock_doc, "version": mock_doc_version}
+        ]
         mock_timeline = MagicMock()
         mock_timeline.model_dump.return_value = {"id": "t1"}
         mock_design.scheduleTimelines = [mock_timeline]
@@ -370,10 +373,16 @@ class TestScheduleOfActivities:
         mock_study = MagicMock()
         mock_version = MagicMock()
         mock_design = MagicMock()
-        usdm._wrapper.study_version_and_design.return_value = (mock_study, mock_version, mock_design)
+        usdm._wrapper.study_version_and_design.return_value = (
+            mock_study,
+            mock_version,
+            mock_design,
+        )
         mock_doc = MagicMock()
         mock_doc.templateName = "CPT"
-        mock_version.documents.return_value = [{"document": mock_doc, "version": MagicMock()}]
+        mock_version.documents.return_value = [
+            {"document": mock_doc, "version": MagicMock()}
+        ]
         mock_design.scheduleTimelines = []
         mock_cpt_dv.return_value = MagicMock()
         result = usdm.schedule_of_activities("design-1")
@@ -391,10 +400,16 @@ class TestScheduleOfActivities:
         mock_study = MagicMock()
         mock_version = MagicMock()
         mock_design = MagicMock()
-        usdm._wrapper.study_version_and_design.return_value = (mock_study, mock_version, mock_design)
+        usdm._wrapper.study_version_and_design.return_value = (
+            mock_study,
+            mock_version,
+            mock_design,
+        )
         mock_doc = MagicMock()
         mock_doc.templateName = "UNKNOWN"
-        mock_version.documents.return_value = [{"document": mock_doc, "version": MagicMock()}]
+        mock_version.documents.return_value = [
+            {"document": mock_doc, "version": MagicMock()}
+        ]
         mock_design.scheduleTimelines = []
         result = usdm.schedule_of_activities("design-1")
         assert result["documents"] == []
@@ -404,7 +419,6 @@ class TestScheduleOfActivities:
 
 
 class TestSoa:
-
     @patch("app.model.usdm_json.SoA")
     def test_success(self, mock_soa_cls):
         usdm = _build_usdm()
@@ -450,22 +464,27 @@ class TestSoa:
 
 
 class TestSectionResponse:
-
     def test_m11_design_found(self):
         usdm = _build_usdm()
-        result = usdm._section_response("design-1", "10.11", "sample size", "[Sample Size]")
+        result = usdm._section_response(
+            "design-1", "10.11", "sample size", "[Sample Size]"
+        )
         assert result is not None
         assert result["m11"] is True
         assert "Sample Size Content" in result["text"]
 
     def test_non_m11_returns_none(self):
         usdm = _build_usdm(m11=False)
-        result = usdm._section_response("design-1", "10.11", "sample size", "[Sample Size]")
+        result = usdm._section_response(
+            "design-1", "10.11", "sample size", "[Sample Size]"
+        )
         assert result is None
 
     def test_design_not_found(self):
         usdm = _build_usdm()
-        result = usdm._section_response("nonexistent", "10.11", "sample size", "[Sample Size]")
+        result = usdm._section_response(
+            "nonexistent", "10.11", "sample size", "[Sample Size]"
+        )
         assert result is None
 
 
@@ -473,7 +492,6 @@ class TestSectionResponse:
 
 
 class TestSectionWrappers:
-
     def test_sample_size(self):
         usdm = _build_usdm()
         result = usdm.sample_size("design-1")
@@ -505,7 +523,6 @@ class TestSectionWrappers:
 
 
 class TestProtocolSectionsList:
-
     def test_basic(self):
         usdm = _build_usdm()
         result = usdm.protocol_sections_list()
@@ -532,7 +549,6 @@ class TestProtocolSectionsList:
 
 
 class TestProtocolSections:
-
     def test_returns_all(self):
         usdm = _build_usdm()
         result = usdm.protocol_sections()
@@ -550,7 +566,6 @@ class TestProtocolSections:
 
 
 class TestSection:
-
     def test_basic(self):
         usdm = _build_usdm()
         result = usdm.section("nc-1")
@@ -572,35 +587,46 @@ class TestSection:
 
 
 class TestFormatHeading:
-
     def test_number_zero(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading({"sectionNumber": "0", "sectionTitle": "Title"})
+        heading, level = usdm._format_heading(
+            {"sectionNumber": "0", "sectionTitle": "Title"}
+        )
         assert heading == ""
 
     def test_number_and_title(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading({"sectionNumber": "1.2", "sectionTitle": "My Section"})
+        heading, level = usdm._format_heading(
+            {"sectionNumber": "1.2", "sectionTitle": "My Section"}
+        )
         assert heading == "<h2>1.2 My Section</h2>"
 
     def test_number_only(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading({"sectionNumber": "3", "sectionTitle": None})
+        heading, level = usdm._format_heading(
+            {"sectionNumber": "3", "sectionTitle": None}
+        )
         assert heading == "<h1>3</h1>"
 
     def test_title_only(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading({"sectionNumber": None, "sectionTitle": "Appendix"})
+        heading, level = usdm._format_heading(
+            {"sectionNumber": None, "sectionTitle": "Appendix"}
+        )
         assert heading == "<h1>Appendix</h1>"
 
     def test_no_number_no_title(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading({"sectionNumber": None, "sectionTitle": None})
+        heading, level = usdm._format_heading(
+            {"sectionNumber": None, "sectionTitle": None}
+        )
         assert heading == ""
 
     def test_nested_number(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading({"sectionNumber": "1.2.3", "sectionTitle": "Deep"})
+        heading, level = usdm._format_heading(
+            {"sectionNumber": "1.2.3", "sectionTitle": "Deep"}
+        )
         assert level == 3
         assert "<h3>" in heading
 
@@ -609,7 +635,6 @@ class TestFormatHeading:
 
 
 class TestGetLevel:
-
     def test_none_section_number(self):
         usdm = _build_usdm()
         assert usdm._get_level({"sectionNumber": None}) == 1
@@ -635,7 +660,6 @@ class TestGetLevel:
 
 
 class TestPopulationAge:
-
     def test_basic(self):
         usdm = _build_usdm()
         design = usdm._data["study"]["versions"][0]["studyDesigns"][0]
@@ -650,8 +674,14 @@ class TestPopulationAge:
         data["study"]["versions"][0]["studyDesigns"][0]["population"]["cohorts"] = [
             {
                 "plannedAge": {
-                    "minValue": {"value": "12", "unit": {"standardCode": {"decode": "Years"}}},
-                    "maxValue": {"value": "70", "unit": {"standardCode": {"decode": "Years"}}},
+                    "minValue": {
+                        "value": "12",
+                        "unit": {"standardCode": {"decode": "Years"}},
+                    },
+                    "maxValue": {
+                        "value": "70",
+                        "unit": {"standardCode": {"decode": "Years"}},
+                    },
                 }
             }
         ]
@@ -673,7 +703,6 @@ class TestPopulationAge:
 
 
 class TestMinMax:
-
     def test_with_item(self):
         usdm = _build_usdm()
         item = {
@@ -694,7 +723,6 @@ class TestMinMax:
 
 
 class TestPopulationRecruitment:
-
     def test_quantity(self):
         usdm = _build_usdm()
         design = usdm._data["study"]["versions"][0]["studyDesigns"][0]
@@ -725,7 +753,6 @@ class TestPopulationRecruitment:
 
 
 class TestRangeOrQuantity:
-
     def test_quantity(self):
         usdm = _build_usdm()
         data = {"testQuantity": {"value": "42"}, "testRange": None}
@@ -749,7 +776,6 @@ class TestRangeOrQuantity:
 
 
 class TestIntervention:
-
     def test_empty_ids(self):
         usdm = _build_usdm()
         result = usdm._intervention(usdm._data["study"]["versions"][0], [])
@@ -770,7 +796,6 @@ class TestIntervention:
 
 
 class TestArmFromIntervention:
-
     def test_found(self):
         usdm = _build_usdm()
         design = usdm._data["study"]["versions"][0]["studyDesigns"][0]
@@ -796,7 +821,6 @@ class TestArmFromIntervention:
 
 
 class TestImageInSection:
-
     def test_with_image(self):
         usdm = _build_usdm()
         section = {"contentItemId": "nci-2"}
@@ -820,7 +844,6 @@ class TestImageInSection:
 
 
 class TestDocument:
-
     def test_valid(self):
         usdm = _build_usdm()
         doc = usdm._document()
@@ -839,7 +862,6 @@ class TestDocument:
 
 
 class TestStudyDesign:
-
     def test_found(self):
         usdm = _build_usdm()
         result = usdm._study_design("design-1")
@@ -856,7 +878,6 @@ class TestStudyDesign:
 
 
 class TestSectionByNumber:
-
     def test_found(self):
         usdm = _build_usdm()
         result = usdm._section_by_number("1.1.2")
@@ -880,7 +901,6 @@ class TestSectionByNumber:
 
 
 class TestSectionByTitleContains:
-
     def test_found(self):
         usdm = _build_usdm()
         result = usdm._section_by_title_contains("Overall Design")
@@ -908,7 +928,6 @@ class TestSectionByTitleContains:
 
 
 class TestSetMultiple:
-
     def test_found(self):
         usdm = _build_usdm()
         result = usdm._set_multiple("design-1", "characteristics", "[Missing]")
@@ -921,17 +940,20 @@ class TestSetMultiple:
 
 
 class TestSetTrialHelpers:
-
     def test_set_trial_intent_types(self):
         data = build_usdm_data()
-        data["study"]["versions"][0]["studyDesigns"][0]["trialIntentTypes"] = [{"decode": "TREATMENT"}]
+        data["study"]["versions"][0]["studyDesigns"][0]["trialIntentTypes"] = [
+            {"decode": "TREATMENT"}
+        ]
         usdm = _build_usdm(data)
         result = usdm._set_trial_intent_types("design-1")
         assert "TREATMENT" in result
 
     def test_set_trial_types(self):
         data = build_usdm_data()
-        data["study"]["versions"][0]["studyDesigns"][0]["trialTypes"] = [{"decode": "EFFICACY"}]
+        data["study"]["versions"][0]["studyDesigns"][0]["trialTypes"] = [
+            {"decode": "EFFICACY"}
+        ]
         usdm = _build_usdm(data)
         result = usdm._set_trial_types("design-1")
         assert "EFFICACY" in result
@@ -941,7 +963,6 @@ class TestSetTrialHelpers:
 
 
 class TestObjectiveEndpointFromEstimand:
-
     def test_found(self):
         usdm = _build_usdm()
         design = usdm._data["study"]["versions"][0]["studyDesigns"][0]
@@ -961,7 +982,6 @@ class TestObjectiveEndpointFromEstimand:
 
 
 class TestFhirAndExport:
-
     @patch("app.model.usdm_json.FHIRM11")
     def test_fhir_data(self, mock_fhir_cls):
         usdm = _build_usdm()
@@ -1020,7 +1040,6 @@ class TestFhirAndExport:
 
 
 class TestGetFiles:
-
     def test_get_usdm(self, tmp_path):
         usdm = _build_usdm()
         test_file = tmp_path / "test.json"
@@ -1050,7 +1069,6 @@ class TestGetFiles:
 
 
 class TestSectionFullText:
-
     def test_by_number(self):
         usdm = _build_usdm()
         result = usdm._section_full_text("10.11", "sample size", "[Default]")
@@ -1084,7 +1102,6 @@ class TestSectionFullText:
 
 
 class TestGetNumber:
-
     def test_valid(self):
         usdm = _build_usdm()
         assert usdm._get_number({"sectionNumber": "5"}) == 5
@@ -1098,7 +1115,6 @@ class TestGetNumber:
 
 
 class TestFindIntervention:
-
     def test_found(self):
         usdm = _build_usdm()
         version = usdm._data["study"]["versions"][0]

@@ -75,7 +75,9 @@ app.include_router(validate.router)
 
 
 @app.exception_handler(Exception)
-async def exception_callback_general(request: Request, e: Exception):  # pragma: no cover
+async def exception_callback_general(
+    request: Request, e: Exception
+):  # pragma: no cover
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -84,7 +86,9 @@ async def exception_callback_general(request: Request, e: Exception):  # pragma:
 
 
 @app.exception_handler(FindException)
-async def exception_callback_find(request: Request, e: FindException):  # pragma: no cover
+async def exception_callback_find(
+    request: Request, e: FindException
+):  # pragma: no cover
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -568,7 +572,9 @@ async def export_json(request: Request, id: int, session: Session = Depends(get_
     usdm = USDMJson(id, session)
     full_path, filename, media_type = usdm.json()
     if full_path:
-        response = FileResponse(path=full_path, filename=filename, media_type=media_type)
+        response = FileResponse(
+            path=full_path, filename=filename, media_type=media_type
+        )
         response.headers["Cache-Control"] = "no-store"
         return response
     else:

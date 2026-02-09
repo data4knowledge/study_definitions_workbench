@@ -72,7 +72,12 @@ def study_list(
 ):
     user, present_in_db = user_details(request, session)
     parts = list_studies.split(",") if list_studies else []
-    data = {"m11_title_page": [], "inclusion": [], "exclusion": [], "m11_amendment_details": []}
+    data = {
+        "m11_title_page": [],
+        "inclusion": [],
+        "exclusion": [],
+        "m11_amendment_details": [],
+    }
     for id in parts:
         version = Version.find_latest_version(id, session)
         usdm = USDMJson(version.id, session)

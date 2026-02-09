@@ -4,7 +4,6 @@ from app.utility.soup import get_soup
 
 
 class TestGetSoup:
-
     def test_basic_html(self):
         result = get_soup("<p>Hello</p>")
         assert isinstance(result, BeautifulSoup)
@@ -23,7 +22,7 @@ class TestGetSoup:
 
     @patch("app.utility.soup.application_logger")
     def test_warning_logged(self, mock_logger):
-        import warnings
+
         with patch("app.utility.soup.warnings.catch_warnings") as mock_cw:
             warning_item = MagicMock()
             warning_item.message = "test warning"
