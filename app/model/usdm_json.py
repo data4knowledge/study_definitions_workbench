@@ -99,11 +99,12 @@ class USDMJson:
         }
         for identifier in version["studyIdentifiers"]:
             org = orgs[identifier["scopeId"]]
-            result["identifiers"][org["type"]["decode"]] = (
-                org["label"] if "label" in org else org["name"]
-            )
+            result["identifiers"][org["type"]["code"]] = {
+                "label": org["label"] if "label" in org else org["name"],
+                "identifier": identifier["text"]
+            }
         for title in version["titles"]:
-            result["titles"][title["type"]["decode"]] = title["text"]
+            result["titles"][title["type"]["code"]] = title["text"]
         phases = []
         for design in version["studyDesigns"]:
             result["study_designs"][design["id"]] = {
