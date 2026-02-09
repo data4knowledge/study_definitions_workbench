@@ -85,9 +85,7 @@ def study_list(
         ie_map = study_version.eligibility_critieria_item_map()
         data["inclusion"].append(study_design.inclusion_criteria(ie_map))
         data["exclusion"].append(study_design.exclusion_criteria(ie_map))
-        data["m11_amendment_details"].append(m11.amendment_details())
     data["m11_title_page"] = restructure_study_list(data["m11_title_page"])
-    data["m11_amendment_details"]= restructure_study_list(data["m11_amendment_details"])
     data["fhir"] = {
         "enabled": transmit_role_enabled(request),
         "versions": fhir_versions(),

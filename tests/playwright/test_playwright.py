@@ -328,7 +328,7 @@ def test_selection_menu(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    # path = filepath()
+    path = filepath()
     page.goto(url)
 
     login(page)
