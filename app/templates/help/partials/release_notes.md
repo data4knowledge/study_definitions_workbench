@@ -1,4 +1,4 @@
-<h5>Release 0.36.0-alpha.12, 2026-01-14</h5>
+<h5>Release 0.36.0-alpha.12, 2026-02-09</h5>
 
 Alpha release: Add in HL7 virtual connectathon updates (issue 52).
 
