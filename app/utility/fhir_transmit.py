@@ -68,7 +68,7 @@ async def fhir_transmit(
         )
         tx = Transmission.create(
             version=version_id,
-            study=details["titles"]["Official Study Title"],
+            study=details["titles"]["C207616"],
             status="Preparing",
             user_id=user.id,
             session=session,

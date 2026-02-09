@@ -34,7 +34,7 @@ class TestFhirM11Transmit:
         mock_session_local.return_value = MagicMock()
         mock_usdm_instance = MagicMock()
         mock_usdm_instance.study_version.return_value = {
-            "titles": {"Official Study Title": "Test"}
+            "titles": {"C207616": "Test"}
         }
         mock_usdm_instance.fhir_data.return_value = '{"data": "fhir"}'
         mock_usdm.return_value = mock_usdm_instance
@@ -77,7 +77,7 @@ class TestFhirTransmit:
         mock_fhir.return_value = mock_server
         mock_cm.success = AsyncMock()
 
-        details = {"titles": {"Official Study Title": "Study X"}}
+        details = {"titles": {"C207616": "Study X"}}
         await fhir_transmit(
             "M11", 1, 2, '{"data": "test"}', details, mock_user, mock_session
         )
@@ -102,7 +102,7 @@ class TestFhirTransmit:
         mock_fhir.return_value = mock_server
         mock_cm.error = AsyncMock()
 
-        details = {"titles": {"Official Study Title": "Study X"}}
+        details = {"titles": {"C207616": "Study X"}}
         await fhir_transmit(
             "M11", 1, 2, '{"data": "test"}', details, mock_user, mock_session
         )
@@ -127,7 +127,7 @@ class TestFhirTransmit:
         mock_fhir.return_value = mock_server
         mock_cm.error = AsyncMock()
 
-        details = {"titles": {"Official Study Title": "Study X"}}
+        details = {"titles": {"C207616": "Study X"}}
         await fhir_transmit(
             "M11", 1, 2, '{"data": "test"}', details, mock_user, mock_session
         )
@@ -142,7 +142,7 @@ class TestFhirTransmit:
         mock_tx.create.side_effect = Exception("DB error")
         mock_cm.error = AsyncMock()
 
-        details = {"titles": {"Official Study Title": "Study X"}}
+        details = {"titles": {"C207616": "Study X"}}
         await fhir_transmit(
             "M11", 1, 2, '{"data": "test"}', details, mock_user, mock_session
         )
