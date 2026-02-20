@@ -112,7 +112,7 @@ class User(UserBase):
             "email": "",
             "sub": "SUE|1234567890",
             "nickname": "Single User",
-            "roles": [],
+            "roles": [{"name": "Admin"}, {"name": "Transmit"}],
         }
 
     def update_display_name(self, display_name: str, session: Session) -> "User":

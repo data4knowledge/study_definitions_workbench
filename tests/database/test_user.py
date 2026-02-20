@@ -23,7 +23,7 @@ def test_single_user(db):
         "email": "",
         "sub": "SUE|1234567890",
         "nickname": "Single User",
-        "roles": [],
+        "roles": [{"name": "Admin"}, {"name": "Transmit"}],
     }
 
 
