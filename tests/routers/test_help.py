@@ -1,5 +1,5 @@
 import pytest
-from tests.mocks.general_mocks import mock_called, mock_parameters_correct
+from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import mock_user_check_exists
 from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
 
@@ -25,7 +25,7 @@ def test_examples(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
-    mock_examples(mocker)
+    mock_markdown_page(mocker, "Examples Test Testy")
     response = client.get("/help/examples")
     assert response.status_code == 200
     assert """Examples Test Testy""" in response.text
@@ -36,7 +36,7 @@ def test_feedback(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
-    mock_feedback(mocker)
+    mock_markdown_page(mocker, "Feedback Test Testy Testy")
     response = client.get("/help/feedback")
     assert response.status_code == 200
     assert """Feedback Test Testy Testy""" in response.text
@@ -46,78 +46,50 @@ def test_feedback(mocker, monkeypatch):
 def test_user_guide(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
-    ug = mock_user_guide(mocker)
+    uc = mock_user_check_exists(mocker)
+    mock_markdown_page(mocker, "User Guide Test Content")
     response = client.get("/help/userGuide")
     assert response.status_code == 200
-    assert mock_called(ug)
+    assert """User Guide Test Content""" in response.text
+    assert mock_called(uc)
 
 
-def test_user_guide_error(mocker, monkeypatch):
-    protect_endpoint()
+def test_user_guide_splash(mocker, monkeypatch):
     client = mock_client(monkeypatch)
-    ug = mock_user_guide_error(mocker)
-    response = client.get("/help/userGuide", follow_redirects=False)
-    print(f"RESPONSE: {response.text}")
+    mock_markdown_page(mocker, "User Guide Splash Content")
+    response = client.get("/help/userGuide/splash")
     assert response.status_code == 200
-    assert """Error downloading the user guide""" in response.text
-    assert mock_called(ug)
+    assert """User Guide Splash Content""" in response.text
 
 
 def test_privacy(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
-    pp = mock_user_guide(mocker)
+    uc = mock_user_check_exists(mocker)
+    mock_markdown_page(mocker, "Privacy Policy Test Content")
     response = client.get("/help/privacyPolicy")
     assert response.status_code == 200
-    assert mock_called(pp)
-    mock_parameters_correct(pp, [mocker.call("privacy_policy.pdf")])
-
-
-def test_privacy_error(mocker, monkeypatch):
-    protect_endpoint()
-    client = mock_client(monkeypatch)
-    pp = mock_user_guide_error(mocker)
-    response = client.get("/help/privacyPolicy", follow_redirects=False)
-    assert response.status_code == 200
-    assert """Error downloading the privacy policy""" in response.text
-    assert mock_called(pp)
-    mock_parameters_correct(pp, [mocker.call("privacy_policy.pdf")])
-
-
-def test_user_guide_splash(mocker, monkeypatch):
-    client = mock_client(monkeypatch)
-    ug = mock_user_guide(mocker)
-    response = client.get("/help/userGuide/splash")
-    assert response.status_code == 200
-    assert mock_called(ug)
-    mock_parameters_correct(ug, [mocker.call("user_guide.pdf")])
-
-
-def test_user_guide_splash_error(mocker, monkeypatch):
-    client = mock_client(monkeypatch)
-    ug = mock_user_guide_error(mocker)
-    response = client.get("/help/userGuide/splash", follow_redirects=False)
-    assert response.status_code == 303
-    assert mock_called(ug)
-    mock_parameters_correct(ug, [mocker.call("user_guide.pdf")])
+    assert """Privacy Policy Test Content""" in response.text
+    assert mock_called(uc)
 
 
 def test_privacy_splash(mocker, monkeypatch):
     client = mock_client(monkeypatch)
-    pp = mock_privacy(mocker)
+    mock_markdown_page(mocker, "Privacy Policy Splash Content")
     response = client.get("/help/privacyPolicy/splash")
     assert response.status_code == 200
-    assert mock_called(pp)
-    mock_parameters_correct(pp, [mocker.call("privacy_policy.pdf")])
+    assert """Privacy Policy Splash Content""" in response.text
 
 
-def test_privacy_splash_error(mocker, monkeypatch):
+def test_prism(mocker, monkeypatch):
+    protect_endpoint()
     client = mock_client(monkeypatch)
-    pp = mock_privacy_error(mocker)
-    response = client.get("/help/privacyPolicy/splash", follow_redirects=False)
-    assert response.status_code == 303
-    assert mock_called(pp)
-    mock_parameters_correct(pp, [mocker.call("privacy_policy.pdf")])
+    uc = mock_user_check_exists(mocker)
+    mock_markdown_page(mocker, "PRISM Guide Test Content")
+    response = client.get("/help/prism")
+    assert response.status_code == 200
+    assert """PRISM Guide Test Content""" in response.text
+    assert mock_called(uc)
 
 
 # Mocks
@@ -128,61 +100,8 @@ def mock_release_notes(mocker):
     rnn.side_effect = ["Release Notes Test Testy"]
 
 
-def mock_examples(mocker):
+def mock_markdown_page(mocker, content):
     mp = mocker.patch("d4k_ms_ui.MarkdownPage.__init__")
     mp.side_effect = [None]
     mpr = mocker.patch("d4k_ms_ui.MarkdownPage.read")
-    mpr.side_effect = ["Examples Test Testy"]
-
-
-def mock_feedback(mocker):
-    mp = mocker.patch("d4k_ms_ui.MarkdownPage.__init__")
-    mp.side_effect = [None]
-    mpr = mocker.patch("d4k_ms_ui.MarkdownPage.read")
-    mpr.side_effect = ["Feedback Test Testy Testy"]
-
-
-def mock_user_guide_error(mocker):
-    mock = mocker.patch("app.routers.help._pdf")
-    mock.side_effect = [(None, None, None)]
-    return mock
-
-
-def mock_user_guide(mocker):
-    mock = mocker.patch("app.routers.help._pdf")
-    mock.side_effect = [
-        ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
-    ]
-    return mock
-
-
-def mock_privacy_error(mocker):
-    mock = mocker.patch("app.routers.help._pdf")
-    mock.side_effect = [(None, None, None)]
-    return mock
-
-
-def mock_privacy(mocker):
-    mock = mocker.patch("app.routers.help._pdf")
-    mock.side_effect = [
-        ("tests/test_files/main/simple.txt", "simple.txt", "text/plain")
-    ]
-    return mock
-
-
-def test_pdf_file_exists(mocker, monkeypatch):
-    from app.routers.help import _pdf
-
-    mocker.patch("os.path.isfile", return_value=True)
-    result = _pdf("test.pdf")
-    assert result[0] is not None
-    assert result[1] == "test.pdf"
-    assert result[2] == "text/plain"
-
-
-def test_pdf_file_not_exists(mocker, monkeypatch):
-    from app.routers.help import _pdf
-
-    mocker.patch("os.path.isfile", return_value=False)
-    result = _pdf("test.pdf")
-    assert result == (None, None, None)
+    mpr.side_effect = [content]

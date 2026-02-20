@@ -1,6 +1,5 @@
 import os
-from fastapi import APIRouter, Depends, Request, status
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from d4k_ms_ui.release_notes import ReleaseNotes
 from d4k_ms_ui.markdown_page import MarkdownPage
@@ -8,17 +7,17 @@ from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import user_details
 from app.dependencies.templates import templates, templates_path
-from app.dependencies.static import static_path
 from app import VERSION, SYSTEM_NAME
 from usdm_info import __model_version__ as usdm_version
 
 router = APIRouter(prefix="/help", tags=["help"])
+PARTIALS_PATH = os.path.join(templates_path, "help", "partials")
 
 
 @router.get("/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
-    rn = ReleaseNotes(os.path.join(templates_path, "help", "partials"))
+    rn = ReleaseNotes(PARTIALS_PATH)
     data = {
         "release_notes": rn.notes(),
         "system": SYSTEM_NAME,
@@ -33,7 +32,7 @@ def about(request: Request, session: Session = Depends(get_db)):
 @router.get("/examples", dependencies=[Depends(protect_endpoint)])
 def examples(request: Request, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
-    ex = MarkdownPage("examples.md", os.path.join(templates_path, "help", "partials"))
+    ex = MarkdownPage("examples.md", PARTIALS_PATH)
     data = {"examples": ex.read()}
     return templates.TemplateResponse(
         request, "help/examples.html", {"user": user, "data": data}
@@ -43,7 +42,7 @@ def examples(request: Request, session: Session = Depends(get_db)):
 @router.get("/feedback", dependencies=[Depends(protect_endpoint)])
 def feedback(request: Request, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
-    fb = MarkdownPage("feedback.md", os.path.join(templates_path, "help", "partials"))
+    fb = MarkdownPage("feedback.md", PARTIALS_PATH)
     data = {"feedback": fb.read()}
     return templates.TemplateResponse(
         request, "help/feedback.html", {"user": user, "data": data}
@@ -52,53 +51,47 @@ def feedback(request: Request, session: Session = Depends(get_db)):
 
 @router.get("/userGuide", dependencies=[Depends(protect_endpoint)])
 def logged_in_ug(request: Request, session: Session = Depends(get_db)):
-    return _logged_in_document(request, "user_guide.pdf", "user guide", session)
+    user, present_in_db = user_details(request, session)
+    ug = MarkdownPage("user_guide.md", PARTIALS_PATH)
+    data = {"user_guide": ug.read()}
+    return templates.TemplateResponse(
+        request, "help/user_guide.html", {"user": user, "data": data}
+    )
 
 
 @router.get("/userGuide/splash")
 def splash_ug(request: Request):
-    return _splash_document("user_guide.pdf")
+    ug = MarkdownPage("user_guide.md", PARTIALS_PATH)
+    data = {"user_guide": ug.read()}
+    return templates.TemplateResponse(
+        request, "help/user_guide_splash.html", {"data": data}
+    )
 
 
 @router.get("/privacyPolicy", dependencies=[Depends(protect_endpoint)])
 def logged_in_pp(request: Request, session: Session = Depends(get_db)):
-    return _logged_in_document(request, "privacy_policy.pdf", "privacy policy", session)
+    user, present_in_db = user_details(request, session)
+    pp = MarkdownPage("privacy_policy.md", PARTIALS_PATH)
+    data = {"privacy_policy": pp.read()}
+    return templates.TemplateResponse(
+        request, "help/privacy_policy.html", {"user": user, "data": data}
+    )
 
 
 @router.get("/privacyPolicy/splash")
 def splash_pp(request: Request):
-    return _splash_document("privacy_policy.pdf")
+    pp = MarkdownPage("privacy_policy.md", PARTIALS_PATH)
+    data = {"privacy_policy": pp.read()}
+    return templates.TemplateResponse(
+        request, "help/privacy_policy_splash.html", {"data": data}
+    )
 
 
-def _logged_in_document(
-    request: Request, filename: str, file_type: str, session: Session
-):
+@router.get("/prism", dependencies=[Depends(protect_endpoint)])
+def prism(request: Request, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
-    full_path, filename, media_type = _pdf(filename)
-    print(f"PATH: {full_path}")
-    if full_path:
-        return FileResponse(path=full_path, filename=filename, media_type=media_type)
-    else:
-        return templates.TemplateResponse(
-            request,
-            "errors/error.html",
-            {"user": user, "data": {"error": f"Error downloading the {file_type}"}},
-        )
-
-
-def _splash_document(filename):
-    full_path, filename, media_type = _pdf(filename)
-    if full_path:
-        return FileResponse(path=full_path, filename=filename, media_type=media_type)
-    else:
-        return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
-
-
-def _pdf(filename):
-    media_type = "text/plain"
-    full_path = os.path.join(static_path, "files", filename)
-    return (
-        (full_path, filename, media_type)
-        if os.path.isfile(full_path)
-        else (None, None, None)
+    pr = MarkdownPage("prism.md", PARTIALS_PATH)
+    data = {"prism": pr.read()}
+    return templates.TemplateResponse(
+        request, "help/prism.html", {"user": user, "data": data}
     )

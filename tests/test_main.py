@@ -34,7 +34,7 @@ def test_home(mocker, monkeypatch):
         in response.text
     )
     assert """Welcome to the d4k Study Definitions Workbench""" in response.text
-    assert """Our privacy policy can be downloaded from""" in response.text
+    assert """Our privacy policy can be viewed""" in response.text
 
 
 def test_home_single(mocker, monkeypatch):
@@ -48,7 +48,7 @@ def test_home_single(mocker, monkeypatch):
         in response.text
     )
     assert """Welcome to the d4k Study Definitions Workbench""" in response.text
-    assert """Our privacy policy can be downloaded from""" not in response.text
+    assert """Our privacy policy can be viewed""" not in response.text
 
 
 @pytest.mark.anyio

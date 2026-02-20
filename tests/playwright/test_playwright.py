@@ -27,19 +27,16 @@ def test_splash(playwright: Playwright) -> None:
         "Welcome to the d4k Study Definitions Workbench. Click on the button below to register or login."
     )
     expect(page.get_by_role("paragraph")).to_contain_text(
-        "A basic user guide can be downloaded from"
+        "A basic user guide can be viewed"
     )
     expect(page.get_by_role("paragraph")).to_contain_text(
-        "Our privacy policy can be downloaded from"
+        "Our privacy policy can be viewed"
     )
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="here").first.click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="here").nth(1).click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
+    page.get_by_role("link", name="here").first.click()
+    expect(page.locator("h4")).to_contain_text("User Guide")
+    page.go_back()
+    page.get_by_role("link", name="here").nth(1).click()
+    expect(page.locator("h4")).to_contain_text("Privacy Policy")
 
     context.close()
     browser.close()
@@ -213,15 +210,11 @@ def test_help(playwright: Playwright) -> None:
     expect(page.get_by_role("link", name="bug / issue")).to_be_visible()
     expect(page.get_by_role("link", name="discussion topic")).to_be_visible()
     page.get_by_role("button", name=" Help").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="User Guide").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/help/{download.suggested_filename}")
+    page.get_by_role("link", name="User Guide").click()
+    expect(page.locator("h4")).to_contain_text("User Guide")
     page.get_by_role("button", name=" Help").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="Privacy Policy").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/help/{download.suggested_filename}")
+    page.get_by_role("link", name="Privacy Policy").click()
+    expect(page.locator("h4")).to_contain_text("Privacy Policy")
 
     context.close()
     browser.close()

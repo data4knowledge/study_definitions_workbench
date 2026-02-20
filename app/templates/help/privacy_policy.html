@@ -1,0 +1,30 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
+  {% endwith %}
+{% endblock %}
+{% block user_content %}
+  {% with request=request, user=user %}
+    {% include "shared/partials/user.html" %}
+  {% endwith %}
+{% endblock %}
+{% block ws_content %}
+{% endblock %}
+
+{% block main_content %}
+  {% set user_info = request.session['userinfo'] %}
+  <div class="container-fluid">
+    <div class="row row-cols-md-1 row-cols-sm-1">
+      <div class="col mt-3">
+        <div class="card rounded-3">
+          <div class="card-body">
+            <h4>Privacy Policy</h4>
+            {{data['privacy_policy']|safe}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
