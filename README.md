@@ -65,7 +65,7 @@ fly secrets set DATABASE_PATH="/mnt/<name>/database"
 fly secrets set DATABASE_NAME="production.db"
 fly secrets set DATAFILE_PATH="/mnt/<name>/datafiles"
 ```
-## Deplotment - New Method
+## Deployment - New Method
 
 Use the updated .toml files to use Docker images. This makes the build process much less prone to errors.
 
