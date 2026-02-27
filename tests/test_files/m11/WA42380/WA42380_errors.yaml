@@ -2,9 +2,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/421bf745-51f1-4475-b6d8-b0de62c6f152/WA42380.docx'',
-    dir=''tests/test_files/mount/datafiles/421bf745-51f1-4475-b6d8-b0de62c6f152'',
-    image_path0''tests/test_files/mount/datafiles/421bf745-51f1-4475-b6d8-b0de62c6f152/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/72fdbda9-e9cf-4399-b4e4-4036530f1696/WA42380.docx'',
+    dir=''tests/test_files/mount/datafiles/72fdbda9-e9cf-4399-b4e4-4036530f1696'',
+    image_path0''tests/test_files/mount/datafiles/72fdbda9-e9cf-4399-b4e4-4036530f1696/images'',
     filename=''WA42380.docx'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -822,7 +822,7 @@
     \ File \"base_events.py\", line 1987, in _run_once\n    handle._run()\n  File\
     \ \"events.py\", line 88, in _run\n    self._context.run(self._callback, *self._args)\n\
     \  File \"anyio/_backends/_asyncio.py\", line 2227, in _run_tests_and_fixtures\n\
-    \    retval = await coro\n  File \"tests/m11/test_m11_integration.py\", line 51,\
+    \    retval = await coro\n  File \"tests/m11/test_m11_integration.py\", line 52,\
     \ in test_m11_wa42380\n    await _run_test(\"WA42380\", \"WA42380\", SAVE)\n \
     \ File \"tests/m11/test_m11_integration.py\", line 26, in _run_test\n    wrapper:\
     \ Wrapper = m11.from_docx(filepath)\n  File \"usdm4_m11/__init__.py\", line 23,\

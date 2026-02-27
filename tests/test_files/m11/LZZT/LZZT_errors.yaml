@@ -2,9 +2,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/42f7701b-f3c7-484b-bc40-b61b02dc130b/LZZT.docx'',
-    dir=''tests/test_files/mount/datafiles/42f7701b-f3c7-484b-bc40-b61b02dc130b'',
-    image_path0''tests/test_files/mount/datafiles/42f7701b-f3c7-484b-bc40-b61b02dc130b/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/88f672ed-737a-471b-9042-9bae87aa7145/LZZT.docx'',
+    dir=''tests/test_files/mount/datafiles/88f672ed-737a-471b-9042-9bae87aa7145'',
+    image_path0''tests/test_files/mount/datafiles/88f672ed-737a-471b-9042-9bae87aa7145/images'',
     filename=''LZZT.docx'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -674,7 +674,7 @@
     \ File \"base_events.py\", line 1987, in _run_once\n    handle._run()\n  File\
     \ \"events.py\", line 88, in _run\n    self._context.run(self._callback, *self._args)\n\
     \  File \"anyio/_backends/_asyncio.py\", line 2227, in _run_tests_and_fixtures\n\
-    \    retval = await coro\n  File \"tests/m11/test_m11_integration.py\", line 56,\
+    \    retval = await coro\n  File \"tests/m11/test_m11_integration.py\", line 57,\
     \ in test_m11_lzzt\n    await _run_test(\"LZZT\", \"LZZT\", SAVE)\n  File \"tests/m11/test_m11_integration.py\"\
     , line 26, in _run_test\n    wrapper: Wrapper = m11.from_docx(filepath)\n  File\
     \ \"usdm4_m11/__init__.py\", line 23, in from_docx\n    result = m11_import.process()\n\

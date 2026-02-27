@@ -2,9 +2,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/6b091219-ead0-487a-b64f-dd708735c9b0/ASP8062.docx'',
-    dir=''tests/test_files/mount/datafiles/6b091219-ead0-487a-b64f-dd708735c9b0'',
-    image_path0''tests/test_files/mount/datafiles/6b091219-ead0-487a-b64f-dd708735c9b0/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/858b50cd-8900-4b7d-bcf4-0df1653a1a52/ASP8062.docx'',
+    dir=''tests/test_files/mount/datafiles/858b50cd-8900-4b7d-bcf4-0df1653a1a52'',
+    image_path0''tests/test_files/mount/datafiles/858b50cd-8900-4b7d-bcf4-0df1653a1a52/images'',
     filename=''ASP8062.docx'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
