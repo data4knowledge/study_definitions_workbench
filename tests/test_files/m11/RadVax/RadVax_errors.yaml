@@ -1,0 +1,337 @@
+- level: Debug
+  location:
+    class_name: raw_docx.raw_docx.RawDocx
+    method_name: __init__
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/d74ed429-ed41-4ec2-b6bf-ad9882ab24b6/RadVax.docx'',
+    dir=''tests/test_files/mount/datafiles/d74ed429-ed41-4ec2-b6bf-ad9882ab24b6'',
+    image_path0''tests/test_files/mount/datafiles/d74ed429-ed41-4ec2-b6bf-ad9882ab24b6/images'',
+    filename=''RadVax.docx'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: raw_docx.docx.docx_paragraph
+    method_name: process_element
+  message: 'Element other instance/tag detected:: ''{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sdt'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: raw_docx.docx.docx_paragraph
+    method_name: process_element
+  message: 'Element other instance/tag detected:: ''{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sdt'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: raw_docx.raw_docx.RawDocx
+    method_name: _iter_block_items
+  message: Ignoring eTree element '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bookmarkStart'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: raw_docx.raw_docx.RawDocx
+    method_name: _iter_block_items
+  message: Ignoring eTree element '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _title_table
+  message: Found M11 title page table
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Extracting title page field ''Sponsor Name and Address:'' -> ''University
+    of Pennsylvania
+
+    Address on File.'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Device Manufacturer Name and Address:' ->
+    ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Names and addresses text: University of Pennsylvania
+
+    Address on File.'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key sponsor: interim raw result={''sponsor'':
+    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
+    None, ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key co_sponsor: interim raw result={''sponsor'':
+    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
+    None, ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key local_sponsor: interim raw result={''sponsor'':
+    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
+    None, ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key device: interim raw result={''sponsor'':
+    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
+    None, ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address: raw result={''sponsor'': ''University of Pennsylvania\nAddress
+    on File.\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_organization_name
+  message: Organization name set to 'University of Pennsylvania'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_organization_address_simple
+  message: 'Address result ''{''lines'': [''Address on File.'', ''''], ''city'': '''',
+    ''district'': '''', ''state'': '''', ''postalCode'': '''', ''country'': ''''}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_organization_address
+  message: 'Organization address set to ''{''lines'': [''Address on File.'', ''''],
+    ''city'': '''', ''district'': '''', ''state'': '''', ''postalCode'': '''', ''country'':
+    ''''}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _extract_names_and_addresss
+  message: 'Extracted organisation names and adddress: result={''sponsor'': {''name'':
+    ''University of Pennsylvania'', ''address'': {''lines'': [''Address on File.'',
+    ''''], ''city'': '''', ''district'': '''', ''state'': '''', ''postalCode'': '''',
+    ''country'': ''''}}, ''co_sponsor'': None, ''local_sponsor'': None, ''device'':
+    None}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Acronym' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Sponsor Protocol Identifier' -> 'IRB# 821403'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Compound Code' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Extracting title page field ''Regulatory or Clinical Trial Identifier(s):''
+    -> ''UPCC# 40914
+
+    IRB# 821403'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Medical Expert Contact:' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _extract_names_and_addresss
+  message: Failed to find medical expert name and addresse text
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: "Extracting title page field 'Full Title' -> 'RADVAX\u2122: A Stratified\
+    \ Phase I Trial of Pembrolizumab with Hypofractionated Radiotherapy in Patients\
+    \ with Advanced and Metastatic Cancers'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: "Extracting title page field 'Short Title' -> 'RadVax\u2122: Pembrolizumab\
+    \ & Hypofractionated Radiotherapy'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Sponsor Signatory' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Extracting title page field ''Compound Name'' -> ''Pembroluzumab
+
+    RADVAX'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Amendment Identifier' -> 'Unavailable'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Amendment Scope' -> 'Unavailable'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Trial Phase' -> 'Phase I'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Version Number' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Sponsor Confidentiality Statement' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Original Protocol' -> 'Yes'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_regulatory_identifiers_simple
+  message: No regulatory identifiers found
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Amendment info: {''identifier'': ''Unavailable'', ''scope'': ''Unavailable''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Error
+  location:
+    class_name: usdm4_cpt.import_.soa.SoA
+    method_name: _decode_soa
+  message: No SoA found
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: _find_amendment_section
+  message: Found amendment section at index 1
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: _amendment_table
+  message: Failed to find amendment table
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: process
+  message: Failed to find amendments table in section
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: process
+  message: Amendment information None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: 'Creating address, source data: {''lines'': [''Address on File.'', ''''],
+    ''city'': '''', ''district'': '''', ''state'': '''', ''postalCode'': '''', ''country'':
+    ''''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: Address set to Address on File.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: Processing co_sponsor, None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: Processing local_sponsor, None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: Processing device_manufacturer, None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: No medical expert contact information detected
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: document_status
+  message: Document status 'FINAL' decoded as 'C25508', 'Final'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: phase
+  message: Trial phase 'I' decoded as 'C15600', 'Phase 1', using M11 decode
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.study_assembler.StudyAssembler
+    method_name: _get_study_name_label
+  message: Study name set to 'IRB821403'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''

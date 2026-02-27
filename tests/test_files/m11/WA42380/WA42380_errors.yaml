@@ -1,0 +1,860 @@
+- level: Debug
+  location:
+    class_name: raw_docx.raw_docx.RawDocx
+    method_name: __init__
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/147588b1-3ab8-48db-a01c-610615058788/WA42380.docx'',
+    dir=''tests/test_files/mount/datafiles/147588b1-3ab8-48db-a01c-610615058788'',
+    image_path0''tests/test_files/mount/datafiles/147588b1-3ab8-48db-a01c-610615058788/images'',
+    filename=''WA42380.docx'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: raw_docx.raw_docx.RawDocx
+    method_name: _iter_block_items
+  message: Ignoring eTree element '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _title_table
+  message: Found M11 title page table
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Sponsor Name and Address:' -> 'F. Hoffmann-La
+    Roche Ltd'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Device Manufacturer Name and Address:' ->
+    ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Names and addresses text: F. Hoffmann-La Roche Ltd'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key sponsor: interim raw result={''sponsor'':
+    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
+    ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key co_sponsor: interim raw result={''sponsor'':
+    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
+    ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key local_sponsor: interim raw result={''sponsor'':
+    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
+    ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address, key device: interim raw result={''sponsor'':
+    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
+    ''device'': None}, remaining='
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Parsing names and address: raw result={''sponsor'': ''F. Hoffmann-La Roche
+    Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_organization_name
+  message: Organization name set to 'F. Hoffmann-La Roche Ltd'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_organization_address_simple
+  message: 'Address result ''{''lines'': [''''], ''city'': '''', ''district'': '''',
+    ''state'': '''', ''postalCode'': '''', ''country'': ''''}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_organization_address
+  message: 'Organization address set to ''{''lines'': [''''], ''city'': '''', ''district'':
+    '''', ''state'': '''', ''postalCode'': '''', ''country'': ''''}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _extract_names_and_addresss
+  message: 'Extracted organisation names and adddress: result={''sponsor'': {''name'':
+    ''F. Hoffmann-La Roche Ltd'', ''address'': {''lines'': [''''], ''city'': '''',
+    ''district'': '''', ''state'': '''', ''postalCode'': '''', ''country'': ''''}},
+    ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Acronym' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Sponsor Protocol Identifier' -> 'WA42380'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Compound Code' -> 'Tocilizumab (RO4877533)'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Extracting title page field ''Regulatory or Clinical Trial Identifier(s):''
+    -> ''EU CT Number: 2020-001154-22
+
+    IND Number: 148225
+
+    NCT Number: NCT04320615'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Medical Expert Contact:' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _extract_names_and_addresss
+  message: Failed to find medical expert name and addresse text
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Full Title' -> 'A RANDOMIZED, DOUBLE-BLIND,
+    PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB
+    IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Short Title' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Sponsor Signatory' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Compound Name' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Amendment Identifier' -> '3'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Amendment Scope' -> 'Global'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Trial Phase' -> 'Phase III'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Version Number' -> '3'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Extracting title page field ''Sponsor Confidentiality Statement'' -> ''This
+    clinical study is being sponsored globally by F. Hoffmann-La Roche Ltd of Basel,
+
+    Switzerland. However, it may be implemented in individual countries by Roche''s
+    local affiliates,
+
+    including Genentech, Inc. in the United States. The information contained in this
+    document, especially
+
+    any unpublished data, is the property of F. Hoffmann-La Roche Ltd (or under its
+    control) and therefore
+
+    is provided to you in confidence as an investigator, potential investigator, or
+    consultant, for review by
+
+    you, your staff, and an applicable Ethics Committee or Institutional Review Board.
+    It is understood that
+
+    this information will not be disclosed to others without written authorization
+    from Roche except to the
+
+    extent necessary to obtain informed consent from persons to whom the drug may
+    be administered.'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Extracting title page field 'Original Protocol' -> 'No'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.title_page.TitlePage
+    method_name: _get_regulatory_identifiers_simple
+  message: 'Found regulatory identifiers: NCT=[''NCT04320615''], IND=[''148225''],
+    EMA=[''2020-001154-22''], jRCT=[], WHO=[]'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Amendment info: {''identifier'': ''3'', ''scope'': ''Global''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_cpt.import_.extract.soa_features.activity_row_feature.ActivityRowFeature
+    method_name: process
+  message: 'Activity Row: {''first_activity_row'': 3, ''last_activity_row'': 30, ''total_rows'':
+    31}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Timing: Row=2, Score=6
+
+    [{''text'': ''-2 to 0'', ''value'': -2, ''unit'': ''day'', ''index'': 0}, {''text'':
+    ''1'', ''value'': 1, ''unit'': ''day'', ''index'': 1}, {''text'': ''1'', ''value'':
+    1, ''unit'': ''day'', ''index'': 2}, {''text'': ''2'', ''value'': 2, ''unit'':
+    ''day'', ''index'': 3}, {''text'': ''2'', ''value'': 2, ''unit'': ''day'', ''index'':
+    4}]'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_cpt.import_.extract.soa_features.timepointss_feature.TimpointsFeature
+    method_name: process
+  message: 'Timepoints ''{''found'': True, ''items'': [{''text'': ''-2 to 0'', ''value'':
+    -2, ''unit'': ''day'', ''index'': 0}, {''text'': ''1'', ''value'': 1, ''unit'':
+    ''day'', ''index'': 1}, {''text'': ''1'', ''value'': 1, ''unit'': ''day'', ''index'':
+    2}, {''text'': ''2'', ''value'': 2, ''unit'': ''day'', ''index'': 3}, {''text'':
+    ''2'', ''value'': 2, ''unit'': ''day'', ''index'': 4}], ''row'': 2}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_cpt.import_.extract.soa_features.epochs_feature.EpochsFeature
+    method_name: process
+  message: 'Epochs ''{''found'': True, ''items'': [{''text'': ''Screeninga, b'', ''index'':
+    0}, {''text'': ''Baseline'', ''index'': 1}, {''text'': '''', ''index'': 2}, {''text'':
+    '''', ''index'': 3}, {''text'': '''', ''index'': 4}], ''row'': 1}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Visit best score update, -1 -> 15, in row 1
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Visit row, ['Screening a, b', 'Baseline', '', '', '']
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Visit best score update, 15 -> 40, in row 2
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Visit row, ['-2 to 0', '1', '1', '2', '2']
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_cpt.import_.extract.soa_features.visits_feature.VisitsFeature
+    method_name: process
+  message: 'Visits ''{''found'': True, ''items'': [{''text'': ''-2 to 0'', ''index'':
+    0, ''references'': []}, {''text'': ''1'', ''index'': 1, ''references'': []}, {''text'':
+    ''1'', ''index'': 2, ''references'': []}, {''text'': ''2'', ''index'': 3, ''references'':
+    []}, {''text'': ''2'', ''index'': 4, ''references'': []}], ''row'': 2}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_cpt.import_.extract.soa_features.windows_feature.windowsFeature
+    method_name: process
+  message: 'Windows ''{''found'': True, ''items'': [{''before'': 0, ''after'': 0,
+    ''unit'': ''day'', ''index'': 0}, {''before'': 0, ''after'': 0, ''unit'': ''day'',
+    ''index'': 1}, {''before'': 0, ''after'': 0, ''unit'': ''day'', ''index'': 2},
+    {''before'': 0, ''after'': 0, ''unit'': ''day'', ''index'': 3}, {''before'': 0,
+    ''after'': 0, ''unit'': ''day'', ''index'': 4}], ''row'': 3}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_cpt.import_.extract.soa_features.conditions_feature.ConditionsFeature
+    method_name: process
+  message: 'Conditions ''{''found'': False, ''items'': []}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: _find_amendment_section
+  message: Found amendment section at index 1
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: Amendment table  found
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: _amendment_table
+  message: Amendment table found
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Amendment scopes text: Global'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Amendment scopes extracted: {''global'': True, ''countries'': [], ''regions'':
+    [], ''sites'': [], ''unknown'': []}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: _get_enrollment_simple
+  message: 'Found enrollment: {''keyword'': ''Globally'', ''value'': 0, ''unit'':
+    ''%'', ''regions'': []}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: _reasons
+  message: 'Amendment reasons found {''primary'': ''Primary: To better align with
+    the statistical analysis plan (SAP)'', ''secondary'': ''Secondary: Minor changes
+    have been made to improve clarity and consistency.''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Safety impact: {''safety'': {''substantial'': False, ''reason'': ''''},
+    ''rights'': {''substantial'': False, ''reason'': ''''}}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Reliability impact: {''reliability'': {''substantial'': False, ''reason'':
+    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: _changes_table
+  message: Amendment changes table found
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Amendment changes: [{''description'': ''Additional secondary efficacy
+    endpoint of time to recovery was added'', ''rationale'': ''To facilitate comparison
+    with other trials of treatments for COVID-19'', ''section'': ''Sections 2.1.2
+    and 6.4.2''}, {''description'': ''Text on the sample size and power calculation
+    was updated to incorporate the increased enrollment target to maintain 90% power
+    for the primary endpoint, as described in the SAP'', ''rationale'': ''The potential
+    for an increase in enrollment was included in Version 2 of the protocol, and the
+    confirmation of increased enrollment was communicated to sites, Agencies, and
+    ethics committees in the week of 4 May 2020.'', ''section'': ''Sections 3.1, 4.1,
+    6.1, 9.5''}, {''description'': ''Geographic stratification factors were updated'',
+    ''rationale'': ''To address the inclusion of only North American and Europe because
+    no sites outside of these regions were included in the study'', ''section'': ''Sections
+    3.1, 4.2.1, 6.1, 6.4.2''}, {''description'': ''Text on the reporting of pregnancies
+    in partner of male patients was removed'', ''rationale'': ''To align with the
+    informed consent form and recommendations for tocilizumab in other indications'',
+    ''section'': ''Section 5.4.3''}, {''description'': ''The method of analysis for
+    the primary endpoint was updated'', ''rationale'': ''To utilize a non-parametric
+    method that was determined to be a more appropriate method, as described in the
+    SAP'', ''section'': ''Sections 6.1 and 6.4.1''}, {''description'': ''The method
+    of analysis for the secondary endpoint of clinical status at additional timepoints
+    was updated'', ''rationale'': ''To utilize a non-parametric method that was determined
+    to be a more appropriate method, as described in the SAP'', ''section'': ''Section
+    6.4.2''}, {''description'': ''Selected secondary efficacy endpoints were specified
+    as key secondary endpoints'', ''rationale'': ''To address Type I error control,
+    as described in the SAP'', ''section'': ''Section 6.4.2''}, {''description'':
+    ''For clarity and as described in the SAP, language on the planned interim analyses
+    was updated'', ''rationale'': ''Updated to address the increased enrollment target
+    to maintain 90% power for the primary endpoint and the criteria for not conducting
+    the interim analyses'', ''section'': ''Section 6.9''}]'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_m11.import_.amendments.Amendments
+    method_name: process
+  message: 'Amendment information {''amendment_details'': ''<p>Amendment Details</p>\n<p>This
+    protocol has been amended previously. Details of prior amendments are presented
+    in Prior Protocol Amendment(s).</p>\n<p></p>\n<p>Current Amendment</p>'', ''identifier'':
+    ''3'', ''scope'': {''global'': True, ''countries'': [], ''regions'': [], ''sites'':
+    [], ''unknown'': []}, ''enrollment'': {''keyword'': ''Globally'', ''value'': 0,
+    ''unit'': ''%'', ''regions'': []}, ''reasons'': {''primary'': ''Primary: To better
+    align with the statistical analysis plan (SAP)'', ''secondary'': ''Secondary:
+    Minor changes have been made to improve clarity and consistency.''}, ''summary'':
+    '''', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'': False,
+    ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}}, ''reliability_and_robustness'':
+    {''reliability'': {''substantial'': False, ''reason'': ''''}, ''robustness'':
+    {''substantial'': False, ''reason'': ''''}}}, ''changes'': [{''description'':
+    ''Additional secondary efficacy endpoint of time to recovery was added'', ''rationale'':
+    ''To facilitate comparison with other trials of treatments for COVID-19'', ''section'':
+    ''Sections 2.1.2 and 6.4.2''}, {''description'': ''Text on the sample size and
+    power calculation was updated to incorporate the increased enrollment target to
+    maintain 90% power for the primary endpoint, as described in the SAP'', ''rationale'':
+    ''The potential for an increase in enrollment was included in Version 2 of the
+    protocol, and the confirmation of increased enrollment was communicated to sites,
+    Agencies, and ethics committees in the week of 4 May 2020.'', ''section'': ''Sections
+    3.1, 4.1, 6.1, 9.5''}, {''description'': ''Geographic stratification factors were
+    updated'', ''rationale'': ''To address the inclusion of only North American and
+    Europe because no sites outside of these regions were included in the study'',
+    ''section'': ''Sections 3.1, 4.2.1, 6.1, 6.4.2''}, {''description'': ''Text on
+    the reporting of pregnancies in partner of male patients was removed'', ''rationale'':
+    ''To align with the informed consent form and recommendations for tocilizumab
+    in other indications'', ''section'': ''Section 5.4.3''}, {''description'': ''The
+    method of analysis for the primary endpoint was updated'', ''rationale'': ''To
+    utilize a non-parametric method that was determined to be a more appropriate method,
+    as described in the SAP'', ''section'': ''Sections 6.1 and 6.4.1''}, {''description'':
+    ''The method of analysis for the secondary endpoint of clinical status at additional
+    timepoints was updated'', ''rationale'': ''To utilize a non-parametric method
+    that was determined to be a more appropriate method, as described in the SAP'',
+    ''section'': ''Section 6.4.2''}, {''description'': ''Selected secondary efficacy
+    endpoints were specified as key secondary endpoints'', ''rationale'': ''To address
+    Type I error control, as described in the SAP'', ''section'': ''Section 6.4.2''},
+    {''description'': ''For clarity and as described in the SAP, language on the planned
+    interim analyses was updated'', ''rationale'': ''Updated to address the increased
+    enrollment target to maintain 90% power for the primary endpoint and the criteria
+    for not conducting the interim analyses'', ''section'': ''Section 6.9''}]}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: 'Creating address, source data: {''lines'': [''''], ''city'': '''', ''district'':
+    '''', ''state'': '''', ''postalCode'': '''', ''country'': ''''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: 'Address set to '
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: 'Creating address, source data: {''lines'': [''National Library of Medicine'',
+    ''8600 Rockville Pike''], ''city'': ''Bethesda'', ''district'': '''', ''state'':
+    ''MD'', ''postalCode'': ''20894'', ''country'': ''USA''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: Address set to National Library of Medicine, 8600 Rockville Pike, Bethesda,
+    MD, 20894, United States of America
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: 'Creating address, source data: {''lines'': [''10903 New Hampshire Ave''],
+    ''city'': ''Silver Spring'', ''district'': '''', ''state'': ''MD'', ''postalCode'':
+    ''20903'', ''country'': ''USA''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: Address set to 10903 New Hampshire Ave, Silver Spring, MD, 20903, United
+    States of America
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: 'Creating address, source data: {''lines'': [''Domenico Scarlattilaan 6''],
+    ''city'': ''Amsterdam'', ''district'': '''', ''state'': '''', ''postalCode'':
+    ''1083 HS'', ''country'': ''NL''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: _create_address
+  message: Address set to Domenico Scarlattilaan 6, Amsterdam, 1083 HS, Netherlands
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: Processing co_sponsor, None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: Processing local_sponsor, None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: Processing device_manufacturer, None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
+    method_name: execute
+  message: No medical expert contact information detected
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4.assembler.document_assembler.DocumentAssembler
+    method_name: _create_date
+  message: No document approval date detected
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: document_status
+  message: Document status 'FINAL' decoded as 'C25508', 'Final'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Amendment assembler source data {''amendment_details'': ''<p>Amendment
+    Details</p>\n<p>This protocol has been amended previously. Details of prior amendments
+    are presented in Prior Protocol Amendment(s).</p>\n<p></p>\n<p>Current Amendment</p>'',
+    ''identifier'': ''3'', ''scope'': {''global'': True, ''countries'': [], ''regions'':
+    [], ''sites'': [], ''unknown'': []}, ''enrollment'': {''keyword'': ''Globally'',
+    ''value'': 0, ''unit'': ''%'', ''regions'': []}, ''reasons'': {''primary'': ''Primary:
+    To better align with the statistical analysis plan (SAP)'', ''secondary'': ''Secondary:
+    Minor changes have been made to improve clarity and consistency.''}, ''summary'':
+    '''', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'': False,
+    ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}}, ''reliability_and_robustness'':
+    {''reliability'': {''substantial'': False, ''reason'': ''''}, ''robustness'':
+    {''substantial'': False, ''reason'': ''''}}}, ''changes'': [{''description'':
+    ''Additional secondary efficacy endpoint of time to recovery was added'', ''rationale'':
+    ''To facilitate comparison with other trials of treatments for COVID-19'', ''section'':
+    ''Sections 2.1.2 and 6.4.2''}, {''description'': ''Text on the sample size and
+    power calculation was updated to incorporate the increased enrollment target to
+    maintain 90% power for the primary endpoint, as described in the SAP'', ''rationale'':
+    ''The potential for an increase in enrollment was included in Version 2 of the
+    protocol, and the confirmation of increased enrollment was communicated to sites,
+    Agencies, and ethics committees in the week of 4 May 2020.'', ''section'': ''Sections
+    3.1, 4.1, 6.1, 9.5''}, {''description'': ''Geographic stratification factors were
+    updated'', ''rationale'': ''To address the inclusion of only North American and
+    Europe because no sites outside of these regions were included in the study'',
+    ''section'': ''Sections 3.1, 4.2.1, 6.1, 6.4.2''}, {''description'': ''Text on
+    the reporting of pregnancies in partner of male patients was removed'', ''rationale'':
+    ''To align with the informed consent form and recommendations for tocilizumab
+    in other indications'', ''section'': ''Section 5.4.3''}, {''description'': ''The
+    method of analysis for the primary endpoint was updated'', ''rationale'': ''To
+    utilize a non-parametric method that was determined to be a more appropriate method,
+    as described in the SAP'', ''section'': ''Sections 6.1 and 6.4.1''}, {''description'':
+    ''The method of analysis for the secondary endpoint of clinical status at additional
+    timepoints was updated'', ''rationale'': ''To utilize a non-parametric method
+    that was determined to be a more appropriate method, as described in the SAP'',
+    ''section'': ''Section 6.4.2''}, {''description'': ''Selected secondary efficacy
+    endpoints were specified as key secondary endpoints'', ''rationale'': ''To address
+    Type I error control, as described in the SAP'', ''section'': ''Section 6.4.2''},
+    {''description'': ''For clarity and as described in the SAP, language on the planned
+    interim analyses was updated'', ''rationale'': ''Updated to address the increased
+    enrollment target to maintain 90% power for the primary endpoint and the criteria
+    for not conducting the interim analyses'', ''section'': ''Section 6.9''}]}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: amendment_reason
+  message: 'Unable to decode amendment reason ''Primary: To better align with the
+    statistical analysis plan (SAP)'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: amendment_reason
+  message: 'Unable to decode amendment reason ''Secondary: Minor changes have been
+    made to improve clarity and consistency.'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _create_scope
+  message: Created scope of type Global
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location: {}
+  message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
+    extensionAttributes=[], type=Code(id=''Code_40'', extensionAttributes=[], code=''C68846'',
+    codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2025-09-26'', decode=''Global'',
+    instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
+    None'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _create_amendment_impact
+  message: 'Creating amendment impacts using {''safety_and_rights'': {''safety'':
+    {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
+    ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
+    ''''}}}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Error
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: Failed to extract section ref from 'Sections 2.1.2 and 6.4.2'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Error
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: Failed to extract section ref from 'Sections 3.1, 4.1, 6.1, 9.5'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Error
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: Failed to extract section ref from 'Sections 3.1, 4.2.1, 6.1, 6.4.2'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: 'Extracted section ref from ''Section 5.4.3'' -> {''sectionNumber'': ''5.4.3'',
+    ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
+    ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Error
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: Failed to extract section ref from 'Sections 6.1 and 6.4.1'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: 'Extracted section ref from ''Section 6.4.2'' -> {''sectionNumber'': ''6.4.2'',
+    ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
+    ''DocumentContentReference_2'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: 'Extracted section ref from ''Section 6.4.2'' -> {''sectionNumber'': ''6.4.2'',
+    ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
+    ''DocumentContentReference_3'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    method_name: _extract_section_numer_and_title
+  message: 'Extracted section ref from ''Section 6.9'' -> {''sectionNumber'': ''6.9'',
+    ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
+    ''DocumentContentReference_4'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_epochs
+  message: 'Epochs: 3'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_encounters
+  message: 'Encounters: 5'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_activities
+  message: 'Activities: 28'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_timepoints
+  message: 'SAI: 5'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_timing
+  message: 'Timing: 5'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Debug
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_timeline
+  message: 'Instances: 5, Timings: 5'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: phase
+  message: Trial phase 'III' decoded as 'C15602', 'Phase 3', using M11 decode
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Error
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: to_date
+  message: "Failed to decode date text 'See electronic date stamp'\n\nDetails\nUnknown\
+    \ string format: See electronic date stamp\n\nTraceback\n  File \"pytest\", line\
+    \ 8, in <module>\n    sys.exit(console_main())\n  File \"_pytest/config/__init__.py\"\
+    , line 206, in console_main\n    code = main()\n  File \"_pytest/config/__init__.py\"\
+    , line 178, in main\n    ret: Union[ExitCode, int] = config.hook.pytest_cmdline_main(\n\
+    \  File \"pluggy/_hooks.py\", line 512, in __call__\n    return self._hookexec(self.name,\
+    \ self._hookimpls.copy(), kwargs, firstresult)\n  File \"pluggy/_manager.py\"\
+    , line 120, in _hookexec\n    return self._inner_hookexec(hook_name, methods,\
+    \ kwargs, firstresult)\n  File \"pluggy/_callers.py\", line 121, in _multicall\n\
+    \    res = hook_impl.function(*args)\n  File \"_pytest/main.py\", line 332, in\
+    \ pytest_cmdline_main\n    return wrap_session(config, _main)\n  File \"_pytest/main.py\"\
+    , line 285, in wrap_session\n    session.exitstatus = doit(config, session) or\
+    \ 0\n  File \"_pytest/main.py\", line 339, in _main\n    config.hook.pytest_runtestloop(session=session)\n\
+    \  File \"pluggy/_hooks.py\", line 512, in __call__\n    return self._hookexec(self.name,\
+    \ self._hookimpls.copy(), kwargs, firstresult)\n  File \"pluggy/_manager.py\"\
+    , line 120, in _hookexec\n    return self._inner_hookexec(hook_name, methods,\
+    \ kwargs, firstresult)\n  File \"pluggy/_callers.py\", line 121, in _multicall\n\
+    \    res = hook_impl.function(*args)\n  File \"_pytest/main.py\", line 364, in\
+    \ pytest_runtestloop\n    item.config.hook.pytest_runtest_protocol(item=item,\
+    \ nextitem=nextitem)\n  File \"pluggy/_hooks.py\", line 512, in __call__\n   \
+    \ return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n\
+    \  File \"pluggy/_manager.py\", line 120, in _hookexec\n    return self._inner_hookexec(hook_name,\
+    \ methods, kwargs, firstresult)\n  File \"pluggy/_callers.py\", line 121, in _multicall\n\
+    \    res = hook_impl.function(*args)\n  File \"_pytest/runner.py\", line 116,\
+    \ in pytest_runtest_protocol\n    runtestprotocol(item, nextitem=nextitem)\n \
+    \ File \"_pytest/runner.py\", line 135, in runtestprotocol\n    reports.append(call_and_report(item,\
+    \ \"call\", log))\n  File \"_pytest/runner.py\", line 240, in call_and_report\n\
+    \    call = CallInfo.from_call(\n  File \"_pytest/runner.py\", line 341, in from_call\n\
+    \    result: Optional[TResult] = func()\n  File \"_pytest/runner.py\", line 241,\
+    \ in <lambda>\n    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise\n\
+    \  File \"pluggy/_hooks.py\", line 512, in __call__\n    return self._hookexec(self.name,\
+    \ self._hookimpls.copy(), kwargs, firstresult)\n  File \"pluggy/_manager.py\"\
+    , line 120, in _hookexec\n    return self._inner_hookexec(hook_name, methods,\
+    \ kwargs, firstresult)\n  File \"pluggy/_callers.py\", line 121, in _multicall\n\
+    \    res = hook_impl.function(*args)\n  File \"_pytest/runner.py\", line 173,\
+    \ in pytest_runtest_call\n    item.runtest()\n  File \"_pytest/python.py\", line\
+    \ 1632, in runtest\n    self.ihook.pytest_pyfunc_call(pyfuncitem=self)\n  File\
+    \ \"pluggy/_hooks.py\", line 512, in __call__\n    return self._hookexec(self.name,\
+    \ self._hookimpls.copy(), kwargs, firstresult)\n  File \"pluggy/_manager.py\"\
+    , line 120, in _hookexec\n    return self._inner_hookexec(hook_name, methods,\
+    \ kwargs, firstresult)\n  File \"pluggy/_callers.py\", line 121, in _multicall\n\
+    \    res = hook_impl.function(*args)\n  File \"anyio/pytest_plugin.py\", line\
+    \ 190, in pytest_pyfunc_call\n    runner.run_test(pyfuncitem.obj, testargs)\n\
+    \  File \"anyio/_backends/_asyncio.py\", line 2300, in run_test\n    self.get_loop().run_until_complete(\n\
+    \  File \"base_events.py\", line 674, in run_until_complete\n    self.run_forever()\n\
+    \  File \"base_events.py\", line 641, in run_forever\n    self._run_once()\n \
+    \ File \"base_events.py\", line 1987, in _run_once\n    handle._run()\n  File\
+    \ \"events.py\", line 88, in _run\n    self._context.run(self._callback, *self._args)\n\
+    \  File \"anyio/_backends/_asyncio.py\", line 2227, in _run_tests_and_fixtures\n\
+    \    retval = await coro\n  File \"tests/m11/test_m11_integration.py\", line 51,\
+    \ in test_m11_wa42380\n    await _run_test(\"WA42380\", \"WA42380\", SAVE)\n \
+    \ File \"tests/m11/test_m11_integration.py\", line 26, in _run_test\n    wrapper:\
+    \ Wrapper = m11.from_docx(filepath)\n  File \"usdm4_m11/__init__.py\", line 23,\
+    \ in from_docx\n    result = m11_import.process()\n  File \"usdm4_m11/import_/m11_import.py\"\
+    , line 26, in process\n    wrapper = assembler.process()\n  File \"usdm4_m11/import_/assemble/__init__.py\"\
+    , line 23, in process\n    self._assembler.execute(self._source_data)\n  File\
+    \ \"src/usdm4/assembler/assembler.py\", line 131, in execute\n    self._study_assembler.execute(\n\
+    \  File \"src/usdm4/assembler/study_assembler.py\", line 111, in execute\n   \
+    \ valid_date = self._create_date(data)\n  File \"src/usdm4/assembler/study_assembler.py\"\
+    , line 229, in _create_date\n    if actual_date := self._encoder.to_date(data[\"\
+    sponsor_approval_date\"]):\n  File \"src/usdm4/assembler/encoder.py\", line 285,\
+    \ in to_date\n    self._errors.exception(\nTraceback (most recent call last):\n\
+    \  File \"src/usdm4/assembler/encoder.py\", line 282, in to_date\n    return parser.parse(input_text)\n\
+    \           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"dateutil/parser/_parser.py\", line\
+    \ 1368, in parse\n    return DEFAULTPARSER.parse(timestr, **kwargs)\n        \
+    \   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"dateutil/parser/_parser.py\"\
+    , line 643, in parse\n    raise ParserError(\"Unknown string format: %s\", timestr)\n\
+    dateutil.parser._parser.ParserError: Unknown string format: See electronic date\
+    \ stamp\n"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4.assembler.study_assembler.StudyAssembler
+    method_name: _create_date
+  message: No sponsor approval date detected
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4.assembler.study_assembler.StudyAssembler
+    method_name: _get_study_name_label
+  message: Study name set to 'WA42380'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''

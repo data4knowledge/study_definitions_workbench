@@ -1,7 +1,8 @@
 import re
 import json
 import pytest
-from tests.files.files import write_json, read_json, read_word
+from tests.files.files import write_json, read_json, read_word, read_yaml, write_yaml
+from tests.helpers.errors_clean import errors_clean_all
 from app.model.file_handling.data_files import DataFiles
 from usdm4_m11 import USDM4M11
 from usdm4.api.wrapper import Wrapper
@@ -27,11 +28,14 @@ async def _run_test(dir, name, save=False):
     result = replace_uuid(result)
     pretty_result = json.dumps(json.loads(result), indent=2)
     result_filename = filename = f"{name}_usdm.json"
+    error_filename = f"{name}_errors.yaml"
     if save:
         write_json(_full_path(dir, result_filename), result)
+        write_yaml(_full_path(name, error_filename), errors_clean_all(m11.errors))
     expected = read_json(_full_path(dir, result_filename))
     assert pretty_result == expected
-
+    error_expected = read_yaml(_full_path(name, error_filename))
+    assert errors_clean_all(m11.errors) == error_expected
 
 def _full_path(dir, filename):
     return f"tests/test_files/m11/{dir}/{filename}"

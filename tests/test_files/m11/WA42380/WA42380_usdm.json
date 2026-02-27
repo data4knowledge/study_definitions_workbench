@@ -9,28 +9,28 @@
         "id": "StudyVersion_1",
         "extensionAttributes": [
           {
-            "id": "ExtensionAttribute_1",
+            "id": "ExtensionAttribute_5",
             "url": "www.d4k.dk/usdm/extensions/008",
             "valueString": "See electronic date stamp",
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_2",
+            "id": "ExtensionAttribute_6",
             "url": "www.d4k.dk/usdm/extensions/001",
             "valueString": "This clinical study is being sponsored globally by F. Hoffmann-La Roche Ltd of Basel,\nSwitzerland. However, it may be implemented in individual countries by Roche's local affiliates,\nincluding Genentech, Inc. in the United States. The information contained in this document, especially\nany unpublished data, is the property of F. Hoffmann-La Roche Ltd (or under its control) and therefore\nis provided to you in confidence as an investigator, potential investigator, or consultant, for review by\nyou, your staff, and an applicable Ethics Committee or Institutional Review Board. It is understood that\nthis information will not be disclosed to others without written authorization from Roche except to the\nextent necessary to obtain informed consent from persons to whom the drug may be administered.",
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_3",
+            "id": "ExtensionAttribute_7",
             "url": "www.d4k.dk/usdm/extensions/002",
             "valueBoolean": false,
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_4",
+            "id": "ExtensionAttribute_8",
             "url": "www.d4k.dk/usdm/extensions/004",
             "valueString": "Tocilizumab (RO4877533)",
             "extensionAttributes": [],
@@ -56,7 +56,7 @@
               "id": "StudyAmendmentReason_1",
               "extensionAttributes": [],
               "code": {
-                "id": "Code_31",
+                "id": "Code_38",
                 "extensionAttributes": [],
                 "code": "C17649",
                 "codeSystem": "http://www.cdisc.org",
@@ -72,7 +72,7 @@
                 "id": "StudyAmendmentReason_2",
                 "extensionAttributes": [],
                 "code": {
-                  "id": "Code_32",
+                  "id": "Code_39",
                   "extensionAttributes": [],
                   "code": "C17649",
                   "codeSystem": "http://www.cdisc.org",
@@ -215,7 +215,7 @@
                 "id": "StudyAmendmentImpact_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_34",
+                  "id": "Code_41",
                   "extensionAttributes": [],
                   "code": "C215665",
                   "codeSystem": "http://www.cdisc.org",
@@ -232,7 +232,7 @@
                 "id": "StudyAmendmentImpact_2",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_35",
+                  "id": "Code_42",
                   "extensionAttributes": [],
                   "code": "C215666",
                   "codeSystem": "http://www.cdisc.org",
@@ -249,7 +249,7 @@
                 "id": "StudyAmendmentImpact_3",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_36",
+                  "id": "Code_43",
                   "extensionAttributes": [],
                   "code": "C215667",
                   "codeSystem": "http://www.cdisc.org",
@@ -266,7 +266,7 @@
                 "id": "StudyAmendmentImpact_4",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_37",
+                  "id": "Code_44",
                   "extensionAttributes": [],
                   "code": "C215668",
                   "codeSystem": "http://www.cdisc.org",
@@ -285,7 +285,7 @@
                 "id": "GeographicScope_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_33",
+                  "id": "Code_40",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -312,7 +312,7 @@
                     "id": "AliasCode_1",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_39",
+                      "id": "Code_46",
                       "extensionAttributes": [],
                       "code": "C25613",
                       "codeSystem": "http://www.cdisc.org",
@@ -329,7 +329,7 @@
                   "id": "GeographicScope_2",
                   "extensionAttributes": [],
                   "type": {
-                    "id": "Code_38",
+                    "id": "Code_45",
                     "extensionAttributes": [],
                     "code": "C68846",
                     "codeSystem": "http://www.cdisc.org",
@@ -355,23 +355,94 @@
         "studyIdentifiers": [
           {
             "id": "StudyIdentifier_1",
-            "extensionAttributes": [],
+            "extensionAttributes": [
+              {
+                "id": "ExtensionAttribute_1",
+                "url": "www.d4k.dk/usdm/extensions/009",
+                "valueCode": {
+                  "id": "Code_6",
+                  "code": "C218690",
+                  "codeSystem": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+                  "codeSystemVersion": "25.12e",
+                  "decode": "Other Regulatory or Clinical Trial Identifier",
+                  "instanceType": "Code",
+                  "extensionAttributes": []
+                },
+                "extensionAttributes": [],
+                "instanceType": "ExtensionAttribute"
+              }
+            ],
             "text": "WA42380",
             "scopeId": "Organization_1",
             "instanceType": "StudyIdentifier"
           },
           {
             "id": "StudyIdentifier_2",
-            "extensionAttributes": [],
+            "extensionAttributes": [
+              {
+                "id": "ExtensionAttribute_2",
+                "url": "www.d4k.dk/usdm/extensions/009",
+                "valueCode": {
+                  "id": "Code_9",
+                  "code": "C172240",
+                  "codeSystem": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+                  "codeSystemVersion": "25.12e",
+                  "decode": "Clinicaltrials.gov Identifier",
+                  "instanceType": "Code",
+                  "extensionAttributes": []
+                },
+                "extensionAttributes": [],
+                "instanceType": "ExtensionAttribute"
+              }
+            ],
             "text": "NCT04320615",
             "scopeId": "Organization_2",
             "instanceType": "StudyIdentifier"
           },
           {
             "id": "StudyIdentifier_3",
-            "extensionAttributes": [],
+            "extensionAttributes": [
+              {
+                "id": "ExtensionAttribute_3",
+                "url": "www.d4k.dk/usdm/extensions/009",
+                "valueCode": {
+                  "id": "Code_13",
+                  "code": "C218685",
+                  "codeSystem": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+                  "codeSystemVersion": "25.12e",
+                  "decode": "US FDA Investigational New Drug Application Number",
+                  "instanceType": "Code",
+                  "extensionAttributes": []
+                },
+                "extensionAttributes": [],
+                "instanceType": "ExtensionAttribute"
+              }
+            ],
             "text": "148225",
             "scopeId": "Organization_3",
+            "instanceType": "StudyIdentifier"
+          },
+          {
+            "id": "StudyIdentifier_4",
+            "extensionAttributes": [
+              {
+                "id": "ExtensionAttribute_4",
+                "url": "www.d4k.dk/usdm/extensions/009",
+                "valueCode": {
+                  "id": "Code_17",
+                  "code": "C218684",
+                  "codeSystem": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+                  "codeSystemVersion": "25.12e",
+                  "decode": "EU Clinical Trial Register Number",
+                  "instanceType": "Code",
+                  "extensionAttributes": []
+                },
+                "extensionAttributes": [],
+                "instanceType": "ExtensionAttribute"
+              }
+            ],
+            "text": "2020-001154-22",
+            "scopeId": "Organization_4",
             "instanceType": "StudyIdentifier"
           }
         ],
@@ -388,7 +459,7 @@
               "id": "AliasCode_2",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_69",
+                "id": "Code_76",
                 "extensionAttributes": [],
                 "code": "C15602",
                 "codeSystem": "http://www.cdisc.org",
@@ -409,7 +480,7 @@
                 "label": "-2 to 0",
                 "description": "Encounter -2 to 0",
                 "type": {
-                  "id": "Code_43",
+                  "id": "Code_50",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -422,7 +493,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_44",
+                    "id": "Code_51",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -433,7 +504,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_45",
+                    "id": "Code_52",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -454,7 +525,7 @@
                 "label": "1",
                 "description": "Encounter 1",
                 "type": {
-                  "id": "Code_46",
+                  "id": "Code_53",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -467,7 +538,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_47",
+                    "id": "Code_54",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -478,7 +549,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_48",
+                    "id": "Code_55",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -499,7 +570,7 @@
                 "label": "1",
                 "description": "Encounter 1",
                 "type": {
-                  "id": "Code_49",
+                  "id": "Code_56",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -512,7 +583,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_50",
+                    "id": "Code_57",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -523,7 +594,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_51",
+                    "id": "Code_58",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -544,7 +615,7 @@
                 "label": "2",
                 "description": "Encounter 2",
                 "type": {
-                  "id": "Code_52",
+                  "id": "Code_59",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -557,7 +628,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_53",
+                    "id": "Code_60",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -568,7 +639,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_54",
+                    "id": "Code_61",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -589,7 +660,7 @@
                 "label": "2",
                 "description": "Encounter 2",
                 "type": {
-                  "id": "Code_55",
+                  "id": "Code_62",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -602,7 +673,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_56",
+                    "id": "Code_63",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -613,7 +684,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_57",
+                    "id": "Code_64",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -1125,7 +1196,7 @@
                 "label": "Screeninga, b",
                 "description": "EPOCH-EPOCH-SCREENINGA, B",
                 "type": {
-                  "id": "Code_40",
+                  "id": "Code_47",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1145,7 +1216,7 @@
                 "label": "Baseline",
                 "description": "EPOCH-EPOCH-BASELINE",
                 "type": {
-                  "id": "Code_41",
+                  "id": "Code_48",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1165,7 +1236,7 @@
                 "label": "",
                 "description": "EPOCH-EPOCH-",
                 "type": {
-                  "id": "Code_42",
+                  "id": "Code_49",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1243,7 +1314,7 @@
                     "label": "-2 to 0",
                     "description": "Timing 1",
                     "type": {
-                      "id": "Code_58",
+                      "id": "Code_65",
                       "extensionAttributes": [],
                       "code": "C201357",
                       "codeSystem": "http://www.cdisc.org",
@@ -1254,7 +1325,7 @@
                     "value": "P2D",
                     "valueLabel": "-2 to 0",
                     "relativeToFrom": {
-                      "id": "Code_59",
+                      "id": "Code_66",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1276,7 +1347,7 @@
                     "label": "1",
                     "description": "Timing 2",
                     "type": {
-                      "id": "Code_60",
+                      "id": "Code_67",
                       "extensionAttributes": [],
                       "code": "C201358",
                       "codeSystem": "http://www.cdisc.org",
@@ -1287,7 +1358,7 @@
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_61",
+                      "id": "Code_68",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1309,7 +1380,7 @@
                     "label": "1",
                     "description": "Timing 3",
                     "type": {
-                      "id": "Code_62",
+                      "id": "Code_69",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1320,7 +1391,7 @@
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_63",
+                      "id": "Code_70",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1342,7 +1413,7 @@
                     "label": "2",
                     "description": "Timing 4",
                     "type": {
-                      "id": "Code_64",
+                      "id": "Code_71",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1353,7 +1424,7 @@
                     "value": "P2D",
                     "valueLabel": "2",
                     "relativeToFrom": {
-                      "id": "Code_65",
+                      "id": "Code_72",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1375,7 +1446,7 @@
                     "label": "2",
                     "description": "Timing 5",
                     "type": {
-                      "id": "Code_66",
+                      "id": "Code_73",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1386,7 +1457,7 @@
                     "value": "P2D",
                     "valueLabel": "2",
                     "relativeToFrom": {
-                      "id": "Code_67",
+                      "id": "Code_74",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1549,7 +1620,7 @@
                 "label": "Inclusion criterion 1 ",
                 "description": "",
                 "category": {
-                  "id": "Code_14",
+                  "id": "Code_21",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -1571,7 +1642,7 @@
                 "label": "Inclusion criterion 2 ",
                 "description": "",
                 "category": {
-                  "id": "Code_15",
+                  "id": "Code_22",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -1593,7 +1664,7 @@
                 "label": "Inclusion criterion 3 ",
                 "description": "",
                 "category": {
-                  "id": "Code_16",
+                  "id": "Code_23",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -1615,7 +1686,7 @@
                 "label": "Inclusion criterion 4 ",
                 "description": "",
                 "category": {
-                  "id": "Code_17",
+                  "id": "Code_24",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -1637,7 +1708,7 @@
                 "label": "Inclusion criterion 5 ",
                 "description": "",
                 "category": {
-                  "id": "Code_18",
+                  "id": "Code_25",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -1659,7 +1730,7 @@
                 "label": "Exclusion criterion 1 ",
                 "description": "",
                 "category": {
-                  "id": "Code_19",
+                  "id": "Code_26",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1681,7 +1752,7 @@
                 "label": "Exclusion criterion 2 ",
                 "description": "",
                 "category": {
-                  "id": "Code_20",
+                  "id": "Code_27",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1703,7 +1774,7 @@
                 "label": "Exclusion criterion 3 ",
                 "description": "",
                 "category": {
-                  "id": "Code_21",
+                  "id": "Code_28",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1725,7 +1796,7 @@
                 "label": "Exclusion criterion 4 ",
                 "description": "",
                 "category": {
-                  "id": "Code_22",
+                  "id": "Code_29",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1747,7 +1818,7 @@
                 "label": "Exclusion criterion 5 ",
                 "description": "",
                 "category": {
-                  "id": "Code_23",
+                  "id": "Code_30",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1769,7 +1840,7 @@
                 "label": "Exclusion criterion 6 ",
                 "description": "",
                 "category": {
-                  "id": "Code_24",
+                  "id": "Code_31",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1791,7 +1862,7 @@
                 "label": "Exclusion criterion 7 ",
                 "description": "",
                 "category": {
-                  "id": "Code_25",
+                  "id": "Code_32",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1813,7 +1884,7 @@
                 "label": "Exclusion criterion 8 ",
                 "description": "",
                 "category": {
-                  "id": "Code_26",
+                  "id": "Code_33",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1835,7 +1906,7 @@
                 "label": "Exclusion criterion 9 ",
                 "description": "",
                 "category": {
-                  "id": "Code_27",
+                  "id": "Code_34",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1857,7 +1928,7 @@
                 "label": "Exclusion criterion 10 ",
                 "description": "",
                 "category": {
-                  "id": "Code_28",
+                  "id": "Code_35",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1879,7 +1950,7 @@
                 "label": "Exclusion criterion 11 ",
                 "description": "",
                 "category": {
-                  "id": "Code_29",
+                  "id": "Code_36",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1901,7 +1972,7 @@
                 "label": "Exclusion criterion 12 ",
                 "description": "",
                 "category": {
-                  "id": "Code_30",
+                  "id": "Code_37",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1922,7 +1993,7 @@
             "instanceType": "InterventionalStudyDesign",
             "subTypes": [],
             "model": {
-              "id": "Code_68",
+              "id": "Code_75",
               "extensionAttributes": [],
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
@@ -2175,7 +2246,7 @@
             "id": "NarrativeContentItem_1",
             "extensionAttributes": [],
             "name": "NCI-0",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"ich-m11-title-page-table\">\n<tr>\n<td>\n<p>Sponsor Confidentiality Statement</p>\n</td>\n<td>\n<p>This clinical study is being sponsored globally by F. Hoffmann-La Roche Ltd of Basel,</p>\n<p>Switzerland. However, it may be implemented in individual countries by Roche's local affiliates,</p>\n<p>including Genentech, Inc. in the United States. The information contained in this document, especially</p>\n<p>any unpublished data, is the property of F. Hoffmann-La Roche Ltd (or under its control) and therefore</p>\n<p>is provided to you in confidence as an investigator, potential investigator, or consultant, for review by</p>\n<p>you, your staff, and an applicable Ethics Committee or Institutional Review Board. It is understood that</p>\n<p>this information will not be disclosed to others without written authorization from Roche except to the</p>\n<p>extent necessary to obtain informed consent from persons to whom the drug may be administered. </p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Full Title</p>\n</td>\n<td>\n<p>A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA </p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Sponsor Protocol Identifier</p>\n</td>\n<td>\n<p>WA42380</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Original Protocol</p>\n</td>\n<td>\n<p>No</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Version Number</p>\n</td>\n<td>\n<p>3</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Amendment Identifier</p>\n</td>\n<td>\n<p>3</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Amendment Scope</p>\n</td>\n<td>\n<p>Global </p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Compound Code(s)</p>\n</td>\n<td>\n<p>Tocilizumab (RO4877533)</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Trial Phase</p>\n</td>\n<td>\n<p>Phase III</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Sponsor Name and Address</p>\n</td>\n<td>\n<p>F. Hoffmann-La Roche Ltd </p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Regulatory Agency Identifier Number(s)</p>\n<p></p>\n</td>\n<td>\n<p>EU CT Number: 2020-001154-22</p>\n<p>IND Number: 148225</p>\n<p>NCT Number: NCT04320615</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Sponsor Approval Date</p>\n</td>\n<td>\n<p>See electronic date stamp</p>\n<p></p>\n</td>\n</tr>\n</table>\n<p></p>\n<p>Sponsor Signatory:</p>\n<p>{This protocol was approved via electronic signature as described on the approval page appended to the document.}</p>\n<p></p>\n<p>Medical Expert Contact: </p>\n<p>Medical Monitor Contact Information for All Sites</p>\n<p>Medical Monitor:\tMin Bao, M.D. </p>\n<p>Mobile Telephone No.:\t\uf02b1 (650) 296-3298</p>\n<p></p>\n<p>Alternate Medical Monitor Contact Information for All Sites</p>\n<p>Medical Monitor:\tBalpreet Matharu, M.D.</p>\n<p>Mobile Telephone No.:\t \uf02b 44 7834814352</p>\n<p></p>\n<p>To ensure the safety of study patients, an Emergency Medical Call Center will be available 24 hours per day, 7 days per week, in case the above-listed contacts cannot be reached.  The Emergency Medical Call Center will connect the investigator with an Emergency Medical Contact, provide medical translation service if necessary, and track all calls.  Contact information, including toll-free numbers for the Emergency Medical Call Center, will be distributed to investigators.  </p>\n<p></p>\n<p>SAE Reporting Method: Report Serious Adverse Events to the sponsor electronically. Refer to Section 9.4 for detailed reporting instructions.</p>\n<p></p>\n<p>Amendment Details</p>\n<p>This protocol has been amended previously. Details of prior amendments are presented in Prior Protocol Amendment(s).</p>\n<p></p>\n<p>Current Amendment</p>\n<p>The table below describes the current amendment.</p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p>Approximate UNKNOWN% Enrolled at time of Sponsor Approval:</p>\n</td>\n<td colspan=\"2\">\n<p>Approximate UNKNOWN% enrolled globally</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>{Reason(s) for Amendment:}</p>\n</td>\n<td>\n<p>Primary: To better align with the statistical analysis plan (SAP)</p>\n</td>\n<td>\n<p>Secondary: Minor changes have been made to improve clarity and consistency.</p>\n</td>\n</tr>\n</table>\n<p></p>\n<p>Overview of Changes in the Current Amendment:</p>\n<p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p>Description of Change</p>\n</td>\n<td>\n<p>Brief Rationale for Change</p>\n</td>\n<td>\n<p>Section # and Name</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Additional secondary efficacy endpoint of time to recovery was added</p>\n</td>\n<td>\n<p>To facilitate comparison with other trials of treatments for COVID-19</p>\n</td>\n<td>\n<p>Sections 2.1.2 and 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Text on the sample size and power calculation was updated to incorporate the increased enrollment target to maintain 90% power for the primary endpoint, as described in the SAP</p>\n</td>\n<td>\n<p>The potential for an increase in enrollment was included in Version 2 of the protocol, and the confirmation of increased enrollment was communicated to sites, Agencies, and ethics committees in the week of 4 May 2020.</p>\n</td>\n<td>\n<p>Sections 3.1, 4.1, 6.1, 9.5</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Geographic stratification factors were updated</p>\n</td>\n<td>\n<p>To address the inclusion of only North American and Europe because no sites outside of these regions were included in the study</p>\n</td>\n<td>\n<p>Sections 3.1, 4.2.1, 6.1, 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Text on the reporting of pregnancies in partner of male patients was removed</p>\n</td>\n<td>\n<p>To align with the informed consent form and recommendations for tocilizumab in other indications</p>\n</td>\n<td>\n<p>Section 5.4.3</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The method of analysis for the primary endpoint was updated</p>\n</td>\n<td>\n<p>To utilize a non-parametric method that was determined to be a more appropriate method, as described in the SAP</p>\n</td>\n<td>\n<p>Sections 6.1 and 6.4.1</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The method of analysis for the secondary endpoint of clinical status at additional timepoints was updated</p>\n</td>\n<td>\n<p>To utilize a non-parametric method that was determined to be a more appropriate method, as described in the SAP</p>\n</td>\n<td>\n<p>Section 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Selected secondary efficacy endpoints were specified as key secondary endpoints</p>\n</td>\n<td>\n<p>To address Type I error control, as described in the SAP</p>\n</td>\n<td>\n<p>Section 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>For clarity and as described in the SAP, language on the planned interim analyses was updated</p>\n</td>\n<td>\n<p>Updated to address the increased enrollment target to maintain 90% power for the primary endpoint and the criteria for not conducting the interim analyses</p>\n</td>\n<td>\n<p>Section 6.9</p>\n</td>\n</tr>\n</table>\n<p></p>\n<p>\t\tTABLE OF CONTENTS</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"ich-m11-title-page-table\">\n<tr>\n<td>\n<p>Sponsor Confidentiality Statement:</p>\n</td>\n<td>\n<p>This clinical study is being sponsored globally by F. Hoffmann-La Roche Ltd of Basel,</p>\n<p>Switzerland. However, it may be implemented in individual countries by Roche's local affiliates,</p>\n<p>including Genentech, Inc. in the United States. The information contained in this document, especially</p>\n<p>any unpublished data, is the property of F. Hoffmann-La Roche Ltd (or under its control) and therefore</p>\n<p>is provided to you in confidence as an investigator, potential investigator, or consultant, for review by</p>\n<p>you, your staff, and an applicable Ethics Committee or Institutional Review Board. It is understood that</p>\n<p>this information will not be disclosed to others without written authorization from Roche except to the</p>\n<p>extent necessary to obtain informed consent from persons to whom the drug may be administered. </p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Full Title:</p>\n</td>\n<td>\n<p>A RANDOMIZED, DOUBLE-BLIND, PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA </p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Sponsor Protocol Identifier:</p>\n</td>\n<td>\n<p>WA42380</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Original Protocol:</p>\n</td>\n<td>\n<p>No</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Version Number:</p>\n</td>\n<td>\n<p>3</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Amendment Identifier:</p>\n</td>\n<td>\n<p>3</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Amendment Scope:</p>\n</td>\n<td>\n<p>Global </p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Compound Code(s):</p>\n</td>\n<td>\n<p>Tocilizumab (RO4877533)</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Trial Phase:</p>\n</td>\n<td>\n<p>Phase III</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Sponsor Name and Address:</p>\n</td>\n<td>\n<p>F. Hoffmann-La Roche Ltd </p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Regulatory or Clinical Trial Identifier(s):</p>\n</td>\n<td>\n<p>EU CT Number: 2020-001154-22</p>\n<p>IND Number: 148225</p>\n<p>NCT Number: NCT04320615</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Sponsor Approval Date</p>\n</td>\n<td>\n<p>See electronic date stamp</p>\n<p></p>\n</td>\n</tr>\n</table>\n<p></p>\n<p>Sponsor Signatory:</p>\n<p>{This protocol was approved via electronic signature as described on the approval page appended to the document.}</p>\n<p></p>\n<p>Medical Expert Contact: </p>\n<p>Medical Monitor Contact Information for All Sites</p>\n<p>Medical Monitor:\tMin Bao, M.D. </p>\n<p>Mobile Telephone No.:\t\uf02b1 (650) 296-3298</p>\n<p></p>\n<p>Alternate Medical Monitor Contact Information for All Sites</p>\n<p>Medical Monitor:\tBalpreet Matharu, M.D.</p>\n<p>Mobile Telephone No.:\t \uf02b 44 7834814352</p>\n<p></p>\n<p>To ensure the safety of study patients, an Emergency Medical Call Center will be available 24 hours per day, 7 days per week, in case the above-listed contacts cannot be reached.  The Emergency Medical Call Center will connect the investigator with an Emergency Medical Contact, provide medical translation service if necessary, and track all calls.  Contact information, including toll-free numbers for the Emergency Medical Call Center, will be distributed to investigators.  </p>\n<p></p>\n<p>SAE Reporting Method: Report Serious Adverse Events to the sponsor electronically. Refer to Section 9.4 for detailed reporting instructions.</p>\n<p></p>\n<p>Amendment Details</p>\n<p>This protocol has been amended previously. Details of prior amendments are presented in Prior Protocol Amendment(s).</p>\n<p></p>\n<p>Current Amendment</p>\n<p>The table below describes the current amendment.</p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p>Approximate UNKNOWN% Enrolled at time of Sponsor Approval:</p>\n</td>\n<td colspan=\"2\">\n<p>Approximate UNKNOWN% enrolled globally</p>\n<p></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>{Reason(s) for Amendment:}</p>\n</td>\n<td>\n<p>Primary: To better align with the statistical analysis plan (SAP)</p>\n</td>\n<td>\n<p>Secondary: Minor changes have been made to improve clarity and consistency.</p>\n</td>\n</tr>\n</table>\n<p></p>\n<p>Overview of Changes in the Current Amendment:</p>\n<p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p>Description of Change</p>\n</td>\n<td>\n<p>Brief Rationale for Change</p>\n</td>\n<td>\n<p>Section # and Name</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Additional secondary efficacy endpoint of time to recovery was added</p>\n</td>\n<td>\n<p>To facilitate comparison with other trials of treatments for COVID-19</p>\n</td>\n<td>\n<p>Sections 2.1.2 and 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Text on the sample size and power calculation was updated to incorporate the increased enrollment target to maintain 90% power for the primary endpoint, as described in the SAP</p>\n</td>\n<td>\n<p>The potential for an increase in enrollment was included in Version 2 of the protocol, and the confirmation of increased enrollment was communicated to sites, Agencies, and ethics committees in the week of 4 May 2020.</p>\n</td>\n<td>\n<p>Sections 3.1, 4.1, 6.1, 9.5</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Geographic stratification factors were updated</p>\n</td>\n<td>\n<p>To address the inclusion of only North American and Europe because no sites outside of these regions were included in the study</p>\n</td>\n<td>\n<p>Sections 3.1, 4.2.1, 6.1, 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Text on the reporting of pregnancies in partner of male patients was removed</p>\n</td>\n<td>\n<p>To align with the informed consent form and recommendations for tocilizumab in other indications</p>\n</td>\n<td>\n<p>Section 5.4.3</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The method of analysis for the primary endpoint was updated</p>\n</td>\n<td>\n<p>To utilize a non-parametric method that was determined to be a more appropriate method, as described in the SAP</p>\n</td>\n<td>\n<p>Sections 6.1 and 6.4.1</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The method of analysis for the secondary endpoint of clinical status at additional timepoints was updated</p>\n</td>\n<td>\n<p>To utilize a non-parametric method that was determined to be a more appropriate method, as described in the SAP</p>\n</td>\n<td>\n<p>Section 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Selected secondary efficacy endpoints were specified as key secondary endpoints</p>\n</td>\n<td>\n<p>To address Type I error control, as described in the SAP</p>\n</td>\n<td>\n<p>Section 6.4.2</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>For clarity and as described in the SAP, language on the planned interim analyses was updated</p>\n</td>\n<td>\n<p>Updated to address the increased enrollment target to maintain 90% power for the primary endpoint and the criteria for not conducting the interim analyses</p>\n</td>\n<td>\n<p>Section 6.9</p>\n</td>\n</tr>\n</table>\n<p></p>\n<p>\t\tTABLE OF CONTENTS</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -3269,7 +3340,7 @@
             "label": null,
             "description": null,
             "code": {
-              "id": "Code_9",
+              "id": "Code_11",
               "extensionAttributes": [],
               "code": "C188863",
               "codeSystem": "http://www.cdisc.org",
@@ -3281,6 +3352,30 @@
             "assignedPersons": [],
             "organizationIds": [
               "Organization_3"
+            ],
+            "masking": null,
+            "notes": [],
+            "instanceType": "StudyRole"
+          },
+          {
+            "id": "StudyRole_3",
+            "extensionAttributes": [],
+            "name": "ROLE_3",
+            "label": null,
+            "description": null,
+            "code": {
+              "id": "Code_15",
+              "extensionAttributes": [],
+              "code": "C188863",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2025-09-26",
+              "decode": "Regulatory Agency",
+              "instanceType": "Code"
+            },
+            "appliesToIds": [],
+            "assignedPersons": [],
+            "organizationIds": [
+              "Organization_4"
             ],
             "masking": null,
             "notes": [],
@@ -3308,7 +3403,9 @@
               "id": "Address_1",
               "extensionAttributes": [],
               "text": "",
-              "lines": [],
+              "lines": [
+                ""
+              ],
               "city": "",
               "district": "",
               "state": "",
@@ -3325,7 +3422,7 @@
             "name": "CT.GOV",
             "label": "ClinicalTrials.gov",
             "type": {
-              "id": "Code_7",
+              "id": "Code_8",
               "extensionAttributes": [],
               "code": "C93453",
               "codeSystem": "http://www.cdisc.org",
@@ -3348,7 +3445,7 @@
               "state": "MD",
               "postalCode": "20894",
               "country": {
-                "id": "Code_6",
+                "id": "Code_7",
                 "extensionAttributes": [],
                 "code": "USA",
                 "codeSystem": "ISO 3166 1 alpha3",
@@ -3367,7 +3464,7 @@
             "name": "FDA",
             "label": "Food and Drug Administration",
             "type": {
-              "id": "Code_10",
+              "id": "Code_12",
               "extensionAttributes": [],
               "code": "C188863",
               "codeSystem": "http://www.cdisc.org",
@@ -3389,12 +3486,53 @@
               "state": "MD",
               "postalCode": "20903",
               "country": {
-                "id": "Code_8",
+                "id": "Code_10",
                 "extensionAttributes": [],
                 "code": "USA",
                 "codeSystem": "ISO 3166 1 alpha3",
                 "codeSystemVersion": "2020-08",
                 "decode": "United States of America",
+                "instanceType": "Code"
+              },
+              "instanceType": "Address"
+            },
+            "managedSites": [],
+            "instanceType": "Organization"
+          },
+          {
+            "id": "Organization_4",
+            "extensionAttributes": [],
+            "name": "EMA",
+            "label": "European Medicines Agency",
+            "type": {
+              "id": "Code_16",
+              "extensionAttributes": [],
+              "code": "C188863",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2025-09-26",
+              "decode": "Regulatory Agency",
+              "instanceType": "Code"
+            },
+            "identifierScheme": "European Union",
+            "identifier": "EMA",
+            "legalAddress": {
+              "id": "Address_4",
+              "extensionAttributes": [],
+              "text": "Domenico Scarlattilaan 6, Amsterdam, 1083 HS, Netherlands",
+              "lines": [
+                "Domenico Scarlattilaan 6"
+              ],
+              "city": "Amsterdam",
+              "district": "",
+              "state": "",
+              "postalCode": "1083 HS",
+              "country": {
+                "id": "Code_14",
+                "extensionAttributes": [],
+                "code": "NLD",
+                "codeSystem": "ISO 3166 1 alpha3",
+                "codeSystemVersion": "2020-08",
+                "decode": "Netherlands",
                 "instanceType": "Code"
               },
               "instanceType": "Address"
@@ -3424,7 +3562,7 @@
         "label": "Protocol Document",
         "description": "Protocol Document",
         "language": {
-          "id": "Code_12",
+          "id": "Code_19",
           "extensionAttributes": [],
           "code": "en",
           "codeSystem": "ISO 639-1",
@@ -3433,7 +3571,7 @@
           "instanceType": "Code"
         },
         "type": {
-          "id": "Code_13",
+          "id": "Code_20",
           "extensionAttributes": [],
           "code": "C70817",
           "codeSystem": "http://www.cdisc.org",
@@ -3448,7 +3586,7 @@
             "extensionAttributes": [],
             "version": "",
             "status": {
-              "id": "Code_11",
+              "id": "Code_18",
               "extensionAttributes": [],
               "code": "C25508",
               "codeSystem": "http://www.cdisc.org",
@@ -5771,5 +5909,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 M11 Package",
-  "systemVersion": "0.9.0"
+  "systemVersion": "0.10.0"
 }
