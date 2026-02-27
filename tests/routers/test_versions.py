@@ -262,8 +262,8 @@ def test_protocol_m11(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
-    uji = mock_usdm_json_init(mocker, "app.routers.versions")
-    usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_study_version(mocker, "app.routers.versions")
     mocker.patch(
         "app.routers.versions.USDMJson.json",
         return_value=(
@@ -284,8 +284,8 @@ def test_protocol_cpt(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
-    uji = mock_usdm_json_init(mocker, "app.routers.versions")
-    usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_study_version(mocker, "app.routers.versions")
     mocker.patch(
         "app.routers.versions.USDMJson.json",
         return_value=(
@@ -306,7 +306,7 @@ def test_protocol_no_file(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
-    uji = mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
     mocker.patch("app.routers.versions.USDMJson.json", return_value=("", "", ""))
     response = client.get("/versions/1/protocol?template=M11")
     assert response.status_code == 200
@@ -373,8 +373,8 @@ def test_protocol_other(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
-    uji = mock_usdm_json_init(mocker, "app.routers.versions")
-    usv = mock_usdm_study_version(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_study_version(mocker, "app.routers.versions")
     mocker.patch(
         "app.routers.versions.USDMJson.json",
         return_value=(

@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 from simple_error_log import Errors
 from usdm4.api.wrapper import Wrapper, Study, StudyVersion, StudyDesign
 from usdm4_m11.data_view.data_view import DataView
-from app.database.study import Study
 from app.database.version import Version
 from app.database.file_import import FileImport
 from app.database.database import get_db

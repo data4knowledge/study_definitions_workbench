@@ -99,7 +99,7 @@ def test_delete_user_endpoint(mocker, monkeypatch):
     ep_find = mocker.patch("app.database.endpoint.Endpoint.find")
     ep_find.return_value = MagicMock()
     ev = mock_endpoint_valid(mocker)
-    uep = mock_user_endpoints_page(mocker)
+    mock_user_endpoints_page(mocker)
     response = client.delete("/users/1/endpoint/1")
     assert response.status_code == 200
     assert mock_called(uf)

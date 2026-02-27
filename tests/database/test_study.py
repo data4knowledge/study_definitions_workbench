@@ -75,7 +75,7 @@ def test_sponsors(db):
 
 def test_find_exists(db):
     _clean(db)
-    user = _base_setup(db)
+    _base_setup(db)
     items = db.query(StudyDB).all()
     study = Study.find(items[0].id, db)
     assert study is not None
@@ -165,7 +165,7 @@ def test_study_and_version_existing_study(db):
 
 def test_summary(db):
     _clean(db)
-    user = _base_setup(db)
+    _base_setup(db)
     items = db.query(StudyDB).all()
     result = Study.summary(items[0].id, db)
     assert "versions" in result
@@ -175,7 +175,7 @@ def test_summary(db):
 
 def test_delete_success(db):
     _clean(db)
-    user = _base_setup(db)
+    _base_setup(db)
     items = db.query(StudyDB).all()
     study = Study(**items[0].__dict__)
     result = study.delete(db)
@@ -200,7 +200,7 @@ def test_delete_failure(db):
 
 def test_debug(db):
     _clean(db)
-    user = _base_setup(db)
+    _base_setup(db)
     result = Study.debug(db)
     assert result["count"] == 17
     assert len(result["items"]) == 17
@@ -243,7 +243,7 @@ def test_generate_name():
 
 def test_add_filters_name_like(db):
     _clean(db)
-    user = _base_setup(db)
+    _base_setup(db)
     query = db.query(StudyDB)
     query = Study._add_filters(query, {"name": "STUDY 2"})
     results = query.all()

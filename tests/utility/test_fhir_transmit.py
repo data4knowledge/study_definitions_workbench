@@ -33,9 +33,7 @@ class TestFhirM11Transmit:
     ):
         mock_session_local.return_value = MagicMock()
         mock_usdm_instance = MagicMock()
-        mock_usdm_instance.study_version.return_value = {
-            "titles": {"C207616": "Test"}
-        }
+        mock_usdm_instance.study_version.return_value = {"titles": {"C207616": "Test"}}
         mock_usdm_instance.fhir_data.return_value = '{"data": "fhir"}'
         mock_usdm.return_value = mock_usdm_instance
         await fhir_m11_transmit(1, 2, "prism2", mock_user)

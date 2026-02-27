@@ -259,10 +259,10 @@ def test_get_logout_multiple(mocker, monkeypatch):
     assert "logout" in str(response.next_request.url)
 
 
-def mock_user_check_exists(mocker):
-    uc = mock_user_check(mocker)
-    uc.side_effect = [(factory_user(), True)]
-    return uc
+# def mock_user_check_exists(mocker):
+#     uc = mock_user_check(mocker)
+#     uc.side_effect = [(factory_user(), True)]
+#     return uc
 
 
 def mock_user_check_new(mocker):

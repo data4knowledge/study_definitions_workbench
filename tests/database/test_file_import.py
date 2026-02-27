@@ -59,7 +59,7 @@ def test_find_not_exists(db):
 def test_find_by_uuid(db):
     _clean(db)
     user = _setup_user(db)
-    fi = _create_import(db, user, uuid="unique-uuid-abc")
+    _create_import(db, user, uuid="unique-uuid-abc")
     found = FileImport.find_by_uuid("unique-uuid-abc", db)
     assert found is not None
     assert found.uuid == "unique-uuid-abc"

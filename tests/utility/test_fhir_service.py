@@ -23,7 +23,7 @@ def fhir_service():
 class TestFHIRServiceInit:
     def test_init(self):
         with (
-            patch("app.utility.fhir_service.ServiceEnvironment") as mock_se,
+            patch("app.utility.fhir_service.ServiceEnvironment"),
             patch("app.utility.service.httpx.AsyncClient"),
         ):
             svc = FHIRService("https://fhir.example.com")

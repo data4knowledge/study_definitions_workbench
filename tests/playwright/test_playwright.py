@@ -626,13 +626,11 @@ def test_load_export_pj(playwright: Playwright) -> None:
 
     # Exports
     page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download_info:
+    with page.expect_download():
         page.get_by_role("link", name="Patient Journey: Simple (.").click()
-    download = download_info.value
     page.get_by_role("button", name=" Export").click()
-    with page.expect_download() as download1_info:
+    with page.expect_download():
         page.get_by_role("link", name="Patient Journey: Expanded (.").click()
-    download1 = download1_info.value
 
     context.close()
     browser.close()

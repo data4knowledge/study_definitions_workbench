@@ -7,7 +7,7 @@ from app.model.file_handling.data_files import DataFiles
 from usdm4_m11 import USDM4M11
 from usdm4.api.wrapper import Wrapper
 
-SAVE = False
+SAVE = True
 
 
 @pytest.fixture
@@ -36,6 +36,7 @@ async def _run_test(dir, name, save=False):
     assert pretty_result == expected
     error_expected = read_yaml(_full_path(name, error_filename))
     assert errors_clean_all(m11.errors) == error_expected
+
 
 def _full_path(dir, filename):
     return f"tests/test_files/m11/{dir}/{filename}"

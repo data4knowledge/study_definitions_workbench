@@ -2,9 +2,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/341cf4e2-ddf6-4979-81b2-d7e6efbd4308/LZZT.docx'',
-    dir=''tests/test_files/mount/datafiles/341cf4e2-ddf6-4979-81b2-d7e6efbd4308'',
-    image_path0''tests/test_files/mount/datafiles/341cf4e2-ddf6-4979-81b2-d7e6efbd4308/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/42f7701b-f3c7-484b-bc40-b61b02dc130b/LZZT.docx'',
+    dir=''tests/test_files/mount/datafiles/42f7701b-f3c7-484b-bc40-b61b02dc130b'',
+    image_path0''tests/test_files/mount/datafiles/42f7701b-f3c7-484b-bc40-b61b02dc130b/images'',
     filename=''LZZT.docx'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -680,13 +680,13 @@
     \ \"usdm4_m11/__init__.py\", line 23, in from_docx\n    result = m11_import.process()\n\
     \  File \"usdm4_m11/import_/m11_import.py\", line 26, in process\n    wrapper\
     \ = assembler.process()\n  File \"usdm4_m11/import_/assemble/__init__.py\", line\
-    \ 23, in process\n    self._assembler.execute(self._source_data)\n  File \"src/usdm4/assembler/assembler.py\"\
-    , line 131, in execute\n    self._study_assembler.execute(\n  File \"src/usdm4/assembler/study_assembler.py\"\
-    , line 111, in execute\n    valid_date = self._create_date(data)\n  File \"src/usdm4/assembler/study_assembler.py\"\
+    \ 23, in process\n    self._assembler.execute(self._source_data)\n  File \"usdm4/assembler/assembler.py\"\
+    , line 131, in execute\n    self._study_assembler.execute(\n  File \"usdm4/assembler/study_assembler.py\"\
+    , line 111, in execute\n    valid_date = self._create_date(data)\n  File \"usdm4/assembler/study_assembler.py\"\
     , line 229, in _create_date\n    if actual_date := self._encoder.to_date(data[\"\
-    sponsor_approval_date\"]):\n  File \"src/usdm4/assembler/encoder.py\", line 285,\
-    \ in to_date\n    self._errors.exception(\nTraceback (most recent call last):\n\
-    \  File \"src/usdm4/assembler/encoder.py\", line 282, in to_date\n    return parser.parse(input_text)\n\
+    sponsor_approval_date\"]):\n  File \"usdm4/assembler/encoder.py\", line 285, in\
+    \ to_date\n    self._errors.exception(\nTraceback (most recent call last):\n \
+    \ File \"usdm4/assembler/encoder.py\", line 282, in to_date\n    return parser.parse(input_text)\n\
     \           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"dateutil/parser/_parser.py\", line\
     \ 1368, in parse\n    return DEFAULTPARSER.parse(timestr, **kwargs)\n        \
     \   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"dateutil/parser/_parser.py\"\

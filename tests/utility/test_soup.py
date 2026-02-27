@@ -22,11 +22,10 @@ class TestGetSoup:
 
     @patch("app.utility.soup.application_logger")
     def test_warning_logged(self, mock_logger):
-
         with patch("app.utility.soup.warnings.catch_warnings") as mock_cw:
             warning_item = MagicMock()
             warning_item.message = "test warning"
             mock_cw.return_value.__enter__ = MagicMock(return_value=[warning_item])
             mock_cw.return_value.__exit__ = MagicMock(return_value=False)
-            result = get_soup("<p>test</p>")
+            get_soup("<p>test</p>")
             mock_logger.warning.assert_called_once()
