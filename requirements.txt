@@ -1,4 +1,4 @@
-uvicorn[standard]
+uvicorn[standard]==0.42.0
 itsdangerous==2.2.0
 sqlalchemy==2.0.31   
 alembic==1.13.2

@@ -1,3 +1,7 @@
+<h5>Release 0.36.0-alpha.16, 2026-03-24</h5>
+
+Alpha release: PRISM file handling bug fixes (issue 54).
+
 <h5>Release 0.36.0-alpha.15, 2026-02-27</h5>
 
 Alpha release: PRISM bug fixes (issue 53).
