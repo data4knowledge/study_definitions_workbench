@@ -88,9 +88,9 @@ async def import_xl_process(
     full_path, _ = df.save(load_type, contents, filename)
     if full_path:
         return templates.TemplateResponse(
+            request,
             "import/partials/upload_success.html",
             {
-                "request": request,
                 "filename": main_file["filename"],
                 "messages": messages,
                 "route": f"/versions/{id}/summary",
@@ -100,9 +100,9 @@ async def import_xl_process(
     else:
         messages.append("Failed to save the load file")
         return templates.TemplateResponse(
+            request,
             "import/partials/upload_fail.html",
             {
-                "request": request,
                 "filename": main_file["filename"],
                 "messages": messages,
                 "type": load_type,

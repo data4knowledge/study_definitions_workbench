@@ -99,7 +99,7 @@ class TestLocalFilesDownload:
         lf = LocalFiles()
         stem, ext, contents = lf.download(str(test_file))
         assert stem == "testfile"
-        assert ext == "xlsx"
+        assert ext == ".xlsx"
         assert contents == b"file contents"
 
 

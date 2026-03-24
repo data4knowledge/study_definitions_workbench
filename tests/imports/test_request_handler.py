@@ -42,7 +42,7 @@ class TestRequestHandler:
         assert result == "success_response"
         mock_templates.TemplateResponse.assert_called_once()
         call_args = mock_templates.TemplateResponse.call_args
-        assert call_args[0][0] == "import/partials/upload_success.html"
+        assert call_args[0][1] == "import/partials/upload_success.html"
 
     @pytest.mark.asyncio
     async def test_process_no_uuid(self):
@@ -70,7 +70,7 @@ class TestRequestHandler:
             result = await handler.process(mock_request, mock_templates, mock_user)
         assert result == "fail_response"
         call_args = mock_templates.TemplateResponse.call_args
-        assert call_args[0][0] == "import/partials/upload_fail.html"
+        assert call_args[0][1] == "import/partials/upload_fail.html"
 
     @pytest.mark.asyncio
     async def test_process_exception(self):
@@ -84,4 +84,4 @@ class TestRequestHandler:
             result = await handler.process(mock_request, mock_templates, mock_user)
         assert result == "exception_response"
         call_args = mock_templates.TemplateResponse.call_args
-        assert call_args[0][0] == "import/partials/upload_fail.html"
+        assert call_args[0][1] == "import/partials/upload_fail.html"

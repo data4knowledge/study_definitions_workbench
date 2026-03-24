@@ -23,9 +23,9 @@ class RequestHandler:
             if uuid:
                 execute_import(import_manager)
                 return templates.TemplateResponse(
+                    request,
                     "import/partials/upload_success.html",
                     {
-                        "request": request,
                         "filename": main_file["filename"],
                         "messages": messages,
                         "route": "/index",
@@ -35,9 +35,9 @@ class RequestHandler:
             else:
                 messages.append("Failed to process the import file(s)")
                 return templates.TemplateResponse(
+                    request,
                     "import/partials/upload_fail.html",
                     {
-                        "request": request,
                         "filename": main_file["filename"],
                         "messages": messages,
                         "type": self.type,
@@ -46,9 +46,9 @@ class RequestHandler:
         except Exception as e:
             application_logger.exception("Exception uploading files", e)
             return templates.TemplateResponse(
+                request,
                 "import/partials/upload_fail.html",
                 {
-                    "request": request,
                     "filename": "",
                     "messages": [
                         "Exception raised while uploading files, see logs for more information"

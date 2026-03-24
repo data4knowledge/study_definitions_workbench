@@ -55,7 +55,7 @@ class FormHandler:
             # print(f"XL OS FILE: {uid}")
             local_files = LocalFiles()
             file_root, file_extension, contents = local_files.download(uid)
-            filename = f"{file_root}.{file_extension}"
+            filename = f"{file_root}{file_extension}"
             main_file, image_files = self._handle_file(
                 file_extension,
                 file_root,

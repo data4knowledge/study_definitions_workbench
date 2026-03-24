@@ -109,4 +109,4 @@ class LocalFiles:
 
     def _stem_and_extension(self, filename):
         result = os.path.splitext(filename)
-        return result[0], result[1][1:]
+        return result[0], result[1]
