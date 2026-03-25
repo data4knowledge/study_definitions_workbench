@@ -41,3 +41,11 @@ Located in `tests/playwright/`. These require a running server and browser envir
 - USDM data uses CDISC NCI codes as dictionary keys (e.g. `C54149` for Pharmaceutical Company, `C207616` for Official Study Title). Templates and code reference these codes, not human-readable names.
 - The `study_version()` method returns identifiers as `{code: {label, identifier}}` dicts, and titles as `{code: text}` dicts.
 - FHIR version support is configured in `app/dependencies/fhir_version.py`. Only versions listed in `FHIR_VERSIONS` are valid for export/transmit.
+
+## Known issues
+
+### Test/server database corruption
+
+**Do not run pytest while the dev server is running.** Both can end up using the same SQLite database, and test cleanup (`_clean()` helpers) will wipe records the server depends on.
+
+Root cause: `application_configuration` is a module-level singleton (`app/configuration/configuration.py:36`) and `database.py` creates its engine at import time (lines 6-10), before `conftest.py`'s session fixture loads `.test_env`. Tests using `TestClient(app)` share the app's module-level engine rather than the separate test `db` fixture. This needs fixing — see memory for details.

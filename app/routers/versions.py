@@ -50,7 +50,7 @@ async def get_version_summary(
 
 
 @router.get("/{id}/load/{load_type}", dependencies=[Depends(protect_endpoint)])
-def import_xl(
+def import_yaml(
     request: Request, id: str, load_type: str, session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
@@ -66,7 +66,7 @@ def import_xl(
 
 
 @router.post("/{id}/load/{load_type}", dependencies=[Depends(protect_endpoint)])
-async def import_xl_process(
+async def import_yaml_process(
     request: Request,
     id: str,
     load_type: str,
