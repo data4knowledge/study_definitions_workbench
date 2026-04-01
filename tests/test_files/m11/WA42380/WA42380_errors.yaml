@@ -2,9 +2,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/72fdbda9-e9cf-4399-b4e4-4036530f1696/WA42380.docx'',
-    dir=''tests/test_files/mount/datafiles/72fdbda9-e9cf-4399-b4e4-4036530f1696'',
-    image_path0''tests/test_files/mount/datafiles/72fdbda9-e9cf-4399-b4e4-4036530f1696/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/f467672d-9294-4a83-9341-a26e1344f8b6/WA42380.docx'',
+    dir=''tests/test_files/mount/datafiles/f467672d-9294-4a83-9341-a26e1344f8b6'',
+    image_path0''tests/test_files/mount/datafiles/f467672d-9294-4a83-9341-a26e1344f8b6/images'',
     filename=''WA42380.docx'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -17,7 +17,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _title_table
   message: Found M11 title page table
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -75,14 +75,14 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_name
   message: Organization name set to 'F. Hoffmann-La Roche Ltd'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_address_simple
   message: 'Address result ''{''lines'': [''''], ''city'': '''', ''district'': '''',
     ''state'': '''', ''postalCode'': '''', ''country'': ''''}'''
@@ -90,7 +90,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_address
   message: 'Organization address set to ''{''lines'': [''''], ''city'': '''', ''district'':
     '''', ''state'': '''', ''postalCode'': '''', ''country'': ''''}'''
@@ -98,7 +98,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _extract_names_and_addresss
   message: 'Extracted organisation names and adddress: result={''sponsor'': {''name'':
     ''F. Hoffmann-La Roche Ltd'', ''address'': {''lines'': [''''], ''city'': '''',
@@ -138,7 +138,7 @@
   type: ''
 - level: Warning
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _extract_names_and_addresss
   message: Failed to find medical expert name and addresse text
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -219,7 +219,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_regulatory_identifiers_simple
   message: 'Found regulatory identifiers: NCT=[''NCT04320615''], IND=[''148225''],
     EMA=[''2020-001154-22''], jRCT=[], WHO=[]'
@@ -232,41 +232,31 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_cpt.import_.extract.soa_features.activity_row_feature.ActivityRowFeature
+    class_name: usdm4_protocol.soa.features.activity_row.ActivityRowFeature
     method_name: process
   message: 'Activity Row: {''first_activity_row'': 3, ''last_activity_row'': 30, ''total_rows'':
     31}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
-  location: {}
-  message: 'Timing: Row=2, Score=6
-
-    [{''text'': ''-2 to 0'', ''value'': -2, ''unit'': ''day'', ''index'': 0}, {''text'':
-    ''1'', ''value'': 1, ''unit'': ''day'', ''index'': 1}, {''text'': ''1'', ''value'':
-    1, ''unit'': ''day'', ''index'': 2}, {''text'': ''2'', ''value'': 2, ''unit'':
-    ''day'', ''index'': 3}, {''text'': ''2'', ''value'': 2, ''unit'': ''day'', ''index'':
-    4}]'
+  location:
+    class_name: usdm4_protocol.soa.features.row_classifier.RowClassifier
+    method_name: classify_rows
+  message: 'Row classification: {0: ''epoch'', 1: ''timepoint'', 2: ''window''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
   location:
-    class_name: usdm4_cpt.import_.extract.soa_features.timepointss_feature.TimpointsFeature
-    method_name: process
-  message: 'Timepoints ''{''found'': True, ''items'': [{''text'': ''-2 to 0'', ''value'':
-    -2, ''unit'': ''day'', ''index'': 0}, {''text'': ''1'', ''value'': 1, ''unit'':
-    ''day'', ''index'': 1}, {''text'': ''1'', ''value'': 1, ''unit'': ''day'', ''index'':
-    2}, {''text'': ''2'', ''value'': 2, ''unit'': ''day'', ''index'': 3}, {''text'':
-    ''2'', ''value'': 2, ''unit'': ''day'', ''index'': 4}], ''row'': 2}'''
+    class_name: usdm4_protocol.common.extract.combined_row_classifier.CombinedRowClassifier
+    method_name: _run_heuristic
+  message: 'Heuristic classification: {0: ''epoch'', 1: ''timepoint'', 2: ''window''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
   location:
-    class_name: usdm4_cpt.import_.extract.soa_features.epochs_feature.EpochsFeature
-    method_name: process
-  message: 'Epochs ''{''found'': True, ''items'': [{''text'': ''Screeninga, b'', ''index'':
-    0}, {''text'': ''Baseline'', ''index'': 1}, {''text'': '''', ''index'': 2}, {''text'':
-    '''', ''index'': 3}, {''text'': '''', ''index'': 4}], ''row'': 1}'''
+    class_name: usdm4_protocol.common.extract.combined_row_classifier.CombinedRowClassifier
+    method_name: classify
+  message: 'Combined row classification: {0: ''epoch'', 1: ''timepoint'', 2: ''window''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
@@ -291,7 +281,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_cpt.import_.extract.soa_features.visits_feature.VisitsFeature
+    class_name: usdm4_protocol.soa.features.visits.VisitsFeature
     method_name: process
   message: 'Visits ''{''found'': True, ''items'': [{''text'': ''-2 to 0'', ''index'':
     0, ''references'': []}, {''text'': ''1'', ''index'': 1, ''references'': []}, {''text'':
@@ -300,8 +290,40 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
+  location: {}
+  message: 'Timing (hint): Row=1
+
+    [{''text'': ''-2 to 0'', ''value'': -2, ''unit'': ''day'', ''index'': 0}, {''text'':
+    ''1'', ''value'': 1, ''unit'': ''day'', ''index'': 1}, {''text'': ''1'', ''value'':
+    1, ''unit'': ''day'', ''index'': 2}, {''text'': ''2'', ''value'': 2, ''unit'':
+    ''day'', ''index'': 3}, {''text'': ''2'', ''value'': 2, ''unit'': ''day'', ''index'':
+    4}]'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
   location:
-    class_name: usdm4_cpt.import_.extract.soa_features.windows_feature.windowsFeature
+    class_name: usdm4_protocol.soa.features.timepoints.TimepointsFeature
+    method_name: process
+  message: 'Timepoints ''{''found'': True, ''items'': [{''text'': ''-2 to 0'', ''value'':
+    -2, ''unit'': ''day'', ''index'': 0}, {''text'': ''1'', ''value'': 1, ''unit'':
+    ''day'', ''index'': 1}, {''text'': ''1'', ''value'': 1, ''unit'': ''day'', ''index'':
+    2}, {''text'': ''2'', ''value'': 2, ''unit'': ''day'', ''index'': 3}, {''text'':
+    ''2'', ''value'': 2, ''unit'': ''day'', ''index'': 4}], ''row'': 1}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_protocol.soa.features.epochs.EpochsFeature
+    method_name: process
+  message: 'Epochs (trusted hint) ''{''found'': True, ''items'': [{''text'': ''Screeninga,
+    b'', ''index'': 0}, {''text'': ''Baseline'', ''index'': 1}, {''text'': '''', ''index'':
+    2}, {''text'': '''', ''index'': 3}, {''text'': '''', ''index'': 4}], ''row'':
+    1}'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Info
+  location:
+    class_name: usdm4_protocol.soa.features.windows.WindowsFeature
     method_name: process
   message: 'Windows ''{''found'': True, ''items'': [{''before'': 0, ''after'': 0,
     ''unit'': ''day'', ''index'': 0}, {''before'': 0, ''after'': 0, ''unit'': ''day'',
@@ -312,14 +334,14 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_cpt.import_.extract.soa_features.conditions_feature.ConditionsFeature
+    class_name: usdm4_protocol.soa.features.conditions.ConditionsFeature
     method_name: process
   message: 'Conditions ''{''found'': False, ''items'': []}'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _find_amendment_section
   message: Found amendment section at index 1
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -331,7 +353,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _amendment_table
   message: Amendment table found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -349,7 +371,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _get_enrollment_simple
   message: 'Found enrollment: {''keyword'': ''Globally'', ''value'': 0, ''unit'':
     ''%'', ''regions'': []}'
@@ -357,7 +379,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _reasons
   message: 'Amendment reasons found {''primary'': ''Primary: To better align with
     the statistical analysis plan (SAP)'', ''secondary'': ''Secondary: Minor changes
@@ -378,7 +400,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _changes_table
   message: Amendment changes table found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -418,7 +440,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: process
   message: 'Amendment information {''amendment_details'': ''<p>Amendment Details</p>\n<p>This
     protocol has been amended previously. Details of prior amendments are presented
@@ -775,7 +797,7 @@
     method_name: to_date
   message: "Failed to decode date text 'See electronic date stamp'\n\nDetails\nUnknown\
     \ string format: See electronic date stamp\n\nTraceback\n  File \"pytest\", line\
-    \ 8, in <module>\n    sys.exit(console_main())\n  File \"_pytest/config/__init__.py\"\
+    \ 6, in <module>\n    sys.exit(console_main())\n  File \"_pytest/config/__init__.py\"\
     , line 206, in console_main\n    code = main()\n  File \"_pytest/config/__init__.py\"\
     , line 178, in main\n    ret: Union[ExitCode, int] = config.hook.pytest_cmdline_main(\n\
     \  File \"pluggy/_hooks.py\", line 512, in __call__\n    return self._hookexec(self.name,\
@@ -815,29 +837,30 @@
     , line 120, in _hookexec\n    return self._inner_hookexec(hook_name, methods,\
     \ kwargs, firstresult)\n  File \"pluggy/_callers.py\", line 121, in _multicall\n\
     \    res = hook_impl.function(*args)\n  File \"anyio/pytest_plugin.py\", line\
-    \ 190, in pytest_pyfunc_call\n    runner.run_test(pyfuncitem.obj, testargs)\n\
-    \  File \"anyio/_backends/_asyncio.py\", line 2300, in run_test\n    self.get_loop().run_until_complete(\n\
+    \ 251, in pytest_pyfunc_call\n    runner.run_test(pyfuncitem.obj, testargs)\n\
+    \  File \"anyio/_backends/_asyncio.py\", line 2316, in run_test\n    self.get_loop().run_until_complete(\n\
     \  File \"base_events.py\", line 674, in run_until_complete\n    self.run_forever()\n\
     \  File \"base_events.py\", line 641, in run_forever\n    self._run_once()\n \
     \ File \"base_events.py\", line 1987, in _run_once\n    handle._run()\n  File\
     \ \"events.py\", line 88, in _run\n    self._context.run(self._callback, *self._args)\n\
-    \  File \"anyio/_backends/_asyncio.py\", line 2227, in _run_tests_and_fixtures\n\
+    \  File \"anyio/_backends/_asyncio.py\", line 2242, in _run_tests_and_fixtures\n\
     \    retval = await coro\n  File \"tests/m11/test_m11_integration.py\", line 52,\
     \ in test_m11_wa42380\n    await _run_test(\"WA42380\", \"WA42380\", SAVE)\n \
     \ File \"tests/m11/test_m11_integration.py\", line 26, in _run_test\n    wrapper:\
-    \ Wrapper = m11.from_docx(filepath)\n  File \"usdm4_m11/__init__.py\", line 23,\
-    \ in from_docx\n    result = m11_import.process()\n  File \"usdm4_m11/import_/m11_import.py\"\
-    , line 26, in process\n    wrapper = assembler.process()\n  File \"usdm4_m11/import_/assemble/__init__.py\"\
-    , line 23, in process\n    self._assembler.execute(self._source_data)\n  File\
-    \ \"usdm4/assembler/assembler.py\", line 131, in execute\n    self._study_assembler.execute(\n\
-    \  File \"usdm4/assembler/study_assembler.py\", line 111, in execute\n    valid_date\
-    \ = self._create_date(data)\n  File \"usdm4/assembler/study_assembler.py\", line\
-    \ 229, in _create_date\n    if actual_date := self._encoder.to_date(data[\"sponsor_approval_date\"\
-    ]):\n  File \"usdm4/assembler/encoder.py\", line 285, in to_date\n    self._errors.exception(\n\
-    Traceback (most recent call last):\n  File \"usdm4/assembler/encoder.py\", line\
-    \ 282, in to_date\n    return parser.parse(input_text)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n\
-    \  File \"dateutil/parser/_parser.py\", line 1368, in parse\n    return DEFAULTPARSER.parse(timestr,\
-    \ **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"dateutil/parser/_parser.py\"\
+    \ Wrapper = m11.from_docx(filepath)\n  File \"src/usdm4_protocol/m11/__init__.py\"\
+    , line 23, in from_docx\n    result = m11_import.process()\n  File \"src/usdm4_protocol/common/base_import.py\"\
+    , line 28, in process\n    wrapper = assembler.process()\n  File \"src/usdm4_protocol/common/assemble/assemble_usdm.py\"\
+    , line 38, in process\n    self._assembler.execute(self._source_data)\n  File\
+    \ \"src/usdm4/assembler/assembler.py\", line 129, in execute\n    self._study_assembler.execute(\n\
+    \  File \"src/usdm4/assembler/study_assembler.py\", line 111, in execute\n   \
+    \ valid_date = self._create_date(data)\n  File \"src/usdm4/assembler/study_assembler.py\"\
+    , line 229, in _create_date\n    if actual_date := self._encoder.to_date(data[\"\
+    sponsor_approval_date\"]):\n  File \"src/usdm4/assembler/encoder.py\", line 285,\
+    \ in to_date\n    self._errors.exception(\nTraceback (most recent call last):\n\
+    \  File \"src/usdm4/assembler/encoder.py\", line 282, in to_date\n    return parser.parse(input_text)\n\
+    \           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"dateutil/parser/_parser.py\", line\
+    \ 1368, in parse\n    return DEFAULTPARSER.parse(timestr, **kwargs)\n        \
+    \   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"dateutil/parser/_parser.py\"\
     , line 643, in parse\n    raise ParserError(\"Unknown string format: %s\", timestr)\n\
     dateutil.parser._parser.ParserError: Unknown string format: See electronic date\
     \ stamp\n"

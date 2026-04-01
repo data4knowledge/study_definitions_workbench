@@ -5908,6 +5908,6 @@
     "instanceType": "Study"
   },
   "usdmVersion": "4.0.0",
-  "systemName": "USDM4 M11 Package",
-  "systemVersion": "0.10.0"
+  "systemName": "USDM4 Protocol Package",
+  "systemVersion": "0.2.0"
 }

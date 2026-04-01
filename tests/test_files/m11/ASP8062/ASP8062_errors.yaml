@@ -2,9 +2,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/858b50cd-8900-4b7d-bcf4-0df1653a1a52/ASP8062.docx'',
-    dir=''tests/test_files/mount/datafiles/858b50cd-8900-4b7d-bcf4-0df1653a1a52'',
-    image_path0''tests/test_files/mount/datafiles/858b50cd-8900-4b7d-bcf4-0df1653a1a52/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/9013d5fe-fd0f-448c-9f9c-7d9c1085dbe1/ASP8062.docx'',
+    dir=''tests/test_files/mount/datafiles/9013d5fe-fd0f-448c-9f9c-7d9c1085dbe1'',
+    image_path0''tests/test_files/mount/datafiles/9013d5fe-fd0f-448c-9f9c-7d9c1085dbe1/images'',
     filename=''ASP8062.docx'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -81,7 +81,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _title_table
   message: Found M11 title page table
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -141,14 +141,14 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_name
   message: Organization name set to 'Astellas Pharma'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_address_simple
   message: 'Address result ''{''lines'': [''Global Development Inc.'', ''1 Astellas
     Way Northbrook, IL 60062, US'', ''''], ''city'': '''', ''district'': '''', ''state'':
@@ -157,7 +157,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_address
   message: 'Organization address set to ''{''lines'': [''Global Development Inc.'',
     ''1 Astellas Way Northbrook, IL 60062, US'', ''''], ''city'': '''', ''district'':
@@ -166,7 +166,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _extract_names_and_addresss
   message: 'Extracted organisation names and adddress: result={''sponsor'': {''name'':
     ''Astellas Pharma'', ''address'': {''lines'': [''Global Development Inc.'', ''1
@@ -203,7 +203,7 @@
   type: ''
 - level: Warning
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _extract_names_and_addresss
   message: Failed to find medical expert name and addresse text
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -262,7 +262,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.title_page.TitlePage
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_regulatory_identifiers_simple
   message: 'Found regulatory identifiers: NCT=[], IND=[''146215''], EMA=[], jRCT=[],
     WHO=[]'
@@ -275,14 +275,14 @@
   type: ''
 - level: Error
   location:
-    class_name: usdm4_cpt.import_.soa.SoA
+    class_name: usdm4_protocol.soa.soa_extractor.SoA
     method_name: _decode_soa
   message: No SoA found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _find_amendment_section
   message: Found amendment section at index 1
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -294,7 +294,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _amendment_table
   message: Amendment table found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -312,7 +312,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _get_enrollment_simple
   message: 'Found enrollment: {''keyword'': ''Globally'', ''value'': 0, ''unit'':
     ''absolute'', ''regions'': []}'
@@ -320,7 +320,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _reasons
   message: 'Amendment reasons found {''primary'': ''Primary: Administrative'', ''secondary'':
     ''Secondary: Not applicable''}'
@@ -340,7 +340,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _changes_table
   message: Amendment changes table found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -379,7 +379,7 @@
   type: ''
 - level: Info
   location:
-    class_name: usdm4_m11.import_.amendments.Amendments
+    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: process
   message: 'Amendment information {''amendment_details'': ''<p>Amendment Details</p>\n<p>This
     is the first protocol amendment.</p>\n<p>Current Amendment</p>'', ''identifier'':
