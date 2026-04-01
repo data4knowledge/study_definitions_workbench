@@ -4,7 +4,7 @@ import pytest
 from tests.files.files import write_json, read_json, read_word, write_yaml
 from tests.helpers.errors_clean import errors_clean_all
 from app.model.file_handling.data_files import DataFiles
-from usdm4_m11 import USDM4M11
+from usdm4_protocol.m11 import USDM4M11
 from usdm4.api.wrapper import Wrapper
 
 SAVE = False

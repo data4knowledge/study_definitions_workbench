@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from simple_error_log import Errors
 from usdm4.api.wrapper import Wrapper, StudyVersion, StudyDesign
-from usdm4_m11.data_view.data_view import DataView
+from usdm4_protocol.m11.views.data_view import DataView
 from app.database.study import Study
 from app.database.version import Version
 from app.database.file_import import FileImport

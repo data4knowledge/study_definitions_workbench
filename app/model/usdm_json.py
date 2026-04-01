@@ -18,9 +18,9 @@ from usdm4.api.study_definition_document import (
     StudyDefinitionDocument,
     StudyDefinitionDocumentVersion,
 )
-from usdm4_cpt.soa.soa import SoA
-from usdm4_cpt.document_view.document_view import DocumentView as CPTDocumentView
-from usdm4_m11.document_view.document_view import DocumentView as M11DocumentView
+from usdm4_protocol.soa.soa_model import SoA
+from usdm4_protocol.cpt.views.document_view import DocumentView as CPTDocumentView
+from usdm4_protocol.m11.views.document_view import DocumentView as M11DocumentView
 from simple_error_log import Errors
 from app.utility.soup import get_soup
 

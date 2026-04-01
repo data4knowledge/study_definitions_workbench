@@ -1,8 +1,8 @@
 import json
 from d4k_ms_base.logger import application_logger
 from usdm_db import USDMDb
-from usdm4_m11 import USDM4M11
-from usdm4_cpt import USDM4CPT
+from usdm4_protocol.m11 import USDM4M11
+from usdm4_protocol.cpt import USDM4CPT
 
 # from usdm4_legacy import USDM4Legacy
 from usdm4_fhir import M11

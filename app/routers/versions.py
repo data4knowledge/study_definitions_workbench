@@ -18,8 +18,8 @@ from app.configuration.configuration import application_configuration
 from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
 from app.imports.form_handler import FormHandler
-from usdm4_m11 import USDM4M11
-from usdm4_cpt import USDM4CPT
+from usdm4_protocol.m11 import USDM4M11
+from usdm4_protocol.cpt import USDM4CPT
 from usdm4.api import Wrapper
 
 
