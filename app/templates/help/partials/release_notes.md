@@ -1,3 +1,7 @@
+<h5>Release 0.36.0-alpha.17, 2026-03-24</h5>
+
+Alpha release: PRISM bugs and updates including move to USDM4_PROTOCOL (issue 55).
+
 <h5>Release 0.36.0-alpha.16, 2026-03-24</h5>
 
 Alpha release: PRISM file handling bug fixes (issue 54).
