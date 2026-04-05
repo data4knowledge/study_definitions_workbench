@@ -2,9 +2,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/b55ecd58-a919-4a45-91d0-5ebe47be6f1b/RadVax.docx'',
-    dir=''tests/test_files/mount/datafiles/b55ecd58-a919-4a45-91d0-5ebe47be6f1b'',
-    image_path0''tests/test_files/mount/datafiles/b55ecd58-a919-4a45-91d0-5ebe47be6f1b/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/dddd9e2c-4d68-4a2b-a71b-2b7385e6fa38/RadVax.docx'',
+    dir=''tests/test_files/mount/datafiles/dddd9e2c-4d68-4a2b-a71b-2b7385e6fa38'',
+    image_path0''tests/test_files/mount/datafiles/dddd9e2c-4d68-4a2b-a71b-2b7385e6fa38/images'',
     filename=''RadVax.docx'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''

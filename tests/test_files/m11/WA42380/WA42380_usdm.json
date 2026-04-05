@@ -789,8 +789,8 @@
                 "id": "Activity_6",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-6",
-                "label": "Complete physical examination c",
-                "description": "Activity Complete physical examination c",
+                "label": "Complete physical examination",
+                "description": "Activity Complete physical examination",
                 "previousId": "Activity_5",
                 "nextId": "Activity_7",
                 "childIds": [],
@@ -823,8 +823,8 @@
                 "id": "Activity_8",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-8",
-                "label": "COVID-19 diagnosis d",
-                "description": "Activity COVID-19 diagnosis d",
+                "label": "COVID-19 diagnosis",
+                "description": "Activity COVID-19 diagnosis",
                 "previousId": "Activity_7",
                 "nextId": "Activity_9",
                 "childIds": [],
@@ -840,8 +840,8 @@
                 "id": "Activity_9",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-9",
-                "label": "Chest X-ray/CT scan e",
-                "description": "Activity Chest X-ray/CT scan e",
+                "label": "Chest X-ray/CT scan",
+                "description": "Activity Chest X-ray/CT scan",
                 "previousId": "Activity_8",
                 "nextId": "Activity_10",
                 "childIds": [],
@@ -874,8 +874,8 @@
                 "id": "Activity_11",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-11",
-                "label": "Pregnancy test f",
-                "description": "Activity Pregnancy test f",
+                "label": "Pregnancy test",
+                "description": "Activity Pregnancy test",
                 "previousId": "Activity_10",
                 "nextId": "Activity_12",
                 "childIds": [],
@@ -891,8 +891,8 @@
                 "id": "Activity_12",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-12",
-                "label": "PaO 2 /FiO 2 g",
-                "description": "Activity PaO 2 /FiO 2 g",
+                "label": "PaO 2 /FiO 2",
+                "description": "Activity PaO 2 /FiO 2",
                 "previousId": "Activity_11",
                 "nextId": "Activity_13",
                 "childIds": [],
@@ -908,8 +908,8 @@
                 "id": "Activity_13",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-13",
-                "label": "SpO 2 h",
-                "description": "Activity SpO 2 h",
+                "label": "SpO 2",
+                "description": "Activity SpO 2",
                 "previousId": "Activity_12",
                 "nextId": "Activity_14",
                 "childIds": [],
@@ -925,8 +925,8 @@
                 "id": "Activity_14",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-14",
-                "label": "Vital signs h",
-                "description": "Activity Vital signs h",
+                "label": "Vital signs",
+                "description": "Activity Vital signs",
                 "previousId": "Activity_13",
                 "nextId": "Activity_15",
                 "childIds": [],
@@ -942,8 +942,8 @@
                 "id": "Activity_15",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-15",
-                "label": "Ordinal scoring i",
-                "description": "Activity Ordinal scoring i",
+                "label": "Ordinal scoring",
+                "description": "Activity Ordinal scoring",
                 "previousId": "Activity_14",
                 "nextId": "Activity_16",
                 "childIds": [],
@@ -959,8 +959,8 @@
                 "id": "Activity_16",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-16",
-                "label": "Adverse events j",
-                "description": "Activity Adverse events j",
+                "label": "Adverse events",
+                "description": "Activity Adverse events",
                 "previousId": "Activity_15",
                 "nextId": "Activity_17",
                 "childIds": [],
@@ -976,8 +976,8 @@
                 "id": "Activity_17",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-17",
-                "label": "Concomitant medications k",
-                "description": "Activity Concomitant medications k",
+                "label": "Concomitant medications",
+                "description": "Activity Concomitant medications",
                 "previousId": "Activity_16",
                 "nextId": "Activity_18",
                 "childIds": [],
@@ -993,8 +993,8 @@
                 "id": "Activity_18",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-18",
-                "label": "Hematology l",
-                "description": "Activity Hematology l",
+                "label": "Hematology",
+                "description": "Activity Hematology",
                 "previousId": "Activity_17",
                 "nextId": "Activity_19",
                 "childIds": [],
@@ -1010,8 +1010,8 @@
                 "id": "Activity_19",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-19",
-                "label": "Chemistry m",
-                "description": "Activity Chemistry m",
+                "label": "Chemistry",
+                "description": "Activity Chemistry",
                 "previousId": "Activity_18",
                 "nextId": "Activity_20",
                 "childIds": [],
@@ -1027,8 +1027,8 @@
                 "id": "Activity_20",
                 "extensionAttributes": [],
                 "name": "ACTIVITY-20",
-                "label": "Study drug administration n",
-                "description": "Activity Study drug administration n",
+                "label": "Study drug administration",
+                "description": "Activity Study drug administration",
                 "previousId": "Activity_19",
                 "nextId": "Activity_21",
                 "childIds": [],
@@ -1085,9 +1085,9 @@
               {
                 "id": "Activity_23",
                 "extensionAttributes": [],
-                "name": "ACTIVITY-SERUM PK P",
-                "label": "Serum PK p",
-                "description": "Activity Serum PK p",
+                "name": "ACTIVITY-SERUM PK",
+                "label": "Serum PK",
+                "description": "Activity Serum PK",
                 "previousId": "Activity_22",
                 "nextId": "Activity_24",
                 "childIds": [],
@@ -1119,9 +1119,9 @@
               {
                 "id": "Activity_25",
                 "extensionAttributes": [],
-                "name": "ACTIVITY-SARS-COV-2 VIRAL LOAD R",
-                "label": "SARS-CoV-2 viral load r",
-                "description": "Activity SARS-CoV-2 viral load r",
+                "name": "ACTIVITY-SARS-COV-2 VIRAL LOAD",
+                "label": "SARS-CoV-2 viral load",
+                "description": "Activity SARS-CoV-2 viral load",
                 "previousId": "Activity_24",
                 "nextId": "Activity_26",
                 "childIds": [],
@@ -1153,9 +1153,9 @@
               {
                 "id": "Activity_27",
                 "extensionAttributes": [],
-                "name": "ACTIVITY-CRYOPRESERVED PBMCS S",
-                "label": "Cryopreserved PBMCs s",
-                "description": "Activity Cryopreserved PBMCs s",
+                "name": "ACTIVITY-CRYOPRESERVED PBMCS",
+                "label": "Cryopreserved PBMCs",
+                "description": "Activity Cryopreserved PBMCs",
                 "previousId": "Activity_26",
                 "nextId": "Activity_28",
                 "childIds": [],
@@ -1170,9 +1170,9 @@
               {
                 "id": "Activity_28",
                 "extensionAttributes": [],
-                "name": "ACTIVITY-WHOLE BLOOD IN PAXGENE \u00c2 TUBES FOR RNA ANALYSES T",
-                "label": "Whole blood in PAXgene \u00e2 tubes for RNA analyses t",
-                "description": "Activity Whole blood in PAXgene \u00e2 tubes for RNA analyses t",
+                "name": "ACTIVITY-WHOLE BLOOD IN PAXGENE TUBES FOR RNA ANALYSES",
+                "label": "Whole blood in PAXgene tubes for RNA analyses",
+                "description": "Activity Whole blood in PAXgene tubes for RNA analyses",
                 "previousId": "Activity_27",
                 "nextId": null,
                 "childIds": [],
@@ -3549,7 +3549,287 @@
         "bcCategories": [],
         "bcSurrogates": [],
         "dictionaries": [],
-        "conditions": [],
+        "conditions": [
+          {
+            "id": "Condition_1",
+            "extensionAttributes": [],
+            "name": "Condition_5",
+            "label": "Condition 5",
+            "description": "Extracted footnote / condition 5",
+            "text": "c A complete physical examination, performed at screening and per the investigator\u2019s discretion during the study, includes an evaluation of the head, eyes, ears, nose, and throat, and the cardiovascular, dermatologic, musculoskeletal, respiratory, gastrointestinal, genitourinary, and neurologic systems.  Any abnormality identified at screening should be recorded on the General Medical History and Baseline Conditions eCRF. New or worsened clinically significant abnormalities identified during the study should be reported as adverse events.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_6"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_2",
+            "extensionAttributes": [],
+            "name": "Condition_6",
+            "label": "Condition 6",
+            "description": "Extracted footnote / condition 6",
+            "text": "d COVID-19 test (SARS-CoV2 PCR) to confirm diagnosis should be performed within 7 days of randomization.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_8"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_3",
+            "extensionAttributes": [],
+            "name": "Condition_7",
+            "label": "Condition 7",
+            "description": "Extracted footnote / condition 7",
+            "text": "e Screening chest X-ray or CT scans should be performed within 48 hours prior to randomization.  If additional chest X-rays/CT scans are taken per local practice during the study, this information should be provided in the eCRF.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_9"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_4",
+            "extensionAttributes": [],
+            "name": "Condition_8",
+            "label": "Condition 8",
+            "description": "Extracted footnote / condition 8",
+            "text": "f For women of childbearing potential, including those who have had a tubal ligation, positive urine test results will be confirmed with a serum pregnancy test.  Study drug infusion must not be administered unless the serum pregnancy test result is negative.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_11"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_5",
+            "extensionAttributes": [],
+            "name": "Condition_9",
+            "label": "Condition 9",
+            "description": "Extracted footnote / condition 9",
+            "text": "g If arterial blood gases are measured.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_12"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_6",
+            "extensionAttributes": [],
+            "name": "Condition_10",
+            "label": "Condition 10",
+            "description": "Extracted footnote / condition 10",
+            "text": "h All vital sign measurements (i.e., respiratory rate, pulse rate, systolic and diastolic blood pressures, and body temperature), oxygen saturation and NEWS2-specific assessments (i.e., consciousness and presence or absence of oxygen support) should be recorded together twice daily with approximately 12 hours in between while the patient remains hospitalized.  If measured more than once during a 12-hour period, the worst values (highest temperature, respiratory rate, and heart rate; lowest blood pressure, oxygen saturation, and consciousness level) during that period should be recorded on the eCRF.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_13",
+              "Activity_14"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_7",
+            "extensionAttributes": [],
+            "name": "Condition_11",
+            "label": "Condition 11",
+            "description": "Extracted footnote / condition 11",
+            "text": "i Assessment of clinical status using the ordinal scale should be recorded at baseline on Day 1/Visit 1 then again daily every morning (between 8\u00a0am and 12 pm) for patients who remain hospitalized.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_15"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_8",
+            "extensionAttributes": [],
+            "name": "Condition_12",
+            "label": "Condition 12",
+            "description": "Extracted footnote / condition 12",
+            "text": "j After informed consent has been obtained but prior to initiation of study drug, only serious adverse events caused by a protocol-mandated intervention should be reported.  After initiation of study drug, all\u00a0adverse events will be reported until 60 days after the final dose of study drug.  After this period, the Sponsor should be notified if the investigator becomes aware of any serious adverse event that is believed to be related to prior study drug treatment (see\u00a0Section\u00a05.6).",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_16"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_9",
+            "extensionAttributes": [],
+            "name": "Condition_13",
+            "label": "Condition 13",
+            "description": "Extracted footnote / condition 13",
+            "text": "k Medication (e.g., prescription drugs, over-the-counter drugs, vaccines, herbal or homeopathic remedies, nutritional supplements) used by a patient in addition to protocol-mandated treatment from 7 days prior to initiation of study drug to the study completion/discontinuation visit.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_17"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_10",
+            "extensionAttributes": [],
+            "name": "Condition_14",
+            "label": "Condition 14",
+            "description": "Extracted footnote / condition 14",
+            "text": "l Hematology includes WBC count, RBC count, hemoglobin, hematocrit, platelet count, differential count (neutrophils, eosinophils, basophils, monocytes, lymphocytes), and lymphocyte subsets (T cells, B cells, and NK cells; if the test is available at the site).",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_18"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_11",
+            "extensionAttributes": [],
+            "name": "Condition_15",
+            "label": "Condition 15",
+            "description": "Extracted footnote / condition 15",
+            "text": "m Chemistry panel (serum or plasma) includes bicarbonate or total carbon dioxide (if considered standard of care for the region), sodium, potassium, chloride, glucose, BUN or urea, creatinine, total protein, albumin, phosphorus, calcium, total bilirubin, ALP, ALT, and/or AST, uric acid, LDH, ferritin, and D-dimer.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_19"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_12",
+            "extensionAttributes": [],
+            "name": "Condition_16",
+            "label": "Condition 16",
+            "description": "Extracted footnote / condition 16",
+            "text": "n Study drug should be administered after collection of all samples for pharmacodynamic and exploratory biomarker analyses.  The initial study drug infusion should be given within 4 hours of randomization.  If the clinical signs or symptoms worsen or do not improve (reflected by sustained fever or at least a one-category worsening on the 7-category ordinal scale of clinical status), one additional infusion of blinded treatment of TCZ or placebo can be given, 8\u201324 hours after the initial infusion.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_20"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_13",
+            "extensionAttributes": [],
+            "name": "Condition_17",
+            "label": "Condition 17",
+            "description": "Extracted footnote / condition 17",
+            "text": "o On Day 1, CRP, IL-6, and sIL-6R samples should be drawn 0-4 hours before the start of infusion and then within 15 minutes (to 1 hour) after the end of the infusion, on the opposite arm as the infusion.  Patents receiving a second infusion of study drug should provide extra samples for CRP, IL-6, and sIL-6R prior to and 15\u00a0minutes after the end of the infusion, on the opposite arm as the infusion.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "ScheduledActivityInstance_2",
+              "ScheduledActivityInstance_3"
+            ],
+            "appliesToIds": [
+              "Activity_22",
+              "Activity_22"
+            ]
+          },
+          {
+            "id": "Condition_14",
+            "extensionAttributes": [],
+            "name": "Condition_18",
+            "label": "Condition 18",
+            "description": "Extracted footnote / condition 18",
+            "text": "p Patents receiving a second infusion of study drug should provide an extra PK sample prior to and 15 minutes (to 1 hour) after the end of the infusion, on the opposite arm as the infusion.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_23"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_15",
+            "extensionAttributes": [],
+            "name": "Condition_19",
+            "label": "Condition 19",
+            "description": "Extracted footnote / condition 19",
+            "text": "q On Day 1, PK samples should be drawn 0-4 hours before the start of infusion and then within 15 minutes (to 1 hour) after the end of the infusion, on the opposite arm as the infusion.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "ScheduledActivityInstance_2",
+              "ScheduledActivityInstance_3"
+            ],
+            "appliesToIds": [
+              "Activity_23",
+              "Activity_23"
+            ]
+          },
+          {
+            "id": "Condition_16",
+            "extensionAttributes": [],
+            "name": "Condition_20",
+            "label": "Condition 20",
+            "description": "Extracted footnote / condition 20",
+            "text": "r Viral load will be assessed by nasopharyngeal swab.  Patients who are intubated and undergo bronchoalveolar lavage will have samples taken for virological assessment.  It may only be possible to access one nostril if a patient has a nasogastric tube in place, in which case sites may collect a sample from one nostril only and where possible the same nostril should be used.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_25"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_17",
+            "extensionAttributes": [],
+            "name": "Condition_21",
+            "label": "Condition 21",
+            "description": "Extracted footnote / condition 21",
+            "text": "s For sites capable of sample collection for analysis of T cells by high-dimensional cytometry.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_27"
+            ],
+            "appliesToIds": []
+          },
+          {
+            "id": "Condition_18",
+            "extensionAttributes": [],
+            "name": "Condition_22",
+            "label": "Condition 22",
+            "description": "Extracted footnote / condition 22",
+            "text": "t The first draw of blood should not be for PAXgene \u00e2 tubes to avoid contact with RNA preservation reagent inside the tube.",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "Condition",
+            "contextIds": [
+              "Activity_28"
+            ],
+            "appliesToIds": []
+          }
+        ],
         "notes": [],
         "instanceType": "StudyVersion"
       }
