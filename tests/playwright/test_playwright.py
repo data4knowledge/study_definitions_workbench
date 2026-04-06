@@ -1044,8 +1044,7 @@ def password():
 
 
 def filepath():
-    value = os.environ["FILEPATH"]
-    return value
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def login(page):
