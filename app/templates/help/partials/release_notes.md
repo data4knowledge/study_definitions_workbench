@@ -1,3 +1,7 @@
+<h5>Release 0.36.0, 2026-04-11</h5>
+
+Full build using new usdm4_protocol pacage.
+
 <h5>Release 0.36.0-alpha.17, 2026-04-06</h5>
 
 Alpha release: PRISM bugs and updates including move to USDM4_PROTOCOL (issue 55).
