@@ -2,10 +2,10 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/dddd9e2c-4d68-4a2b-a71b-2b7385e6fa38/RadVax.docx'',
-    dir=''tests/test_files/mount/datafiles/dddd9e2c-4d68-4a2b-a71b-2b7385e6fa38'',
-    image_path0''tests/test_files/mount/datafiles/dddd9e2c-4d68-4a2b-a71b-2b7385e6fa38/images'',
-    filename=''RadVax.docx'
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/f079d12f-af7f-45f2-9a59-2f57263ce591/RadVax.docx'',
+    dir=''tests/test_files/mount/datafiles/f079d12f-af7f-45f2-9a59-2f57263ce591'',
+    image_path=''tests/test_files/mount/datafiles/f079d12f-af7f-45f2-9a59-2f57263ce591/images'',
+    filename=''RadVax.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Warning
@@ -240,6 +240,28 @@
     class_name: usdm4_protocol.soa.soa_extractor.SoA
     method_name: _decode_soa
   message: No SoA found
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: 'Warning raised within Soup package, processing ''Be willing and able to
+    provide written informed consent/assent for the trial. ''
+
+    Message returned ''The input looks more like a filename than markup. You may want
+    to open this file and pass the filehandle into Beautiful Soup.'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: 'Warning raised within Soup package, processing ''Has a known history of
+    Human Immunodeficiency Virus (HIV) (HIV 1/2 antibodies). ''
+
+    Message returned ''The input looks more like a filename than markup. You may want
+    to open this file and pass the filehandle into Beautiful Soup.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Info

@@ -2,10 +2,10 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/85b083b9-7a95-49f7-92a5-bde5b49a3cb4/LZZT.docx'',
-    dir=''tests/test_files/mount/datafiles/85b083b9-7a95-49f7-92a5-bde5b49a3cb4'',
-    image_path0''tests/test_files/mount/datafiles/85b083b9-7a95-49f7-92a5-bde5b49a3cb4/images'',
-    filename=''LZZT.docx'
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/71353790-a44d-4fe2-b46a-cccbee8bbd6f/LZZT.docx'',
+    dir=''tests/test_files/mount/datafiles/71353790-a44d-4fe2-b46a-cccbee8bbd6f'',
+    image_path=''tests/test_files/mount/datafiles/71353790-a44d-4fe2-b46a-cccbee8bbd6f/images'',
+    filename=''LZZT.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Warning
@@ -55,6 +55,17 @@
   message: Adding list item '[text='Large, confluent areas of encephalomalacia in
     parieto-occipital or frontal regions consistent with watershed infarcts. ', level='2']'
     to item but level jump greater than 1
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location: {}
+  message: "Adding list item '[text='The above are exclusionary. Exceptions are made\
+    \ for small areas of cortical asymmetry which may represent a small cortical stroke\
+    \ or a focal area of atrophy provided there is no abnormal signal intensity in\
+    \ the immediately underlying parenchyma. Only one such questionable area allowed\
+    \ per scan, and size is restricted to \u22641cm in frontal/parietal/temporal cortices\
+    \ and \u22642 cm in occipital cortex. ', level='2']' to item but level jump greater\
+    \ than 1"
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Warning
@@ -394,6 +405,131 @@
   message: No SoA found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
+- level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: 'Warning raised within Soup package, processing ''Investigator has obtained
+    informed consent signed by the patient (and/or legal representative) and by the
+    caregiver. ''
+
+    Message returned ''The input looks more like a filename than markup. You may want
+    to open this file and pass the filehandle into Beautiful Soup.'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Error
+  location: {}
+  message: "RawList item detected with no previous RawListItem entries, type: '<class\
+    \ 'raw_docx.raw_list.RawList'>', text: '  Muscle relaxants-centrally active including\
+    \ but not limited to \n  Equanil\xAE (meprobamate) \t\t\t2 weeks \n  Flexeril\xAE\
+    \ (cyclobenzaprine) \t\t\t2 weeks \n  Lioresal\xAE (baclofen) \t\t\t\t2 weeks\
+    \ \n  Norflex\xAE (orphenadrine) \t\t\t2 weeks \n  Parafon Forte\xAE (chlorzoxazone)\
+    \ \t\t2 weeks \n  Robaxin\xAE (methocarbamol) \t\t\t2 weeks \n  Skelaxin\xAE (metaxalone)\
+    \ \t\t\t2 weeks \n  Soma\xAE (carisoprodol) \t\t\t\t2 weeks  \n  Monamine oxidase\
+    \ inhibitors (MAOI) including but not limited to \n  Eldepryl\xAE(selegiline)\
+    \ \t\t\t\t1 month \n  Nardil\xAE (phenelzine) \t\t\t\t1 month \n  Parnate\xAE\
+    \ (tranylcypromine) \t\t\t1 month \n  Parasympatholytics including but not limited\
+    \ to \n  Antivert\xAE, Bonine\xAE, Dramamine II\xAE (meclizine)\t\t3 days \n \
+    \ Artane\xAE (trihexyphenidyl) \t\t\t\t\t2 weeks \n  Bellergal-S\xAE (alkaloids\
+    \ of belladonna and ergotamine) \t2 weeks \n  Bentyl\xAE (dicyclomine) \t\t\t\t\
+    \t\t3 days \n  Cogentin\xAE (benztropine) \t\t\t\t\t2 weeks \n  Cystospaz\xAE\
+    , Levsin\xAE, Levsinex\xAE (hyoscyamine) \t\t2 weeks \n  Ditropan\xAE (oxybutynin)\
+    \ \t\t\t\t\t2 weeks \n  Donnatal\xAE, Hyosophen\xAE (atropine, scopolamine, hyoscyamine\
+    \ and phenobarbitol) \t\t\t\t\t\t\t1 month \n  Dramamine\xAE (dimenhydrinate)\
+    \ \t\t\t\t3 days \n  Lomotil\xAE, Lonox\xAE (atropine, diphenoxylate) \t\t\t2\
+    \ weeks \n  Pro-Banthine\xAE (propantheline) \t\t\t\t2 weeks \n  Robinul\xAE (glycopyrrolate)\
+    \ \t\t\t\t\t3 days \n  Tigan\xAE (trimethobenzamide) \t\t\t\t\t3 days \n  Transderm-Scop\xAE\
+    \ (scopolamine) \t\t\t\t2 weeks \n  Urispas\xAE (flavoxate) \t\t\t\t\t\t2 weeks\
+    \ \n  Antidepressants including but not limited to \n  Anafranil\xAE (clomipramine)\
+    \ \t\t\t\t\t1 month \n  Asendin\xAE (amoxapine) \t\t\t\t\t\t1 month \n  Desyrel\xAE\
+    \ (trazodone) \t\t\t\t\t\t1 month \n  Effexor\xAE (venlafaxine) \t\t\t\t\t\t1\
+    \ month \n  Elavil\xAE (amitriptyline) \t\t\t\t\t\t1 month \n  Ludiomil\xAE (maprotiline)\
+    \ \t\t\t\t\t1 month \n  Norpramin\xAE (desipramine) \t\t\t\t\t1 month \n  Pamelor\xAE\
+    , Aventyl\xAE (nortriptyline) \t\t\t\t1 month \n  Paxil\xAE (paroxetine) \t\t\t\
+    \t\t\t1 month \n  Prozac\xAE (fluoxetine) \t\t\t\t\t\t1 month \n  Remeron\xAE\
+    \ (mirtazapine) \t\t\t\t\t1 month \n  Serzone\xAE (nefazodone) \t\t\t\t\t1 month\
+    \ \n  Sinequan\xAE (doxepin) \t\t\t\t\t\t1 month \n  Tofranil\xAE (imipramine)\
+    \ \t\t\t\t\t1 month \n  Vivactil\xAE (protriptyline) \t\t\t\t\t1 month \n  Wellbutrin\xAE\
+    \ (bupropion) \t\t\t\t\t1 month \n  Zoloft\xAE (sertraline) \t\t\t\t\t\t1 month\
+    \   \n  Systemic corticosteroids including but not limited to \n  Cortisone \t\
+    \t\t\t\t\t\t2 weeks \n  Decadron\xAE (dexamethasone) \t\t\t\t\t2 weeks \n  Depo-Medrol\xAE\
+    \ (methylprednisolone) \t\t\t\t1 month \n  Prednisone \t\t\t\t\t\t\t2 weeks \n\
+    \  Xanthine derivatives including but not limited to \n  Aminophylline \t\t\t\t\
+    \t\t\t2 weeks \n  Fioricet\xAE, Esgic\xAE, Phrenilin Forte\xAE (caffeine, butalbital)\
+    \ \t3 days \n  Theo-Dur\xAE (theophylline) \t\t\t\t\t2 weeks \n  Wigraine\xAE\
+    , Cafergot\xAE (caffeine, ergotamine) \t\t\t3 days \n  Histamine (H2) antagonists\
+    \ including but not limited to \n  Axid\xAE (nizatidine) \t\t\t\t\t\t1 week \n\
+    \  Pepcid\xAE (famotidine) \t\t\t\t\t\t1 week \n  Tagamet\xAE (cimetidine) \t\t\
+    \t\t\t\t1 week \n  Zantac\xAE (ranitidine) \t\t\t\t\t\t1 week \n  \n  If an H2\
+    \ antagonist is needed by the patient, Axid\xAE will be allowed on a case-by-case\
+    \ basis. Please consult CRO medical monitor.\n   \n  Narcotic Analgesics including\
+    \ but not limited to \n  Darvocet-N 100\xAE, (propoxyphene) \t\t\t\t1 week \n\
+    \  Demerol\xAE (meperidine) \t\t\t\t\t1 week \n  Dilaudid\xAE (hydromorphone)\
+    \ \t\t\t\t\t1 week \n  Duragesic\xAE (fentanyl) \t\t\t\t\t\t1 week \n  MS Contin\xAE\
+    , Roxanol\xAE, Oramorph\xAE (morphine) \t\t1 week \n  Percocet\xAE, Roxicet\xAE\
+    \ (oxycodone with acetaminophen) \t3 days \n  Percodan\xAE, Roxiprin \t\t\t\t\t\
+    \t1 week \n  Stadol\xAE (butorphanol) \t\t\t\t\t\t1 week \n  Talacen\xAE (pentazocine)\
+    \ \t\t\t\t\t1 week \n  Tylenol #2\xAE, #3\xAE, #4\xAE (codeine and acetaminophen)\
+    \ \t3 days \n  Tylox\xAE, Roxilox\xAE (oxycodone) \t\t\t\t3 days \n  Vicodin\xAE\
+    , Lorcet\xAE (hydrocodone) \t\t\t\t1 week \n  \n  Percocet (oxycodone with acetaminophen)\
+    \ and Tylenol\xAE with codeine #2, #3, #4 (acetaminophen + codeine) ARE allowed\
+    \ in the month prior to enrollment, but are not permitted in the 3 days prior\
+    \ to enrollment\n  \n  Neuroleptics (antipsychotics) including but not limited\
+    \ to \n  Clozaril\xAE (clozapine) \t\t\t\t\t2 weeks \n  Haldol\xAE (haloperidol)\
+    \ \t\t\t\t\t2 weeks \n  Loxitane\xAE (loxapine) \t\t\t\t\t2 weeks \n  Mellaril\xAE\
+    \ (thioridazine) \t\t\t\t2 weeks \n  Moban\xAE (molindone) \t\t\t\t\t2 weeks \n\
+    \  Navane\xAE (thiothixene) \t\t\t\t\t2 weeks \n  Orap\xAE (pimozide) \t\t\t\t\
+    \t2 weeks \n  Prolixin\xAE (fluphenazine) \t\t\t\t1 month \n  Risperdal\xAE (risperidone)\t\
+    \ \t\t\t2 weeks \n  Stelazine\xAE (trifluoperazine) \t\t\t\t2 weeks \n  Thorazine\xAE\
+    \ (chlorpromazine) \t\t\t\t2 weeks \n  Trilafon\xAE (perphenazine) \t\t\t\t2 weeks\
+    \ \n  Serentil\xAE (mesoridazine) \t\t\t\t2 weeks \n  \n  The use of neuroleptics\
+    \ on a daily basis must be discontinued 2 to 4 weeks prior to enrollment. The\
+    \ use of neuroleptics on an as-needed basis is allowable during the screening\
+    \ period, but the last dose must be at least 7 days prior to enrollment. \n  \n\
+    \  Antianxiety agents including but not limited to \n  Atarax\xAE (hydroxyzine)\
+    \ \t\t\t\t\t2 weeks \n  BuSpar\xAE (buspirone) \t\t\t\t\t2 weeks \n  Librium\xAE\
+    \ (chlordiazepoxide) \t\t\t\t2 weeks \n  Serax\xAE (oxazepam) \t\t\t\t\t2 weeks\
+    \ \n  Tranxene\xAE (clorazepate) \t\t\t\t2 weeks \n  Valium\xAE (diazepam) \t\t\
+    \t\t\t2 weeks \n  Vistaril\xAE (hydroxyzine pamoate) \t\t\t2 weeks \n  Xanax\xAE\
+    \ (alprazolam) \t\t\t\t\t2 weeks \n  \n  Ativan\xAE (lorazepam) should be discontinued\
+    \ on a daily basis 2 weeks prior to enrollment. It may be used on an as-needed\
+    \ basis during the screening period, but is not permitted in the 24 hours prior\
+    \ to enrollment.\n   \n  Hypnotics/Sedatives including but not limited to \n \
+    \ Ambien\xAE (zolpidem) \t\t\t\t\t3 days \n  Dalmane\xAE (flurazepam) \t\t\t\t\
+    3 days \n  Doral\xAE (quazepam) \t\t\t\t\t3 days \n  Halcion\xAE (triazolam) \t\
+    \t\t\t\t3 days \n  Nembutal\xAE \t\t\t\t\t\t2 weeks \n  ProSom\xAE (estazolam)\
+    \ \t\t\t\t\t3 days \n  Restoril\xAE (temazepam) \t\t\t\t\t3 days \n  Seconal\xAE\
+    \ \t\t\t\t\t\t2 weeks   \n  \n  Chloral Hydrate is allowed on an as-needed basis\
+    \ during screening, but is not permitted in the 24 hours prior to enrollment.\n\
+    \   \n  Histamine (H1) antagonists including but not limited to \n  Actifed\xAE\
+    , Actifed Plus\xAE (triprolidine) \t\t\t\t\t3 days \n  Benadryl\xAE, Unisom\xAE\
+    , Tylenol P.M.\xAE (diphenhydramine) \t\t3 days \n  Compazine\xAE (prochlorperazine)\
+    \ \t\t\t\t\t3 days \n  Contac\xAE, Coricidin D\xAE, Sinutab\xAE, Novahistine\xAE\
+    , Alka Seltzer Plus\xAE, Naldecon\xAE, Sudafed Plus\xAE, Tylenol Cold\xAE, Tylenol\
+    \ Cold and Flu\xAE (chlorpheniramine) \t\t\t\t\t\t\t3 days \n  Dimetapp\xAE (brompheniramine)\
+    \ \t\t\t\t\t3 days \n  Drixoral\xAE (dexbrompheniramine) \t\t\t\t\t3 days \n \
+    \ Hismanal\xAE (astemizole) \t\t\t\t\t\t1 week \n  Phenergan\xAE (promethazine)\
+    \ \t\t\t\t\t\t3 days \n  Seldane\xAE (terfenadine) \t\t\t\t\t\t\t1 week \n  Tavist\xAE\
+    \ (clemastine fumarate) \t\t\t\t\t\t3 days \n  Zyrtec\xAE (cetrizine) \t\t\t\t\
+    \t\t\t1 week \n  \n  Allegra\xAE (fexofenadine hydrochloride) or Claritin\xAE\
+    \ (loratadine) may be taken on as-needed basis during screening but must be discontinued\
+    \ within 24 hours of enrollment. \n  \n  Stimulants including but not limited\
+    \ to \n  Cylert\xAE (pemoline) \t\t\t\t1 month \n  Ritalin\xAE (methylphenidate)\
+    \ \t\t\t1 month \n  Antiarrhythmics including but not limited to the following\
+    \ \n  Adenocard\xAE (adenosine) \n  Cordarone\xAE (amiodarone)\n   Ethmozine\xAE\
+    \ (moricizine) \n  Mexitil\xAE (mexiletine) \n  Norpace\xAE (disopyramide) \n\
+    \  Procan\xAE (procainamide) \n  Quinaglute\xAE (quinidine)\n   Rythmol\xAE (propafenone)\
+    \ \n  Tambocor\xAE (flecainide) \n  Tonocard\xAE (tocainide)  \n  \n  Requirement\
+    \ of these drugs for control of cardiac arrhythmia indicates that the patient\
+    \ should be excluded from the study. If discontinuation of an antiarrhythmic is\
+    \ considered, please discuss case with CRO medical monitor.\n   \n  Miscellaneous\
+    \ drugs including but not limited to\n  Coenzyme Q \t\t\t\t\t2 weeks \n  Eskalith\xAE\
+    , Lithobid\xAE (lithium) \t\t2 weeks \n  Ginkgo biloba \t\t\t\t\t1 week \n  Lecithin\
+    \ \t\t\t\t\t\t1 week \n  Lupron \t\t\t\t\t\t2 weeks \n  Tamoxifen \t\t\t\t\t1\
+    \ month \n  v) Estrogen supplements are permitted during the study, but dosage\
+    \ must be stable for at least 3 months prior to enrollment.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
 - level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
@@ -588,7 +724,7 @@
 - level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
-    extensionAttributes=[], type=Code(id=''Code_97'', extensionAttributes=[], code=''C68846'',
+    extensionAttributes=[], type=Code(id=''Code_44'', extensionAttributes=[], code=''C68846'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2025-09-26'', decode=''Global'',
     instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
     None'
@@ -678,7 +814,7 @@
     \ in test_m11_lzzt\n    await _run_test(\"LZZT\", \"LZZT\", SAVE)\n  File \"tests/m11/test_m11_integration.py\"\
     , line 26, in _run_test\n    wrapper: Wrapper = m11.from_docx(filepath)\n  File\
     \ \"usdm4_protocol/m11/__init__.py\", line 23, in from_docx\n    result = m11_import.process()\n\
-    \  File \"usdm4_protocol/common/base_import.py\", line 28, in process\n    wrapper\
+    \  File \"usdm4_protocol/common/base_import.py\", line 29, in process\n    wrapper\
     \ = assembler.process()\n  File \"usdm4_protocol/common/assemble/assemble_usdm.py\"\
     , line 38, in process\n    self._assembler.execute(self._source_data)\n  File\
     \ \"usdm4/assembler/assembler.py\", line 129, in execute\n    self._study_assembler.execute(\n\

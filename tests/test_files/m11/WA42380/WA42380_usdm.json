@@ -56,7 +56,7 @@
               "id": "StudyAmendmentReason_1",
               "extensionAttributes": [],
               "code": {
-                "id": "Code_38",
+                "id": "Code_40",
                 "extensionAttributes": [],
                 "code": "C17649",
                 "codeSystem": "http://www.cdisc.org",
@@ -72,7 +72,7 @@
                 "id": "StudyAmendmentReason_2",
                 "extensionAttributes": [],
                 "code": {
-                  "id": "Code_39",
+                  "id": "Code_41",
                   "extensionAttributes": [],
                   "code": "C17649",
                   "codeSystem": "http://www.cdisc.org",
@@ -215,7 +215,7 @@
                 "id": "StudyAmendmentImpact_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_41",
+                  "id": "Code_43",
                   "extensionAttributes": [],
                   "code": "C215665",
                   "codeSystem": "http://www.cdisc.org",
@@ -232,7 +232,7 @@
                 "id": "StudyAmendmentImpact_2",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_42",
+                  "id": "Code_44",
                   "extensionAttributes": [],
                   "code": "C215666",
                   "codeSystem": "http://www.cdisc.org",
@@ -249,7 +249,7 @@
                 "id": "StudyAmendmentImpact_3",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_43",
+                  "id": "Code_45",
                   "extensionAttributes": [],
                   "code": "C215667",
                   "codeSystem": "http://www.cdisc.org",
@@ -266,7 +266,7 @@
                 "id": "StudyAmendmentImpact_4",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_44",
+                  "id": "Code_46",
                   "extensionAttributes": [],
                   "code": "C215668",
                   "codeSystem": "http://www.cdisc.org",
@@ -285,7 +285,7 @@
                 "id": "GeographicScope_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_40",
+                  "id": "Code_42",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -312,7 +312,7 @@
                     "id": "AliasCode_1",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_46",
+                      "id": "Code_48",
                       "extensionAttributes": [],
                       "code": "C25613",
                       "codeSystem": "http://www.cdisc.org",
@@ -329,7 +329,7 @@
                   "id": "GeographicScope_2",
                   "extensionAttributes": [],
                   "type": {
-                    "id": "Code_45",
+                    "id": "Code_47",
                     "extensionAttributes": [],
                     "code": "C68846",
                     "codeSystem": "http://www.cdisc.org",
@@ -459,7 +459,7 @@
               "id": "AliasCode_2",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_76",
+                "id": "Code_78",
                 "extensionAttributes": [],
                 "code": "C15602",
                 "codeSystem": "http://www.cdisc.org",
@@ -480,7 +480,7 @@
                 "label": "-2 to 0",
                 "description": "Encounter -2 to 0",
                 "type": {
-                  "id": "Code_50",
+                  "id": "Code_52",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -493,7 +493,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_51",
+                    "id": "Code_53",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -504,7 +504,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_52",
+                    "id": "Code_54",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -525,7 +525,7 @@
                 "label": "1",
                 "description": "Encounter 1",
                 "type": {
-                  "id": "Code_53",
+                  "id": "Code_55",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -538,7 +538,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_54",
+                    "id": "Code_56",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -549,7 +549,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_55",
+                    "id": "Code_57",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -570,7 +570,7 @@
                 "label": "1",
                 "description": "Encounter 1",
                 "type": {
-                  "id": "Code_56",
+                  "id": "Code_58",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -583,7 +583,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_57",
+                    "id": "Code_59",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -594,7 +594,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_58",
+                    "id": "Code_60",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -615,7 +615,7 @@
                 "label": "2",
                 "description": "Encounter 2",
                 "type": {
-                  "id": "Code_59",
+                  "id": "Code_61",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -628,7 +628,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_60",
+                    "id": "Code_62",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -639,7 +639,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_61",
+                    "id": "Code_63",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -660,7 +660,7 @@
                 "label": "2",
                 "description": "Encounter 2",
                 "type": {
-                  "id": "Code_62",
+                  "id": "Code_64",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -673,7 +673,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_63",
+                    "id": "Code_65",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -684,7 +684,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_64",
+                    "id": "Code_66",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -1196,7 +1196,7 @@
                 "label": "Screeninga, b",
                 "description": "EPOCH-EPOCH-SCREENINGA, B",
                 "type": {
-                  "id": "Code_47",
+                  "id": "Code_49",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1216,7 +1216,7 @@
                 "label": "Baseline",
                 "description": "EPOCH-EPOCH-BASELINE",
                 "type": {
-                  "id": "Code_48",
+                  "id": "Code_50",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1236,7 +1236,7 @@
                 "label": "",
                 "description": "EPOCH-EPOCH-",
                 "type": {
-                  "id": "Code_49",
+                  "id": "Code_51",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1282,7 +1282,9 @@
                 "EligibilityCriterion_14",
                 "EligibilityCriterion_15",
                 "EligibilityCriterion_16",
-                "EligibilityCriterion_17"
+                "EligibilityCriterion_17",
+                "EligibilityCriterion_18",
+                "EligibilityCriterion_19"
               ],
               "plannedAge": null,
               "notes": [],
@@ -1314,7 +1316,7 @@
                     "label": "-2 to 0",
                     "description": "Timing 1",
                     "type": {
-                      "id": "Code_65",
+                      "id": "Code_67",
                       "extensionAttributes": [],
                       "code": "C201357",
                       "codeSystem": "http://www.cdisc.org",
@@ -1325,7 +1327,7 @@
                     "value": "P2D",
                     "valueLabel": "-2 to 0",
                     "relativeToFrom": {
-                      "id": "Code_66",
+                      "id": "Code_68",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1347,7 +1349,7 @@
                     "label": "1",
                     "description": "Timing 2",
                     "type": {
-                      "id": "Code_67",
+                      "id": "Code_69",
                       "extensionAttributes": [],
                       "code": "C201358",
                       "codeSystem": "http://www.cdisc.org",
@@ -1358,7 +1360,7 @@
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_68",
+                      "id": "Code_70",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1380,7 +1382,7 @@
                     "label": "1",
                     "description": "Timing 3",
                     "type": {
-                      "id": "Code_69",
+                      "id": "Code_71",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1391,7 +1393,7 @@
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_70",
+                      "id": "Code_72",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1413,7 +1415,7 @@
                     "label": "2",
                     "description": "Timing 4",
                     "type": {
-                      "id": "Code_71",
+                      "id": "Code_73",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1424,7 +1426,7 @@
                     "value": "P2D",
                     "valueLabel": "2",
                     "relativeToFrom": {
-                      "id": "Code_72",
+                      "id": "Code_74",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1446,7 +1448,7 @@
                     "label": "2",
                     "description": "Timing 5",
                     "type": {
-                      "id": "Code_73",
+                      "id": "Code_75",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1457,7 +1459,7 @@
                     "value": "P2D",
                     "valueLabel": "2",
                     "relativeToFrom": {
-                      "id": "Code_74",
+                      "id": "Code_76",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1726,19 +1728,19 @@
               {
                 "id": "EligibilityCriterion_6",
                 "extensionAttributes": [],
-                "name": "EXC1",
-                "label": "Exclusion criterion 1 ",
+                "name": "INC6",
+                "label": "Inclusion criterion 6 ",
                 "description": "",
                 "category": {
                   "id": "Code_26",
                   "extensionAttributes": [],
-                  "code": "C25370",
+                  "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2025-09-26",
-                  "decode": "EXCLUSION",
+                  "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "1",
+                "identifier": "6",
                 "criterionItemId": "EligibilityCriterionItem_6",
                 "nextId": null,
                 "previousId": null,
@@ -1748,19 +1750,19 @@
               {
                 "id": "EligibilityCriterion_7",
                 "extensionAttributes": [],
-                "name": "EXC2",
-                "label": "Exclusion criterion 2 ",
+                "name": "INC7",
+                "label": "Inclusion criterion 7 ",
                 "description": "",
                 "category": {
                   "id": "Code_27",
                   "extensionAttributes": [],
-                  "code": "C25370",
+                  "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2025-09-26",
-                  "decode": "EXCLUSION",
+                  "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "2",
+                "identifier": "7",
                 "criterionItemId": "EligibilityCriterionItem_7",
                 "nextId": null,
                 "previousId": null,
@@ -1770,8 +1772,8 @@
               {
                 "id": "EligibilityCriterion_8",
                 "extensionAttributes": [],
-                "name": "EXC3",
-                "label": "Exclusion criterion 3 ",
+                "name": "EXC1",
+                "label": "Exclusion criterion 1 ",
                 "description": "",
                 "category": {
                   "id": "Code_28",
@@ -1782,7 +1784,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "3",
+                "identifier": "1",
                 "criterionItemId": "EligibilityCriterionItem_8",
                 "nextId": null,
                 "previousId": null,
@@ -1792,8 +1794,8 @@
               {
                 "id": "EligibilityCriterion_9",
                 "extensionAttributes": [],
-                "name": "EXC4",
-                "label": "Exclusion criterion 4 ",
+                "name": "EXC2",
+                "label": "Exclusion criterion 2 ",
                 "description": "",
                 "category": {
                   "id": "Code_29",
@@ -1804,7 +1806,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "4",
+                "identifier": "2",
                 "criterionItemId": "EligibilityCriterionItem_9",
                 "nextId": null,
                 "previousId": null,
@@ -1814,8 +1816,8 @@
               {
                 "id": "EligibilityCriterion_10",
                 "extensionAttributes": [],
-                "name": "EXC5",
-                "label": "Exclusion criterion 5 ",
+                "name": "EXC3",
+                "label": "Exclusion criterion 3 ",
                 "description": "",
                 "category": {
                   "id": "Code_30",
@@ -1826,7 +1828,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "5",
+                "identifier": "3",
                 "criterionItemId": "EligibilityCriterionItem_10",
                 "nextId": null,
                 "previousId": null,
@@ -1836,8 +1838,8 @@
               {
                 "id": "EligibilityCriterion_11",
                 "extensionAttributes": [],
-                "name": "EXC6",
-                "label": "Exclusion criterion 6 ",
+                "name": "EXC4",
+                "label": "Exclusion criterion 4 ",
                 "description": "",
                 "category": {
                   "id": "Code_31",
@@ -1848,7 +1850,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "6",
+                "identifier": "4",
                 "criterionItemId": "EligibilityCriterionItem_11",
                 "nextId": null,
                 "previousId": null,
@@ -1858,8 +1860,8 @@
               {
                 "id": "EligibilityCriterion_12",
                 "extensionAttributes": [],
-                "name": "EXC7",
-                "label": "Exclusion criterion 7 ",
+                "name": "EXC5",
+                "label": "Exclusion criterion 5 ",
                 "description": "",
                 "category": {
                   "id": "Code_32",
@@ -1870,7 +1872,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "7",
+                "identifier": "5",
                 "criterionItemId": "EligibilityCriterionItem_12",
                 "nextId": null,
                 "previousId": null,
@@ -1880,8 +1882,8 @@
               {
                 "id": "EligibilityCriterion_13",
                 "extensionAttributes": [],
-                "name": "EXC8",
-                "label": "Exclusion criterion 8 ",
+                "name": "EXC6",
+                "label": "Exclusion criterion 6 ",
                 "description": "",
                 "category": {
                   "id": "Code_33",
@@ -1892,7 +1894,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "8",
+                "identifier": "6",
                 "criterionItemId": "EligibilityCriterionItem_13",
                 "nextId": null,
                 "previousId": null,
@@ -1902,8 +1904,8 @@
               {
                 "id": "EligibilityCriterion_14",
                 "extensionAttributes": [],
-                "name": "EXC9",
-                "label": "Exclusion criterion 9 ",
+                "name": "EXC7",
+                "label": "Exclusion criterion 7 ",
                 "description": "",
                 "category": {
                   "id": "Code_34",
@@ -1914,7 +1916,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "9",
+                "identifier": "7",
                 "criterionItemId": "EligibilityCriterionItem_14",
                 "nextId": null,
                 "previousId": null,
@@ -1924,8 +1926,8 @@
               {
                 "id": "EligibilityCriterion_15",
                 "extensionAttributes": [],
-                "name": "EXC10",
-                "label": "Exclusion criterion 10 ",
+                "name": "EXC8",
+                "label": "Exclusion criterion 8 ",
                 "description": "",
                 "category": {
                   "id": "Code_35",
@@ -1936,7 +1938,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "10",
+                "identifier": "8",
                 "criterionItemId": "EligibilityCriterionItem_15",
                 "nextId": null,
                 "previousId": null,
@@ -1946,8 +1948,8 @@
               {
                 "id": "EligibilityCriterion_16",
                 "extensionAttributes": [],
-                "name": "EXC11",
-                "label": "Exclusion criterion 11 ",
+                "name": "EXC9",
+                "label": "Exclusion criterion 9 ",
                 "description": "",
                 "category": {
                   "id": "Code_36",
@@ -1958,7 +1960,7 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "11",
+                "identifier": "9",
                 "criterionItemId": "EligibilityCriterionItem_16",
                 "nextId": null,
                 "previousId": null,
@@ -1968,8 +1970,8 @@
               {
                 "id": "EligibilityCriterion_17",
                 "extensionAttributes": [],
-                "name": "EXC12",
-                "label": "Exclusion criterion 12 ",
+                "name": "EXC10",
+                "label": "Exclusion criterion 10 ",
                 "description": "",
                 "category": {
                   "id": "Code_37",
@@ -1980,8 +1982,52 @@
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
-                "identifier": "12",
+                "identifier": "10",
                 "criterionItemId": "EligibilityCriterionItem_17",
+                "nextId": null,
+                "previousId": null,
+                "notes": [],
+                "instanceType": "EligibilityCriterion"
+              },
+              {
+                "id": "EligibilityCriterion_18",
+                "extensionAttributes": [],
+                "name": "EXC11",
+                "label": "Exclusion criterion 11 ",
+                "description": "",
+                "category": {
+                  "id": "Code_38",
+                  "extensionAttributes": [],
+                  "code": "C25370",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2025-09-26",
+                  "decode": "EXCLUSION",
+                  "instanceType": "Code"
+                },
+                "identifier": "11",
+                "criterionItemId": "EligibilityCriterionItem_18",
+                "nextId": null,
+                "previousId": null,
+                "notes": [],
+                "instanceType": "EligibilityCriterion"
+              },
+              {
+                "id": "EligibilityCriterion_19",
+                "extensionAttributes": [],
+                "name": "EXC12",
+                "label": "Exclusion criterion 12 ",
+                "description": "",
+                "category": {
+                  "id": "Code_39",
+                  "extensionAttributes": [],
+                  "code": "C25370",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2025-09-26",
+                  "decode": "EXCLUSION",
+                  "instanceType": "Code"
+                },
+                "identifier": "12",
+                "criterionItemId": "EligibilityCriterionItem_19",
                 "nextId": null,
                 "previousId": null,
                 "notes": [],
@@ -1993,7 +2039,7 @@
             "instanceType": "InterventionalStudyDesign",
             "subTypes": [],
             "model": {
-              "id": "Code_75",
+              "id": "Code_77",
               "extensionAttributes": [],
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
@@ -2111,6 +2157,28 @@
           {
             "id": "EligibilityCriterionItem_6",
             "extensionAttributes": [],
+            "name": "INC-I6",
+            "label": "Inclusion item 6 ",
+            "description": "",
+            "text": "\u2022\tFor women of childbearing potential:  agreement to remain abstinent (refrain from heterosexual intercourse) or use contraception, as defined below:",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "EligibilityCriterionItem"
+          },
+          {
+            "id": "EligibilityCriterionItem_7",
+            "extensionAttributes": [],
+            "name": "INC-I7",
+            "label": "Inclusion item 7 ",
+            "description": "",
+            "text": "\u2022\tFor men:  agreement to remain abstinent (refrain from heterosexual intercourse) or use a condom, and agreement to refrain from donating sperm, as defined below:",
+            "dictionaryId": null,
+            "notes": [],
+            "instanceType": "EligibilityCriterionItem"
+          },
+          {
+            "id": "EligibilityCriterionItem_8",
+            "extensionAttributes": [],
             "name": "EXC-I1",
             "label": "Exclusion item 1 ",
             "description": "",
@@ -2120,7 +2188,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_7",
+            "id": "EligibilityCriterionItem_9",
             "extensionAttributes": [],
             "name": "EXC-I2",
             "label": "Exclusion item 2 ",
@@ -2131,7 +2199,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_8",
+            "id": "EligibilityCriterionItem_10",
             "extensionAttributes": [],
             "name": "EXC-I3",
             "label": "Exclusion item 3 ",
@@ -2142,7 +2210,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_9",
+            "id": "EligibilityCriterionItem_11",
             "extensionAttributes": [],
             "name": "EXC-I4",
             "label": "Exclusion item 4 ",
@@ -2153,7 +2221,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_10",
+            "id": "EligibilityCriterionItem_12",
             "extensionAttributes": [],
             "name": "EXC-I5",
             "label": "Exclusion item 5 ",
@@ -2164,7 +2232,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_11",
+            "id": "EligibilityCriterionItem_13",
             "extensionAttributes": [],
             "name": "EXC-I6",
             "label": "Exclusion item 6 ",
@@ -2175,7 +2243,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_12",
+            "id": "EligibilityCriterionItem_14",
             "extensionAttributes": [],
             "name": "EXC-I7",
             "label": "Exclusion item 7 ",
@@ -2186,7 +2254,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_13",
+            "id": "EligibilityCriterionItem_15",
             "extensionAttributes": [],
             "name": "EXC-I8",
             "label": "Exclusion item 8 ",
@@ -2197,7 +2265,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_14",
+            "id": "EligibilityCriterionItem_16",
             "extensionAttributes": [],
             "name": "EXC-I9",
             "label": "Exclusion item 9 ",
@@ -2208,7 +2276,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_15",
+            "id": "EligibilityCriterionItem_17",
             "extensionAttributes": [],
             "name": "EXC-I10",
             "label": "Exclusion item 10 ",
@@ -2219,7 +2287,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_16",
+            "id": "EligibilityCriterionItem_18",
             "extensionAttributes": [],
             "name": "EXC-I11",
             "label": "Exclusion item 11 ",
@@ -2230,7 +2298,7 @@
             "instanceType": "EligibilityCriterionItem"
           },
           {
-            "id": "EligibilityCriterionItem_17",
+            "id": "EligibilityCriterionItem_19",
             "extensionAttributes": [],
             "name": "EXC-I12",
             "label": "Exclusion item 12 ",
@@ -2869,7 +2937,7 @@
             "id": "NarrativeContentItem_90",
             "extensionAttributes": [],
             "name": "NCI-89",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Include any specific instructions for the collection and assay of samples for genetic and/or pharmacogenomic analysis. If genetic testing is not included in the study, state \u201cNot Applicable.\u201d</p>\n<ul>\n<li>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.), handling of samples, and the assay method.</li>\n<li><ul>\n<li>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</li>\n</ul></li>\n<li>Describe the retention time for the samples (ensuring alignment with the ICF).</li>\n<li>Indicate the types of analyses that may be studied for each sample.</li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Include any specific instructions for the collection and assay of samples for genetic and/or pharmacogenomic analysis. If genetic testing is not included in the study, state \u201cNot Applicable.\u201d</p>\n<ul>\n<li>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.), handling of samples, and the assay method.\n<ul>\n<li>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</li>\n</ul>\n</li>\n<li>Describe the retention time for the samples (ensuring alignment with the ICF).</li>\n<li>Indicate the types of analyses that may be studied for each sample.</li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -6189,5 +6257,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 Protocol Package",
-  "systemVersion": "0.2.0"
+  "systemVersion": "0.3.0"
 }

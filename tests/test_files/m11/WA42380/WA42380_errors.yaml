@@ -2,10 +2,10 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/1109d3ac-1870-40f4-bcf5-6ad3db6bac27/WA42380.docx'',
-    dir=''tests/test_files/mount/datafiles/1109d3ac-1870-40f4-bcf5-6ad3db6bac27'',
-    image_path0''tests/test_files/mount/datafiles/1109d3ac-1870-40f4-bcf5-6ad3db6bac27/images'',
-    filename=''WA42380.docx'
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/ef55a323-2477-4613-9566-d1c5ce99a87c/WA42380.docx'',
+    dir=''tests/test_files/mount/datafiles/ef55a323-2477-4613-9566-d1c5ce99a87c'',
+    image_path=''tests/test_files/mount/datafiles/ef55a323-2477-4613-9566-d1c5ce99a87c/images'',
+    filename=''WA42380.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - level: Warning
@@ -346,6 +346,47 @@
   message: Linked 21 footnote references to activities
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
+- level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tSigned Informed\
+    \ Consent Form by any patient capable of giving consent, or, when the patient\
+    \ is not capable of giving consent, by his or her legal/authorized representative'\n\
+    Message returned 'The input looks more like a filename than markup. You may want\
+    \ to open this file and pass the filehandle into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tSpO2 \uF0A3 93%\
+    \ or PaO2/FiO2 \uF03C 300 mmHg'\nMessage returned 'The input looks more like a\
+    \ filename than markup. You may want to open this file and pass the filehandle\
+    \ into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tANC &lt; 1000/\uF06D\
+    L at screening (according to local laboratory reference ranges)'\nMessage returned\
+    \ 'The input looks more like a filename than markup. You may want to open this\
+    \ file and pass the filehandle into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tPlatelet count\
+    \ \uF03C 50,000/\uF06DL at screening (according to local laboratory reference\
+    \ ranges)'\nMessage returned 'The input looks more like a filename than markup.\
+    \ You may want to open this file and pass the filehandle into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
 - level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
@@ -668,7 +709,7 @@
 - level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
-    extensionAttributes=[], type=Code(id=''Code_40'', extensionAttributes=[], code=''C68846'',
+    extensionAttributes=[], type=Code(id=''Code_42'', extensionAttributes=[], code=''C68846'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2025-09-26'', decode=''Global'',
     instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
     None'
@@ -875,7 +916,7 @@
     \ File \"tests/m11/test_m11_integration.py\", line 26, in _run_test\n    wrapper:\
     \ Wrapper = m11.from_docx(filepath)\n  File \"usdm4_protocol/m11/__init__.py\"\
     , line 23, in from_docx\n    result = m11_import.process()\n  File \"usdm4_protocol/common/base_import.py\"\
-    , line 28, in process\n    wrapper = assembler.process()\n  File \"usdm4_protocol/common/assemble/assemble_usdm.py\"\
+    , line 29, in process\n    wrapper = assembler.process()\n  File \"usdm4_protocol/common/assemble/assemble_usdm.py\"\
     , line 38, in process\n    self._assembler.execute(self._source_data)\n  File\
     \ \"usdm4/assembler/assembler.py\", line 129, in execute\n    self._study_assembler.execute(\n\
     \  File \"usdm4/assembler/study_assembler.py\", line 111, in execute\n    valid_date\
