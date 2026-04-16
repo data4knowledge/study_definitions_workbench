@@ -1,6 +1,10 @@
+<h5>Release 0.37.0, 2026-04-20</h5>
+
+Fixes and tweaks for PRISM testing (issue 56).
+
 <h5>Release 0.36.0, 2026-04-11</h5>
 
-Full build using new usdm4_protocol pacage.
+Full build using new usdm4_protocol package.
 
 <h5>Release 0.36.0-alpha.17, 2026-04-06</h5>
 
