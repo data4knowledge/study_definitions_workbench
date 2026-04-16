@@ -257,12 +257,8 @@ class USDMJson:
         design = self._study_design(id)
         # print(f"ESTIMANDS: {'design' if design else ''}")
         if design:
-            section = None
-            if self.m11:
-                section = self._section_by_number("3.1")
-            if not section:
-                section = self._section_by_title_contains("Primary Objective")
-            text = self._section_item(section) if section else ""
+            number = "3.1" if self.m11 else None
+            text = self._section_full_text(number, "Primary Objective", "")
             result = {
                 "id": self.id,
                 "m11": self.m11,
