@@ -36,6 +36,11 @@
       overflow-wrap: break-word;
       vertical-align: top;
     }
+    .ich-m11-title-page-table .not-in-protocol {
+      color: #888;
+      font-size: 0.8em;
+      font-style: italic;
+    }
   </style>
 {% endblock %}   
 {% block menu_content %}
@@ -70,7 +75,11 @@
                       <td>{{k}}</td>
                       {% for w in range(width) %}
                         <td>
-                          {{v[w]}}                          
+                          {% if v[w] is string and v[w].startswith("NP:") %}
+                            <span class="not-in-protocol">{{v[w]}}</span>
+                          {% else %}
+                            {{v[w]}}
+                          {% endif %}
                         </td>
                       {% endfor %}
                     </tr>
