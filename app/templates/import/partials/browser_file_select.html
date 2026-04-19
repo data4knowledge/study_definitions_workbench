@@ -1,10 +1,21 @@
 <div class="card rounded-3">
   <div class="card-body">
-    <h4 class="card-title">{{title}}</h4>
-    <h6 class="card-subtitle mb-2 text-muted">{{subtitle}}</h6>
+    <h4 class="card-title" id="card_title">{{title}}</h4>
+    <h6 class="card-subtitle mb-2 text-muted" id="card_subtitle">{{subtitle}}</h6>
     <div class="mt-3" id="form_div">
       <p>{{text}}</p>
-      <form id='form' hx-encoding='multipart/form-data' hx-post='{{url}}' hx-target="#form_div" hx-swap="outerHTML">
+      {# hx-indicator points at the spinner block below; HTMX shows it
+         while the request is in flight and hides it afterwards. The
+         hx-disabled-elt rule prevents double-submits while uploading.
+         Both attributes are additive — flows that don't need feedback
+         are unaffected. #}
+      <form id='form'
+            hx-encoding='multipart/form-data'
+            hx-post='{{url}}'
+            hx-target="#form_div"
+            hx-swap="outerHTML"
+            hx-indicator="#upload_progress"
+            hx-disabled-elt="find button">
         <input type="file" class="form-control" id="files" name='files' multiple onchange="javascript:updateList()" />
         <div class="mt-3" id="filelist"></div>
         <div class="mt-3">
@@ -17,6 +28,10 @@
               <i class="bi bi-upload pe-2"></i>Upload File(s)
             </button>
           {% endif %}
+        </div>
+        <div id="upload_progress" class="htmx-indicator mt-3 text-muted">
+          {% include "shared/partials/spinner.html" %}
+          <p class="text-center mt-2 mb-0 small">Processing — this may take a minute for large protocols.</p>
         </div>
       </form>
     </div>

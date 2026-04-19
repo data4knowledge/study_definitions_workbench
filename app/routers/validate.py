@@ -13,6 +13,7 @@ from app.database.user import User
 from app.imports.form_handler import FormHandler
 from usdm4 import USDM4, RulesValidationResults
 from usdm3 import USDM3
+from usdm4_protocol.m11 import USDM4M11
 
 router = APIRouter(
     prefix="/validate", tags=["validate"], dependencies=[Depends(protect_endpoint)]
@@ -59,6 +60,29 @@ async def validate_usdm_process(
 ):
     user, present_in_db = user_details(request, session)
     return await _process(request, user, USDM4(), source)
+
+
+@router.get("/m11-docx", dependencies=[Depends(protect_endpoint)])
+def validate_m11_docx(request: Request, session: Session = Depends(get_db)):
+    """File picker for M11 ``.docx`` validation. Extracts the protocol via
+    USDM4M11 then runs the M11 specification checks."""
+    return _validate_setup(
+        request,
+        session,
+        "docx",
+        False,
+        "/validate/m11-docx",
+        "validate/partials/validate_m11_docx.html",
+        {"version": "ICH M11 (2025-11-16)"},
+    )
+
+
+@router.post("/m11-docx", dependencies=[Depends(protect_endpoint)])
+async def validate_m11_docx_process(
+    request: Request, source: str = "browser", session: Session = Depends(get_db)
+):
+    user, present_in_db = user_details(request, session)
+    return await _process_m11_docx(request, user, source)
 
 
 @staticmethod
@@ -112,6 +136,53 @@ async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: st
                 "filename": main_file,
                 "messages": messages,
                 "errors": errors,
+            },
+        },
+    )
+
+
+@staticmethod
+async def _process_m11_docx(request: Request, user: User, source: str):
+    """Process an uploaded M11 ``.docx`` through USDM4M11 validation and
+    render the findings template.
+
+    Mirrors ``_process`` for USDM JSON. Differences: ``.docx`` extension,
+    USDM4M11 entry point, and a different results partial because M11
+    findings carry element + section location rather than klass/attribute.
+    """
+    form_handler = FormHandler(
+        request,
+        False,
+        ".docx",
+        source,
+    )
+    main_file, image_files, messages = await form_handler.get_files()
+    findings: list[dict] = []
+    if main_file:
+        files = DataFiles()
+        _ = files.new()
+        # Reuse the existing "docx" media type; "m11" isn't registered in
+        # DataFiles.media_type and shouldn't be added just for validation.
+        files.save("docx", main_file["contents"], main_file["filename"])
+        full_path, filename, exists = files.path("docx")
+        m11 = USDM4M11()
+        results = m11.validate_docx(full_path)
+        if results is None:
+            messages.append("Validation could not be completed (extraction failed).")
+        else:
+            findings = results.to_dict()
+        files.delete()
+    else:
+        messages.append("Failed to process the validation file")
+    return templates.TemplateResponse(
+        request,
+        "validate/partials/m11_docx_results.html",
+        {
+            "user": user,
+            "data": {
+                "filename": main_file,
+                "messages": messages,
+                "findings": findings,
             },
         },
     )
