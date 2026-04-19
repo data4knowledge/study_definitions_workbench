@@ -14,6 +14,7 @@ from usdm_info import __model_version__ as usdm_version
 from app.database.user import User
 
 from app.imports.form_handler import FormHandler
+from app.utility.m11_annotate import annotate as m11_annotate
 from usdm4 import USDM4, RulesValidationResults
 from usdm3 import USDM3
 from usdm4_protocol.m11 import USDM4M11
@@ -161,6 +162,8 @@ async def _process_m11_docx(request: Request, user: User, source: str):
     )
     main_file, image_files, messages = await form_handler.get_files()
     findings: list[dict] = []
+    annotated_html: str = ""
+    unplaced_findings: list[dict] = []
     if main_file:
         files = DataFiles()
         _ = files.new()
@@ -174,6 +177,15 @@ async def _process_m11_docx(request: Request, user: User, source: str):
             messages.append("Validation could not be completed (extraction failed).")
         else:
             findings = results.to_dict()
+            # Render the extracted wrapper as M11 HTML and overlay the
+            # findings so the "Annotated document" tab on the results
+            # page shows each finding at the element it applies to.
+            # render_current reuses the wrapper cached during
+            # validate_docx — no second extraction.
+            rendered = m11.render_current() or ""
+            annotated = m11_annotate(rendered, findings)
+            annotated_html = annotated.html
+            unplaced_findings = annotated.unplaced
         files.delete()
     else:
         messages.append("Failed to process the validation file")
@@ -186,6 +198,8 @@ async def _process_m11_docx(request: Request, user: User, source: str):
                 "filename": main_file,
                 "messages": messages,
                 "findings": findings,
+                "annotated_html": annotated_html,
+                "unplaced_findings": unplaced_findings,
             },
         },
     )

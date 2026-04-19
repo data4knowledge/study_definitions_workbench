@@ -181,6 +181,14 @@ async def test_validate_m11_docx_post(mocker, monkeypatch):
         }
     ]
     instance.validate_docx.return_value = results_mock
+    # render_current produces the HTML for the annotated-document tab.
+    # Stub it here so the route completes without touching real
+    # Wrapper / M11Export plumbing.
+    instance.render_current.return_value = (
+        '<div class="ich-m11-document-div">'
+        '<div data-m11-element="Full Title">A Trial</div>'
+        '</div>'
+    )
 
     response = await async_client.post("/validate/m11-docx")
     assert response.status_code == 200
@@ -193,6 +201,11 @@ async def test_validate_m11_docx_post(mocker, monkeypatch):
     path_type = df_instance.path.call_args.args[0]
     assert save_type == "docx"
     assert path_type == "docx"
+    # Annotator ran on the rendered HTML and injected a marker for the
+    # single finding. Proves the annotated-document tab is wired.
+    body = response.text
+    assert "m11-doc-marker" in body
+    assert 'data-m11-finding-index="0"' in body
 
 
 @pytest.mark.anyio

@@ -39,39 +39,25 @@ lifecycle.
 **Context:** flagged by Dave as issue 1b during the April 2026
 validation UX review.
 
-### 3. Annotated protocol render
+### 3a. Annotated protocol render — polish (follow-up to ✅ below)
 
-**Problem:** Currently the validator reports findings in a table. Users
-can see the findings and they can see the rendered protocol (via the
-existing `USDM4M11().to_html(path)` view), but the two are in
-different places. For demos, PR, and teaching M11 it would be
-compelling to see the rendered protocol with finding markers overlaid
-on the offending elements in place.
+The first cut of the annotated render shipped as a second tab on the
+validate-docx results page (see archive). Open polish items:
 
-**Proposed approach:**
-
-- Leverage the existing `to_html()` render, which walks the M11
-  template and produces HTML with one visible `<m11:element>` per
-  element. The renderer replaces those with the extracted value.
-- Decorate post-hoc: after rendering, walk the output, match each
-  `<m11:element name="X">`-produced div / span against the findings
-  by element name, and inject a severity marker + hover / click
-  reveal with the rule message.
-- Alternatively, weave the decoration into the renderer itself by
-  passing the findings dict in.
-- UX: a red/amber/grey bar in the document's margin at the offending
-  element, click to expand a side panel with the rule details. Jump
-  navigation — next finding / previous finding — via keyboard.
-- Probably wants its own route and template distinct from the current
-  table-driven results page. Or a tab within the results page
-  ("Document view").
-
-**Effort:** medium. Bulk of the work is the decoration walk and the
-side-panel UI; the renderer's existing element-by-element traversal
-gives a clean attachment point.
-
-**Context:** flagged by Dave as issue 3 during the April 2026
-validation UX review. Pure PR value; not blocking.
+- **Keyboard navigation.** `n` / `p` to cycle through markers, `Esc`
+  closes the side panel (already wired). Would also want `g` /
+  `shift-G` to jump first/last, and scroll-into-view on focus.
+- **Severity filter.** Toggle buttons at the top of the annotated doc
+  to hide info-level or warning-level markers when doing a
+  triage-pass on errors only.
+- **Jump-to-finding from the findings table.** Clicking a row in the
+  Findings tab switches to the Annotated document tab and
+  scroll-to-highlights the matching marker.
+- **Persistent panel-open state across tab switches.** Today
+  switching tabs closes the panel; ideally it should remember the
+  last-selected finding when you come back.
+- **Compact mobile layout.** The side panel is desktop-sized; on
+  narrow viewports it should become a bottom-sheet.
 
 ## General
 
@@ -125,3 +111,27 @@ normalisation (`M11_010/011`) and contradiction (`M11_042`) findings
 surface in the compare view the same way they do in the dedicated
 validate view. Uses the existing on-disk CSV format — no schema
 change.
+
+### Annotated protocol render ✅
+
+Shipped on branch `57-add-m11-validation`. The validate-docx results
+page now has two tabs: Findings (existing table + downloads) and
+Annotated document (new).
+
+Pipeline:
+
+- `usdm4_protocol` side — `M11Export._parse_elements` stamps each
+  rendered element with `data-m11-element="<name>"`;
+  `USDM4M11.render_current()` re-renders the cached wrapper without
+  re-extraction.
+- SDW side — `app/utility/m11_annotate.py::annotate()` walks the
+  rendered HTML via BeautifulSoup, injects a severity-coloured marker
+  inside each `[data-m11-element]` node, returns the annotated HTML
+  plus any findings that couldn't be located. `_process_m11_docx`
+  calls render + annotate and passes both into the template.
+- UI — native `<details>`-free this time; a single fixed side panel
+  reveals the finding on marker click. Keyboard-accessible (Enter /
+  Space activate markers, Esc closes the panel).
+
+Follow-up polish (keyboard nav, severity filter, jump-from-findings-table,
+persistent panel state) is captured in §3a above.
