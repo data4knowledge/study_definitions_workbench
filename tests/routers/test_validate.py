@@ -239,3 +239,74 @@ async def test_validate_m11_docx_post_no_file(mocker, monkeypatch):
     fh_instance.get_files = AsyncMock(return_value=(None, [], ["No file"]))
     response = await async_client.post("/validate/m11-docx")
     assert response.status_code == 200
+
+
+# --- XLSX download endpoint --------------------------------------------
+
+
+@pytest.mark.anyio
+async def test_validate_m11_docx_download_xlsx_returns_workbook(monkeypatch):
+    """POST to the XLSX download route returns an .xlsx stream with the
+    expected Content-Type and Content-Disposition. Payload is a
+    findings list plus source filename (what the client embeds in the
+    results page)."""
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    payload = {
+        "findings": [
+            {
+                "rule_id": "M11_001",
+                "severity": "error",
+                "status": "Failed",
+                "message": "Required missing.",
+                "expected": "Text",
+                "actual": "(no value)",
+                "element_name": "Full Title",
+                "section_number": "",
+                "section_title": "Title Page",
+            }
+        ],
+        "source_filename": "protocol.docx",
+    }
+    response = await async_client.post(
+        "/validate/m11-docx/download/xlsx",
+        json=payload,
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith(
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    # Filename contains the stripped source base and today's date.
+    disp = response.headers["content-disposition"]
+    assert "protocol-m11-findings-" in disp
+    assert disp.endswith('.xlsx"')
+    # Body is an .xlsx, which is a zip — starts with PK header bytes.
+    assert response.content[:2] == b"PK"
+
+
+@pytest.mark.anyio
+async def test_validate_m11_docx_download_xlsx_honours_filename_query(monkeypatch):
+    """If the client passes a ?filename= query-string, the response
+    Content-Disposition should use it (after sanitisation)."""
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    response = await async_client.post(
+        "/validate/m11-docx/download/xlsx?filename=my-report.xlsx",
+        json={"findings": [], "source_filename": "any.docx"},
+    )
+    assert response.status_code == 200
+    assert 'filename="my-report.xlsx"' in response.headers["content-disposition"]
+
+
+@pytest.mark.anyio
+async def test_validate_m11_docx_download_xlsx_empty_findings(monkeypatch):
+    """Zero findings is a valid case — produces an xlsx with just the
+    header row. Should not crash or return a 4xx."""
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    response = await async_client.post(
+        "/validate/m11-docx/download/xlsx",
+        json={"findings": [], "source_filename": "protocol.docx"},
+    )
+    assert response.status_code == 200
+    assert response.content[:2] == b"PK"

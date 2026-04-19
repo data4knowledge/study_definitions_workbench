@@ -98,7 +98,15 @@ def study_list(
         # already displaying. Fast (no docx extraction — wrapper is already
         # loaded). Convert Findings to dicts here so the Jinja template
         # can stay attribute-style without importing Finding.
-        validation = M11Validator(wrapper, errors).validate()
+        #
+        # Rehydrate the errors from the original import so that
+        # extraction-time normalisation + contradiction records survive
+        # into this view. Without this, the compare view would be
+        # Wrapper-state only and findings that the extractor silently
+        # reconciled (e.g. Amendment Identifier contradictions on
+        # original protocols) never surface here.
+        validation_errors = usdm.import_errors()
+        validation = M11Validator(wrapper, validation_errors).validate()
         data["m11_validation"].append(
             {k: [f.to_dict() for f in v] for k, v in validation.by_element().items()}
         )

@@ -1126,3 +1126,159 @@ class TestFindIntervention:
         version = usdm._data["study"]["versions"][0]
         result = usdm._find_intervention(version, "nonexistent")
         assert result is None
+
+
+# --- import_errors ---
+
+
+class TestImportErrors:
+    """Rehydrate the saved errors.csv into an Errors() object."""
+
+    def _with_errors_csv(self, tmp_path, rows):
+        """Build a USDMJson whose _files.path('errors') points at a
+        freshly-written errors.csv containing the given rows."""
+        import csv
+
+        path = tmp_path / "errors.csv"
+        fieldnames = ["level", "message", "type", "extra", "timestamp", "location"]
+        with path.open("w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow({**{k: "" for k in fieldnames}, **row})
+
+        usdm = _build_usdm()
+        usdm._files = MagicMock()
+        usdm._files.path.return_value = (str(path), "errors.csv", True)
+        return usdm
+
+    def test_returns_empty_when_file_missing(self):
+        usdm = _build_usdm()
+        usdm._files = MagicMock()
+        usdm._files.path.return_value = ("/no/such/path", "errors.csv", False)
+        errors = usdm.import_errors()
+        assert errors.count() == 0
+
+    def test_returns_empty_when_path_raises(self):
+        # Legacy imports without a known media type entry; DataFiles raises
+        # rather than returning exists=False. Handler must not propagate.
+        usdm = _build_usdm()
+        usdm._files = MagicMock()
+        usdm._files.path.side_effect = KeyError("errors")
+        errors = usdm.import_errors()
+        assert errors.count() == 0
+
+    def test_rehydrates_normalisation_record_round_trip(self, tmp_path):
+        # What the M11 validator actually needs: type + extra dict
+        # preserved through the CSV round-trip so _collect_normalisation_findings
+        # can fire on the rehydrated data.
+        row = {
+            "level": "Warning",
+            "message": "M11 normalisation: 'Trial Phase' coerced",
+            "type": "m11_normalization_record",
+            "extra": str({
+                "element": "Trial Phase",
+                "source": "Phase III",
+                "normalised": "Phase 3",
+                "kind": "coerced",
+            }),
+            "timestamp": "2026-04-19 14:00:00.000000",
+            "location": "{}",
+        }
+        usdm = self._with_errors_csv(tmp_path, [row])
+        errors = usdm.import_errors()
+        assert errors.count() == 1
+        item = errors._items[0]
+        from simple_error_log.error import Error
+
+        assert item.level == Error.WARNING
+        assert item.error_type == "m11_normalization_record"
+        assert item.extra == {
+            "element": "Trial Phase",
+            "source": "Phase III",
+            "normalised": "Phase 3",
+            "kind": "coerced",
+        }
+
+    def test_rehydrates_contradiction_record(self, tmp_path):
+        row = {
+            "level": "Error",
+            "message": "Amendment Identifier contradicts Original=Yes",
+            "type": "m11_contradiction_record",
+            "extra": str({
+                "element": "Amendment Identifier",
+                "source_value": "Protocol Version 1",
+                "other_element": "Original Protocol Indicator",
+                "other_value": "Yes",
+            }),
+            "timestamp": "2026-04-19 14:00:00.000000",
+            "location": "{}",
+        }
+        usdm = self._with_errors_csv(tmp_path, [row])
+        errors = usdm.import_errors()
+        assert errors.count() == 1
+        item = errors._items[0]
+        assert item.error_type == "m11_contradiction_record"
+        assert item.extra["source_value"] == "Protocol Version 1"
+
+    def test_rehydrates_multiple_rows_in_order(self, tmp_path):
+        rows = [
+            {"level": "Info", "message": "first", "type": "tag_a", "extra": ""},
+            {"level": "Warning", "message": "second", "type": "tag_b", "extra": "{'k': 1}"},
+            {"level": "Error", "message": "third", "type": "tag_c", "extra": ""},
+        ]
+        usdm = self._with_errors_csv(tmp_path, rows)
+        errors = usdm.import_errors()
+        assert errors.count() == 3
+        assert [i.error_type for i in errors._items] == ["tag_a", "tag_b", "tag_c"]
+        assert errors._items[1].extra == {"k": 1}
+
+    def test_handles_malformed_extra_gracefully(self, tmp_path):
+        # An entry written by some future component might not match
+        # the Python-dict-repr shape we expect. Degrade to extra=None
+        # rather than raising.
+        row = {
+            "level": "Warning",
+            "message": "malformed",
+            "type": "tag",
+            "extra": "not a dict repr <> 123",
+            "timestamp": "",
+            "location": "",
+        }
+        usdm = self._with_errors_csv(tmp_path, [row])
+        errors = usdm.import_errors()
+        assert errors.count() == 1
+        assert errors._items[0].extra is None
+
+    def test_none_string_parses_as_none(self, tmp_path):
+        # DictWriter stringifies Python None as "None". Must not
+        # literal_eval that to the NoneType sentinel and crash — we
+        # want a plain None on the Error instance.
+        row = {
+            "level": "Warning",
+            "message": "no extra",
+            "type": "tag",
+            "extra": "None",
+            "timestamp": "",
+            "location": "",
+        }
+        usdm = self._with_errors_csv(tmp_path, [row])
+        errors = usdm.import_errors()
+        assert errors._items[0].extra is None
+
+    def test_unknown_level_defaults_to_info(self, tmp_path):
+        # Forward compat: if a future code adds a new level label we
+        # don't recognise, place the entry at INFO rather than crashing.
+        row = {
+            "level": "Trace",
+            "message": "future level",
+            "type": "tag",
+            "extra": "",
+            "timestamp": "",
+            "location": "",
+        }
+        usdm = self._with_errors_csv(tmp_path, [row])
+        errors = usdm.import_errors()
+        from simple_error_log.error import Error
+
+        assert errors._items[0].level == Error.INFO

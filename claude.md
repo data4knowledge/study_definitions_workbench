@@ -4,6 +4,12 @@
 
 Study Definitions Workbench — a FastAPI web application for managing USDM (Unified Study Definitions Model) clinical study data, with FHIR M11 import/export support.
 
+## Feature-specific docs
+
+- **M11 validation UI** — `docs/m11_validation.md`. How the `/validate/m11-docx` and `/studies/list` validation flows work end-to-end, which templates and JS do what, and which routes exist. The rule catalogue and interpretation live in the sibling `usdm4_protocol` package under its `docs/m11_rule_interpretation.md` and `docs/m11_observed_issues.md`.
+- **Backlog** — `docs/next_steps.md`. Running list of scoped-but-not-shipped improvements (validation background execution, annotated protocol render, validation history, …). When you finish an item, move it to the Archive section.
+- **Lessons learned** — `docs/lessons_learned.md`. Hard-won "don't step on this" notes from building SDW features: the server-restart-for-external-packages trap, HTMX partial pattern, pill-styling convention, DataFiles media-type gotchas, rehydrating saved errors, and why `<details>` beats `data-bs-toggle="collapse"` for small toggles. Add a lesson here when you step on one.
+
 ## Tests
 
 There are two distinct types of tests in this project:

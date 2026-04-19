@@ -1,4 +1,7 @@
+import io
+from datetime import date
 from fastapi import APIRouter, Depends, Request
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
@@ -186,3 +189,101 @@ async def _process_m11_docx(request: Request, user: User, source: str):
             },
         },
     )
+
+
+@router.post("/m11-docx/download/xlsx", dependencies=[Depends(protect_endpoint)])
+async def validate_m11_docx_download_xlsx(request: Request):
+    """Stream findings as an .xlsx. Client POSTs the findings JSON it
+    already has (embedded in the results page) plus the source filename;
+    the server round-trip exists only because we don't ship a
+    client-side XLSX generator. CSV / JSON / Markdown are produced
+    entirely in the browser.
+
+    The ``filename`` query-string lets the caller choose the download
+    filename; we default to something sensible if it's absent or
+    malformed. The file is generated via openpyxl (already a transitive
+    dependency through usdm4_excel).
+    """
+    payload = await request.json()
+    findings = payload.get("findings") or []
+    source_filename = payload.get("source_filename") or "protocol.docx"
+    default_name = (
+        f"{source_filename.rsplit('.', 1)[0]}"
+        f"-m11-findings-{date.today().isoformat()}.xlsx"
+    )
+    filename = request.query_params.get("filename") or default_name
+    # Only allow a narrow filename shape so the Content-Disposition
+    # header stays safe from injection.
+    filename = "".join(
+        c for c in filename if c.isalnum() or c in "-_. "
+    ) or default_name
+
+    buffer = _findings_to_xlsx(findings, source_filename)
+    return StreamingResponse(
+        buffer,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+        },
+    )
+
+
+def _findings_to_xlsx(findings: list[dict], source_filename: str) -> io.BytesIO:
+    """Render a list of finding dicts to an in-memory .xlsx. Uses
+    openpyxl (installed via usdm4_excel). Bold header row, column
+    widths sized to typical finding content so the sheet opens
+    readable in Excel / Numbers / Sheets without manual resizing.
+    """
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, Alignment
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "M11 Findings"
+
+    headers = [
+        ("Rule", 10),
+        ("Severity", 10),
+        ("Status", 10),
+        ("Element", 28),
+        ("Section", 18),
+        ("Message", 60),
+        ("Expected", 30),
+        ("Actual", 30),
+    ]
+    for col_idx, (title, width) in enumerate(headers, start=1):
+        cell = ws.cell(row=1, column=col_idx, value=title)
+        cell.font = Font(bold=True)
+        ws.column_dimensions[cell.column_letter].width = width
+
+    for row_idx, f in enumerate(findings, start=2):
+        values = [
+            f.get("rule_id", ""),
+            f.get("severity", ""),
+            f.get("status", ""),
+            f.get("element_name", ""),
+            f.get("section_title", ""),
+            f.get("message", ""),
+            f.get("expected", ""),
+            f.get("actual", ""),
+        ]
+        for col_idx, value in enumerate(values, start=1):
+            cell = ws.cell(row=row_idx, column=col_idx, value=value)
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+
+    # Source-filename note on a second sheet so the primary sheet
+    # stays dense. Useful when someone sends the xlsx around and loses
+    # the original filename context.
+    meta = wb.create_sheet("Source")
+    meta["A1"] = "Source file"
+    meta["A1"].font = Font(bold=True)
+    meta["A2"] = source_filename
+    meta["A3"] = "Generated"
+    meta["A3"].font = Font(bold=True)
+    meta["A4"] = date.today().isoformat()
+    meta.column_dimensions["A"].width = 40
+
+    buffer = io.BytesIO()
+    wb.save(buffer)
+    buffer.seek(0)
+    return buffer

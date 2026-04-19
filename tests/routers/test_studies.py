@@ -163,6 +163,14 @@ def test_study_list(mocker, monkeypatch):
 
     mocker.patch("app.routers.studies.USDMJson.__init__", new=custom_init)
     mocker.patch("app.routers.studies.USDMJson.wrapper", return_value=mock_wrapper)
+    # import_errors() reads errors.csv from the study's DataFiles at
+    # request time; mock it so the route doesn't touch the filesystem.
+    from simple_error_log import Errors as RealErrors
+
+    mocker.patch(
+        "app.routers.studies.USDMJson.import_errors",
+        return_value=RealErrors(),
+    )
     mock_dv = mocker.patch("app.routers.studies.DataView")
     mock_dv_instance = mock_dv.return_value
     mock_dv_instance.title_page.return_value = {"title": "Test"}
@@ -214,6 +222,14 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
 
     mocker.patch("app.routers.studies.USDMJson.__init__", new=custom_init)
     mocker.patch("app.routers.studies.USDMJson.wrapper", return_value=mock_wrapper)
+    # import_errors() reads errors.csv from the study's DataFiles at
+    # request time; mock it so the route doesn't touch the filesystem.
+    from simple_error_log import Errors as RealErrors
+
+    mocker.patch(
+        "app.routers.studies.USDMJson.import_errors",
+        return_value=RealErrors(),
+    )
 
     mock_dv = mocker.patch("app.routers.studies.DataView")
     mock_dv.return_value.title_page.return_value = {"Full Title": "A Trial"}

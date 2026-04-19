@@ -1,3 +1,5 @@
+import ast
+import csv
 import json
 import yaml
 from app.database.file_import import FileImport
@@ -84,6 +86,78 @@ class USDMJson:
 
     def extra(self) -> dict:
         return self._extra
+
+    def import_errors(self) -> Errors:
+        """Rehydrate the Errors object saved alongside this study at
+        import time.
+
+        The import pipeline writes every entry above INFO level to
+        ``errors.csv`` via ``DataFiles._save_csv_file``. Each row carries
+        the message, level, error_type, a serialised ``extra`` payload
+        (Python dict repr, not JSON), plus timestamp/location.
+
+        We rebuild an ``Errors`` object from those rows so consumers
+        that rely on typed entries (the M11 validator's normalisation
+        and contradiction collectors in particular) can see the
+        extraction-time evidence in the compare view — where a fresh
+        ``Errors()`` would otherwise be empty. Returns empty ``Errors``
+        on any shape mismatch (legacy imports without the file,
+        non-M11 imports that never emitted typed entries, parse
+        failures) — the validator degrades silently rather than
+        crashing.
+        """
+        errors = Errors()
+        try:
+            full_path, _filename, exists = self._files.path("errors")
+        except Exception:
+            return errors
+        if not exists:
+            return errors
+        level_by_label = {
+            "Error": Errors.ERROR,
+            "Warning": Errors.WARNING,
+            "Info": Errors.INFO,
+            "Debug": Errors.DEBUG,
+        }
+        try:
+            with open(full_path, newline="") as handle:
+                reader = csv.DictReader(handle)
+                for row in reader:
+                    level = level_by_label.get(
+                        row.get("level") or "", Errors.INFO
+                    )
+                    extra = self._parse_dict_repr(row.get("extra"))
+                    errors.add(
+                        row.get("message") or "",
+                        error_type=row.get("type") or "",
+                        level=level,
+                        extra=extra,
+                    )
+        except Exception:
+            # The CSV may be malformed for older imports or future
+            # format changes. Swallow and return whatever we managed
+            # to parse — callers default to empty on full failure.
+            pass
+        return errors
+
+    @staticmethod
+    def _parse_dict_repr(value):
+        """Best-effort parse of a CSV cell that holds ``str(some_dict)``.
+
+        DictWriter stringifies non-str values with ``str()`` rather
+        than JSON-encoding them, so the extra column reads like
+        ``{'element': 'Trial Phase', 'source': 'Phase III', ...}``.
+        ``ast.literal_eval`` parses that safely (it only accepts
+        literal Python containers, not arbitrary expressions).
+        Returns ``None`` for empty / "None" / un-parseable cells.
+        """
+        if not value or value == "None":
+            return None
+        try:
+            parsed = ast.literal_eval(value)
+        except (ValueError, SyntaxError):
+            return None
+        return parsed if isinstance(parsed, dict) else None
 
     def study_version(self):
         version = self._data["study"]["versions"][0]

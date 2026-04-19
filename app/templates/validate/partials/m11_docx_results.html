@@ -32,6 +32,33 @@
       </div>
     {% endif %}
 
+    {# Download controls. The findings JSON is embedded on the page so
+       client-side formats (CSV / JSON / Markdown) generate without a
+       server round-trip. XLSX requires openpyxl and posts the findings
+       to a dedicated endpoint that streams an .xlsx back. The original
+       filename is embedded too, for deterministic download filenames
+       like WP45338-m11-findings-2026-04-19.csv. #}
+    {% if findings %}
+      <div id="m11-download-controls" class="mb-3"
+           data-findings='{{ findings|tojson }}'
+           data-source-filename="{{ filename }}">
+        <span class="text-muted me-2">Download:</span>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="csv">
+          <i class="bi bi-filetype-csv me-1"></i>CSV
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="json">
+          <i class="bi bi-filetype-json me-1"></i>JSON
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="md">
+          <i class="bi bi-markdown me-1"></i>Markdown
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="xlsx">
+          <i class="bi bi-file-earmark-excel me-1"></i>XLSX
+        </button>
+      </div>
+      <script src="/static/js/m11_download.js"></script>
+    {% endif %}
+
     <div class="table-responsive">
       <table class="table table-striped table-sm align-middle">
         <thead>
