@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from simple_error_log import Errors
 from usdm4.api.wrapper import Wrapper, StudyVersion, StudyDesign
 from usdm4_protocol.m11.views.data_view import DataView
+from usdm4_protocol.m11.validate import M11Validator
 from app.database.study import Study
 from app.database.version import Version
 from app.database.file_import import FileImport
@@ -74,6 +75,12 @@ def study_list(
     parts = list_studies.split(",") if list_studies else []
     data = {
         "m11_title_page": [],
+        # M11 validation findings per study, grouped by element name. Parallel
+        # list (same index as m11_title_page pre-transpose / same column as
+        # the rendered comparison table post-transpose). Not transposed here
+        # because by_element() dicts from different studies can have
+        # different key sets; the template indexes positionally instead.
+        "m11_validation": [],
         "inclusion": [],
         "exclusion": [],
         "m11_amendment_details": [],
@@ -87,6 +94,14 @@ def study_list(
         errors = Errors()
         m11 = DataView(wrapper, errors)
         data["m11_title_page"].append(m11.title_page())
+        # Run M11 validation against the same Wrapper the compare view is
+        # already displaying. Fast (no docx extraction — wrapper is already
+        # loaded). Convert Findings to dicts here so the Jinja template
+        # can stay attribute-style without importing Finding.
+        validation = M11Validator(wrapper, errors).validate()
+        data["m11_validation"].append(
+            {k: [f.to_dict() for f in v] for k, v in validation.by_element().items()}
+        )
         ie_map = study_version.eligibility_critieria_item_map()
         data["inclusion"].append(study_design.inclusion_criteria(ie_map))
         data["exclusion"].append(study_design.exclusion_criteria(ie_map))

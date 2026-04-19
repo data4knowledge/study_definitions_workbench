@@ -3,6 +3,16 @@
     <div class="col-12 extract-div mt-3 mb-3">
         <div class="overflow-auto section-div">
         <table class="table table-responsive">
+            {# Optional header row \u2014 callers pass `headers` (typically the
+               sponsor identifier per study) so columns are labelled. When
+               not provided, table renders unchanged for backward compat. #}
+            {% if headers is defined and headers %}
+            <tr>
+                {% for w in range(width) %}
+                <td><strong>{{ headers[w] }}</strong></td>
+                {% endfor %}
+            </tr>
+            {% endif %}
             <tr>
             {% for w in range(width) %}
                 <td>
@@ -10,7 +20,7 @@
                     {% for i in data[w] %}
                     <tr>
                         <td>
-                        {{i["identifier"]}}: {{i["criterionItem"]["text"]|safe}}                          
+                        {{i["identifier"]}}: {{i["criterionItem"]["text"]|safe}}
                         </td>
                     </tr>
                     {% endfor %}
@@ -21,4 +31,5 @@
         </table>
         </div>
     </div>
-</div>  
+</div>
+

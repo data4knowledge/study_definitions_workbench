@@ -167,6 +167,14 @@ def test_study_list(mocker, monkeypatch):
     mock_dv_instance = mock_dv.return_value
     mock_dv_instance.title_page.return_value = {"title": "Test"}
     mock_dv_instance.amendment_details.return_value = {"amendment": "None"}
+    # The compare view now also runs M11Validator per study — mock it so
+    # the route can build data["m11_validation"] without touching the real
+    # spec data / Wrapper traversal.
+    mock_validator = mocker.patch("app.routers.studies.M11Validator")
+    mock_validator_instance = mock_validator.return_value
+    mock_results = MagicMock()
+    mock_results.by_element.return_value = {}
+    mock_validator_instance.validate.return_value = mock_results
     mocker.patch(
         "app.routers.studies.restructure_study_list", return_value={"title": ["Test"]}
     )
@@ -175,6 +183,75 @@ def test_study_list(mocker, monkeypatch):
     response = client.get("/studies/list?list_studies=1")
     assert response.status_code == 200
     assert mock_called(uc)
+    # The validator must be invoked once per study listed. Same wrapper
+    # instance so Findings anchor to the same protocol the cell displays.
+    mock_validator.assert_called_once()
+    mock_validator_instance.validate.assert_called_once()
+
+
+def test_study_list_renders_validation_badges(mocker, monkeypatch):
+    """When M11Validator returns findings, the comparison view renders a
+    badge (bootstrap icon) per finding on the matching cell."""
+    from unittest.mock import MagicMock
+
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+
+    mock_vlv = mocker.patch("app.routers.studies.Version.find_latest_version")
+    mock_vlv.return_value = MagicMock(id=1)
+    mock_wrapper = MagicMock()
+    mock_sv = MagicMock()
+    mock_sd = MagicMock()
+    mock_sv.studyDesigns = [mock_sd]
+    mock_sv.eligibility_critieria_item_map.return_value = {}
+    mock_sd.inclusion_criteria.return_value = []
+    mock_sd.exclusion_criteria.return_value = []
+    mock_wrapper.first_version.return_value = mock_sv
+
+    def custom_init(self, *args, **kwargs):
+        pass
+
+    mocker.patch("app.routers.studies.USDMJson.__init__", new=custom_init)
+    mocker.patch("app.routers.studies.USDMJson.wrapper", return_value=mock_wrapper)
+
+    mock_dv = mocker.patch("app.routers.studies.DataView")
+    mock_dv.return_value.title_page.return_value = {"Full Title": "A Trial"}
+
+    # Build a fake finding that will decorate the 'Full Title' cell.
+    fake_finding = MagicMock()
+    fake_finding.to_dict.return_value = {
+        "rule_id": "M11_001",
+        "severity": "error",
+        "status": "Failed",
+        "message": "Required element missing.",
+        "expected": "Text",
+        "actual": "(no value)",
+        "element_name": "Full Title",
+        "section_number": "",
+        "section_title": "Title Page",
+    }
+    mock_validator = mocker.patch("app.routers.studies.M11Validator")
+    mock_results = MagicMock()
+    mock_results.by_element.return_value = {"Full Title": [fake_finding]}
+    mock_validator.return_value.validate.return_value = mock_results
+
+    # restructure_study_list returns {element: tuple_of_values_across_studies}
+    mocker.patch(
+        "app.routers.studies.restructure_study_list",
+        return_value={"Full Title": ("A Trial",)},
+    )
+    mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
+    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
+
+    response = client.get("/studies/list?list_studies=1")
+    assert response.status_code == 200
+    body = response.text
+    # Finding converted via to_dict() and rendered as a bootstrap badge
+    # with the rule id/message in the tooltip title.
+    assert "m11-validation-badge" in body
+    assert "M11_001" in body
+    assert "Required element missing." in body
 
 
 def test_study_list_empty(mocker, monkeypatch):

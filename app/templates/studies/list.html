@@ -63,23 +63,82 @@
           <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#exclusion_tab">Exclusion Critieria</button>
         </li>
       </ul>
+      {# Sponsor IDs per study, captured before the {% with %} blocks below
+         shadow the outer `data` for the IE tabs. Used as column headers
+         across all three tabs so users can tell which column is which
+         protocol (sponsor identifier is the only universally-present
+         human-readable identifier). #}
+      {% set sponsor_ids = data["m11_title_page"]["Sponsor Protocol Identifier"] %}
       <div class="tab-content mt-2">
         <div id="title_page_tab" class="tab-pane fade show active" role="tabpanel">
           {% set width = data["m11_title_page"]["Full Title"]|length %}
+          {# Badges reflect M11 validation of the USDM-derived view of each
+             protocol \u2014 the same values shown in the cell. See
+             usdm4_protocol.m11.validate for the rule catalogue. #}
           <div class="outer-div row mt-3">
             <div class="col-12 extract-div mt-3 mb-3">
               <div class="overflow-auto section-div">
                 <table class="ich-m11-title-page-table">
+                  {# Header row: sponsor identifier per study + validation
+                     summary pill. Always renders 0 findings explicitly so
+                     the user can tell "validation ran, nothing to flag"
+                     from "validation didn't run at all". #}
+                  <tr>
+                    <td><strong>Protocol</strong></td>
+                    {% for w in range(width) %}
+                      {% set per_study = data["m11_validation"][w] if data["m11_validation"]|length > w else {} %}
+                      {# Jinja's set inside a loop is loop-scoped, so counts
+                         live on a namespace object to survive the inner loop. #}
+                      {% set ns = namespace(err=0, warn=0, info=0) %}
+                      {% for f_list in per_study.values() %}
+                        {% for f in f_list %}
+                          {% if f.severity == 'error' %}{% set ns.err = ns.err + 1 %}
+                          {% elif f.severity == 'warning' %}{% set ns.warn = ns.warn + 1 %}
+                          {% else %}{% set ns.info = ns.info + 1 %}{% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      <td>
+                        <div><strong>{{ sponsor_ids[w] }}</strong></div>
+                        <div class="mt-1">
+                          {% if ns.err == 0 and ns.warn == 0 and ns.info == 0 %}
+                            <span class="badge bg-success">
+                              <i class="bi bi-check-circle-fill me-1"></i>0 findings
+                            </span>
+                          {% else %}
+                            {% if ns.err %}<span class="badge bg-danger me-1">{{ ns.err }} error{% if ns.err != 1 %}s{% endif %}</span>{% endif %}
+                            {% if ns.warn %}<span class="badge bg-warning text-dark me-1">{{ ns.warn }} warning{% if ns.warn != 1 %}s{% endif %}</span>{% endif %}
+                            {% if ns.info %}<span class="badge bg-secondary me-1">{{ ns.info }} info</span>{% endif %}
+                          {% endif %}
+                        </div>
+                      </td>
+                    {% endfor %}
+                  </tr>
                   {% for k, v in data["m11_title_page"].items() %}
                     <tr>
                       <td>{{k}}</td>
                       {% for w in range(width) %}
+                        {% set cell_findings = data["m11_validation"][w].get(k, []) if data["m11_validation"]|length > w else [] %}
                         <td>
                           {% if v[w] is string and v[w].startswith("NP:") %}
                             <span class="not-in-protocol">{{v[w]}}</span>
                           {% else %}
                             {{v[w]}}
                           {% endif %}
+                          {% for f in cell_findings %}
+                            {% if f['severity'] == 'error' %}
+                              <i class="bi bi-x-circle-fill text-danger ms-1 m11-validation-badge"
+                                 data-bs-toggle="tooltip"
+                                 title="{{ f['rule_id'] }}: {{ f['message'] }}"></i>
+                            {% elif f['severity'] == 'warning' %}
+                              <i class="bi bi-exclamation-triangle-fill text-warning ms-1 m11-validation-badge"
+                                 data-bs-toggle="tooltip"
+                                 title="{{ f['rule_id'] }}: {{ f['message'] }}"></i>
+                            {% else %}
+                              <i class="bi bi-info-circle text-secondary ms-1 m11-validation-badge"
+                                 data-bs-toggle="tooltip"
+                                 title="{{ f['rule_id'] }}: {{ f['message'] }}"></i>
+                            {% endif %}
+                          {% endfor %}
                         </td>
                       {% endfor %}
                     </tr>
@@ -87,21 +146,35 @@
                 </table>
               </div>
              </div>
-          </div>  
+          </div>
         </div>
         <div id="inclusion_tab" class="tab-pane fade" role="tabpanel">
-          {% with data=data["inclusion"] %}
+          {% with data=data["inclusion"], headers=sponsor_ids %}
             {% include "studies/partials/criteria.html" %}
           {% endwith %}
         </div>
         <div id="exclusion_tab" class="tab-pane fade" role="tabpanel">
-          {% with data=data["exclusion"] %}
+          {% with data=data["exclusion"], headers=sponsor_ids %}
             {% include "studies/partials/criteria.html" %}
           {% endwith %}
         </div>
       </div>
     </div>
   </div>
+
+  {# Initialise Bootstrap tooltips for the M11 validation badges. Scoped
+     to this page — other pages that want tooltips can add their own init.
+     Using a title attribute means native browser tooltips still work if
+     this script fails to run. #}
+  <script>
+    (function () {
+      var els = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      els.forEach(function (el) {
+        // eslint-disable-next-line no-new
+        new bootstrap.Tooltip(el);
+      });
+    })();
+  </script>
 {% endblock %}
 
 
