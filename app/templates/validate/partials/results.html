@@ -1,42 +1,121 @@
+{# HTMX partial for the three USDM / M11 validation flows that use the
+   shared row shape. Rows are pre-projected by the router into the shared
+   finding shape — keys: ``rule_id``, ``severity``, ``section``,
+   ``element``, ``message``, ``rule_text``, ``path``. See
+   :mod:`app.utility.finding_projections` for the contract.
+
+   Columns intentionally match the M11 docx results partial so the
+   three validation flows read like siblings rather than three
+   bespoke tables.
+
+   Context keys consumed from ``data``:
+     * ``findings``       — the projected row list.
+     * ``messages``       — operational messages (extraction failures etc.).
+     * ``filename``       — dict with ``filename``/``full_path``/``exists``;
+                            used to label the source in downloads.
+     * ``download_kind``  — slug for the download filename suffix
+                            (e.g. ``"usdm-rules-findings"``).
+     * ``download_title`` — heading used on the Markdown export.
+     * ``download_sheet`` — worksheet name on the XLSX export. #}
+
+{% set findings = data['findings'] if data['findings'] is defined else [] %}
+{% set messages = data['messages'] if data['messages'] is defined else [] %}
+{% set real_messages = messages | reject('equalto', 'File accepted') | list %}
+{% set source_filename = (data['filename']['filename'] if data['filename'] else '') or '' %}
+{% set download_kind = data['download_kind'] if data['download_kind'] is defined else 'validation-findings' %}
+{% set download_title = data['download_title'] if data['download_title'] is defined else 'Validation Findings' %}
+{% set download_sheet = data['download_sheet'] if data['download_sheet'] is defined else 'Findings' %}
 
 {% block main_content %}
 <div class="mt-3 row">
-    <div class="col-12">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Rule</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Message</th>
-                        <th scope="col">Level</th>
-                        <th scope="col">Klass</th>
-                        <th scope="col">Attribute</th>
-                        <th scope="col">Path</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in data['errors']: %}
-                        {% if item['status'] not in ['Not Implemented', 'Success'] %}
-                            <tr>
-                                <td>{{item['rule_id']}}</td>
-                                <td>{{item['status']}}</td>
-                                {% if item['exception'] %}
-                                    <td colspan="5">{{item['exception']}}</td>
-                                {% else %}
-                                  <td>{{item['message']}}</td>
-                                  <td>{{item['level']}}</td>
-                                  <td>{{item['klass']}}</td>
-                                  <td>{{item['attribute']}}</td>
-                                  <td>{{item['path']}}</td>
-                                {% endif %}
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+  <div class="col-12">
+
+    {% if real_messages %}
+      <div class="alert alert-warning" role="alert">
+        <ul class="mb-0">
+          {% for m in real_messages %}<li>{{ m }}</li>{% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if findings %}
+      <p class="text-muted">
+        {{ findings|length }} finding{% if findings|length != 1 %}s{% endif %}
+        reported.
+      </p>
+    {% else %}
+      <div class="alert alert-success" role="alert">
+        No findings — validation passed.
+      </div>
+    {% endif %}
+
+    {% if findings %}
+      {# Plain HTML form — zero JavaScript. Each submit button uses
+         ``formaction`` to target one of four server-side download
+         routes. The findings are carried along as a hidden JSON
+         blob so the server can regenerate any format on demand.
+         ``target="_blank"`` keeps the results page in place when
+         the download streams. #}
+      <form method="post" target="_blank" class="mb-3">
+        <input type="hidden" name="findings" value='{{ findings|tojson }}'>
+        <input type="hidden" name="source_filename" value="{{ source_filename }}">
+        <input type="hidden" name="kind" value="{{ download_kind }}">
+        <input type="hidden" name="title" value="{{ download_title }}">
+        <input type="hidden" name="sheet_title" value="{{ download_sheet }}">
+        <span class="text-muted me-2">Download:</span>
+        <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                formaction="/validate/download/csv">
+          <i class="bi bi-filetype-csv me-1"></i>CSV
+        </button>
+        <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                formaction="/validate/download/json">
+          <i class="bi bi-filetype-json me-1"></i>JSON
+        </button>
+        <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                formaction="/validate/download/md">
+          <i class="bi bi-markdown me-1"></i>Markdown
+        </button>
+        <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                formaction="/validate/download/xlsx">
+          <i class="bi bi-file-earmark-excel me-1"></i>XLSX
+        </button>
+      </form>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Section</th>
+              <th scope="col">Element</th>
+              <th scope="col">Severity</th>
+              <th scope="col">Rule</th>
+              <th scope="col">Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for f in findings %}
+              <tr>
+                <td>{{ f['section'] or '' }}</td>
+                <td>{{ f['element'] or '' }}</td>
+                <td>
+                  {% set sev = f['severity'] or 'info' %}
+                  {% if sev == 'error' %}
+                    <span class="badge rounded-pill text-bg-danger">Error</span>
+                  {% elif sev == 'warning' %}
+                    <span class="badge rounded-pill text-bg-warning">Warning</span>
+                  {% else %}
+                    <span class="badge rounded-pill text-bg-secondary">Info</span>
+                  {% endif %}
+                </td>
+                <td><code>{{ f['rule_id'] }}</code></td>
+                <td>{{ f['message'] }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+  </div>
 </div>
 {% endblock %}

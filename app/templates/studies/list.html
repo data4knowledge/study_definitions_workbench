@@ -203,15 +203,21 @@
                                 <span class="m11-findings-count">{{ cell_findings|length }}</span>
                               </summary>
                               <div class="m11-findings-body">
+                                {# Finding panel carries the rule id, the
+                                   human-readable message, and the section
+                                   location. ``section`` is the canonical
+                                   row-shape key produced by
+                                   ``project_m11_result`` — the earlier
+                                   ``expected`` / ``actual`` lines were
+                                   retired with the adapter; the new M11
+                                   validator folds those specifics into
+                                   ``message`` directly. #}
                                 {% for f in cell_findings %}
                                   <div class="m11-finding-panel severity-{{ f['severity'] }}">
                                     <code class="m11-finding-rule">{{ f['rule_id'] }}</code>
                                     <span class="m11-finding-message">{{ f['message'] }}</span>
-                                    {% if f['expected'] %}
-                                      <div class="m11-finding-meta"><strong>Expected:</strong> {{ f['expected'] }}</div>
-                                    {% endif %}
-                                    {% if f['actual'] %}
-                                      <div class="m11-finding-meta"><strong>Actual:</strong> {{ f['actual'] }}</div>
+                                    {% if f['section'] %}
+                                      <div class="m11-finding-meta"><strong>Section:</strong> {{ f['section'] }}</div>
                                     {% endif %}
                                   </div>
                                 {% endfor %}

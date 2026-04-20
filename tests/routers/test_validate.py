@@ -140,7 +140,10 @@ def test_validate_m11_docx_get(mocker, monkeypatch):
 
 @pytest.mark.anyio
 async def test_validate_m11_docx_post(mocker, monkeypatch):
-    """POST runs USDM4M11.validate_docx and renders the M11 results page."""
+    """POST runs M11Validator against the stored DOCX and renders the
+    findings table. The annotated-protocol view was removed from this
+    flow in task #36 — the route now only projects findings and passes
+    download metadata to the results partial."""
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
@@ -164,36 +167,37 @@ async def test_validate_m11_docx_post(mocker, monkeypatch):
     )
     df_instance.delete.return_value = True
 
-    usdm4m11 = mocker.patch("app.routers.validate.USDM4M11")
-    instance = usdm4m11.return_value
+    # Validator runs standalone against the stored docx path — no
+    # Wrapper involvement.  Mock count() > 0 so the route takes the
+    # happy path and doesn't emit the "extraction failed" message.
+    validator_cls = mocker.patch("app.routers.validate.M11Validator")
+    validator_instance = validator_cls.return_value
     results_mock = MagicMock()
-    results_mock.to_dict.return_value = [
-        {
-            "rule_id": "M11_001",
-            "severity": "error",
-            "status": "Failed",
-            "message": "Required element 'Full Title' is missing.",
-            "expected": "A value of type 'Text'",
-            "actual": "(no value)",
-            "element_name": "Full Title",
-            "section_number": "",
-            "section_title": "Title Page",
-        }
-    ]
-    instance.validate_docx.return_value = results_mock
-    # render_current produces the HTML for the annotated-document tab.
-    # Stub it here so the route completes without touching real
-    # Wrapper / M11Export plumbing.
-    instance.render_current.return_value = (
-        '<div class="ich-m11-document-div">'
-        '<div data-m11-element="Full Title">A Trial</div>'
-        '</div>'
+    results_mock.count.return_value = 1
+    validator_instance.validate.return_value = results_mock
+
+    # Stub the projection so we control the finding dicts exactly —
+    # the template renders ``rule_id``, ``severity``, ``section``,
+    # ``element``, and ``message`` for each row.
+    mocker.patch(
+        "app.routers.validate.project_m11_result",
+        return_value=[
+            {
+                "rule_id": "M11_001",
+                "severity": "error",
+                "section": "Title Page",
+                "element": "Full Title",
+                "message": "Required element 'Full Title' is missing.",
+                "rule_text": "",
+                "path": "",
+            }
+        ],
     )
 
     response = await async_client.post("/validate/m11-docx")
     assert response.status_code == 200
     assert mock_called(uc)
-    instance.validate_docx.assert_called_once()
+    validator_instance.validate.assert_called_once()
     # Lock in the DataFiles convention: the route must use the existing
     # "docx" media_type. Inventing a new one (e.g. "m11") raises KeyError
     # from DataFiles.path — a hazard we already hit once.
@@ -201,17 +205,24 @@ async def test_validate_m11_docx_post(mocker, monkeypatch):
     path_type = df_instance.path.call_args.args[0]
     assert save_type == "docx"
     assert path_type == "docx"
-    # Annotator ran on the rendered HTML and injected a marker for the
-    # single finding. Proves the annotated-document tab is wired.
+    # Finding row rendered in the shared findings table.
     body = response.text
-    assert "m11-doc-marker" in body
-    assert 'data-m11-finding-index="0"' in body
+    assert "M11_001" in body
+    assert "Full Title" in body
+    assert "Required element 'Full Title' is missing." in body
+    # Annotated-document artifacts must not appear — task #36 stripped
+    # the tab entirely from the standalone flow.
+    assert "m11-doc-marker" not in body
+    assert "m11-annotated-doc" not in body
+    assert "data-m11-finding-index" not in body
+    assert "Annotated document" not in body
 
 
 @pytest.mark.anyio
 async def test_validate_m11_docx_post_extraction_failure(mocker, monkeypatch):
-    """If USDM4M11.validate_docx returns None (extraction failed), the
-    response still renders without throwing and surfaces a message."""
+    """When the validator couldn't even run (count==0 but the operational
+    error log is non-empty), the route surfaces the "extraction failed"
+    message instead of silently claiming success."""
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     mock_user_check_exists(mocker)
@@ -235,11 +246,18 @@ async def test_validate_m11_docx_post_extraction_failure(mocker, monkeypatch):
     )
     df_instance.delete.return_value = True
 
-    usdm4m11 = mocker.patch("app.routers.validate.USDM4M11")
-    usdm4m11.return_value.validate_docx.return_value = None
+    # Validator ran but produced no rule outcomes AND the operational
+    # error log records a reader failure — the two-channel signal the
+    # route watches for.  Patch the Errors instance the route creates so
+    # count() reports at least one entry.
+    validator_cls = mocker.patch("app.routers.validate.M11Validator")
+    validator_cls.return_value.validate.return_value = MagicMock(count=lambda: 0)
+    errors_cls = mocker.patch("app.routers.validate.M11Errors")
+    errors_cls.return_value.count.return_value = 1
 
     response = await async_client.post("/validate/m11-docx")
     assert response.status_code == 200
+    assert "Validation could not be completed" in response.text
 
 
 @pytest.mark.anyio
@@ -267,13 +285,11 @@ _SAMPLE_FINDINGS = [
     {
         "rule_id": "M11_001",
         "severity": "error",
-        "status": "Failed",
+        "section": "Title Page",
+        "element": "Full Title",
         "message": "Required missing.",
-        "expected": "Text",
-        "actual": "(no value)",
-        "element_name": "Full Title",
-        "section_number": "",
-        "section_title": "Title Page",
+        "rule_text": "",
+        "path": "",
     }
 ]
 
@@ -281,9 +297,15 @@ _SAMPLE_FINDINGS = [
 def _form_payload(findings=None, source="protocol.docx"):
     import json as _json
 
+    # ``kind`` is the validator tag that slots into the filename —
+    # defaults to ``m11-findings`` here so filename assertions
+    # (``…-m11-findings-YYYY-MM-DD.ext``) still hold after the
+    # route rename. The USDM CORE / Rules flows pass their own
+    # ``kind`` values at their own call sites.
     return {
         "findings": _json.dumps(findings or []),
         "source_filename": source,
+        "kind": "m11-findings",
     }
 
 
@@ -292,7 +314,7 @@ async def test_download_csv_returns_plain_csv(monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
-        "/validate/m11-docx/download/csv",
+        "/validate/download/csv",
         data=_form_payload(_SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
@@ -303,7 +325,7 @@ async def test_download_csv_returns_plain_csv(monkeypatch):
     body = response.content.decode("utf-8")
     # Header row + one data row. Fields are in the fixed formatter
     # order — not load-bearing for the test but nice to spot-check.
-    assert "rule_id,severity,status,element_name" in body
+    assert "rule_id,severity,section,element,message" in body
     assert "M11_001" in body
     assert "Full Title" in body
 
@@ -313,7 +335,7 @@ async def test_download_json_returns_findings_array(monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
-        "/validate/m11-docx/download/json",
+        "/validate/download/json",
         data=_form_payload(_SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
@@ -331,7 +353,7 @@ async def test_download_markdown_returns_heading_and_table(monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
-        "/validate/m11-docx/download/md",
+        "/validate/download/md",
         data=_form_payload(_SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
@@ -347,7 +369,7 @@ async def test_download_xlsx_returns_workbook(monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
-        "/validate/m11-docx/download/xlsx",
+        "/validate/download/xlsx",
         data=_form_payload(_SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
@@ -375,7 +397,7 @@ async def test_download_empty_findings_is_valid(monkeypatch, fmt, content_marker
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
-        f"/validate/m11-docx/download/{fmt}",
+        f"/validate/download/{fmt}",
         data=_form_payload(findings=[]),
     )
     assert response.status_code == 200
@@ -389,7 +411,7 @@ async def test_download_malformed_findings_json_degrades_to_empty(monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
-        "/validate/m11-docx/download/json",
+        "/validate/download/json",
         data={
             "findings": "this is not json",
             "source_filename": "protocol.docx",

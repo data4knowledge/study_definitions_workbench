@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
@@ -229,6 +230,58 @@ async def import_errors(request: Request, id: str, session: Session = Depends(ge
                 },
             },
         )
+
+
+@router.get("/{id}/m11-validation", dependencies=[Depends(protect_endpoint)])
+async def import_m11_validation(
+    request: Request, id: str, session: Session = Depends(get_db)
+):
+    """Surface the M11 validation findings recorded during import.
+
+    The findings are persisted by :class:`ImportM11` via the
+    ``m11_validation`` media type.  This endpoint rehydrates them and
+    renders the shared findings table template so the user sees the
+    same layout as the standalone ``/validate/m11-docx`` flow.
+
+    When the file isn't present (non-M11 import, legacy import from
+    before this feature landed, or a validator exception during
+    import) the page renders an informational message rather than
+    an error — validator findings are advisory.
+    """
+    user, present_in_db = user_details(request, session)
+    file_import = FileImport.find(id, session)
+    findings: list[dict] = []
+    messages: list[str] = []
+    raw = DataFiles(file_import.uuid).read("m11_validation")
+    if raw is None:
+        messages.append(
+            "No M11 validation findings are available for this import."
+        )
+    else:
+        try:
+            findings = json.loads(raw)
+        except ValueError:
+            messages.append(
+                "M11 validation file could not be decoded — "
+                "it may be corrupted."
+            )
+    return templates.TemplateResponse(
+        request,
+        "import/m11_validation.html",
+        {
+            "user": user,
+            "data": {
+                "filename": {"filename": file_import.filename},
+                "messages": messages,
+                "findings": findings,
+                "download_kind": "m11-findings",
+                "download_title": "M11 Validation Findings",
+                "download_sheet": "M11 Findings",
+                "import_id": id,
+                "import_filename": file_import.filename,
+            },
+        },
+    )
 
 
 @staticmethod

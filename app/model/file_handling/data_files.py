@@ -92,6 +92,12 @@ class DataFiles:
                 "filename": "m11-protocol",
                 "extension": "html",
             },
+            "m11_validation": {
+                "method": self._save_json_file,
+                "use_original": False,
+                "filename": "m11_validation",
+                "extension": "json",
+            },
             "cpt-protocol": {
                 "method": self._save_html_file,
                 "use_original": False,
@@ -140,6 +146,14 @@ class DataFiles:
             application_configuration.database_path,
             application_configuration.local_file_path,
         ]
+        # Preserve the CDISC CORE cache if it lives under the mount —
+        # otherwise the first clean-and-tidy pass after a restart would
+        # silently wipe the cache we just configured to persist.
+        # ``cdisc_core_cache_path`` is an empty string when not set, and
+        # ``""`` is not a path `os.listdir` can yield, so it won't match
+        # anything in the sweep either way.
+        if application_configuration.cdisc_core_cache_path:
+            keep.append(application_configuration.cdisc_core_cache_path)
         application_logger.info(f"Running clean and tidy on '{dir}'")
         try:
             for file in os.listdir(dir):

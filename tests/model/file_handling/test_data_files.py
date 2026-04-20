@@ -17,6 +17,10 @@ class TestDataFiles:
         mock.mount_path = "/test/mount/path"
         mock.database_path = "/test/database/path"
         mock.local_file_path = "/test/local/path"
+        # Empty-string default (matches an unset env var) so the
+        # clean_and_tidy sweep doesn't try to preserve a phantom cache
+        # directory in tests that don't opt in.
+        mock.cdisc_core_cache_path = ""
         return mock
 
     @pytest.fixture
@@ -44,6 +48,15 @@ class TestDataFiles:
         """Test initialization with a UUID."""
         assert data_files_with_uuid.uuid == "test-uuid"
         assert data_files_with_uuid.dir == "/test/data/path"
+
+    def test_m11_validation_media_type_registered(self, data_files):
+        """The m11_validation media type must be registered so M11 validator
+        findings can be persisted per-study as a JSON file."""
+        entry = data_files.media_type["m11_validation"]
+        assert entry["method"] == data_files._save_json_file
+        assert entry["use_original"] is False
+        assert entry["filename"] == "m11_validation"
+        assert entry["extension"] == "json"
 
     def test_new_success(self, data_files, mocker):
         """Test creating a new UUID directory successfully."""

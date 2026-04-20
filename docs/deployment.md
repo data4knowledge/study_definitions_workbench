@@ -31,11 +31,12 @@ The application has two modes controlled by the `SINGLE_USER` variable:
 | `DATABASE_NAME` | Database filename (e.g. `production.db`) |
 | `DATAFILE_PATH` | Directory for uploaded/generated data files |
 | `LOCALFILE_PATH` | Path to local files within the volume |
+| `CDISC_CORE_CACHE_PATH` | Directory for the CDISC CORE validation cache (JSONata files, XSD schemas, rules, CT packages). Should live on the mounted volume so it survives restarts — a cold cache can take several minutes to rebuild. Leave unset to fall through to the USDM4 platform default (ephemeral inside a container). |
 | `ADDRESS_SERVER_URL` | URL for the external address server |
 | `SINGLE_USER` | `True` for single-user mode, `False` for multi-user (see above) |
 | `FILE_PICKER` | `browser` for standard browser uploads, `os` for the built-in server-side picker |
 
-When running via Docker, the Dockerfile pre-sets `MNT_PATH`, `DATABASE_PATH`, `DATABASE_NAME`, `DATAFILE_PATH`, `LOCALFILE_PATH`, and `ADDRESS_SERVER_URL`, so only `SINGLE_USER`, `FILE_PICKER`, and (if multi-user) the Auth0 variables need to be supplied externally.
+When running via Docker, the Dockerfile pre-sets `MNT_PATH`, `DATABASE_PATH`, `DATABASE_NAME`, `DATAFILE_PATH`, `LOCALFILE_PATH`, `CDISC_CORE_CACHE_PATH`, and `ADDRESS_SERVER_URL`, so only `SINGLE_USER`, `FILE_PICKER`, and (if multi-user) the Auth0 variables need to be supplied externally.
 
 ---
 
@@ -43,13 +44,14 @@ When running via Docker, the Dockerfile pre-sets `MNT_PATH`, `DATABASE_PATH`, `D
 
 The application stores its SQLite database, uploaded data files, and local files on disk. In Docker these paths all live under `/mount` inside the container (as set by the Dockerfile). **A Docker volume must be mounted at `/mount` so that this data survives container restarts and re-deployments.** Without a volume, all data is lost when the container stops.
 
-The volume provides three directories (created automatically by the application on first run):
+The volume provides four directories (created automatically by the application on first run):
 
 | Container path | Purpose |
 | :--- | :--- |
 | `/mount/database` | SQLite database file |
 | `/mount/datafiles` | Uploaded and generated data files |
 | `/mount/localfiles` | Local working files |
+| `/mount/core_cache` | CDISC CORE validation cache (rules, JSONata files, XSD schemas, CT packages) |
 
 You can create a named volume ahead of time, or let Docker Compose create one for you (see below).
 
@@ -133,7 +135,7 @@ fly launch --no-deploy -c fly_production.toml --ha=false
 fly secrets set -a d4k-sdw AUTH0_SESSION_SECRET="..." AUTH0_DOMAIN="..." ...
 
 # Set storage paths
-fly secrets set -a d4k-sdw MNT_PATH="/mnt/sdw_data" DATABASE_PATH="/mnt/sdw_data/database" DATABASE_NAME="production.db" DATAFILE_PATH="/mnt/sdw_data/datafiles"
+fly secrets set -a d4k-sdw MNT_PATH="/mnt/sdw_data" DATABASE_PATH="/mnt/sdw_data/database" DATABASE_NAME="production.db" DATAFILE_PATH="/mnt/sdw_data/datafiles" LOCALFILE_PATH="/mnt/sdw_data/localfiles" CDISC_CORE_CACHE_PATH="/mnt/sdw_data/core_cache"
 
 # Deploy
 fly deploy -c fly_production.toml

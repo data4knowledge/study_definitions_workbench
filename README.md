@@ -26,6 +26,7 @@ The following other environment varaibles are also required:
 | DATABASE_NAME | The name of the database file, 'production.db' for example |
 | DATAFILE_PATH | The path where the datafiles will reside |
 | LOCALFILE_PATH | The path to where local files will reside within the volume |
+| CDISC_CORE_CACHE_PATH | The path for the CDISC CORE validation cache. Put it on the mounted volume (e.g. `/mnt/<name>/core_cache`) so the downloaded rules, JSONata files, XSD schemas, and CT packages survive container restarts. Leave unset to fall through to the USDM4 platform default (ephemeral in a container). |
 | ADDRESS_SERVER_URL | URL for the address server |
 | SINGLE_USER | 'True' for single user environment, 'False' otherwise |
 | FILE_PICKER | The file picker to be used, 'browser' for using the normal browser picker for file uploads or 'os' using a built in picker that access the server environment |
@@ -64,6 +65,8 @@ fly secrets set MNT_PATH="/mnt/<name>"
 fly secrets set DATABASE_PATH="/mnt/<name>/database"
 fly secrets set DATABASE_NAME="production.db"
 fly secrets set DATAFILE_PATH="/mnt/<name>/datafiles"
+fly secrets set LOCALFILE_PATH="/mnt/<name>/localfiles"
+fly secrets set CDISC_CORE_CACHE_PATH="/mnt/<name>/core_cache"
 ```
 ## Deployment - New Method
 

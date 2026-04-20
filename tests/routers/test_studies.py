@@ -175,14 +175,14 @@ def test_study_list(mocker, monkeypatch):
     mock_dv_instance = mock_dv.return_value
     mock_dv_instance.title_page.return_value = {"title": "Test"}
     mock_dv_instance.amendment_details.return_value = {"amendment": "None"}
-    # The compare view now also runs M11Validator per study — mock it so
-    # the route can build data["m11_validation"] without touching the real
-    # spec data / Wrapper traversal.
-    mock_validator = mocker.patch("app.routers.studies.M11Validator")
-    mock_validator_instance = mock_validator.return_value
-    mock_results = MagicMock()
-    mock_results.by_element.return_value = {}
-    mock_validator_instance.validate.return_value = mock_results
+    # The compare view runs M11 DOCX-layer validation per study. The
+    # helper reaches into DataFiles + M11Validator + the adapter — stub
+    # it at the seam the template actually consumes (a dict of element
+    # name → list[finding_dict]) rather than mocking the whole chain.
+    m11_helper = mocker.patch(
+        "app.routers.studies._m11_validation_for_study",
+        return_value={},
+    )
     mocker.patch(
         "app.routers.studies.restructure_study_list", return_value={"title": ["Test"]}
     )
@@ -191,10 +191,9 @@ def test_study_list(mocker, monkeypatch):
     response = client.get("/studies/list?list_studies=1")
     assert response.status_code == 200
     assert mock_called(uc)
-    # The validator must be invoked once per study listed. Same wrapper
-    # instance so Findings anchor to the same protocol the cell displays.
-    mock_validator.assert_called_once()
-    mock_validator_instance.validate.assert_called_once()
+    # The helper must be invoked once per study listed — that guarantees
+    # findings are anchored to the same protocol the cell displays.
+    m11_helper.assert_called_once()
 
 
 def test_study_list_renders_validation_badges(mocker, monkeypatch):
@@ -235,22 +234,22 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
     mock_dv.return_value.title_page.return_value = {"Full Title": "A Trial"}
 
     # Build a fake finding that will decorate the 'Full Title' cell.
-    fake_finding = MagicMock()
-    fake_finding.to_dict.return_value = {
+    # The template reads plain-dict keys directly (no to_dict() call);
+    # the row shape matches ``project_m11_result`` (section, element,
+    # severity, rule_id, message, rule_text, path).
+    fake_finding = {
         "rule_id": "M11_001",
         "severity": "error",
-        "status": "Failed",
+        "section": "Title Page",
+        "element": "Full Title",
         "message": "Required element missing.",
-        "expected": "Text",
-        "actual": "(no value)",
-        "element_name": "Full Title",
-        "section_number": "",
-        "section_title": "Title Page",
+        "rule_text": "",
+        "path": "",
     }
-    mock_validator = mocker.patch("app.routers.studies.M11Validator")
-    mock_results = MagicMock()
-    mock_results.by_element.return_value = {"Full Title": [fake_finding]}
-    mock_validator.return_value.validate.return_value = mock_results
+    m11_helper = mocker.patch(
+        "app.routers.studies._m11_validation_for_study",
+        return_value={"Full Title": [fake_finding]},
+    )
 
     # restructure_study_list returns {element: tuple_of_values_across_studies}
     mocker.patch(
@@ -263,8 +262,9 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
     response = client.get("/studies/list?list_studies=1")
     assert response.status_code == 200
     body = response.text
-    # Finding converted via to_dict() and rendered as a bootstrap badge
-    # with the rule id/message in the tooltip title.
+    m11_helper.assert_called_once()
+    # Canonical-shape finding dicts render as a severity-coloured badge
+    # with the rule id and message visible inside the <details> panel.
     assert "m11-validation-badge" in body
     assert "M11_001" in body
     assert "Required element missing." in body

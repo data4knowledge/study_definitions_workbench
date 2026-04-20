@@ -249,18 +249,40 @@ class TestImportM11:
 
     @pytest.mark.asyncio
     async def test_process(self, mock_m11_protocol):
-        """Test process method."""
+        """Test process method — happy path. Validation runs before
+        USDM extraction, findings are projected and persisted via the
+        ``m11_validation`` media type, and the USDM extraction proceeds
+        independently."""
         # Setup
         processor = ImportM11("M11_DOCX", "test-uuid", "/path/to/file")
+        sample_findings = [
+            {
+                "rule_id": "M11_001",
+                "severity": "error",
+                "section": "1",
+                "element": "Full Title",
+                "message": "Required element 'Full Title' is missing.",
+                "rule_text": "",
+                "path": "",
+            }
+        ]
 
         # Mock the _study_parameters method to avoid the error with version.phases()
         with patch.object(
             processor, "_study_parameters", return_value={"name": "test-study-M11_DOCX"}
-        ):
+        ), patch(
+            "app.imports.import_processors.M11Validator"
+        ) as mock_validator, patch(
+            "app.imports.import_processors.project_m11_result",
+            return_value=sample_findings,
+        ) as mock_project, patch(
+            "app.imports.import_processors.DataFiles"
+        ) as mock_data_files:
+            mock_validator.return_value.validate.return_value = MagicMock()
             # Execute
             result = await processor.process()
 
-        # Assert
+        # Assert — import succeeded
         assert result
         mock_m11_protocol.assert_called_once()
         mock_m11_protocol.return_value.from_docx.assert_called_once()
@@ -273,6 +295,42 @@ class TestImportM11:
             processor.errors
             == mock_m11_protocol.return_value.errors.to_dict.return_value
         )
+
+        # Assert — validation ran, was projected, and was persisted
+        mock_validator.assert_called_once()
+        call_args = mock_validator.call_args
+        assert call_args.args[0] == "/path/to/file"
+        mock_project.assert_called_once()
+        mock_data_files.assert_called_once_with("test-uuid")
+        save_call = mock_data_files.return_value.save.call_args
+        assert save_call.args[0] == "m11_validation"
+        import json as _json
+        assert _json.loads(save_call.args[1]) == sample_findings
+        assert processor.m11_validation == sample_findings
+
+    @pytest.mark.asyncio
+    async def test_process_validation_exception_does_not_stop_import(
+        self, mock_m11_protocol, mock_logger
+    ):
+        """A crash in the M11 validation step must not abort the
+        import — validator output is advisory, not a gate."""
+        processor = ImportM11("M11_DOCX", "test-uuid", "/path/to/file")
+        with patch.object(
+            processor, "_study_parameters", return_value={"name": "test"}
+        ), patch(
+            "app.imports.import_processors.M11Validator",
+            side_effect=RuntimeError("boom"),
+        ), patch(
+            "app.imports.import_processors.DataFiles"
+        ):
+            result = await processor.process()
+
+        # Import still completes and USDM extraction still runs
+        assert result
+        mock_m11_protocol.return_value.from_docx.assert_called_once()
+        # Findings attribute is present and empty; exception was logged
+        assert processor.m11_validation == []
+        mock_logger.exception.assert_called()
 
 
 class TestImportCPT:

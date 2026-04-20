@@ -1,3 +1,4 @@
+import json
 import yaml
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse
@@ -18,6 +19,7 @@ from app.configuration.configuration import application_configuration
 from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
 from app.imports.form_handler import FormHandler
+from app.utility.m11_annotate import annotate as m11_annotate
 from usdm4_protocol.m11 import USDM4M11
 from usdm4_protocol.cpt import USDM4CPT
 from usdm4.api import Wrapper
@@ -42,6 +44,7 @@ async def get_version_summary(
             "enabled": transmit_role_enabled(request),
             "versions": fhir_versions(),
         },
+        "m11": getattr(usdm, "m11", False),
     }
     # print(f"DATA: {data}")
     return templates.TemplateResponse(
@@ -122,9 +125,80 @@ async def get_version_history(
         "page": 1,
         "size": 10,
         "filter": "",
+        "m11": getattr(usdm, "m11", False),
     }
     return templates.TemplateResponse(
         request, "study_versions/history.html", {"user": user, "data": data}
+    )
+
+
+@router.get("/{id}/validation")
+async def get_version_validation(
+    request: Request, id: int, session: Session = Depends(get_db)
+):
+    """Render the Validation panel for an M11-origin study.
+
+    Reads the persisted ``m11_validation`` JSON (written during the
+    M11 import via :class:`ImportM11` in ``app/imports/import_processors.py``).
+    Pairs those findings with a freshly rendered M11 HTML view of the
+    imported USDM and overlays anchored markers via
+    :func:`app.utility.m11_annotate.annotate`. The DOCX itself is *not*
+    re-validated here — the findings were captured at import time so
+    this view is deterministic and cheap to re-render.
+
+    Non-M11 studies, or M11 studies without a persisted findings file,
+    render the same template with ``available=False`` so the user sees
+    an explanatory empty state rather than a 404.
+    """
+    user, present_in_db = user_details(request, session)
+    usdm = USDMJson(id, session)
+    is_m11 = getattr(usdm, "m11", False)
+    df = DataFiles(usdm.uuid)
+    findings: list[dict] = []
+    annotated_html = ""
+    unplaced: list[dict] = []
+    placed_count = 0
+    available = False
+    messages: list[str] = []
+    if is_m11:
+        full_path, _filename, exists = df.generic_path("m11_validation")
+        if exists:
+            try:
+                with open(full_path, "r") as fh:
+                    findings = json.load(fh) or []
+                available = True
+            except Exception as e:
+                application_logger.exception(
+                    f"Failed to read m11_validation file '{full_path}'", e
+                )
+                messages.append("Failed to read the M11 validation findings file.")
+    if available:
+        try:
+            usdm_path, _, _ = usdm.json()
+            rendered = USDM4M11().to_html(usdm_path)
+            annotated = m11_annotate(rendered, findings)
+            annotated_html = annotated.html
+            unplaced = annotated.unplaced
+            placed_count = annotated.placed_count
+        except Exception as e:
+            application_logger.exception("Failed to render annotated protocol", e)
+            messages.append("Failed to render the annotated protocol view.")
+    data = {
+        "version": usdm.study_version(),
+        "m11": is_m11,
+        "available": available,
+        "findings": findings,
+        "annotated_html": annotated_html,
+        "unplaced": unplaced,
+        "placed_count": placed_count,
+        "messages": messages,
+        "filename": None,
+        "download_kind": "m11-findings",
+        "download_title": "M11 Validation Findings",
+        "download_sheet": "M11 Findings",
+    }
+    return templates.TemplateResponse(
+        request, "study_versions/validation.html", {"user": user, "data": data}
     )
 
 
@@ -181,7 +255,11 @@ async def protocol(
     full_path, _, _ = usdm.json()
     if full_path:
         _, html = _generate_protocol(template, full_path, usdm)
-        data = {"version": usdm.study_version(), "document": html}
+        data = {
+            "version": usdm.study_version(),
+            "document": html,
+            "m11": getattr(usdm, "m11", False),
+        }
         return templates.TemplateResponse(
             request, "study_versions/protocol.html", {"user": user, "data": data}
         )

@@ -4,6 +4,7 @@ ENV DATABASE_PATH=/mount/database
 ENV DATABASE_NAME=/database.db
 ENV DATAFILE_PATH=/mount/datafiles
 ENV LOCALFILE_PATH=/mount/localfiles
+ENV CDISC_CORE_CACHE_PATH=/mount/core_cache
 ENV ADDRESS_SERVER_URL="https://d4k-address.fly.dev"
 EXPOSE 8000
 WORKDIR /code

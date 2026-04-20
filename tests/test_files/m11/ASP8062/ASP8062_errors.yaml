@@ -1,63 +1,72 @@
-- level: Debug
+- extra: null
+  level: Debug
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/6e61175b-84b7-48f1-9a95-e4a2c01b269c/ASP8062.docx'',
-    dir=''tests/test_files/mount/datafiles/6e61175b-84b7-48f1-9a95-e4a2c01b269c'',
-    image_path=''tests/test_files/mount/datafiles/6e61175b-84b7-48f1-9a95-e4a2c01b269c/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/bf5522cb-7f19-480b-b0e9-8b298a8e809a/ASP8062.docx'',
+    dir=''tests/test_files/mount/datafiles/bf5522cb-7f19-480b-b0e9-8b298a8e809a'',
+    image_path=''tests/test_files/mount/datafiles/bf5522cb-7f19-480b-b0e9-8b298a8e809a/images'',
     filename=''ASP8062.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.docx.docx_paragraph
     method_name: process_element
   message: 'Element other instance/tag detected:: ''{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sdt'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: _iter_block_items
   message: Ignoring eTree element '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bookmarkEnd'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: _iter_block_items
   message: Ignoring eTree element '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bookmarkEnd'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.docx.docx_paragraph
     method_name: process_element
   message: 'Element other instance/tag detected:: ''{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sdt'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.docx.docx_paragraph
     method_name: process_element
   message: 'Element other instance/tag detected:: ''{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sdt'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.docx.docx_paragraph
     method_name: process_element
   message: 'Element other instance/tag detected:: ''{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sdt'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.docx.docx_paragraph
     method_name: process_element
   message: 'Element other instance/tag detected:: ''{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sdt'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location: {}
   message: "Adding list item '[text='\u2265 1 ASP8062-treated participant experiences\
     \ ASP8062-related symptomatic decrease in SpO2 requiring intubation, for medically\
@@ -65,88 +74,101 @@
     \ than 1"
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: _iter_block_items
   message: Ignoring eTree element '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bookmarkStart'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: _iter_block_items
   message: Ignoring eTree element '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sectPr'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _title_table
   message: Found M11 title page table
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: "Extracting title page field 'Sponsor Name and Address:' -> 'Astellas Pharma\
     \ \nGlobal Development Inc. \n1 Astellas Way Northbrook, IL 60062, US'"
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Device Manufacturer Name and Address:' ->
     ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: "Names and addresses text: Astellas Pharma \nGlobal Development Inc. \n\
     1 Astellas Way Northbrook, IL 60062, US"
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Parsing names and address, key sponsor: interim raw result={''sponsor'':
     ''Astellas Pharma \nGlobal Development Inc. \n1 Astellas Way Northbrook, IL 60062,
     US\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}, remaining='
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Parsing names and address, key co_sponsor: interim raw result={''sponsor'':
     ''Astellas Pharma \nGlobal Development Inc. \n1 Astellas Way Northbrook, IL 60062,
     US\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}, remaining='
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Parsing names and address, key local_sponsor: interim raw result={''sponsor'':
     ''Astellas Pharma \nGlobal Development Inc. \n1 Astellas Way Northbrook, IL 60062,
     US\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}, remaining='
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Parsing names and address, key device: interim raw result={''sponsor'':
     ''Astellas Pharma \nGlobal Development Inc. \n1 Astellas Way Northbrook, IL 60062,
     US\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}, remaining='
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Parsing names and address: raw result={''sponsor'': ''Astellas Pharma
     \nGlobal Development Inc. \n1 Astellas Way Northbrook, IL 60062, US\n'', ''co_sponsor'':
     None, ''local_sponsor'': None, ''device'': None}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_name
   message: Organization name set to 'Astellas Pharma'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_address_simple
@@ -155,7 +177,8 @@
     '''', ''postalCode'': '''', ''country'': ''''}'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_organization_address
@@ -164,7 +187,8 @@
     '''', ''state'': '''', ''postalCode'': '''', ''country'': ''''}'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _extract_names_and_addresss
@@ -175,92 +199,109 @@
     None, ''local_sponsor'': None, ''device'': None}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Acronym' -> ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Sponsor Protocol Identifier' -> '8062-CL-2002'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
-  message: Extracting title page field 'Compound Code' -> 'ASP8062'
+  message: Extracting title page field 'Investigational Product Code' -> ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Regulatory or Clinical Trial Identifier(s):'
     -> 'IND 146215'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Medical Expert Contact:' -> ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _extract_names_and_addresss
   message: Failed to find medical expert name and addresse text
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Full Title' -> 'A Phase 1 Randomized, Placebo-controlled
     Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses
     of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Short Title' -> ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Sponsor Signatory' -> ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
-  message: Extracting title page field 'Compound Name' -> ''
+  message: Extracting title page field 'Investigational Product Name' -> ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Amendment Identifier' -> '1.1'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Amendment Scope' -> 'Local US'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Trial Phase' -> 'Phase I'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Version Number' -> '1.1'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Sponsor Confidentiality Statement' -> ''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Extracting title page field 'Original Protocol' -> 'No'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_regulatory_identifiers_simple
@@ -268,19 +309,22 @@
     WHO=[]'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment info: {''identifier'': ''1.1'', ''scope'': ''Local US''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Error
+- extra: null
+  level: Error
   location:
     class_name: usdm4_protocol.soa.soa_extractor.SoA
     method_name: _decode_soa
   message: No SoA found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: usdm4_protocol.common.html.soup_utils
     method_name: get_soup
@@ -292,7 +336,8 @@
     to open this file and pass the filehandle into Beautiful Soup.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: usdm4_protocol.common.html.soup_utils
     method_name: get_soup
@@ -304,7 +349,8 @@
     to open this file and pass the filehandle into Beautiful Soup.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: usdm4_protocol.common.html.soup_utils
     method_name: get_soup
@@ -316,7 +362,8 @@
     to open this file and pass the filehandle into Beautiful Soup.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: usdm4_protocol.common.html.soup_utils
     method_name: get_soup
@@ -328,37 +375,37 @@
     to open this file and pass the filehandle into Beautiful Soup.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _find_amendment_section
   message: Found amendment section at index 1
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
-  location: {}
-  message: Amendment table  found
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _amendment_table
   message: Amendment table found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment scopes text: Local US'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment scopes extracted: {''global'': False, ''countries'': [], ''regions'':
     [], ''sites'': [], ''unknown'': ['''', ''US'']}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _get_enrollment_simple
@@ -366,7 +413,8 @@
     ''absolute'', ''regions'': []}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _reasons
@@ -374,26 +422,30 @@
     ''Secondary: Not applicable''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Safety impact: {''safety'': {''substantial'': False, ''reason'': ''''},
     ''rights'': {''substantial'': False, ''reason'': ''''}}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Reliability impact: {''reliability'': {''substantial'': False, ''reason'':
     ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _changes_table
   message: Amendment changes table found
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment changes: [{''description'': ''Update screening language: \nEdit
     the rescreening language'', ''rationale'': ''To allow for the repeat of screening
@@ -425,51 +477,54 @@
     Respiratory Rate''}]'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: process
   message: 'Amendment information {''amendment_details'': ''<p>Amendment Details</p>\n<p>This
-    is the first protocol amendment.</p>\n<p>Current Amendment</p>'', ''identifier'':
-    ''1.1'', ''scope'': {''global'': False, ''countries'': [], ''regions'': [], ''sites'':
-    [], ''unknown'': ['''', ''US'']}, ''enrollment'': {''keyword'': ''Globally'',
-    ''value'': 0, ''unit'': ''absolute'', ''regions'': []}, ''reasons'': {''primary'':
-    ''Primary: Administrative'', ''secondary'': ''Secondary: Not applicable''}, ''summary'':
-    ''This is a nonsubstantial amendment.amuuuSummStnent ementmmdmentmddndndmendment
-    Summary'', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
-    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
-    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
-    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''changes'':
-    [{''description'': ''Update screening language: \nEdit the rescreening language'',
-    ''rationale'': ''To allow for the repeat of screening assessments within the screening
-    window or to allow a subject to rescreen once for the study. Due to the nature
-    of the participant population and the study design, subject safety and data integrity
-    will not be impacted'', ''section'': ''5.4.1 Rescreening''}, {''description'':
-    ''Clarify inclusion and exclusion criteria: \nMove exclusion criterion 18 to the
-    inclusion criteria and clarify the CYP450 enzymes that are excluded for exclusion
-    criterion 19.'', ''rationale'': ''Previous exclusion 18 should be answered affirmatively
-    in order for the subject to be eligible for participation; as a result, this exclusion
-    should be listed as an inclusion. Exclusion 19 excluded all inducers of metabolism;
-    however, after consideration, it is only necessary to exclude inducers of CYP3A4.'',
-    ''section'': ''5.2 Exclusion Criteria''}, {''description'': ''Clarify procedure
-    for continuous end tidal CO2:\nAdd clarification that subjects may remove cannula
-    to dose or eat'', ''rationale'': ''The timepoints overlap for the collection of
-    end tidal CO2 and it would not be possible for the subject to dose or eat with
-    the cannula in place.'', ''section'': ''7.2.8 Continuous and Spot End Tidal Carbon
-    Dioxide, Table 5, Established Limits for End Tidal Carbon Dioxide''}, {''description'':
-    ''Lower the respiratory rate alarm for continuous end tidal CO2 alarms: \nThe
-    alarm for respiratory rate low was 10 bpm and is now 6 bpm.'', ''rationale'':
-    ''Generally, respiratory rates between 6 and 10 are not clinically relevant. A
-    low respiratory rate alarm of 6 will allow a more accurate clinical determination
-    of a true signal.'', ''section'': ''7.2.8 Continuous and Spot End Tidal Carbon
-    Dioxide, Table 5, Established Limits''}, {''description'': ''Edit Spot CO2 respiratory
-    rate values: \nThe spot values are lowered to start at > 24, and continue with
-    increments of 4 bpm: >28, >32, and >36.'', ''rationale'': ''This change is made
-    to align with the protocol, Table 7, alarm values.'', ''section'': ''9.4.3.3 Vital
-    Signs, Table 7, Criteria for Respiratory Rate''}]}'
+    is the first protocol amendment.</p>\n<p>Current Amendment</p>\n<p>The table below
+    describes the current amendment.</p>'', ''identifier'': ''1.1'', ''scope'': {''global'':
+    False, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'': ['''',
+    ''US'']}, ''enrollment'': {''keyword'': ''Globally'', ''value'': 0, ''unit'':
+    ''absolute'', ''regions'': []}, ''reasons'': {''primary'': ''Primary: Administrative'',
+    ''secondary'': ''Secondary: Not applicable''}, ''summary'': ''This is a nonsubstantial
+    amendment.amuuuSummStnent ementmmdmentmddndndmendment Summary'', ''impact'': {''safety_and_rights'':
+    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
+    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
+    ''''}}}, ''changes'': [{''description'': ''Update screening language: \nEdit the
+    rescreening language'', ''rationale'': ''To allow for the repeat of screening
+    assessments within the screening window or to allow a subject to rescreen once
+    for the study. Due to the nature of the participant population and the study design,
+    subject safety and data integrity will not be impacted'', ''section'': ''5.4.1
+    Rescreening''}, {''description'': ''Clarify inclusion and exclusion criteria:
+    \nMove exclusion criterion 18 to the inclusion criteria and clarify the CYP450
+    enzymes that are excluded for exclusion criterion 19.'', ''rationale'': ''Previous
+    exclusion 18 should be answered affirmatively in order for the subject to be eligible
+    for participation; as a result, this exclusion should be listed as an inclusion.
+    Exclusion 19 excluded all inducers of metabolism; however, after consideration,
+    it is only necessary to exclude inducers of CYP3A4.'', ''section'': ''5.2 Exclusion
+    Criteria''}, {''description'': ''Clarify procedure for continuous end tidal CO2:\nAdd
+    clarification that subjects may remove cannula to dose or eat'', ''rationale'':
+    ''The timepoints overlap for the collection of end tidal CO2 and it would not
+    be possible for the subject to dose or eat with the cannula in place.'', ''section'':
+    ''7.2.8 Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits
+    for End Tidal Carbon Dioxide''}, {''description'': ''Lower the respiratory rate
+    alarm for continuous end tidal CO2 alarms: \nThe alarm for respiratory rate low
+    was 10 bpm and is now 6 bpm.'', ''rationale'': ''Generally, respiratory rates
+    between 6 and 10 are not clinically relevant. A low respiratory rate alarm of
+    6 will allow a more accurate clinical determination of a true signal.'', ''section'':
+    ''7.2.8 Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits''},
+    {''description'': ''Edit Spot CO2 respiratory rate values: \nThe spot values are
+    lowered to start at > 24, and continue with increments of 4 bpm: >28, >32, and
+    >36.'', ''rationale'': ''This change is made to align with the protocol, Table
+    7, alarm values.'', ''section'': ''9.4.3.3 Vital Signs, Table 7, Criteria for
+    Respiratory Rate''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Debug
+- extra: null
+  level: Debug
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: _create_address
@@ -478,7 +533,8 @@
     '''', ''state'': '''', ''postalCode'': '''', ''country'': ''''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: _create_address
@@ -486,7 +542,8 @@
     US
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Debug
+- extra: null
+  level: Debug
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: _create_address
@@ -495,7 +552,8 @@
     ''20903'', ''country'': ''USA''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: _create_address
@@ -503,107 +561,118 @@
     States of America
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Debug
+- extra: null
+  level: Debug
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: execute
   message: Processing co_sponsor, None
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Debug
+- extra: null
+  level: Debug
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: execute
   message: Processing local_sponsor, None
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Debug
+- extra: null
+  level: Debug
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: execute
   message: Processing device_manufacturer, None
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
     method_name: execute
   message: No medical expert contact information detected
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: document_status
   message: Document status 'FINAL' decoded as 'C25508', 'Final'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment assembler source data {''amendment_details'': ''<p>Amendment
-    Details</p>\n<p>This is the first protocol amendment.</p>\n<p>Current Amendment</p>'',
-    ''identifier'': ''1.1'', ''scope'': {''global'': False, ''countries'': [], ''regions'':
-    [], ''sites'': [], ''unknown'': ['''', ''US'']}, ''enrollment'': {''keyword'':
-    ''Globally'', ''value'': 0, ''unit'': ''absolute'', ''regions'': []}, ''reasons'':
-    {''primary'': ''Primary: Administrative'', ''secondary'': ''Secondary: Not applicable''},
-    ''summary'': ''This is a nonsubstantial amendment.amuuuSummStnent ementmmdmentmddndndmendment
-    Summary'', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
-    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
-    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
-    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''changes'':
-    [{''description'': ''Update screening language: \nEdit the rescreening language'',
-    ''rationale'': ''To allow for the repeat of screening assessments within the screening
-    window or to allow a subject to rescreen once for the study. Due to the nature
-    of the participant population and the study design, subject safety and data integrity
-    will not be impacted'', ''section'': ''5.4.1 Rescreening''}, {''description'':
-    ''Clarify inclusion and exclusion criteria: \nMove exclusion criterion 18 to the
-    inclusion criteria and clarify the CYP450 enzymes that are excluded for exclusion
-    criterion 19.'', ''rationale'': ''Previous exclusion 18 should be answered affirmatively
-    in order for the subject to be eligible for participation; as a result, this exclusion
-    should be listed as an inclusion. Exclusion 19 excluded all inducers of metabolism;
-    however, after consideration, it is only necessary to exclude inducers of CYP3A4.'',
-    ''section'': ''5.2 Exclusion Criteria''}, {''description'': ''Clarify procedure
-    for continuous end tidal CO2:\nAdd clarification that subjects may remove cannula
-    to dose or eat'', ''rationale'': ''The timepoints overlap for the collection of
-    end tidal CO2 and it would not be possible for the subject to dose or eat with
-    the cannula in place.'', ''section'': ''7.2.8 Continuous and Spot End Tidal Carbon
-    Dioxide, Table 5, Established Limits for End Tidal Carbon Dioxide''}, {''description'':
-    ''Lower the respiratory rate alarm for continuous end tidal CO2 alarms: \nThe
-    alarm for respiratory rate low was 10 bpm and is now 6 bpm.'', ''rationale'':
-    ''Generally, respiratory rates between 6 and 10 are not clinically relevant. A
-    low respiratory rate alarm of 6 will allow a more accurate clinical determination
-    of a true signal.'', ''section'': ''7.2.8 Continuous and Spot End Tidal Carbon
-    Dioxide, Table 5, Established Limits''}, {''description'': ''Edit Spot CO2 respiratory
-    rate values: \nThe spot values are lowered to start at > 24, and continue with
-    increments of 4 bpm: >28, >32, and >36.'', ''rationale'': ''This change is made
-    to align with the protocol, Table 7, alarm values.'', ''section'': ''9.4.3.3 Vital
-    Signs, Table 7, Criteria for Respiratory Rate''}]}'
+    Details</p>\n<p>This is the first protocol amendment.</p>\n<p>Current Amendment</p>\n<p>The
+    table below describes the current amendment.</p>'', ''identifier'': ''1.1'', ''scope'':
+    {''global'': False, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'':
+    ['''', ''US'']}, ''enrollment'': {''keyword'': ''Globally'', ''value'': 0, ''unit'':
+    ''absolute'', ''regions'': []}, ''reasons'': {''primary'': ''Primary: Administrative'',
+    ''secondary'': ''Secondary: Not applicable''}, ''summary'': ''This is a nonsubstantial
+    amendment.amuuuSummStnent ementmmdmentmddndndmendment Summary'', ''impact'': {''safety_and_rights'':
+    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
+    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
+    ''''}}}, ''changes'': [{''description'': ''Update screening language: \nEdit the
+    rescreening language'', ''rationale'': ''To allow for the repeat of screening
+    assessments within the screening window or to allow a subject to rescreen once
+    for the study. Due to the nature of the participant population and the study design,
+    subject safety and data integrity will not be impacted'', ''section'': ''5.4.1
+    Rescreening''}, {''description'': ''Clarify inclusion and exclusion criteria:
+    \nMove exclusion criterion 18 to the inclusion criteria and clarify the CYP450
+    enzymes that are excluded for exclusion criterion 19.'', ''rationale'': ''Previous
+    exclusion 18 should be answered affirmatively in order for the subject to be eligible
+    for participation; as a result, this exclusion should be listed as an inclusion.
+    Exclusion 19 excluded all inducers of metabolism; however, after consideration,
+    it is only necessary to exclude inducers of CYP3A4.'', ''section'': ''5.2 Exclusion
+    Criteria''}, {''description'': ''Clarify procedure for continuous end tidal CO2:\nAdd
+    clarification that subjects may remove cannula to dose or eat'', ''rationale'':
+    ''The timepoints overlap for the collection of end tidal CO2 and it would not
+    be possible for the subject to dose or eat with the cannula in place.'', ''section'':
+    ''7.2.8 Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits
+    for End Tidal Carbon Dioxide''}, {''description'': ''Lower the respiratory rate
+    alarm for continuous end tidal CO2 alarms: \nThe alarm for respiratory rate low
+    was 10 bpm and is now 6 bpm.'', ''rationale'': ''Generally, respiratory rates
+    between 6 and 10 are not clinically relevant. A low respiratory rate alarm of
+    6 will allow a more accurate clinical determination of a true signal.'', ''section'':
+    ''7.2.8 Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits''},
+    {''description'': ''Edit Spot CO2 respiratory rate values: \nThe spot values are
+    lowered to start at > 24, and continue with increments of 4 bpm: >28, >32, and
+    >36.'', ''rationale'': ''This change is made to align with the protocol, Table
+    7, alarm values.'', ''section'': ''9.4.3.3 Vital Signs, Table 7, Criteria for
+    Respiratory Rate''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Warning
+- extra: null
+  level: Warning
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: amendment_reason
   message: 'Unable to decode amendment reason ''Primary: Administrative'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: Amendment reason 'Not applicable' decoded as 'C48660', 'Not Applicable'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
     method_name: _create_scope
   message: Created scope of type Country -> [USA, United States of America]
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_2'',
     extensionAttributes=[], type=Code(id=''Code_53'', extensionAttributes=[], code=''C25464'',
-    codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2025-09-26'', decode=''Country'',
+    codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Country'',
     instanceType=''Code''), code=AliasCode(id=''AliasCode_1'', extensionAttributes=[],
     standardCode=Code(id=''Code_54'', extensionAttributes=[], code=''USA'', codeSystem=''ISO
     3166 1 alpha3'', codeSystemVersion=''2020-08'', decode=''United States of America'',
@@ -611,7 +680,8 @@
     sites: None'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
     method_name: _create_amendment_impact
@@ -622,7 +692,8 @@
     ''''}}}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
     method_name: _extract_section_numer_and_title
@@ -631,7 +702,8 @@
     ''id'': ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
     method_name: _extract_section_numer_and_title
@@ -640,7 +712,8 @@
     ''id'': ''DocumentContentReference_2'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
     method_name: _extract_section_numer_and_title
@@ -651,7 +724,8 @@
     ''id'': ''DocumentContentReference_3'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
     method_name: _extract_section_numer_and_title
@@ -662,7 +736,8 @@
     ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
     method_name: _extract_section_numer_and_title
@@ -672,14 +747,16 @@
     ''id'': ''DocumentContentReference_5'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: phase
   message: Trial phase 'I' decoded as 'C15600', 'Phase 1', using M11 decode
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- level: Info
+- extra: null
+  level: Info
   location:
     class_name: usdm4.assembler.study_assembler.StudyAssembler
     method_name: _get_study_name_label

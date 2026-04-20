@@ -451,3 +451,124 @@ async def test_versions_post_load_failure(mocker, monkeypatch):
     response = await async_client.post("/versions/1/load/costs")
     assert response.status_code == 200
     assert mock_called(uc)
+
+
+# ---------------------------------------------------------------------------
+# Validation view — /versions/{id}/validation
+#
+# Three distinct paths through the route:
+#   1. Non-M11 study → template renders an "only available for M11"
+#      notice. No DataFiles read, no protocol render.
+#   2. M11 study with no persisted findings → template renders an
+#      "no findings stored" notice.
+#   3. M11 study with persisted findings → template renders tabs
+#      (Findings + Annotated Protocol), annotator runs on rendered HTML.
+# ---------------------------------------------------------------------------
+
+
+def test_version_validation_non_m11(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    usv = mock_usdm_study_version(mocker)
+
+    def custom_init(self, *args, **kwargs):
+        self.m11 = False
+        self.uuid = "test-uuid"
+
+    mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
+    response = client.get("/versions/1/validation")
+    assert response.status_code == 200
+    assert (
+        "M11 validation is only available for studies imported from an"
+        in response.text
+    )
+    assert mock_called(uc)
+    assert mock_called(usv)
+
+
+def test_version_validation_m11_no_file(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    usv = mock_usdm_study_version(mocker)
+
+    def custom_init(self, *args, **kwargs):
+        self.m11 = True
+        self.uuid = "test-uuid"
+
+    mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
+    df = mocker.patch("app.routers.versions.DataFiles")
+    df.return_value.generic_path.return_value = ("/tmp/missing.json", "missing.json", False)
+    response = client.get("/versions/1/validation")
+    assert response.status_code == 200
+    assert "No M11 validation findings are stored" in response.text
+    assert mock_called(uc)
+    assert mock_called(usv)
+
+
+def test_version_validation_m11_with_findings(mocker, monkeypatch, tmp_path):
+    import json
+
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    usv = mock_usdm_study_version(mocker)
+
+    findings = [
+        {
+            "rule_id": "M11_001",
+            "severity": "error",
+            "section": "Title Page",
+            "element": "study_title",
+            "message": "Study Title is missing",
+            "rule_text": "Required",
+            "path": "",
+        }
+    ]
+    findings_file = tmp_path / "m11_validation.json"
+    findings_file.write_text(json.dumps(findings))
+
+    def custom_init(self, *args, **kwargs):
+        self.m11 = True
+        self.uuid = "test-uuid"
+
+    mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
+    mocker.patch(
+        "app.routers.versions.USDMJson.json",
+        return_value=("/tmp/usdm.json", "usdm.json", "application/json"),
+    )
+    df = mocker.patch("app.routers.versions.DataFiles")
+    df.return_value.generic_path.return_value = (
+        str(findings_file),
+        "m11_validation.json",
+        True,
+    )
+    mocker.patch(
+        "app.routers.versions.USDM4M11"
+    ).return_value.to_html.return_value = (
+        '<div data-m11-element="study_title">Title</div>'
+    )
+
+    # Annotator runs on the rendered HTML; mock its return so we
+    # don't rely on its implementation details here.
+    from app.utility.m11_annotate import AnnotatedDocument
+
+    mocker.patch(
+        "app.routers.versions.m11_annotate",
+        return_value=AnnotatedDocument(
+            html="<div>annotated</div>", unplaced=[], placed_count=1
+        ),
+    )
+
+    response = client.get("/versions/1/validation")
+    assert response.status_code == 200
+    # Findings tab content (from shared results partial).
+    assert "M11_001" in response.text
+    assert "Study Title is missing" in response.text
+    # Tab structure renders.
+    assert 'id="findings_pane"' in response.text
+    assert 'id="annotated_pane"' in response.text
+    assert "annotated" in response.text
+    assert mock_called(uc)
+    assert mock_called(usv)

@@ -103,4 +103,47 @@
 
     .ich-m11-overall-design-title { font-weight: bold; }
 
+    /* Inline markers injected by app.utility.m11_annotate onto
+       data-m11-element nodes in the rendered M11 HTML. Native
+       <details> handles the toggle — no JS on the client side. */
+    details.m11-doc-marker {
+        display: inline-block;
+        margin-left: 0.25rem;
+        vertical-align: baseline;
+    }
+    details.m11-doc-marker > summary.m11-doc-marker-summary {
+        display: inline;
+        cursor: pointer;
+        list-style: none;
+    }
+    details.m11-doc-marker > summary.m11-doc-marker-summary::-webkit-details-marker {
+        display: none;
+    }
+    details.m11-doc-marker .m11-doc-marker-body {
+        display: block;
+        margin-top: 0.25rem;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        background-color: #fff8e1;
+        border-left: 3px solid #f0ad4e;
+        font: 10pt -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    details.m11-doc-marker.severity-error .m11-doc-marker-body {
+        background-color: #fdecea;
+        border-left-color: #d9534f;
+    }
+    details.m11-doc-marker.severity-info .m11-doc-marker-body {
+        background-color: #e7f1ff;
+        border-left-color: #6c757d;
+    }
+    details.m11-doc-marker .m11-doc-marker-header { margin-bottom: 0.25rem; }
+    details.m11-doc-marker .m11-doc-marker-rule {
+        font-weight: bold;
+        font-size: 9pt;
+    }
+    details.m11-doc-marker .m11-doc-marker-message { margin-bottom: 0.25rem; }
+    details.m11-doc-marker .m11-doc-marker-meta {
+        font-size: 9pt;
+        color: #6c757d;
+    }
 </style>

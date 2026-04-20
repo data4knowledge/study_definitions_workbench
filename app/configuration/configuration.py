@@ -15,6 +15,15 @@ class Configuration:
         self.database_path = self._se.get("DATABASE_PATH")
         self.database_name = self._se.get("DATABASE_NAME")
         self.auth0_secret = self._se.get("AUTH0_SESSION_SECRET")
+        # CDISC CORE validation cache — persistent directory for the
+        # resources the CDISC CORE engine downloads (JSONata files, XSD
+        # schemas, rules, CT packages). Without this, the cache lands in
+        # platformdirs.user_cache_dir() which in a Docker container is
+        # ephemeral (wiped on every restart). Setting this to a path on
+        # the mounted volume keeps the cache persistent across restarts.
+        # Empty string falls through to the USDM4 platform default, so a
+        # deployment that hasn't been upgraded still works.
+        self.cdisc_core_cache_path = self._se.get("CDISC_CORE_CACHE_PATH")
 
     def _single_user(self) -> bool:
         single = self._se.get("SINGLE_USER")

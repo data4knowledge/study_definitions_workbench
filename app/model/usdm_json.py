@@ -8,6 +8,7 @@ from usdm4_fhir import M11 as FHIRM11
 
 # from usdm4_fhir import SoA as FHIRSoA
 from usdm4_fhir.soa.export.export_soa import ExportSoA as FHIRSoA
+from app.configuration.configuration import application_configuration
 from app.database.version import Version
 from sqlalchemy.orm import Session
 from usdm_model.wrapper import Wrapper
@@ -29,7 +30,11 @@ from app.utility.soup import get_soup
 
 class USDMJson:
     def __init__(self, id: int, session: Session):  # pragma: no cover
-        usdm4 = USDM4()
+        # Pass the CORE cache path through for uniformity — this class
+        # only calls ``loadd`` today, but keeping the pattern consistent
+        # means future ``validate_core`` calls get the configured cache
+        # without needing a separate wiring pass.
+        usdm4 = USDM4(cache_dir=application_configuration.cdisc_core_cache_path or None)
         self.id = id
         # print(f"ID: {id}")
         version = Version.find(id, session)

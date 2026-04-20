@@ -17,8 +17,11 @@
         <a class="dropdown-item" href="/versions/{{data['version']['id']}}/protocol?template={{template}}">{{template}} Protocol</a>
       {% endfor %}
     {% endif %}  
-    {% if view != 'history' %}  
+    {% if view != 'history' %}
       <a class="dropdown-item" href="/versions/{{data['version']['id']}}/history">Version History</a>
-    {% endif %}  
+    {% endif %}
+    {% if data.get('m11') and view != 'validation' %}
+      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/validation">Validation View</a>
+    {% endif %}
   </div>
 </li>

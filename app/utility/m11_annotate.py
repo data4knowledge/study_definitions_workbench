@@ -58,10 +58,12 @@ def annotate(html: str, findings: list[dict]) -> AnnotatedDocument:
     values. Native browser behaviour handles the toggle — no
     JavaScript required on the client.
 
-    Findings whose ``element_name`` doesn't match anything in the
-    rendered HTML are returned in ``AnnotatedDocument.unplaced`` so
-    the caller can display them separately. Never silently drops a
-    finding.
+    Findings whose ``element`` doesn't match anything in the rendered
+    HTML are returned in ``AnnotatedDocument.unplaced`` so the caller
+    can display them separately. Never silently drops a finding.
+
+    The ``element`` key is the canonical row-shape key produced by
+    :func:`app.utility.finding_projections.project_m11_result`.
     """
     if not html:
         return AnnotatedDocument(html="", unplaced=list(findings))
@@ -73,7 +75,7 @@ def annotate(html: str, findings: list[dict]) -> AnnotatedDocument:
     placed = 0
 
     for index, finding in enumerate(findings):
-        element_name = (finding or {}).get("element_name") or ""
+        element_name = (finding or {}).get("element") or ""
         if not element_name:
             unplaced.append(finding)
             continue
@@ -116,9 +118,11 @@ def _build_marker(soup, finding: dict, index: int):
     summary.append(icon)
     marker.append(summary)
 
-    # Expanded body: rule id + message + optional expected/actual.
+    # Expanded body: rule id + message (and section when present).
     # Kept compact so the inline expansion doesn't overwhelm the
-    # surrounding rendered-protocol content.
+    # surrounding rendered-protocol content. ``expected`` / ``actual``
+    # lines were part of the retired adapter shape — the new canonical
+    # shape folds those specifics into ``message`` inline.
     body = soup.new_tag("div", attrs={"class": "m11-doc-marker-body"})
     header = soup.new_tag("div", attrs={"class": "m11-doc-marker-header"})
     rule_code = soup.new_tag("code", attrs={"class": "m11-doc-marker-rule"})
@@ -130,23 +134,14 @@ def _build_marker(soup, finding: dict, index: int):
     message_div.string = finding.get("message") or ""
     body.append(message_div)
 
-    expected = finding.get("expected")
-    if expected:
-        exp = soup.new_tag("div", attrs={"class": "m11-doc-marker-meta"})
+    section = finding.get("section")
+    if section:
+        sec = soup.new_tag("div", attrs={"class": "m11-doc-marker-meta"})
         label = soup.new_tag("strong")
-        label.string = "Expected: "
-        exp.append(label)
-        exp.append(str(expected))
-        body.append(exp)
-
-    actual = finding.get("actual")
-    if actual:
-        act = soup.new_tag("div", attrs={"class": "m11-doc-marker-meta"})
-        label = soup.new_tag("strong")
-        label.string = "Actual: "
-        act.append(label)
-        act.append(str(actual))
-        body.append(act)
+        label.string = "Section: "
+        sec.append(label)
+        sec.append(str(section))
+        body.append(sec)
 
     marker.append(body)
     return marker

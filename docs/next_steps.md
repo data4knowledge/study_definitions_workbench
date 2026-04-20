@@ -41,9 +41,11 @@ validation UX review.
 
 ### 3a. Annotated protocol render — polish (follow-up to ✅ below)
 
-The first cut of the annotated render shipped as a second tab on the
-validate-docx results page (see archive). Open polish items,
-respecting the project's JS-free stance (lesson 10):
+The annotated render now lives on the study-view Validation tab at
+`/versions/{id}/validation` (it was moved out of the standalone
+validate-docx flow so findings persisted at import time drive the same
+rendering without a re-upload). Open polish items apply to that tab
+and respect the project's JS-free stance (lesson 10):
 
 - **Severity filter.** Hide info-level or warning-level markers via
   a CSS-only toggle (radio buttons + adjacent-sibling selectors
@@ -51,7 +53,7 @@ respecting the project's JS-free stance (lesson 10):
   error-only triage pass without scrolling through info findings.
 - **Jump-to-finding from the findings table.** Each finding row
   gets an anchor to its marker's element id; clicking scrolls the
-  Annotated-document tab into view at that marker. Needs markers
+  Annotated Protocol tab into view at that marker. Needs markers
   to carry a stable id per finding and the tab to be switchable via
   URL hash (`:target` CSS or plain `href="#tab-id"`).
 - **Compact mobile layout.** Inline expansions push content down
@@ -87,6 +89,17 @@ inside the request / test context so `.test_env` loading in
 likely incremental (ship a factory, migrate routes one by one).
 
 ## Archive
+
+### CDISC CORE cache on the mounted volume ✅
+
+`CDISC_CORE_CACHE_PATH` env var added and threaded through
+`Configuration`, every `USDM4(...)` call site, and the
+`DataFiles.clean_and_tidy()` keep-list. Docker and `.env` pre-set it
+to `/mount/core_cache`; Fly.io deployment docs updated to set it
+under `/mnt/sdw_data`. Previously the cache landed in
+`platformdirs.user_cache_dir()` (ephemeral in a container), forcing
+a multi-minute cold-cache download on every container restart. See
+lesson 15 in `docs/lessons_learned.md`.
 
 ### 1a. Download from validate view ✅
 
@@ -125,24 +138,38 @@ change.
 
 ### Annotated protocol render ✅
 
-Shipped on branch `57-add-m11-validation`. The validate-docx results
-page now has two tabs: Findings (existing table + downloads) and
-Annotated document.
+Originally shipped on branch `57-add-m11-validation` as a second tab
+on the validate-docx results page. The annotated-document tab was
+later moved out of the standalone flow and onto the study-view
+Validation tab (see "Study-view Validation tab" below), which reads
+the persisted `m11_validation` DataFiles file rather than re-running
+the validator.
 
 Pipeline:
 
 - `usdm4_protocol` side — `M11Export._parse_elements` stamps each
   rendered element with `data-m11-element="<name>"`;
-  `USDM4M11.render_current()` re-renders the cached wrapper without
+  `USDM4M11.to_html(usdm_path)` renders the wrapper without
   re-extraction.
 - SDW side — `app/utility/m11_annotate.py::annotate()` walks the
   rendered HTML via BeautifulSoup and injects a native `<details>`
   marker inside each `[data-m11-element]` node carrying the rule id,
-  message, and expected/actual inline in the `<details>` body.
-  Unmatched findings come back in `AnnotatedDocument.unplaced` so the
-  caller can surface them separately.
+  message, and section inline in the `<details>` body. Unmatched
+  findings come back in `AnnotatedDocument.unplaced` so the caller
+  can surface them separately.
 - UI — **zero JavaScript**. Native browser `<details>` handles
   expand/collapse and keyboard interaction. An earlier cut used a
   fixed side panel driven by JS; that was rewritten to inline
   `<details>` per the project's JS-free stance (see
   `docs/lessons_learned.md` lesson 10).
+
+### Study-view Validation tab ✅
+
+`/versions/{id}/validation` now renders Findings + Annotated Protocol
+tabs for any M11-origin study, reading the `m11_validation` findings
+file persisted at import time by `ImportM11.process()`. The Views
+dropdown gates the entry behind `data.get('m11')` so non-M11 studies
+never see it. Non-M11 or missing-file cases render explanatory empty
+states rather than a 404. The compare view's per-cell findings read
+from the same persisted file — the validator only runs once per study,
+at import time. See `docs/m11_validation.md` for the full data flow.

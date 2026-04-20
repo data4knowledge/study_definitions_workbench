@@ -143,6 +143,50 @@ def test_import_status_data(mocker, monkeypatch):
     assert response.status_code == 200
     assert '<div id="data_div">' in response.text
     assert '<th scope="col">Imported At</th>' in response.text
+    # Validation column is present alongside the existing errors column
+    assert '<th scope="col">Validation</th>' in response.text
+    assert mock_called(uc)
+    assert mock_called(fip)
+
+
+def test_import_status_data_renders_m11_validation_link(mocker, monkeypatch):
+    """M11 items in the import list must expose a link to the
+    /import/{id}/m11-validation view; non-M11 items must not."""
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    fip = mocker.patch("app.database.file_import.FileImport.page")
+    fip.side_effect = [
+        {
+            "page": 1,
+            "size": 10,
+            "count": 2,
+            "filter": "",
+            "items": [
+                {
+                    "id": 42,
+                    "type": "M11_DOCX",
+                    "created": "2026-04-20",
+                    "filename": "protocol.docx",
+                    "status": "Success",
+                },
+                {
+                    "id": 43,
+                    "type": "USDM_EXCEL",
+                    "created": "2026-04-20",
+                    "filename": "study.xlsx",
+                    "status": "Success",
+                },
+            ],
+        }
+    ]
+    response = client.get("/import/status/data?page=1&size=10&filter=")
+    assert response.status_code == 200
+    body = response.text
+    assert 'href="/import/42/m11-validation"' in body
+    assert "M11 Findings" in body
+    # Non-M11 row must not surface the link
+    assert 'href="/import/43/m11-validation"' not in body
     assert mock_called(uc)
     assert mock_called(fip)
 
@@ -201,6 +245,84 @@ def mock_data_file_path_error(mocker):
     mock = mocker.patch("app.model.file_handling.data_files.DataFiles.path")
     mock.side_effect = [("", "", False)]
     return mock
+
+
+def test_import_m11_validation(mocker, monkeypatch):
+    """Happy path — persisted findings render in the shared results
+    table with severity pills, rule ids, and the M11 download form."""
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    fif = mock_file_import_find(mocker)
+    dfr = mocker.patch(
+        "app.model.file_handling.data_files.DataFiles.read",
+        return_value=(
+            '[{"rule_id":"M11_001","severity":"error","section":"1",'
+            '"element":"Full Title",'
+            '"message":"Required element \'Full Title\' is missing.",'
+            '"rule_text":"","path":""}]'
+        ),
+    )
+    response = client.get("/import/1/m11-validation")
+    assert response.status_code == 200
+    body = response.text
+    assert "M11 Validation Findings" in body
+    assert "M11_001" in body
+    assert "Full Title" in body
+    assert "Required element 'Full Title' is missing." in body
+    # Download form is present when findings are non-empty
+    assert 'formaction="/validate/download/csv"' in body
+    assert 'value="m11-findings"' in body
+    assert mock_called(uc)
+    assert mock_called(fif)
+    assert mock_called(dfr)
+
+
+def test_import_m11_validation_no_file(mocker, monkeypatch):
+    """When no findings file has been persisted (non-M11 import, legacy
+    import, or validator exception), the page renders an informational
+    message rather than an error. Validator findings are advisory."""
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    fif = mock_file_import_find(mocker)
+    dfr = mocker.patch(
+        "app.model.file_handling.data_files.DataFiles.read",
+        return_value=None,
+    )
+    response = client.get("/import/1/m11-validation")
+    assert response.status_code == 200
+    assert (
+        "No M11 validation findings are available for this import."
+        in response.text
+    )
+    # No download form when findings are empty
+    assert 'formaction="/validate/download/csv"' not in response.text
+    assert mock_called(uc)
+    assert mock_called(fif)
+    assert mock_called(dfr)
+
+
+def test_import_m11_validation_corrupted(mocker, monkeypatch):
+    """If the persisted file isn't valid JSON the page should report a
+    decode problem and still render — not 500."""
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    fif = mock_file_import_find(mocker)
+    dfr = mocker.patch(
+        "app.model.file_handling.data_files.DataFiles.read",
+        return_value="this is not json",
+    )
+    response = client.get("/import/1/m11-validation")
+    assert response.status_code == 200
+    assert (
+        "M11 validation file could not be decoded"
+        in response.text
+    )
+    assert mock_called(uc)
+    assert mock_called(fif)
+    assert mock_called(dfr)
 
 
 def test_import_cpt_docx(mocker, monkeypatch):

@@ -14,6 +14,7 @@ def test_multiple_browser(mocker, monkeypatch):
             "database/path",
             "databasename",
             "secret1234",
+            "cache/path",
         ],
     )
     config = Configuration()
@@ -31,6 +32,7 @@ def test_multiple_browser(mocker, monkeypatch):
     assert config.database_path == "database/path"
     assert config.database_name == "databasename"
     assert config.auth0_secret == "secret1234"
+    assert config.cdisc_core_cache_path == "cache/path"
 
 
 def test_single_os(mocker, monkeypatch):
@@ -46,6 +48,7 @@ def test_single_os(mocker, monkeypatch):
             "database/path",
             "databasename",
             "secret1234",
+            "cache/path",
         ],
     )
     config = Configuration()
@@ -63,6 +66,7 @@ def test_single_os(mocker, monkeypatch):
     assert config.database_path == "database/path"
     assert config.database_name == "databasename"
     assert config.auth0_secret == "secret1234"
+    assert config.cdisc_core_cache_path == "cache/path"
 
 
 def test_single_1(mocker, monkeypatch):
@@ -78,6 +82,7 @@ def test_single_1(mocker, monkeypatch):
             "database/path",
             "databasename",
             "secret1234",
+            "cache/path",
         ],
     )
     config = Configuration()
@@ -97,6 +102,7 @@ def test_single_2(mocker, monkeypatch):
             "database/path",
             "databasename",
             "secret1234",
+            "cache/path",
         ],
     )
     config = Configuration()
@@ -116,6 +122,7 @@ def test_single_3(mocker, monkeypatch):
             "database/path",
             "databasename",
             "secret1234",
+            "cache/path",
         ],
     )
     config = Configuration()
@@ -135,6 +142,7 @@ def test_single_4(mocker, monkeypatch):
             "database/path",
             "databasename",
             "secret1234",
+            "cache/path",
         ],
     )
     config = Configuration()

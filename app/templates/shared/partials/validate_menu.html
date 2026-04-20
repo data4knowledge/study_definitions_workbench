@@ -1,10 +1,23 @@
+{# Validate dropdown.  Three entries for three independent engines:
+
+   * CDISC CORE — USDM v4 .json through the CDISC CORE JSONata engine
+     (usdm4.USDM4.validate_core).  Strongest conformance signal; can
+     take several minutes on a cold cache.
+   * usdm4 rules — USDM v4 .json through the usdm4 Python rule library
+     (usdm4.USDM4.validate).  Fast, runs the SDW-authored rules.
+   * ICH M11 — ICH M11 .docx through M11Validator in usdm4_protocol.
+     Structural and title-page conformance, does not leave the DOCX.
+
+   USDM v3 has been dropped from this menu; the /validate/usdm3 route
+   is still live for direct URL callers during the transition but isn't
+   surfaced to the author audience. #}
 <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
     <i class="bi bi-check2-square me-2"></i>Validate
   </a>
   <div class="dropdown-menu">
-    <a class="dropdown-item" href="/validate/usdm3">USDM v3 (.json)</a>
-    <a class="dropdown-item" href="/validate/usdm">USDM v4 (.json)</a>
+    <a class="dropdown-item" href="/validate/usdm-core">USDM v4 — CDISC CORE (.json)</a>
+    <a class="dropdown-item" href="/validate/usdm-rules">USDM v4 — usdm4 rules (.json)</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="/validate/m11-docx">ICH M11 Protocol (.docx)</a>
   </div>

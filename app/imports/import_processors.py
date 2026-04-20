@@ -9,11 +9,26 @@ from usdm4_fhir import M11
 from usdm4.api.wrapper import Wrapper
 from usdm4.api.study_version import StudyVersion
 from usdm4.api.identifier import StudyIdentifier
+from usdm4_protocol.validation.m11 import M11Validator
+from simple_error_log import Errors as M11Errors
 from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
+from app.utility.finding_projections import project_m11_result
+from app.configuration.configuration import application_configuration
 from usdm4 import USDM4
 from usdm3 import USDM3, RulesValidationResults
 import simple_error_log as sel
+
+
+def _usdm4() -> USDM4:
+    """Build a USDM4 facade wired to the configured CORE cache path.
+
+    The cache path is only read by the CORE validation subsystem, but we
+    pass it on every instantiation so the pattern stays uniform — if a
+    future caller adds ``validate_core`` to an import processor, the
+    cache is already configured correctly.
+    """
+    return USDM4(cache_dir=application_configuration.cdisc_core_cache_path or None)
 
 
 class ImportProcessorBase:
@@ -34,7 +49,7 @@ class ImportProcessorBase:
     def _study_parameters(self) -> dict | None:
         try:
             data = json.loads(self.usdm)
-            db = USDM4()
+            db = _usdm4()
             wrapper: Wrapper = db.from_json(data)
             object_path = ObjectPath(wrapper)
             version: StudyVersion = wrapper.study.first_version()
@@ -102,6 +117,26 @@ class ImportExcel(ImportProcessorBase):
 
 class ImportM11(ImportProcessorBase):
     async def process(self) -> bool:
+        # Initial M11 specification validation runs against the raw DOCX
+        # via the standalone :class:`M11Validator` (no USDM translation
+        # step). Findings are persisted as the ``m11_validation`` media
+        # type so the study view can surface them later; failures here
+        # must NOT stop the import — the validator is advisory, not a
+        # gate. The findings are also kept on ``self.m11_validation``
+        # so the end-of-import flow can surface them directly.
+        self.m11_validation: list[dict] = []
+        try:
+            validator_errors = M11Errors()
+            results = M11Validator(self.full_path, validator_errors).validate()
+            self.m11_validation = project_m11_result(results)
+            DataFiles(self.uuid).save(
+                "m11_validation", json.dumps(self.m11_validation)
+            )
+        except Exception as e:
+            application_logger.exception(
+                "Exception raised during M11 validation step", e
+            )
+
         importer = USDM4M11()
         wrapper: Wrapper = importer.from_docx(self.full_path, use_ai=True)
         application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
@@ -184,7 +219,7 @@ class ImportUSDM3(ImportProcessorBase):
         usdm3 = USDM3()
         results: RulesValidationResults = usdm3.validate(full_path)
         if results.passed_or_not_implemented():
-            usdm4 = USDM4()
+            usdm4 = _usdm4()
             wrapper = usdm4.convert(full_path)
             self.usdm = wrapper.to_json()
             data_files.save("usdm", self.usdm)  # Save USDM in new version
@@ -209,7 +244,7 @@ class ImportUSDM4(ImportProcessorBase):
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
         self.usdm = data_files.read("usdm")
-        usdm4 = USDM4()
+        usdm4 = _usdm4()
         results: RulesValidationResults = usdm4.validate(full_path)
         # application_logger.info(results.to_dict(sel.Errors.DEBUG))
         self.errors = results.to_dict()

@@ -28,20 +28,6 @@
             "valueBoolean": false,
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
-          },
-          {
-            "id": "ExtensionAttribute_5",
-            "url": "www.d4k.dk/usdm/extensions/004",
-            "valueString": "LY246708",
-            "extensionAttributes": [],
-            "instanceType": "ExtensionAttribute"
-          },
-          {
-            "id": "ExtensionAttribute_6",
-            "url": "www.d4k.dk/usdm/extensions/005",
-            "valueString": "Xanomeline",
-            "extensionAttributes": [],
-            "instanceType": "ExtensionAttribute"
           }
         ],
         "versionIdentifier": "(c)",
@@ -67,7 +53,7 @@
                 "extensionAttributes": [],
                 "code": "C17649",
                 "codeSystem": "http://www.cdisc.org",
-                "codeSystemVersion": "2025-09-26",
+                "codeSystemVersion": "2026-03-27",
                 "decode": "Other",
                 "instanceType": "Code"
               },
@@ -83,7 +69,7 @@
                   "extensionAttributes": [],
                   "code": "C17649",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "Other",
                   "instanceType": "Code"
                 },
@@ -122,7 +108,7 @@
                   "extensionAttributes": [],
                   "code": "C215665",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "Study Subject Safety",
                   "instanceType": "Code"
                 },
@@ -139,7 +125,7 @@
                   "extensionAttributes": [],
                   "code": "C215666",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "Study Subject Rights",
                   "instanceType": "Code"
                 },
@@ -156,7 +142,7 @@
                   "extensionAttributes": [],
                   "code": "C215667",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "Study Data Reliability",
                   "instanceType": "Code"
                 },
@@ -173,7 +159,7 @@
                   "extensionAttributes": [],
                   "code": "C215668",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "Study Data Robustness",
                   "instanceType": "Code"
                 },
@@ -192,7 +178,7 @@
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "Global",
                   "instanceType": "Code"
                 },
@@ -219,7 +205,7 @@
                       "extensionAttributes": [],
                       "code": "C25613",
                       "codeSystem": "http://www.cdisc.org",
-                      "codeSystemVersion": "2025-09-26",
+                      "codeSystemVersion": "2026-03-27",
                       "decode": "Percentage",
                       "instanceType": "Code"
                     },
@@ -236,7 +222,7 @@
                     "extensionAttributes": [],
                     "code": "C68846",
                     "codeSystem": "http://www.cdisc.org",
-                    "codeSystemVersion": "2025-09-26",
+                    "codeSystemVersion": "2026-03-27",
                     "decode": "Global",
                     "instanceType": "Code"
                   },
@@ -297,7 +283,7 @@
                 "extensionAttributes": [],
                 "code": "C15602",
                 "codeSystem": "http://www.cdisc.org",
-                "codeSystemVersion": "2025-09-26",
+                "codeSystemVersion": "2026-03-27",
                 "decode": "Phase 3",
                 "instanceType": "Code"
               },
@@ -381,7 +367,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -403,7 +389,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -425,7 +411,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -447,7 +433,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -469,7 +455,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -491,7 +477,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -513,7 +499,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -535,7 +521,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -557,7 +543,7 @@
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "INCLUSION",
                   "instanceType": "Code"
                 },
@@ -579,7 +565,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -601,7 +587,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -623,7 +609,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -645,7 +631,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -667,7 +653,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -689,7 +675,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -711,7 +697,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -733,7 +719,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -755,7 +741,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -777,7 +763,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -799,7 +785,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -821,7 +807,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -843,7 +829,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -865,7 +851,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -887,7 +873,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -909,7 +895,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -931,7 +917,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -953,7 +939,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -975,7 +961,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -997,7 +983,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -1019,7 +1005,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -1041,7 +1027,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -1063,7 +1049,7 @@
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
-                  "codeSystemVersion": "2025-09-26",
+                  "codeSystemVersion": "2026-03-27",
                   "decode": "EXCLUSION",
                   "instanceType": "Code"
                 },
@@ -1084,7 +1070,7 @@
               "extensionAttributes": [],
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2025-09-26",
+              "codeSystemVersion": "2026-03-27",
               "decode": "Parallel Study",
               "instanceType": "Code"
             },
@@ -1102,7 +1088,7 @@
               "extensionAttributes": [],
               "code": "C207616",
               "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2025-09-26",
+              "codeSystemVersion": "2026-03-27",
               "decode": "Official Study Title",
               "instanceType": "Code"
             },
@@ -1117,7 +1103,7 @@
               "extensionAttributes": [],
               "code": "C207646",
               "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2025-09-26",
+              "codeSystemVersion": "2026-03-27",
               "decode": "Study Acronym",
               "instanceType": "Code"
             },
@@ -1132,7 +1118,7 @@
               "extensionAttributes": [],
               "code": "C207615",
               "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2025-09-26",
+              "codeSystemVersion": "2026-03-27",
               "decode": "Brief Study Title",
               "instanceType": "Code"
             },
@@ -2439,7 +2425,7 @@
               "extensionAttributes": [],
               "code": "C70793",
               "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2025-09-26",
+              "codeSystemVersion": "2026-03-27",
               "decode": "Sponsor",
               "instanceType": "Code"
             },
@@ -2464,7 +2450,7 @@
               "extensionAttributes": [],
               "code": "C54149",
               "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2025-09-26",
+              "codeSystemVersion": "2026-03-27",
               "decode": "Pharmaceutical Company",
               "instanceType": "Code"
             },
@@ -2524,7 +2510,7 @@
           "extensionAttributes": [],
           "code": "C70817",
           "codeSystem": "http://www.cdisc.org",
-          "codeSystemVersion": "2025-09-26",
+          "codeSystemVersion": "2026-03-27",
           "decode": "Protocol",
           "instanceType": "Code"
         },
@@ -2539,7 +2525,7 @@
               "extensionAttributes": [],
               "code": "C25508",
               "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2025-09-26",
+              "codeSystemVersion": "2026-03-27",
               "decode": "Final",
               "instanceType": "Code"
             },
@@ -4569,5 +4555,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 Protocol Package",
-  "systemVersion": "0.3.0"
+  "systemVersion": "0.4.0"
 }

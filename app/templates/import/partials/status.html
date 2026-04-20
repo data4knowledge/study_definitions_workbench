@@ -13,22 +13,38 @@
           <th scope="col">File Name</th>
           <th scope="col">Status</th>
           <th scope="col">Errors</th>
+          <th scope="col">Validation</th>
         </tr>
       </thead>
       <tbody>
         {% for item in data['items']: %}
           <tr>
-            <td>{{item['type']}}</td> 
-            <td>{{item['created']}}</td> 
+            <td>{{item['type']}}</td>
+            <td>{{item['created']}}</td>
             <td>{{item['filename']}}</td>
             <td>{{item['status']}}</td>
             <td>
               {% if item['type'] in imports_with_errors() %}
                 <a href="/import/{{item['id']}}/errors" class="btn btn-sm btn-outline-primary rounded-5" title="Download errors file">
                   <i class="me-1 bi bi-bug"></i>Errors File
-                </a>  
+                </a>
               {% else %}
                 <p><small><i>No errors file available</i></small></p>
+              {% endif %}
+            </td>
+            <td>
+              {# M11 imports run the standalone M11 specification
+                 validator during import (see ImportM11.process).
+                 The findings are persisted as the m11_validation
+                 media type and surfaced via this link. Other import
+                 types don't produce these findings, so the cell is
+                 empty. #}
+              {% if is_m11_docx_import(item['type']) %}
+                <a href="/import/{{item['id']}}/m11-validation" class="btn btn-sm btn-outline-primary rounded-5" title="View M11 validation findings">
+                  <i class="me-1 bi bi-clipboard-check"></i>M11 Findings
+                </a>
+              {% else %}
+                <p><small><i>—</i></small></p>
               {% endif %}
             </td>
           </tr>

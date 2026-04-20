@@ -1,3 +1,4 @@
+import json
 from typing import Annotated
 from fastapi import APIRouter, Form, Depends, Request, status
 from fastapi.responses import RedirectResponse
@@ -5,7 +6,6 @@ from sqlalchemy.orm import Session
 from simple_error_log import Errors
 from usdm4.api.wrapper import Wrapper, StudyVersion, StudyDesign
 from usdm4_protocol.m11.views.data_view import DataView
-from usdm4_protocol.m11.validate import M11Validator
 from app.database.study import Study
 from app.database.version import Version
 from app.database.file_import import FileImport
@@ -94,22 +94,13 @@ def study_list(
         errors = Errors()
         m11 = DataView(wrapper, errors)
         data["m11_title_page"].append(m11.title_page())
-        # Run M11 validation against the same Wrapper the compare view is
-        # already displaying. Fast (no docx extraction — wrapper is already
-        # loaded). Convert Findings to dicts here so the Jinja template
-        # can stay attribute-style without importing Finding.
-        #
-        # Rehydrate the errors from the original import so that
-        # extraction-time normalisation + contradiction records survive
-        # into this view. Without this, the compare view would be
-        # Wrapper-state only and findings that the extractor silently
-        # reconciled (e.g. Amendment Identifier contradictions on
-        # original protocols) never surface here.
-        validation_errors = usdm.import_errors()
-        validation = M11Validator(wrapper, validation_errors).validate()
-        data["m11_validation"].append(
-            {k: [f.to_dict() for f in v] for k, v in validation.by_element().items()}
-        )
+        # M11 validation findings were captured during import and
+        # persisted as the ``m11_validation`` DataFiles media type (see
+        # ``ImportM11.process()``). The compare view just reads that
+        # file — it does NOT re-run the validator here. When the file
+        # is missing (legacy imports, non-M11 imports) the cell shows
+        # empty, which the template renders as "0 findings".
+        data["m11_validation"].append(_m11_validation_for_study(usdm))
         ie_map = study_version.eligibility_critieria_item_map()
         data["inclusion"].append(study_design.inclusion_criteria(ie_map))
         data["exclusion"].append(study_design.exclusion_criteria(ie_map))
@@ -122,3 +113,51 @@ def study_list(
     return templates.TemplateResponse(
         request, "studies/list.html", {"user": user, "data": data}
     )
+
+
+def _m11_validation_for_study(usdm: USDMJson) -> dict[str, list[dict]]:
+    """Return the persisted M11 validation findings for a study, grouped
+    by element name.
+
+    Findings are captured during M11 import (:class:`ImportM11` in
+    ``app/imports/import_processors.py``) by running the DOCX-layer
+    validator and persisting the projected rows as the ``m11_validation``
+    DataFiles media type. This helper reads that file — it does NOT
+    re-run the validator.
+
+    Returns an empty dict when:
+      * the import wasn't an M11 (no persisted findings expected),
+      * the ``m11_validation`` file is missing (legacy imports written
+        before the validator was wired in), or
+      * the file can't be read / parsed.
+
+    Callers (the compare view) treat the empty dict as "0 findings" — see
+    the namespace counters in ``studies/list.html``.
+    """
+    if not getattr(usdm, "m11", False):
+        return {}
+    try:
+        files = DataFiles(usdm.uuid)
+        full_path, _filename, exists = files.generic_path("m11_validation")
+    except Exception:
+        return {}
+    if not exists:
+        return {}
+    try:
+        with open(full_path, "r") as fh:
+            findings = json.load(fh) or []
+    except Exception:
+        # Degrade to empty — the compare view is not the right place to
+        # surface an unexpected read/parse failure.  The persisted file
+        # is already projected to the canonical row shape at import
+        # time, so no further projection is needed here.
+        return {}
+    # Group by the ``element`` field so the compare-view template can
+    # look up per-cell findings with ``per_study.get(element, [])``.
+    # The keys match the title-page dict keys produced by
+    # ``DataView.title_page()`` — both sides use the same M11 element
+    # names.
+    grouped: dict[str, list[dict]] = {}
+    for finding in findings:
+        grouped.setdefault((finding or {}).get("element") or "", []).append(finding)
+    return grouped

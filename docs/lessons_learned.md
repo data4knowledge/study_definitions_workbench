@@ -326,3 +326,107 @@ Add a lesson to this file when you step on one, add a backlog item to
 both from `claude.md`'s feature-specific-docs list. The next
 contributor — including future-you — starts from a complete map
 rather than re-deriving.
+
+
+## 14. Capture once at import, read many times — don't re-run the validator per view
+
+The first cut of M11 validation in the compare view re-ran
+`M11Validator` per selected study on every `/studies/list` request.
+That was the wrong seam: the validator's input (the uploaded `.docx`)
+is fixed at import time, its output is the `Results` object, and
+several views need the same findings. Re-running per view costs
+CPU, varies with whether the original DOCX is still on disk (legacy
+imports), and risks drift between views if the validator changes
+between a study's import and its later viewings.
+
+The pattern we landed on:
+
+- **Capture at import.** `ImportM11.process()` runs
+  `M11Validator(docx_path, errors).validate()` once, projects the
+  findings to the canonical row shape (via
+  `app/utility/finding_projections.py::project_m11_result`), and
+  writes them as the `m11_validation` DataFiles media type next to
+  the other per-study artefacts.
+- **Read in every view.** The compare view
+  (`studies.py::_m11_validation_for_study`) and the study-view
+  Validation tab (`versions.py::get_version_validation`) both read
+  that JSON file. Neither touches the validator. The compare view
+  groups by `element`; the study-view tab pairs the findings with a
+  rendered protocol via `m11_annotate`.
+- **Standalone flow is the exception.** `/validate/m11-docx` is an
+  ad-hoc one-shot — no study, no persistence. It still calls the
+  validator directly because that is its entire purpose.
+
+Two payoffs worth naming:
+
+- **Deterministic across views.** Compare-view cell counts and
+  study-view tab counts are guaranteed to agree — same file, same
+  parser. Before the refactor they could diverge if the validator
+  rule set changed between import and viewing.
+- **Legacy imports degrade gracefully.** When the `m11_validation`
+  file is absent (pre-refactor imports, non-M11 studies), callers
+  see an empty list and render "0 findings" rather than crashing or
+  attempting to re-validate a `.docx` that may no longer be on disk.
+
+Related to lesson 5 (rehydrate saved errors), but stronger — lesson 5
+reuses import-time data for a new view while the primary producer
+still runs on-demand; this pattern removes the on-demand run
+entirely and makes the file the canonical source.
+
+**Lesson: When a computation's input is fixed at one well-defined
+moment (upload, import, commit…) and several views need the same
+output, run it there, persist the output in the canonical shape, and
+make every view a thin reader. Keep the direct-call path only for
+flows where there is no "moment" to attach to (one-shot validates,
+ad-hoc tools).**
+
+
+## 15. External-package caches need the same persistence story as our own files
+
+USDM4's CDISC CORE validation downloads a non-trivial set of
+resources the first time it runs: JSONata files, XSD schemas, rules
+from the CDISC API, CT packages. Cold-cache runs take several
+minutes. USDM4 writes the cache under `platformdirs.user_cache_dir()`
+by default — which in a Docker container lands in
+`/root/.cache/usdm4/core/` and is wiped on every container restart.
+The USDM4 facade accepts a `cache_dir` override exactly because of
+this case.
+
+What bit us: SDW instantiated `USDM4()` with no arguments in
+`/validate/usdm-core`. Everything looked correct locally (the cache
+lived in the host user's home and persisted), but every production
+deploy would pay the cold-cache tax from scratch. DataFiles'
+`clean_and_tidy()` sweep would also wipe the cache on the first run
+after restart even if we put it under `/mount`, because the keep-list
+only knew about our own three subdirectories.
+
+The fix has three moving parts, and all three matter:
+
+1. **New env var wired through Configuration.** `CDISC_CORE_CACHE_PATH`
+   is read in `Configuration.__init__` like every other path. An
+   empty string (unset) means "fall through to the USDM4 platform
+   default" — so a deployment that hasn't been upgraded still works,
+   it just pays the cold-cache cost.
+2. **Threaded into every `USDM4(...)` call site.** The primary site is
+   `validate.py::_process` (the only caller of `validate_core`), but
+   the import processors and `USDMJson` also pass it through for
+   uniformity. That means if anyone later adds a `validate_core`
+   call in one of those flows, the cache is already configured —
+   they won't re-trip this lesson.
+3. **Teach `DataFiles.clean_and_tidy()` about the cache.** Added
+   `application_configuration.cdisc_core_cache_path` to the `keep`
+   list (guarded by truthiness so the empty-string fallback path
+   doesn't append `""`). Without this, the next restart's sweep would
+   shred the cache we just asked Docker to persist.
+
+Dockerfile pre-sets `CDISC_CORE_CACHE_PATH=/mount/core_cache`, and the
+Fly.io deployment notes got a matching `fly secrets set` line so the
+production volume layout stays documented. `.env` also gained the
+variable so local dev mirrors the container layout.
+
+**Lesson: When an external package caches expensive downloads to disk
+and exposes a configurable path, wire that path through the same
+config/env/mount plumbing you use for your own persistent files — and
+teach any sweep/cleanup logic to preserve it. A cache that's correct
+locally but ephemeral in production is a recurring-cost bug that
+won't show up until the first restart after a deploy.**

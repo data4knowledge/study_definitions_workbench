@@ -21,17 +21,18 @@ def _finding(
     severity: str = "error",
     rule: str = "M11_001",
     message: str = "Required element missing.",
+    section: str = "Title Page",
 ) -> dict:
+    """Build a finding in the canonical row shape produced by
+    :func:`app.utility.finding_projections.project_m11_result`."""
     return {
         "rule_id": rule,
         "severity": severity,
-        "status": "Failed",
+        "section": section,
+        "element": element,
         "message": message,
-        "expected": "Text",
-        "actual": "(no value)",
-        "element_name": element,
-        "section_number": "",
-        "section_title": "Title Page",
+        "rule_text": "",
+        "path": "",
     }
 
 
@@ -72,7 +73,7 @@ class TestAnnotate:
         assert result.unplaced == [finding]
         assert result.placed_count == 0
 
-    def test_finding_with_empty_element_name_goes_to_unplaced(self):
+    def test_finding_with_empty_element_goes_to_unplaced(self):
         html = '<div data-m11-element="Full Title">A Trial</div>'
         finding = _finding(element="")
         result = annotate(html, [finding])
@@ -135,7 +136,7 @@ class TestAnnotate:
         result = annotate(html, findings)
         assert result.placed_count == 2
         assert len(result.unplaced) == 1
-        assert result.unplaced[0]["element_name"] == "Missing Element"
+        assert result.unplaced[0]["element"] == "Missing Element"
 
     def test_preserves_existing_html_structure(self):
         # Existing tags and attributes should round-trip; we only
@@ -155,32 +156,28 @@ class TestAnnotate:
             in result.html.split("m11-doc-marker")[0]
         )
 
-    def test_renders_expected_and_actual_in_body(self):
+    def test_renders_section_in_body_when_present(self):
+        # The canonical row shape carries the document location in
+        # ``section``; the marker body surfaces it as a labelled row so
+        # the reader can see where in the M11 protocol the finding
+        # applies without scrolling to look at a sibling column.
         html = '<div data-m11-element="Trial Phase">Phase 3</div>'
         finding = _finding(
             element="Trial Phase",
             rule="M11_010",
             severity="warning",
             message="Source value normalised.",
+            section="1.2 Title Page",
         )
-        finding["expected"] = "Phase 3"
-        finding["actual"] = "Phase III"
         result = annotate(html, [finding])
-        # Expected / actual rows appear inside the <details> body so
-        # they're visible when expanded, no JS needed.
-        assert "Expected: " in result.html
-        assert "Phase 3" in result.html
-        assert "Actual: " in result.html
-        assert "Phase III" in result.html
+        assert "Section: " in result.html
+        assert "1.2 Title Page" in result.html
 
-    def test_omits_expected_actual_rows_when_empty(self):
-        # A finding with no expected/actual (e.g. M11_003) should not
-        # render empty "Expected: " rows in the body — just the rule
-        # id and message.
+    def test_omits_section_row_when_missing(self):
+        # Findings without a ``section`` value (e.g. structural rules
+        # that don't map to one section number) should not render an
+        # empty "Section: " row — the body stays compact.
         html = '<div data-m11-element="Full Title">A Trial</div>'
-        finding = _finding()
-        finding["expected"] = None
-        finding["actual"] = None
+        finding = _finding(section="")
         result = annotate(html, [finding])
-        assert "Expected: " not in result.html
-        assert "Actual: " not in result.html
+        assert "Section: " not in result.html
