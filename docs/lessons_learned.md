@@ -264,8 +264,61 @@ stale extension files sitting next to it. When you see an "htmx
 1 extension" warning, that's the signal to refresh the one
 file — and a reminder to check whether others need the same.**
 
+**Related cache-busting pattern.** After a vendor-file replace,
+browsers often keep serving the old copy from disk cache —
+reloads don't help because the URL is unchanged. SDW's shared
+layouts now cache-bust every self-hosted vendor script via a
+``?v=<version>`` query string (see `shared/_main_layout.html`
+and `shared/_home_layout.html`). When you bump an extension or
+the core library, bump the `v` in the matching `<script src>`
+too; browsers treat the changed URL as a new resource and
+refetch automatically. Bootstrap and any future self-hosted JS
+follow the same convention.
 
-## 12. The `docs/` and `claude.md` pair is the durable memory
+
+## 12. Not every console error is ours — browser extensions inject too
+
+Twice this session a confusing `Uncaught Error` appeared in the
+browser console from a file called `searchAnalyzer.js`:
+
+    at t.SearchEngineFactory.getSearchEngineAnalyzer
+      (searchAnalyzer.js:2:241641)
+
+Nothing in SDW (or `usdm4_protocol`) references `searchAnalyzer`,
+`SearchEngineFactory`, or anything search-engine related. Telltale
+signs it was a browser extension:
+
+- **Minified single-line JS** — the column offsets `:2:241641`,
+  `:2:90878`, etc. are millions of characters into line 2. Our
+  bundles are readable, multi-line source.
+- **Names that don't match any SDW symbol.** A quick `grep -rln
+  SearchEngineFactory` across both repos returned zero matches.
+- **Page-agnostic** — the same error appears on `/index`,
+  `/validate/m11-docx`, and elsewhere, because the extension
+  injects into every page.
+
+Two confirmations:
+
+- **Incognito/Private window.** Most browsers disable extensions
+  there by default. Loading `http://localhost:8000/index` in a
+  private window removes the noise, proving the source.
+- **DevTools Sources tab.** Expand the page's tree; extension
+  scripts show under `chrome-extension://<id>/…` so you can see
+  which extension is responsible and disable it specifically.
+
+There's nothing to fix in SDW. The extension reads the DOM,
+doesn't find what it expects, and logs. It doesn't affect
+application behaviour.
+
+**Lesson: Before investigating a console error, check whether the
+stack trace's source file exists in your repo. `grep -rln
+<symbol-name>` is fast and decisive. If no match, the error is
+almost certainly from a browser extension (or another tab's
+service worker) — disable extensions in Incognito mode to
+confirm, then move on.**
+
+
+## 13. The `docs/` and `claude.md` pair is the durable memory
 
 SDW has pytest, but tests don't capture "why we chose this approach."
 Add a lesson to this file when you step on one, add a backlog item to

@@ -11,7 +11,9 @@
   </head>
   <body>
     {% block main_content %}{% endblock %}
-    <script src="/static/js/htmx.min.js"></script>
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    {# Version query-strings are cache-busters — bump when the file
+       changes, matches _main_layout.html. #}
+    <script src="/static/js/htmx.min.js?v=2.0.8"></script>
+    <script src="/static/js/bootstrap.bundle.min.js?v=5.3"></script>
   </body>
 </html>

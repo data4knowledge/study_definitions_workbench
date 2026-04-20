@@ -87,9 +87,17 @@
       {% endblock %}
     </div>
     
-    <script src="/static/js/htmx.min.js"></script>
-    <script src="/static/js/htmx.ws.js"></script>
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    {# Cache-busting ``?v=<version>`` on each self-hosted vendor file.
+       When the file is bumped (new htmx release, extension refresh,
+       Bootstrap update), bump the ``v`` here too and clients will
+       force-refetch on next page load. Browsers key the HTTP cache on
+       the full URL including query string, so a changed ``v`` is a
+       distinct resource that bypasses any stale copy. See
+       ``docs/lessons_learned.md`` lesson 11 for the htmx-extension
+       lockstep note. #}
+    <script src="/static/js/htmx.min.js?v=2.0.8"></script>
+    <script src="/static/js/htmx.ws.js?v=2.0.3"></script>
+    <script src="/static/js/bootstrap.bundle.min.js?v=5.3"></script>
 
     {% block additional_js %}
     {% endblock %}
