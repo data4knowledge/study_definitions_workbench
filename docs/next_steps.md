@@ -42,22 +42,25 @@ validation UX review.
 ### 3a. Annotated protocol render — polish (follow-up to ✅ below)
 
 The first cut of the annotated render shipped as a second tab on the
-validate-docx results page (see archive). Open polish items:
+validate-docx results page (see archive). Open polish items,
+respecting the project's JS-free stance (lesson 10):
 
-- **Keyboard navigation.** `n` / `p` to cycle through markers, `Esc`
-  closes the side panel (already wired). Would also want `g` /
-  `shift-G` to jump first/last, and scroll-into-view on focus.
-- **Severity filter.** Toggle buttons at the top of the annotated doc
-  to hide info-level or warning-level markers when doing a
-  triage-pass on errors only.
-- **Jump-to-finding from the findings table.** Clicking a row in the
-  Findings tab switches to the Annotated document tab and
-  scroll-to-highlights the matching marker.
-- **Persistent panel-open state across tab switches.** Today
-  switching tabs closes the panel; ideally it should remember the
-  last-selected finding when you come back.
-- **Compact mobile layout.** The side panel is desktop-sized; on
-  narrow viewports it should become a bottom-sheet.
+- **Severity filter.** Hide info-level or warning-level markers via
+  a CSS-only toggle (radio buttons + adjacent-sibling selectors
+  scoped to the annotated-doc container). Lets a reviewer do an
+  error-only triage pass without scrolling through info findings.
+- **Jump-to-finding from the findings table.** Each finding row
+  gets an anchor to its marker's element id; clicking scrolls the
+  Annotated-document tab into view at that marker. Needs markers
+  to carry a stable id per finding and the tab to be switchable via
+  URL hash (`:target` CSS or plain `href="#tab-id"`).
+- **Compact mobile layout.** Inline expansions push content down
+  on narrow viewports; may want `max-width` constraints or an
+  option to show finding panels below the rendered doc rather than
+  inline.
+- **Collapse-all / expand-all.** Removed in the JS cleanup pass.
+  A CSS-only version is possible (form + radio buttons + scoped
+  selectors) but not trivially accessible; defer until asked for.
 
 ## General
 
@@ -87,14 +90,22 @@ likely incremental (ship a factory, migrate routes one by one).
 
 ### 1a. Download from validate view ✅
 
-Shipped on branch `57-add-m11-validation` — CSV, JSON, Markdown
-client-side; XLSX via `/validate/m11-docx/download/xlsx`.
+Shipped on branch `57-add-m11-validation`. All four formats (CSV,
+JSON, Markdown, XLSX) are now server-side routes
+(`/validate/m11-docx/download/{csv,json,md,xlsx}`). The template
+emits a plain HTML `<form>` with four submit buttons using
+`formaction` to target each route; shared formatter helper in
+`app/utility/m11_findings_export.py`. **Zero JavaScript** — an
+initial cut used client-side `Blob` generation for CSV/JSON/MD plus
+a JSON-POST for XLSX, but was rewritten to server-only per the
+project's JS-free stance (see `docs/lessons_learned.md` lesson 10).
 
 ### 2. Findings detail on compare view ✅
 
 Shipped on branch `57-add-m11-validation` — native `<details>` per
-cell with severity-coloured finding panels and a global Expand-all /
-Collapse-all toggle on the title-page tab.
+cell with severity-coloured finding panels. The global Expand-all /
+Collapse-all toggle was removed in the JS-free cleanup pass; users
+click individual cells to expand.
 
 ### Original M11 validate view ✅
 
@@ -116,7 +127,7 @@ change.
 
 Shipped on branch `57-add-m11-validation`. The validate-docx results
 page now has two tabs: Findings (existing table + downloads) and
-Annotated document (new).
+Annotated document.
 
 Pipeline:
 
@@ -125,13 +136,13 @@ Pipeline:
   `USDM4M11.render_current()` re-renders the cached wrapper without
   re-extraction.
 - SDW side — `app/utility/m11_annotate.py::annotate()` walks the
-  rendered HTML via BeautifulSoup, injects a severity-coloured marker
-  inside each `[data-m11-element]` node, returns the annotated HTML
-  plus any findings that couldn't be located. `_process_m11_docx`
-  calls render + annotate and passes both into the template.
-- UI — native `<details>`-free this time; a single fixed side panel
-  reveals the finding on marker click. Keyboard-accessible (Enter /
-  Space activate markers, Esc closes the panel).
-
-Follow-up polish (keyboard nav, severity filter, jump-from-findings-table,
-persistent panel state) is captured in §3a above.
+  rendered HTML via BeautifulSoup and injects a native `<details>`
+  marker inside each `[data-m11-element]` node carrying the rule id,
+  message, and expected/actual inline in the `<details>` body.
+  Unmatched findings come back in `AnnotatedDocument.unplaced` so the
+  caller can surface them separately.
+- UI — **zero JavaScript**. Native browser `<details>` handles
+  expand/collapse and keyboard interaction. An earlier cut used a
+  fixed side panel driven by JS; that was rewritten to inline
+  `<details>` per the project's JS-free stance (see
+  `docs/lessons_learned.md` lesson 10).

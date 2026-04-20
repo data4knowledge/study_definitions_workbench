@@ -1,7 +1,6 @@
-import io
-from datetime import date
-from fastapi import APIRouter, Depends, Request
-from fastapi.responses import StreamingResponse
+import json
+from fastapi import APIRouter, Depends, Form, Request
+from fastapi.responses import Response, StreamingResponse
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
@@ -15,6 +14,14 @@ from app.database.user import User
 
 from app.imports.form_handler import FormHandler
 from app.utility.m11_annotate import annotate as m11_annotate
+from app.utility.m11_findings_export import (
+    default_filename,
+    sanitise_filename,
+    to_csv as findings_to_csv,
+    to_json as findings_to_json,
+    to_markdown as findings_to_markdown,
+    to_xlsx as findings_to_xlsx,
+)
 from usdm4 import USDM4, RulesValidationResults
 from usdm3 import USDM3
 from usdm4_protocol.m11 import USDM4M11
@@ -205,99 +212,116 @@ async def _process_m11_docx(request: Request, user: User, source: str):
     )
 
 
-@router.post("/m11-docx/download/xlsx", dependencies=[Depends(protect_endpoint)])
-async def validate_m11_docx_download_xlsx(request: Request):
-    """Stream findings as an .xlsx. Client POSTs the findings JSON it
-    already has (embedded in the results page) plus the source filename;
-    the server round-trip exists only because we don't ship a
-    client-side XLSX generator. CSV / JSON / Markdown are produced
-    entirely in the browser.
+# --- Findings download routes ------------------------------------
+#
+# The results page has a plain HTML form with four submit buttons, each
+# targeting the route below. Form fields: ``findings`` is the findings
+# JSON (already rendered as a hidden input by the results template),
+# ``source_filename`` is the uploaded ``.docx`` name — used to build a
+# deterministic download filename like
+# ``WP45338-m11-findings-2026-04-19.csv``.
+#
+# The routes share a small helper (``_download_response``) so each
+# format-specific handler is a two-line method call. Keeping the logic
+# per-format rather than dispatching by a ``format`` query parameter
+# avoids clients having to escape / URL-build, and lets each route
+# have a clear, CURL-friendly URL.
 
-    The ``filename`` query-string lets the caller choose the download
-    filename; we default to something sensible if it's absent or
-    malformed. The file is generated via openpyxl (already a transitive
-    dependency through usdm4_excel).
-    """
-    payload = await request.json()
-    findings = payload.get("findings") or []
-    source_filename = payload.get("source_filename") or "protocol.docx"
-    default_name = (
-        f"{source_filename.rsplit('.', 1)[0]}"
-        f"-m11-findings-{date.today().isoformat()}.xlsx"
-    )
-    filename = request.query_params.get("filename") or default_name
-    # Only allow a narrow filename shape so the Content-Disposition
-    # header stays safe from injection.
-    filename = "".join(
-        c for c in filename if c.isalnum() or c in "-_. "
-    ) or default_name
 
-    buffer = _findings_to_xlsx(findings, source_filename)
-    return StreamingResponse(
-        buffer,
-        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+def _parse_findings(findings_json: str) -> list[dict]:
+    """Parse the hidden-input findings JSON. Returns ``[]`` on empty /
+    malformed input rather than raising — the downstream formatters
+    all tolerate an empty list cleanly."""
+    if not findings_json:
+        return []
+    try:
+        parsed = json.loads(findings_json)
+    except (json.JSONDecodeError, TypeError):
+        return []
+    return parsed if isinstance(parsed, list) else []
+
+
+def _download_response(
+    body: bytes,
+    filename: str,
+    media_type: str,
+) -> Response:
+    """Wrap a serialised payload in an HTTP response that triggers a
+    download, with a safely-sanitised filename on the
+    Content-Disposition header."""
+    return Response(
+        content=body,
+        media_type=media_type,
         headers={
             "Content-Disposition": f'attachment; filename="{filename}"',
         },
     )
 
 
-def _findings_to_xlsx(findings: list[dict], source_filename: str) -> io.BytesIO:
-    """Render a list of finding dicts to an in-memory .xlsx. Uses
-    openpyxl (installed via usdm4_excel). Bold header row, column
-    widths sized to typical finding content so the sheet opens
-    readable in Excel / Numbers / Sheets without manual resizing.
-    """
-    from openpyxl import Workbook
-    from openpyxl.styles import Font, Alignment
+@router.post(
+    "/m11-docx/download/csv", dependencies=[Depends(protect_endpoint)]
+)
+async def validate_m11_docx_download_csv(
+    findings: str = Form(""),
+    source_filename: str = Form("protocol.docx"),
+):
+    default = default_filename(source_filename, "csv")
+    filename = sanitise_filename(default, default)
+    return _download_response(
+        findings_to_csv(_parse_findings(findings)),
+        filename,
+        "text/csv; charset=utf-8",
+    )
 
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "M11 Findings"
 
-    headers = [
-        ("Rule", 10),
-        ("Severity", 10),
-        ("Status", 10),
-        ("Element", 28),
-        ("Section", 18),
-        ("Message", 60),
-        ("Expected", 30),
-        ("Actual", 30),
-    ]
-    for col_idx, (title, width) in enumerate(headers, start=1):
-        cell = ws.cell(row=1, column=col_idx, value=title)
-        cell.font = Font(bold=True)
-        ws.column_dimensions[cell.column_letter].width = width
+@router.post(
+    "/m11-docx/download/json", dependencies=[Depends(protect_endpoint)]
+)
+async def validate_m11_docx_download_json(
+    findings: str = Form(""),
+    source_filename: str = Form("protocol.docx"),
+):
+    default = default_filename(source_filename, "json")
+    filename = sanitise_filename(default, default)
+    return _download_response(
+        findings_to_json(_parse_findings(findings)),
+        filename,
+        "application/json; charset=utf-8",
+    )
 
-    for row_idx, f in enumerate(findings, start=2):
-        values = [
-            f.get("rule_id", ""),
-            f.get("severity", ""),
-            f.get("status", ""),
-            f.get("element_name", ""),
-            f.get("section_title", ""),
-            f.get("message", ""),
-            f.get("expected", ""),
-            f.get("actual", ""),
-        ]
-        for col_idx, value in enumerate(values, start=1):
-            cell = ws.cell(row=row_idx, column=col_idx, value=value)
-            cell.alignment = Alignment(wrap_text=True, vertical="top")
 
-    # Source-filename note on a second sheet so the primary sheet
-    # stays dense. Useful when someone sends the xlsx around and loses
-    # the original filename context.
-    meta = wb.create_sheet("Source")
-    meta["A1"] = "Source file"
-    meta["A1"].font = Font(bold=True)
-    meta["A2"] = source_filename
-    meta["A3"] = "Generated"
-    meta["A3"].font = Font(bold=True)
-    meta["A4"] = date.today().isoformat()
-    meta.column_dimensions["A"].width = 40
+@router.post(
+    "/m11-docx/download/md", dependencies=[Depends(protect_endpoint)]
+)
+async def validate_m11_docx_download_md(
+    findings: str = Form(""),
+    source_filename: str = Form("protocol.docx"),
+):
+    default = default_filename(source_filename, "md")
+    filename = sanitise_filename(default, default)
+    return _download_response(
+        findings_to_markdown(_parse_findings(findings), source_filename),
+        filename,
+        "text/markdown; charset=utf-8",
+    )
 
-    buffer = io.BytesIO()
-    wb.save(buffer)
-    buffer.seek(0)
-    return buffer
+
+@router.post(
+    "/m11-docx/download/xlsx", dependencies=[Depends(protect_endpoint)]
+)
+async def validate_m11_docx_download_xlsx(
+    findings: str = Form(""),
+    source_filename: str = Form("protocol.docx"),
+):
+    default = default_filename(source_filename, "xlsx")
+    filename = sanitise_filename(default, default)
+    buffer = findings_to_xlsx(_parse_findings(findings), source_filename)
+    return StreamingResponse(
+        buffer,
+        media_type=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+        },
+    )

@@ -4,6 +4,17 @@
 
 Study Definitions Workbench — a FastAPI web application for managing USDM (Unified Study Definitions Model) clinical study data, with FHIR M11 import/export support.
 
+## Interaction layer: HTMX, not hand-written JavaScript
+
+SDW uses HTMX (+ native HTML: forms, links, `<details>`, `<dialog>`, etc.) as its interaction layer. Preference order:
+
+1. Native HTML elements that already do the job (forms, `<details>` / `<summary>`, `<dialog>`, anchors).
+2. HTMX attributes (`hx-post`, `hx-swap`, `hx-target`, `hx-swap-oob`, `hx-indicator`, `hx-disabled-elt`).
+3. Complete packaged JavaScript libraries with a narrow purpose (e.g. D3 for visualisations on specific pages, a PDF viewer on protocol pages). Library boundaries keep these self-contained.
+4. Hand-written JavaScript glue — avoid. It accumulates fast, tangles across files, and drifts from the markup it manipulates.
+
+Before adding any JavaScript, check whether #1 or #2 does the job. Before pulling in a library under #3, check that the feature genuinely needs the library (not just "would be convenient"). When in doubt, ask. See `docs/lessons_learned.md` (lesson 10) for the full reasoning and the M11-validation cleanup that established this stance.
+
 ## Feature-specific docs
 
 - **M11 validation UI** — `docs/m11_validation.md`. How the `/validate/m11-docx` and `/studies/list` validation flows work end-to-end, which templates and JS do what, and which routes exist. The rule catalogue and interpretation live in the sibling `usdm4_protocol` package under its `docs/m11_rule_interpretation.md` and `docs/m11_observed_issues.md`.

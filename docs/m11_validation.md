@@ -48,44 +48,48 @@ runner is shared; only the entry point differs.
 |--------|----------------------------------|-----------------------------------------------------------------|
 | GET    | `/validate/m11-docx`             | File picker (shared `browser_file_select.html`)                 |
 | POST   | `/validate/m11-docx`             | Extract + validate; returns the HTMX results partial            |
-| POST   | `/validate/m11-docx/download/xlsx` | Takes findings JSON in the body, streams an openpyxl workbook |
+| POST   | `/validate/m11-docx/download/csv`  | Findings as CSV                                                |
+| POST   | `/validate/m11-docx/download/json` | Findings as JSON (pretty-printed)                              |
+| POST   | `/validate/m11-docx/download/md`   | Findings as a Markdown document                                |
+| POST   | `/validate/m11-docx/download/xlsx` | Findings as an openpyxl-generated workbook                     |
 
-CSV, JSON, and Markdown downloads are generated entirely client-side in
-`static/js/m11_download.js`. The browser reads the findings JSON
-embedded in the results page (`data-findings` attribute on
-`#m11-download-controls`), builds a `Blob`, and triggers the download.
-No server round-trip for those three.
+**Downloads are server-side, form-based, and zero-JS.** The results
+template emits a plain HTML `<form>` carrying the findings JSON and
+source filename as hidden inputs; each of the four submit buttons
+uses `formaction` to target one of the routes above. The server
+picks up the form-encoded fields, runs the matching formatter in
+`app/utility/m11_findings_export.py`, and streams the file back with
+a deterministic filename (`{source-basename}-m11-findings-{YYYY-MM-DD}.{ext}`).
 
-XLSX is the exception: it needs openpyxl (which is already a dependency
-via `usdm4_excel`). The browser POSTs the findings JSON to the
-`/download/xlsx` endpoint, which renders the workbook and streams it
-back with an `attachment` Content-Disposition. The filename is
-deterministic: `{source-basename}-m11-findings-{YYYY-MM-DD}.xlsx`.
+The annotated-document view is also zero-JS. Each finding marker is
+a native `<details>` element injected by the server-side annotator
+(`app/utility/m11_annotate.py`); the browser handles the toggle.
 
 ## Templates
 
 - **`validate/partials/validate_m11_docx.html`** — the picker. Extends
   the shared picker pattern from `import/partials/browser_file_select.html`.
-- **`validate/partials/m11_docx_results.html`** — findings table,
-  download controls, HTMX out-of-band swap that updates the picker
-  card's subtitle to include the validated filename. **Intentionally
-  does not `{% extends %}` a layout** — HTMX swaps this partial into
-  the picker's `#form_div`; extending would duplicate the page chrome.
+- **`validate/partials/m11_docx_results.html`** — findings table +
+  download form, plus the annotated-document tab. HTMX out-of-band
+  swap updates the picker card's subtitle with the validated filename.
+  **Intentionally does not `{% extends %}` a layout** — HTMX swaps
+  this partial into the picker's `#form_div`; extending would
+  duplicate the page chrome. Pulls in `shared/styles/m11.html` so the
+  annotated protocol keeps its existing styling.
 - **`studies/list.html`** — the compare view. Title-page tab cells
   render findings in native `<details>`/`<summary>` so the table stays
-  compact by default; expand to see finding panels inline. An
-  "Expand all / Collapse all" button at the top iterates `<details>`
-  elements for demo mode.
+  compact by default; click a cell's disclosure to see its finding
+  panels inline.
 
-## Javascript
+## JavaScript policy
 
-- **`static/js/m11_download.js`** — generates CSV / JSON / Markdown
-  client-side; POSTs for XLSX. Reads findings from
-  `#m11-download-controls[data-findings]` as JSON. Handles filename
-  sanitisation and Blob download.
-- **Inline in `studies/list.html`** — Bootstrap tooltip init (legacy,
-  mostly no-op now that finding text is visible in expanded panels);
-  onclick handlers on the Expand-all / Collapse-all buttons.
+**We don't write JavaScript for UI state.** Forms, links, HTMX, and
+native `<details>` cover every interaction in this feature. Two stub
+files remain in `static/js/` (`m11_download.js` and `m11_annotated_doc.js`)
+only to absorb any stale `<script src>` references from browsers with
+cached pages — no active template references them, and they contain
+no logic. Safe to `git rm` once you've confirmed the templates are
+clean.
 
 ## Tests
 

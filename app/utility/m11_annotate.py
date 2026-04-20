@@ -2,15 +2,15 @@
 
 Takes the rendered protocol HTML from ``USDM4M11.render_current()`` /
 ``to_html()`` and a list of finding dicts, and returns the HTML with
-severity markers injected at each element the findings reference.
-Each marker carries a ``data-m11-finding-index`` so client-side JS can
-map a marker click back to the finding for the side-panel reveal.
+native ``<details>`` markers injected at each element the findings
+reference. No JavaScript — the browser handles the expand/collapse
+toggle and keyboard interaction.
 
 Depends on the renderer stamping ``data-m11-element="<name>"`` on each
-element wrapper. That happens in
-``usdm4_protocol/m11/export/m11_export.py::_parse_elements`` — if
-anything breaks the stamp, this annotator silently degrades to
-"everything unplaced" rather than raising.
+element wrapper (see
+``usdm4_protocol/m11/export/m11_export.py::_parse_elements``). If the
+stamp is missing the annotator silently degrades to "everything
+unplaced" rather than raising.
 """
 
 from __future__ import annotations
@@ -24,9 +24,8 @@ from app.utility.soup import get_soup
 class AnnotatedDocument:
     """Output of ``annotate()`` — the annotated HTML plus any findings
     that couldn't be located on the rendered protocol (e.g. findings on
-    elements not present in the template, or orphaned sentinel
-    findings). Callers should surface the unplaced list so nothing gets
-    silently lost."""
+    elements not present in the template). Callers should surface the
+    unplaced list so nothing gets silently lost."""
 
     html: str
     unplaced: list[dict] = field(default_factory=list)
@@ -49,20 +48,20 @@ _SEVERITY_TEXT = {
 
 
 def annotate(html: str, findings: list[dict]) -> AnnotatedDocument:
-    """Inject severity markers into ``html`` for each finding that can
-    be located.
+    """Inject a ``<details>`` marker into ``html`` for each finding
+    whose element can be located.
 
-    Markers are added as small ``<span>`` badges inside the matching
-    ``[data-m11-element]`` node, not before or after — staying inside
-    means they travel with the element if the document is restyled or
-    moved. Each marker carries ``data-m11-finding-index`` as a 0-based
-    pointer into the original ``findings`` list so client-side JS can
-    retrieve the full finding for the side panel without needing the
-    whole finding inline in the DOM.
+    Each marker is a ``<details class="m11-doc-marker severity-X">``
+    that sits inside the matching ``[data-m11-element]`` node. The
+    ``<summary>`` carries the severity icon (click target); the
+    expanded body carries the rule id, message, and expected/actual
+    values. Native browser behaviour handles the toggle — no
+    JavaScript required on the client.
 
     Findings whose ``element_name`` doesn't match anything in the
-    rendered HTML are returned in ``AnnotatedDocument.unplaced`` so the
-    caller can display them separately. Never silently drops a finding.
+    rendered HTML are returned in ``AnnotatedDocument.unplaced`` so
+    the caller can display them separately. Never silently drops a
+    finding.
     """
     if not html:
         return AnnotatedDocument(html="", unplaced=list(findings))
@@ -78,11 +77,6 @@ def annotate(html: str, findings: list[dict]) -> AnnotatedDocument:
         if not element_name:
             unplaced.append(finding)
             continue
-        # Use find (first match) because the renderer stamps the parent
-        # container — usually a div/td with a single element replacement.
-        # Multiple matches shouldn't happen for a well-formed template;
-        # if they do, we annotate the first to avoid duplicate markers
-        # and leave the others alone.
         target = soup.find(attrs={"data-m11-element": element_name})
         if target is None:
             unplaced.append(finding)
@@ -94,26 +88,65 @@ def annotate(html: str, findings: list[dict]) -> AnnotatedDocument:
 
 
 def _build_marker(soup, finding: dict, index: int):
-    """Construct a single marker tag that carries enough classes for
-    CSS styling and enough data for JS to retrieve the finding. Returns
-    a BeautifulSoup tag ready to be appended to the target element.
-    """
+    """Construct a ``<details>`` marker with a severity-keyed summary
+    and the finding body inline. Returns a BeautifulSoup tag ready to
+    be appended to the target element. No JS reaches this marker — all
+    interactivity is native ``<details>`` behaviour."""
     severity = (finding.get("severity") or "info").lower()
     icon_class = _SEVERITY_ICON.get(severity, _SEVERITY_ICON["info"])
     text_class = _SEVERITY_TEXT.get(severity, _SEVERITY_TEXT["info"])
 
     marker = soup.new_tag(
-        "span",
+        "details",
         attrs={
             "class": f"m11-doc-marker severity-{severity}",
-            "role": "button",
-            "tabindex": "0",
             "data-m11-finding-index": str(index),
-            # Native tooltip as a fallback if the side-panel JS fails
-            # to initialise — at least the user still sees the rule id.
+        },
+    )
+    summary = soup.new_tag(
+        "summary",
+        attrs={
+            "class": "m11-doc-marker-summary",
+            # Native tooltip carries rule id + message so users see
+            # the essence without having to click.
             "title": f"{finding.get('rule_id') or ''}: {finding.get('message') or ''}",
         },
     )
     icon = soup.new_tag("i", attrs={"class": f"bi {icon_class} {text_class}"})
-    marker.append(icon)
+    summary.append(icon)
+    marker.append(summary)
+
+    # Expanded body: rule id + message + optional expected/actual.
+    # Kept compact so the inline expansion doesn't overwhelm the
+    # surrounding rendered-protocol content.
+    body = soup.new_tag("div", attrs={"class": "m11-doc-marker-body"})
+    header = soup.new_tag("div", attrs={"class": "m11-doc-marker-header"})
+    rule_code = soup.new_tag("code", attrs={"class": "m11-doc-marker-rule"})
+    rule_code.string = finding.get("rule_id") or ""
+    header.append(rule_code)
+    body.append(header)
+
+    message_div = soup.new_tag("div", attrs={"class": "m11-doc-marker-message"})
+    message_div.string = finding.get("message") or ""
+    body.append(message_div)
+
+    expected = finding.get("expected")
+    if expected:
+        exp = soup.new_tag("div", attrs={"class": "m11-doc-marker-meta"})
+        label = soup.new_tag("strong")
+        label.string = "Expected: "
+        exp.append(label)
+        exp.append(str(expected))
+        body.append(exp)
+
+    actual = finding.get("actual")
+    if actual:
+        act = soup.new_tag("div", attrs={"class": "m11-doc-marker-meta"})
+        label = soup.new_tag("strong")
+        label.string = "Actual: "
+        act.append(label)
+        act.append(str(actual))
+        body.append(act)
+
+    marker.append(body)
     return marker

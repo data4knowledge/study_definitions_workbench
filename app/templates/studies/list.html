@@ -90,12 +90,6 @@
       margin-top: 0.15rem;
     }
 
-    /* Compact expand-all / collapse-all control above the table. */
-    .m11-expand-controls {
-      margin: 0.4rem 0 0.6rem 0;
-      display: flex;
-      gap: 0.4rem;
-    }
   </style>
 {% endblock %}   
 {% block menu_content %}
@@ -130,19 +124,6 @@
           {# Badges reflect M11 validation of the USDM-derived view of each
              protocol \u2014 the same values shown in the cell. See
              usdm4_protocol.m11.validate for the rule catalogue. #}
-          <div class="m11-expand-controls">
-            {# Global toggles for every <details> inside #title_page_tab.
-               Scoped selector means IE tabs (if they ever grow findings)
-               are unaffected. #}
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-5"
-                    onclick="document.querySelectorAll('#title_page_tab details.m11-cell-findings').forEach(function(d){d.open=true;});">
-              <i class="bi bi-arrows-expand me-1"></i>Expand all findings
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-5"
-                    onclick="document.querySelectorAll('#title_page_tab details.m11-cell-findings').forEach(function(d){d.open=false;});">
-              <i class="bi bi-arrows-collapse me-1"></i>Collapse all
-            </button>
-          </div>
           <div class="outer-div row mt-3">
             <div class="col-12 extract-div mt-3 mb-3">
               <div class="overflow-auto section-div">
@@ -259,20 +240,6 @@
       </div>
     </div>
   </div>
-
-  {# Initialise Bootstrap tooltips for the M11 validation badges. Scoped
-     to this page — other pages that want tooltips can add their own init.
-     Using a title attribute means native browser tooltips still work if
-     this script fails to run. #}
-  <script>
-    (function () {
-      var els = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-      els.forEach(function (el) {
-        // eslint-disable-next-line no-new
-        new bootstrap.Tooltip(el);
-      });
-    })();
-  </script>
 {% endblock %}
 
 

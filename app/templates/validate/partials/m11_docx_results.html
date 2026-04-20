@@ -28,79 +28,68 @@
 </h6>
 
 <style>
-  /* Marker injected by app/utility/m11_annotate.py inside each
-     element container on the rendered protocol. Severity-coloured
-     border + click/focus affordances. Stays visually subtle so the
-     protocol reads naturally until the user wants to know more. */
-  .m11-doc-marker {
+  /* Markers on the annotated protocol. Each finding is a native
+     <details> element injected by app/utility/m11_annotate.py inside
+     its target [data-m11-element]. Default state: only the summary
+     (severity icon) is visible, staying unobtrusive within the
+     rendered protocol. Expanding via click/keyboard reveals the
+     inline panel with the rule details. Zero JavaScript. */
+  details.m11-doc-marker {
+    display: inline;
+    margin-left: 0.35em;
+  }
+  details.m11-doc-marker > summary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 1.4em;
     height: 1.4em;
-    margin-left: 0.35em;
     border-radius: 50%;
     border: 1px solid transparent;
+    background: #ffffff;
     cursor: pointer;
     vertical-align: middle;
-    background: #ffffff;
-    transition: transform 0.1s ease-in-out;
+    list-style: none;
+    user-select: none;
   }
-  .m11-doc-marker:hover,
-  .m11-doc-marker:focus {
-    transform: scale(1.1);
+  details.m11-doc-marker > summary::-webkit-details-marker { display: none; }
+  details.m11-doc-marker > summary:hover,
+  details.m11-doc-marker > summary:focus {
     outline: 2px solid rgba(39, 128, 227, 0.4);
     outline-offset: 2px;
   }
-  .m11-doc-marker.severity-error   { border-color: #ff0039; }
-  .m11-doc-marker.severity-warning { border-color: #ff7518; }
-  .m11-doc-marker.severity-info    { border-color: #6c757d; }
+  details.m11-doc-marker.severity-error   > summary { border-color: #ff0039; }
+  details.m11-doc-marker.severity-warning > summary { border-color: #ff7518; }
+  details.m11-doc-marker.severity-info    > summary { border-color: #6c757d; }
 
-  /* Side panel with finding details. Anchored bottom-right; slides
-     in when a marker is clicked. Plain CSS — no Bootstrap offcanvas
-     to keep the JS footprint minimal. */
-  #m11-finding-panel {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    width: 26rem;
-    max-width: 90vw;
-    max-height: 60vh;
-    background: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    padding: 1rem 1.1rem;
-    display: none;
-    overflow: auto;
-    z-index: 1050;
-  }
-  #m11-finding-panel.open { display: block; }
-  #m11-finding-panel header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.75rem;
-  }
-  #m11-finding-panel header h5 { margin: 0; font-size: 1rem; }
-  #m11-finding-panel .m11-close {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #6c757d;
-    cursor: pointer;
-    padding: 0 0.25rem;
-  }
-  #m11-finding-panel dl { margin: 0; }
-  #m11-finding-panel dt {
-    font-weight: 600;
-    margin-top: 0.45rem;
+  /* Expanded panel. Sits immediately below the summary, flowing with
+     the surrounding document rather than floating above it — so users
+     who open several at once can still scan the protocol linearly. */
+  .m11-doc-marker-body {
+    display: block;
+    margin: 0.5rem 0 0.5rem 0;
+    padding: 0.55rem 0.7rem;
+    background: #f8f9fa;
+    border-left: 3px solid #adb5bd;
+    border-radius: 0.25rem;
+    max-width: 32rem;
     font-size: 0.85em;
-    color: #495057;
+    line-height: 1.4;
+    color: #212529;
   }
-  #m11-finding-panel dd {
-    margin: 0 0 0.3rem 0;
-    font-size: 0.9em;
+  details.m11-doc-marker.severity-error   .m11-doc-marker-body { border-left-color: #ff0039; }
+  details.m11-doc-marker.severity-warning .m11-doc-marker-body { border-left-color: #ff7518; }
+  details.m11-doc-marker.severity-info    .m11-doc-marker-body { border-left-color: #6c757d; }
+  .m11-doc-marker-rule {
+    color: #d63384;
+    margin-right: 0.5em;
+    font-size: 0.95em;
+  }
+  .m11-doc-marker-header { margin-bottom: 0.25rem; }
+  .m11-doc-marker-meta {
+    margin-top: 0.2rem;
+    color: #495057;
+    font-size: 0.95em;
   }
 
   /* Annotated document pane — give the rendered protocol some breathing
@@ -112,14 +101,6 @@
     border-radius: 0.375rem;
     max-height: 75vh;
     overflow: auto;
-  }
-
-  /* Highlight the element currently focused by the side panel so the
-     user can see which element the displayed finding applies to. */
-  [data-m11-element].m11-element-focus {
-    outline: 2px solid #2780e3;
-    outline-offset: 2px;
-    border-radius: 2px;
   }
 </style>
 
@@ -160,24 +141,36 @@
       {# --- Findings tab ------------------------------------------------ #}
       <div id="m11-findings-tab" class="tab-pane fade show active" role="tabpanel">
         {% if findings %}
-          <div id="m11-download-controls" class="mb-3"
-               data-findings='{{ findings|tojson }}'
-               data-source-filename="{{ filename }}">
+          {# Plain HTML form — zero JavaScript. Each submit button uses
+             ``formaction`` to target one of four server-side download
+             routes. The findings are carried along as a hidden JSON
+             blob so the server can regenerate any format on demand.
+             ``target="_blank"`` keeps the results page in place when
+             the download streams — browsers open the attachment
+             response in a fresh tab that then auto-closes. #}
+          <form method="post"
+                target="_blank"
+                class="mb-3">
+            <input type="hidden" name="findings" value='{{ findings|tojson }}'>
+            <input type="hidden" name="source_filename" value="{{ filename }}">
             <span class="text-muted me-2">Download:</span>
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="csv">
+            <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                    formaction="/validate/m11-docx/download/csv">
               <i class="bi bi-filetype-csv me-1"></i>CSV
             </button>
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="json">
+            <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                    formaction="/validate/m11-docx/download/json">
               <i class="bi bi-filetype-json me-1"></i>JSON
             </button>
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="md">
+            <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                    formaction="/validate/m11-docx/download/md">
               <i class="bi bi-markdown me-1"></i>Markdown
             </button>
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-5 me-1" data-m11-download="xlsx">
+            <button type="submit" class="btn btn-sm btn-outline-primary rounded-5 me-1"
+                    formaction="/validate/m11-docx/download/xlsx">
               <i class="bi bi-file-earmark-excel me-1"></i>XLSX
             </button>
-          </div>
-          <script src="/static/js/m11_download.js"></script>
+          </form>
         {% endif %}
 
         <div class="table-responsive">
@@ -211,8 +204,7 @@
       </div>
 
       {# --- Annotated document tab ------------------------------------- #}
-      <div id="m11-document-tab" class="tab-pane fade" role="tabpanel"
-           data-findings='{{ findings|tojson }}'>
+      <div id="m11-document-tab" class="tab-pane fade" role="tabpanel">
         {% if annotated_html %}
           {% if unplaced_findings %}
             <div class="alert alert-secondary" role="alert">
@@ -235,16 +227,4 @@
   </div>
 </div>
 
-{# Side panel (hidden until a marker is clicked). Rendered once at the
-   document level; populated dynamically from the finding referenced by
-   data-m11-finding-index. #}
-<aside id="m11-finding-panel" role="dialog" aria-label="Finding details">
-  <header>
-    <h5 id="m11-finding-panel-title">Finding</h5>
-    <button type="button" class="m11-close" aria-label="Close">&times;</button>
-  </header>
-  <dl id="m11-finding-panel-body"></dl>
-</aside>
-
-<script src="/static/js/m11_annotated_doc.js"></script>
 {% endblock %}
