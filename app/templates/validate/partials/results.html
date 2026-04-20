@@ -19,8 +19,11 @@
      * ``download_sheet`` — worksheet name on the XLSX export. #}
 
 {% set findings = data['findings'] if data['findings'] is defined else [] %}
-{% set messages = data['messages'] if data['messages'] is defined else [] %}
-{% set real_messages = messages | reject('equalto', 'File accepted') | list %}
+{# The router has already stripped the informational "File 'X' accepted"
+   messages — see ``_strip_accepted_messages`` in
+   :mod:`app.routers.validate`. Anything left here is a genuine
+   operational message the user should see. #}
+{% set real_messages = data['messages'] if data['messages'] is defined else [] %}
 {% set source_filename = (data['filename']['filename'] if data['filename'] else '') or '' %}
 {% set download_kind = data['download_kind'] if data['download_kind'] is defined else 'validation-findings' %}
 {% set download_title = data['download_title'] if data['download_title'] is defined else 'Validation Findings' %}

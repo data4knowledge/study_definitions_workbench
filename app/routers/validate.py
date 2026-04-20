@@ -170,6 +170,21 @@ def _validate_setup(
     return templates.TemplateResponse(request, page_html, {"user": user, "data": data})
 
 
+def _strip_accepted_messages(messages: list[str]) -> list[str]:
+    """Drop ``FormHandler``'s informational "File 'X' accepted" /
+    "Image file 'X' accepted" banner from the messages list before it
+    reaches the results template.
+
+    The banner makes sense on background imports (where the user wants
+    a "we got your file" signal while the import runs asynchronously),
+    but is just noise on the foreground validation flows — the user is
+    already watching the findings table appear, so confirming the
+    upload landed is redundant. Operational warnings ("File 'X' was
+    ignored ...", "Failed to process the validation file") remain.
+    """
+    return [m for m in messages if not m.endswith(" accepted")]
+
+
 @staticmethod
 async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: str):
     form_handler = FormHandler(
@@ -201,7 +216,7 @@ async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: st
             "user": user,
             "data": {
                 "filename": main_file,
-                "messages": messages,
+                "messages": _strip_accepted_messages(messages),
                 "findings": findings,
             },
         },
@@ -275,7 +290,7 @@ async def _process_usdm_engine(
             "user": user,
             "data": {
                 "filename": main_file,
-                "messages": messages,
+                "messages": _strip_accepted_messages(messages),
                 "findings": findings,
                 "download_kind": download_kind,
                 "download_title": download_title,
@@ -338,7 +353,7 @@ async def _process_m11_docx(request: Request, user: User, source: str):
             "user": user,
             "data": {
                 "filename": main_file,
-                "messages": messages,
+                "messages": _strip_accepted_messages(messages),
                 "findings": findings,
                 # Download metadata shared with the USDM v4 flows — the
                 # M11 results template passes these through to the

@@ -4,8 +4,10 @@
       to the picker card's subtitle so the page header carries the file
       identity without needing a body heading.
    Body is a single findings table plus the four-format download form.
-   "File accepted" informational messages are filtered out; only error
-   messages (e.g. extraction failure) render here.
+   Informational "File 'X' accepted" messages from FormHandler are
+   filtered out — the user is watching the foreground validation run,
+   so "we got your file" is noise; only genuine operational messages
+   (e.g. extraction failure) render here.
 
    The annotated-protocol view has been removed from this standalone
    flow (task #36). It will be rehomed under the study view's
@@ -13,9 +15,10 @@
    exists to hang markers on. #}
 
 {% set filename = data['filename']['filename'] if data['filename'] else '' %}
-{% set real_messages = data['messages']
-                       | reject('equalto', 'File accepted')
-                       | list %}
+{# The router has already stripped the informational "File 'X' accepted"
+   messages — see ``_strip_accepted_messages`` in
+   :mod:`app.routers.validate`. Anything left here is genuine. #}
+{% set real_messages = data['messages'] %}
 {% set findings = data['findings'] %}
 
 <h6 class="card-subtitle mb-2 text-muted"

@@ -175,6 +175,7 @@ install_local_d4kms.sh
 mount/database/database.db
 mount/datafiles/*/
 mount/localfiles/*
+mount/core_cache/*
 
 # Test Database
 tests/test_files/mount/database/*
