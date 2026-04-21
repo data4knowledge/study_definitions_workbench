@@ -66,6 +66,51 @@ and respect the project's JS-free stance (lesson 10):
 
 ## General
 
+### "File accepted" banner — cleaner separation between foreground and background flows
+
+**Problem:** `FormHandler._handle_file()` appends an informational
+`"File '{filename}' accepted"` message to the `messages` list for every
+uploaded file. That signal is genuinely useful on the background import
+flows (the import runs asynchronously, so the user wants a "we got your
+file" confirmation while the job kicks off), but it's pure noise on the
+foreground validation flows — the user is already watching the
+validation run in the foreground; they don't need a post-hoc banner
+telling them we accepted the file they just uploaded and whose results
+are now on screen.
+
+**Current workaround:** `_strip_accepted_messages()` in
+`app/routers/validate.py` filters any message ending in `" accepted"`
+out of the list before it reaches the results templates, applied in
+all three foreground helpers (`_process`, `_process_usdm_engine`,
+`_process_m11_docx`). This works but feels crappy — we're papering
+over an API that shouldn't have emitted the message in this context in
+the first place, and string-matching on `" accepted"` is fragile.
+
+**Proposed approach:**
+
+- Split the message channel in `FormHandler` so callers can
+  distinguish informational file-accepted signals from genuine
+  operational messages (extraction failure, wrong type, etc.). Either
+  a separate return value, or a structured message type with
+  `kind={"informational", "operational"}`.
+- Background imports surface the informational banner via their own
+  toast / flash UX (ideally something nicer than "File 'X' accepted"
+  buried in a warning banner — a success indicator tied to the import
+  job card).
+- Foreground validation flows ignore the informational channel
+  entirely — no filter needed, no string matching, and the template
+  only renders operational messages.
+
+**Effort:** small-medium. `FormHandler` is a shared helper in the
+`d4k_ms_base` package so the change either lives there or we keep
+the split locally and translate at the boundary. Touches
+`_handle_file()`, every caller that inspects `messages`, and the
+background-import UX for whichever channel the banner moves into.
+
+**Context:** flagged by Dave on 2026-04-21 after the foreground
+validation filter landed as a tactical fix for the orange "File 'X'
+accepted" banner appearing on `/validate/*` result pages.
+
 ### Study-level validation history
 
 Currently every validation is a one-shot — re-upload, re-validate, no
