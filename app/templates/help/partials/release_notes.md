@@ -1,6 +1,7 @@
 <h5>Release 0.37.0, 2026-04-20</h5>
 
 Fixes and tweaks for PRISM testing (issue 56).
+Add in CDISC CORE USDM validation, d4k USDM validation and M11 doc validation (issue 57)
 
 <h5>Release 0.36.0, 2026-04-11</h5>
 
