@@ -1,166 +1,204 @@
 # Study Definitions Workbench
 
-The swiss army knife for USDM study definitions
+The swiss army knife for USDM study definitions — a FastAPI + HTMX web
+application for managing clinical study data expressed in the CDISC
+TransCelerate USDM (Unified Study Definitions Model). Imports ICH M11
+`.docx` protocols, validates them against the M11 specification and
+against USDM rules (including CDISC CORE), exchanges studies as HL7
+FHIR M11 messages, and renders them in a set of comparison and
+protocol views.
 
-# Environment Variables -
+---
 
-The following variables are required for authentication and the server. Note that for a single user version the Auth0 variables can be blank:
+## Quickstart (local development)
 
-| Variable | Description |
-| :--- | :--- |
-| AUTH0_SESSION_SECRET | Session Secret |
-| AUTH0_DOMAIN  | Auth0 domain |
-| AUTH0_CLIENT_ID | Auth0 client id |
-| AUTH0_CLIENT_SECRET | Auth0 client secret |
-| AUTH0_AUDIENCE | Auth0 audience key |
-| AUTH0_MNGT_CLIENT_ID | Auth0 management API client id |
-| AUTH0_MNGT_CLIENT_SECRET | Auth0 management API client secret |
-| ROOT_URL | The server's base url. Can be set but deprecated |
-
-The following other environment varaibles are also required:
-
-| Variable | Description |
-| :--- | :--- |
-| MNT_PATH | The root mount path |
-| DATABASE_PATH | The path where the DB will reside |
-| DATABASE_NAME | The name of the database file, 'production.db' for example |
-| DATAFILE_PATH | The path where the datafiles will reside |
-| LOCALFILE_PATH | The path to where local files will reside within the volume |
-| CDISC_CORE_CACHE_PATH | The path for the CDISC CORE validation cache. Put it on the mounted volume (e.g. `/mnt/<name>/core_cache`) so the downloaded rules, JSONata files, XSD schemas, and CT packages survive container restarts. Leave unset to fall through to the USDM4 platform default (ephemeral in a container). |
-| ADDRESS_SERVER_URL | URL for the address server |
-| SINGLE_USER | 'True' for single user environment, 'False' otherwise |
-| FILE_PICKER | The file picker to be used, 'browser' for using the normal browser picker for file uploads or 'os' using a built in picker that access the server environment |
-
-# Fly Deployment
-
-## Deployment - Old Method
-
-Deploy to fly.io using the following:
-
-```
-fly launch --no-deploy -c <fly_production.toml | fly_staging.toml | ... > --ha=false
-fly secrets set -a <d4k-sdw | d4k-sdw-staging | ...>  ..... all the secrets, space separated, on one line ....
-fly deploy -c <fly_production.toml | fly_staging.toml | ... >
-````
-
-Notes:
-- Note the option for production, staging or other applications.
-- Run on one machine at the moment, sharing of file store is an issue as well as database. The ```-ha``` flag forces the use of a single machine. 
-- The ```-c``` flag forces the use of the correct configuration file.
-- Once deployed the -a d4k-sdw appplication name flag works
-
-Volumes:
-- A volumne is created as part of the deploy (from this bit in the ```.toml``` file)
-
-```
-[[mounts]]
-  source = '<name>'
-  destination = '/mnt/<name>'
+```bash
+pip install -r requirements.txt
+cp .env.example .env   # or edit the committed .env for local defaults
+./dev_server.sh        # runs uvicorn on :8000
 ```
 
-Using either 'sdw_data' or 'sdw_data_staging' for the names. This gives environment varaibles:
+`.env` ships with single-user defaults (`SINGLE_USER=True`, no Auth0
+required) and `mount/` sub-paths so the database, data files, local
+files, and CDISC CORE cache all land under `./mount` inside the repo.
 
-````
-fly secrets set MNT_PATH="/mnt/<name>"
-fly secrets set DATABASE_PATH="/mnt/<name>/database"
-fly secrets set DATABASE_NAME="production.db"
-fly secrets set DATAFILE_PATH="/mnt/<name>/datafiles"
-fly secrets set LOCALFILE_PATH="/mnt/<name>/localfiles"
-fly secrets set CDISC_CORE_CACHE_PATH="/mnt/<name>/core_cache"
+For the full deployment story — Docker Compose, Docker Run, Docker
+Desktop, Fly.io, persistent volumes, and which environment variables
+come pre-set inside the published Docker image — see
+[`docs/deployment.md`](docs/deployment.md).
+
+---
+
+## Environment Variables
+
+### Authentication (only required when `SINGLE_USER=False`)
+
+In single-user mode all Auth0 variables can be omitted entirely. In
+multi-user mode every variable below must be supplied.
+
+| Variable                   | Description                              |
+| :------------------------- | :--------------------------------------- |
+| `AUTH0_SESSION_SECRET`     | Session secret                           |
+| `AUTH0_DOMAIN`             | Auth0 domain                             |
+| `AUTH0_CLIENT_ID`          | Auth0 client id                          |
+| `AUTH0_CLIENT_SECRET`      | Auth0 client secret                      |
+| `AUTH0_AUDIENCE`           | Auth0 audience key                       |
+| `AUTH0_MNGT_CLIENT_ID`     | Auth0 management API client id           |
+| `AUTH0_MNGT_CLIENT_SECRET` | Auth0 management API client secret       |
+
+### Application
+
+| Variable                | Description                                                                                                                                                                                                                                                    |
+| :---------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SINGLE_USER`           | `True` for single-user mode (no auth), `False` for multi-user (Auth0 required)                                                                                                                                                                              |
+| `FILE_PICKER`           | `browser` for standard browser uploads, `os` for the built-in server-side picker                                                                                                                                                                            |
+| `ROOT_URL`              | The server's base URL (deprecated but still accepted)                                                                                                                                                                                                       |
+| `MNT_PATH`              | Root mount path for persistent storage                                                                                                                                                                                                                       |
+| `DATABASE_PATH`         | Directory where the SQLite database resides                                                                                                                                                                                                                  |
+| `DATABASE_NAME`         | Database filename (e.g. `production.db`)                                                                                                                                                                                                                     |
+| `DATAFILE_PATH`         | Directory for uploaded/generated data files                                                                                                                                                                                                                  |
+| `LOCALFILE_PATH`        | Directory for local working files within the volume                                                                                                                                                                                                          |
+| `CDISC_CORE_CACHE_PATH` | Directory for the CDISC CORE validation cache (rules, JSONata files, XSD schemas, CT packages). Put it on the mounted volume (e.g. `/mnt/<name>/core_cache`) so a cold cache — which can take several minutes to rebuild — survives container restarts. Leave unset to fall through to the USDM4 platform default (ephemeral in a container). |
+| `ADDRESS_SERVER_URL`    | URL for the external address server                                                                                                                                                                                                                          |
+
+When running via Docker, the `Dockerfile` pre-sets `MNT_PATH`,
+`DATABASE_PATH`, `DATABASE_NAME`, `DATAFILE_PATH`, `LOCALFILE_PATH`,
+`CDISC_CORE_CACHE_PATH`, and `ADDRESS_SERVER_URL`, so only
+`SINGLE_USER`, `FILE_PICKER`, `ROOT_URL`, and (if multi-user) the
+Auth0 variables need to be supplied externally.
+
+---
+
+## Docker (summary)
+
+SDW stores its database, data files, local files, and CDISC CORE
+cache under `/mount` inside the container — **a Docker volume must
+be mounted there or all data is lost on container stop**. There are
+two paths:
+
+### Docker Compose (recommended)
+
+```bash
+docker build . -t data4knowledge/sdw:latest
+docker compose up
 ```
-## Deployment - New Method
 
-Use the updated .toml files to use Docker images. This makes the build process much less prone to errors.
+`compose.yml` declares a named volume `sdw_data` mounted at `/mount`.
+Compose **creates it automatically on first `up` and reuses it on
+subsequent `up`s** — you do not need to run `docker volume create`.
+Use `docker compose down` to stop while keeping your data;
+`docker compose down -v` wipes the volume.
 
-## Separate Applications
-
-With ```fly```command line utility use ```-a <app name>``` to address the production and staging applications
-Note the separate ```.toml``` configuration files. Be careful when launching, they need to address the ```.toml``` files voa the ```-c``` flag
-
-# Docker
-
-## Login
+Set environment variables via a `.docker_env` file (referenced by
+`compose.yml`). Minimum for single-user mode:
 
 ```
-docker login
+SINGLE_USER=True
+FILE_PICKER=browser
 ```
 
-## Build & Run using Compose
+### Plain `docker run` (manual)
 
-```
-docker build . -t data4knowledge/sdw:latest 
-docker compose up   
-```
+If you're not using Compose, create the volume yourself first:
 
-Set the environment variables using a ```.docker_env``` file (this is named in the ```compose.yml``` file). Set the following environment variables
-
-- AUTH0_SESSION_SECRET
-- AUTH0_DOMAIN
-- AUTH0_AUDIENCE
-- AUTH0_CLIENT_ID
-- AUTH0_CLIENT_SECRET
-- AUTH0_MNGT_CLIENT_ID
-- AUTH0_MNGT_CLIENT_SECRET
-- SINGLE_USER
-- FILE_PICKER
-- ROOT_URL
-
-## Build and Run using Docker
-
-```
-docker build . -t data4knowledge/sdw:latest -t data4knowledge/sdw:<version>
+```bash
+docker build . -t data4knowledge/sdw:latest
 docker volume create sdw_data
-docker run -d  --mount source=sdw_data,target=/mount -p 8000:8000 data4knowledge/sdw:latest
+docker run -d \
+  --mount source=sdw_data,target=/mount \
+  -p 8000:8000 \
+  --env-file .env \
+  data4knowledge/sdw:latest
 ```
 
-Set the environment variables using a ```.env``` file.
+> **Heads-up:** The volume Compose manages and a volume you create
+> manually with `docker volume create sdw_data` are **not the same
+> volume** — Compose prefixes the name with the project directory.
+> Pick one path per environment and stick with it. See
+> [`docs/deployment.md`](docs/deployment.md) for the full walkthrough
+> and for Docker Desktop / Fly.io / multi-platform publishing.
 
-## Run using Docker Desktop
+---
 
-The image can also be run. obviously, using Docker desktop. Set the environment variables using the launch interface.
+## Fly.io (summary)
 
-## Multi Platform Builds
+Two environments, each with its own `.toml`:
 
-Note: 
-- Don't use "latest" at the moment. Put additional -t data4knowledge/sdw:<tag> within command detailed below
-- <tag> does NOT include a 'v'
+- `fly_production.toml` — app `d4k-sdw`
+- `fly_staging.toml` — app `d4k-sdw-staging`
 
-````
-docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:<tag> . --push
-docker manifest inspect data4knowledge/sdw:<tag>  
+Set secrets on one line:
+
+```bash
+fly secrets set -a d4k-sdw \
+  MNT_PATH="/mnt/sdw_data" \
+  DATABASE_PATH="/mnt/sdw_data/database" \
+  DATABASE_NAME="production.db" \
+  DATAFILE_PATH="/mnt/sdw_data/datafiles" \
+  LOCALFILE_PATH="/mnt/sdw_data/localfiles" \
+  CDISC_CORE_CACHE_PATH="/mnt/sdw_data/core_cache"
 ```
 
-As an example, if no latest build then and building v0.1.0 it would be (note no 'v' on docker tags)
+Deploy against the matching `.toml`:
 
+```bash
+fly deploy -c fly_production.toml
 ```
-docker buildx build --platform linux/amd64,linux/arm64 -t data4knowledge/sdw:0.1.0 . --push
+
+Full Fly.io walkthrough (volumes, single-machine constraint, staging
+vs production) lives in [`docs/deployment.md`](docs/deployment.md).
+
+---
+
+## Tests
+
+Two suites, with very different cost profiles:
+
+```bash
+# Unit tests — fast, safe to run any time
+python -m pytest --ignore=tests/playwright
+
+# Playwright end-to-end tests — require a running server + browser
+python -m pytest tests/playwright
 ```
 
-## Environment Variables with Docker Image
+Do **not** run pytest while the dev server is up — both processes
+share a SQLite database through a module-level singleton and test
+cleanup will wipe records the server depends on. See
+[`claude.md`](claude.md) (§ *Known issues*) for the root cause and
+planned fix.
 
-The following environment variables need to be set (The remainder are set within the docker file itself):
+---
 
-- AUTH0_SESSION_SECRET
-- AUTH0_DOMAIN
-- AUTH0_CLIENT_ID
-- AUTH0_CLIENT_SECRET
-- AUTH0_AUDIENCE
-- AUTH0_MNGT_CLIENT_ID
-- AUTH0_MNGT_CLIENT_SECRET
-- ROOT_URL
-- SINGLE_USER
-- FILE_PICKER 
+## Documentation
 
-For a single user environment the AUTH0 variables can be empty.
+- [`docs/deployment.md`](docs/deployment.md) — full deployment guide
+  (Docker Compose, Docker Run, Docker Desktop, Fly.io, volumes, env
+  vars).
+- [`docs/m11_validation.md`](docs/m11_validation.md) — M11 validation
+  UI end-to-end: import-time single-run validator, study-view
+  Validation tab, compare-view per-cell findings, standalone
+  `/validate/m11-docx` flow, routes, and templates.
+- [`docs/next_steps.md`](docs/next_steps.md) — running backlog of
+  scoped-but-not-shipped improvements.
+- [`docs/lessons_learned.md`](docs/lessons_learned.md) — durable
+  "don't step on this" notes from building SDW features (HTMX
+  patterns, DataFiles gotchas, the external-package cache persistence
+  story for CDISC CORE, etc.).
+- [`claude.md`](claude.md) — project orientation for contributors and
+  AI agents (architecture stance, test philosophy, known issues).
 
-# Deployment Checklist
+---
 
-- Unit tests pass
-- Deploy to Staging and check
-- Playwright tests pass
-- Deploy to Production and check
-- Build docker image (tagged with version and as latest)
-- Tag release in GitHub
-- Check pFDA
-- Write GitHub release note
-- Update version and release notes ready for the next release
+## Deployment Checklist
+
+1. Unit tests pass (`python -m pytest --ignore=tests/playwright`)
+2. Deploy to staging and verify
+3. Playwright end-to-end tests pass
+4. Deploy to production and verify
+5. Build and push the Docker image (tagged with version **and**
+   `latest`)
+6. Tag the release in GitHub
+7. Check pFDA
+8. Write GitHub release notes
+9. Update version and release notes for the next release

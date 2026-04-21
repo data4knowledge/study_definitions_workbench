@@ -53,7 +53,13 @@ The volume provides four directories (created automatically by the application o
 | `/mount/localfiles` | Local working files |
 | `/mount/core_cache` | CDISC CORE validation cache (rules, JSONata files, XSD schemas, CT packages) |
 
-You can create a named volume ahead of time, or let Docker Compose create one for you (see below).
+You have two ways to provide this volume — Docker Compose (Option 1) creates and manages it for you, or you create one by hand and mount it with `docker run` (Option 2). **These two paths produce independent volumes**; see the note under Option 2 if you're switching between them.
+
+To list existing volumes at any point:
+
+```bash
+docker volume ls
+```
 
 ---
 
@@ -74,7 +80,17 @@ This is the simplest way to run the application locally or on a single server. D
    docker compose up
    ```
 
-The `compose.yml` declares a named volume `sdw_data` and mounts it at `/mount` inside the container. Docker creates this volume on first run and reuses it on subsequent runs, so your data persists automatically.
+   Compose reads `compose.yml`, which declares a named volume `sdw_data` mounted at `/mount` inside the container. On the first `up`, Compose **creates the volume automatically** — you do not need to run `docker volume create` yourself. On every subsequent `up`, Compose **reuses the same volume**, so your database, data files, local files, and CDISC CORE cache all persist across container restarts and image upgrades.
+
+3. **Stop the container:**
+   ```bash
+   docker compose down       # stops containers, KEEPS the volume (and your data)
+   docker compose down -v    # stops containers AND DELETES the volume (data is gone)
+   ```
+
+   Use `down` for everyday restarts; only use `down -v` if you deliberately want a clean slate.
+
+**Volume naming note.** Compose prefixes the volume name with the project name, so `docker volume ls` will show something like `study_definitions_workbench_sdw_data`, not bare `sdw_data`. This only matters if you want to inspect, back up, or reuse the volume outside Compose — use the prefixed name in those commands.
 
 ---
 
@@ -97,12 +113,14 @@ docker run -d \
   data4knowledge/sdw:latest
 ```
 
-The `--mount source=sdw_data,target=/mount` flag connects the named volume to the container's `/mount` directory. As long as you use the same volume name (`sdw_data`) when restarting or upgrading the container, all database and file data is preserved.
+The `--mount source=sdw_data,target=/mount` flag connects the named volume to the container's `/mount` directory. As long as you use the same volume name (`sdw_data`) when restarting or upgrading the container, all database and file data is preserved. The volume is **not** deleted when you `docker stop` or `docker rm` the container — use `docker volume rm sdw_data` for that.
 
 To inspect or back up the volume:
 ```bash
 docker volume inspect sdw_data
 ```
+
+**This volume is independent of Compose's volume.** The bare `sdw_data` you create here is a different volume from the `<project>_sdw_data` that Compose creates in Option 1 — data does **not** flow between the two. If you start with Compose and later switch to manual `docker run` (or vice versa), your existing data stays with whichever path created it. Pick one path per environment and stick with it.
 
 ---
 
