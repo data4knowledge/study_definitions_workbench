@@ -480,8 +480,7 @@ def test_version_validation_non_m11(mocker, monkeypatch):
     response = client.get("/versions/1/validation")
     assert response.status_code == 200
     assert (
-        "M11 validation is only available for studies imported from an"
-        in response.text
+        "M11 validation is only available for studies imported from an" in response.text
     )
     assert mock_called(uc)
     assert mock_called(usv)
@@ -499,7 +498,11 @@ def test_version_validation_m11_no_file(mocker, monkeypatch):
 
     mocker.patch("app.routers.versions.USDMJson.__init__", new=custom_init)
     df = mocker.patch("app.routers.versions.DataFiles")
-    df.return_value.generic_path.return_value = ("/tmp/missing.json", "missing.json", False)
+    df.return_value.generic_path.return_value = (
+        "/tmp/missing.json",
+        "missing.json",
+        False,
+    )
     response = client.get("/versions/1/validation")
     assert response.status_code == 200
     assert "No M11 validation findings are stored" in response.text

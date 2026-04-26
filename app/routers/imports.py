@@ -254,16 +254,13 @@ async def import_m11_validation(
     messages: list[str] = []
     raw = DataFiles(file_import.uuid).read("m11_validation")
     if raw is None:
-        messages.append(
-            "No M11 validation findings are available for this import."
-        )
+        messages.append("No M11 validation findings are available for this import.")
     else:
         try:
             findings = json.loads(raw)
         except ValueError:
             messages.append(
-                "M11 validation file could not be decoded — "
-                "it may be corrupted."
+                "M11 validation file could not be decoded — it may be corrupted."
             )
     return templates.TemplateResponse(
         request,

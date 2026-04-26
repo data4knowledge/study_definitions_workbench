@@ -105,9 +105,7 @@ class TestAnnotate:
 
     def test_summary_carries_native_tooltip(self):
         html = '<div data-m11-element="Full Title">A Trial</div>'
-        finding = _finding(
-            rule="M11_001", message="Required element missing."
-        )
+        finding = _finding(rule="M11_001", message="Required element missing.")
         result = annotate(html, [finding])
         # ``title=`` on the summary gives users the rule essence on
         # hover without having to expand the <details>.
@@ -143,7 +141,7 @@ class TestAnnotate:
         # append markers inside matching targets.
         html = (
             '<table class="ich-m11-title-page-table">'
-            '<tr><td>Full Title</td>'
+            "<tr><td>Full Title</td>"
             '<td data-m11-element="Full Title"><p>Emicizumab study</p></td>'
             "</tr></table>"
         )
@@ -151,10 +149,7 @@ class TestAnnotate:
         assert 'class="ich-m11-title-page-table"' in result.html
         assert "<p>Emicizumab study</p>" in result.html
         # Marker nested inside the td.
-        assert (
-            'data-m11-element="Full Title"'
-            in result.html.split("m11-doc-marker")[0]
-        )
+        assert 'data-m11-element="Full Title"' in result.html.split("m11-doc-marker")[0]
 
     def test_renders_section_in_body_when_present(self):
         # The canonical row shape carries the document location in

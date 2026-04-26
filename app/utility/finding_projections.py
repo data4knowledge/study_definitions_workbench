@@ -203,6 +203,7 @@ def project_usdm_core_result(result: Any) -> list[dict]:
 
 # ---- CORE helpers -----------------------------------------------------
 
+
 def _format_core_error(error: Any) -> dict[str, Any]:
     """Flatten a raw CORE engine error dict to the flat shape the
     projection consumes.
@@ -243,8 +244,7 @@ def _format_core_error(error: Any) -> dict[str, Any]:
         for key in ("name", "sectionNumber", "sectionTitle"):
             if key in value:
                 formatted[key] = value[key]
-        skip = {"instanceType", "id", "path", "name",
-                "sectionNumber", "sectionTitle"}
+        skip = {"instanceType", "id", "path", "name", "sectionNumber", "sectionTitle"}
         extras = {k: v for k, v in value.items() if k not in skip}
         if extras:
             formatted["details"] = extras

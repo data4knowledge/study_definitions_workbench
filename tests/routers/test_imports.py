@@ -294,10 +294,7 @@ def test_import_m11_validation_no_file(mocker, monkeypatch):
     )
     response = client.get("/import/1/m11-validation")
     assert response.status_code == 200
-    assert (
-        "No M11 validation findings are available for this import."
-        in response.text
-    )
+    assert "No M11 validation findings are available for this import." in response.text
     # No download form when findings are empty
     assert 'formaction="/validate/download/csv"' not in response.text
     assert mock_called(uc)
@@ -318,10 +315,7 @@ def test_import_m11_validation_corrupted(mocker, monkeypatch):
     )
     response = client.get("/import/1/m11-validation")
     assert response.status_code == 200
-    assert (
-        "M11 validation file could not be decoded"
-        in response.text
-    )
+    assert "M11 validation file could not be decoded" in response.text
     assert mock_called(uc)
     assert mock_called(fif)
     assert mock_called(dfr)

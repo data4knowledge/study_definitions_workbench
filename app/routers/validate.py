@@ -224,9 +224,7 @@ async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: st
 
 
 @staticmethod
-async def _process_usdm_engine(
-    request: Request, user: User, source: str, engine: str
-):
+async def _process_usdm_engine(request: Request, user: User, source: str, engine: str):
     """Shared handler for the two USDM v4 validation flows.
 
     ``engine`` is ``"rules"`` (usdm4 Python rule library,
@@ -424,9 +422,7 @@ def _download_response(
     )
 
 
-@router.post(
-    "/download/csv", dependencies=[Depends(protect_endpoint)]
-)
+@router.post("/download/csv", dependencies=[Depends(protect_endpoint)])
 async def validate_download_csv(
     findings: str = Form(""),
     source_filename: str = Form("protocol.docx"),
@@ -441,9 +437,7 @@ async def validate_download_csv(
     )
 
 
-@router.post(
-    "/download/json", dependencies=[Depends(protect_endpoint)]
-)
+@router.post("/download/json", dependencies=[Depends(protect_endpoint)])
 async def validate_download_json(
     findings: str = Form(""),
     source_filename: str = Form("protocol.docx"),
@@ -458,9 +452,7 @@ async def validate_download_json(
     )
 
 
-@router.post(
-    "/download/md", dependencies=[Depends(protect_endpoint)]
-)
+@router.post("/download/md", dependencies=[Depends(protect_endpoint)])
 async def validate_download_md(
     findings: str = Form(""),
     source_filename: str = Form("protocol.docx"),
@@ -476,9 +468,7 @@ async def validate_download_md(
     )
 
 
-@router.post(
-    "/download/xlsx", dependencies=[Depends(protect_endpoint)]
-)
+@router.post("/download/xlsx", dependencies=[Depends(protect_endpoint)])
 async def validate_download_xlsx(
     findings: str = Form(""),
     source_filename: str = Form("protocol.docx"),

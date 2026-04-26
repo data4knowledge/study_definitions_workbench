@@ -268,16 +268,19 @@ class TestImportM11:
         ]
 
         # Mock the _study_parameters method to avoid the error with version.phases()
-        with patch.object(
-            processor, "_study_parameters", return_value={"name": "test-study-M11_DOCX"}
-        ), patch(
-            "app.imports.import_processors.M11Validator"
-        ) as mock_validator, patch(
-            "app.imports.import_processors.project_m11_result",
-            return_value=sample_findings,
-        ) as mock_project, patch(
-            "app.imports.import_processors.DataFiles"
-        ) as mock_data_files:
+        with (
+            patch.object(
+                processor,
+                "_study_parameters",
+                return_value={"name": "test-study-M11_DOCX"},
+            ),
+            patch("app.imports.import_processors.M11Validator") as mock_validator,
+            patch(
+                "app.imports.import_processors.project_m11_result",
+                return_value=sample_findings,
+            ) as mock_project,
+            patch("app.imports.import_processors.DataFiles") as mock_data_files,
+        ):
             mock_validator.return_value.validate.return_value = MagicMock()
             # Execute
             result = await processor.process()
@@ -305,6 +308,7 @@ class TestImportM11:
         save_call = mock_data_files.return_value.save.call_args
         assert save_call.args[0] == "m11_validation"
         import json as _json
+
         assert _json.loads(save_call.args[1]) == sample_findings
         assert processor.m11_validation == sample_findings
 
@@ -315,13 +319,13 @@ class TestImportM11:
         """A crash in the M11 validation step must not abort the
         import — validator output is advisory, not a gate."""
         processor = ImportM11("M11_DOCX", "test-uuid", "/path/to/file")
-        with patch.object(
-            processor, "_study_parameters", return_value={"name": "test"}
-        ), patch(
-            "app.imports.import_processors.M11Validator",
-            side_effect=RuntimeError("boom"),
-        ), patch(
-            "app.imports.import_processors.DataFiles"
+        with (
+            patch.object(processor, "_study_parameters", return_value={"name": "test"}),
+            patch(
+                "app.imports.import_processors.M11Validator",
+                side_effect=RuntimeError("boom"),
+            ),
+            patch("app.imports.import_processors.DataFiles"),
         ):
             result = await processor.process()
 

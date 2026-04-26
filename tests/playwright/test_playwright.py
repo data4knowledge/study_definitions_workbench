@@ -880,9 +880,7 @@ def test_validate_menu(playwright: Playwright) -> None:
     expect(page.locator("#navBarMain")).to_contain_text(
         "USDM v4 — CDISC CORE Engine (.json)"
     )
-    expect(page.locator("#navBarMain")).to_contain_text(
-        "USDM v4 — d4k Engine (.json)"
-    )
+    expect(page.locator("#navBarMain")).to_contain_text("USDM v4 — d4k Engine (.json)")
     expect(page.locator("#navBarMain")).to_contain_text("ICH M11 Protocol (.docx)")
 
     context.close()

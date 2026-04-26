@@ -1176,12 +1176,14 @@ class TestImportErrors:
             "level": "Warning",
             "message": "M11 normalisation: 'Trial Phase' coerced",
             "type": "m11_normalization_record",
-            "extra": str({
-                "element": "Trial Phase",
-                "source": "Phase III",
-                "normalised": "Phase 3",
-                "kind": "coerced",
-            }),
+            "extra": str(
+                {
+                    "element": "Trial Phase",
+                    "source": "Phase III",
+                    "normalised": "Phase 3",
+                    "kind": "coerced",
+                }
+            ),
             "timestamp": "2026-04-19 14:00:00.000000",
             "location": "{}",
         }
@@ -1205,12 +1207,14 @@ class TestImportErrors:
             "level": "Error",
             "message": "Amendment Identifier contradicts Original=Yes",
             "type": "m11_contradiction_record",
-            "extra": str({
-                "element": "Amendment Identifier",
-                "source_value": "Protocol Version 1",
-                "other_element": "Original Protocol Indicator",
-                "other_value": "Yes",
-            }),
+            "extra": str(
+                {
+                    "element": "Amendment Identifier",
+                    "source_value": "Protocol Version 1",
+                    "other_element": "Original Protocol Indicator",
+                    "other_value": "Yes",
+                }
+            ),
             "timestamp": "2026-04-19 14:00:00.000000",
             "location": "{}",
         }
@@ -1224,7 +1228,12 @@ class TestImportErrors:
     def test_rehydrates_multiple_rows_in_order(self, tmp_path):
         rows = [
             {"level": "Info", "message": "first", "type": "tag_a", "extra": ""},
-            {"level": "Warning", "message": "second", "type": "tag_b", "extra": "{'k': 1}"},
+            {
+                "level": "Warning",
+                "message": "second",
+                "type": "tag_b",
+                "extra": "{'k': 1}",
+            },
             {"level": "Error", "message": "third", "type": "tag_c", "extra": ""},
         ]
         usdm = self._with_errors_csv(tmp_path, rows)

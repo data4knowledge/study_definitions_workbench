@@ -386,12 +386,15 @@ async def test_download_xlsx_returns_workbook(monkeypatch):
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("fmt,content_marker", [
-    ("csv", b"rule_id,severity"),
-    ("json", b"[]"),
-    ("md", b"_No findings._"),
-    ("xlsx", b"PK"),
-])
+@pytest.mark.parametrize(
+    "fmt,content_marker",
+    [
+        ("csv", b"rule_id,severity"),
+        ("json", b"[]"),
+        ("md", b"_No findings._"),
+        ("xlsx", b"PK"),
+    ],
+)
 async def test_download_empty_findings_is_valid(monkeypatch, fmt, content_marker):
     """Zero findings is a normal case — every route must return a
     valid-but-empty file rather than erroring. Marker bytes vary per

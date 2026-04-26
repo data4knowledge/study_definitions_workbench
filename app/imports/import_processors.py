@@ -152,9 +152,7 @@ class ImportM11(ImportProcessorBase):
             validator_errors = M11Errors()
             results = M11Validator(self.full_path, validator_errors).validate()
             self.m11_validation = project_m11_result(results)
-            DataFiles(self.uuid).save(
-                "m11_validation", json.dumps(self.m11_validation)
-            )
+            DataFiles(self.uuid).save("m11_validation", json.dumps(self.m11_validation))
         except Exception as e:
             application_logger.exception(
                 "Exception raised during M11 validation step", e
@@ -316,7 +314,5 @@ class ImportUSDM4(ImportProcessorBase):
         # enough that the wrapper can't surface a sponsor / title /
         # phase, we still land the study with placeholder values so
         # the user can open it and see the persisted findings.
-        self.study_parameters = (
-            self._study_parameters() or self._fallback_parameters()
-        )
+        self.study_parameters = self._study_parameters() or self._fallback_parameters()
         return self.success

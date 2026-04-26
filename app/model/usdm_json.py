@@ -128,9 +128,7 @@ class USDMJson:
             with open(full_path, newline="") as handle:
                 reader = csv.DictReader(handle)
                 for row in reader:
-                    level = level_by_label.get(
-                        row.get("level") or "", Errors.INFO
-                    )
+                    level = level_by_label.get(row.get("level") or "", Errors.INFO)
                     extra = self._parse_dict_repr(row.get("extra"))
                     errors.add(
                         row.get("message") or "",
