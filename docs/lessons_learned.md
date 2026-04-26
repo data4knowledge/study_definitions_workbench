@@ -430,3 +430,42 @@ config/env/mount plumbing you use for your own persistent files — and
 teach any sweep/cleanup logic to preserve it. A cache that's correct
 locally but ephemeral in production is a recurring-cost bug that
 won't show up until the first restart after a deploy.**
+
+
+## 16. USDM rules validation at import time is advisory, not a gate
+
+`ImportUSDM3` and `ImportUSDM4` originally treated a USDM rules failure
+as fatal: `self.success = False`, set `fatal_error`, the import never
+landed in the studies list. The USDM v4 rules library is now active
+enough that real-world files routinely fail at least one rule, which
+meant the gate was rejecting files the user actually needed to look at
+in the workbench (often *because* they don't conform yet).
+
+Both processors now run validation, persist the findings to the errors
+file via the existing `ImportManager` save, and proceed to create the
+study record regardless of the rule outcome. Parameter extraction
+(`_study_parameters`) is also best-effort — when the wrapper or the
+high-level accessors (`first_version`, `phases`, `official_title_text`,
+…) raise on a structurally non-conforming file, the processor falls
+back to `_fallback_parameters()` (an empty-string dict) so the import
+still lands. `Study.study_and_version` already synthesises a record
+name via `_set_study_name(file_import)` when the supplied `name` is
+empty, so this works end-to-end.
+
+The only path that still surfaces a fatal error is an `ImportUSDM3`
+v3 → v4 conversion crash. Without a v4 file there's nothing to save —
+we keep the v3 rule findings as the diagnostic the user can act on.
+
+The findings remain visible to the user via the existing errors-file
+download and the study view. Don't reinstate the gate without first
+finding a way to surface findings as a soft warning that lets the
+user proceed — the original gate was protecting the studies list from
+"broken" data, but in practice it was hiding the data the user needed
+to fix.
+
+**Lesson: Validation that the user already has another way to see and
+act on shouldn't double as an admission gate. If a check is advisory
+in spirit (you're informing, not refusing), implement it advisory in
+code — persist the findings, surface them, and let the user proceed.
+Gates that mix "tell me what's wrong" and "refuse to load" punish the
+exact users who most need the diagnostic.**

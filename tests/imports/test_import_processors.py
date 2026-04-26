@@ -470,11 +470,19 @@ class TestImportFhirPRISM3:
 
 
 class TestImportUSDM3:
-    """Tests for the ImportUSDM3 class."""
+    """Tests for the ImportUSDM3 class.
+
+    The import contract for v3 is: always run v3 validation, always
+    convert to v4, always run v4 validation, always extract parameters.
+    Validation findings are captured in ``processor.errors`` (sourced
+    from the v4 results — that's the file we keep) but are advisory:
+    they do not fail the import. The only blocking failures are a
+    conversion crash and a missing study-parameter dict.
+    """
 
     @pytest.mark.asyncio
     async def test_process(self, mock_data_files, mock_usdm3, mock_usdm4):
-        """Test process method."""
+        """Happy path — both validations clean, conversion succeeds."""
         # Setup
         processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
 
@@ -497,47 +505,98 @@ class TestImportUSDM3:
             processor.usdm
             == mock_usdm3.return_value.convert.return_value.to_json.return_value
         )
+        # Errors come from the v4 validation pass — that's the file
+        # that's stored, so its rule output is what users will be
+        # working from.
         assert (
             processor.errors
-            == mock_usdm3.return_value.validate.return_value.to_dict.return_value
+            == mock_usdm4.return_value.validate.return_value.to_dict.return_value
         )
         assert processor.success
         assert processor.fatal_error is None
 
     @pytest.mark.asyncio
-    async def test_process_error(self, mock_data_files, mock_usdm3):
-        """Test process method."""
+    async def test_process_v3_validation_failure_does_not_block(
+        self, mock_data_files, mock_usdm3, mock_usdm4
+    ):
+        """v3 rule failures used to block; they're now advisory. The
+        import proceeds through conversion and v4 validation regardless
+        of what the v3 engine reports."""
         instance = mock_usdm3.return_value
         instance.validate.return_value.passed_or_not_implemented = lambda: False
         instance.validate.return_value.to_dict.return_value = {
             "errors": [{"status": "Failure"}]
         }
 
-        # Setup
         processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
+        result = await processor.process()
 
-        # Execute with patch to avoid file not found error
-        with patch("usdm4.USDM4.convert") as _:
-            result = await processor.process()
+        assert result
+        assert processor.success
+        assert processor.fatal_error is None
+        # Conversion and v4 validation must still run on a v3 failure —
+        # that's the whole point of the gate being lifted.
+        mock_usdm4.return_value.convert.assert_called_once_with("/path/to/file")
+        mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
 
-        # Assert
+    @pytest.mark.asyncio
+    async def test_process_v4_validation_failure_does_not_block(
+        self, mock_data_files, mock_usdm3, mock_usdm4
+    ):
+        """Same contract as v3: v4 rule failures are persisted but do
+        not fail the import."""
+        instance = mock_usdm4.return_value
+        instance.validate.return_value.passed_or_not_implemented = lambda: False
+        instance.validate.return_value.to_dict.return_value = {
+            "errors": [{"status": "Failure"}]
+        }
+
+        processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
+        result = await processor.process()
+
+        assert result
+        assert processor.success
+        assert processor.fatal_error is None
+        assert processor.errors == {"errors": [{"status": "Failure"}]}
+
+    @pytest.mark.asyncio
+    async def test_process_conversion_crash_blocks(
+        self, mock_data_files, mock_usdm3, mock_usdm4
+    ):
+        """A v3→v4 conversion crash is a structural failure — without a
+        v4 file we have nothing to anchor a study record to, so the
+        import does fail. The diagnostic falls back to the v3 rule
+        output so the user has something to act on."""
+        mock_usdm3.return_value.validate.return_value.to_dict.return_value = {
+            "errors": [{"status": "v3 issue"}]
+        }
+        mock_usdm4.return_value.convert.side_effect = ValueError("bad input")
+
+        processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
+        result = await processor.process()
+
         assert not result
-        mock_data_files.assert_called_once_with("test-uuid")
-        mock_usdm3.assert_called_once()
-        mock_usdm3.return_value.validate.assert_called_once_with("/path/to/file")
         assert not processor.success
-        assert (
-            processor.fatal_error
-            == "USDM v3 validation failed. Check the file using the validate functionality"
-        )
+        assert processor.fatal_error is not None
+        assert "conversion failed" in processor.fatal_error
+        # v3 findings are surfaced when conversion blows up.
+        assert processor.errors == {"errors": [{"status": "v3 issue"}]}
 
 
 class TestImportUSDM:
-    """Tests for the ImportUSDM class."""
+    """Tests for the ImportUSDM class.
+
+    The v4 import contract: validate, persist findings to
+    ``processor.errors``, extract parameters (with a fallback to
+    placeholder values when extraction raises), succeed. The processor
+    never sets ``success = False`` — validation findings are advisory
+    and even a structurally non-conforming file lands so the user can
+    review it via the study view + Errors File download.
+    """
 
     @pytest.mark.asyncio
     async def test_process(self, mock_data_files, mock_usdm4):
-        """Test process method."""
+        """Happy path."""
         # Setup
         processor = ImportUSDM4("USDM4_JSON", "test-uuid", "/path/to/file")
 
@@ -558,27 +617,54 @@ class TestImportUSDM:
         )
 
     @pytest.mark.asyncio
-    async def test_process_error(self, mock_data_files, mock_usdm4):
-        """Test process method."""
+    async def test_process_validation_failure_does_not_block(
+        self, mock_data_files, mock_usdm4
+    ):
+        """Validation findings are persisted but don't fail the
+        import. Users review the imported study and remediate from
+        there — the gate lifted to support exactly this workflow."""
         instance = mock_usdm4.return_value
         instance.validate.return_value.passed_or_not_implemented = lambda: False
         instance.validate.return_value.to_dict.return_value = {
             "errors": [{"status": "Failure"}]
         }
 
-        # Setup
         processor = ImportUSDM4("USDM4_JSON", "test-uuid", "/path/to/file")
-
-        # Execute
         result = await processor.process()
 
-        # Assert
-        assert not result
-        mock_data_files.assert_called_once_with("test-uuid")
-        mock_usdm4.assert_called_once()
-        mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
-        assert not processor.success
-        assert (
-            processor.fatal_error
-            == "USDM v4 validation failed. Check the file using the validate functionality"
-        )
+        assert result
+        assert processor.success
+        assert processor.fatal_error is None
+        # Findings are still persisted on the processor so the import
+        # manager can write them to the errors file.
+        assert processor.errors == {"errors": [{"status": "Failure"}]}
+
+    @pytest.mark.asyncio
+    async def test_process_missing_parameters_falls_back(
+        self, mock_data_files, mock_usdm4
+    ):
+        """When ``_study_parameters`` returns ``None`` (the wrapper /
+        accessors raised on a structurally non-conforming file), the
+        processor falls back to a placeholder parameters dict so the
+        import still lands. ``Study.study_and_version`` synthesises a
+        name from the file_import when the placeholder leaves it
+        empty, so downstream consumers cope."""
+        processor = ImportUSDM4("USDM4_JSON", "test-uuid", "/path/to/file")
+
+        with patch.object(ImportUSDM4, "_study_parameters", return_value=None):
+            result = await processor.process()
+
+        assert result
+        assert processor.success
+        assert processor.fatal_error is None
+        # Fallback parameters are a dict with the canonical keys
+        # populated to empty strings — that's the contract
+        # ``Study.study_and_version`` reads against.
+        assert processor.study_parameters == {
+            "name": "",
+            "phase": "",
+            "full_title": "",
+            "sponsor_identifier": "",
+            "nct_identifier": "",
+            "sponsor": "",
+        }

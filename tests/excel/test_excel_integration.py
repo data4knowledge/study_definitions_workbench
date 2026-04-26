@@ -3,7 +3,7 @@ from tests.files.files import read_json, write_json, read_excel
 from usdm_db import USDMDb
 from app.model.file_handling.data_files import DataFiles
 
-SAVE = True
+SAVE = False
 
 
 def _run_test(name, save=False):

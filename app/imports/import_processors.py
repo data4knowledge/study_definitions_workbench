@@ -73,6 +73,29 @@ class ImportProcessorBase:
         value = object_path.get(path)
         return value if value else ""
 
+    def _fallback_parameters(self) -> dict:
+        """Synthesize a minimal study-parameters dict for files where
+        the real fields can't be extracted.
+
+        Used when a USDM file is structurally non-conforming enough that
+        ``_study_parameters`` raises while reaching for ``first_version``,
+        ``official_title_text``, etc. Lets the import still land — the
+        user can inspect the file and the persisted findings from the
+        study view rather than being shut out at the door.
+
+        ``name`` is left empty on purpose so ``Study.study_and_version``
+        falls through to ``_set_study_name`` and synthesizes one from
+        the file_import (matching how malformed files were named even
+        before this fallback existed)."""
+        return {
+            "name": "",
+            "phase": "",
+            "full_title": "",
+            "sponsor_identifier": "",
+            "nct_identifier": "",
+            "sponsor": "",
+        }
+
     def _blank_extra(self):
         return {
             "amendment": {
@@ -213,45 +236,87 @@ class ImportFhirPRISM3(ImportProcessorBase):
 
 
 class ImportUSDM3(ImportProcessorBase):
+    """Import a USDM v3 JSON file.
+
+    Runs the v3 rules library for diagnostics, converts to v4, runs the
+    v4 rules library on the converted file, then extracts study
+    parameters (falling back to a minimal placeholder dict if the file
+    is non-conforming enough that the parameter accessors raise).
+    Validation findings are persisted to the errors file (via
+    :class:`ImportManager`) but the import always lands — findings are
+    advisory and the user reviews them via the study view.
+
+    The only path that still surfaces a fatal error is a v3 → v4
+    conversion crash: without a v4 file we have nothing to save.
+    """
+
     async def process(self) -> bool:
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
         usdm3 = USDM3()
-        results: RulesValidationResults = usdm3.validate(full_path)
-        if results.passed_or_not_implemented():
+        # Run v3 validation for the record. Findings are kept in scope
+        # so the v3-side errors surface if conversion crashes before we
+        # have a v4 file to validate against.
+        v3_results: RulesValidationResults = usdm3.validate(full_path)
+        try:
             usdm4 = _usdm4()
             wrapper = usdm4.convert(full_path)
             self.usdm = wrapper.to_json()
             data_files.save("usdm", self.usdm)  # Save USDM in new version
             full_path, filename, exists = data_files.path("usdm")
-            results: RulesValidationResults = usdm4.validate(full_path)
-            self.errors = results.to_dict()
-            if results.passed_or_not_implemented():
-                self.study_parameters = self._study_parameters()
-            else:  # pragma: no cover
-                self.success = False
-                self.fatal_error = "USDM v4 validation failed. Check the file using the validate functionality"
-        else:
-            self.errors = results.to_dict()
+            v4_results: RulesValidationResults = usdm4.validate(full_path)
+            # The v4 errors are the more actionable diagnostic — the
+            # converted file is what's stored, so its rule output is
+            # what users will be remediating against.
+            self.errors = v4_results.to_dict()
+            # Parameter extraction is best-effort. Files with rule
+            # violations may also have structural issues that make the
+            # high-level accessors (``first_version``, ``phases``, ...)
+            # raise; the fallback gives us a placeholder so the study
+            # still lands and can be reviewed.
+            self.study_parameters = (
+                self._study_parameters() or self._fallback_parameters()
+            )
+        except Exception as e:
+            # v3 → v4 conversion crashed. Without a v4 file we have
+            # nothing to anchor a study record to, so the import does
+            # have to stop here. Persist the v3 findings as the
+            # diagnostic the user can act on.
+            application_logger.exception("USDM v3 → v4 conversion failed", e)
+            self.errors = v3_results.to_dict()
             self.success = False
-            self.fatal_error = "USDM v3 validation failed. Check the file using the validate functionality"
+            self.fatal_error = (
+                "USDM v3 → v4 conversion failed; cannot import this file. "
+                "Check the file using the validate functionality."
+            )
         application_logger.info(self.errors)
         return self.success
 
 
 class ImportUSDM4(ImportProcessorBase):
+    """Import a USDM v4 JSON file.
+
+    Runs the v4 rules library for diagnostics and persists the findings
+    to the errors file via :class:`ImportManager`. The import always
+    succeeds when the file reaches this processor — validation findings
+    are advisory, and even a parameter-extraction failure (caused by a
+    structurally non-conforming file) falls back to a placeholder dict
+    rather than blocking. The user reviews the imported study and the
+    persisted findings to figure out what's wrong.
+    """
+
     async def process(self) -> bool:
         data_files = DataFiles(self.uuid)
         full_path, filename, exists = data_files.path("usdm")
         self.usdm = data_files.read("usdm")
         usdm4 = _usdm4()
         results: RulesValidationResults = usdm4.validate(full_path)
-        # application_logger.info(results.to_dict(sel.Errors.DEBUG))
         self.errors = results.to_dict()
-        # data_files.save("errors", self.errors)
-        if results.passed_or_not_implemented():
-            self.study_parameters = self._study_parameters()
-        else:
-            self.success = False
-            self.fatal_error = "USDM v4 validation failed. Check the file using the validate functionality"
+        # Best-effort parameter extraction; if the file is malformed
+        # enough that the wrapper can't surface a sponsor / title /
+        # phase, we still land the study with placeholder values so
+        # the user can open it and see the persisted findings.
+        self.study_parameters = (
+            self._study_parameters() or self._fallback_parameters()
+        )
         return self.success

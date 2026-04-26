@@ -688,7 +688,15 @@ def test_import_usdm(playwright: Playwright) -> None:
 
 
 @pytest.mark.playwright
-def test_import_usdm_errors(playwright: Playwright) -> None:
+def test_import_usdm_with_validation_findings(playwright: Playwright) -> None:
+    """USDM v3 / v4 files with rule violations import successfully and
+    their findings remain downloadable via the Errors File link.
+
+    USDM rules validation is advisory at import time (see
+    ``docs/lessons_learned.md`` lesson 16): findings are persisted to
+    the errors file but do not gate the import. This test pins both
+    halves of that contract — the success message lands AND the
+    persisted findings are still streamed by ``/import/{id}/errors``."""
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -698,12 +706,13 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     login(page)
     delete_db(page)
 
+    # USDM v3 file with rule failures — used to be rejected, now lands.
     load_usdm(
         page,
         path,
         "tests/test_files/usdm3/errors.json",
         "3",
-        "Error: Error encountered",
+        "Success: Import of",
     )
 
     page.get_by_role("link").first.click()
@@ -714,13 +723,24 @@ def test_import_usdm_errors(playwright: Playwright) -> None:
     _ = download_info.value
     page.get_by_role("link", name=" Back").click()
 
+    # Same contract for USDM v4 — rule failures, but the import still
+    # succeeds and the errors file is still downloadable.
     load_usdm(
         page,
         path,
         "tests/test_files/usdm4/errors.json",
         "4",
-        "Error: Error encountered",
+        "Success: Import of",
     )
+
+    page.get_by_role("link").first.click()
+    page.get_by_role("button", name=" Import").click()
+    page.get_by_role("link", name="Import Status").click()
+    # Two imports in this run (v3 then v4), so the v4 row is the
+    # second Errors File link in the status table.
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name=" Errors File").nth(1).click()
+    _ = download_info.value
 
     context.close()
     browser.close()
@@ -826,6 +846,140 @@ def test_json_explorer(playwright: Playwright) -> None:
     page.locator("circle").first.click()
     expect(page.locator("#detailsPanelTitle")).to_contain_text("Activity")
     expect(page.locator("#detailsContent")).to_contain_text("Activity_1")
+
+    context.close()
+    browser.close()
+
+
+# --- Validate menu ---------------------------------------------------------
+#
+# Three quick smoke tests for the Validate dropdown. They confirm the menu
+# surfaces the three engines, that the CDISC CORE and d4k Engine USDM v4
+# routes render their results partial after upload, and that the M11 docx
+# route does the same. We deliberately don't assert on specific rule ids
+# or finding counts — the engines evolve and this layer is about the menu
+# wiring + results rendering, not the rule content. Findings detail is
+# already covered by the unit tests under tests/routers/test_validate.py.
+#
+# Timeouts: USDM rules / M11 docx finish in seconds; CDISC CORE can take
+# several minutes on a cold cache (see ``USDM4.validate_core``). The CORE
+# test therefore allows a generous timeout.
+
+
+@pytest.mark.playwright
+def test_validate_menu(playwright: Playwright) -> None:
+    """The Validate dropdown surfaces all three engines with stable labels."""
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto(url)
+
+    login(page)
+
+    page.get_by_role("button", name=" Validate").click()
+    expect(page.locator("#navBarMain")).to_contain_text(
+        "USDM v4 — CDISC CORE Engine (.json)"
+    )
+    expect(page.locator("#navBarMain")).to_contain_text(
+        "USDM v4 — d4k Engine (.json)"
+    )
+    expect(page.locator("#navBarMain")).to_contain_text("ICH M11 Protocol (.docx)")
+
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
+def test_validate_usdm_d4k(playwright: Playwright) -> None:
+    """USDM v4 — d4k Engine: pick a clean USDM4 JSON, run validation,
+    confirm the results partial renders. We don't pin to specific
+    finding content — the engine evolves; what we care about here is
+    that the menu link routes correctly and the HTMX swap returns a
+    results fragment. The most reliable "swap completed" signal is the
+    upload form disappearing (``hx-swap='outerHTML'`` on ``#form_div``
+    removes the form unconditionally on a successful response)."""
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+
+    page.get_by_role("button", name=" Validate").click()
+    page.get_by_role("link", name="USDM v4 — d4k Engine (.json)").click()
+    expect(page.locator("h4")).to_contain_text("Validate USDM JSON")
+    page.set_input_files(
+        "#files", os.path.join(path, "tests/test_files/usdm4/no_errors.json")
+    )
+    page.locator("text = Upload File(s)").last.click()
+    # Wait for HTMX to remove ``#form_div`` — that's the swap-completed
+    # signal and is independent of finding count or template wording.
+    expect(page.locator("#form_div")).to_have_count(0, timeout=180_000)
+
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
+def test_validate_usdm_core(playwright: Playwright) -> None:
+    """USDM v4 — CDISC CORE Engine: same shape as the d4k test, but
+    against the CORE engine. CORE downloads JSONata files / schemas /
+    rules / CT packages on first run, which can take several minutes
+    on a cold cache (subsequent runs hit the persistent cache directory
+    and complete much faster). Timeout sized so a warm-cache CI box
+    finishes well within budget without a cold run holding the suite
+    hostage indefinitely."""
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+
+    page.get_by_role("button", name=" Validate").click()
+    page.get_by_role("link", name="USDM v4 — CDISC CORE Engine (.json)").click()
+    expect(page.locator("h4")).to_contain_text("Validate USDM JSON")
+    page.set_input_files(
+        "#files", os.path.join(path, "tests/test_files/usdm4/no_errors.json")
+    )
+    page.locator("text = Upload File(s)").last.click()
+    expect(page.locator("#form_div")).to_have_count(0, timeout=300_000)
+
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
+def test_validate_m11(playwright: Playwright) -> None:
+    """ICH M11 Protocol: drive the M11Validator route with a known-good
+    sample DOCX. Confirms the picker page loads, the upload reaches the
+    validator, and the M11 results partial swaps the OOB card subtitle
+    in with the uploaded filename — that subtitle is set unconditionally
+    by ``m11_docx_results.html`` whenever the route returns, regardless
+    of how many findings the engine produced."""
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+
+    page.get_by_role("button", name=" Validate").click()
+    page.get_by_role("link", name="ICH M11 Protocol (.docx)").click()
+    expect(page.locator("h4")).to_contain_text("Validate M11 Protocol")
+    page.set_input_files(
+        "#files", os.path.join(path, "tests/test_files/m11/RadVax/RadVax.docx")
+    )
+    page.locator("text = Upload File(s)").last.click()
+    # The OOB-swapped subtitle is the most reliable "results rendered"
+    # signal — it carries the uploaded filename and is set on every
+    # success path through ``_process_m11_docx``.
+    expect(page.locator("#card_subtitle")).to_contain_text(
+        "RadVax.docx", timeout=180_000
+    )
 
     context.close()
     browser.close()
