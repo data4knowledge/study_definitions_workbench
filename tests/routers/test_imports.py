@@ -269,7 +269,9 @@ def test_import_m11_validation(mocker, monkeypatch):
     assert "M11 Validation Findings" in body
     assert "M11_001" in body
     assert "Full Title" in body
-    assert "Required element 'Full Title' is missing." in body
+    # Jinja autoescape converts apostrophes to ``&#39;`` in HTML output —
+    # the rendered cell carries the escaped form, not the raw string.
+    assert "Required element &#39;Full Title&#39; is missing." in body
     # Download form is present when findings are non-empty
     assert 'formaction="/validate/download/csv"' in body
     assert 'value="m11-findings"' in body

@@ -49,7 +49,7 @@
               "id": "StudyAmendmentReason_1",
               "extensionAttributes": [],
               "code": {
-                "id": "Code_40",
+                "id": "Code_42",
                 "extensionAttributes": [],
                 "code": "C17649",
                 "codeSystem": "http://www.cdisc.org",
@@ -65,7 +65,7 @@
                 "id": "StudyAmendmentReason_2",
                 "extensionAttributes": [],
                 "code": {
-                  "id": "Code_41",
+                  "id": "Code_43",
                   "extensionAttributes": [],
                   "code": "C17649",
                   "codeSystem": "http://www.cdisc.org",
@@ -208,7 +208,7 @@
                 "id": "StudyAmendmentImpact_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_43",
+                  "id": "Code_45",
                   "extensionAttributes": [],
                   "code": "C215665",
                   "codeSystem": "http://www.cdisc.org",
@@ -225,7 +225,7 @@
                 "id": "StudyAmendmentImpact_2",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_44",
+                  "id": "Code_46",
                   "extensionAttributes": [],
                   "code": "C215666",
                   "codeSystem": "http://www.cdisc.org",
@@ -242,7 +242,7 @@
                 "id": "StudyAmendmentImpact_3",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_45",
+                  "id": "Code_47",
                   "extensionAttributes": [],
                   "code": "C215667",
                   "codeSystem": "http://www.cdisc.org",
@@ -259,7 +259,7 @@
                 "id": "StudyAmendmentImpact_4",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_46",
+                  "id": "Code_48",
                   "extensionAttributes": [],
                   "code": "C215668",
                   "codeSystem": "http://www.cdisc.org",
@@ -278,7 +278,7 @@
                 "id": "GeographicScope_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_42",
+                  "id": "Code_44",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -305,7 +305,7 @@
                     "id": "AliasCode_1",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_48",
+                      "id": "Code_50",
                       "extensionAttributes": [],
                       "code": "C25613",
                       "codeSystem": "http://www.cdisc.org",
@@ -322,7 +322,7 @@
                   "id": "GeographicScope_2",
                   "extensionAttributes": [],
                   "type": {
-                    "id": "Code_47",
+                    "id": "Code_49",
                     "extensionAttributes": [],
                     "code": "C68846",
                     "codeSystem": "http://www.cdisc.org",
@@ -452,7 +452,7 @@
               "id": "AliasCode_2",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_78",
+                "id": "Code_81",
                 "extensionAttributes": [],
                 "code": "C15602",
                 "codeSystem": "http://www.cdisc.org",
@@ -473,7 +473,7 @@
                 "label": "-2 to 0",
                 "description": "Encounter -2 to 0",
                 "type": {
-                  "id": "Code_52",
+                  "id": "Code_54",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -486,7 +486,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_53",
+                    "id": "Code_55",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -497,7 +497,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_54",
+                    "id": "Code_56",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -518,7 +518,7 @@
                 "label": "1",
                 "description": "Encounter 1",
                 "type": {
-                  "id": "Code_55",
+                  "id": "Code_57",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -531,7 +531,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_56",
+                    "id": "Code_58",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -542,7 +542,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_57",
+                    "id": "Code_59",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -563,7 +563,7 @@
                 "label": "1",
                 "description": "Encounter 1",
                 "type": {
-                  "id": "Code_58",
+                  "id": "Code_60",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -576,7 +576,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_59",
+                    "id": "Code_61",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -587,7 +587,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_60",
+                    "id": "Code_62",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -608,7 +608,7 @@
                 "label": "2",
                 "description": "Encounter 2",
                 "type": {
-                  "id": "Code_61",
+                  "id": "Code_63",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -621,7 +621,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_62",
+                    "id": "Code_64",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -632,7 +632,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_63",
+                    "id": "Code_65",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -653,7 +653,7 @@
                 "label": "2",
                 "description": "Encounter 2",
                 "type": {
-                  "id": "Code_64",
+                  "id": "Code_66",
                   "extensionAttributes": [],
                   "code": "C25716",
                   "codeSystem": "http://www.cdisc.org",
@@ -666,7 +666,7 @@
                 "scheduledAtId": null,
                 "environmentalSettings": [
                   {
-                    "id": "Code_65",
+                    "id": "Code_67",
                     "extensionAttributes": [],
                     "code": "C211570",
                     "codeSystem": "http://www.cdisc.org",
@@ -677,7 +677,7 @@
                 ],
                 "contactModes": [
                   {
-                    "id": "Code_66",
+                    "id": "Code_68",
                     "extensionAttributes": [],
                     "code": "C175574",
                     "codeSystem": "http://www.cdisc.org",
@@ -1189,7 +1189,7 @@
                 "label": "Screeninga, b",
                 "description": "EPOCH-EPOCH-SCREENINGA, B",
                 "type": {
-                  "id": "Code_49",
+                  "id": "Code_51",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1209,7 +1209,7 @@
                 "label": "Baseline",
                 "description": "EPOCH-EPOCH-BASELINE",
                 "type": {
-                  "id": "Code_50",
+                  "id": "Code_52",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1229,7 +1229,7 @@
                 "label": "",
                 "description": "EPOCH-EPOCH-",
                 "type": {
-                  "id": "Code_51",
+                  "id": "Code_53",
                   "extensionAttributes": [],
                   "code": "C101526",
                   "codeSystem": "http://www.cdisc.org",
@@ -1257,7 +1257,26 @@
               "includesHealthySubjects": true,
               "plannedEnrollmentNumber": null,
               "plannedCompletionNumber": null,
-              "plannedSex": [],
+              "plannedSex": [
+                {
+                  "id": "Code_40",
+                  "extensionAttributes": [],
+                  "code": "C16576",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Female",
+                  "instanceType": "Code"
+                },
+                {
+                  "id": "Code_41",
+                  "extensionAttributes": [],
+                  "code": "C20197",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Male",
+                  "instanceType": "Code"
+                }
+              ],
               "criterionIds": [
                 "EligibilityCriterion_1",
                 "EligibilityCriterion_2",
@@ -1309,7 +1328,7 @@
                     "label": "-2 to 0",
                     "description": "Timing 1",
                     "type": {
-                      "id": "Code_67",
+                      "id": "Code_69",
                       "extensionAttributes": [],
                       "code": "C201357",
                       "codeSystem": "http://www.cdisc.org",
@@ -1320,7 +1339,7 @@
                     "value": "P2D",
                     "valueLabel": "-2 to 0",
                     "relativeToFrom": {
-                      "id": "Code_68",
+                      "id": "Code_70",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1342,7 +1361,7 @@
                     "label": "1",
                     "description": "Timing 2",
                     "type": {
-                      "id": "Code_69",
+                      "id": "Code_71",
                       "extensionAttributes": [],
                       "code": "C201358",
                       "codeSystem": "http://www.cdisc.org",
@@ -1353,7 +1372,7 @@
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_70",
+                      "id": "Code_72",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1375,7 +1394,7 @@
                     "label": "1",
                     "description": "Timing 3",
                     "type": {
-                      "id": "Code_71",
+                      "id": "Code_73",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1386,7 +1405,7 @@
                     "value": "P1D",
                     "valueLabel": "1",
                     "relativeToFrom": {
-                      "id": "Code_72",
+                      "id": "Code_74",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1408,7 +1427,7 @@
                     "label": "2",
                     "description": "Timing 4",
                     "type": {
-                      "id": "Code_73",
+                      "id": "Code_75",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1419,7 +1438,7 @@
                     "value": "P2D",
                     "valueLabel": "2",
                     "relativeToFrom": {
-                      "id": "Code_74",
+                      "id": "Code_76",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -1441,7 +1460,7 @@
                     "label": "2",
                     "description": "Timing 5",
                     "type": {
-                      "id": "Code_75",
+                      "id": "Code_77",
                       "extensionAttributes": [],
                       "code": "C201356",
                       "codeSystem": "http://www.cdisc.org",
@@ -1452,7 +1471,7 @@
                     "value": "P2D",
                     "valueLabel": "2",
                     "relativeToFrom": {
-                      "id": "Code_76",
+                      "id": "Code_78",
                       "extensionAttributes": [],
                       "code": "C201355",
                       "codeSystem": "http://www.cdisc.org",
@@ -2032,7 +2051,7 @@
             "instanceType": "InterventionalStudyDesign",
             "subTypes": [],
             "model": {
-              "id": "Code_77",
+              "id": "Code_80",
               "extensionAttributes": [],
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",

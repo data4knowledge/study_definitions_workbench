@@ -251,10 +251,17 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
         return_value={"Full Title": [fake_finding]},
     )
 
-    # restructure_study_list returns {element: tuple_of_values_across_studies}
+    # restructure_study_list returns {element: tuple_of_values_across_studies}.
+    # ``Sponsor Protocol Identifier`` is mandatory: ``studies/list.html``
+    # reads it up front to build the per-study column headers, so the mock
+    # must supply it even when the body of the test only exercises another
+    # element (here, ``Full Title``).
     mocker.patch(
         "app.routers.studies.restructure_study_list",
-        return_value={"Full Title": ("A Trial",)},
+        return_value={
+            "Full Title": ("A Trial",),
+            "Sponsor Protocol Identifier": ("PROTO-001",),
+        },
     )
     mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
     mocker.patch("app.routers.studies.fhir_versions", return_value=[])

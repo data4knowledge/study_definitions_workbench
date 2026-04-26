@@ -209,7 +209,9 @@ async def test_validate_m11_docx_post(mocker, monkeypatch):
     body = response.text
     assert "M11_001" in body
     assert "Full Title" in body
-    assert "Required element 'Full Title' is missing." in body
+    # Jinja autoescape converts apostrophes to ``&#39;`` in HTML output —
+    # the rendered cell carries the escaped form, not the raw string.
+    assert "Required element &#39;Full Title&#39; is missing." in body
     # Annotated-document artifacts must not appear — task #36 stripped
     # the tab entirely from the standalone flow.
     assert "m11-doc-marker" not in body

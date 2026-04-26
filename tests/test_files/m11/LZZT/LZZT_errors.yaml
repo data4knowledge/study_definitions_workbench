@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/4f3bf3e5-770b-4dc1-a982-414e53ef80ed/LZZT.docx'',
-    dir=''tests/test_files/mount/datafiles/4f3bf3e5-770b-4dc1-a982-414e53ef80ed'',
-    image_path=''tests/test_files/mount/datafiles/4f3bf3e5-770b-4dc1-a982-414e53ef80ed/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/dd816797-b166-4dc6-8a74-137e4ab5efeb/LZZT.docx'',
+    dir=''tests/test_files/mount/datafiles/dd816797-b166-4dc6-8a74-137e4ab5efeb'',
+    image_path=''tests/test_files/mount/datafiles/dd816797-b166-4dc6-8a74-137e4ab5efeb/images'',
     filename=''LZZT.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -758,6 +758,22 @@
   type: ''
 - extra: null
   level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: sex
+  message: Sex 'FEMALE' decoded as 'C16576', 'Female'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: sex
+  message: Sex 'MALE' decoded as 'C20197', 'Male'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment assembler source data {''amendment_details'': ''<p>Amendment
     Details:</p>\n<p>This protocol has been amended previously. Details of prior amendments
@@ -805,7 +821,7 @@
   level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
-    extensionAttributes=[], type=Code(id=''Code_44'', extensionAttributes=[], code=''C68846'',
+    extensionAttributes=[], type=Code(id=''Code_46'', extensionAttributes=[], code=''C68846'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Global'',
     instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
     None'
@@ -831,6 +847,14 @@
   message: 'Extracted section ref from ''5.2 Inclusion Criteria'' -> {''sectionNumber'':
     ''5.2'', ''sectionTitle'': ''Inclusion Criteria'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_model
+  message: Intervention model '' not decoded; defaulting to 'Parallel Study'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

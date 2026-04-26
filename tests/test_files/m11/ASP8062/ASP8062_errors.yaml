@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/bf5522cb-7f19-480b-b0e9-8b298a8e809a/ASP8062.docx'',
-    dir=''tests/test_files/mount/datafiles/bf5522cb-7f19-480b-b0e9-8b298a8e809a'',
-    image_path=''tests/test_files/mount/datafiles/bf5522cb-7f19-480b-b0e9-8b298a8e809a/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/6cf0d9f0-23be-4843-b58a-dc00a9f1b9c5/ASP8062.docx'',
+    dir=''tests/test_files/mount/datafiles/6cf0d9f0-23be-4843-b58a-dc00a9f1b9c5'',
+    image_path=''tests/test_files/mount/datafiles/6cf0d9f0-23be-4843-b58a-dc00a9f1b9c5/images'',
     filename=''ASP8062.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -603,6 +603,22 @@
   type: ''
 - extra: null
   level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: sex
+  message: Sex 'FEMALE' decoded as 'C16576', 'Female'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: sex
+  message: Sex 'MALE' decoded as 'C20197', 'Male'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment assembler source data {''amendment_details'': ''<p>Amendment
     Details</p>\n<p>This is the first protocol amendment.</p>\n<p>Current Amendment</p>\n<p>The
@@ -671,10 +687,10 @@
   level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_2'',
-    extensionAttributes=[], type=Code(id=''Code_53'', extensionAttributes=[], code=''C25464'',
+    extensionAttributes=[], type=Code(id=''Code_55'', extensionAttributes=[], code=''C25464'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Country'',
     instanceType=''Code''), code=AliasCode(id=''AliasCode_1'', extensionAttributes=[],
-    standardCode=Code(id=''Code_54'', extensionAttributes=[], code=''USA'', codeSystem=''ISO
+    standardCode=Code(id=''Code_56'', extensionAttributes=[], code=''USA'', codeSystem=''ISO
     3166 1 alpha3'', codeSystemVersion=''2020-08'', decode=''United States of America'',
     instanceType=''Code''), standardCodeAliases=[], instanceType=''AliasCode''), instanceType=''GeographicScope'')],
     sites: None'
@@ -745,6 +761,14 @@
     Respiratory Rate'' -> {''sectionNumber'': ''9.4.3.3'', ''sectionTitle'': ''Vital
     Signs, Table 7, Criteria for Respiratory Rate'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_5'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_model
+  message: Intervention model '' not decoded; defaulting to 'Parallel Study'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

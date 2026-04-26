@@ -49,7 +49,7 @@
               "id": "StudyAmendmentReason_1",
               "extensionAttributes": [],
               "code": {
-                "id": "Code_42",
+                "id": "Code_44",
                 "extensionAttributes": [],
                 "code": "C17649",
                 "codeSystem": "http://www.cdisc.org",
@@ -65,7 +65,7 @@
                 "id": "StudyAmendmentReason_2",
                 "extensionAttributes": [],
                 "code": {
-                  "id": "Code_43",
+                  "id": "Code_45",
                   "extensionAttributes": [],
                   "code": "C17649",
                   "codeSystem": "http://www.cdisc.org",
@@ -104,7 +104,7 @@
                 "id": "StudyAmendmentImpact_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_45",
+                  "id": "Code_47",
                   "extensionAttributes": [],
                   "code": "C215665",
                   "codeSystem": "http://www.cdisc.org",
@@ -121,7 +121,7 @@
                 "id": "StudyAmendmentImpact_2",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_46",
+                  "id": "Code_48",
                   "extensionAttributes": [],
                   "code": "C215666",
                   "codeSystem": "http://www.cdisc.org",
@@ -138,7 +138,7 @@
                 "id": "StudyAmendmentImpact_3",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_47",
+                  "id": "Code_49",
                   "extensionAttributes": [],
                   "code": "C215667",
                   "codeSystem": "http://www.cdisc.org",
@@ -155,7 +155,7 @@
                 "id": "StudyAmendmentImpact_4",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_48",
+                  "id": "Code_50",
                   "extensionAttributes": [],
                   "code": "C215668",
                   "codeSystem": "http://www.cdisc.org",
@@ -174,7 +174,7 @@
                 "id": "GeographicScope_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_44",
+                  "id": "Code_46",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -201,7 +201,7 @@
                     "id": "AliasCode_1",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_50",
+                      "id": "Code_52",
                       "extensionAttributes": [],
                       "code": "C25613",
                       "codeSystem": "http://www.cdisc.org",
@@ -218,7 +218,7 @@
                   "id": "GeographicScope_2",
                   "extensionAttributes": [],
                   "type": {
-                    "id": "Code_49",
+                    "id": "Code_51",
                     "extensionAttributes": [],
                     "code": "C68846",
                     "codeSystem": "http://www.cdisc.org",
@@ -279,7 +279,7 @@
               "id": "AliasCode_2",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_52",
+                "id": "Code_55",
                 "extensionAttributes": [],
                 "code": "C15602",
                 "codeSystem": "http://www.cdisc.org",
@@ -312,7 +312,26 @@
               "includesHealthySubjects": true,
               "plannedEnrollmentNumber": null,
               "plannedCompletionNumber": null,
-              "plannedSex": [],
+              "plannedSex": [
+                {
+                  "id": "Code_42",
+                  "extensionAttributes": [],
+                  "code": "C16576",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Female",
+                  "instanceType": "Code"
+                },
+                {
+                  "id": "Code_43",
+                  "extensionAttributes": [],
+                  "code": "C20197",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Male",
+                  "instanceType": "Code"
+                }
+              ],
               "criterionIds": [
                 "EligibilityCriterion_1",
                 "EligibilityCriterion_2",
@@ -1066,7 +1085,7 @@
             "instanceType": "InterventionalStudyDesign",
             "subTypes": [],
             "model": {
-              "id": "Code_51",
+              "id": "Code_54",
               "extensionAttributes": [],
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
