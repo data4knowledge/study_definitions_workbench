@@ -1,15 +1,20 @@
 """Unit tests for ``app.utility.finding_projections``.
 
-Focused on ``project_usdm_core_summary`` because the per-row
-projections are exercised via the router-level tests already.  The
-summary projector is exercised in isolation here so its defensive
-fallbacks (``None`` input, partial fields, non-CORE objects) are
+Focused on the two summary projectors
+(:func:`project_usdm_core_summary` and
+:func:`project_usdm_rules_summary`) because the per-row projections
+are exercised via the router-level tests already.  The summary
+projectors are exercised in isolation here so their defensive
+fallbacks (``None`` input, partial fields, wrong-engine objects) are
 covered without standing up a full validation run.
 """
 
 from types import SimpleNamespace
 
-from app.utility.finding_projections import project_usdm_core_summary
+from app.utility.finding_projections import (
+    project_usdm_core_summary,
+    project_usdm_rules_summary,
+)
 
 
 def _finding(error_count: int = 0):
@@ -108,3 +113,120 @@ class TestProjectUsdmCoreSummary:
         summary = project_usdm_core_summary(result)
         assert summary["finding_count"] == 5
         assert summary["rule_count"] == 3
+
+
+# ---- d4k rules engine summary -----------------------------------------
+
+
+def _outcome(status: str, error_count: int = 0):
+    """Build a minimal ``RuleOutcome`` stand-in.
+
+    The projector reads ``status.value`` and ``error_count`` — wraps
+    the status in a tiny namespace that mimics the real
+    ``RuleStatus`` enum's ``.value`` attribute access.
+    """
+    return SimpleNamespace(
+        status=SimpleNamespace(value=status),
+        error_count=error_count,
+    )
+
+
+def _rules_result(outcomes_by_id=None, finding_count=0):
+    """Build a ``RulesValidationResults``-shaped namespace.
+
+    The projector duck-types — it needs ``outcomes`` (dict),
+    ``count()`` (callable), and ``finding_count`` (int property).
+    """
+    outcomes = outcomes_by_id or {}
+    return SimpleNamespace(
+        outcomes=outcomes,
+        count=lambda: len(outcomes),
+        finding_count=finding_count,
+    )
+
+
+class TestProjectUsdmRulesSummary:
+    def test_none_input_returns_empty(self):
+        assert project_usdm_rules_summary(None) == {}
+
+    def test_non_rules_object_returns_empty(self):
+        # A CORE result has ``rules_executed`` but no ``outcomes`` /
+        # ``count()`` — duck-type check should reject it so the
+        # template's ``engine`` discriminator stays clean.
+        core_like = SimpleNamespace(rules_executed=10, findings=[])
+        assert project_usdm_rules_summary(core_like) == {}
+
+    def test_happy_path_full_summary(self):
+        result = _rules_result(
+            outcomes_by_id={
+                "R001": _outcome("Success"),
+                "R002": _outcome("Success"),
+                "R003": _outcome("Failure", error_count=4),
+                "R004": _outcome("Failure", error_count=1),
+                "R005": _outcome("Exception"),
+                "R006": _outcome("Not Implemented"),
+                "R007": _outcome("Not Implemented"),
+            },
+            finding_count=5,
+        )
+        summary = project_usdm_rules_summary(result)
+        assert summary == {
+            "engine": "d4k",
+            "version": "",
+            "file_path": "",
+            "rules_executed": 7,
+            "rules_skipped": 0,
+            "finding_count": 5,
+            "rule_count": 2,  # two Failure outcomes with errors
+            "success_count": 2,
+            "failure_count": 2,
+            "exception_count": 1,
+            "not_implemented_count": 2,
+        }
+
+    def test_empty_run(self):
+        # No outcomes at all — projection should still return a
+        # populated dict (so the header card renders) with all counts
+        # zeroed.
+        summary = project_usdm_rules_summary(_rules_result())
+        assert summary["engine"] == "d4k"
+        assert summary["rules_executed"] == 0
+        assert summary["finding_count"] == 0
+        assert summary["failure_count"] == 0
+        assert summary["exception_count"] == 0
+        assert summary["not_implemented_count"] == 0
+
+    def test_rule_count_excludes_failures_with_no_errors(self):
+        # ``rule_count`` is "rules that produced findings" — a Failure
+        # with ``error_count=0`` is a degenerate outcome and shouldn't
+        # be counted as a finding-producing rule.
+        result = _rules_result(
+            outcomes_by_id={
+                "R001": _outcome("Failure", error_count=0),
+                "R002": _outcome("Failure", error_count=2),
+            },
+            finding_count=2,
+        )
+        summary = project_usdm_rules_summary(result)
+        assert summary["failure_count"] == 2
+        assert summary["rule_count"] == 1
+
+    def test_unknown_status_is_ignored(self):
+        # An outcome with a status outside the four known buckets
+        # shouldn't blow up the projection — it just doesn't increment
+        # any of the per-status counters.
+        result = _rules_result(
+            outcomes_by_id={
+                "R001": _outcome("Mystery"),
+                "R002": _outcome("Success"),
+            }
+        )
+        summary = project_usdm_rules_summary(result)
+        assert summary["rules_executed"] == 2
+        assert summary["success_count"] == 1
+        assert (
+            summary["failure_count"]
+            == summary["exception_count"]
+            == summary["not_implemented_count"]
+            == 0
+        )

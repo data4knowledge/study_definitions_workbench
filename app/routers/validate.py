@@ -30,6 +30,7 @@ from app.utility.finding_projections import (
     project_usdm_core_result,
     project_usdm_core_summary,
     project_usdm_rules_result,
+    project_usdm_rules_summary,
 )
 
 router = APIRouter(
@@ -100,7 +101,7 @@ async def validate_usdm_rules_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await _process_usdm_engine(request, user, source, engine="rules")
+    return await _process_usdm_engine(request, user, source, engine="d4k")
 
 
 @router.get("/usdm-core", dependencies=[Depends(protect_endpoint)])
@@ -228,12 +229,15 @@ async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: st
 async def _process_usdm_engine(request: Request, user: User, source: str, engine: str):
     """Shared handler for the two USDM v4 validation flows.
 
-    ``engine`` is ``"rules"`` (usdm4 Python rule library,
+    ``engine`` is ``"d4k"`` (the d4k / usdm4 Python rule library,
     :meth:`USDM4.validate`) or ``"core"`` (CDISC CORE JSONata engine,
     :meth:`USDM4.validate_core`). Both return engine-native result
     objects that we project into the shared UI row shape via
     :mod:`app.utility.finding_projections` before rendering the common
-    ``validate/partials/results.html`` template.
+    ``validate/partials/results.html`` template. The header card uses
+    the same ``"d4k"`` / ``"core"`` discriminator on
+    ``summary['engine']`` to pick its title and per-engine subtitle
+    extras, so the dispatch hint and the template tag stay in sync.
 
     The CORE run can take several minutes on a cold cache — today this
     call is synchronous which means the HTMX swap blocks until the
@@ -270,11 +274,22 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
             download_title = "USDM v4 CORE Findings"
             download_sheet = "USDM CORE Findings"
         else:
-            # ``rules`` is the default — ``engine`` values other than
+            # ``d4k`` is the default — ``engine`` values other than
             # ``"core"`` fall through here so a typo doesn't silently
             # swap engines.
             results = usdm.validate(full_path)
             findings = project_usdm_rules_result(results)
+            # Mirror the CORE flow: feed the run-level outcome
+            # breakdown (rules executed / failures / exceptions / not-
+            # implemented) into the header card so the rules-engine
+            # results page reads as a sibling of the CORE one.
+            summary = project_usdm_rules_summary(results)
+            # Stamp the validated USDM version onto the summary —
+            # ``RulesValidationResults`` doesn't carry one of its own
+            # (the version belongs to the file, not the engine), and
+            # for the d4k engine the workbench currently only ships
+            # validation against the active ``usdm_version``.
+            summary["version"] = usdm_version
             download_kind = "usdm-rules-findings"
             download_title = "USDM v4 Rules Findings"
             download_sheet = "USDM Rules Findings"

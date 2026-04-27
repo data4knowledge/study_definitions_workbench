@@ -50,10 +50,12 @@
 
 {# ---------- Header card ----------------------------------------------
    Mirrors the study-version pages (see study_versions/summary.html):
-   title on top, pipe-separated metadata subtitle below. For a CORE
-   run we promote the run-level summary fields into the subtitle so
-   the author can see at a glance how thorough the run was. For the
-   rules engine the summary is absent and we just show the filename.
+   title on top, pipe-separated metadata subtitle below.  Both USDM v4
+   engines (CORE and d4k rules) emit a ``summary`` dict with an
+   ``engine`` discriminator — the title and the per-engine extras in
+   the subtitle branch on it.  Common fields (file, USDM version,
+   rules executed / skipped, findings) render once for either engine
+   so the layout stays sibling-consistent.
 
    Note: this row deliberately has *no* ``mt-3`` — the picker page
    ``validate_json.html`` already wraps the swap target in a
@@ -61,13 +63,16 @@
    two top margins and pushed the header ~40% lower than the rest of
    the workbench's pages. The findings card below this one *does*
    keep ``mt-3`` because it needs spacing from this header card. #}
+{% set engine = summary['engine'] if summary else '' %}
 <div class="row">
   <div class="col-12">
     <div class="card card-body rounded-3 shadow-sm">
       <div class="row">
         <h4 class="card-title">
-          {% if summary %}
+          {% if engine == 'core' %}
             CDISC CORE Validation Results
+          {% elif engine == 'd4k' %}
+            d4k Rules Validation Results
           {% else %}
             Validation Results
           {% endif %}
@@ -77,13 +82,21 @@
           {% if summary %}
             {% if source_filename %} | {% endif %}USDM: {{ summary['version'] }}
             | Rules executed: {{ summary['rules_executed'] }}
-            | Rules skipped: {{ summary['rules_skipped'] }}
+            {% if engine == 'core' %}
+              | Rules skipped: {{ summary['rules_skipped'] }}
+            {% endif %}
             | Findings: {{ summary['finding_count'] }} ({{ summary['rule_count'] }} rule{% if summary['rule_count'] != 1 %}s{% endif %})
-            | Execution errors: {{ summary['execution_error_count'] }}
-            | CT packages loaded: {{ summary['ct_packages_loaded_count'] }}/{{ summary['ct_packages_available'] }}
+            {% if engine == 'core' %}
+              | Execution errors: {{ summary['execution_error_count'] }}
+              | CT packages loaded: {{ summary['ct_packages_loaded_count'] }}/{{ summary['ct_packages_available'] }}
+            {% elif engine == 'd4k' %}
+              | Failures: {{ summary['failure_count'] }}
+              | Exceptions: {{ summary['exception_count'] }}
+              | Not implemented: {{ summary['not_implemented_count'] }}
+            {% endif %}
           {% endif %}
         </h6>
-        {% if summary and summary['ct_packages_loaded'] %}
+        {% if engine == 'core' and summary['ct_packages_loaded'] %}
           {# Full CT package list lives in a <details> drawer so the
              header stays compact but the loaded packages are always one
              click away — useful for run reproducibility. #}

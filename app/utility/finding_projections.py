@@ -201,6 +201,77 @@ def project_usdm_core_result(result: Any) -> list[dict]:
     return projected
 
 
+def project_usdm_rules_summary(result: Any) -> dict:
+    """Project the run-level summary fields of a
+    ``RulesValidationResults`` (the d4k engine) into a flat dict for
+    the results-page header card.
+
+    Parallels :func:`project_usdm_core_summary`.  The d4k engine
+    doesn't carry the CT-package or USDM-version context CORE has,
+    but it does expose a per-status outcome breakdown
+    (Success / Failure / Exception / Not Implemented) that's useful
+    enough to surface in the header — especially the *Exception*
+    count, which is the d4k-specific signal that a rule blew up
+    rather than producing a finding.
+
+    Returns ``{}`` for ``None`` / non-rules inputs so the template can
+    use a single ``{% if summary %}`` guard regardless of engine.
+    """
+    if result is None:
+        return {}
+    # Duck-type — ``outcomes`` and ``count`` are stable across the
+    # engine's public API and uniquely identify a
+    # ``RulesValidationResults``.  Match against ``count`` so we don't
+    # accidentally classify a CORE result (which has neither) here.
+    if not hasattr(result, "outcomes") or not callable(getattr(result, "count", None)):
+        return {}
+
+    outcomes = getattr(result, "outcomes", {}) or {}
+    by_status: dict[str, int] = {
+        "Success": 0,
+        "Failure": 0,
+        "Exception": 0,
+        "Not Implemented": 0,
+    }
+    rules_with_findings = 0
+    for outcome in outcomes.values():
+        # ``status`` is a ``RuleStatus`` enum but the value is a string
+        # ("Success" / "Failure" / …).  ``str(status)`` would give us
+        # ``RuleStatus.SUCCESS`` so reach for ``.value`` and fall back
+        # to ``str()`` for mocks that pass plain strings.
+        status_value = getattr(getattr(outcome, "status", None), "value", None)
+        if status_value is None:
+            status_value = str(getattr(outcome, "status", "") or "")
+        if status_value in by_status:
+            by_status[status_value] += 1
+        if status_value == "Failure" and getattr(outcome, "error_count", 0):
+            rules_with_findings += 1
+
+    finding_count = int(getattr(result, "finding_count", 0) or 0)
+    return {
+        # Discriminator for the results-page header card. The user-
+        # facing label everywhere else in the workbench (validate
+        # menu, results card title, download filenames) is "d4k", so
+        # we use that here too rather than the internal "rules"
+        # naming used by the projector function name.
+        "engine": "d4k",
+        # ``RulesValidationResults`` doesn't carry a USDM version on
+        # the result object — the version belongs to the input file,
+        # not the engine.  We leave this empty so the header subtitle
+        # collapses cleanly.
+        "version": "",
+        "file_path": "",
+        "rules_executed": int(result.count()),
+        "rules_skipped": 0,  # d4k engine doesn't surface a skipped count
+        "finding_count": finding_count,
+        "rule_count": rules_with_findings,
+        "success_count": by_status["Success"],
+        "failure_count": by_status["Failure"],
+        "exception_count": by_status["Exception"],
+        "not_implemented_count": by_status["Not Implemented"],
+    }
+
+
 def project_usdm_core_summary(result: Any) -> dict:
     """Project the run-level summary fields of a ``CoreValidationResult``
     into a flat dict for the results-page header card.
