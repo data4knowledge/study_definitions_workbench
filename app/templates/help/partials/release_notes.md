@@ -1,3 +1,7 @@
+<h5>Release 0.38.0, 2026-04-28</h5>
+
+Batter results presentation for CORE and d4k (issue 58 & 59).
+
 <h5>Release 0.37.0, 2026-04-27</h5>
 
 Fixes and tweaks for PRISM testing (issue 56).

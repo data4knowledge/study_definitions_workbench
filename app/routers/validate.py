@@ -28,6 +28,7 @@ from simple_error_log import Errors as M11Errors
 from app.utility.finding_projections import (
     project_m11_result,
     project_usdm_core_result,
+    project_usdm_core_summary,
     project_usdm_rules_result,
 )
 
@@ -243,6 +244,7 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
     form_handler = FormHandler(request, False, ".json", source)
     main_file, image_files, messages = await form_handler.get_files()
     findings: list[dict] = []
+    summary: dict = {}
     if main_file:
         files = DataFiles()
         _ = files.new()
@@ -257,6 +259,13 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
         if engine == "core":
             results = usdm.validate_core(full_path)
             findings = project_usdm_core_result(results)
+            # CORE returns a rich run-level context (rules executed /
+            # skipped, execution errors, CT packages loaded, …) that
+            # the rules engine has no equivalent for. Surface it via
+            # the results-page header card. ``project_usdm_core_summary``
+            # returns ``{}`` for non-CORE / None inputs so the template
+            # can use a single ``{% if summary %}`` guard.
+            summary = project_usdm_core_summary(results)
             download_kind = "usdm-core-findings"
             download_title = "USDM v4 CORE Findings"
             download_sheet = "USDM CORE Findings"
@@ -281,6 +290,15 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
         download_sheet = (
             "USDM CORE Findings" if engine == "core" else "USDM Rules Findings"
         )
+    # HTMX retarget: the picker (``import/partials/browser_file_select.html``)
+    # wraps its form in an outer ``#picker_card`` with title /
+    # subtitle.  Once results are rendered the result page already
+    # carries that identity in its own header card, so we tell HTMX to
+    # replace the *whole* picker card (``HX-Retarget: #picker_card``,
+    # ``HX-Reswap: outerHTML``) rather than swapping into the form
+    # ``#form_div`` inside it.  Result: the file-picker chrome
+    # disappears in one swap — no OOB fragments, no order-of-operations
+    # surprises — and we reuse the picker page's outer column layout.
     return templates.TemplateResponse(
         request,
         "validate/partials/results.html",
@@ -290,10 +308,15 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
                 "filename": main_file,
                 "messages": _strip_accepted_messages(messages),
                 "findings": findings,
+                "summary": summary,
                 "download_kind": download_kind,
                 "download_title": download_title,
                 "download_sheet": download_sheet,
             },
+        },
+        headers={
+            "HX-Retarget": "#picker_card",
+            "HX-Reswap": "outerHTML",
         },
     )
 

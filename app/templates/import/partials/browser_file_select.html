@@ -1,4 +1,10 @@
-<div class="card rounded-3">
+{# ``id="picker_card"`` lets a results partial OOB-swap the entire
+   outer card away once validation completes — see e.g. the USDM CORE
+   /rules ``validate/partials/results.html`` partial, where the file-
+   picker chrome is redundant once the result header card is showing.
+   Flows that want to keep the picker card (M11 docx) simply do not
+   target this id from their result partial, and the card stays as-is. #}
+<div class="card rounded-3" id="picker_card">
   <div class="card-body">
     <h4 class="card-title" id="card_title">{{title}}</h4>
     <h6 class="card-subtitle mb-2 text-muted" id="card_subtitle">{{subtitle}}</h6>

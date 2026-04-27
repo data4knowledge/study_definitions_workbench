@@ -201,6 +201,53 @@ def project_usdm_core_result(result: Any) -> list[dict]:
     return projected
 
 
+def project_usdm_core_summary(result: Any) -> dict:
+    """Project the run-level summary fields of a ``CoreValidationResult``
+    into a flat dict for the results-page header card.
+
+    The CORE engine returns a substantial run-level context that the
+    findings table alone cannot show — how many rules ran, how many
+    errored out before they could check anything, which CT packages
+    were loaded, etc.  See
+    :class:`usdm4.core.core_validation_result.CoreValidationResult`
+    for the authoritative shape.
+
+    Returns ``{}`` for non-CORE / ``None`` / unexpected inputs so the
+    template can use a single ``{% if summary %}`` guard.  The dict is
+    flat (not nested) so the template doesn't need helper macros to
+    pull values out.
+    """
+    if result is None:
+        return {}
+    # Duck-type — the CORE summary fields are unique enough that
+    # presence of ``rules_executed`` is a sufficient signal.  This
+    # keeps the projection robust against mocks that don't import the
+    # real dataclass.
+    if not hasattr(result, "rules_executed"):
+        return {}
+    ct_loaded = list(getattr(result, "ct_packages_loaded", []) or [])
+    findings = getattr(result, "findings", []) or []
+    finding_count = sum(
+        len(getattr(f, "errors", []) or []) for f in findings
+    )
+    execution_errors = list(getattr(result, "execution_errors", []) or [])
+    return {
+        "engine": "core",
+        "version": getattr(result, "version", "") or "",
+        "file_path": getattr(result, "file_path", "") or "",
+        "rules_executed": int(getattr(result, "rules_executed", 0) or 0),
+        "rules_skipped": int(getattr(result, "rules_skipped", 0) or 0),
+        "finding_count": finding_count,
+        "rule_count": len(findings),
+        "execution_error_count": len(execution_errors),
+        "ct_packages_available": int(
+            getattr(result, "ct_packages_available", 0) or 0
+        ),
+        "ct_packages_loaded": ct_loaded,
+        "ct_packages_loaded_count": len(ct_loaded),
+    }
+
+
 # ---- CORE helpers -----------------------------------------------------
 
 
