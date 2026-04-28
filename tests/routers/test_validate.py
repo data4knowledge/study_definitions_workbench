@@ -343,8 +343,13 @@ async def test_download_csv_returns_plain_csv(monkeypatch):
     assert disp.endswith('.csv"')
     body = response.content.decode("utf-8")
     # Header row + one data row. Fields are in the fixed formatter
-    # order — not load-bearing for the test but nice to spot-check.
-    assert "rule_id,severity,section,element,message" in body
+    # order — section / element first (mirrors the display), then
+    # severity, rule id, the rule's description, the per-instance
+    # message, and the JSON / DOCX path. Spot-checked here so a future
+    # column reorder is a deliberate decision rather than a silent drift.
+    assert (
+        "section,element,severity,rule_id,rule_text,message,path" in body
+    )
     assert "M11_001" in body
     assert "Full Title" in body
 
@@ -379,7 +384,7 @@ async def test_download_markdown_returns_heading_and_table(monkeypatch):
     assert response.headers["content-type"].startswith("text/markdown")
     body = response.content.decode("utf-8")
     assert body.startswith("# M11 Validation Findings")
-    assert "| Rule | Severity" in body
+    assert "| Section | Element | Severity | Rule |" in body
     assert "| M11_001 |" in body
 
 
@@ -406,7 +411,9 @@ async def test_download_xlsx_returns_workbook(monkeypatch):
 @pytest.mark.parametrize(
     "fmt,content_marker",
     [
-        ("csv", b"rule_id,severity"),
+        # CSV: the empty file is just the header row, so prove it landed
+        # by matching the leading two columns of the canonical order.
+        ("csv", b"section,element"),
         ("json", b"[]"),
         ("md", b"_No findings._"),
         ("xlsx", b"PK"),

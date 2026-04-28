@@ -38,23 +38,34 @@ import json
 from datetime import date
 
 
-# The canonical field set — matches the column set rendered in the
+# The canonical field set — mirrors the column set rendered in the
 # shared ``validate/partials/results.html`` table so the download
-# mirrors what the user sees on screen.
+# carries every field the user sees on screen.  The display fuses
+# ``section`` and ``element`` into a single two-line "Element" column
+# for layout reasons; the download keeps them as separate columns
+# because spreadsheet analysis benefits from granular columns for
+# sort / filter / pivot.  Order tracks the display: location first
+# (Section, Element), then the categorical (Severity), the rule
+# identity (Rule + Description), the actual finding text (Message),
+# and finally the drill-down JSON path.
 _FIELDS = (
-    "rule_id",
-    "severity",
     "section",
     "element",
+    "severity",
+    "rule_id",
+    "rule_text",
     "message",
+    "path",
 )
 
 _MD_HEADERS = (
-    "Rule",
-    "Severity",
     "Section",
     "Element",
+    "Severity",
+    "Rule",
+    "Description",
     "Message",
+    "Path",
 )
 
 
@@ -156,12 +167,19 @@ def to_xlsx(
     ws = wb.active
     ws.title = sheet_title[:31]  # Excel hard limit.
 
+    # Column widths picked to match the relative information density of
+    # each field — Section / Element are tag-like, Severity is a short
+    # word, Rule is a short id, Description and Message are prose
+    # paragraphs (Message tends to be longest), Path is a long-string
+    # JSONPath / DOCX path. Order matches ``_FIELDS``.
     headers = [
-        ("Rule", 14),
-        ("Severity", 10),
         ("Section", 24),
         ("Element", 28),
+        ("Severity", 10),
+        ("Rule", 14),
+        ("Description", 50),
         ("Message", 70),
+        ("Path", 50),
     ]
     for col_idx, (title, width) in enumerate(headers, start=1):
         cell = ws.cell(row=1, column=col_idx, value=title)
@@ -202,11 +220,13 @@ def _row_view(finding: dict) -> dict[str, str]:
     if not isinstance(finding, dict):
         return {field: "" for field in _FIELDS}
     return {
-        "rule_id": finding.get("rule_id") or "",
-        "severity": finding.get("severity") or "",
         "section": finding.get("section") or "",
         "element": finding.get("element") or "",
+        "severity": finding.get("severity") or "",
+        "rule_id": finding.get("rule_id") or "",
+        "rule_text": finding.get("rule_text") or "",
         "message": finding.get("message") or "",
+        "path": finding.get("path") or "",
     }
 
 
