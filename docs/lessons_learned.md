@@ -393,7 +393,7 @@ The USDM4 facade accepts a `cache_dir` override exactly because of
 this case.
 
 What bit us: SDW instantiated `USDM4()` with no arguments in
-`/validate/usdm-core`. Everything looked correct locally (the cache
+`/validate/usdm/cdisc` (formerly `/validate/usdm-core`). Everything looked correct locally (the cache
 lived in the host user's home and persisted), but every production
 deploy would pay the cold-cache tax from scratch. DataFiles'
 `clean_and_tidy()` sweep would also wipe the cache on the first run

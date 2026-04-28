@@ -878,7 +878,7 @@ def test_validate_menu(playwright: Playwright) -> None:
 
     page.get_by_role("button", name=" Validate").click()
     expect(page.locator("#navBarMain")).to_contain_text(
-        "USDM v4 — CDISC CORE Engine (.json)"
+        "USDM v4 — CDISC Engine (.json)"
     )
     expect(page.locator("#navBarMain")).to_contain_text("USDM v4 — d4k Engine (.json)")
     expect(page.locator("#navBarMain")).to_contain_text("ICH M11 Protocol (.docx)")
@@ -920,12 +920,13 @@ def test_validate_usdm_d4k(playwright: Playwright) -> None:
 
 
 @pytest.mark.playwright
-def test_validate_usdm_core(playwright: Playwright) -> None:
-    """USDM v4 — CDISC CORE Engine: same shape as the d4k test, but
-    against the CORE engine. CORE downloads JSONata files / schemas /
-    rules / CT packages on first run, which can take several minutes
-    on a cold cache (subsequent runs hit the persistent cache directory
-    and complete much faster). Timeout sized so a warm-cache CI box
+def test_validate_usdm_cdisc(playwright: Playwright) -> None:
+    """USDM v4 — CDISC Engine: same shape as the d4k test, but
+    against the CDISC engine (CORE under the hood — CDISC's only
+    engine). CORE downloads JSONata files / schemas / rules / CT
+    packages on first run, which can take several minutes on a cold
+    cache (subsequent runs hit the persistent cache directory and
+    complete much faster). Timeout sized so a warm-cache CI box
     finishes well within budget without a cold run holding the suite
     hostage indefinitely."""
     browser = playwright.chromium.launch(headless=False)
@@ -937,7 +938,7 @@ def test_validate_usdm_core(playwright: Playwright) -> None:
     login(page)
 
     page.get_by_role("button", name=" Validate").click()
-    page.get_by_role("link", name="USDM v4 — CDISC CORE Engine (.json)").click()
+    page.get_by_role("link", name="USDM v4 — CDISC Engine (.json)").click()
     expect(page.locator("h4")).to_contain_text("Validate USDM JSON")
     page.set_input_files(
         "#files", os.path.join(path, "tests/test_files/usdm4/no_errors.json")

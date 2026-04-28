@@ -67,7 +67,7 @@ def default_filename(
     ``{source-basename}-{kind}-{YYYY-MM-DD}.{extension}``.
 
     ``kind`` is the validator tag (e.g. ``"m11-findings"``,
-    ``"usdm-core-findings"``, ``"usdm-rules-findings"``). Callers can
+    ``"usdm-cdisc-findings"``, ``"usdm-d4k-findings"``). Callers can
     pass any slug-safe string; the default is intentionally generic so
     call sites that don't care still produce a reasonable name.
     """
@@ -115,7 +115,7 @@ def to_markdown(
     pasting into PRs, tickets, emails, or chat.
 
     ``title`` varies by validator (e.g. ``"M11 Validation Findings"``,
-    ``"USDM v4 Rules Findings"``, ``"USDM v4 CORE Findings"``).
+    ``"USDM v4 d4k Findings"``, ``"USDM v4 CDISC Findings"``).
     """
     lines: list[str] = []
     lines.append(f"# {title}")
@@ -146,7 +146,7 @@ def to_xlsx(
     metadata on the second. Returns an ``io.BytesIO`` ready to stream.
 
     ``sheet_title`` names the findings worksheet — e.g. ``"M11 Findings"``,
-    ``"USDM Rules Findings"``, ``"USDM CORE Findings"``. Excel caps
+    ``"USDM d4k Findings"``, ``"USDM CDISC Findings"``. Excel caps
     worksheet titles at 31 characters; callers should stay within that.
     """
     from openpyxl import Workbook

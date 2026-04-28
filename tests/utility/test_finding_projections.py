@@ -1,19 +1,24 @@
 """Unit tests for ``app.utility.finding_projections``.
 
 Focused on the two summary projectors
-(:func:`project_usdm_core_summary` and
-:func:`project_usdm_rules_summary`) because the per-row projections
+(:func:`project_usdm_cdisc_summary` and
+:func:`project_usdm_d4k_summary`) because the per-row projections
 are exercised via the router-level tests already.  The summary
 projectors are exercised in isolation here so their defensive
 fallbacks (``None`` input, partial fields, wrong-engine objects) are
 covered without standing up a full validation run.
+
+The names reflect the workbench's user-facing engine labels
+("cdisc" / "d4k") rather than the underlying engine technology
+("CORE" / "Rules") — see ``app/routers/validate.py`` for the routes
+those labels surface on.
 """
 
 from types import SimpleNamespace
 
 from app.utility.finding_projections import (
-    project_usdm_core_summary,
-    project_usdm_rules_summary,
+    project_usdm_cdisc_summary,
+    project_usdm_d4k_summary,
 )
 
 
@@ -44,9 +49,9 @@ def _result(**overrides):
     return SimpleNamespace(**base)
 
 
-class TestProjectUsdmCoreSummary:
+class TestProjectUsdmCdiscSummary:
     def test_none_input_returns_empty(self):
-        assert project_usdm_core_summary(None) == {}
+        assert project_usdm_cdisc_summary(None) == {}
 
     def test_non_core_object_returns_empty(self):
         # A rules-engine result object has ``to_dict`` but no
@@ -54,7 +59,7 @@ class TestProjectUsdmCoreSummary:
         # short-circuit and return an empty dict so the template's
         # ``{% if summary %}`` guard skips the CORE-only header.
         rules_like = SimpleNamespace(to_dict=lambda: [])
-        assert project_usdm_core_summary(rules_like) == {}
+        assert project_usdm_cdisc_summary(rules_like) == {}
 
     def test_happy_path_full_summary(self):
         result = _result(
@@ -67,9 +72,9 @@ class TestProjectUsdmCoreSummary:
             file_path="/tmp/study.json",
             version="4-0",
         )
-        summary = project_usdm_core_summary(result)
+        summary = project_usdm_cdisc_summary(result)
         assert summary == {
-            "engine": "core",
+            "engine": "cdisc",
             "version": "4-0",
             "file_path": "/tmp/study.json",
             "rules_executed": 120,
@@ -86,7 +91,7 @@ class TestProjectUsdmCoreSummary:
         # A run with no findings, no execution errors, no CT packages
         # loaded should still produce a populated dict (so the header
         # card renders) — just with zero counts.
-        summary = project_usdm_core_summary(_result(rules_executed=10))
+        summary = project_usdm_cdisc_summary(_result(rules_executed=10))
         assert summary["finding_count"] == 0
         assert summary["rule_count"] == 0
         assert summary["execution_error_count"] == 0
@@ -99,7 +104,7 @@ class TestProjectUsdmCoreSummary:
         # result object; the projector should coerce to ``[]`` rather
         # than blow up.
         result = _result(ct_packages_loaded=None, execution_errors=None)
-        summary = project_usdm_core_summary(result)
+        summary = project_usdm_cdisc_summary(result)
         assert summary["ct_packages_loaded"] == []
         assert summary["ct_packages_loaded_count"] == 0
         assert summary["execution_error_count"] == 0
@@ -110,12 +115,12 @@ class TestProjectUsdmCoreSummary:
         # ``CoreValidationResult.finding_count``. ``rule_count`` is the
         # number of distinct findings (one per rule).
         result = _result(findings=[_finding(0), _finding(4), _finding(1)])
-        summary = project_usdm_core_summary(result)
+        summary = project_usdm_cdisc_summary(result)
         assert summary["finding_count"] == 5
         assert summary["rule_count"] == 3
 
 
-# ---- d4k rules engine summary -----------------------------------------
+# ---- d4k engine summary -----------------------------------------------
 
 
 def _outcome(status: str, error_count: int = 0):
@@ -145,16 +150,16 @@ def _rules_result(outcomes_by_id=None, finding_count=0):
     )
 
 
-class TestProjectUsdmRulesSummary:
+class TestProjectUsdmD4kSummary:
     def test_none_input_returns_empty(self):
-        assert project_usdm_rules_summary(None) == {}
+        assert project_usdm_d4k_summary(None) == {}
 
     def test_non_rules_object_returns_empty(self):
         # A CORE result has ``rules_executed`` but no ``outcomes`` /
         # ``count()`` — duck-type check should reject it so the
         # template's ``engine`` discriminator stays clean.
         core_like = SimpleNamespace(rules_executed=10, findings=[])
-        assert project_usdm_rules_summary(core_like) == {}
+        assert project_usdm_d4k_summary(core_like) == {}
 
     def test_happy_path_full_summary(self):
         result = _rules_result(
@@ -169,7 +174,7 @@ class TestProjectUsdmRulesSummary:
             },
             finding_count=5,
         )
-        summary = project_usdm_rules_summary(result)
+        summary = project_usdm_d4k_summary(result)
         assert summary == {
             "engine": "d4k",
             "version": "",
@@ -188,7 +193,7 @@ class TestProjectUsdmRulesSummary:
         # No outcomes at all — projection should still return a
         # populated dict (so the header card renders) with all counts
         # zeroed.
-        summary = project_usdm_rules_summary(_rules_result())
+        summary = project_usdm_d4k_summary(_rules_result())
         assert summary["engine"] == "d4k"
         assert summary["rules_executed"] == 0
         assert summary["finding_count"] == 0
@@ -207,7 +212,7 @@ class TestProjectUsdmRulesSummary:
             },
             finding_count=2,
         )
-        summary = project_usdm_rules_summary(result)
+        summary = project_usdm_d4k_summary(result)
         assert summary["failure_count"] == 2
         assert summary["rule_count"] == 1
 
@@ -221,7 +226,7 @@ class TestProjectUsdmRulesSummary:
                 "R002": _outcome("Success"),
             }
         )
-        summary = project_usdm_rules_summary(result)
+        summary = project_usdm_d4k_summary(result)
         assert summary["rules_executed"] == 2
         assert summary["success_count"] == 1
         assert (

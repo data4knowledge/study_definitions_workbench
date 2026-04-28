@@ -13,9 +13,16 @@
 
 
 {% block main_content %}
-  {% set url = data['url'] ~ "?version=" ~ data['version']%}
+  {# The form's POST URL is the route path itself — the engine and the
+     USDM version are already implicit in the route the user picked,
+     so we don't need to round-trip them through a query string the
+     POST handler doesn't read. #}
+  {% set url = data['url'] %}
   {% set title = "Validate USDM JSON" %}
   {% set subtitle = "Validation for USDM version " ~ data['version'] ~ " '.json' file" %}
+  {% if data.get('engine') %}
+    {% set subtitle = subtitle ~ " (" ~ data['engine'] ~ " engine)" %}
+  {% endif %}
   {% set text = "Select a single USDM file" %}
   {% set disable = False %}
   {% if data['pfda'] or data['os'] %}

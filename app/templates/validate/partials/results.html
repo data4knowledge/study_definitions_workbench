@@ -5,23 +5,23 @@
    :mod:`app.utility.finding_projections` for the contract.
 
    Layout follows the rest of the workbench: a header card carrying the
-   run-level metadata (filename + the CDISC CORE summary fields when
-   present), then the findings card.  The CORE engine surfaces a rich
+   run-level metadata (filename + the CDISC summary fields when
+   present), then the findings card.  The CDISC engine surfaces a rich
    per-run context (rules executed / skipped, execution errors, CT
    packages loaded) that has no equivalent on the d4k rules engine, so
    the summary block is conditional on ``data['summary']`` being a
-   non-empty CORE summary dict — see
-   :func:`app.utility.finding_projections.project_usdm_core_summary`.
+   non-empty CDISC summary dict — see
+   :func:`app.utility.finding_projections.project_usdm_cdisc_summary`.
 
    Context keys consumed from ``data``:
      * ``findings``       — the projected row list.
-     * ``summary``        — optional run-level dict (CORE only); empty
+     * ``summary``        — optional run-level dict (CDISC only); empty
                             ``{}`` when the engine doesn't supply one.
      * ``messages``       — operational messages (extraction failures etc.).
      * ``filename``       — dict with ``filename``/``full_path``/``exists``;
                             used to label the source in downloads.
      * ``download_kind``  — slug for the download filename suffix
-                            (e.g. ``"usdm-rules-findings"``).
+                            (e.g. ``"usdm-d4k-findings"``).
      * ``download_title`` — heading used on the Markdown export.
      * ``download_sheet`` — worksheet name on the XLSX export. #}
 
@@ -51,11 +51,11 @@
 {# ---------- Header card ----------------------------------------------
    Mirrors the study-version pages (see study_versions/summary.html):
    title on top, pipe-separated metadata subtitle below.  Both USDM v4
-   engines (CORE and d4k rules) emit a ``summary`` dict with an
-   ``engine`` discriminator — the title and the per-engine extras in
-   the subtitle branch on it.  Common fields (file, USDM version,
-   rules executed / skipped, findings) render once for either engine
-   so the layout stays sibling-consistent.
+   engines (CDISC and d4k) emit a ``summary`` dict with an ``engine``
+   discriminator — the title and the per-engine extras in the subtitle
+   branch on it.  Common fields (file, USDM version, rules executed /
+   skipped, findings) render once for either engine so the layout
+   stays sibling-consistent.
 
    Note: this row deliberately has *no* ``mt-3`` — the picker page
    ``validate_json.html`` already wraps the swap target in a
@@ -69,10 +69,10 @@
     <div class="card card-body rounded-3 shadow-sm">
       <div class="row">
         <h4 class="card-title">
-          {% if engine == 'core' %}
-            CDISC CORE Validation Results
+          {% if engine == 'cdisc' %}
+            CDISC Validation Results
           {% elif engine == 'd4k' %}
-            d4k Rules Validation Results
+            d4k Validation Results
           {% else %}
             Validation Results
           {% endif %}
@@ -82,11 +82,11 @@
           {% if summary %}
             {% if source_filename %} | {% endif %}USDM: {{ summary['version'] }}
             | Rules executed: {{ summary['rules_executed'] }}
-            {% if engine == 'core' %}
+            {% if engine == 'cdisc' %}
               | Rules skipped: {{ summary['rules_skipped'] }}
             {% endif %}
             | Findings: {{ summary['finding_count'] }} ({{ summary['rule_count'] }} rule{% if summary['rule_count'] != 1 %}s{% endif %})
-            {% if engine == 'core' %}
+            {% if engine == 'cdisc' %}
               | Execution errors: {{ summary['execution_error_count'] }}
               | CT packages loaded: {{ summary['ct_packages_loaded_count'] }}/{{ summary['ct_packages_available'] }}
             {% elif engine == 'd4k' %}
@@ -96,7 +96,7 @@
             {% endif %}
           {% endif %}
         </h6>
-        {% if engine == 'core' and summary['ct_packages_loaded'] %}
+        {% if engine == 'cdisc' and summary['ct_packages_loaded'] %}
           {# Full CT package list lives in a <details> drawer so the
              header stays compact but the loaded packages are always one
              click away — useful for run reproducibility. #}

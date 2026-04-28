@@ -121,9 +121,9 @@ def project_m11_result(result: Any) -> list[dict]:
     ]
 
 
-def project_usdm_rules_result(result: Any) -> list[dict]:
-    """Project a ``RulesValidationResults`` object into the shared UI
-    row shape.
+def project_usdm_d4k_result(result: Any) -> list[dict]:
+    """Project a ``RulesValidationResults`` object (the d4k engine's
+    output) into the shared UI row shape.
 
     USDM JSON has no ``section`` concept — the nearest equivalent is
     the class name plus attribute.  We present ``klass`` as *Section*
@@ -146,19 +146,20 @@ def project_usdm_rules_result(result: Any) -> list[dict]:
     ]
 
 
-def project_usdm_core_result(result: Any) -> list[dict]:
-    """Project a ``CoreValidationResult`` into the shared UI row shape.
+def project_usdm_cdisc_result(result: Any) -> list[dict]:
+    """Project a ``CoreValidationResult`` (the CDISC engine's output —
+    CORE is CDISC's only engine) into the shared UI row shape.
 
-    CORE results are not flat: the top-level carries a list of
+    CDISC results are not flat: the top-level carries a list of
     ``CoreRuleFinding`` objects, each with its own list of per-instance
     ``errors`` dicts.  We flatten to one row per (finding, error) pair.
 
     Section / element are reconstructed from the ``_format_error``
     output that CORE already ships: ``sectionNumber`` + ``sectionTitle``
     form the section label, and ``entity`` + ``instance_id`` together
-    identify the element.  Severity is always ``"error"`` because CORE
-    does not emit a warning/info vocabulary — everything it surfaces is
-    a real-data conformance failure.
+    identify the element.  Severity is always ``"error"`` because the
+    CDISC engine does not emit a warning/info vocabulary — everything
+    it surfaces is a real-data conformance failure.
     """
     if result is None or not hasattr(result, "findings"):
         return []
@@ -186,14 +187,14 @@ def project_usdm_core_result(result: Any) -> list[dict]:
             )
             continue
         for error in raw_errors:
-            formatted = _format_core_error(error)
+            formatted = _format_cdisc_error(error)
             projected.append(
                 {
                     "rule_id": rule_id,
                     "severity": "error",
-                    "section": _core_section(formatted),
-                    "element": _core_element(formatted),
-                    "message": _core_message(base_message, formatted),
+                    "section": _cdisc_section(formatted),
+                    "element": _cdisc_element(formatted),
+                    "message": _cdisc_message(base_message, formatted),
                     "rule_text": description,
                     "path": formatted.get("path", "") or "",
                 }
@@ -201,14 +202,14 @@ def project_usdm_core_result(result: Any) -> list[dict]:
     return projected
 
 
-def project_usdm_rules_summary(result: Any) -> dict:
+def project_usdm_d4k_summary(result: Any) -> dict:
     """Project the run-level summary fields of a
     ``RulesValidationResults`` (the d4k engine) into a flat dict for
     the results-page header card.
 
-    Parallels :func:`project_usdm_core_summary`.  The d4k engine
-    doesn't carry the CT-package or USDM-version context CORE has,
-    but it does expose a per-status outcome breakdown
+    Parallels :func:`project_usdm_cdisc_summary`.  The d4k engine
+    doesn't carry the CT-package or USDM-version context the CDISC
+    engine has, but it does expose a per-status outcome breakdown
     (Success / Failure / Exception / Not Implemented) that's useful
     enough to surface in the header — especially the *Exception*
     count, which is the d4k-specific signal that a rule blew up
@@ -272,18 +273,19 @@ def project_usdm_rules_summary(result: Any) -> dict:
     }
 
 
-def project_usdm_core_summary(result: Any) -> dict:
+def project_usdm_cdisc_summary(result: Any) -> dict:
     """Project the run-level summary fields of a ``CoreValidationResult``
-    into a flat dict for the results-page header card.
+    (the CDISC engine's output) into a flat dict for the results-page
+    header card.
 
-    The CORE engine returns a substantial run-level context that the
+    The CDISC engine returns a substantial run-level context that the
     findings table alone cannot show — how many rules ran, how many
     errored out before they could check anything, which CT packages
     were loaded, etc.  See
     :class:`usdm4.core.core_validation_result.CoreValidationResult`
     for the authoritative shape.
 
-    Returns ``{}`` for non-CORE / ``None`` / unexpected inputs so the
+    Returns ``{}`` for non-CDISC / ``None`` / unexpected inputs so the
     template can use a single ``{% if summary %}`` guard.  The dict is
     flat (not nested) so the template doesn't need helper macros to
     pull values out.
@@ -303,7 +305,12 @@ def project_usdm_core_summary(result: Any) -> dict:
     )
     execution_errors = list(getattr(result, "execution_errors", []) or [])
     return {
-        "engine": "core",
+        # Discriminator for the results-page header card.  The user-
+        # facing label everywhere else in the workbench (validate menu,
+        # results card title, download filenames) is "CDISC" — CORE is
+        # CDISC's only engine — so we use that here too rather than the
+        # internal "core" naming the engine itself uses.
+        "engine": "cdisc",
         "version": getattr(result, "version", "") or "",
         "file_path": getattr(result, "file_path", "") or "",
         "rules_executed": int(getattr(result, "rules_executed", 0) or 0),
@@ -319,12 +326,12 @@ def project_usdm_core_summary(result: Any) -> dict:
     }
 
 
-# ---- CORE helpers -----------------------------------------------------
+# ---- CDISC engine helpers --------------------------------------------
 
 
-def _format_core_error(error: Any) -> dict[str, Any]:
-    """Flatten a raw CORE engine error dict to the flat shape the
-    projection consumes.
+def _format_cdisc_error(error: Any) -> dict[str, Any]:
+    """Flatten a raw CDISC engine error dict (CORE under the hood) to
+    the flat shape the projection consumes.
 
     The CORE engine hands us each error as a nested dict — the
     identity fields are at the top level, while section and domain
@@ -336,7 +343,7 @@ def _format_core_error(error: Any) -> dict[str, Any]:
         * ``name`` / ``sectionNumber`` / ``sectionTitle`` — copied
           from ``value``.
         * other non-identity ``value`` keys — rolled into a
-          ``details`` dict so :func:`_core_message` can concatenate
+          ``details`` dict so :func:`_cdisc_message` can concatenate
           them into a readable per-error tail.
 
     Non-dict inputs are wrapped in a minimal ``{"detail": ...}`` dict
@@ -376,7 +383,7 @@ def _format_core_error(error: Any) -> dict[str, Any]:
     return formatted
 
 
-def _core_section(formatted: dict) -> str:
+def _cdisc_section(formatted: dict) -> str:
     number = str(formatted.get("sectionNumber", "") or "").strip()
     title = str(formatted.get("sectionTitle", "") or "").strip()
     if number and title:
@@ -384,7 +391,7 @@ def _core_section(formatted: dict) -> str:
     return number or title
 
 
-def _core_element(formatted: dict) -> str:
+def _cdisc_element(formatted: dict) -> str:
     entity = str(formatted.get("entity", "") or "").strip()
     instance_id = str(formatted.get("instance_id", "") or "").strip()
     name = str(formatted.get("name", "") or "").strip()
@@ -393,7 +400,7 @@ def _core_element(formatted: dict) -> str:
     return entity or name or instance_id
 
 
-def _core_message(base: str, formatted: dict) -> str:
+def _cdisc_message(base: str, formatted: dict) -> str:
     """Compose a human-readable message for a CORE error row.
 
     ``CoreRuleFinding.message`` is the rule-level message shared by

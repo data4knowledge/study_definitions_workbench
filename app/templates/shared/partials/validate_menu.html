@@ -1,9 +1,10 @@
 {# Validate dropdown.  Three entries for three independent engines:
 
-   * CDISC CORE — USDM v4 .json through the CDISC CORE JSONata engine
-     (usdm4.USDM4.validate_core).  Strongest conformance signal; can
-     take several minutes on a cold cache.
-   * usdm4 rules — USDM v4 .json through the usdm4 Python rule library
+   * CDISC — USDM v4 .json through the CDISC CORE JSONata engine
+     (usdm4.USDM4.validate_core).  CORE is CDISC's only engine, so
+     the menu just labels it "CDISC".  Strongest conformance signal;
+     can take several minutes on a cold cache.
+   * d4k — USDM v4 .json through the usdm4 Python rule library
      (usdm4.USDM4.validate).  Fast, runs the SDW-authored rules.
    * ICH M11 — ICH M11 .docx through M11Validator in usdm4_protocol.
      Structural and title-page conformance, does not leave the DOCX.
@@ -16,8 +17,8 @@
     <i class="bi bi-check2-square me-2"></i>Validate
   </a>
   <div class="dropdown-menu">
-    <a class="dropdown-item" href="/validate/usdm-core">USDM v4 — CDISC CORE Engine (.json)</a>
-    <a class="dropdown-item" href="/validate/usdm-rules">USDM v4 — d4k Engine (.json)</a>
+    <a class="dropdown-item" href="/validate/usdm/cdisc">USDM v4 — CDISC Engine (.json)</a>
+    <a class="dropdown-item" href="/validate/usdm/d4k">USDM v4 — d4k Engine (.json)</a>
     <a class="dropdown-item" href="/validate/m11-docx">ICH M11 Protocol (.docx)</a>
   </div>
 </li>

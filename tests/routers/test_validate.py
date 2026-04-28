@@ -75,6 +75,12 @@ async def test_validate_usdm3_post(mocker, monkeypatch):
 
 @pytest.mark.anyio
 async def test_validate_usdm_post(mocker, monkeypatch):
+    """POST /validate/usdm now defers to ``_process_usdm_engine`` with
+    the CDISC engine (the workbench default). That path calls
+    ``USDM4.validate_core`` and projects the result via
+    ``project_usdm_cdisc_result`` / ``project_usdm_cdisc_summary``, so
+    the result mock needs the (empty) ``findings`` list / iterable
+    surface those projectors duck-type on."""
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
@@ -99,9 +105,20 @@ async def test_validate_usdm_post(mocker, monkeypatch):
     df_instance.delete.return_value = True
     usdm4 = mocker.patch("app.routers.validate.USDM4")
     usdm4_instance = usdm4.return_value
+    # CORE-shaped mock: the projectors duck-type on ``findings``,
+    # ``rules_executed``, ``ct_packages_loaded``, ``execution_errors``.
+    # Empty-list defaults keep the projection paths exercised but
+    # produce zero rows / counts.
     results_mock = MagicMock()
-    results_mock.to_dict.return_value = {"errors": []}
-    usdm4_instance.validate.return_value = results_mock
+    results_mock.findings = []
+    results_mock.rules_executed = 0
+    results_mock.rules_skipped = 0
+    results_mock.execution_errors = []
+    results_mock.ct_packages_loaded = []
+    results_mock.ct_packages_available = 0
+    results_mock.version = "4.0.0"
+    results_mock.file_path = "/tmp/test.json"
+    usdm4_instance.validate_core.return_value = results_mock
     response = await async_client.post("/validate/usdm")
     assert response.status_code == 200
     assert mock_called(uc)

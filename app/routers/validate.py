@@ -27,10 +27,10 @@ from usdm4_protocol.validation.m11 import M11Validator
 from simple_error_log import Errors as M11Errors
 from app.utility.finding_projections import (
     project_m11_result,
-    project_usdm_core_result,
-    project_usdm_core_summary,
-    project_usdm_rules_result,
-    project_usdm_rules_summary,
+    project_usdm_cdisc_result,
+    project_usdm_cdisc_summary,
+    project_usdm_d4k_result,
+    project_usdm_d4k_summary,
 )
 
 router = APIRouter(
@@ -53,6 +53,12 @@ def validate_usdm3(request: Request, session: Session = Depends(get_db)):
 
 @router.get("/usdm", dependencies=[Depends(protect_endpoint)])
 def validate_usdm(request: Request, session: Session = Depends(get_db)):
+    """Default USDM v4 picker. Routes through the CDISC engine — CDISC
+    is the workbench's default validator, with d4k available as the
+    sibling ``/validate/usdm/d4k`` route. The validate dropdown in
+    ``shared/partials/validate_menu.html`` skips this default in
+    favour of explicit engine routes, so this entry point is reached
+    only via direct URL / bookmarks."""
     return _validate_setup(
         request,
         session,
@@ -60,7 +66,7 @@ def validate_usdm(request: Request, session: Session = Depends(get_db)):
         False,
         "/validate/usdm",
         "validate/partials/validate_json.html",
-        {"version": usdm_version},
+        {"version": usdm_version, "engine": "CDISC"},
     )
 
 
@@ -76,57 +82,63 @@ async def validate_usdm3_process(
 async def validate_usdm_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
+    """POST companion to the default ``/validate/usdm`` picker. Defers
+    to the shared ``_process_usdm_engine`` helper with the CDISC
+    engine — keeps the default route's results page identical to
+    ``/validate/usdm/cdisc`` rather than the bare-bones output of
+    ``_process``."""
     user, present_in_db = user_details(request, session)
-    return await _process(request, user, USDM4(), source)
+    return await _process_usdm_engine(request, user, source, engine="cdisc")
 
 
-@router.get("/usdm-rules", dependencies=[Depends(protect_endpoint)])
-def validate_usdm_rules(request: Request, session: Session = Depends(get_db)):
-    """File picker for USDM v4 rules-library validation. Reuses the
-    shared USDM JSON picker — only the data URL and displayed version
-    string differ from ``/validate/usdm-core``."""
+@router.get("/usdm/d4k", dependencies=[Depends(protect_endpoint)])
+def validate_usdm_d4k(request: Request, session: Session = Depends(get_db)):
+    """File picker for USDM v4 d4k engine validation (the ``usdm4``
+    Python rule library). Reuses the shared USDM JSON picker — only the
+    data URL and the engine label differ from ``/validate/usdm/cdisc``."""
     return _validate_setup(
         request,
         session,
         "json",
         False,
-        "/validate/usdm-rules",
+        "/validate/usdm/d4k",
         "validate/partials/validate_json.html",
-        {"version": f"{usdm_version} (usdm4 Rules Library)"},
+        {"version": usdm_version, "engine": "d4k"},
     )
 
 
-@router.post("/usdm-rules", dependencies=[Depends(protect_endpoint)])
-async def validate_usdm_rules_process(
+@router.post("/usdm/d4k", dependencies=[Depends(protect_endpoint)])
+async def validate_usdm_d4k_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
     return await _process_usdm_engine(request, user, source, engine="d4k")
 
 
-@router.get("/usdm-core", dependencies=[Depends(protect_endpoint)])
-def validate_usdm_core(request: Request, session: Session = Depends(get_db)):
-    """File picker for USDM v4 CDISC CORE engine validation. CORE runs
-    can take several minutes on a cold cache — this is documented on the
-    file picker page via the displayed version string. See
-    ``usdm4.USDM4.validate_core`` for cache_dir / api_key wiring."""
+@router.get("/usdm/cdisc", dependencies=[Depends(protect_endpoint)])
+def validate_usdm_cdisc(request: Request, session: Session = Depends(get_db)):
+    """File picker for USDM v4 CDISC engine validation (CORE — the only
+    CDISC engine, so the route just says CDISC). CORE runs can take
+    several minutes on a cold cache — surfaced via the displayed engine
+    label on the picker page. See ``usdm4.USDM4.validate_core`` for
+    cache_dir / api_key wiring."""
     return _validate_setup(
         request,
         session,
         "json",
         False,
-        "/validate/usdm-core",
+        "/validate/usdm/cdisc",
         "validate/partials/validate_json.html",
-        {"version": f"{usdm_version} (CDISC CORE engine)"},
+        {"version": usdm_version, "engine": "CDISC"},
     )
 
 
-@router.post("/usdm-core", dependencies=[Depends(protect_endpoint)])
-async def validate_usdm_core_process(
+@router.post("/usdm/cdisc", dependencies=[Depends(protect_endpoint)])
+async def validate_usdm_cdisc_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    return await _process_usdm_engine(request, user, source, engine="core")
+    return await _process_usdm_engine(request, user, source, engine="cdisc")
 
 
 @router.get("/m11-docx", dependencies=[Depends(protect_endpoint)])
@@ -206,7 +218,7 @@ async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: st
         # Project the engine's row shape into the shared UI row shape
         # consumed by ``validate/partials/results.html``.  See
         # ``app/utility/finding_projections.py`` for the row contract.
-        findings = project_usdm_rules_result(results)
+        findings = project_usdm_d4k_result(results)
         files.delete()
     else:
         print(f"Messages: {messages}")
@@ -230,12 +242,13 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
     """Shared handler for the two USDM v4 validation flows.
 
     ``engine`` is ``"d4k"`` (the d4k / usdm4 Python rule library,
-    :meth:`USDM4.validate`) or ``"core"`` (CDISC CORE JSONata engine,
-    :meth:`USDM4.validate_core`). Both return engine-native result
-    objects that we project into the shared UI row shape via
+    :meth:`USDM4.validate`) or ``"cdisc"`` (CDISC CORE JSONata engine,
+    :meth:`USDM4.validate_core` — CORE is the only CDISC engine, so the
+    workbench labels it just ``cdisc``). Both return engine-native
+    result objects that we project into the shared UI row shape via
     :mod:`app.utility.finding_projections` before rendering the common
     ``validate/partials/results.html`` template. The header card uses
-    the same ``"d4k"`` / ``"core"`` discriminator on
+    the same ``"d4k"`` / ``"cdisc"`` discriminator on
     ``summary['engine']`` to pick its title and per-engine subtitle
     extras, so the dispatch hint and the template tag stay in sync.
 
@@ -260,50 +273,51 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
         # mounted volume so they survive container restarts — a cold
         # cache run can take several minutes.
         usdm = USDM4(cache_dir=application_configuration.cdisc_core_cache_path or None)
-        if engine == "core":
+        if engine == "cdisc":
             results = usdm.validate_core(full_path)
-            findings = project_usdm_core_result(results)
-            # CORE returns a rich run-level context (rules executed /
-            # skipped, execution errors, CT packages loaded, …) that
-            # the rules engine has no equivalent for. Surface it via
-            # the results-page header card. ``project_usdm_core_summary``
-            # returns ``{}`` for non-CORE / None inputs so the template
-            # can use a single ``{% if summary %}`` guard.
-            summary = project_usdm_core_summary(results)
-            download_kind = "usdm-core-findings"
-            download_title = "USDM v4 CORE Findings"
-            download_sheet = "USDM CORE Findings"
+            findings = project_usdm_cdisc_result(results)
+            # CDISC's CORE engine returns a rich run-level context
+            # (rules executed / skipped, execution errors, CT packages
+            # loaded, …) that the d4k engine has no equivalent for.
+            # Surface it via the results-page header card.
+            # ``project_usdm_cdisc_summary`` returns ``{}`` for non-CDISC
+            # / None inputs so the template can use a single
+            # ``{% if summary %}`` guard.
+            summary = project_usdm_cdisc_summary(results)
+            download_kind = "usdm-cdisc-findings"
+            download_title = "USDM v4 CDISC Findings"
+            download_sheet = "USDM CDISC Findings"
         else:
             # ``d4k`` is the default — ``engine`` values other than
-            # ``"core"`` fall through here so a typo doesn't silently
+            # ``"cdisc"`` fall through here so a typo doesn't silently
             # swap engines.
             results = usdm.validate(full_path)
-            findings = project_usdm_rules_result(results)
-            # Mirror the CORE flow: feed the run-level outcome
+            findings = project_usdm_d4k_result(results)
+            # Mirror the CDISC flow: feed the run-level outcome
             # breakdown (rules executed / failures / exceptions / not-
-            # implemented) into the header card so the rules-engine
-            # results page reads as a sibling of the CORE one.
-            summary = project_usdm_rules_summary(results)
+            # implemented) into the header card so the d4k results
+            # page reads as a sibling of the CDISC one.
+            summary = project_usdm_d4k_summary(results)
             # Stamp the validated USDM version onto the summary —
             # ``RulesValidationResults`` doesn't carry one of its own
             # (the version belongs to the file, not the engine), and
             # for the d4k engine the workbench currently only ships
             # validation against the active ``usdm_version``.
             summary["version"] = usdm_version
-            download_kind = "usdm-rules-findings"
-            download_title = "USDM v4 Rules Findings"
-            download_sheet = "USDM Rules Findings"
+            download_kind = "usdm-d4k-findings"
+            download_title = "USDM v4 d4k Findings"
+            download_sheet = "USDM d4k Findings"
         files.delete()
     else:
         messages.append("Failed to process the validation file")
         download_kind = (
-            "usdm-core-findings" if engine == "core" else "usdm-rules-findings"
+            "usdm-cdisc-findings" if engine == "cdisc" else "usdm-d4k-findings"
         )
         download_title = (
-            "USDM v4 CORE Findings" if engine == "core" else "USDM v4 Rules Findings"
+            "USDM v4 CDISC Findings" if engine == "cdisc" else "USDM v4 d4k Findings"
         )
         download_sheet = (
-            "USDM CORE Findings" if engine == "core" else "USDM Rules Findings"
+            "USDM CDISC Findings" if engine == "cdisc" else "USDM d4k Findings"
         )
     # HTMX retarget: the picker (``import/partials/browser_file_select.html``)
     # wraps its form in an outer ``#picker_card`` with title /
@@ -413,8 +427,8 @@ async def _process_m11_docx(request: Request, user: User, source: str):
 #     deterministic download filename like
 #     ``WP45338-m11-findings-2026-04-19.csv``;
 #   * ``kind`` — validator tag that slots into the filename
-#     (``m11-findings`` / ``usdm-rules-findings`` /
-#     ``usdm-core-findings``). Defaults to ``m11-findings`` because
+#     (``m11-findings`` / ``usdm-d4k-findings`` /
+#     ``usdm-cdisc-findings``). Defaults to ``m11-findings`` because
 #     M11 was the first caller; new callers should set it explicitly.
 #   * ``title`` — heading used on the Markdown export.
 #   * ``sheet_title`` — worksheet name on the XLSX export.
@@ -426,8 +440,8 @@ async def _process_m11_docx(request: Request, user: User, source: str):
 # have a clear, CURL-friendly URL.
 #
 # Routes are mounted under ``/validate/download/{fmt}`` (not
-# ``/validate/m11-docx/download/...``) so the USDM v4 CORE and USDM v4
-# Rules validation flows can share them.
+# ``/validate/m11-docx/download/...``) so the USDM v4 CDISC and USDM v4
+# d4k validation flows can share them.
 
 
 def _parse_findings(findings_json: str) -> list[dict]:

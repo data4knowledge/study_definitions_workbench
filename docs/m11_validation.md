@@ -146,10 +146,10 @@ empty dict; the template renders "0 findings" on those columns.
 |--------|-------------------------------|----------------------------------------------------------------|
 | GET    | `/validate/usdm`              | USDM v4 file picker (validates a USDM JSON against usdm4 rules)|
 | POST   | `/validate/usdm`              | Validate and return findings partial                           |
-| GET    | `/validate/usdm-rules`        | USDM v4 file picker — same engine, direct entry                |
-| POST   | `/validate/usdm-rules`        | Validate and return findings partial                           |
-| GET    | `/validate/usdm-core`         | USDM v4 file picker (CDISC CORE engine)                        |
-| POST   | `/validate/usdm-core`         | Validate via CORE engine and return findings partial           |
+| GET    | `/validate/usdm/d4k`          | USDM v4 file picker — d4k engine                                |
+| POST   | `/validate/usdm/d4k`          | Validate via d4k engine and return findings partial             |
+| GET    | `/validate/usdm/cdisc`        | USDM v4 file picker — CDISC engine (CORE)                       |
+| POST   | `/validate/usdm/cdisc`        | Validate via CDISC engine and return findings partial           |
 | GET    | `/validate/usdm3`             | USDM v3 file picker (legacy)                                   |
 | POST   | `/validate/usdm3`             | Validate v3 and return findings partial                        |
 | GET    | `/validate/m11-docx`          | M11 DOCX file picker                                            |
@@ -211,8 +211,8 @@ empty state rather than a 404.
 ### Shared results partial
 
 - `validate/partials/results.html` — canonical findings table used
-  by four flows (`/validate/usdm`, `/validate/usdm-rules`,
-  `/validate/usdm-core`, and the study-view Findings tab). Consumes
+  by four flows (`/validate/usdm`, `/validate/usdm/d4k`,
+  `/validate/usdm/cdisc`, and the study-view Findings tab). Consumes
   `data['findings']`, `data['messages']`, and the download slug keys
   (`download_kind`, `download_title`, `download_sheet`).
 
