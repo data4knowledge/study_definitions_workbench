@@ -121,6 +121,42 @@ def project_m11_result(result: Any) -> list[dict]:
     ]
 
 
+def project_m11_summary(result: Any, findings: list[dict]) -> dict:
+    """Project the run-level summary fields of an M11 ``Results`` object
+    into a flat dict for the results-page header card.
+
+    Parallels :func:`project_usdm_cdisc_summary` and
+    :func:`project_usdm_d4k_summary` so the shared
+    ``validate/partials/results.html`` template can render the M11 flow
+    with the same header-card shape as the USDM engines.
+
+    The M11 ``Results`` object only exposes ``count()`` (rules executed),
+    so per-status / per-package breakdowns aren't available — the M11
+    branch in the template skips them.  ``rule_count`` is derived from
+    the projected findings (one count per distinct ``rule_id``) so it
+    reflects "rules that produced findings", consistent with the d4k
+    summary.
+
+    No ``version`` key is set — M11Validator doesn't surface a spec
+    version on the result, so the template's version line is skipped
+    for M11 rather than rendering an empty ``M11: `` segment.
+
+    Returns ``{}`` for ``None`` / non-M11 inputs so the template can use
+    a single ``{% if summary %}`` guard regardless of engine.
+    """
+    if result is None:
+        return {}
+    if not callable(getattr(result, "count", None)):
+        return {}
+    rule_ids = {f.get("rule_id") for f in (findings or []) if f.get("rule_id")}
+    return {
+        "engine": "m11",
+        "rules_executed": int(result.count()),
+        "finding_count": len(findings or []),
+        "rule_count": len(rule_ids),
+    }
+
+
 def project_usdm_d4k_result(result: Any) -> list[dict]:
     """Project a ``RulesValidationResults`` object (the d4k engine's
     output) into the shared UI row shape.
@@ -300,9 +336,7 @@ def project_usdm_cdisc_summary(result: Any) -> dict:
         return {}
     ct_loaded = list(getattr(result, "ct_packages_loaded", []) or [])
     findings = getattr(result, "findings", []) or []
-    finding_count = sum(
-        len(getattr(f, "errors", []) or []) for f in findings
-    )
+    finding_count = sum(len(getattr(f, "errors", []) or []) for f in findings)
     execution_errors = list(getattr(result, "execution_errors", []) or [])
     return {
         # Discriminator for the results-page header card.  The user-
@@ -318,9 +352,7 @@ def project_usdm_cdisc_summary(result: Any) -> dict:
         "finding_count": finding_count,
         "rule_count": len(findings),
         "execution_error_count": len(execution_errors),
-        "ct_packages_available": int(
-            getattr(result, "ct_packages_available", 0) or 0
-        ),
+        "ct_packages_available": int(getattr(result, "ct_packages_available", 0) or 0),
         "ct_packages_loaded": ct_loaded,
         "ct_packages_loaded_count": len(ct_loaded),
     }

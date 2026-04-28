@@ -109,10 +109,13 @@ validate.py::_process_m11_docx
        │
        ├── M11Validator(temp_path, errors).validate() → Results
        │
-       └── project_m11_result(results) → list[dict]
+       ├── project_m11_result(results)  → list[dict]
+       └── project_m11_summary(results, findings) → summary dict
                 │
                 ▼
-       validate/partials/m11_docx_results.html (HTMX-swapped into picker)
+       validate/partials/results.html (the shared partial, also used
+       by the CDISC and d4k engine flows; HX-Retarget replaces the
+       picker card in one swap)
 ```
 
 ### Compare view (/studies/list)
@@ -187,12 +190,15 @@ empty state rather than a 404.
 
 - `validate/partials/validate_m11_docx.html` — the picker. Extends
   the shared picker pattern from `import/partials/browser_file_select.html`.
-- `validate/partials/m11_docx_results.html` — findings table +
-  download form. **Intentionally does not `{% extends %}` a layout**
-  — HTMX swaps this partial into the picker's `#form_div`; extending
-  would duplicate the page chrome. The annotated-document tab was
-  removed from this flow (it's now the study-view tab); see
-  `docs/lessons_learned.md` lesson 2.
+- `validate/partials/results.html` — findings table + download form.
+  Shared across all three validation engines (CDISC, d4k, M11). The
+  router sets `HX-Retarget: #picker_card` and `HX-Reswap: outerHTML`
+  so the whole picker card is replaced with the rendered results in
+  one swap — no out-of-band fragments. Header card branches on
+  `summary['engine']` to pick the title and per-engine subtitle
+  extras. The annotated-document tab was removed from the M11 flow
+  (it's now the study-view tab); see `docs/lessons_learned.md`
+  lesson 2.
 
 ### Study-view flow
 

@@ -345,11 +345,14 @@ async def test_download_csv_returns_plain_csv(monkeypatch):
     # Header row + one data row. Fields are in the fixed formatter
     # order — section / element first (mirrors the display), then
     # severity, rule id, the rule's description, the per-instance
-    # message, and the JSON / DOCX path. Spot-checked here so a future
-    # column reorder is a deliberate decision rather than a silent drift.
-    assert (
-        "section,element,severity,rule_id,rule_text,message,path" in body
-    )
+    # message. The Path column is data-driven (see
+    # ``_active_fields`` in ``findings_export``) — this fixture's
+    # findings have empty paths so Path is suppressed in the output,
+    # matching the M11 results page that hides the column for the
+    # same reason. Spot-checked here so a future column reorder is a
+    # deliberate decision rather than a silent drift.
+    assert "section,element,severity,rule_id,rule_text,message" in body
+    assert ",path" not in body  # Path column suppressed when no finding carries one.
     assert "M11_001" in body
     assert "Full Title" in body
 

@@ -50,12 +50,12 @@
 
 {# ---------- Header card ----------------------------------------------
    Mirrors the study-version pages (see study_versions/summary.html):
-   title on top, pipe-separated metadata subtitle below.  Both USDM v4
-   engines (CDISC and d4k) emit a ``summary`` dict with an ``engine``
-   discriminator — the title and the per-engine extras in the subtitle
-   branch on it.  Common fields (file, USDM version, rules executed /
-   skipped, findings) render once for either engine so the layout
-   stays sibling-consistent.
+   title on top, pipe-separated metadata subtitle below.  All three
+   validation engines (CDISC, d4k, M11) emit a ``summary`` dict with
+   an ``engine`` discriminator — the title and the per-engine extras
+   in the subtitle branch on it.  Common fields (file, version, rules
+   executed, findings) render once for any engine so the three result
+   pages stay sibling-consistent.
 
    Note: this row deliberately has *no* ``mt-3`` — the picker page
    ``validate_json.html`` already wraps the swap target in a
@@ -73,26 +73,33 @@
             CDISC Validation Results
           {% elif engine == 'd4k' %}
             d4k Validation Results
+          {% elif engine == 'm11' %}
+            ICH M11 Validation Results
           {% else %}
             Validation Results
           {% endif %}
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">
-          {% if source_filename %}File: {{ source_filename }}{% endif %}
+          {# ``joiner`` emits '' on its first call and ' | ' on every
+             subsequent call — lets each segment guard itself with a
+             plain ``{% if %}`` without juggling leading-separator
+             logic.  Skipping the version line for M11 (no spec
+             version on the validator's result) and skipping the file
+             line on direct-URL replays both fall out for free. #}
+          {% set sep = joiner(' | ') %}
+          {% if source_filename %}{{ sep() }}File: {{ source_filename }}{% endif %}
           {% if summary %}
-            {% if source_filename %} | {% endif %}USDM: {{ summary['version'] }}
-            | Rules executed: {{ summary['rules_executed'] }}
+            {% if summary.get('version') %}{{ sep() }}{% if engine == 'm11' %}M11{% else %}USDM{% endif %}: {{ summary['version'] }}{% endif %}
+            {{ sep() }}Rules executed: {{ summary['rules_executed'] }}
+            {% if engine == 'cdisc' %}{{ sep() }}Rules skipped: {{ summary['rules_skipped'] }}{% endif %}
+            {{ sep() }}Findings: {{ summary['finding_count'] }} ({{ summary['rule_count'] }} rule{% if summary['rule_count'] != 1 %}s{% endif %})
             {% if engine == 'cdisc' %}
-              | Rules skipped: {{ summary['rules_skipped'] }}
-            {% endif %}
-            | Findings: {{ summary['finding_count'] }} ({{ summary['rule_count'] }} rule{% if summary['rule_count'] != 1 %}s{% endif %})
-            {% if engine == 'cdisc' %}
-              | Execution errors: {{ summary['execution_error_count'] }}
-              | CT packages loaded: {{ summary['ct_packages_loaded_count'] }}/{{ summary['ct_packages_available'] }}
+              {{ sep() }}Execution errors: {{ summary['execution_error_count'] }}
+              {{ sep() }}CT packages loaded: {{ summary['ct_packages_loaded_count'] }}/{{ summary['ct_packages_available'] }}
             {% elif engine == 'd4k' %}
-              | Failures: {{ summary['failure_count'] }}
-              | Exceptions: {{ summary['exception_count'] }}
-              | Not implemented: {{ summary['not_implemented_count'] }}
+              {{ sep() }}Failures: {{ summary['failure_count'] }}
+              {{ sep() }}Exceptions: {{ summary['exception_count'] }}
+              {{ sep() }}Not implemented: {{ summary['not_implemented_count'] }}
             {% endif %}
           {% endif %}
         </h6>
@@ -130,14 +137,27 @@
     {# The "N findings reported" line was redundant — the header card
        above already shows ``Findings: N (M rules)``. We keep the
        success alert though: an empty findings list with no header
-       counter would otherwise leave the card body completely blank. #}
-    {% if not findings %}
+       counter would otherwise leave the card body completely blank.
+       Guarded on ``real_messages`` too — when an operational message
+       is present (e.g. M11's "Validation could not be completed
+       (extraction failed)"), the run did NOT pass and showing a green
+       "passed" alert next to the yellow error message would be
+       actively misleading. #}
+    {% if not findings and not real_messages %}
       <div class="alert alert-success" role="alert">
         No findings — validation passed.
       </div>
     {% endif %}
 
     {% if findings %}
+      {# Path column visibility is data-driven: shown only if any
+         finding carries a non-empty path.  CDISC's CORE engine and
+         the d4k rules engine produce JSON / DOCX paths for drill-
+         down; M11 findings don't carry a path field, so the column
+         vanishes for that flow rather than leaving an empty stripe.
+         Falls out for any future engine without paths and stays
+         correct if M11 ever starts surfacing them. #}
+      {% set has_paths = findings | selectattr('path') | list | length > 0 %}
       {# Plain HTML form — zero JavaScript. Each submit button uses
          ``formaction`` to target one of four server-side download
          routes. The findings are carried along as a hidden JSON
@@ -192,9 +212,18 @@
             <col style="width: 14%;">  {# Element       #}
             <col style="width:  6%;">  {# Severity      #}
             <col style="width:  9%;">  {# Rule          #}
-            <col style="width: 22%;">  {# Description   #}
-            <col style="width: 30%;">  {# Message       #}
-            <col style="width: 19%;">  {# Path          #}
+            {% if has_paths %}
+              <col style="width: 22%;">  {# Description   #}
+              <col style="width: 30%;">  {# Message       #}
+              <col style="width: 19%;">  {# Path          #}
+            {% else %}
+              {# Path's 19% redistributed across the two prose columns
+                 (Description +9, Message +10) so the table still
+                 totals 100% and the long-prose cells get the extra
+                 breathing room. #}
+              <col style="width: 31%;">  {# Description   #}
+              <col style="width: 40%;">  {# Message       #}
+            {% endif %}
           </colgroup>
           <thead>
             <tr>
@@ -203,7 +232,7 @@
               <th scope="col">Rule</th>
               <th scope="col">Description</th>
               <th scope="col">Message</th>
-              <th scope="col">Path</th>
+              {% if has_paths %}<th scope="col">Path</th>{% endif %}
             </tr>
           </thead>
           <tbody>
@@ -258,11 +287,13 @@
                 <td class="text-break"><code>{{ f['rule_id'] }}</code></td>
                 <td class="text-break">{{ f['rule_text'] or '' }}</td>
                 <td class="text-break">{{ f['message'] }}</td>
-                <td>
-                  {% if f['path'] %}
-                    <code class="text-break">{{ f['path'] }}</code>
-                  {% endif %}
-                </td>
+                {% if has_paths %}
+                  <td>
+                    {% if f['path'] %}
+                      <code class="text-break">{{ f['path'] }}</code>
+                    {% endif %}
+                  </td>
+                {% endif %}
               </tr>
             {% endfor %}
           </tbody>

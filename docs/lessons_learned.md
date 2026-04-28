@@ -31,9 +31,11 @@ root. That widens the watch set.
 
 ## 2. HTMX result partials must not extend a layout
 
-SDW's result pages (see `validate/partials/results.html`,
-`validate/partials/m11_docx_results.html`) are HTMX-swapped into a
-parent page's `#form_div`. If the partial `{% extends %}`s a layout,
+SDW's result pages (see `validate/partials/results.html`, the shared
+partial used by all three validation engines) are HTMX-swapped into a
+parent page's `#form_div` (or, in the unified flow, replace the whole
+`#picker_card` via `HX-Retarget`). If the partial `{% extends %}`s a
+layout,
 the response carries a full `<html>…</html>` page and HTMX drops the
 entire chrome (nav, sidebar, footer) inside the parent's chrome —
 producing a nested "page within the page" visual bug.

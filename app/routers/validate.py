@@ -27,6 +27,7 @@ from usdm4_protocol.validation.m11 import M11Validator
 from simple_error_log import Errors as M11Errors
 from app.utility.finding_projections import (
     project_m11_result,
+    project_m11_summary,
     project_usdm_cdisc_result,
     project_usdm_cdisc_summary,
     project_usdm_d4k_result,
@@ -353,12 +354,15 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
 @staticmethod
 async def _process_m11_docx(request: Request, user: User, source: str):
     """Process an uploaded M11 ``.docx`` through the standalone M11
-    validator and render the findings template.
+    validator and render the unified findings template.
 
-    Mirrors ``_process`` for USDM JSON. Differences: ``.docx`` extension,
-    :class:`M11Validator` entry point (DOCX-layer, no translator), and a
-    different results partial because M11 findings carry element +
-    section location rather than klass/attribute.
+    Mirrors ``_process_usdm_engine`` for USDM JSON. Differences:
+    ``.docx`` extension and the :class:`M11Validator` entry point
+    (DOCX-layer, no translator). Renders the same
+    ``validate/partials/results.html`` partial as the CDISC and d4k
+    flows so the three validation result pages share one layout — the
+    template branches on ``summary['engine']`` to pick the M11 title
+    and skip USDM-only header extras.
 
     The annotated-protocol view has been removed from this standalone
     flow (task #36). It will be rehomed under the study view's
@@ -373,6 +377,7 @@ async def _process_m11_docx(request: Request, user: User, source: str):
     )
     main_file, image_files, messages = await form_handler.get_files()
     findings: list[dict] = []
+    summary: dict = {}
     if main_file:
         files = DataFiles()
         _ = files.new()
@@ -386,8 +391,10 @@ async def _process_m11_docx(request: Request, user: User, source: str):
         validator_errors = M11Errors()
         results = M11Validator(full_path, validator_errors).validate()
         # Project the M11 engine's Results object into the shared UI row
-        # shape consumed by ``validate/partials/m11_docx_results.html``.
+        # shape and summary dict consumed by
+        # ``validate/partials/results.html``.
         findings = project_m11_result(results)
+        summary = project_m11_summary(results, findings)
         if results.count() == 0 and validator_errors.count() > 0:
             # Reader or runner failed before any rule could run —
             # surface the operational problem rather than claim
@@ -396,23 +403,33 @@ async def _process_m11_docx(request: Request, user: User, source: str):
         files.delete()
     else:
         messages.append("Failed to process the validation file")
+    # HTMX retarget mirrors the USDM v4 flows: replace the whole
+    # ``#picker_card`` with the rendered results card in one swap so
+    # the picker chrome (title / subtitle / border) disappears
+    # cleanly.  The unified template carries its own header card with
+    # the M11 identity, so no out-of-band fragments are needed.
     return templates.TemplateResponse(
         request,
-        "validate/partials/m11_docx_results.html",
+        "validate/partials/results.html",
         {
             "user": user,
             "data": {
                 "filename": main_file,
                 "messages": _strip_accepted_messages(messages),
                 "findings": findings,
+                "summary": summary,
                 # Download metadata shared with the USDM v4 flows — the
-                # M11 results template passes these through to the
+                # results template passes these through to the
                 # hidden-input form so /validate/download/{csv,json,md,
                 # xlsx} produces filenames and headings tagged for M11.
                 "download_kind": "m11-findings",
                 "download_title": "M11 Validation Findings",
                 "download_sheet": "M11 Findings",
             },
+        },
+        headers={
+            "HX-Retarget": "#picker_card",
+            "HX-Reswap": "outerHTML",
         },
     )
 

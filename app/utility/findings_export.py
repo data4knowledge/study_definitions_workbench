@@ -58,15 +58,53 @@ _FIELDS = (
     "path",
 )
 
-_MD_HEADERS = (
-    "Section",
-    "Element",
-    "Severity",
-    "Rule",
-    "Description",
-    "Message",
-    "Path",
-)
+# Header label per field, used by the markdown / xlsx formatters and
+# the CSV writer.  Single-source-of-truth so adding or renaming a
+# column is a one-line change.
+_HEADER_FOR = {
+    "section": "Section",
+    "element": "Element",
+    "severity": "Severity",
+    "rule_id": "Rule",
+    "rule_text": "Description",
+    "message": "Message",
+    "path": "Path",
+}
+
+# XLSX column width per field.  Picked to match the relative
+# information density of each column — Section / Element are tag-like,
+# Severity is a short word, Rule is a short id, Description and
+# Message are prose paragraphs (Message tends to be longest), Path is
+# a long-string JSONPath / DOCX path.
+_WIDTH_FOR = {
+    "section": 24,
+    "element": 28,
+    "severity": 10,
+    "rule_id": 14,
+    "rule_text": 50,
+    "message": 70,
+    "path": 50,
+}
+
+
+def _active_fields(findings: list[dict]) -> tuple[str, ...]:
+    """Return ``_FIELDS`` minus columns that carry no information for
+    this particular set of findings.  Today only ``path`` is
+    data-driven: M11 findings don't surface drill-down paths, so the
+    column would otherwise be a wasted stripe in every download.
+    Mirrors the column-visibility rule on the display side
+    (``validate/partials/results.html``) so what the user sees on
+    screen and what they get in the download stay in lock-step.
+
+    Empty findings list defaults to suppressing ``path`` — there's
+    nothing to suggest paths would be useful, and the M11 case is
+    the most common reason to download empty results.
+    """
+    if findings and any(
+        (f.get("path") if isinstance(f, dict) else "") for f in findings
+    ):
+        return _FIELDS
+    return tuple(f for f in _FIELDS if f != "path")
 
 
 def default_filename(
@@ -97,12 +135,13 @@ def to_csv(findings: list[dict]) -> bytes:
     """Serialise findings as UTF-8 CSV with a header row. RFC-4180
     escaping applies (DictWriter handles commas / quotes / newlines).
     """
+    fields = _active_fields(findings)
     buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(buffer, fieldnames=list(_FIELDS), extrasaction="ignore")
+    writer = csv.DictWriter(buffer, fieldnames=list(fields), extrasaction="ignore")
     writer.writeheader()
     for finding in findings or []:
         row = _row_view(finding)
-        writer.writerow({field: _stringify(row.get(field)) for field in _FIELDS})
+        writer.writerow({field: _stringify(row.get(field)) for field in fields})
     return buffer.getvalue().encode("utf-8")
 
 
@@ -110,8 +149,9 @@ def to_json(findings: list[dict]) -> bytes:
     """Pretty-printed JSON. Normalised to the canonical row shape so
     downstream consumers (diffing, archiving) see a stable key set
     regardless of which engine produced the findings."""
+    fields = _active_fields(findings)
     normalised = [
-        {field: _stringify(_row_view(finding).get(field)) for field in _FIELDS}
+        {field: _stringify(_row_view(finding).get(field)) for field in fields}
         for finding in findings or []
     ]
     return json.dumps(normalised, indent=2).encode("utf-8")
@@ -138,11 +178,13 @@ def to_markdown(
     if not findings:
         lines.append("_No findings._")
         return ("\n".join(lines) + "\n").encode("utf-8")
-    lines.append("| " + " | ".join(_MD_HEADERS) + " |")
-    lines.append("| " + " | ".join("---" for _ in _MD_HEADERS) + " |")
+    fields = _active_fields(findings)
+    headers = [_HEADER_FOR[f] for f in fields]
+    lines.append("| " + " | ".join(headers) + " |")
+    lines.append("| " + " | ".join("---" for _ in headers) + " |")
     for finding in findings:
         row = _row_view(finding)
-        cells = [_md_cell(row.get(field)) for field in _FIELDS]
+        cells = [_md_cell(row.get(field)) for field in fields]
         lines.append("| " + " | ".join(cells) + " |")
     return ("\n".join(lines) + "\n").encode("utf-8")
 
@@ -167,28 +209,20 @@ def to_xlsx(
     ws = wb.active
     ws.title = sheet_title[:31]  # Excel hard limit.
 
-    # Column widths picked to match the relative information density of
-    # each field — Section / Element are tag-like, Severity is a short
-    # word, Rule is a short id, Description and Message are prose
-    # paragraphs (Message tends to be longest), Path is a long-string
-    # JSONPath / DOCX path. Order matches ``_FIELDS``.
-    headers = [
-        ("Section", 24),
-        ("Element", 28),
-        ("Severity", 10),
-        ("Rule", 14),
-        ("Description", 50),
-        ("Message", 70),
-        ("Path", 50),
-    ]
-    for col_idx, (title, width) in enumerate(headers, start=1):
-        cell = ws.cell(row=1, column=col_idx, value=title)
+    # Active column set is data-driven (see ``_active_fields``) so the
+    # workbook tracks the display: Path is dropped when no finding
+    # carries a non-empty path.  Header label and width come from the
+    # ``_HEADER_FOR`` / ``_WIDTH_FOR`` maps so the three formatters
+    # share one source of truth.
+    fields = _active_fields(findings)
+    for col_idx, field in enumerate(fields, start=1):
+        cell = ws.cell(row=1, column=col_idx, value=_HEADER_FOR[field])
         cell.font = Font(bold=True)
-        ws.column_dimensions[cell.column_letter].width = width
+        ws.column_dimensions[cell.column_letter].width = _WIDTH_FOR[field]
 
     for row_idx, finding in enumerate(findings or [], start=2):
         row = _row_view(finding)
-        for col_idx, field in enumerate(_FIELDS, start=1):
+        for col_idx, field in enumerate(fields, start=1):
             cell = ws.cell(
                 row=row_idx, column=col_idx, value=_stringify(row.get(field))
             )

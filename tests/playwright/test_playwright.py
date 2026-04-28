@@ -954,10 +954,12 @@ def test_validate_usdm_cdisc(playwright: Playwright) -> None:
 def test_validate_m11(playwright: Playwright) -> None:
     """ICH M11 Protocol: drive the M11Validator route with a known-good
     sample DOCX. Confirms the picker page loads, the upload reaches the
-    validator, and the M11 results partial swaps the OOB card subtitle
-    in with the uploaded filename — that subtitle is set unconditionally
-    by ``m11_docx_results.html`` whenever the route returns, regardless
-    of how many findings the engine produced."""
+    validator, and the unified results partial replaces the picker
+    card with the rendered findings. The M11 flow now renders the
+    same ``validate/partials/results.html`` partial as the CDISC and
+    d4k flows (HX-Retarget replaces ``#picker_card``), so the
+    swap-completed signal mirrors the d4k test: ``#form_div`` is gone
+    once the response lands."""
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -973,12 +975,94 @@ def test_validate_m11(playwright: Playwright) -> None:
         "#files", os.path.join(path, "tests/test_files/m11/RadVax/RadVax.docx")
     )
     page.locator("text = Upload File(s)").last.click()
-    # The OOB-swapped subtitle is the most reliable "results rendered"
-    # signal — it carries the uploaded filename and is set on every
-    # success path through ``_process_m11_docx``.
-    expect(page.locator("#card_subtitle")).to_contain_text(
-        "RadVax.docx", timeout=180_000
+    # ``#form_div`` disappearing is the swap-completed signal — once
+    # the HX-Retarget header is honoured the whole ``#picker_card``
+    # (and therefore ``#form_div`` inside it) is replaced by the
+    # results card. Mirrors the d4k / CDISC playwright tests so the
+    # three M11 / d4k / CDISC flows assert on the same signal.
+    expect(page.locator("#form_div")).to_have_count(0, timeout=180_000)
+    # And the rendered results card carries the uploaded filename in
+    # its subtitle ("File: RadVax.docx ...") — proves the response
+    # actually contained results, not an error page.
+    expect(page.get_by_text("RadVax.docx")).to_be_visible()
+
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
+def test_validate_m11_downloads(playwright: Playwright) -> None:
+    """Click each of the four findings-download buttons on the M11
+    results page and confirm a download fires with the expected
+    filename slug.
+
+    Sister to ``test_validate_m11`` — that test stops at the swap-
+    completed signal; this one drives the form's hidden-input round-
+    trip through to ``/validate/download/{fmt}``.  Covers:
+
+    * the four download buttons (CSV / JSON / Markdown / XLSX) are
+      still rendered on the unified ``results.html`` partial after
+      the M11 migration;
+    * each button's ``formaction`` points at a route that returns
+      ``200`` with ``Content-Disposition: attachment`` (otherwise no
+      download event fires);
+    * the ``kind`` slug (``"m11-findings"``) is correctly threaded
+      from the M11 router → results partial's hidden input →
+      download route → ``default_filename()``, so the saved name
+      matches ``{basename}-m11-findings-{YYYY-MM-DD}.{ext}``.
+
+    M11 is the discriminating case across the three engines because
+    its download metadata is the most distinct (slug ``m11-findings``
+    vs ``usdm-cdisc-findings`` / ``usdm-d4k-findings``).  The shared
+    ``results.html`` template means CDISC and d4k inherit the same
+    button wiring; running this once for M11 validates the pipeline
+    end-to-end without paying the CDISC cold-cache cost in CI.
+    """
+    import re
+    from datetime import date
+
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+
+    page.get_by_role("button", name=" Validate").click()
+    page.get_by_role("link", name="ICH M11 Protocol (.docx)").click()
+    page.set_input_files(
+        "#files", os.path.join(path, "tests/test_files/m11/RadVax/RadVax.docx")
     )
+    page.locator("text = Upload File(s)").last.click()
+    # Wait for the results swap before clicking the download buttons —
+    # they don't exist on the picker page.
+    expect(page.locator("#form_div")).to_have_count(0, timeout=180_000)
+
+    # Mirror the splash / errors-file download tests' on-disk save
+    # convention so a maintainer can eyeball what each format
+    # actually produces.  ``exist_ok=True`` because the directory may
+    # not exist on a fresh checkout.
+    download_dir = "tests/test_files/downloads/m11_findings"
+    os.makedirs(download_dir, exist_ok=True)
+
+    today = date.today().isoformat()
+    expected = re.compile(rf"^RadVax-m11-findings-{today}\.(csv|json|md|xlsx)$")
+
+    # ``button`` text mirrors the labels rendered in
+    # ``validate/partials/results.html`` (next to the bi-filetype-*
+    # icons).  Each button submits the same form to its own
+    # ``formaction``, so iterating like this exercises one route per
+    # iteration without re-running the validation.
+    for label in ("CSV", "JSON", "Markdown", "XLSX"):
+        with page.expect_download() as download_info:
+            page.get_by_role("button", name=label).click()
+        download = download_info.value
+        assert expected.match(download.suggested_filename), (
+            f"{label} download had unexpected filename: "
+            f"{download.suggested_filename!r} (expected match for {expected.pattern})"
+        )
+        download.save_as(os.path.join(download_dir, download.suggested_filename))
 
     context.close()
     browser.close()
