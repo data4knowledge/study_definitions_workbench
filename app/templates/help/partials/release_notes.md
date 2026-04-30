@@ -1,3 +1,7 @@
+<h5>Release 0.40.0, 2026-04-30</h5>
+
+Update for improved packages and small UI tweak(Issue 63).
+
 <h5>Release 0.39.0, 2026-04-29</h5>
 
 Small tweaks to improve CORE and d4k results (issues 60, 61 and 62).
