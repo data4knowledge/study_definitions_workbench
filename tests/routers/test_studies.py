@@ -270,9 +270,9 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
     assert response.status_code == 200
     body = response.text
     m11_helper.assert_called_once()
-    # Canonical-shape finding dicts render as a severity-coloured badge
+    # Canonical-shape finding dicts render as a severity-coloured pill
     # with the rule id and message visible inside the <details> panel.
-    assert "m11-validation-badge" in body
+    assert "m11-findings-pill" in body
     assert "M11_001" in body
     assert "Required element missing." in body
 

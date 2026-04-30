@@ -56,10 +56,18 @@
       user-select: none;
     }
     details.m11-cell-findings > summary::-webkit-details-marker { display: none; }
-    details.m11-cell-findings > summary .m11-findings-count {
-      font-size: 0.75em;
-      color: #666;
-      margin-left: 0.2em;
+    /* Per-cell findings pill — sized down from the default Bootstrap
+       badge so it sits comfortably inline next to a value, but still
+       coloured by severity (danger/warning/info) so the eye picks it
+       out against the field label. Mirrors the header pills above. */
+    details.m11-cell-findings > summary .m11-findings-pill {
+      font-size: 0.7em;
+      padding: 0.2em 0.5em;
+      vertical-align: middle;
+    }
+    details.m11-cell-findings > summary .m11-findings-pill .bi {
+      font-size: 0.95em;
+      margin-right: 0.25em;
     }
     .m11-findings-body {
       margin-top: 0.3rem;
@@ -193,14 +201,27 @@
                             {% endfor %}
                             <details class="m11-cell-findings severity-{{ highest }}">
                               <summary>
+                                {# Coloured pill (red/yellow/blue by severity)
+                                   draws the eye to fields with findings —
+                                   matches the protocol-level pill convention
+                                   in the header row above. #}
                                 {% if highest == 'error' %}
-                                  <i class="bi bi-x-circle-fill text-danger m11-validation-badge"></i>
+                                  <span class="badge rounded-pill bg-danger text-white m11-findings-pill">
+                                    <i class="bi bi-x-circle-fill"></i>{{ cell_findings|length }}
+                                  </span>
                                 {% elif highest == 'warning' %}
-                                  <i class="bi bi-exclamation-triangle-fill text-warning m11-validation-badge"></i>
+                                  <span class="badge rounded-pill bg-warning text-white m11-findings-pill">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>{{ cell_findings|length }}
+                                  </span>
                                 {% else %}
-                                  <i class="bi bi-info-circle text-secondary m11-validation-badge"></i>
+                                  {# bg-primary (theme blue) rather than
+                                     bg-info — this Bootstrap build remaps
+                                     --bs-info to brand purple, which doesn't
+                                     read as "information" to most users. #}
+                                  <span class="badge rounded-pill bg-primary text-white m11-findings-pill">
+                                    <i class="bi bi-info-circle-fill"></i>{{ cell_findings|length }}
+                                  </span>
                                 {% endif %}
-                                <span class="m11-findings-count">{{ cell_findings|length }}</span>
                               </summary>
                               <div class="m11-findings-body">
                                 {# Finding panel carries the rule id, the
