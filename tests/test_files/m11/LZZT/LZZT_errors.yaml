@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/ebe4fad8-ff05-45a4-84f6-9d7a57b9b86c/LZZT.docx'',
-    dir=''tests/test_files/mount/datafiles/ebe4fad8-ff05-45a4-84f6-9d7a57b9b86c'',
-    image_path=''tests/test_files/mount/datafiles/ebe4fad8-ff05-45a4-84f6-9d7a57b9b86c/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/5cea1787-9994-4e3e-ae8a-c47af34d8009/LZZT.docx'',
+    dir=''tests/test_files/mount/datafiles/5cea1787-9994-4e3e-ae8a-c47af34d8009'',
+    image_path=''tests/test_files/mount/datafiles/5cea1787-9994-4e3e-ae8a-c47af34d8009/images'',
     filename=''LZZT.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -775,22 +775,18 @@
 - extra: null
   level: Info
   location: {}
-  message: 'Amendment assembler source data {''amendment_details'': ''<p>Amendment
-    Details:</p>\n<p>This protocol has been amended previously. Details of prior amendments
-    are presented in Prior Protocol Amendment(s).}</p>\n<p>The table below describes
-    the current amendment.</p>'', ''identifier'': ''H2Q-MC-LXXT(c)'', ''scope'': {''global'':
-    True, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'': []}, ''enrollment'':
-    {''keyword'': ''Globally'', ''value'': 66, ''unit'': ''%'', ''regions'': []},
-    ''reasons'': {''primary'': ''Primary: Entry Criteria'', ''secondary'': ''Secondary:
-    Administrative.''}, ''summary'': ''(Example data only as exact details of amendment
-    were not available for this test protocol.)amuuuSummStnent ementmmdmentmddndndmendment
-    Summary'', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
-    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
-    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
-    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''changes'':
-    [{''description'': ''Changed Entry Criteria'', ''rationale'': ''Example data only
-    as exact details of amendment were not available for this test protocol.'', ''section'':
-    ''5.2 Inclusion Criteria''}]}'
+  message: 'Amendment assembler source data {''identifier'': ''H2Q-MC-LXXT(c)'', ''summary'':
+    ''(Example data only as exact details of amendment were not available for this
+    test protocol.)amuuuSummStnent ementmmdmentmddndndmendment Summary'', ''reasons'':
+    {''primary'': ''Primary: Entry Criteria'', ''secondary'': ''Secondary: Administrative.''},
+    ''impact'': {''safety_and_rights'': {''safety'': {''substantial'': False, ''reason'':
+    ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}}, ''reliability_and_robustness'':
+    {''reliability'': {''substantial'': False, ''reason'': ''''}, ''robustness'':
+    {''substantial'': False, ''reason'': ''''}}}, ''enrollment'': {''value'': 66,
+    ''unit'': ''%''}, ''scope'': {''global'': True, ''unknown'': [], ''countries'':
+    [], ''regions'': [], ''sites'': []}, ''changes'': [{''section'': ''5.2 Inclusion
+    Criteria'', ''description'': ''Changed Entry Criteria'', ''rationale'': ''Example
+    data only as exact details of amendment were not available for this test protocol.''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -821,7 +817,7 @@
   level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
-    extensionAttributes=[], type=Code(id=''Code_46'', extensionAttributes=[], code=''C68846'',
+    extensionAttributes=[], type=Code(id=''Code_48'', extensionAttributes=[], code=''C68846'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Global'',
     instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
     None'

@@ -1161,7 +1161,7 @@ def test_filter(playwright: Playwright) -> None:
 
     # Check Phase menu
     page.get_by_role("button", name=" Phases").click()
-    expect(page.locator("li").filter(has_text="Phase 1")).to_be_visible()
+    expect(page.locator("li").filter(has_text="Phase I Trial")).to_be_visible()
     page.get_by_role("button", name=" Phases").click()
 
     # Check filter
@@ -1170,7 +1170,7 @@ def test_filter(playwright: Playwright) -> None:
         "checkbox"
     ).uncheck()
     page.get_by_role("button", name=" Phases").click()
-    page.locator("li").filter(has_text="Phase 1").get_by_role("checkbox").uncheck()
+    page.locator("li").filter(has_text="Phase I Trial").get_by_role("checkbox").uncheck()
     page.locator("li").filter(has_text="Phase II Trial").get_by_role(
         "checkbox"
     ).uncheck()
@@ -1208,7 +1208,7 @@ def test_filter(playwright: Playwright) -> None:
         "checkbox"
     ).uncheck()
     page.get_by_role("button", name=" Phases").click()
-    page.locator("li").filter(has_text="Phase 1").get_by_role("checkbox").check()
+    page.locator("li").filter(has_text="Phase I Trial").get_by_role("checkbox").check()
     page.locator("li").filter(has_text="Phase II Trial").get_by_role("checkbox").check()
     page.get_by_role("button", name=" Filter").click()
     expect(page.locator("#card_2_div")).to_contain_text(

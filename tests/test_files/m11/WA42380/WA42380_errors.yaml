@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/ecb62446-8a9c-4015-82c7-8a493af2c2aa/WA42380.docx'',
-    dir=''tests/test_files/mount/datafiles/ecb62446-8a9c-4015-82c7-8a493af2c2aa'',
-    image_path=''tests/test_files/mount/datafiles/ecb62446-8a9c-4015-82c7-8a493af2c2aa/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/0a373ef5-ac92-46ca-90e3-c539998cbb70/WA42380.docx'',
+    dir=''tests/test_files/mount/datafiles/0a373ef5-ac92-46ca-90e3-c539998cbb70'',
+    image_path=''tests/test_files/mount/datafiles/0a373ef5-ac92-46ca-90e3-c539998cbb70/images'',
     filename=''WA42380.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -731,47 +731,44 @@
 - extra: null
   level: Info
   location: {}
-  message: 'Amendment assembler source data {''amendment_details'': ''<p>Amendment
-    Details</p>\n<p>This protocol has been amended previously. Details of prior amendments
-    are presented in Prior Protocol Amendment(s).</p>\n<p></p>\n<p>Current Amendment</p>\n<p>The
-    table below describes the current amendment.</p>'', ''identifier'': ''3'', ''scope'':
-    {''global'': True, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'':
-    []}, ''enrollment'': {''keyword'': ''Globally'', ''value'': 0, ''unit'': ''%'',
-    ''regions'': []}, ''reasons'': {''primary'': ''Primary: To better align with the
-    statistical analysis plan (SAP)'', ''secondary'': ''Secondary: Minor changes have
-    been made to improve clarity and consistency.''}, ''summary'': '''', ''impact'':
-    {''safety_and_rights'': {''safety'': {''substantial'': False, ''reason'': ''''},
-    ''rights'': {''substantial'': False, ''reason'': ''''}}, ''reliability_and_robustness'':
-    {''reliability'': {''substantial'': False, ''reason'': ''''}, ''robustness'':
-    {''substantial'': False, ''reason'': ''''}}}, ''changes'': [{''description'':
-    ''Additional secondary efficacy endpoint of time to recovery was added'', ''rationale'':
-    ''To facilitate comparison with other trials of treatments for COVID-19'', ''section'':
-    ''Sections 2.1.2 and 6.4.2''}, {''description'': ''Text on the sample size and
-    power calculation was updated to incorporate the increased enrollment target to
-    maintain 90% power for the primary endpoint, as described in the SAP'', ''rationale'':
-    ''The potential for an increase in enrollment was included in Version 2 of the
-    protocol, and the confirmation of increased enrollment was communicated to sites,
-    Agencies, and ethics committees in the week of 4 May 2020.'', ''section'': ''Sections
-    3.1, 4.1, 6.1, 9.5''}, {''description'': ''Geographic stratification factors were
+  message: 'Amendment assembler source data {''identifier'': ''3'', ''summary'': '''',
+    ''reasons'': {''primary'': ''Primary: To better align with the statistical analysis
+    plan (SAP)'', ''secondary'': ''Secondary: Minor changes have been made to improve
+    clarity and consistency.''}, ''impact'': {''safety_and_rights'': {''safety'':
+    {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
+    ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
+    ''''}}}, ''enrollment'': {''value'': 0, ''unit'': ''%''}, ''scope'': {''global'':
+    True, ''unknown'': [], ''countries'': [], ''regions'': [], ''sites'': []}, ''changes'':
+    [{''section'': ''Sections 2.1.2 and 6.4.2'', ''description'': ''Additional secondary
+    efficacy endpoint of time to recovery was added'', ''rationale'': ''To facilitate
+    comparison with other trials of treatments for COVID-19''}, {''section'': ''Sections
+    3.1, 4.1, 6.1, 9.5'', ''description'': ''Text on the sample size and power calculation
+    was updated to incorporate the increased enrollment target to maintain 90% power
+    for the primary endpoint, as described in the SAP'', ''rationale'': ''The potential
+    for an increase in enrollment was included in Version 2 of the protocol, and the
+    confirmation of increased enrollment was communicated to sites, Agencies, and
+    ethics committees in the week of 4 May 2020.''}, {''section'': ''Sections 3.1,
+    4.2.1, 6.1, 6.4.2'', ''description'': ''Geographic stratification factors were
     updated'', ''rationale'': ''To address the inclusion of only North American and
-    Europe because no sites outside of these regions were included in the study'',
-    ''section'': ''Sections 3.1, 4.2.1, 6.1, 6.4.2''}, {''description'': ''Text on
-    the reporting of pregnancies in partner of male patients was removed'', ''rationale'':
-    ''To align with the informed consent form and recommendations for tocilizumab
-    in other indications'', ''section'': ''Section 5.4.3''}, {''description'': ''The
-    method of analysis for the primary endpoint was updated'', ''rationale'': ''To
-    utilize a non-parametric method that was determined to be a more appropriate method,
-    as described in the SAP'', ''section'': ''Sections 6.1 and 6.4.1''}, {''description'':
-    ''The method of analysis for the secondary endpoint of clinical status at additional
-    timepoints was updated'', ''rationale'': ''To utilize a non-parametric method
-    that was determined to be a more appropriate method, as described in the SAP'',
-    ''section'': ''Section 6.4.2''}, {''description'': ''Selected secondary efficacy
-    endpoints were specified as key secondary endpoints'', ''rationale'': ''To address
-    Type I error control, as described in the SAP'', ''section'': ''Section 6.4.2''},
-    {''description'': ''For clarity and as described in the SAP, language on the planned
-    interim analyses was updated'', ''rationale'': ''Updated to address the increased
-    enrollment target to maintain 90% power for the primary endpoint and the criteria
-    for not conducting the interim analyses'', ''section'': ''Section 6.9''}]}'
+    Europe because no sites outside of these regions were included in the study''},
+    {''section'': ''Section 5.4.3'', ''description'': ''Text on the reporting of pregnancies
+    in partner of male patients was removed'', ''rationale'': ''To align with the
+    informed consent form and recommendations for tocilizumab in other indications''},
+    {''section'': ''Sections 6.1 and 6.4.1'', ''description'': ''The method of analysis
+    for the primary endpoint was updated'', ''rationale'': ''To utilize a non-parametric
+    method that was determined to be a more appropriate method, as described in the
+    SAP''}, {''section'': ''Section 6.4.2'', ''description'': ''The method of analysis
+    for the secondary endpoint of clinical status at additional timepoints was updated'',
+    ''rationale'': ''To utilize a non-parametric method that was determined to be
+    a more appropriate method, as described in the SAP''}, {''section'': ''Section
+    6.4.2'', ''description'': ''Selected secondary efficacy endpoints were specified
+    as key secondary endpoints'', ''rationale'': ''To address Type I error control,
+    as described in the SAP''}, {''section'': ''Section 6.9'', ''description'': ''For
+    clarity and as described in the SAP, language on the planned interim analyses
+    was updated'', ''rationale'': ''Updated to address the increased enrollment target
+    to maintain 90% power for the primary endpoint and the criteria for not conducting
+    the interim analyses''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -804,7 +801,7 @@
   level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
-    extensionAttributes=[], type=Code(id=''Code_44'', extensionAttributes=[], code=''C68846'',
+    extensionAttributes=[], type=Code(id=''Code_46'', extensionAttributes=[], code=''C68846'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Global'',
     instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
     None'
@@ -939,10 +936,10 @@
   location:
     class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
     method_name: _add_conditions
-  message: 'Failed to align condition {''text'': ''a Results from standard-of-care
-    tests or examinations performed prior to obtaining informed consent and within
-    48 hours before randomization may be used; such tests do not need to be repeated
-    for screening.'', ''reference'': ''a'', ''references'': [''a'']}, not created.'
+  message: 'Failed to align condition {''reference'': ''a'', ''text'': ''a Results
+    from standard-of-care tests or examinations performed prior to obtaining informed
+    consent and within 48 hours before randomization may be used; such tests do not
+    need to be repeated for screening.''}, not created.'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -950,9 +947,9 @@
   location:
     class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
     method_name: _add_conditions
-  message: 'Failed to align condition {''text'': ''b Informed consent must be documented
-    before any study-specific screening procedure is performed.'', ''reference'':
-    ''b'', ''references'': [''b'']}, not created.'
+  message: 'Failed to align condition {''reference'': ''b'', ''text'': ''b Informed
+    consent must be documented before any study-specific screening procedure is performed.''},
+    not created.'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
