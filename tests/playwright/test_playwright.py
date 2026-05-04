@@ -1170,7 +1170,9 @@ def test_filter(playwright: Playwright) -> None:
         "checkbox"
     ).uncheck()
     page.get_by_role("button", name=" Phases").click()
-    page.locator("li").filter(has_text="Phase I Trial").get_by_role("checkbox").uncheck()
+    page.locator("li").filter(has_text="Phase I Trial").get_by_role(
+        "checkbox"
+    ).uncheck()
     page.locator("li").filter(has_text="Phase II Trial").get_by_role(
         "checkbox"
     ).uncheck()
