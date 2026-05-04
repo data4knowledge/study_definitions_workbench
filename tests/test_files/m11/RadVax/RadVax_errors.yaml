@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/48ee4477-f269-4a6c-abce-10423cabbffb/RadVax.docx'',
-    dir=''tests/test_files/mount/datafiles/48ee4477-f269-4a6c-abce-10423cabbffb'',
-    image_path=''tests/test_files/mount/datafiles/48ee4477-f269-4a6c-abce-10423cabbffb/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/eaaa19bb-1017-427c-9a21-d108a5a80f10/RadVax.docx'',
+    dir=''tests/test_files/mount/datafiles/eaaa19bb-1017-427c-9a21-d108a5a80f10'',
+    image_path=''tests/test_files/mount/datafiles/eaaa19bb-1017-427c-9a21-d108a5a80f10/images'',
     filename=''RadVax.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -406,63 +406,6 @@
     class_name: usdm4.encoder.encoder.Encoder
     method_name: sex
   message: Sex 'MALE' decoded as 'C20197', 'Male'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Amendment assembler source data {''identifier'': '''', ''summary'': '''',
-    ''reasons'': {''primary'': '''', ''secondary'': ''''}, ''impact'': {''safety_and_rights'':
-    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
-    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
-    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
-    ''''}}}, ''enrollment'': None, ''scope'': None, ''changes'': []}'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4.encoder.encoder.Encoder
-    method_name: amendment_reason
-  message: Amendment reason not decoded, missing text
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _create_scope
-  message: Created scope of type Global
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Error
-  location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _create_scopes
-  message: Empty scope found
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_2'',
-    extensionAttributes=[], type=Code(id=''Code_50'', extensionAttributes=[], code=''C68846'',
-    codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Global'',
-    instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
-    None'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _create_amendment_impact
-  message: 'Creating amendment impacts using {''safety_and_rights'': {''safety'':
-    {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
-    ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
-    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
-    ''''}}}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

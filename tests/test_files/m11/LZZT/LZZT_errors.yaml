@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/9977fd59-ed06-4492-9c9d-0d762f558c37/LZZT.docx'',
-    dir=''tests/test_files/mount/datafiles/9977fd59-ed06-4492-9c9d-0d762f558c37'',
-    image_path=''tests/test_files/mount/datafiles/9977fd59-ed06-4492-9c9d-0d762f558c37/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/1fd94000-96c0-4310-a1b1-1b5a75850065/LZZT.docx'',
+    dir=''tests/test_files/mount/datafiles/1fd94000-96c0-4310-a1b1-1b5a75850065'',
+    image_path=''tests/test_files/mount/datafiles/1fd94000-96c0-4310-a1b1-1b5a75850065/images'',
     filename=''LZZT.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
