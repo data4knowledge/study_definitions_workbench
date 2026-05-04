@@ -1,10 +1,10 @@
 <h5>Release 0.41.0, 2026-05-03</h5>
 
-Update for improved packages.
+Update for improved packages (issue 64).
 
 <h5>Release 0.40.0, 2026-04-30</h5>
 
-Update for improved packages and small UI tweak (Issue 63).
+Update for improved packages and small UI tweak (issue 63).
 
 <h5>Release 0.39.0, 2026-04-29</h5>
 
