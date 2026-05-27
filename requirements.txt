@@ -19,6 +19,6 @@ pytest
 pytest-mock
 pytest-cov
 pytest-asyncio
-playwright
-pytest-playwright
+playwright==1.48.0
+pytest-playwright==0.5.2
 ruff

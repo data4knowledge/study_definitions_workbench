@@ -1315,6 +1315,18 @@ def login(page, email=None, name=None):
     page.get_by_label("Login code").click()
     page.get_by_label("Login code").fill(dev_code())
     page.get_by_role("button", name="Sign in").click()
+    # A successful sign-in redirects to /index. If it doesn't, the server
+    # is almost certainly not issuing the fixed DEV_LOGIN_CODE — fail fast
+    # with guidance instead of letting later steps hang on a missing page.
+    try:
+        page.wait_for_url("**/index", timeout=10_000)
+    except Exception:
+        raise AssertionError(
+            "Login did not complete (still on the verify page). Start the "
+            "server with ./playwright_server.sh so it runs in dev mode with "
+            "DEV_LOGIN_CODE=123456 — dev_server.sh emails a real random code "
+            "and rejects the test code."
+        )
 
 
 def load_excel(page, root_path, filepath):
