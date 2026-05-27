@@ -91,7 +91,8 @@ def test_clear_all(db):
     db.commit()
 
     # Verify data was added
-    assert db.query(UserDB).count() > 0
+    users_before = db.query(UserDB).count()
+    assert users_before > 0
     assert db.query(StudyDB).count() > 0
 
     # Execute clear_all with a mock for DataFiles().delete_all()
@@ -99,13 +100,17 @@ def test_clear_all(db):
         manager = DatabaseManager()
         manager.clear_all()
 
-        # Verify all tables were cleared
+        # Verify all data tables were cleared
         assert db.query(StudyDB).count() == 0
         assert db.query(VersionDB).count() == 0
         assert db.query(FileImportDB).count() == 0
         assert db.query(EndpointDB).count() == 0
         assert db.query(UserEndpointDB).count() == 0
         assert db.query(TransmissionDB).count() == 0
+
+        # The user table MUST be preserved — it is the login allow-list
+        # and holds roles. clear_all must never touch it.
+        assert db.query(UserDB).count() == users_before
 
         # Verify DataFiles.delete_all was called
         mock_delete_all.assert_called_once()
@@ -160,15 +165,29 @@ def test_migrate_at_31(db):
     assert version == 32
 
 
-def test_migrate_above_31(db):
-    """Test migration when version > 31 (no migration needed)."""
+def test_migrate_at_32(db):
+    """Test migration when version == 32 (adds roles column, -> 33)."""
     manager = DatabaseManager(session=db)
     cursor = db.connection().connection.cursor()
     cursor.execute("pragma user_version = 32")
     db.commit()
     manager.migrate()
     version = manager._get_version()
-    assert version == 32
+    assert version == 33
+    # The user table must have a roles column after this migration.
+    cols = [row[1] for row in cursor.execute("pragma table_info(user)")]
+    assert "roles" in cols
+
+
+def test_migrate_above_32(db):
+    """Test migration when version > 32 (no migration needed)."""
+    manager = DatabaseManager(session=db)
+    cursor = db.connection().connection.cursor()
+    cursor.execute("pragma user_version = 33")
+    db.commit()
+    manager.migrate()
+    version = manager._get_version()
+    assert version == 33
 
 
 def test_get_version(db):

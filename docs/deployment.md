@@ -4,28 +4,35 @@ This document summarises the deployment options for the Study Definitions Workbe
 
 ## Environment Variables
 
+Login is **passwordless email-code** (a numeric code emailed to the user). The former Auth0 / OAuth integration has been removed — there are no `AUTH0_*` variables (the legacy `AUTH0_SESSION_SECRET` name is still accepted as a fallback for `SESSION_SECRET`, nothing else).
+
 The application has two modes controlled by the `SINGLE_USER` variable:
 
-- **`SINGLE_USER=True`** — Single-user mode. No authentication is required and **all Auth0 variables can be omitted entirely**. This is the simplest configuration for local or personal use.
-- **`SINGLE_USER=False`** — Multi-user mode. All Auth0 variables listed below **must** be provided with valid values.
+- **`SINGLE_USER=True`** — Single-user mode. No login screen; the app runs as a single built-in user with full (`Admin` + `Transmit`) rights. **No SMTP required.** Simplest configuration for local or personal use. Still needs `SESSION_SECRET`.
+- **`SINGLE_USER=False`** — Multi-user mode. Email-code login: users self-register, get a code by email, and sign in. **SMTP must be configured** so codes can be sent. Roles live in the user table; any `@data4knowledge.dk` email automatically gets `Admin` + `Transmit`.
 
-### Authentication (Auth0) — only required when `SINGLE_USER=False`
+### Authentication & email (login codes)
+
+| Variable | Required | Description |
+| :--- | :--- | :--- |
+| `SESSION_SECRET` | **always** | Signs the session cookie. Set a long random string. (Legacy `AUTH0_SESSION_SECRET` still works.) |
+| `SMTP_HOST` | multi-user | SMTP server host. If unset, codes are logged to the console instead of emailed (dev mode). |
+| `SMTP_PORT` | multi-user | SMTP port (default `587`). |
+| `SMTP_USER` | multi-user | SMTP username. |
+| `SMTP_PASSWORD` | multi-user | SMTP password. |
+| `SMTP_FROM` | multi-user | From address for the code email (defaults to `SMTP_USER`). |
+| `REGISTRATION_NOTIFY_EMAIL` | optional | If set, emailed whenever someone self-registers. |
+| `EMAIL_DEV_MODE` | optional | `true` = log codes instead of emailing. Defaults `true` when `SMTP_HOST` unset. **Must be off/unset in production.** |
+| `CODE_LENGTH` | optional | Login code length (default `6`). |
+| `CODE_EXPIRY_MINUTES` | optional | Minutes a code stays valid (default `10`). |
+| `DEV_LOGIN_CODE` | optional (dev only) | Fixed code used only in dev mode for Playwright; ignored in production. |
+
+> **Production gotcha:** with `SINGLE_USER=False` and no `SMTP_HOST` (or `EMAIL_DEV_MODE=true`), codes are only logged, never emailed, and nobody can log in. Always configure SMTP for a real multi-user deploy.
+
+### Application / storage
 
 | Variable | Description |
 | :--- | :--- |
-| `AUTH0_SESSION_SECRET` | Session secret |
-| `AUTH0_DOMAIN` | Auth0 domain |
-| `AUTH0_CLIENT_ID` | Auth0 client id |
-| `AUTH0_CLIENT_SECRET` | Auth0 client secret |
-| `AUTH0_AUDIENCE` | Auth0 audience key |
-| `AUTH0_MNGT_CLIENT_ID` | Auth0 management API client id |
-| `AUTH0_MNGT_CLIENT_SECRET` | Auth0 management API client secret |
-
-### Application
-
-| Variable | Description |
-| :--- | :--- |
-| `ROOT_URL` | The server's base URL (deprecated but still accepted) |
 | `MNT_PATH` | Root mount path for persistent storage |
 | `DATABASE_PATH` | Directory where the SQLite database resides |
 | `DATABASE_NAME` | Database filename (e.g. `production.db`) |
@@ -33,10 +40,10 @@ The application has two modes controlled by the `SINGLE_USER` variable:
 | `LOCALFILE_PATH` | Path to local files within the volume |
 | `CDISC_CORE_CACHE_PATH` | Directory for the CDISC CORE validation cache (JSONata files, XSD schemas, rules, CT packages). Should live on the mounted volume so it survives restarts — a cold cache can take several minutes to rebuild. Leave unset to fall through to the USDM4 platform default (ephemeral inside a container). |
 | `ADDRESS_SERVER_URL` | URL for the external address server |
-| `SINGLE_USER` | `True` for single-user mode, `False` for multi-user (see above) |
+| `SINGLE_USER` | `True` for single-user mode, `False` for multi-user email-code login |
 | `FILE_PICKER` | `browser` for standard browser uploads, `os` for the built-in server-side picker |
 
-When running via Docker, the Dockerfile pre-sets `MNT_PATH`, `DATABASE_PATH`, `DATABASE_NAME`, `DATAFILE_PATH`, `LOCALFILE_PATH`, `CDISC_CORE_CACHE_PATH`, and `ADDRESS_SERVER_URL`, so only `SINGLE_USER`, `FILE_PICKER`, and (if multi-user) the Auth0 variables need to be supplied externally.
+When running via Docker, the Dockerfile pre-sets `MNT_PATH`, `DATABASE_PATH`, `DATABASE_NAME`, `DATAFILE_PATH`, `LOCALFILE_PATH`, `CDISC_CORE_CACHE_PATH`, and `ADDRESS_SERVER_URL`, so only `SESSION_SECRET`, `SINGLE_USER`, `FILE_PICKER`, and (if multi-user) the `SMTP_*` variables need to be supplied externally.
 
 ---
 
@@ -69,10 +76,11 @@ This is the simplest way to run the application locally or on a single server. D
 
 1. **Create a `.docker_env` file** with the required environment variables. For a minimal single-user setup this is just:
    ```
+   SESSION_SECRET="<a long random string>"
    SINGLE_USER=True
    FILE_PICKER=browser
    ```
-   For multi-user mode, add all the Auth0 variables as well.
+   For multi-user mode, set `SINGLE_USER=False` and add the `SMTP_*` variables (and optionally `REGISTRATION_NOTIFY_EMAIL`) so login codes can be emailed.
 
 2. **Build and start:**
    ```bash
@@ -149,8 +157,11 @@ Both configurations reference a pre-built Docker image from Docker Hub rather th
 # First-time launch (choose the appropriate .toml file)
 fly launch --no-deploy -c fly_production.toml --ha=false
 
-# Set secrets (all on one line, space-separated)
-fly secrets set -a d4k-sdw AUTH0_SESSION_SECRET="..." AUTH0_DOMAIN="..." ...
+# Set auth + email secrets (all on one line, space-separated).
+# SESSION_SECRET is required in every mode; the SMTP_* set is required
+# for multi-user so login codes can be emailed. Do NOT set
+# EMAIL_DEV_MODE=true in production.
+fly secrets set -a d4k-sdw SESSION_SECRET="..." SINGLE_USER=False FILE_PICKER=browser SMTP_HOST="asmtp.dandomain.dk" SMTP_PORT=587 SMTP_USER="no-reply@d4k.dk" SMTP_PASSWORD="..." SMTP_FROM="no-reply@d4k.dk" REGISTRATION_NOTIFY_EMAIL="dih@data4knowledge.dk"
 
 # Set storage paths
 fly secrets set -a d4k-sdw MNT_PATH="/mnt/sdw_data" DATABASE_PATH="/mnt/sdw_data/database" DATABASE_NAME="production.db" DATAFILE_PATH="/mnt/sdw_data/datafiles" LOCALFILE_PATH="/mnt/sdw_data/localfiles" CDISC_CORE_CACHE_PATH="/mnt/sdw_data/core_cache"

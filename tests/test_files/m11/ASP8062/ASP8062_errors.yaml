@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/f42f09a7-5392-400c-bf00-98810f3bbbf0/ASP8062.docx'',
-    dir=''tests/test_files/mount/datafiles/f42f09a7-5392-400c-bf00-98810f3bbbf0'',
-    image_path=''tests/test_files/mount/datafiles/f42f09a7-5392-400c-bf00-98810f3bbbf0/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/3fed8cd0-fa0f-4e96-b1ce-5842ba02e0fe/ASP8062.docx'',
+    dir=''tests/test_files/mount/datafiles/3fed8cd0-fa0f-4e96-b1ce-5842ba02e0fe'',
+    image_path=''tests/test_files/mount/datafiles/3fed8cd0-fa0f-4e96-b1ce-5842ba02e0fe/images'',
     filename=''ASP8062.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -675,7 +675,7 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _create_scope
   message: Created scope of type Country -> [USA, United States of America]
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
@@ -696,7 +696,7 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _create_amendment_impact
   message: 'Creating amendment impacts using {''safety_and_rights'': {''safety'':
     {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
@@ -708,8 +708,8 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _extract_section_numer_and_title
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''5.4.1 Rescreening'' -> {''sectionNumber'':
     ''5.4.1'', ''sectionTitle'': ''Rescreening'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
@@ -718,8 +718,8 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _extract_section_numer_and_title
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''5.2 Exclusion Criteria'' -> {''sectionNumber'':
     ''5.2'', ''sectionTitle'': ''Exclusion Criteria'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_2'', ''instanceType'': ''DocumentContentReference''}'
@@ -728,8 +728,8 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _extract_section_numer_and_title
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''7.2.8 Continuous and Spot End Tidal Carbon
     Dioxide, Table 5, Established Limits for End Tidal Carbon Dioxide'' -> {''sectionNumber'':
     ''7.2.8'', ''sectionTitle'': ''Continuous and Spot End Tidal Carbon Dioxide, Table
@@ -740,8 +740,8 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _extract_section_numer_and_title
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''7.2.8 Continuous and Spot End Tidal Carbon
     Dioxide, Table 5, Established Limits'' -> {''sectionNumber'': ''7.2.8'', ''sectionTitle'':
     ''Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits'',
@@ -752,8 +752,8 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4.assembler.amendments_assembler.AmenementsAssembler
-    method_name: _extract_section_numer_and_title
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''9.4.3.3 Vital Signs, Table 7, Criteria for
     Respiratory Rate'' -> {''sectionNumber'': ''9.4.3.3'', ''sectionTitle'': ''Vital
     Signs, Table 7, Criteria for Respiratory Rate'', ''appliesToId'': ''StudyDefinitionDocument_1'',

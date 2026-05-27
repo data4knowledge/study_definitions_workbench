@@ -1,17 +1,56 @@
-from typing import Annotated
-from fastapi import APIRouter, Form, Depends, Request
+from typing import Annotated, Optional
+from fastapi import APIRouter, Form, Depends, Request, status
+from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from app.database.user import User
 from app.database.endpoint import Endpoint
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import admin_role_enabled
+from app.dependencies.utility import admin_role_enabled, user_details
 from app.dependencies.templates import templates
 from d4k_ms_base.logger import application_logger
 
 router = APIRouter(
     prefix="/users", tags=["users"], dependencies=[Depends(protect_endpoint)]
 )
+
+
+@router.get("/manage")
+def manage_users(request: Request, session: Session = Depends(get_db)):
+    """Admin-only screen to grant/revoke Admin and Transmit roles."""
+    if not admin_role_enabled(request):
+        return RedirectResponse("/index", status_code=status.HTTP_303_SEE_OTHER)
+    current_user, _ = user_details(request, session)
+    data = {"users": User.list_all(session), "admin_domain": User.ADMIN_DOMAIN}
+    return templates.TemplateResponse(
+        request, "users/manage.html", {"user": current_user, "data": data}
+    )
+
+
+@router.post("/{id}/roles")
+def update_user_roles(
+    request: Request,
+    id: int,
+    admin: Optional[str] = Form(None),
+    transmit: Optional[str] = Form(None),
+    session: Session = Depends(get_db),
+):
+    """Update a user's stored roles. Admin only; rendered as an HTMX row."""
+    if not admin_role_enabled(request):
+        return RedirectResponse("/index", status_code=status.HTTP_303_SEE_OTHER)
+    user = User.find(id, session)
+    roles = []
+    if admin:
+        roles.append("Admin")
+    if transmit:
+        roles.append("Transmit")
+    user = user.set_roles(roles, session)
+    application_logger.info(f"Roles for '{user.email}' set to '{user.roles}'")
+    return templates.TemplateResponse(
+        request,
+        "users/partials/user_row.html",
+        {"u": user, "saved": True, "admin_domain": User.ADMIN_DOMAIN},
+    )
 
 
 @router.get("/{id}/show")

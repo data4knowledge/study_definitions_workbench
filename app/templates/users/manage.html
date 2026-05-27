@@ -1,0 +1,44 @@
+{% extends "shared/_main_layout.html" %}
+
+{% block environment_content %}
+  {% with request=request %}
+    {% include "shared/partials/environment.html" %}
+  {% endwith %}
+{% endblock %}
+{% block user_content %}
+  <div id="nav_display_name_div">
+    {% with request=request, user=user %}
+      {% include "shared/partials/user.html" %}
+    {% endwith %}
+  </div>
+{% endblock %}
+
+{% block main_content %}
+  <div class="container-fluid mt-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">User Administration</h5>
+        <h6 class="card-subtitle mb-3 text-muted">Grant or revoke Admin and Transmit roles</h6>
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Email</th>
+              <th scope="col">Display Name</th>
+              <th scope="col">Roles</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for u in data['users'] %}
+              {% with u=u, admin_domain=data['admin_domain'], saved=False %}
+                {% include "users/partials/user_row.html" %}
+              {% endwith %}
+            {% endfor %}
+          </tbody>
+        </table>
+        <p class="text-muted small mb-0">
+          Users with an @{{ data['admin_domain'] }} email always have Admin and Transmit (granted by domain) and cannot be changed here.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

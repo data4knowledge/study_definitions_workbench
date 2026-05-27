@@ -1,0 +1,28 @@
+<tr id="user_row_{{ u.id }}">
+  <td class="align-middle">{{ u.email }}</td>
+  <td class="align-middle">{{ u.display_name }}</td>
+  <td class="align-middle">
+    {% if u.is_admin_domain(u.email) %}
+      <span class="badge rounded-pill role me-1">Admin</span>
+      <span class="badge rounded-pill role me-1">Transmit</span>
+      <small class="text-muted ms-1">@{{ admin_domain }} (locked)</small>
+    {% else %}
+      <form hx-post="/users/{{ u.id }}/roles" hx-target="#user_row_{{ u.id }}" hx-swap="outerHTML">
+        <div class="d-flex align-items-center gap-3">
+          <div class="form-check form-check-inline m-0">
+            <input class="form-check-input" type="checkbox" name="admin" id="admin_{{ u.id }}"
+                   {% if 'Admin' in u.stored_role_names() %}checked{% endif %}>
+            <label class="form-check-label" for="admin_{{ u.id }}">Admin</label>
+          </div>
+          <div class="form-check form-check-inline m-0">
+            <input class="form-check-input" type="checkbox" name="transmit" id="transmit_{{ u.id }}"
+                   {% if 'Transmit' in u.stored_role_names() %}checked{% endif %}>
+            <label class="form-check-label" for="transmit_{{ u.id }}">Transmit</label>
+          </div>
+          <button class="btn btn-sm btn-outline-primary rounded-5" type="submit">Save</button>
+          {% if saved %}<span class="text-success small ms-1"><i class="bi bi-check-circle me-1"></i>Saved</span>{% endif %}
+        </div>
+      </form>
+    {% endif %}
+  </td>
+</tr>

@@ -77,6 +77,19 @@ class DatabaseManager:
             cursor.execute("pragma user_version = 32")
             self.session.commit()
             application_logger.info("Database migrated to v32")
+        elif version == 32:
+            # Add the roles column used by the email-code auth (replaces
+            # the roles previously provided by Auth0). create_all() will
+            # not alter an existing table, so do it explicitly here.
+            cursor = self.session.connection().connection.cursor()
+            existing = [row[1] for row in cursor.execute("pragma table_info(user)")]
+            if "roles" not in existing:
+                cursor.execute(
+                    "ALTER TABLE user ADD COLUMN roles VARCHAR NOT NULL DEFAULT ''"
+                )
+            cursor.execute("pragma user_version = 33")
+            self.session.commit()
+            application_logger.info("Database migrated to v33")
         else:
             application_logger.info("No database migration")
 

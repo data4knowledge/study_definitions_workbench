@@ -21,6 +21,19 @@ Before adding any JavaScript, check whether #1 or #2 does the job. Before pullin
 - **Backlog** — `docs/next_steps.md`. Running list of scoped-but-not-shipped improvements (validation background execution, annotated protocol render, validation history, …). When you finish an item, move it to the Archive section.
 - **Lessons learned** — `docs/lessons_learned.md`. Hard-won "don't step on this" notes from building SDW features: the server-restart-for-external-packages trap, HTMX partial pattern, pill-styling convention, DataFiles media-type gotchas, rehydrating saved errors, and why `<details>` beats `data-bs-toggle="collapse"` for small toggles. Add a lesson here when you step on one.
 
+## Authentication: email-code login (replaced Auth0)
+
+Login is an emailed numeric code, not Auth0/OAuth. Flow: `GET /login` (email form) → `POST /login` (looks up the email in the `user` table, emails a code) → `POST /verify` (checks the code, sets `request.session["userinfo"]`) → `/logout` clears the session. On success the session carries the same `userinfo` dict Auth0 used (`sub`, `email`, `nickname`, `roles`), so `user_details`, `admin_role_enabled` etc. are unchanged.
+
+- The `user` table is the allow-list: only registered emails can log in. Users self-register at `GET/POST /register` (email + display name), or an admin seeds them with `python -m scripts.seed_user --email X --name "Y" --roles Admin,Transmit`.
+- **Domain rule:** any `@data4knowledge.dk` email always has `Admin` + `Transmit`, granted in `User.effective_role_names()`/`session_info()` regardless of stored roles (`User.ADMIN_DOMAIN`). Self-registration also persists those roles for d4k emails; external registrants get none.
+- **Admin screen:** `GET /users/manage` (admin only) lists users with Admin/Transmit toggles; `POST /users/{id}/roles` updates stored roles via an HTMX row swap (`users/partials/user_row.html`). Linked from the admin column in `users/show.html`. d4k-domain users are shown locked (domain wins).
+- Roles live in the `user.roles` column (comma-separated, e.g. `Admin,Transmit`); DB migration v33 adds the column.
+- Code logic: `app/model/email_auth.py`. Pending codes are in-memory (single-instance only — move to DB/Redis if running multiple workers).
+- **Playwright login:** run the server with `./playwright_server.sh` (forces `EMAIL_DEV_MODE=true` + `DEV_LOGIN_CODE=123456`). In dev mode with `DEV_LOGIN_CODE` set, `generate_code` returns that fixed code so the UI flow is deterministic (never used in prod — `email_dev_mode` is off there). The `login(page, email=None)` helper self-registers via `/register` then enters the fixed code; defaults to `TEST_D4K_EMAIL` (Admin+Transmit), pass `non_d4k_email()` for a roleless user. Test emails + `DEV_LOGIN_CODE` live in `.playwright_env`. NOTE: `tests/playwright/site_populate.py` still uses the old Auth0 password flow and needs updating before it runs against a redeployed staging.
+- New self-registrations email a notification to `REGISTRATION_NOTIFY_EMAIL` (best-effort; skipped if unset; logged in dev mode). Only fires for genuinely new emails, not re-registrations.
+- Env vars: `SESSION_SECRET` (falls back to `AUTH0_SESSION_SECRET`), `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`, `REGISTRATION_NOTIFY_EMAIL`, `CODE_LENGTH` (6), `CODE_EXPIRY_MINUTES` (10), `APP_NAME`, `EMAIL_DEV_MODE`. With no `SMTP_HOST` (or `EMAIL_DEV_MODE=true`) the code is logged instead of emailed. `SINGLE_USER=True` bypasses login entirely. The old `AUTH0_*` vars are now dead except the session secret.
+
 ## Tests
 
 There are two distinct types of tests in this project:

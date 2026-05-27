@@ -167,3 +167,75 @@ def test_valid():
     assert v["display_name"]["valid"] is True
     assert v["email"]["valid"] is True
     assert v["identifier"]["valid"] is True
+
+
+# --- Roles / domain auto-roles / registration ---
+
+
+def test_is_admin_domain():
+    assert User.is_admin_domain("dih@data4knowledge.dk") is True
+    assert User.is_admin_domain("DIH@DATA4KNOWLEDGE.DK") is True
+    assert User.is_admin_domain("someone@gmail.com") is False
+    assert User.is_admin_domain("") is False
+
+
+def test_domain_roles():
+    assert User.domain_roles("a@data4knowledge.dk") == "Admin,Transmit"
+    assert User.domain_roles("a@gmail.com") == ""
+
+
+def test_effective_roles_domain_user_no_stored(db):
+    _clean(db)
+    user, _ = User.create("d4k", "dih@data4knowledge.dk", "Dave", db, roles="")
+    assert sorted(user.effective_role_names()) == ["Admin", "Transmit"]
+    assert user.has_role("Admin") and user.has_role("Transmit")
+    roles = {r["name"] for r in user.session_info()["roles"]}
+    assert roles == {"Admin", "Transmit"}
+
+
+def test_effective_roles_external_user(db):
+    _clean(db)
+    user, _ = User.create("ext", "x@gmail.com", "Ext", db, roles="Transmit")
+    assert user.effective_role_names() == ["Transmit"]
+    assert user.has_role("Admin") is False
+    assert user.stored_role_names() == ["Transmit"]
+
+
+def test_register_domain_grants_full_rights(db):
+    _clean(db)
+    user, validation, existed = User.register("new@data4knowledge.dk", "New Person", db)
+    assert existed is False
+    assert user is not None
+    assert sorted(user.effective_role_names()) == ["Admin", "Transmit"]
+
+
+def test_register_external_grants_no_roles(db):
+    _clean(db)
+    user, validation, existed = User.register("new@gmail.com", "New Person", db)
+    assert existed is False
+    assert user.stored_role_names() == []
+    assert user.effective_role_names() == []
+
+
+def test_register_existing_email_is_idempotent(db):
+    _clean(db)
+    User.register("dup@gmail.com", "First", db)
+    user, validation, existed = User.register("dup@gmail.com", "Second", db)
+    assert existed is True
+
+
+def test_set_roles_filters_unknown(db):
+    _clean(db)
+    user, _ = User.create("sr", "sr@gmail.com", "SR", db, roles="")
+    updated = user.set_roles(["Admin", "Bogus"], db)
+    assert updated.stored_role_names() == ["Admin"]
+    updated = updated.set_roles([], db)
+    assert updated.stored_role_names() == []
+
+
+def test_list_all(db):
+    _clean(db)
+    User.create("a1", "a1@gmail.com", "A One", db)
+    User.create("a2", "a2@gmail.com", "A Two", db)
+    users = User.list_all(db)
+    assert len(users) == 2

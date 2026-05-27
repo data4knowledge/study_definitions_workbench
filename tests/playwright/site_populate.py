@@ -63,12 +63,17 @@ def filepath():
 
 
 def login(page):
+    # Email-code login against a real site. A code is emailed to the user;
+    # this is a hands-on populate run (headed browser), so enter the code
+    # in the browser yourself. The script waits until you're signed in.
     page.get_by_role("link", name="Click here to register or").click()
     page.get_by_label("Email address").click()
     page.get_by_label("Email address").fill(username())
-    page.get_by_label("Password").click()
-    page.get_by_label("Password").fill(password())
-    page.get_by_role("button", name="Continue", exact=True).click()
+    page.get_by_role("button", name="Send login code").click()
+    print(f"\n*** A login code has been emailed to {username()}.")
+    print("*** Enter it in the browser and click 'Sign in' — the script will then continue.\n")
+    # Wait (up to 5 minutes) for the manual code entry to complete.
+    page.wait_for_url("**/index", timeout=300_000)
 
 
 def logout(page):

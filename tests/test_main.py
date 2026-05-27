@@ -60,6 +60,16 @@ async def test_login_single(monkeypatch):
     assert str(response.next_request.url) == "http://test/index"
 
 
+@pytest.mark.anyio
+async def test_register_single(monkeypatch):
+    async_client = mock_async_client(monkeypatch)
+    monkeypatch.setenv("SINGLE_USER", "True")
+    application_configuration.single_user = True
+    response = await async_client.get("/register")
+    assert response.status_code == 307
+    assert str(response.next_request.url) == "http://test/index"
+
+
 # def test_import_m11(mocker, monkeypatch):
 #     protect_endpoint()
 #     client = mock_client(monkeypatch)
@@ -256,7 +266,7 @@ def test_get_logout_multiple(mocker, monkeypatch):
     client = mock_client_multiple(mocker)
     response = client.get("/logout", follow_redirects=False)
     assert response.status_code == 307
-    assert "logout" in str(response.next_request.url)
+    assert str(response.next_request.url) == "http://testserver/"
 
 
 # def mock_user_check_exists(mocker):
@@ -734,24 +744,134 @@ def test_debug_level_not_admin(mocker, monkeypatch):
 # --- Callback ---
 
 
-@pytest.mark.anyio
-async def test_callback_success(mocker, monkeypatch):
-    mocker.patch("app.main.authorisation.save_token", new_callable=AsyncMock)
-    async_client = mock_async_client(monkeypatch)
-    response = await async_client.get("/callback")
-    assert response.status_code == 307
+def test_login_multiple_shows_form(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    client = mock_client_multiple(mocker)
+    response = client.get("/login")
+    assert response.status_code == 200
+    assert 'action="/login"' in response.text
+    assert 'name="email"' in response.text
 
 
-@pytest.mark.anyio
-async def test_callback_exception(mocker, monkeypatch):
-    mocker.patch(
-        "app.main.authorisation.save_token",
-        new_callable=AsyncMock,
-        side_effect=Exception("fail"),
+def test_login_submit_unknown_email(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    mocker.patch("app.main.User.find_by_email", return_value=None)
+    client = mock_client_multiple(mocker)
+    response = client.post("/login", data={"email": "nobody@example.com"})
+    assert response.status_code == 200
+    assert "Email not recognised" in response.text
+
+
+def test_login_submit_known_email_sends_code(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    mocker.patch("app.main.User.find_by_email", return_value=MagicMock())
+    gen = mocker.patch("app.main.generate_code", return_value="123456")
+    send = mocker.patch("app.main.send_code_email", return_value=True)
+    client = mock_client_multiple(mocker)
+    response = client.post("/login", data={"email": "user@example.com"})
+    assert response.status_code == 200
+    assert 'action="/verify"' in response.text
+    assert gen.called
+    assert send.called
+
+
+def test_verify_invalid_code(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    mocker.patch("app.main.verify_code", return_value=False)
+    client = mock_client_multiple(mocker)
+    response = client.post(
+        "/verify", data={"email": "user@example.com", "code": "000000"}
     )
-    async_client = mock_async_client(monkeypatch)
-    response = await async_client.get("/callback")
-    assert response.status_code == 307
+    assert response.status_code == 200
+    assert "Invalid or expired code" in response.text
+
+
+def test_register_page_multiple(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    client = mock_client_multiple(mocker)
+    response = client.get("/register")
+    assert response.status_code == 200
+    assert 'action="/register"' in response.text
+    assert 'name="email"' in response.text
+    assert 'name="name"' in response.text
+
+
+def test_register_submit_creates_and_sends(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    mocker.patch(
+        "app.main.User.register", return_value=(MagicMock(), User.valid(), False)
+    )
+    gen = mocker.patch("app.main.generate_code", return_value="123456")
+    send = mocker.patch("app.main.send_code_email", return_value=True)
+    notify = mocker.patch("app.main.send_registration_notification", return_value=True)
+    client = mock_client_multiple(mocker)
+    response = client.post(
+        "/register", data={"email": "new@data4knowledge.dk", "name": "New Person"}
+    )
+    assert response.status_code == 200
+    assert 'action="/verify"' in response.text
+    assert gen.called and send.called
+    # New registration notifies the configured address.
+    assert notify.called
+
+
+def test_register_existing_email_does_not_notify(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    mocker.patch(
+        "app.main.User.register", return_value=(MagicMock(), User.valid(), True)
+    )
+    mocker.patch("app.main.generate_code", return_value="123456")
+    mocker.patch("app.main.send_code_email", return_value=True)
+    notify = mocker.patch("app.main.send_registration_notification", return_value=True)
+    client = mock_client_multiple(mocker)
+    response = client.post(
+        "/register", data={"email": "dup@gmail.com", "name": "Dup"}
+    )
+    assert response.status_code == 200
+    # Already-registered email must not trigger a notification.
+    assert not notify.called
+
+
+def test_register_submit_invalid_name(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    validation = {"display_name": {"valid": False, "message": "Bad name"}}
+    mocker.patch("app.main.User.register", return_value=(None, validation, False))
+    client = mock_client_multiple(mocker)
+    response = client.post(
+        "/register", data={"email": "new@gmail.com", "name": "Bad!@#"}
+    )
+    assert response.status_code == 200
+    assert "Bad name" in response.text
+
+
+def test_verify_success_sets_session(mocker, monkeypatch):
+    application_configuration.single_user = False
+    application_configuration.multiple_user = True
+    mocker.patch("app.main.verify_code", return_value=True)
+    user = MagicMock()
+    user.session_info.return_value = {
+        "sub": "user@example.com",
+        "email": "user@example.com",
+        "nickname": "User",
+        "roles": [],
+    }
+    mocker.patch("app.main.User.find_by_email", return_value=user)
+    client = mock_client_multiple(mocker)
+    response = client.post(
+        "/verify",
+        data={"email": "user@example.com", "code": "123456"},
+        follow_redirects=False,
+    )
+    assert response.status_code == 303
+    assert str(response.next_request.url) == "http://testserver/index"
 
 
 # --- USDM Explore/Diff ---

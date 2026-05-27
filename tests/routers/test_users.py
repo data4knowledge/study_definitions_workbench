@@ -10,6 +10,7 @@ from tests.mocks.user_mocks import (
     mock_user_find,
 )
 from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
+from tests.mocks.factory_mocks import factory_user
 
 
 @pytest.fixture
@@ -104,3 +105,60 @@ def test_delete_user_endpoint(mocker, monkeypatch):
     assert response.status_code == 200
     assert mock_called(uf)
     assert mock_called(ev)
+
+
+# --- User administration (roles) ---
+
+
+def test_manage_users_admin(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch("app.routers.users.admin_role_enabled", return_value=True)
+    mocker.patch(
+        "app.routers.users.user_details", return_value=(factory_user(), True)
+    )
+    mocker.patch("app.database.user.User.list_all", return_value=[factory_user()])
+    response = client.get("/users/manage")
+    assert response.status_code == 200
+    assert "User Administration" in response.text
+    assert "fred@example.com" in response.text
+
+
+def test_manage_users_not_admin(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch("app.routers.users.admin_role_enabled", return_value=False)
+    response = client.get("/users/manage", follow_redirects=False)
+    assert response.status_code == 303
+    assert str(response.next_request.url) == "http://testserver/index"
+
+
+def test_update_user_roles_admin(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch("app.routers.users.admin_role_enabled", return_value=True)
+    uf = mock_user_find(mocker)
+    sr = mocker.patch("app.database.user.User.set_roles", return_value=factory_user())
+    response = client.post(
+        "/users/1/roles",
+        data={"admin": "on"},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    assert response.status_code == 200
+    assert "fred@example.com" in response.text
+    assert mock_called(uf)
+    assert mock_called(sr)
+
+
+def test_update_user_roles_not_admin(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch("app.routers.users.admin_role_enabled", return_value=False)
+    response = client.post(
+        "/users/1/roles",
+        data={"admin": "on"},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        follow_redirects=False,
+    )
+    assert response.status_code == 303
+    assert str(response.next_request.url) == "http://testserver/index"

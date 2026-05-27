@@ -1,0 +1,28 @@
+{% extends "shared/_home_layout.html" %}
+{% block main_content %}
+<div class="bg-image" style="background-image: url('static/images/background.jpg'); height: 100vh">
+  <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+    <div class="card rounded-4 shadow" style="max-width: 28rem; width: 100%;">
+      <div class="card-body p-4">
+        <h3 class="card-title mb-3" style="color:#C49C3D;">Enter your code</h3>
+        <p class="text-muted">We've sent a login code to <strong>{{ data['email'] }}</strong>. Enter it below.</p>
+        {% if data['error'] %}
+        <div class="alert alert-danger" role="alert">{{ data['error'] }}</div>
+        {% endif %}
+        <form method="post" action="/verify">
+          <input type="hidden" name="email" value="{{ data['email'] }}">
+          <div class="mb-3">
+            <label for="code" class="form-label">Login code</label>
+            <input type="text" class="form-control" id="code" name="code" required autofocus
+                   inputmode="numeric" autocomplete="one-time-code">
+          </div>
+          <div class="d-grid gap-2">
+            <button name="verify_button" type="submit" class="btn btn-lg btn-primary rounded-5">Sign in</button>
+            <a name="resend_link" class="btn btn-link" href="/login">Use a different email / resend code</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

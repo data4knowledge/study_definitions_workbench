@@ -1,6 +1,14 @@
 import os
 import json
-from fastapi import Depends, FastAPI, Request, WebSocket, WebSocketDisconnect, status
+from fastapi import (
+    Depends,
+    FastAPI,
+    Form,
+    Request,
+    WebSocket,
+    WebSocketDisconnect,
+    status,
+)
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from d4k_ms_base.logger import application_logger
@@ -39,7 +47,12 @@ from app.routers import (
 from app.dependencies.dependency import (
     set_middleware_secret,
     protect_endpoint,
-    authorisation,
+)
+from app.model.email_auth import (
+    generate_code,
+    send_code_email,
+    send_registration_notification,
+    verify_code,
 )
 from app.dependencies.utility import user_details, admin_role_enabled
 from app.dependencies.templates import templates
@@ -124,12 +137,117 @@ def home(request: Request):
 async def login(request: Request):
     if application_configuration.single_user:
         return RedirectResponse("/index")
-    else:  # pragma: no cover
-        if (
-            "id_token" not in request.session
-        ):  # it could be userinfo instead of id_token
-            return await authorisation.login(request, "callback")
+    if "userinfo" in request.session:
         return RedirectResponse("/index")
+    return templates.TemplateResponse(
+        request, "auth/login.html", {"user": None, "data": {"error": None}}
+    )
+
+
+@app.post("/login")
+async def login_submit(
+    request: Request,
+    email: str = Form(...),
+    session: Session = Depends(get_db),
+):
+    email = email.strip().lower()
+    user = User.find_by_email(email, session) if email else None
+    if not user:
+        return templates.TemplateResponse(
+            request,
+            "auth/login.html",
+            {"user": None, "data": {"error": "Email not recognised"}},
+        )
+    code = generate_code(email)
+    if not send_code_email(email, code):
+        return templates.TemplateResponse(
+            request,
+            "auth/login.html",
+            {"user": None, "data": {"error": "Failed to send code. Please try again."}},
+        )
+    return templates.TemplateResponse(
+        request,
+        "auth/verify.html",
+        {"user": None, "data": {"email": email, "error": None}},
+    )
+
+
+@app.post("/verify")
+async def verify(
+    request: Request,
+    email: str = Form(...),
+    code: str = Form(...),
+    session: Session = Depends(get_db),
+):
+    email = email.strip().lower()
+    if not verify_code(email, code):
+        return templates.TemplateResponse(
+            request,
+            "auth/verify.html",
+            {"user": None, "data": {"email": email, "error": "Invalid or expired code"}},
+        )
+    user = User.find_by_email(email, session)
+    if not user:
+        return templates.TemplateResponse(
+            request,
+            "auth/login.html",
+            {"user": None, "data": {"error": "Email not recognised"}},
+        )
+    request.session["userinfo"] = user.session_info()
+    application_logger.info(f"User '{email}' authenticated via email code")
+    return RedirectResponse("/index", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.get("/register")
+async def register_page(request: Request):
+    if application_configuration.single_user:
+        return RedirectResponse("/index")
+    return templates.TemplateResponse(
+        request, "auth/register.html", {"user": None, "data": {"error": None}}
+    )
+
+
+@app.post("/register")
+async def register_submit(
+    request: Request,
+    email: str = Form(...),
+    name: str = Form(...),
+    session: Session = Depends(get_db),
+):
+    email = email.strip().lower()
+    name = name.strip()
+    if not email or not name:
+        return templates.TemplateResponse(
+            request,
+            "auth/register.html",
+            {"user": None, "data": {"error": "Email and name are required"}},
+        )
+    user, validation, existed = User.register(email, name, session)
+    if user is None:
+        message = validation.get("display_name", {}).get(
+            "message"
+        ) or "Could not register with those details"
+        return templates.TemplateResponse(
+            request,
+            "auth/register.html",
+            {"user": None, "data": {"error": message}},
+        )
+    # Notify the configured address about genuinely new registrations.
+    if not existed:
+        send_registration_notification(email, name)
+    # Registered (or already existed) — send a login code and verify.
+    code = generate_code(email)
+    if not send_code_email(email, code):
+        return templates.TemplateResponse(
+            request,
+            "auth/register.html",
+            {"user": None, "data": {"error": "Failed to send code. Please try again."}},
+        )
+    return templates.TemplateResponse(
+        request,
+        "auth/verify.html",
+        {"user": None, "data": {"email": email, "error": None}},
+    )
 
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
@@ -677,17 +795,5 @@ async def debug_level(
 
 @app.get("/logout")
 def logout(request: Request):
-    if application_configuration.multiple_user:
-        url = authorisation.logout(request, "/")
-        return RedirectResponse(url=url)
-    else:
-        return RedirectResponse("/")
-
-
-@app.get("/callback")
-async def callback(request: Request):
-    try:
-        await authorisation.save_token(request)
-        return RedirectResponse("/index")
-    except Exception:
-        return RedirectResponse("/logout")
+    request.session.clear()
+    return RedirectResponse("/")

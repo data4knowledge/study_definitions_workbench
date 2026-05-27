@@ -20,11 +20,9 @@ def protect_endpoint():
 
 
 def mock_authorisation(mocker):
-    r = mocker.patch("d4k_ms_auth.auth0_service.Auth0Service.register")
-    mt = mocker.patch("d4k_ms_auth.auth0_service.Auth0Service.management_token")
-    r.side_effect = [[]]
-    mt.side_effect = [[]]
-    return r, mt
+    # Auth0 has been replaced by email-code login; nothing to mock at
+    # import time. Retained as a no-op so existing callers keep working.
+    return None, None
 
 
 def mock_client(monkeypatch):
@@ -36,7 +34,6 @@ def mock_client(monkeypatch):
 
 
 def mock_client_multiple(mocker):
-    mock_authorisation(mocker)
     from app.main import app
 
     return TestClient(app)

@@ -1268,33 +1268,53 @@ def test_filter(playwright: Playwright) -> None:
 #     browser.close()
 
 
-def username():
-    value = os.environ["USERNAME"]
-    return value
+# Display name used when (self-)registering a test user. The nav shows
+# this, so delete_db() and similar look it up via display_name().
+TEST_DISPLAY_NAME = "Test User"
+
+
+def d4k_email():
+    """A @data4knowledge.dk address — auto-gets Admin + Transmit."""
+    return os.environ["TEST_D4K_EMAIL"]
+
+
+def non_d4k_email():
+    """A non-d4k address — registers with no roles (for role tests)."""
+    return os.environ["TEST_NON_D4K_EMAIL"]
+
+
+def dev_code():
+    """The fixed login code the dev-mode server issues (DEV_LOGIN_CODE)."""
+    return os.environ["DEV_LOGIN_CODE"]
 
 
 def display_name():
-    return username().split("@")[0]
-
-
-def password():
-    value = os.environ["PASSWORD"]
-    return value
+    return TEST_DISPLAY_NAME
 
 
 def filepath():
     return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-def login(page):
-    page.get_by_role("link", name="Click here to register or").click()
+def login(page, email=None, name=None):
+    """Log in via the email-code flow.
+
+    Uses /register so it self-provisions on a fresh database (registration
+    is idempotent for an existing email). Defaults to the d4k address,
+    which carries full rights. Pass non_d4k_email() to test a roleless user.
+    Requires the server to run in dev mode with DEV_LOGIN_CODE set.
+    """
+    email = email or d4k_email()
+    name = name or TEST_DISPLAY_NAME
+    page.goto(f"{url}/register")
     page.get_by_label("Email address").click()
-    page.get_by_label("Email address").fill(username())
-    # pwd = page.get_by_label("Password")
-    pwd = page.locator("#password")
-    pwd.click()
-    pwd.fill(password())
-    page.get_by_role("button", name="Continue", exact=True).click()
+    page.get_by_label("Email address").fill(email)
+    page.get_by_label("Display name").click()
+    page.get_by_label("Display name").fill(name)
+    page.get_by_role("button", name="Register").click()
+    page.get_by_label("Login code").click()
+    page.get_by_label("Login code").fill(dev_code())
+    page.get_by_role("button", name="Sign in").click()
 
 
 def load_excel(page, root_path, filepath):

@@ -1,0 +1,26 @@
+{% extends "shared/_home_layout.html" %}
+{% block main_content %}
+<div class="bg-image" style="background-image: url('static/images/background.jpg'); height: 100vh">
+  <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+    <div class="card rounded-4 shadow" style="max-width: 28rem; width: 100%;">
+      <div class="card-body p-4">
+        <h3 class="card-title mb-3" style="color:#C49C3D;">Sign in</h3>
+        <p class="text-muted">Enter your email address and we'll send you a login code.</p>
+        {% if data['error'] %}
+        <div class="alert alert-danger" role="alert">{{ data['error'] }}</div>
+        {% endif %}
+        <form method="post" action="/login">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" required autofocus autocomplete="email">
+          </div>
+          <div class="d-grid gap-2">
+            <button name="send_code_button" type="submit" class="btn btn-lg btn-primary rounded-5">Send login code</button>
+            <a name="register_link" class="btn btn-link" href="/register">New here? Register</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

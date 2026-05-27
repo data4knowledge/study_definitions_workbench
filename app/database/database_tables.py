@@ -22,6 +22,9 @@ class User(Base):
     email = Column(String, index=True)
     display_name = Column(String, nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
+    # Comma-separated role names (e.g. "Admin,Transmit"). Drives the
+    # permissions previously sourced from Auth0 roles.
+    roles = Column(String, nullable=False, default="")
     imports = relationship("FileImport", backref="user")
     studies = relationship("Study", backref="user")
     transmissions = relationship("TransmissionTable", backref="user")
