@@ -149,20 +149,23 @@ def test_migrate_below_31(db):
     cursor.execute("pragma user_version = 0")
     db.commit()
     manager.migrate()
-    # Verify version was updated to 31
+    # A single migrate() call applies every pending step up to the latest.
     version = manager._get_version()
-    assert version == 31
+    assert version == 33
+    cursor = db.connection().connection.cursor()
+    cols = [row[1] for row in cursor.execute("pragma table_info(user)")]
+    assert "roles" in cols
 
 
 def test_migrate_at_31(db):
-    """Test migration when version == 31."""
+    """Test migration when version == 31 runs through to the latest version."""
     manager = DatabaseManager(session=db)
     cursor = db.connection().connection.cursor()
     cursor.execute("pragma user_version = 31")
     db.commit()
     manager.migrate()
     version = manager._get_version()
-    assert version == 32
+    assert version == 33
 
 
 def test_migrate_at_32(db):

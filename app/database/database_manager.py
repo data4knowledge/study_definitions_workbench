@@ -56,42 +56,57 @@ class DatabaseManager:
         self.session.commit()
 
     def migrate(self):
+        # Apply every pending step in a single call. Each branch advances the
+        # version by one; the loop keeps going until the DB is fully migrated,
+        # so a DB several versions behind no longer needs one restart per step.
         version = self._get_version()
         application_logger.info(f"Database version: v{version}")
-        if version < 31:  # Do it anyway
-            cursor = self.session.connection().connection.cursor()
-            new_types = (
-                {"old": "", "new": "1111"},
-                {"old": "XLSX", "new": "USDM_EXCEL"},
-                {"old": "FHIR_V1", "new": "FHIR_V1_JSON"},
-                {"old": "DOCX", "new": "M11_DOCX"},
-            )
-            cursor.executemany("UPDATE import SET type=:new WHERE type=:old", new_types)
-            cursor.execute("pragma user_version = 31")
-            self.session.commit()
-            application_logger.info("Database migrated to v31")
-        elif version == 31:
-            cursor = self.session.connection().connection.cursor()
-            new_types = ({"old": "FHIR_V1_JSON", "new": "FHIR_PRISM2_JSON"},)
-            cursor.executemany("UPDATE import SET type=:new WHERE type=:old", new_types)
-            cursor.execute("pragma user_version = 32")
-            self.session.commit()
-            application_logger.info("Database migrated to v32")
-        elif version == 32:
-            # Add the roles column used by the email-code auth (replaces
-            # the roles previously provided by Auth0). create_all() will
-            # not alter an existing table, so do it explicitly here.
-            cursor = self.session.connection().connection.cursor()
-            existing = [row[1] for row in cursor.execute("pragma table_info(user)")]
-            if "roles" not in existing:
-                cursor.execute(
-                    "ALTER TABLE user ADD COLUMN roles VARCHAR NOT NULL DEFAULT ''"
+        migrated = False
+        while True:
+            version = self._get_version()
+            if version < 31:  # Do it anyway
+                cursor = self.session.connection().connection.cursor()
+                new_types = (
+                    {"old": "", "new": "1111"},
+                    {"old": "XLSX", "new": "USDM_EXCEL"},
+                    {"old": "FHIR_V1", "new": "FHIR_V1_JSON"},
+                    {"old": "DOCX", "new": "M11_DOCX"},
                 )
-            cursor.execute("pragma user_version = 33")
-            self.session.commit()
-            application_logger.info("Database migrated to v33")
-        else:
-            application_logger.info("No database migration")
+                cursor.executemany(
+                    "UPDATE import SET type=:new WHERE type=:old", new_types
+                )
+                cursor.execute("pragma user_version = 31")
+                self.session.commit()
+                application_logger.info("Database migrated to v31")
+            elif version == 31:
+                cursor = self.session.connection().connection.cursor()
+                new_types = ({"old": "FHIR_V1_JSON", "new": "FHIR_PRISM2_JSON"},)
+                cursor.executemany(
+                    "UPDATE import SET type=:new WHERE type=:old", new_types
+                )
+                cursor.execute("pragma user_version = 32")
+                self.session.commit()
+                application_logger.info("Database migrated to v32")
+            elif version == 32:
+                # Add the roles column used by the email-code auth (replaces
+                # the roles previously provided by Auth0). create_all() will
+                # not alter an existing table, so do it explicitly here.
+                cursor = self.session.connection().connection.cursor()
+                existing = [
+                    row[1] for row in cursor.execute("pragma table_info(user)")
+                ]
+                if "roles" not in existing:
+                    cursor.execute(
+                        "ALTER TABLE user ADD COLUMN roles VARCHAR NOT NULL DEFAULT ''"
+                    )
+                cursor.execute("pragma user_version = 33")
+                self.session.commit()
+                application_logger.info("Database migrated to v33")
+            else:
+                if not migrated:
+                    application_logger.info("No database migration")
+                break
+            migrated = True
 
     def _get_version(self):
         cursor = self.session.connection().connection.cursor()
