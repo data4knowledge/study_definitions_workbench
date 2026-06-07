@@ -1,6 +1,7 @@
-<h5>Release 0.42.0, 2026-05-04</h5>
+<h5>Release 0.43.0, 2026-06-07</h5>
 
-Change authentication mechanism to simple email rather than Auth0 (issue 66).
+- Change authentication mechanism to simple email rather than Auth0 (issue 66).
+- Updated versions of packages
 
 <h5>Release 0.42.0, 2026-05-04</h5>
 
