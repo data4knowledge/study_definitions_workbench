@@ -213,6 +213,16 @@ fly secrets set -a d4k-sdw \
   REGISTRATION_NOTIFY_EMAIL="dih@data4knowledge.dk"
 ```
 
+Faster alternative: import a whole env file in one atomic restart (pairs the file to the right app — no `-a` typo can cross-target):
+
+```bash
+fly secrets import -c fly_production.toml < .production_env
+fly secrets import -c fly_staging.toml   < .staging_env
+```
+
+Always qualify Fly commands with `-c <toml>` (or `-a <app>`) — there is
+no plain `fly.toml`, so nothing auto-detects the target.
+
 Do **not** set `EMAIL_DEV_MODE=true` in production — codes would be
 logged instead of emailed and logins would fail.
 
