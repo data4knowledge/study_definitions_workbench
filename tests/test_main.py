@@ -831,9 +831,7 @@ def test_register_existing_email_does_not_notify(mocker, monkeypatch):
     mocker.patch("app.main.send_code_email", return_value=True)
     notify = mocker.patch("app.main.send_registration_notification", return_value=True)
     client = mock_client_multiple(mocker)
-    response = client.post(
-        "/register", data={"email": "dup@gmail.com", "name": "Dup"}
-    )
+    response = client.post("/register", data={"email": "dup@gmail.com", "name": "Dup"})
     assert response.status_code == 200
     # Already-registered email must not trigger a notification.
     assert not notify.called

@@ -51,7 +51,9 @@ def upsert_user(email: str, name: str, roles: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Add or update a workbench user.")
     parser.add_argument("--email", required=True)
-    parser.add_argument("--name", required=True, help="Display name (alphanumeric/spaces)")
+    parser.add_argument(
+        "--name", required=True, help="Display name (alphanumeric/spaces)"
+    )
     parser.add_argument(
         "--roles",
         default="",

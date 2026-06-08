@@ -114,9 +114,7 @@ def test_manage_users_admin(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     mocker.patch("app.routers.users.admin_role_enabled", return_value=True)
-    mocker.patch(
-        "app.routers.users.user_details", return_value=(factory_user(), True)
-    )
+    mocker.patch("app.routers.users.user_details", return_value=(factory_user(), True))
     mocker.patch("app.database.user.User.list_all", return_value=[factory_user()])
     response = client.get("/users/manage")
     assert response.status_code == 200

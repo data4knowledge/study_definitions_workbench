@@ -71,7 +71,9 @@ def login(page):
     page.get_by_label("Email address").fill(username())
     page.get_by_role("button", name="Send login code").click()
     print(f"\n*** A login code has been emailed to {username()}.")
-    print("*** Enter it in the browser and click 'Sign in' — the script will then continue.\n")
+    print(
+        "*** Enter it in the browser and click 'Sign in' — the script will then continue.\n"
+    )
     # Wait (up to 5 minutes) for the manual code entry to complete.
     page.wait_for_url("**/index", timeout=300_000)
 

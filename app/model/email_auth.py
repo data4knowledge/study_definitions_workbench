@@ -95,8 +95,7 @@ def send_registration_notification(new_email: str, name: str) -> bool:
         return False
     if cfg.email_dev_mode:
         application_logger.info(
-            f"[DEV MODE] New registration: {name} <{new_email}> "
-            f"(would notify {notify})"
+            f"[DEV MODE] New registration: {name} <{new_email}> (would notify {notify})"
         )
         return True
     try:

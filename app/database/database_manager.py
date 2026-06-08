@@ -92,9 +92,7 @@ class DatabaseManager:
                 # the roles previously provided by Auth0). create_all() will
                 # not alter an existing table, so do it explicitly here.
                 cursor = self.session.connection().connection.cursor()
-                existing = [
-                    row[1] for row in cursor.execute("pragma table_info(user)")
-                ]
+                existing = [row[1] for row in cursor.execute("pragma table_info(user)")]
                 if "roles" not in existing:
                     cursor.execute(
                         "ALTER TABLE user ADD COLUMN roles VARCHAR NOT NULL DEFAULT ''"

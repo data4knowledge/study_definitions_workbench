@@ -39,7 +39,13 @@ def test_multiple_browser(mocker, monkeypatch):
 
 def test_single_os(mocker, monkeypatch):
     env = _base_env()
-    env.update({"SINGLE_USER": "T", "FILE_PICKER": "os", "LOCALFILE_PATH": "/local/file/path/extra"})
+    env.update(
+        {
+            "SINGLE_USER": "T",
+            "FILE_PICKER": "os",
+            "LOCALFILE_PATH": "/local/file/path/extra",
+        }
+    )
     mock_se_get(mocker, env)
     config = Configuration()
     assert config.single_user

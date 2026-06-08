@@ -184,7 +184,10 @@ async def verify(
         return templates.TemplateResponse(
             request,
             "auth/verify.html",
-            {"user": None, "data": {"email": email, "error": "Invalid or expired code"}},
+            {
+                "user": None,
+                "data": {"email": email, "error": "Invalid or expired code"},
+            },
         )
     user = User.find_by_email(email, session)
     if not user:
@@ -224,9 +227,10 @@ async def register_submit(
         )
     user, validation, existed = User.register(email, name, session)
     if user is None:
-        message = validation.get("display_name", {}).get(
-            "message"
-        ) or "Could not register with those details"
+        message = (
+            validation.get("display_name", {}).get("message")
+            or "Could not register with those details"
+        )
         return templates.TemplateResponse(
             request,
             "auth/register.html",

@@ -1,3 +1,7 @@
+<h5>Release 0.43.1, 2026-06-08</h5>
+
+- Update USDM package depedency
+
 <h5>Release 0.43.0, 2026-06-07</h5>
 
 - Change authentication mechanism to simple email rather than Auth0 (issue 66).
