@@ -75,3 +75,29 @@ class TestConnectionManager:
         assert "alert-success" in html
         assert "Done!" in html
         assert "Success:" in html
+
+
+class TestEvictionRace:
+    """Regression tests for the alert-loss bug: a stale socket closing
+    must not evict a newer socket registered under the same user_id."""
+
+    @pytest.mark.asyncio
+    async def test_stale_socket_close_does_not_evict_new_socket(self, manager):
+        ws1 = AsyncMock()
+        await manager.connect("2", ws1)
+        ws2 = AsyncMock()
+        await manager.connect("2", ws2)
+        assert manager.active_connections["2"] is ws2
+        ws1.close.assert_awaited_once()
+        # old socket closes after the new one replaced it
+        manager.disconnect("2", ws1)
+        assert manager.active_connections.get("2") is ws2
+
+    def test_disconnect_matching_socket_removes_it(self, manager, mock_ws):
+        manager.active_connections["2"] = mock_ws
+        manager.disconnect("2", mock_ws)
+        assert "2" not in manager.active_connections
+
+    @pytest.mark.asyncio
+    async def test_error_no_connection_does_not_raise(self, manager):
+        await manager.error("boom", "nobody")  # should log, not KeyError

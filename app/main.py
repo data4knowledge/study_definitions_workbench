@@ -122,7 +122,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):  # pragma: no 
         while True:
             await websocket.receive_text()
     except WebSocketDisconnect:
-        connection_manager.disconnect(user_id)
+        connection_manager.disconnect(user_id, websocket)
 
 
 @app.get("/")
