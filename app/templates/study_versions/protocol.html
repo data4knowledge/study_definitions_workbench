@@ -3,31 +3,99 @@
 {% block environment_content %}
   {% with request=request %}
     {% include "shared/partials/environment.html" %}
-  {% endwith %}    
+  {% endwith %}
 {% endblock %}
 {% block user_content %}
   {% with request=request, user=user %}
     {% include "shared/partials/user.html" %}
-  {% endwith %}    
+  {% endwith %}
 {% endblock %}
 {% block additional_css %}
   {% with %}
     {% include "shared/styles/m11.html" %}
-  {% endwith %}  
-{% endblock %}   
+  {% endwith %}
+{% endblock %}
 {% block menu_content %}
   {% with view='protocol', data=data %}
     {% include "shared/partials/version_view_menu.html" %}
-  {% endwith %} 
+  {% endwith %}
   {% with data=data %}
     {% include "shared/partials/section_menu.html" %}
   {% endwith %}
-{% endblock %}  
+{% endblock %}
 
 {% block main_content %}
   <div class="outer-div row">
     <div class="col-12 mt-3">
-      {{data["document"]|safe}}
+      <div id="protocol_document">
+        {{data["document"]|safe}}
+      </div>
     </div>
   </div>
+
+  {# Slide-in Table of Contents. The list is built client-side from the
+     rendered document's headings (see additional_js) and jumps to them
+     with plain in-page anchors -- no per-section "off page" loading. Built
+     in the browser so it adapts to whichever template (M11 / CPT / ...)
+     produced the document, with no server-side section list. #}
+  <div class="offcanvas offcanvas-start" data-bs-backdrop="false" tabindex="-1" id="protocol_menu">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Table of Contents</h5>
+      <button type="button" class="btn-close btn-sm" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav nav-pills flex-column" id="protocol_toc"></ul>
+    </div>
+  </div>
+  <style>
+    a.section-link { text-decoration: none; color: gray; display: block; padding: .1rem 0; }
+    a.section-link:hover { color: var(--bs-primary); }
+  </style>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+  // Build the Table of Contents from the rendered document's headings.
+  // Runs after Bootstrap (loaded above) so the offcanvas toggle works.
+  (function () {
+    function buildToc() {
+      var doc = document.getElementById("protocol_document");
+      var toc = document.getElementById("protocol_toc");
+      if (!doc || !toc) return;
+      var headings = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
+      toc.innerHTML = "";
+      function addLink(targetId, text, indentRem) {
+        var li = document.createElement("li");
+        li.className = "nav-item";
+        var a = document.createElement("a");
+        a.className = "section-link";
+        a.href = "#" + targetId;
+        a.textContent = text;
+        a.style.paddingLeft = indentRem + "rem";
+        a.setAttribute("data-bs-dismiss", "offcanvas");
+        li.appendChild(a);
+        toc.appendChild(li);
+      }
+      // The M11 title page is a table, not a heading, so add it explicitly
+      // (when present) as the first entry, mirroring the prior menu.
+      var titlePage = doc.querySelector(".ich-m11-title-page-table-nmt");
+      if (titlePage) {
+        if (!titlePage.id) titlePage.id = "protocol-title-page";
+        titlePage.style.scrollMarginTop = "90px";
+        addLink(titlePage.id, "Title Page", 0);
+      }
+      headings.forEach(function (h, i) {
+        var text = (h.textContent || "").trim();
+        if (!text) return;
+        if (!h.id) h.id = "protocol-sec-" + i;
+        // Offset anchor jumps so the heading clears the sticky top nav.
+        h.style.scrollMarginTop = "90px";
+        var level = parseInt(h.tagName.substring(1), 10) || 1;
+        addLink(h.id, text, (level - 1) * 0.75);
+      });
+    }
+    if (document.readyState !== "loading") buildToc();
+    else document.addEventListener("DOMContentLoaded", buildToc);
+  })();
+</script>
 {% endblock %}
