@@ -1,3 +1,7 @@
+<h5>Release 0.44.0, 2026-06-22</h5>
+
+- Add in imporved M11 doc validation and FHIR message handling (issue 67)
+
 <h5>Release 0.43.1, 2026-06-08</h5>
 
 - Update USDM package depedency
