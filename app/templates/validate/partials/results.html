@@ -64,6 +64,7 @@
    the workbench's pages. The findings card below this one *does*
    keep ``mt-3`` because it needs spacing from this header card. #}
 {% set engine = summary['engine'] if summary else '' %}
+{% if summary %}
 <div class="row">
   <div class="col-12">
     <div class="card card-body rounded-3 shadow-sm">
@@ -120,6 +121,8 @@
     </div>
   </div>
 </div>
+
+{% endif %}
 
 {# ---------- Findings card -------------------------------------------- #}
 <div class="mt-3 row">
@@ -225,14 +228,17 @@
               <col style="width: 40%;">  {# Message       #}
             {% endif %}
           </colgroup>
+          {# ``border-0`` (Bootstrap ``border: 0 !important``) strips the
+             default ``.table`` cell border-bottom from the header row so the
+             column headings sit unboxed above the striped rows. #}
           <thead>
             <tr>
-              <th scope="col">Element</th>
-              <th scope="col">Severity</th>
-              <th scope="col">Rule</th>
-              <th scope="col">Description</th>
-              <th scope="col">Message</th>
-              {% if has_paths %}<th scope="col">Path</th>{% endif %}
+              <th scope="col" class="border-0">Element</th>
+              <th scope="col" class="border-0">Severity</th>
+              <th scope="col" class="border-0">Rule</th>
+              <th scope="col" class="border-0">Description</th>
+              <th scope="col" class="border-0">Message</th>
+              {% if has_paths %}<th scope="col" class="border-0">Path</th>{% endif %}
             </tr>
           </thead>
           <tbody>
