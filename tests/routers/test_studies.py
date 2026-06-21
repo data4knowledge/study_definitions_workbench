@@ -277,6 +277,113 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
     assert "Required element missing." in body
 
 
+def test_study_section_renders_columns(mocker, monkeypatch):
+    """The section-compare endpoint renders one column per selected study
+    with the chosen section's HTML and the sponsor identifier header."""
+    from unittest.mock import MagicMock
+
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+
+    mock_vlv = mocker.patch("app.routers.studies.Version.find_latest_version")
+    mock_vlv.return_value = MagicMock(id=1)
+
+    mock_wrapper = MagicMock()
+    mock_sv = MagicMock()
+    mock_sv.sponsor_identifier_text.return_value = "PROTO-001"
+    mock_sv.narrative_content_item_map.return_value = {}
+    mock_wrapper.first_version.return_value = mock_sv
+
+    mock_nc = MagicMock()
+    mock_nc.content.return_value = "<h2>2 Introduction</h2><p>Some body text.</p>"
+    mock_sddv = MagicMock()
+    mock_sddv.find_narrative_content_by_number.return_value = mock_nc
+    mock_wrapper.study_document_version.return_value = mock_sddv
+
+    def custom_init(self, *args, **kwargs):
+        pass
+
+    mocker.patch("app.routers.studies.USDMJson.__init__", new=custom_init)
+    mocker.patch("app.routers.studies.USDMJson.wrapper", return_value=mock_wrapper)
+
+    response = client.get("/studies/section?list_studies=1&section=2")
+    assert response.status_code == 200
+    body = response.text
+    assert "PROTO-001" in body
+    assert "2 Introduction" in body
+    assert "Some body text." in body
+    mock_sddv.find_narrative_content_by_number.assert_called_once_with("2")
+
+
+def test_study_section_missing_section(mocker, monkeypatch):
+    """A study that doesn't carry the requested section renders a
+    'Not in protocol' placeholder rather than failing or dropping the
+    column."""
+    from unittest.mock import MagicMock
+
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+
+    mock_vlv = mocker.patch("app.routers.studies.Version.find_latest_version")
+    mock_vlv.return_value = MagicMock(id=1)
+
+    mock_wrapper = MagicMock()
+    mock_sv = MagicMock()
+    mock_sv.sponsor_identifier_text.return_value = "PROTO-002"
+    mock_sv.narrative_content_item_map.return_value = {}
+    mock_wrapper.first_version.return_value = mock_sv
+
+    mock_sddv = MagicMock()
+    mock_sddv.find_narrative_content_by_number.return_value = None
+    mock_wrapper.study_document_version.return_value = mock_sddv
+
+    def custom_init(self, *args, **kwargs):
+        pass
+
+    mocker.patch("app.routers.studies.USDMJson.__init__", new=custom_init)
+    mocker.patch("app.routers.studies.USDMJson.wrapper", return_value=mock_wrapper)
+
+    response = client.get("/studies/section?list_studies=1&section=99")
+    assert response.status_code == 200
+    body = response.text
+    assert "PROTO-002" in body
+    assert "NP: Not in protocol" in body
+
+
+def test_section_toc_unions_and_sorts():
+    """_section_toc unions sections across studies, skips the title page
+    (section 0), dedupes by number, and sorts naturally (1.10 after
+    1.9)."""
+    from unittest.mock import MagicMock
+    from app.routers.studies import _section_toc
+
+    def nc(number, title, level):
+        m = MagicMock()
+        m.sectionNumber = number
+        m.sectionTitle = title
+        m.level.return_value = level
+        return m
+
+    doc_a = MagicMock()
+    doc_a.narrative_content_in_order.return_value = [
+        nc("0", "Title Page", 1),
+        nc("1", "Protocol Summary", 1),
+        nc("1.9", "Nine", 2),
+        nc("1.10", "Ten", 2),
+    ]
+    doc_b = MagicMock()
+    doc_b.narrative_content_in_order.return_value = [
+        nc("1", "Protocol Summary", 1),
+        nc("2", "Introduction", 1),
+    ]
+
+    toc = _section_toc([doc_a, None, doc_b])
+    numbers = [s["number"] for s in toc]
+    assert numbers == ["1", "1.9", "1.10", "2"]  # 0 skipped, deduped, natural sort
+
+
 def test_study_list_empty(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)

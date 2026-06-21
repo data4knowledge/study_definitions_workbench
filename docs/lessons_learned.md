@@ -113,17 +113,40 @@ Two cheats worth knowing:
   not raise. Legacy imports predate the typed-record format; future
   imports may add fields we don't know about yet.
 
-## 6. Don't run pytest while the dev server is up
+## 6. Running pytest could wipe the dev database — the real cause was `clean_and_tidy`, not the DB engine
 
-Both hit the same SQLite database. Test cleanup (`_clean()` helpers in
-`tests/conftest.py`) wipes records the server depends on and vice
-versa. The `claude.md` "Known issues" section captures the root cause
-(module-level singleton + engine-at-import-time in `database.py`,
-`TestClient(app)` sharing the app's engine rather than the test
-`db` fixture) — a proper fix is on the backlog.
+Symptom: run `pytest` while the dev server is up (or even when it
+isn't) and the dev database / imported studies vanish.
 
-Until then: stop the server before running tests. Obvious in
-retrospect; easy to forget in flow.
+The tempting explanation is the shared SQLite engine (module-level
+singleton + engine-at-import-time in `database.py`, `TestClient(app)`
+using the app engine). That's a real fragility, but it is **not** what
+deleted the data. With `PYTHON_ENVIRONMENT=test` forced early in
+`conftest.py`, the engine binds to the test DB correctly.
+
+The actual culprit was `DataFiles.clean_and_tidy()`, which runs at
+`app.main` import time — and `app.main` is imported by every router
+test via `mock_client` / `protect_endpoint`. `clean_and_tidy` does a
+**delete-by-exclusion sweep**: it lists everything under
+`MNT_PATH` and `rmtree`s any subdirectory not in a keep-list built from
+`DATABASE_PATH` / `DATAFILE_PATH` / `LOCALFILE_PATH`. The bug was a
+path mismatch in `.test_env`: `MNT_PATH="mount"` (the **dev** mount)
+while the keep paths pointed at `tests/test_files/mount/...`. So the
+sweep walked the dev mount, found nothing matching the (test-tree)
+keep-list, and deleted `mount/database`, `mount/datafiles`,
+`mount/localfiles`.
+
+Two fixes, both shipped:
+
+- **`.test_env`**: `MNT_PATH="tests/test_files/mount"` so the sweep
+  stays inside the test tree. (`.test_env` is untracked / per-machine —
+  check yours if this resurfaces.)
+- **`clean_and_tidy` guard**: it now aborts (logs an error, returns
+  `False`, deletes nothing) if any keep path is not under `MNT_PATH`.
+  A future env mismatch can no longer destroy data outside the mount.
+
+The engine-sharing fragility is still worth the backlog fix, but it
+isn't what bites you here.
 
 ## 7. Server-side downloads via a single HTML form
 

@@ -64,6 +64,74 @@ and respect the project's JS-free stance (lesson 10):
   A CSS-only version is possible (form + radio buttons + scoped
   selectors) but not trivially accessible; defer until asked for.
 
+## Compare view
+
+### Section-by-section comparison across selected studies
+
+**Problem:** `GET /studies/list` compares selected studies on three
+fixed things only — title page, inclusion, exclusion (the three spec
+sections in `usdm4_protocol`'s `sections.yaml`). There's no way to
+pick an arbitrary M11 protocol section (Introduction, Objectives,
+Study Design, …) and see it side-by-side across the selected
+protocols. The single-study protocol page at
+`/versions/{id}/protocol` already has a slide-in Table of Contents;
+we want the same navigation in the compare view, where clicking a
+section shows that section from every selected study.
+
+**Assumption (confirmed with Dave 2026-06-21):** selected protocols
+use M11 section numbering. Alignment keys on `sectionNumber`. We do
+NOT attempt title-based fuzzy matching — it produces confident-but-
+wrong pairings, worse than an honest gap.
+
+**Proposed approach:**
+
+- **Data layer already exists** — no new extraction logic.
+  `StudyDefinitionDocumentVersion` (usdm4) provides
+  `narrative_content_in_order()`, `find_narrative_content_by_number()`,
+  and `NarrativeContent.content(narrative_content_item_map)` which
+  renders one section's HTML (heading + body).
+  `study_version.narrative_content_item_map()` gives the map.
+- **Build the TOC server-side from narrative content, NOT from
+  rendered headings.** The existing protocol-page TOC
+  (`study_versions/protocol.html` `buildToc()`) scans the rendered
+  document's `h1`–`h6` client-side — fine for one document, but it
+  carries no stable cross-document key, so it's the wrong thing to
+  reuse here. Instead walk each selected study's
+  `narrative_content_in_order()` and build a section tree keyed on
+  `sectionNumber`, using `level()` for indent. Union across the
+  selected studies so a section present in one but missing in another
+  still appears in the menu.
+- **Reuse the offcanvas menu shell** (the `section_menu.html` toggle
+  + offcanvas markup), but render the list server-side. Each entry is
+  `hx-get="/studies/section?list_studies=...&section=<number>"`
+  targeting the content pane — fetch-and-swap rather than the
+  protocol page's in-page anchor jump.
+- **New partial endpoint** `GET /studies/section` in `studies.py`:
+  for each selected study, `find_narrative_content_by_number(section)`
+  then `content(...)`. Render one column per study; missing section →
+  the existing `NP: Not in protocol` treatment. Lazy — one section
+  fetched per click, never all sections up front (heavy and pointless
+  across multiple full protocols).
+- **Layout** — reuse the column-per-study table and the
+  `.overflow-auto section-div` wrapper from the title-page tab so wide
+  section bodies scroll horizontally. Zero hand-written JS beyond the
+  HTMX attributes (lesson 10).
+
+**Effort:** medium. One router endpoint, one server-rendered TOC
+partial, one section-content partial, template wiring into the
+existing tabbed compare view. No schema change, no new extraction.
+
+**Open follow-ups (defer):** only M11-origin studies have narrative
+content — Excel/FHIR imports show empty columns; whose ordering drives
+the unioned menu when sections differ; rendering cost if a section is
+very large across many columns.
+
+**Context:** flagged by Dave 2026-06-21, building on the existing
+title-page/IE compare view. The protocol-page TOC he pointed at is
+the UX target; the implementation diverges (server-side menu +
+sectionNumber alignment) because the compare view needs cross-document
+matching the heading-scan TOC can't provide.
+
 ## General
 
 ### "File accepted" banner — cleaner separation between foreground and background flows

@@ -84,7 +84,14 @@ def study_list(
         "inclusion": [],
         "exclusion": [],
         "m11_amendment_details": [],
+        # The raw selection string, threaded back into the section-compare
+        # TOC links so each hx-get carries the same set of studies.
+        "list_studies": list_studies or "",
     }
+    # M11 document versions for the selected studies, collected so the
+    # section-compare TOC can be built from the union of their narrative
+    # content (see _section_toc). Non-M11 studies contribute nothing.
+    section_docs = []
     for id in parts:
         version = Version.find_latest_version(id, session)
         usdm = USDMJson(version.id, session)
@@ -94,6 +101,7 @@ def study_list(
         errors = Errors()
         m11 = DataView(wrapper, errors)
         data["m11_title_page"].append(m11.title_page())
+        section_docs.append(wrapper.study_document_version("M11"))
         # M11 validation findings were captured during import and
         # persisted as the ``m11_validation`` DataFiles media type (see
         # ``ImportM11.process()``). The compare view just reads that
@@ -105,13 +113,103 @@ def study_list(
         data["inclusion"].append(study_design.inclusion_criteria(ie_map))
         data["exclusion"].append(study_design.exclusion_criteria(ie_map))
     data["m11_title_page"] = restructure_study_list(data["m11_title_page"])
+    data["sections"] = _section_toc(section_docs)
     data["fhir"] = {
         "enabled": transmit_role_enabled(request),
         "versions": fhir_versions(),
     }
-    print(f"DATA: {data}")
     return templates.TemplateResponse(
         request, "studies/list.html", {"user": user, "data": data}
+    )
+
+
+def _section_sort_key(number: str) -> list:
+    """Natural sort key for an M11 section number like ``1``, ``1.1``,
+    ``1.10``, ``2``. Splits on dots and compares each part numerically
+    where possible so ``1.10`` sorts after ``1.9`` (not after ``1.1``).
+    Non-numeric parts (e.g. ``Appendix``) sort after numeric ones.
+    """
+    key = []
+    for part in number.split("."):
+        part = part.strip()
+        if part.isdigit():
+            key.append((0, int(part), ""))
+        else:
+            key.append((1, 0, part.lower()))
+    return key
+
+
+def _section_toc(section_docs: list) -> list[dict]:
+    """Build the section-compare Table of Contents from the union of the
+    selected studies' M11 narrative content.
+
+    Each study contributes its ordered narrative sections; we key on
+    ``sectionNumber`` (the assumption is M11 numbering — see
+    ``docs/next_steps.md``) so a section present in one protocol but
+    missing from another still appears in the menu exactly once. The
+    result is sorted by natural section number so the tree reads 1, 1.1,
+    1.1.1, 2, … regardless of which study supplied each entry.
+
+    ``section_docs`` entries are ``StudyDefinitionDocumentVersion`` or
+    ``None`` (non-M11 studies); ``None`` entries contribute nothing.
+    """
+    seen: dict[str, dict] = {}
+    for sddv in section_docs:
+        if not sddv:
+            continue
+        for nc in sddv.narrative_content_in_order():
+            number = (nc.sectionNumber or "").strip()
+            # Skip the title page (section "0", rendered as its own tab)
+            # and any content lacking a usable section number.
+            if not number or number == "0":
+                continue
+            if number not in seen:
+                seen[number] = {
+                    "number": number,
+                    "title": nc.sectionTitle or "",
+                    "level": nc.level(),
+                }
+    return sorted(seen.values(), key=lambda s: _section_sort_key(s["number"]))
+
+
+@router.get("/section", dependencies=[Depends(protect_endpoint)])
+def study_section(
+    request: Request,
+    list_studies: str = None,
+    section: str = None,
+    session: Session = Depends(get_db),
+):
+    """Render a single M11 section across the selected studies, one
+    column per study.
+
+    Lazy companion to ``study_list``: the compare view builds the section
+    TOC up front, but the section bodies are only fetched (via hx-get)
+    when the user clicks a TOC entry. For each selected study we look the
+    section up by number in its M11 document version and render that
+    section's HTML; studies that lack the section (or aren't M11) show a
+    "Not in protocol" placeholder so columns stay aligned.
+    """
+    user, present_in_db = user_details(request, session)
+    parts = [x.strip() for x in list_studies.split(",")] if list_studies else []
+    columns = []
+    for id in parts:
+        version = Version.find_latest_version(id, session)
+        usdm = USDMJson(version.id, session)
+        wrapper: Wrapper = usdm.wrapper()
+        study_version: StudyVersion = wrapper.first_version()
+        sponsor = (
+            study_version.sponsor_identifier_text() if study_version else ""
+        )
+        content = None
+        sddv = wrapper.study_document_version("M11")
+        if sddv and section:
+            nc = sddv.find_narrative_content_by_number(section)
+            if nc:
+                content = nc.content(study_version.narrative_content_item_map())
+        columns.append({"sponsor": sponsor, "content": content})
+    data = {"columns": columns, "section": section}
+    return templates.TemplateResponse(
+        request, "studies/partials/section.html", {"user": user, "data": data}
     )
 
 

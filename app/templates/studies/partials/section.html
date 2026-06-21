@@ -1,0 +1,31 @@
+{# Single M11 section compared across the selected studies, one column
+   per study. Swapped into ``#section_compare`` by the TOC links in
+   studies/list.html. ``content`` is the section's rendered M11 HTML
+   (heading + body); the page already includes shared/styles/m11.html so
+   the M11 classes style correctly. A null ``content`` means the study
+   doesn't carry this section (non-M11 import, or section absent). #}
+{% set cols = data["columns"] %}
+<div class="outer-div row mt-3">
+  <div class="col-12 extract-div mt-3 mb-3">
+    <div class="overflow-auto section-div">
+      <table class="ich-m11-section-compare-table">
+        <tr>
+          {% for c in cols %}
+            <td><strong>{{ c["sponsor"] }}</strong></td>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for c in cols %}
+            <td>
+              {% if c["content"] %}
+                {{ c["content"]|safe }}
+              {% else %}
+                <span class="section-not-in-protocol"><em>NP: Not in protocol</em></span>
+              {% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

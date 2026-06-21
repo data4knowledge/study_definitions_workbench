@@ -451,6 +451,15 @@ class TestDataFiles:
 
     def test_clean_and_tidy_failure(self, mock_config, mocker, mock_logger):
         """Test clean_and_tidy class method failure."""
+        # Keep paths must live under the mount path or the safety guard
+        # aborts before the sweep (see the dedicated guard test below).
+        # Set them consistently so this test exercises the listdir-raises
+        # path it's actually about.
+        mock_config.mount_path = "/test/mount/path"
+        mock_config.data_file_path = "/test/mount/path/data"
+        mock_config.database_path = "/test/mount/path/database"
+        mock_config.local_file_path = "/test/mount/path/local"
+
         # Mock os.listdir to raise an exception
         mock_listdir = mocker.patch("os.listdir")
         mock_listdir.side_effect = Exception("Test error")
@@ -459,6 +468,32 @@ class TestDataFiles:
 
         assert result is False
         mock_logger.exception.assert_called_once()
+
+    def test_clean_and_tidy_aborts_when_keep_paths_outside_mount(
+        self, mock_config, mocker, mock_logger
+    ):
+        """Regression: if the mount path doesn't contain the keep paths
+        (e.g. a ``.test_env`` where MNT_PATH points at the dev mount but
+        DATABASE_PATH / DATAFILE_PATH point at the test tree), the
+        delete-by-exclusion sweep would remove data it was meant to keep.
+        This wiped the dev database when running pytest. The guard must
+        refuse to sweep in that case.
+
+        Uses the default ``mock_config`` paths, where ``mount_path`` is
+        ``/test/mount/path`` but the keep paths live under ``/test/data``,
+        ``/test/database`` and ``/test/local`` — none under the mount."""
+        mock_listdir = mocker.patch("os.listdir")
+        mock_rmtree = mocker.patch("shutil.rmtree")
+        mock_unlink = mocker.patch("os.unlink")
+
+        result = DataFiles.clean_and_tidy()
+
+        assert result is False
+        # Bailed out before touching the filesystem.
+        mock_listdir.assert_not_called()
+        mock_rmtree.assert_not_called()
+        mock_unlink.assert_not_called()
+        mock_logger.error.assert_called_once()
 
     def test_check_success_create_dir(self, mock_config, mocker, mock_logger):
         """Test check class method success when creating directory."""

@@ -98,6 +98,28 @@
       margin-top: 0.15rem;
     }
 
+    /* Section-compare TOC links — mirror the protocol page's slide-in
+       menu styling (grey, primary on hover, one entry per line). */
+    a.section-link { text-decoration: none; color: gray; display: block; padding: .1rem 0; }
+    a.section-link:hover { color: var(--bs-primary); }
+
+    /* Section-compare table: fixed-width columns side by side, content
+       aligned to the top so headings line up across protocols. The
+       wrapping .section-div already scrolls horizontally when the
+       columns overflow. */
+    .ich-m11-section-compare-table td {
+      vertical-align: top;
+      min-width: 26em;
+      max-width: 40em;
+      padding: 10px;
+      border-right: 1px solid #e9ecef;
+    }
+    .ich-m11-section-compare-table .section-not-in-protocol {
+      color: #888;
+      font-size: 0.8em;
+      font-style: italic;
+    }
+
   </style>
 {% endblock %}   
 {% block menu_content %}
@@ -118,6 +140,9 @@
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#exclusion_tab">Exclusion Critieria</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#sections_tab">Sections</button>
         </li>
       </ul>
       {# Sponsor IDs per study, captured before the {% with %} blocks below
@@ -264,7 +289,51 @@
             {% include "studies/partials/criteria.html" %}
           {% endwith %}
         </div>
+        {# Section-compare tab. The TOC (built server-side from the union
+           of the selected protocols' narrative content) lives in a
+           slide-in offcanvas — mirroring the single-study protocol page.
+           Each TOC entry hx-gets one section across all selected studies
+           into #section_compare. Bodies are fetched lazily, one section
+           per click. #}
+        <div id="sections_tab" class="tab-pane fade" role="tabpanel">
+          <div class="mt-3">
+            <a class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="offcanvas" href="#section_menu">
+              <i class="bi bi-list me-1"></i>Sections
+            </a>
+          </div>
+          <div id="section_compare" class="mt-2">
+            <p class="text-muted mt-3">Open <strong>Sections</strong> and pick a section to compare it across the selected protocols.</p>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
+
+  {# Slide-in Table of Contents for the section-compare tab. Unlike the
+     protocol page (which builds its TOC client-side from rendered
+     headings), this list is server-rendered from narrative content so
+     entries carry the section number used to align studies. #}
+  <div class="offcanvas offcanvas-start" data-bs-backdrop="false" tabindex="-1" id="section_menu">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Table of Contents</h5>
+      <button type="button" class="btn-close btn-sm" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column" id="section_toc">
+        {% for s in data["sections"] %}
+          <li class="nav-item">
+            <a class="section-link"
+               style="padding-left: {{ (s['level'] - 1) * 0.75 }}rem;"
+               href="#"
+               hx-get="/studies/section?list_studies={{ data['list_studies'] }}&section={{ s['number'] }}"
+               hx-target="#section_compare"
+               hx-swap="innerHTML"
+               data-bs-dismiss="offcanvas">{{ s['number'] }} {{ s['title'] }}</a>
+          </li>
+        {% else %}
+          <li class="nav-item"><span class="text-muted">No M11 sections in the selected studies.</span></li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
 {% endblock %}

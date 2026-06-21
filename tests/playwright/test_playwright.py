@@ -401,6 +401,49 @@ def test_selection_list(playwright: Playwright) -> None:
 
 
 @pytest.mark.playwright
+def test_compare_sections(playwright: Playwright) -> None:
+    """Section-by-section compare on the multi-study list page.
+
+    Smoke test of the wiring only — we deliberately don't assert on the
+    section content (it varies by protocol and the renderer evolves).
+    What we pin: the Sections tab activates, its slide-in Table of
+    Contents can be opened, and clicking a section entry swaps some
+    content into the compare pane (the placeholder table appears)."""
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    path = filepath()
+    page.goto(url)
+
+    login(page)
+    delete_db(page)
+
+    load_m11(page, path, "tests/test_files/m11/WA42380/WA42380.docx")
+    load_m11(page, path, "tests/test_files/m11/ASP8062/ASP8062.docx")
+
+    page.get_by_role("link").first.click()
+    page.locator("#card_1_div").get_by_role("button", name=" Select").click()
+    page.locator("#card_2_div").get_by_role("button", name=" Select").click()
+    page.get_by_role("button", name=" Selection").click()
+    page.get_by_role("button", name=" List selected studies").click()
+
+    # The Sections tab activates when clicked.
+    page.get_by_role("tab", name="Sections").click()
+    expect(page.locator("#sections_tab")).to_be_visible()
+
+    # Its slide-in Table of Contents can be displayed.
+    page.locator("#sections_tab").get_by_role("link", name="Sections").click()
+    expect(page.locator("#section_menu")).to_be_visible()
+
+    # Picking a section swaps some content into the compare pane.
+    page.locator("#section_toc a.section-link").first.click()
+    expect(page.locator("#section_compare table")).to_be_visible()
+
+    context.close()
+    browser.close()
+
+
+@pytest.mark.playwright
 def test_selection_delete(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()

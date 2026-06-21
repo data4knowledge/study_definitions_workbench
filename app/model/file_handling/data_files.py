@@ -154,6 +154,28 @@ class DataFiles:
         # anything in the sweep either way.
         if application_configuration.cdisc_core_cache_path:
             keep.append(application_configuration.cdisc_core_cache_path)
+        # Safety guard: this method deletes everything under ``dir`` that
+        # isn't in ``keep``. That is only safe when the keep paths
+        # actually live under ``dir``. If they don't — e.g. a
+        # misconfigured ``.test_env`` where MNT_PATH points at the dev
+        # mount but DATABASE_PATH/DATAFILE_PATH point at the test tree —
+        # the sweep would delete the very data it was meant to keep
+        # (this wiped the dev database when running tests). Refuse to run
+        # rather than destroy data. See docs/lessons_learned.md lesson 6.
+        abs_dir = os.path.abspath(dir)
+        stray = [
+            k
+            for k in keep
+            if k and not os.path.abspath(k).startswith(abs_dir + os.sep)
+        ]
+        if stray:
+            application_logger.error(
+                f"clean_and_tidy aborted: keep paths {stray} are not under "
+                f"mount path '{dir}'. Refusing to sweep to avoid deleting "
+                f"data outside the mount (check MNT_PATH vs DATABASE_PATH / "
+                f"DATAFILE_PATH in the active env file)."
+            )
+            return False
         application_logger.info(f"Running clean and tidy on '{dir}'")
         try:
             for file in os.listdir(dir):
