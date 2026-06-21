@@ -249,11 +249,32 @@ python -m pytest --ignore=tests/playwright
 python -m pytest tests/playwright
 ```
 
-Do **not** run pytest while the dev server is up — both processes
-share a SQLite database through a module-level singleton and test
-cleanup will wipe records the server depends on. See
-[`claude.md`](claude.md) (§ *Known issues*) for the root cause and
-planned fix.
+### Databases & environments
+
+Which database/storage a process uses is decided by `PYTHON_ENVIRONMENT`,
+which selects a `.{env}_env` file (`ServiceEnvironment` loads it once at
+import). Each environment points at its own mount, so dev and test data
+are isolated:
+
+| Process | `PYTHON_ENVIRONMENT` | Env file | Mount / database |
+|---|---|---|---|
+| Dev server (`dev_server.sh`) | `development` | `.development_env` | `mount/` → `mount/database/database.db` |
+| Unit tests (`conftest.py` forces it) | `test` | `.test_env` | `tests/test_files/mount/` → `…/database/test_database.db` |
+| Playwright server (`playwright_server.sh`) | `test` | `.test_env` | same test mount as unit tests |
+
+Because the Playwright server runs in the `test` environment, the e2e
+suite's destructive actions (Delete Database, delete/import flows) hit
+the throwaway test database — **never** the dev database. `.test_env`
+and `.development_env` are untracked per-machine files; keep their
+`MNT_PATH` aligned with their `DATABASE_PATH` / `DATAFILE_PATH` (all
+under the same mount) or `clean_and_tidy` will refuse to run (it guards
+against deleting data outside its mount).
+
+Remaining caveat: the Playwright server and `pytest` both use the
+**test** database, so don't run unit tests while the Playwright server
+is up — it can scramble a test run (but no longer touches dev data).
+See [`docs/lessons_learned.md`](docs/lessons_learned.md) (§ 6) for the
+full story of how this used to wipe the dev database.
 
 ---
 

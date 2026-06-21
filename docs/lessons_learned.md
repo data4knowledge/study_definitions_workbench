@@ -148,6 +148,27 @@ Two fixes, both shipped:
 The engine-sharing fragility is still worth the backlog fix, but it
 isn't what bites you here.
 
+### Playwright was a second, separate path to the same disaster
+
+`playwright_server.sh` used to `export PYTHON_ENVIRONMENT=development`,
+so the e2e server ran against the **dev** database. The Playwright
+suite then deletes it on purpose — `test_clear_db` and the `delete_db()`
+helper click the "Delete Database" UI action at the start of many
+tests. So running Playwright wiped real dev data, independently of the
+`clean_and_tidy` bug above.
+
+Fix: `playwright_server.sh` now runs `PYTHON_ENVIRONMENT=test`, sharing
+the throwaway test mount/database under `tests/test_files/mount`
+(Playwright *is* a test). `.test_env` gained a `SESSION_SECRET` so the
+server can run the session middleware / email-code login (unit tests
+never start the middleware, which is why it wasn't there before). The
+test mount's `datafiles` are disposable runtime junk (untracked), so
+e2e wiping them is harmless.
+
+Caveat that remains: don't run `pytest` and the Playwright server at the
+same time — they now share the *test* database. That can scramble a
+test run, but it can no longer touch dev data.
+
 ## 7. Server-side downloads via a single HTML form
 
 [Superseded and re-scoped by lesson 10 — the original advice favoured
