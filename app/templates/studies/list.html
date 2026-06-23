@@ -1,4 +1,5 @@
 {% extends "shared/_main_layout.html" %}
+{% from "studies/partials/_source_pill.html" import source_pill %}
 
 {% block environment_content %}
   {% with request=request %}
@@ -15,14 +16,26 @@
     {% include "shared/styles/m11.html" %}
   {% endwith %}  
   <style>
+    /* Pills inherit Times New Roman from .extract-div / .section-div
+       (the M11 preferred style applied to the displayed protocol data).
+       Force the app's sans-serif body font on badges so they read the
+       same as the home-page pills, while the data stays in Times. */
+    .extract-div .badge,
+    .section-div .badge { font-family: var(--bs-body-font-family); }
     .document-div { width: 95%; }
-    .ich-m11-title-page-table { margin-top: 20px; }
-    .ich-m11-title-page-table td:first-child { 
+    /* Fixed layout so the data columns share the remaining width equally;
+       the first column (field titles) stays pinned narrow at 12em. */
+    .ich-m11-title-page-table { margin-top: 20px; table-layout: fixed; width: 100%; }
+    .ich-m11-title-page-table td:first-child {
       width: 12em;
       min-width: 12em;
-      max-width: 12em; 
+      max-width: 12em;
     }
-    .ich-m11-title-page-table td { padding: 10px; }
+    .ich-m11-title-page-table td {
+      padding: 10px;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
     .ich-m11-amendment-table { table-layout: fixed; width: 100%; }
     .ich-m11-amendment-table td:first-child {
       width: 12em;
@@ -107,13 +120,19 @@
        aligned to the top so headings line up across protocols. The
        wrapping .section-div already scrolls horizontally when the
        columns overflow. */
+    /* Fixed layout + full width so the study columns split the available
+       space equally however many are selected. Without this the table
+       sizes to content and leaves empty space on the right that reads as
+       a phantom extra column. */
+    .ich-m11-section-compare-table { table-layout: fixed; width: 100%; }
     .ich-m11-section-compare-table td {
       vertical-align: top;
-      min-width: 26em;
-      max-width: 40em;
       padding: 10px;
       border-right: 1px solid #e9ecef;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
     }
+    .ich-m11-section-compare-table td:last-child { border-right: none; }
     .ich-m11-section-compare-table .section-not-in-protocol {
       color: #888;
       font-size: 0.8em;
@@ -151,6 +170,9 @@
          protocol (sponsor identifier is the only universally-present
          human-readable identifier). #}
       {% set sponsor_ids = data["m11_title_page"]["Sponsor Protocol Identifier"] %}
+      {# Captured before the {% with %} blocks below shadow `data`, same as
+         sponsor_ids — drives the source pill in the IE/section headers. #}
+      {% set import_types = data["import_type"] %}
       <div class="tab-content mt-2">
         <div id="title_page_tab" class="tab-pane fade show active" role="tabpanel">
           {% set width = data["m11_title_page"]["Full Title"]|length %}
@@ -181,13 +203,14 @@
                       {% endfor %}
                       <td>
                         <div><strong>{{ sponsor_ids[w] }}</strong></div>
+                        {# All pills on one line: the input-source pill
+                           (M11 Protocol / USDM Excel / FHIR …) followed by
+                           the validation summary. Source pill mirrors the
+                           home page; validation pills follow the same
+                           ``badge rounded-pill bg-<severity>`` convention
+                           (see studies/partials/show.html). #}
                         <div class="mt-1">
-                          {# Match the home-page pill convention:
-                             ``badge rounded-pill bg-<severity>`` with
-                             white text for readable contrast on every
-                             colour. See studies/partials/show.html for
-                             the Phase / Version / M11-Protocol pills
-                             this intentionally mirrors. #}
+                          {{ source_pill(data["import_type"][w]) }}
                           {% if ns.err == 0 and ns.warn == 0 and ns.info == 0 %}
                             <span class="badge rounded-pill bg-success text-white">
                               <i class="bi bi-check-circle-fill me-1"></i>0 findings
@@ -280,12 +303,12 @@
           </div>
         </div>
         <div id="inclusion_tab" class="tab-pane fade" role="tabpanel">
-          {% with data=data["inclusion"], headers=sponsor_ids %}
+          {% with data=data["inclusion"], headers=sponsor_ids, import_types=import_types %}
             {% include "studies/partials/criteria.html" %}
           {% endwith %}
         </div>
         <div id="exclusion_tab" class="tab-pane fade" role="tabpanel">
-          {% with data=data["exclusion"], headers=sponsor_ids %}
+          {% with data=data["exclusion"], headers=sponsor_ids, import_types=import_types %}
             {% include "studies/partials/criteria.html" %}
           {% endwith %}
         </div>

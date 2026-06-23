@@ -4,6 +4,7 @@
    (heading + body); the page already includes shared/styles/m11.html so
    the M11 classes style correctly. A null ``content`` means the study
    doesn't carry this section (non-M11 import, or section absent). #}
+{% from "studies/partials/_source_pill.html" import source_pill %}
 {% set cols = data["columns"] %}
 <div class="outer-div row mt-3">
   <div class="col-12 extract-div mt-3 mb-3">
@@ -11,7 +12,10 @@
       <table class="ich-m11-section-compare-table">
         <tr>
           {% for c in cols %}
-            <td><strong>{{ c["sponsor"] }}</strong></td>
+            <td>
+              <div><strong>{{ c["sponsor"] }}</strong></div>
+              <div class="mt-1">{{ source_pill(c["import_type"]) }}</div>
+            </td>
           {% endfor %}
         </tr>
         <tr>

@@ -1,3 +1,4 @@
+{% from "studies/partials/_source_pill.html" import source_pill %}
 {% set width = data|length %}
 <div class="outer-div row mt-3">
     <div class="col-12 extract-div mt-3 mb-3">
@@ -9,7 +10,14 @@
             {% if headers is defined and headers %}
             <tr>
                 {% for w in range(width) %}
-                <td><strong>{{ headers[w] }}</strong></td>
+                <td>
+                  <div><strong>{{ headers[w] }}</strong></div>
+                  {# Input-source pill — only when the caller supplies the
+                     parallel `import_types` list (compare view does). #}
+                  {% if import_types is defined and import_types %}
+                  <div class="mt-1">{{ source_pill(import_types[w]) }}</div>
+                  {% endif %}
+                </td>
                 {% endfor %}
             </tr>
             {% endif %}

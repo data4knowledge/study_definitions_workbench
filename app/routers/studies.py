@@ -83,6 +83,10 @@ def study_list(
         "m11_validation": [],
         "inclusion": [],
         "exclusion": [],
+        # Import source per study (parallel list, column order). Drives the
+        # input-source pill shown in each tab's header so the compare view
+        # carries the same format badge the user saw on the home page.
+        "import_type": [],
         "m11_amendment_details": [],
         # The raw selection string, threaded back into the section-compare
         # TOC links so each hx-get carries the same set of studies.
@@ -100,6 +104,9 @@ def study_list(
         study_design: StudyDesign = study_version.studyDesigns[0]
         errors = Errors()
         m11 = DataView(wrapper, errors)
+        data["import_type"].append(
+            FileImport.find(version.import_id, session).type
+        )
         data["m11_title_page"].append(m11.title_page())
         section_docs.append(wrapper.study_document_version("M11"))
         # M11 validation findings were captured during import and
@@ -206,7 +213,10 @@ def study_section(
             nc = sddv.find_narrative_content_by_number(section)
             if nc:
                 content = nc.content(study_version.narrative_content_item_map())
-        columns.append({"sponsor": sponsor, "content": content})
+        import_type = FileImport.find(version.import_id, session).type
+        columns.append(
+            {"sponsor": sponsor, "content": content, "import_type": import_type}
+        )
     data = {"columns": columns, "section": section}
     return templates.TemplateResponse(
         request, "studies/partials/section.html", {"user": user, "data": data}

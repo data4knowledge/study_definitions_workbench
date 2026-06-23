@@ -174,6 +174,13 @@ def test_study_list(mocker, monkeypatch):
     mock_dv = mocker.patch("app.routers.studies.DataView")
     mock_dv_instance = mock_dv.return_value
     mock_dv_instance.title_page.return_value = {"title": "Test"}
+    # The compare view labels each column with an input-source pill, read
+    # from the latest version's FileImport. Stub it so the route doesn't
+    # touch the DB.
+    mocker.patch(
+        "app.routers.studies.FileImport.find",
+        return_value=MagicMock(type="M11_DOCX"),
+    )
     mock_dv_instance.amendment_details.return_value = {"amendment": "None"}
     # The compare view runs M11 DOCX-layer validation per study. The
     # helper reaches into DataFiles + M11Validator + the adapter — stub
@@ -232,6 +239,10 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
 
     mock_dv = mocker.patch("app.routers.studies.DataView")
     mock_dv.return_value.title_page.return_value = {"Full Title": "A Trial"}
+    mocker.patch(
+        "app.routers.studies.FileImport.find",
+        return_value=MagicMock(type="M11_DOCX"),
+    )
 
     # Build a fake finding that will decorate the 'Full Title' cell.
     # The template reads plain-dict keys directly (no to_dict() call);
@@ -292,6 +303,10 @@ def test_study_section_renders_columns(mocker, monkeypatch):
     mock_wrapper = MagicMock()
     mock_sv = MagicMock()
     mock_sv.sponsor_identifier_text.return_value = "PROTO-001"
+    mocker.patch(
+        "app.routers.studies.FileImport.find",
+        return_value=MagicMock(type="M11_DOCX"),
+    )
     mock_sv.narrative_content_item_map.return_value = {}
     mock_wrapper.first_version.return_value = mock_sv
 
@@ -332,6 +347,10 @@ def test_study_section_missing_section(mocker, monkeypatch):
     mock_wrapper = MagicMock()
     mock_sv = MagicMock()
     mock_sv.sponsor_identifier_text.return_value = "PROTO-002"
+    mocker.patch(
+        "app.routers.studies.FileImport.find",
+        return_value=MagicMock(type="M11_DOCX"),
+    )
     mock_sv.narrative_content_item_map.return_value = {}
     mock_wrapper.first_version.return_value = mock_sv
 
