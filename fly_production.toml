@@ -9,7 +9,7 @@ kill_signal = 'SIGINT'
 kill_timeout = '5s'
 
 [build]
-  image = 'data4knowledge/sdw:0.43.1'
+  image = 'data4knowledge/sdw:0.44.0'
 
 [[mounts]]
   source = 'sdw_data'

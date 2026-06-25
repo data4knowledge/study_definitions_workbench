@@ -3,9 +3,9 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/19551825-eea7-44b9-a567-126fb4bdc814/LZZT.docx'',
-    dir=''tests/test_files/mount/datafiles/19551825-eea7-44b9-a567-126fb4bdc814'',
-    image_path=''tests/test_files/mount/datafiles/19551825-eea7-44b9-a567-126fb4bdc814/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/8c81fe5c-3f10-43bc-aa0f-7201c08835c4/LZZT.docx'',
+    dir=''tests/test_files/mount/datafiles/8c81fe5c-3f10-43bc-aa0f-7201c08835c4'',
+    image_path=''tests/test_files/mount/datafiles/8c81fe5c-3f10-43bc-aa0f-7201c08835c4/images'',
     filename=''LZZT.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -841,6 +841,14 @@
     ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
     False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
     ''''}}}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _create_scope
+  message: Created scope of type Global
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

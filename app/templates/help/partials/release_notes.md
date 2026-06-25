@@ -1,4 +1,4 @@
-<h5>Release 0.44.0, 2026-06-22</h5>
+<h5>Release 0.44.0, 2026-06-25</h5>
 
 - Add in imporved M11 doc validation and FHIR message handling (issue 67)
 
