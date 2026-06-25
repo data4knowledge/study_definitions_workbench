@@ -7,7 +7,7 @@ from app.model.file_handling.data_files import DataFiles
 from usdm4_protocol.m11 import USDM4M11
 from usdm4.api.wrapper import Wrapper
 
-Save = False
+SAVE = False
 
 
 @pytest.fixture
