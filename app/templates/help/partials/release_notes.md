@@ -1,6 +1,6 @@
 <h5>Release 0.45.0, 2026-07-01</h5>
 
-- Improved M11 protocol display (issue 68)
+- Improved M11 protocol display and dependencies (issue 68)
 
 <h5>Release 0.44.0, 2026-06-25</h5>
 
