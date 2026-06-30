@@ -1,3 +1,7 @@
+<h5>Release 0.45.0, 2026-07-01</h5>
+
+- Improved M11 protocol display (issue 68)
+
 <h5>Release 0.44.0, 2026-06-25</h5>
 
 - Add in imporved M11 doc validation and FHIR message handling (issue 67)
