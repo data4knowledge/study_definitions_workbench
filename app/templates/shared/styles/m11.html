@@ -49,6 +49,21 @@
     .ich-m11-table td, th, tr { vertical-align: inherit }
     .ich-m11-table td, th { border: 1px solid black; padding: 8px; }
 
+    /* Narrative tables imported from the source document carry the default
+       raw_docx class "raw-docx-table". Without this rule they render
+       borderless. The title-page and overall-design tables replace_class
+       away from raw-docx-table during import, so they are unaffected. */
+    .raw-docx-table {
+        border: 1px solid black;
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .raw-docx-table thead, .raw-docx-table tbody, .raw-docx-table tfoot { vertical-align: top }
+    .raw-docx-table td, .raw-docx-table th, .raw-docx-table tr { vertical-align: inherit }
+    .raw-docx-table td, .raw-docx-table th { border: 1px solid black; padding: 8px; }
+
     .section-div h1, .ich-m11-section-div h1 { font-size: 16pt; font-weight: bold; }
     .section-div h2, .ich-m11-section-div h2 { font-size: 14pt; font-weight: bold; }
     .section-div h3, .ich-m11-section-div h3 { font-size: 12pt; font-weight: bold; }
