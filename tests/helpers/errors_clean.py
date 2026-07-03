@@ -7,13 +7,15 @@ def errors_clean_all(errors: Errors) -> list[dict]:
     for item in result:
         item = _fix_timestamp(item)
         item = _remove_file_paths(item)
+        item = _fix_uuid(item)
     return result
 
 
 def error_clean(errors: Errors, index=0) -> dict:
     result = errors._items[index].to_dict()
     result = _remove_file_paths(result)
-    return _fix_timestamp(result)
+    result = _fix_timestamp(result)
+    return _fix_uuid(result)
 
 
 def _fix_timestamp(data: dict) -> dict:
@@ -22,6 +24,20 @@ def _fix_timestamp(data: dict) -> dict:
         data["timestamp"] = re.sub(
             timestamp_pattern, "YYYY-MM-DD HH:MM:SS.nnnnnn", data["timestamp"]
         )
+    return data
+
+
+def _fix_uuid(data: dict) -> dict:
+    # Import runs against a freshly-created DataFiles directory whose name is a
+    # random UUID; it leaks into logged paths (e.g. the RawDocx init message).
+    # Replace it with "FAKE" so the saved errors file stays stable, matching the
+    # ``replace_uuid`` normalisation applied to the USDM JSON result.
+    uuid_pattern = (
+        r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+        r"[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+    )
+    if "message" in data:
+        data["message"] = re.sub(uuid_pattern, "FAKE", data["message"])
     return data
 
 

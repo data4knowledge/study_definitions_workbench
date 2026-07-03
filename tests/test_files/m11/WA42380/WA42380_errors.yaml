@@ -3,9 +3,8 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/7dc09047-ad26-48c4-ace8-634a39701eff/WA42380.docx'',
-    dir=''tests/test_files/mount/datafiles/7dc09047-ad26-48c4-ace8-634a39701eff'',
-    image_path=''tests/test_files/mount/datafiles/7dc09047-ad26-48c4-ace8-634a39701eff/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/FAKE/WA42380.docx'',
+    dir=''tests/test_files/mount/datafiles/FAKE'', image_path=''tests/test_files/mount/datafiles/FAKE/images'',
     filename=''WA42380.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -836,27 +835,103 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Error
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
-  message: Failed to extract section ref from 'Sections 2.1.2 and 6.4.2'
+  message: 'Extracted section ref from ''Sections 2.1.2 and 6.4.2'' -> {''sectionNumber'':
+    ''2.1.2'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Error
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
-  message: Failed to extract section ref from 'Sections 3.1, 4.1, 6.1, 9.5'
+  message: 'Extracted section ref from ''Sections 2.1.2 and 6.4.2'' -> {''sectionNumber'':
+    ''6.4.2'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_2'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Error
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
-  message: Failed to extract section ref from 'Sections 3.1, 4.2.1, 6.1, 6.4.2'
+  message: 'Extracted section ref from ''Sections 3.1, 4.1, 6.1, 9.5'' -> {''sectionNumber'':
+    ''3.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_3'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 3.1, 4.1, 6.1, 9.5'' -> {''sectionNumber'':
+    ''4.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_4'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 3.1, 4.1, 6.1, 9.5'' -> {''sectionNumber'':
+    ''6.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_5'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 3.1, 4.1, 6.1, 9.5'' -> {''sectionNumber'':
+    ''9.5'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_6'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
+    ''3.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_7'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
+    ''4.2.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_8'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
+    ''6.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_9'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
+    ''6.4.2'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_10'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -866,15 +941,27 @@
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Section 5.4.3'' -> {''sectionNumber'': ''5.4.3'',
     ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
-    ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
+    ''DocumentContentReference_11'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Error
+  level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
-  message: Failed to extract section ref from 'Sections 6.1 and 6.4.1'
+  message: 'Extracted section ref from ''Sections 6.1 and 6.4.1'' -> {''sectionNumber'':
+    ''6.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_12'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _extract_section_number_and_title
+  message: 'Extracted section ref from ''Sections 6.1 and 6.4.1'' -> {''sectionNumber'':
+    ''6.4.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''id'': ''DocumentContentReference_13'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -884,7 +971,7 @@
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Section 6.4.2'' -> {''sectionNumber'': ''6.4.2'',
     ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
-    ''DocumentContentReference_2'', ''instanceType'': ''DocumentContentReference''}'
+    ''DocumentContentReference_14'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -894,7 +981,7 @@
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Section 6.4.2'' -> {''sectionNumber'': ''6.4.2'',
     ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
-    ''DocumentContentReference_3'', ''instanceType'': ''DocumentContentReference''}'
+    ''DocumentContentReference_15'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -904,7 +991,7 @@
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Section 6.9'' -> {''sectionNumber'': ''6.9'',
     ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
-    ''DocumentContentReference_4'', ''instanceType'': ''DocumentContentReference''}'
+    ''DocumentContentReference_16'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

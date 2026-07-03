@@ -86,7 +86,24 @@
                 "description": null,
                 "summary": "Additional secondary efficacy endpoint of time to recovery was added",
                 "rationale": "To facilitate comparison with other trials of treatments for COVID-19",
-                "changedSections": [],
+                "changedSections": [
+                  {
+                    "id": "DocumentContentReference_1",
+                    "extensionAttributes": [],
+                    "sectionNumber": "2.1.2",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_2",
+                    "extensionAttributes": [],
+                    "sectionNumber": "6.4.2",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  }
+                ],
                 "instanceType": "StudyChange"
               },
               {
@@ -97,7 +114,40 @@
                 "description": null,
                 "summary": "Text on the sample size and power calculation was updated to incorporate the increased enrollment target to maintain 90% power for the primary endpoint, as described in the SAP",
                 "rationale": "The potential for an increase in enrollment was included in Version 2 of the protocol, and the confirmation of increased enrollment was communicated to sites, Agencies, and ethics committees in the week of 4 May 2020.",
-                "changedSections": [],
+                "changedSections": [
+                  {
+                    "id": "DocumentContentReference_3",
+                    "extensionAttributes": [],
+                    "sectionNumber": "3.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_4",
+                    "extensionAttributes": [],
+                    "sectionNumber": "4.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_5",
+                    "extensionAttributes": [],
+                    "sectionNumber": "6.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_6",
+                    "extensionAttributes": [],
+                    "sectionNumber": "9.5",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  }
+                ],
                 "instanceType": "StudyChange"
               },
               {
@@ -108,7 +158,40 @@
                 "description": null,
                 "summary": "Geographic stratification factors were updated",
                 "rationale": "To address the inclusion of only North American and Europe because no sites outside of these regions were included in the study",
-                "changedSections": [],
+                "changedSections": [
+                  {
+                    "id": "DocumentContentReference_7",
+                    "extensionAttributes": [],
+                    "sectionNumber": "3.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_8",
+                    "extensionAttributes": [],
+                    "sectionNumber": "4.2.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_9",
+                    "extensionAttributes": [],
+                    "sectionNumber": "6.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_10",
+                    "extensionAttributes": [],
+                    "sectionNumber": "6.4.2",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  }
+                ],
                 "instanceType": "StudyChange"
               },
               {
@@ -121,7 +204,7 @@
                 "rationale": "To align with the informed consent form and recommendations for tocilizumab in other indications",
                 "changedSections": [
                   {
-                    "id": "DocumentContentReference_1",
+                    "id": "DocumentContentReference_11",
                     "extensionAttributes": [],
                     "sectionNumber": "5.4.3",
                     "sectionTitle": "",
@@ -139,7 +222,24 @@
                 "description": null,
                 "summary": "The method of analysis for the primary endpoint was updated",
                 "rationale": "To utilize a non-parametric method that was determined to be a more appropriate method, as described in the SAP",
-                "changedSections": [],
+                "changedSections": [
+                  {
+                    "id": "DocumentContentReference_12",
+                    "extensionAttributes": [],
+                    "sectionNumber": "6.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  },
+                  {
+                    "id": "DocumentContentReference_13",
+                    "extensionAttributes": [],
+                    "sectionNumber": "6.4.1",
+                    "sectionTitle": "",
+                    "appliesToId": "StudyDefinitionDocument_1",
+                    "instanceType": "DocumentContentReference"
+                  }
+                ],
                 "instanceType": "StudyChange"
               },
               {
@@ -152,7 +252,7 @@
                 "rationale": "To utilize a non-parametric method that was determined to be a more appropriate method, as described in the SAP",
                 "changedSections": [
                   {
-                    "id": "DocumentContentReference_2",
+                    "id": "DocumentContentReference_14",
                     "extensionAttributes": [],
                     "sectionNumber": "6.4.2",
                     "sectionTitle": "",
@@ -172,7 +272,7 @@
                 "rationale": "To address Type I error control, as described in the SAP",
                 "changedSections": [
                   {
-                    "id": "DocumentContentReference_3",
+                    "id": "DocumentContentReference_15",
                     "extensionAttributes": [],
                     "sectionNumber": "6.4.2",
                     "sectionTitle": "",
@@ -192,7 +292,7 @@
                 "rationale": "Updated to address the increased enrollment target to maintain 90% power for the primary endpoint and the criteria for not conducting the interim analyses",
                 "changedSections": [
                   {
-                    "id": "DocumentContentReference_4",
+                    "id": "DocumentContentReference_16",
                     "extensionAttributes": [],
                     "sectionNumber": "6.9",
                     "sectionTitle": "",
