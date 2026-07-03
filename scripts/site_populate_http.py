@@ -46,9 +46,18 @@ FILES = [
     ("/import/m11", "tests/test_files/m11/RadVax/RadVax.docx"),
     ("/import/m11", "tests/test_files/m11/LZZT/LZZT.docx"),
     ("/import/fhir?version=prism3", "tests/test_files/fhir_v3/from/IGBJ_fhir_m11.json"),
-    ("/import/fhir?version=prism3", "tests/test_files/fhir_v3/from/WA42380_fhir_m11.json"),
-    ("/import/fhir?version=prism3", "tests/test_files/fhir_v3/from/ASP8062_fhir_m11.json"),
-    ("/import/fhir?version=prism3", "tests/test_files/fhir_v3/from/DEUCRALIP_fhir_m11.json"),
+    (
+        "/import/fhir?version=prism3",
+        "tests/test_files/fhir_v3/from/WA42380_fhir_m11.json",
+    ),
+    (
+        "/import/fhir?version=prism3",
+        "tests/test_files/fhir_v3/from/ASP8062_fhir_m11.json",
+    ),
+    (
+        "/import/fhir?version=prism3",
+        "tests/test_files/fhir_v3/from/DEUCRALIP_fhir_m11.json",
+    ),
     ("/import/xl", "tests/test_files/excel/pilot.xlsx"),
 ]
 

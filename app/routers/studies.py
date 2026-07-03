@@ -104,9 +104,7 @@ def study_list(
         study_design: StudyDesign = study_version.studyDesigns[0]
         errors = Errors()
         m11 = DataView(wrapper, errors)
-        data["import_type"].append(
-            FileImport.find(version.import_id, session).type
-        )
+        data["import_type"].append(FileImport.find(version.import_id, session).type)
         data["m11_title_page"].append(m11.title_page())
         section_docs.append(wrapper.study_document_version("M11"))
         # M11 validation findings were captured during import and
@@ -204,9 +202,7 @@ def study_section(
         usdm = USDMJson(version.id, session)
         wrapper: Wrapper = usdm.wrapper()
         study_version: StudyVersion = wrapper.first_version()
-        sponsor = (
-            study_version.sponsor_identifier_text() if study_version else ""
-        )
+        sponsor = study_version.sponsor_identifier_text() if study_version else ""
         content = None
         sddv = wrapper.study_document_version("M11")
         if sddv and section:

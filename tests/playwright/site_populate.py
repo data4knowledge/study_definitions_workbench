@@ -4,7 +4,7 @@ from playwright.sync_api import Playwright, expect
 
 # site_url = "https://d4k-sdw-staging.fly.dev"
 # site_url = f"https://d4k-sdw.fly.dev"
-site_url = f"http://localhost:8000"
+site_url = "http://localhost:8000"
 
 
 @pytest.mark.playwright

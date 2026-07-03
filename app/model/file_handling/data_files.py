@@ -164,9 +164,7 @@ class DataFiles:
         # rather than destroy data. See docs/lessons_learned.md lesson 6.
         abs_dir = os.path.abspath(dir)
         stray = [
-            k
-            for k in keep
-            if k and not os.path.abspath(k).startswith(abs_dir + os.sep)
+            k for k in keep if k and not os.path.abspath(k).startswith(abs_dir + os.sep)
         ]
         if stray:
             application_logger.error(
