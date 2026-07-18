@@ -194,6 +194,27 @@
 - extra: null
   level: Info
   location: {}
+  message: Extracting title page field 'Original Protocol' -> 'Yes'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
+  message: Extracting title page field 'Version Number' -> ''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
+    method_name: _get_version_number
+  message: Version Number not found on title page; document is an original protocol,
+    defaulting version to '1'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
   message: "Extracting title page field 'Full Title' -> 'RADVAX\u2122: A Stratified\
     \ Phase I Trial of Pembrolizumab with Hypofractionated Radiotherapy in Patients\
     \ with Advanced and Metastatic Cancers'"
@@ -239,19 +260,7 @@
 - extra: null
   level: Info
   location: {}
-  message: Extracting title page field 'Version Number' -> ''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
   message: Extracting title page field 'Sponsor Confidentiality Statement' -> ''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: Extracting title page field 'Original Protocol' -> 'Yes'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

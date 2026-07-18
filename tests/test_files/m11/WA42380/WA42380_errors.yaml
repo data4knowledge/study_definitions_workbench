@@ -166,6 +166,18 @@
 - extra: null
   level: Info
   location: {}
+  message: Extracting title page field 'Original Protocol' -> 'No'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
+  message: Extracting title page field 'Version Number' -> '3'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
   message: Extracting title page field 'Full Title' -> 'A RANDOMIZED, DOUBLE-BLIND,
     PLACEBO-CONTROLLED, MULTICENTER STUDY TO EVALUATE THE SAFETY AND EFFICACY OF TOCILIZUMAB
     IN PATIENTS WITH SEVERE COVID 19 PNEUMONIA'
@@ -210,12 +222,6 @@
 - extra: null
   level: Info
   location: {}
-  message: Extracting title page field 'Version Number' -> '3'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
   message: 'Extracting title page field ''Sponsor Confidentiality Statement'' -> ''This
     clinical study is being sponsored globally by F. Hoffmann-La Roche Ltd of Basel,
 
@@ -239,12 +245,6 @@
 
     extent necessary to obtain informed consent from persons to whom the drug may
     be administered.'''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: Extracting title page field 'Original Protocol' -> 'No'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

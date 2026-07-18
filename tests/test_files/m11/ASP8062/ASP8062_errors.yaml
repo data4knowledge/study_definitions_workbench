@@ -240,6 +240,18 @@
 - extra: null
   level: Info
   location: {}
+  message: Extracting title page field 'Original Protocol' -> 'No'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
+  message: Extracting title page field 'Version Number' -> '1.1'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
   message: Extracting title page field 'Full Title' -> 'A Phase 1 Randomized, Placebo-controlled
     Study to Assess the Safety, Tolerability and Pharmacokinetics of Multiple Doses
     of ASP8062 with a Single Dose of Morphine in Recreational Opioid Using Participants'
@@ -284,19 +296,7 @@
 - extra: null
   level: Info
   location: {}
-  message: Extracting title page field 'Version Number' -> '1.1'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
   message: Extracting title page field 'Sponsor Confidentiality Statement' -> ''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: Extracting title page field 'Original Protocol' -> 'No'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

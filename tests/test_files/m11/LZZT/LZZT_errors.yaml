@@ -379,6 +379,18 @@
 - extra: null
   level: Info
   location: {}
+  message: Extracting title page field 'Original Protocol' -> 'No'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
+  message: Extracting title page field 'Version Number' -> '(c)'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location: {}
   message: "Extracting title page field 'Full Title' -> 'Safety and Efficacy of the\
     \ Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate\
     \ Alzheimer\u2019s Disease'"
@@ -425,19 +437,7 @@
 - extra: null
   level: Info
   location: {}
-  message: Extracting title page field 'Version Number' -> '(c)'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
   message: Extracting title page field 'Sponsor Confidentiality Statement' -> ''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: Extracting title page field 'Original Protocol' -> 'No'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
