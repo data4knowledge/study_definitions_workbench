@@ -1,7 +1,7 @@
 import json
 import yaml
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from d4k_ms_ui.pagination import Pagination
 from d4k_ms_base.logger import application_logger
@@ -20,6 +20,7 @@ from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
 from app.imports.form_handler import FormHandler
 from app.utility.m11_annotate import annotate as m11_annotate
+from app.utility.backbone_transmit import backbone_enabled, run_backbone_transmit
 from usdm4_protocol.m11 import USDM4M11
 from usdm4_protocol.cpt import USDM4CPT
 from usdm4.api import Wrapper
@@ -44,6 +45,7 @@ async def get_version_summary(
             "enabled": transmit_role_enabled(request),
             "versions": fhir_versions(),
         },
+        "backbone": {"enabled": backbone_enabled()},
         "m11": getattr(usdm, "m11", False),
     }
     # print(f"DATA: {data}")
@@ -111,6 +113,42 @@ async def import_yaml_process(
                 "type": load_type,
             },
         )
+
+
+@router.get("/{id}/backbone/load")
+async def backbone_load(request: Request, id: int, session: Session = Depends(get_db)):
+    """Push this version's USDM v4 JSON to the d4k backbone.
+
+    Fires the load on a background thread (Transmission audit +
+    WebSocket outcome, mirroring FHIR transmit) and bounces straight
+    back to the summary page. Requires the Transmit role and a
+    configured BACKBONE_URL.
+    """
+    user, present_in_db = user_details(request, session)
+    if not transmit_role_enabled(request):
+        return templates.TemplateResponse(
+            request,
+            "errors/error.html",
+            {
+                "user": user,
+                "data": {
+                    "error": "User is not authorised to load studies into the backbone."
+                },
+            },
+        )
+    if not backbone_enabled():
+        return templates.TemplateResponse(
+            request,
+            "errors/error.html",
+            {
+                "user": user,
+                "data": {
+                    "error": "No backbone has been configured (BACKBONE_URL is not set)."
+                },
+            },
+        )
+    run_backbone_transmit(id, user)
+    return RedirectResponse(f"/versions/{id}/summary")
 
 
 @router.get("/{id}/history")

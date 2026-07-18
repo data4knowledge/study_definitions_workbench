@@ -34,6 +34,10 @@ Login is an emailed numeric code, not Auth0/OAuth. Flow: `GET /login` (email for
 - New self-registrations email a notification to `REGISTRATION_NOTIFY_EMAIL` (best-effort; skipped if unset; logged in dev mode). Only fires for genuinely new emails, not re-registrations.
 - Env vars: `SESSION_SECRET` (falls back to `AUTH0_SESSION_SECRET`), `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`, `REGISTRATION_NOTIFY_EMAIL`, `CODE_LENGTH` (6), `CODE_EXPIRY_MINUTES` (10), `APP_NAME`, `EMAIL_DEV_MODE`. With no `SMTP_HOST` (or `EMAIL_DEV_MODE=true`) the code is logged instead of emailed. `SINGLE_USER=True` bypasses login entirely. The old `AUTH0_*` vars are now dead except the session secret.
 
+## Backbone integration
+
+Users with the Transmit role can push a version's USDM v4 JSON (the `usdm.json` DataFiles artefact) to the d4k backbone: `GET /versions/{id}/backbone/load` → background thread POSTs multipart to `{BACKBONE_URL}/v1/studies` (`app/utility/backbone_transmit.py`, mirroring the FHIR transmit pattern: Transmission audit row + WebSocket outcome). The menu item ("USDM v4 to Backbone", in the Transmit dropdown on the version summary page) only appears when `BACKBONE_URL` is set; the route also enforces the Transmit role and the config server-side. Optional `BACKBONE_API_KEY` is sent as an `X-API-Key` header when set. Backbone responses handled: 200/201 success (`slug`/`triple_count`/`graph_uri` reported), 409 version already loaded, other statuses reported with truncated detail.
+
 ## Tests
 
 There are two distinct types of tests in this project:

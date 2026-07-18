@@ -48,6 +48,15 @@ class Configuration:
         # Empty string falls through to the USDM4 platform default, so a
         # deployment that hasn't been upgraded still works.
         self.cdisc_core_cache_path = self._se.get("CDISC_CORE_CACHE_PATH")
+        # d4k backbone integration. When set, users with the Transmit role
+        # can push a study version's USDM v4 JSON to the backbone's
+        # POST {BACKBONE_URL}/v1/studies load endpoint. Empty disables the
+        # feature (the menu item is hidden and the route refuses).
+        self.backbone_url = self._se.get("BACKBONE_URL")
+        # Optional API key for the backbone. When set it is sent as an
+        # 'X-API-Key' header on the load request; when unset no auth
+        # header is sent.
+        self.backbone_api_key = self._se.get("BACKBONE_API_KEY")
 
     def _email_dev_mode(self) -> bool:
         flag = self._se.get("EMAIL_DEV_MODE")

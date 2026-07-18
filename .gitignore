@@ -203,3 +203,5 @@ playwright_record.sh
 
 # VSCode
 .vscode
+# Test working area (created by .test_env paths)
+tests/test_area/

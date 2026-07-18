@@ -16,6 +16,9 @@
         {% endfor %}
       {% endfor %}
     {% endif %}
+    {% if data.get('backbone', {}).get('enabled') %}
+      <a class="dropdown-item" href="/versions/{{data['version']['id']}}/backbone/load">USDM v4 to Backbone</a>
+    {% endif %}
     <a class="dropdown-item" href="/transmissions/status?page=1&size=10">Transmission Status</a>
   </div>
 </li>

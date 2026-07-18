@@ -71,6 +71,85 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     assert_view_menu(response.text, "summary", templates=["M11"])
 
 
+def test_version_summary_backbone_enabled(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mock_transmit_role_enabled_true(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_study_version(mocker, "app.routers.versions")
+    mock_usdm_json_templates(mocker, "app.routers.versions")
+    mock_fhir_versions(mocker, "app.routers.versions")
+    be = mocker.patch("app.routers.versions.backbone_enabled")
+    be.side_effect = [True]
+    response = client.get("/versions/1/summary")
+    assert response.status_code == 200
+    assert (
+        '<a class="dropdown-item" href="/versions/1/backbone/load">USDM v4 to Backbone</a>'
+        in response.text
+    )
+    assert mock_called(be)
+
+
+def test_version_summary_backbone_disabled(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mock_transmit_role_enabled_true(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_study_version(mocker, "app.routers.versions")
+    mock_usdm_json_templates(mocker, "app.routers.versions")
+    mock_fhir_versions(mocker, "app.routers.versions")
+    be = mocker.patch("app.routers.versions.backbone_enabled")
+    be.side_effect = [False]
+    response = client.get("/versions/1/summary")
+    assert response.status_code == 200
+    assert "USDM v4 to Backbone" not in response.text
+    assert mock_called(be)
+
+
+def test_backbone_load(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    uc = mock_user_check_exists(mocker)
+    ift = mock_transmit_role_enabled_true(mocker, "app.routers.versions")
+    be = mocker.patch("app.routers.versions.backbone_enabled")
+    be.side_effect = [True]
+    rbt = mocker.patch("app.routers.versions.run_backbone_transmit")
+    response = client.get("/versions/1/backbone/load", follow_redirects=False)
+    assert response.status_code == 307
+    assert response.headers["location"] == "/versions/1/summary"
+    assert mock_called(uc)
+    assert mock_called(ift)
+    assert mock_called(rbt)
+
+
+def test_backbone_load_not_authorised(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mock_transmit_role_enabled_false(mocker, "app.routers.versions")
+    rbt = mocker.patch("app.routers.versions.run_backbone_transmit")
+    response = client.get("/versions/1/backbone/load")
+    assert response.status_code == 200
+    assert "not authorised" in response.text
+    assert not mock_called(rbt)
+
+
+def test_backbone_load_not_configured(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mock_transmit_role_enabled_true(mocker, "app.routers.versions")
+    be = mocker.patch("app.routers.versions.backbone_enabled")
+    be.side_effect = [False]
+    rbt = mocker.patch("app.routers.versions.run_backbone_transmit")
+    response = client.get("/versions/1/backbone/load")
+    assert response.status_code == 200
+    assert "No backbone has been configured" in response.text
+    assert not mock_called(rbt)
+
+
 def test_version_history(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
