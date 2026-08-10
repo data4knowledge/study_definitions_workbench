@@ -1,6 +1,6 @@
 import json
 from d4k_ms_base.logger import application_logger
-from usdm_db import USDMDb
+from usdm4_excel import USDM4Excel
 from usdm4_protocol.m11 import USDM4M11
 from usdm4_protocol.cpt import USDM4CPT
 
@@ -15,8 +15,7 @@ from app.model.object_path import ObjectPath
 from app.model.file_handling.data_files import DataFiles
 from app.utility.finding_projections import project_m11_result
 from app.configuration.configuration import application_configuration
-from usdm4 import USDM4
-from usdm3 import USDM3, RulesValidationResults
+from usdm4 import USDM4, RulesValidationResults
 import simple_error_log as sel
 
 
@@ -131,11 +130,20 @@ class ImportProcessorBase:
 
 class ImportExcel(ImportProcessorBase):
     async def process(self) -> bool:
-        db = USDMDb()
-        self.errors = db.from_excel(self.full_path)
-        self.usdm = db.to_json()
-        self.study_parameters = self._study_parameters()
-        return True
+        importer = USDM4Excel()
+        wrapper: Wrapper = importer.from_excel(self.full_path)
+        errors = importer.errors()
+        application_logger.info(errors.dump(sel.Errors.DEBUG))
+        if wrapper:
+            self.usdm = wrapper.to_json()
+            self.study_parameters = self._study_parameters()
+            self.errors = errors.to_dict(sel.Errors.INFO)
+            self.success = True
+        else:
+            self.success = False
+            self.errors = errors.to_dict(sel.Errors.INFO)
+            self.fatal_error = "Excel import failed, check the error file"
+        return self.success
 
 
 class ImportM11(ImportProcessorBase):
@@ -230,64 +238,6 @@ class ImportFhirPRISM3(ImportProcessorBase):
             self.success = False
             self.errors = importer.errors.to_dict(sel.Errors.INFO)
             self.fatal_error = "FHIR (PRISM3) import failed, check the error file"
-        return self.success
-
-
-class ImportUSDM3(ImportProcessorBase):
-    """Import a USDM v3 JSON file.
-
-    Runs the v3 rules library for diagnostics, converts to v4, runs the
-    v4 rules library on the converted file, then extracts study
-    parameters (falling back to a minimal placeholder dict if the file
-    is non-conforming enough that the parameter accessors raise).
-    Validation findings are persisted to the errors file (via
-    :class:`ImportManager`) but the import always lands — findings are
-    advisory and the user reviews them via the study view.
-
-    The only path that still surfaces a fatal error is a v3 → v4
-    conversion crash: without a v4 file we have nothing to save.
-    """
-
-    async def process(self) -> bool:
-        data_files = DataFiles(self.uuid)
-        full_path, filename, exists = data_files.path("usdm")
-        usdm3 = USDM3()
-        # Run v3 validation for the record. Findings are kept in scope
-        # so the v3-side errors surface if conversion crashes before we
-        # have a v4 file to validate against.
-        v3_results: RulesValidationResults = usdm3.validate(full_path)
-        try:
-            usdm4 = _usdm4()
-            wrapper = usdm4.convert(full_path)
-            self.usdm = wrapper.to_json()
-            data_files.save("usdm", self.usdm)  # Save USDM in new version
-            full_path, filename, exists = data_files.path("usdm")
-            v4_results: RulesValidationResults = usdm4.validate(full_path)
-            # The v4 errors are the more actionable diagnostic — the
-            # converted file is what's stored, so its rule output is
-            # what users will be remediating against.
-            self.errors = v4_results.to_dict()
-            # Parameter extraction is best-effort. Files with rule
-            # violations may also have structural issues that make the
-            # high-level accessors (``first_version``, ``phases``, ...)
-            # raise; the fallback gives us a placeholder so the study
-            # still lands and can be reviewed.
-            self.study_parameters = (
-                self._study_parameters() or self._fallback_parameters()
-            )
-        except Exception as e:
-            # v3 → v4 conversion crashed. Without a v4 file we have
-            # nothing to anchor a study record to, so the import does
-            # have to stop here. Persist the v3 findings as the
-            # diagnostic the user can act on.
-            application_logger.exception("USDM v3 → v4 conversion failed", e)
-            self.errors = v3_results.to_dict()
-            self.success = False
-            self.fatal_error = (
-                "USDM v3 → v4 conversion failed; cannot import this file. "
-                "Check the file using the validate functionality."
-            )
-        application_logger.info(self.errors)
         return self.success
 
 

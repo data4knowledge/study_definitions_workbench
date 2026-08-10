@@ -13,6 +13,10 @@ class FormHandler:
         self.image_files = image_files
         self.ext = ext if ext.startswith(".") else "." + ext
         self.source = source
+        # Additional files sharing the main extension (beyond the first).
+        # Used by the Excel import flow where a multi-design study is
+        # uploaded as a main workbook plus one workbook per study design.
+        self.extra_files: list[dict] = []
         self._files_method = {
             "browser": self._get_files_browser,
             "pfda": self._get_files_pfda,
@@ -99,7 +103,10 @@ class FormHandler:
     ):
         if file_extension == self.ext:
             messages.append(f"File '{filename}' accepted")
-            main_file = {"filename": filename, "contents": contents}
+            if main_file is None:
+                main_file = {"filename": filename, "contents": contents}
+            else:
+                self.extra_files.append({"filename": filename, "contents": contents})
             application_logger.info(f"Processing upload file '{file_root}'")
         elif self.image_files and file_extension in [".png", "jpg", "jpeg"]:
             messages.append(f"Image file '{filename}' accepted")

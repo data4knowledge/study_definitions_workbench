@@ -4,7 +4,7 @@ from tests.mocks.fastapi_mocks import protect_endpoint, mock_client, mock_async_
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import mock_user_check_exists
 from tests.mocks.factory_mocks import factory_file_import
-from usdm_info import __model_version__ as usdm_version
+from usdm4.__info__ import __model_version__ as usdm_version
 
 
 @pytest.fixture
@@ -43,27 +43,9 @@ def test_import_xl(mocker, monkeypatch):
     assert response.status_code == 200
     assert '<h4 class="card-title">Import USDM Excel Definition</h4>' in response.text
     assert (
-        "<p>Select a single Excel file and zero, one or more images files. </p>"
+        "<p>Select a single Excel workbook (or, for a multi-design study, the main workbook plus one workbook per study design) and zero, one or more image files. </p>"
         in response.text
     )
-    assert mock_called(uc)
-
-
-def test_import_usdm3(mocker, monkeypatch):
-    protect_endpoint()
-    client = mock_client(monkeypatch)
-    uc = mock_user_check_exists(mocker)
-    application_configuration.file_picker = {
-        "browser": False,
-        "os": True,
-        "pfda": False,
-        "source": "os",
-    }
-    response = client.get("/import/usdm3")
-    print(f"RESPONSE: {response.text}")
-    assert response.status_code == 200
-    assert '<h4 class="card-title">Import USDM JSON</h4>' in response.text
-    assert "Import for USDM version 3.0.0" in response.text
     assert mock_called(uc)
 
 
@@ -421,19 +403,6 @@ async def test_import_fhir_execute(mocker, monkeypatch):
     pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
     pm.side_effect = ["<h1>Fake FHIR Response</h1>"]
     response = await async_client.post("/import/fhir?version=prism3")
-    assert response.status_code == 200
-    assert mock_called(uc)
-    assert mock_called(pm)
-
-
-@pytest.mark.anyio
-async def test_import_usdm3_execute(mocker, monkeypatch):
-    protect_endpoint()
-    async_client = mock_async_client(monkeypatch)
-    uc = mock_user_check_exists(mocker)
-    pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
-    pm.side_effect = ["<h1>Fake USDM3 Response</h1>"]
-    response = await async_client.post("/import/usdm3")
     assert response.status_code == 200
     assert mock_called(uc)
     assert mock_called(pm)

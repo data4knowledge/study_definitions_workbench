@@ -312,6 +312,22 @@
 - extra: null
   level: Info
   location:
+    class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions
+    method_name: process
+  message: No Trial Intervention table found; using AI narrative extraction
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.common.extract.objectives_extractor.ObjectivesExtractor
+    method_name: guard
+  message: No objectives extracted
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _find_amendment_section
   message: Found amendment section at index 1
@@ -340,6 +356,24 @@
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: process
   message: Amendment information None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'public' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'scientific' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'acronym' is not valid, ignored.
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -414,6 +448,31 @@
     class_name: usdm4.encoder.encoder.Encoder
     method_name: sex
   message: Sex 'MALE' decoded as 'C20197', 'Male'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.population_assembler.PopulationAssembler
+    method_name: _build_planned_age
+  message: Planned age range partially supplied (min=18.0, max=None); filling missing
+    bound with supplied value.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: age_unit
+  message: Age unit 'YEARS' decoded as 'C29848', 'Year'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: age_unit
+  message: Age unit 'YEARS' decoded as 'C29848', 'Year'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

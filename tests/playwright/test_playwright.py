@@ -600,33 +600,6 @@ def test_excel_v4_export(playwright: Playwright) -> None:
 
 
 @pytest.mark.playwright
-def test_excel_v3_export(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    path = filepath()
-    page.goto(url)
-
-    login(page)
-    delete_db(page)
-
-    load_m11(page, path, "tests/test_files/m11/WA42380/WA42380.docx")
-
-    page.get_by_role("link").first.click()
-    page.locator("#card_1_div").get_by_role("link", name=" View Details").click()
-    expect(page.locator("#navBarMain")).to_contain_text("Export")
-    page.get_by_role("button", name=" Export").click()
-    expect(page.locator("#navBarMain")).to_contain_text("USDM v3 format Excel (.xlsx)")
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name="USDM v3 format Excel (.xlsx)").click()
-    download = download_info.value
-    download.save_as(f"tests/test_files/downloads/splash/{download.suggested_filename}")
-
-    context.close()
-    browser.close()
-
-
-@pytest.mark.playwright
 def test_load_export_pj(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
@@ -691,8 +664,8 @@ def test_import_usdm_menus(playwright: Playwright) -> None:
     delete_db(page)
 
     page.get_by_role("button", name=" Import").click()
-    expect(page.get_by_role("link", name="USDM v3 (.json)")).to_be_visible()
     expect(page.get_by_role("link", name="USDM v4 (.json)")).to_be_visible()
+    expect(page.get_by_role("link", name="USDM v3 (.json)")).not_to_be_visible()
     page.get_by_role("button", name=" Import").click()
 
     context.close()
@@ -711,7 +684,7 @@ def test_import_usdm(playwright: Playwright) -> None:
     delete_db(page)
 
     load_usdm(
-        page, path, "tests/test_files/usdm3/no_errors.json", "3", "Success: Import of"
+        page, path, "tests/test_files/usdm4/no_errors.json", "4", "Success: Import of"
     )
 
     page.get_by_role("link").first.click()
@@ -722,17 +695,13 @@ def test_import_usdm(playwright: Playwright) -> None:
     _ = download_info.value
     page.get_by_role("link", name=" Back").click()
 
-    load_usdm(
-        page, path, "tests/test_files/usdm4/no_errors.json", "4", "Success: Import of"
-    )
-
     context.close()
     browser.close()
 
 
 @pytest.mark.playwright
 def test_import_usdm_with_validation_findings(playwright: Playwright) -> None:
-    """USDM v3 / v4 files with rule violations import successfully and
+    """USDM v4 files with rule violations import successfully and
     their findings remain downloadable via the Errors File link.
 
     USDM rules validation is advisory at import time (see
@@ -749,25 +718,8 @@ def test_import_usdm_with_validation_findings(playwright: Playwright) -> None:
     login(page)
     delete_db(page)
 
-    # USDM v3 file with rule failures — used to be rejected, now lands.
-    load_usdm(
-        page,
-        path,
-        "tests/test_files/usdm3/errors.json",
-        "3",
-        "Success: Import of",
-    )
-
-    page.get_by_role("link").first.click()
-    page.get_by_role("button", name=" Import").click()
-    page.get_by_role("link", name="Import Status").click()
-    with page.expect_download() as download_info:
-        page.get_by_role("link", name=" Errors File").click()
-    _ = download_info.value
-    page.get_by_role("link", name=" Back").click()
-
-    # Same contract for USDM v4 — rule failures, but the import still
-    # succeeds and the errors file is still downloadable.
+    # USDM v4 — rule failures, but the import still succeeds and the
+    # errors file is still downloadable.
     load_usdm(
         page,
         path,
@@ -779,10 +731,8 @@ def test_import_usdm_with_validation_findings(playwright: Playwright) -> None:
     page.get_by_role("link").first.click()
     page.get_by_role("button", name=" Import").click()
     page.get_by_role("link", name="Import Status").click()
-    # Two imports in this run (v3 then v4), so the v4 row is the
-    # second Errors File link in the status table.
     with page.expect_download() as download_info:
-        page.get_by_role("link", name=" Errors File").nth(1).click()
+        page.get_by_role("link", name=" Errors File").click()
     _ = download_info.value
 
     context.close()
@@ -802,7 +752,7 @@ def test_import_status_and_diff(playwright: Playwright) -> None:
 
     load_m11(page, path, "tests/test_files/m11/LZZT/LZZT.docx")
     load_usdm(
-        page, path, "tests/test_files/usdm3/no_errors.json", "3", "Success: Import of"
+        page, path, "tests/test_files/usdm4/no_errors.json", "4", "Success: Import of"
     )
     load_excel(page, path, "tests/test_files/excel/pilot.xlsx")
     load_excel(page, path, "tests/test_files/excel/pilot_tweak.xlsx")

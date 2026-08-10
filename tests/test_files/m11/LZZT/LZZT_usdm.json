@@ -49,7 +49,7 @@
               "id": "StudyAmendmentReason_1",
               "extensionAttributes": [],
               "code": {
-                "id": "Code_46",
+                "id": "Code_45",
                 "extensionAttributes": [],
                 "code": "C17649",
                 "codeSystem": "http://www.cdisc.org",
@@ -65,7 +65,7 @@
                 "id": "StudyAmendmentReason_2",
                 "extensionAttributes": [],
                 "code": {
-                  "id": "Code_47",
+                  "id": "Code_46",
                   "extensionAttributes": [],
                   "code": "C17649",
                   "codeSystem": "http://www.cdisc.org",
@@ -104,7 +104,7 @@
                 "id": "StudyAmendmentImpact_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_49",
+                  "id": "Code_48",
                   "extensionAttributes": [],
                   "code": "C215665",
                   "codeSystem": "http://www.cdisc.org",
@@ -121,7 +121,7 @@
                 "id": "StudyAmendmentImpact_2",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_50",
+                  "id": "Code_49",
                   "extensionAttributes": [],
                   "code": "C215666",
                   "codeSystem": "http://www.cdisc.org",
@@ -138,7 +138,7 @@
                 "id": "StudyAmendmentImpact_3",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_51",
+                  "id": "Code_50",
                   "extensionAttributes": [],
                   "code": "C215667",
                   "codeSystem": "http://www.cdisc.org",
@@ -155,7 +155,7 @@
                 "id": "StudyAmendmentImpact_4",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_52",
+                  "id": "Code_51",
                   "extensionAttributes": [],
                   "code": "C215668",
                   "codeSystem": "http://www.cdisc.org",
@@ -174,7 +174,7 @@
                 "id": "GeographicScope_1",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_48",
+                  "id": "Code_47",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -194,14 +194,14 @@
                 "label": null,
                 "description": null,
                 "quantity": {
-                  "id": "Quantity_1",
+                  "id": "Quantity_3",
                   "extensionAttributes": [],
                   "value": 66.0,
                   "unit": {
-                    "id": "AliasCode_1",
+                    "id": "AliasCode_3",
                     "extensionAttributes": [],
                     "standardCode": {
-                      "id": "Code_54",
+                      "id": "Code_53",
                       "extensionAttributes": [],
                       "code": "C25613",
                       "codeSystem": "http://www.cdisc.org",
@@ -218,7 +218,7 @@
                   "id": "GeographicScope_2",
                   "extensionAttributes": [],
                   "type": {
-                    "id": "Code_53",
+                    "id": "Code_52",
                     "extensionAttributes": [],
                     "code": "C68846",
                     "codeSystem": "http://www.cdisc.org",
@@ -249,7 +249,7 @@
                 "id": "ExtensionAttribute_1",
                 "url": "www.d4k.dk/usdm/extensions/009",
                 "valueCode": {
-                  "id": "Code_8",
+                  "id": "Code_5",
                   "code": "C218690",
                   "codeSystem": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
                   "codeSystemVersion": "25.12e",
@@ -275,7 +275,7 @@
             "label": "Study Design 1",
             "description": "A study design",
             "studyType": {
-              "id": "Code_56",
+              "id": "Code_79",
               "extensionAttributes": [],
               "code": "C98388",
               "codeSystem": "http://www.cdisc.org",
@@ -284,10 +284,10 @@
               "instanceType": "Code"
             },
             "studyPhase": {
-              "id": "AliasCode_2",
+              "id": "AliasCode_14",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_57",
+                "id": "Code_80",
                 "extensionAttributes": [],
                 "code": "C15602",
                 "codeSystem": "http://www.cdisc.org",
@@ -302,14 +302,148 @@
             "characteristics": [],
             "encounters": [],
             "activities": [],
-            "arms": [],
+            "arms": [
+              {
+                "id": "StudyArm_1",
+                "extensionAttributes": [],
+                "name": "ARM-A",
+                "label": "Arm A",
+                "description": "Arm A",
+                "type": {
+                  "id": "Code_73",
+                  "extensionAttributes": [],
+                  "code": "C174266",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Investigational Arm",
+                  "instanceType": "Code"
+                },
+                "dataOriginDescription": "",
+                "dataOriginType": {
+                  "id": "Code_72",
+                  "extensionAttributes": [],
+                  "code": "C188866",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Data Generated Within Study",
+                  "instanceType": "Code"
+                },
+                "populationIds": [],
+                "notes": [],
+                "instanceType": "StudyArm"
+              },
+              {
+                "id": "StudyArm_2",
+                "extensionAttributes": [],
+                "name": "ARM-B",
+                "label": "Arm B",
+                "description": "Arm B",
+                "type": {
+                  "id": "Code_75",
+                  "extensionAttributes": [],
+                  "code": "C174266",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Investigational Arm",
+                  "instanceType": "Code"
+                },
+                "dataOriginDescription": "",
+                "dataOriginType": {
+                  "id": "Code_74",
+                  "extensionAttributes": [],
+                  "code": "C188866",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Data Generated Within Study",
+                  "instanceType": "Code"
+                },
+                "populationIds": [],
+                "notes": [],
+                "instanceType": "StudyArm"
+              },
+              {
+                "id": "StudyArm_3",
+                "extensionAttributes": [],
+                "name": "ARM-C",
+                "label": "Arm C",
+                "description": "Arm C",
+                "type": {
+                  "id": "Code_77",
+                  "extensionAttributes": [],
+                  "code": "C174226",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Control Arm",
+                  "instanceType": "Code"
+                },
+                "dataOriginDescription": "",
+                "dataOriginType": {
+                  "id": "Code_76",
+                  "extensionAttributes": [],
+                  "code": "C188866",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Data Generated Within Study",
+                  "instanceType": "Code"
+                },
+                "populationIds": [],
+                "notes": [],
+                "instanceType": "StudyArm"
+              }
+            ],
             "studyCells": [],
             "rationale": "Not set",
             "epochs": [],
-            "elements": [],
+            "elements": [
+              {
+                "id": "StudyElement_1",
+                "extensionAttributes": [],
+                "name": "EL-ARM-A",
+                "label": "Arm A interventions",
+                "description": "Interventions administered in arm 'Arm A'",
+                "transitionStartRule": null,
+                "transitionEndRule": null,
+                "studyInterventionIds": [
+                  "StudyIntervention_1"
+                ],
+                "notes": [],
+                "instanceType": "StudyElement"
+              },
+              {
+                "id": "StudyElement_2",
+                "extensionAttributes": [],
+                "name": "EL-ARM-B",
+                "label": "Arm B interventions",
+                "description": "Interventions administered in arm 'Arm B'",
+                "transitionStartRule": null,
+                "transitionEndRule": null,
+                "studyInterventionIds": [
+                  "StudyIntervention_1"
+                ],
+                "notes": [],
+                "instanceType": "StudyElement"
+              },
+              {
+                "id": "StudyElement_3",
+                "extensionAttributes": [],
+                "name": "EL-ARM-C",
+                "label": "Arm C interventions",
+                "description": "Interventions administered in arm 'Arm C'",
+                "transitionStartRule": null,
+                "transitionEndRule": null,
+                "studyInterventionIds": [
+                  "StudyIntervention_2"
+                ],
+                "notes": [],
+                "instanceType": "StudyElement"
+              }
+            ],
             "estimands": [],
             "indications": [],
-            "studyInterventionIds": [],
+            "studyInterventionIds": [
+              "StudyIntervention_1",
+              "StudyIntervention_2"
+            ],
             "objectives": [],
             "population": {
               "id": "StudyDesignPopulation_1",
@@ -322,7 +456,7 @@
               "plannedCompletionNumber": null,
               "plannedSex": [
                 {
-                  "id": "Code_44",
+                  "id": "Code_41",
                   "extensionAttributes": [],
                   "code": "C16576",
                   "codeSystem": "http://www.cdisc.org",
@@ -331,7 +465,7 @@
                   "instanceType": "Code"
                 },
                 {
-                  "id": "Code_45",
+                  "id": "Code_42",
                   "extensionAttributes": [],
                   "code": "C20197",
                   "codeSystem": "http://www.cdisc.org",
@@ -374,7 +508,54 @@
                 "EligibilityCriterion_31",
                 "EligibilityCriterion_32"
               ],
-              "plannedAge": null,
+              "plannedAge": {
+                "id": "Range_1",
+                "extensionAttributes": [],
+                "minValue": {
+                  "id": "Quantity_1",
+                  "extensionAttributes": [],
+                  "value": 50.0,
+                  "unit": {
+                    "id": "AliasCode_1",
+                    "extensionAttributes": [],
+                    "standardCode": {
+                      "id": "Code_43",
+                      "extensionAttributes": [],
+                      "code": "C29848",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2026-03-27",
+                      "decode": "Year",
+                      "instanceType": "Code"
+                    },
+                    "standardCodeAliases": [],
+                    "instanceType": "AliasCode"
+                  },
+                  "instanceType": "Quantity"
+                },
+                "maxValue": {
+                  "id": "Quantity_2",
+                  "extensionAttributes": [],
+                  "value": 50.0,
+                  "unit": {
+                    "id": "AliasCode_2",
+                    "extensionAttributes": [],
+                    "standardCode": {
+                      "id": "Code_44",
+                      "extensionAttributes": [],
+                      "code": "C29848",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2026-03-27",
+                      "decode": "Year",
+                      "instanceType": "Code"
+                    },
+                    "standardCodeAliases": [],
+                    "instanceType": "AliasCode"
+                  },
+                  "instanceType": "Quantity"
+                },
+                "isApproximate": false,
+                "instanceType": "Range"
+              },
               "notes": [],
               "instanceType": "StudyDesignPopulation",
               "cohorts": []
@@ -390,7 +571,7 @@
                 "label": "Inclusion criterion 1 ",
                 "description": "",
                 "category": {
-                  "id": "Code_12",
+                  "id": "Code_9",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -400,7 +581,7 @@
                 },
                 "identifier": "1",
                 "criterionItemId": "EligibilityCriterionItem_1",
-                "nextId": null,
+                "nextId": "EligibilityCriterion_2",
                 "previousId": null,
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
@@ -412,7 +593,7 @@
                 "label": "Inclusion criterion 2 ",
                 "description": "",
                 "category": {
-                  "id": "Code_13",
+                  "id": "Code_10",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -422,8 +603,8 @@
                 },
                 "identifier": "2",
                 "criterionItemId": "EligibilityCriterionItem_2",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_3",
+                "previousId": "EligibilityCriterion_1",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -434,7 +615,7 @@
                 "label": "Inclusion criterion 3 ",
                 "description": "",
                 "category": {
-                  "id": "Code_14",
+                  "id": "Code_11",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -444,8 +625,8 @@
                 },
                 "identifier": "3",
                 "criterionItemId": "EligibilityCriterionItem_3",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_4",
+                "previousId": "EligibilityCriterion_2",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -456,7 +637,7 @@
                 "label": "Inclusion criterion 4 ",
                 "description": "",
                 "category": {
-                  "id": "Code_15",
+                  "id": "Code_12",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -466,8 +647,8 @@
                 },
                 "identifier": "4",
                 "criterionItemId": "EligibilityCriterionItem_4",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_5",
+                "previousId": "EligibilityCriterion_3",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -478,7 +659,7 @@
                 "label": "Inclusion criterion 5 ",
                 "description": "",
                 "category": {
-                  "id": "Code_16",
+                  "id": "Code_13",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -488,8 +669,8 @@
                 },
                 "identifier": "5",
                 "criterionItemId": "EligibilityCriterionItem_5",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_6",
+                "previousId": "EligibilityCriterion_4",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -500,7 +681,7 @@
                 "label": "Inclusion criterion 6 ",
                 "description": "",
                 "category": {
-                  "id": "Code_17",
+                  "id": "Code_14",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -510,8 +691,8 @@
                 },
                 "identifier": "6",
                 "criterionItemId": "EligibilityCriterionItem_6",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_7",
+                "previousId": "EligibilityCriterion_5",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -522,7 +703,7 @@
                 "label": "Inclusion criterion 7 ",
                 "description": "",
                 "category": {
-                  "id": "Code_18",
+                  "id": "Code_15",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -532,8 +713,8 @@
                 },
                 "identifier": "7",
                 "criterionItemId": "EligibilityCriterionItem_7",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_8",
+                "previousId": "EligibilityCriterion_6",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -544,7 +725,7 @@
                 "label": "Inclusion criterion 8 ",
                 "description": "",
                 "category": {
-                  "id": "Code_19",
+                  "id": "Code_16",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -554,8 +735,8 @@
                 },
                 "identifier": "8",
                 "criterionItemId": "EligibilityCriterionItem_8",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_9",
+                "previousId": "EligibilityCriterion_7",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -566,7 +747,7 @@
                 "label": "Inclusion criterion 9 ",
                 "description": "",
                 "category": {
-                  "id": "Code_20",
+                  "id": "Code_17",
                   "extensionAttributes": [],
                   "code": "C25532",
                   "codeSystem": "http://www.cdisc.org",
@@ -577,7 +758,7 @@
                 "identifier": "9",
                 "criterionItemId": "EligibilityCriterionItem_9",
                 "nextId": null,
-                "previousId": null,
+                "previousId": "EligibilityCriterion_8",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -588,7 +769,7 @@
                 "label": "Exclusion criterion 1 ",
                 "description": "",
                 "category": {
-                  "id": "Code_21",
+                  "id": "Code_18",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -598,7 +779,7 @@
                 },
                 "identifier": "1",
                 "criterionItemId": "EligibilityCriterionItem_10",
-                "nextId": null,
+                "nextId": "EligibilityCriterion_11",
                 "previousId": null,
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
@@ -610,7 +791,7 @@
                 "label": "Exclusion criterion 2 ",
                 "description": "",
                 "category": {
-                  "id": "Code_22",
+                  "id": "Code_19",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -620,8 +801,8 @@
                 },
                 "identifier": "2",
                 "criterionItemId": "EligibilityCriterionItem_11",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_12",
+                "previousId": "EligibilityCriterion_10",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -632,7 +813,7 @@
                 "label": "Exclusion criterion 3 ",
                 "description": "",
                 "category": {
-                  "id": "Code_23",
+                  "id": "Code_20",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -642,8 +823,8 @@
                 },
                 "identifier": "3",
                 "criterionItemId": "EligibilityCriterionItem_12",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_13",
+                "previousId": "EligibilityCriterion_11",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -654,7 +835,7 @@
                 "label": "Exclusion criterion 4 ",
                 "description": "",
                 "category": {
-                  "id": "Code_24",
+                  "id": "Code_21",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -664,8 +845,8 @@
                 },
                 "identifier": "4",
                 "criterionItemId": "EligibilityCriterionItem_13",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_14",
+                "previousId": "EligibilityCriterion_12",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -676,7 +857,7 @@
                 "label": "Exclusion criterion 5 ",
                 "description": "",
                 "category": {
-                  "id": "Code_25",
+                  "id": "Code_22",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -686,8 +867,8 @@
                 },
                 "identifier": "5",
                 "criterionItemId": "EligibilityCriterionItem_14",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_15",
+                "previousId": "EligibilityCriterion_13",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -698,7 +879,7 @@
                 "label": "Exclusion criterion 6 ",
                 "description": "",
                 "category": {
-                  "id": "Code_26",
+                  "id": "Code_23",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -708,8 +889,8 @@
                 },
                 "identifier": "6",
                 "criterionItemId": "EligibilityCriterionItem_15",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_16",
+                "previousId": "EligibilityCriterion_14",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -720,7 +901,7 @@
                 "label": "Exclusion criterion 7 ",
                 "description": "",
                 "category": {
-                  "id": "Code_27",
+                  "id": "Code_24",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -730,8 +911,8 @@
                 },
                 "identifier": "7",
                 "criterionItemId": "EligibilityCriterionItem_16",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_17",
+                "previousId": "EligibilityCriterion_15",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -742,7 +923,7 @@
                 "label": "Exclusion criterion 8 ",
                 "description": "",
                 "category": {
-                  "id": "Code_28",
+                  "id": "Code_25",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -752,8 +933,8 @@
                 },
                 "identifier": "8",
                 "criterionItemId": "EligibilityCriterionItem_17",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_18",
+                "previousId": "EligibilityCriterion_16",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -764,7 +945,7 @@
                 "label": "Exclusion criterion 9 ",
                 "description": "",
                 "category": {
-                  "id": "Code_29",
+                  "id": "Code_26",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -774,8 +955,8 @@
                 },
                 "identifier": "9",
                 "criterionItemId": "EligibilityCriterionItem_18",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_19",
+                "previousId": "EligibilityCriterion_17",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -786,7 +967,7 @@
                 "label": "Exclusion criterion 10 ",
                 "description": "",
                 "category": {
-                  "id": "Code_30",
+                  "id": "Code_27",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -796,8 +977,8 @@
                 },
                 "identifier": "10",
                 "criterionItemId": "EligibilityCriterionItem_19",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_20",
+                "previousId": "EligibilityCriterion_18",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -808,7 +989,7 @@
                 "label": "Exclusion criterion 11 ",
                 "description": "",
                 "category": {
-                  "id": "Code_31",
+                  "id": "Code_28",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -818,8 +999,8 @@
                 },
                 "identifier": "11",
                 "criterionItemId": "EligibilityCriterionItem_20",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_21",
+                "previousId": "EligibilityCriterion_19",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -830,7 +1011,7 @@
                 "label": "Exclusion criterion 12 ",
                 "description": "",
                 "category": {
-                  "id": "Code_32",
+                  "id": "Code_29",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -840,8 +1021,8 @@
                 },
                 "identifier": "12",
                 "criterionItemId": "EligibilityCriterionItem_21",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_22",
+                "previousId": "EligibilityCriterion_20",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -852,7 +1033,7 @@
                 "label": "Exclusion criterion 13 ",
                 "description": "",
                 "category": {
-                  "id": "Code_33",
+                  "id": "Code_30",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -862,8 +1043,8 @@
                 },
                 "identifier": "13",
                 "criterionItemId": "EligibilityCriterionItem_22",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_23",
+                "previousId": "EligibilityCriterion_21",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -874,7 +1055,7 @@
                 "label": "Exclusion criterion 14 ",
                 "description": "",
                 "category": {
-                  "id": "Code_34",
+                  "id": "Code_31",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -884,8 +1065,8 @@
                 },
                 "identifier": "14",
                 "criterionItemId": "EligibilityCriterionItem_23",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_24",
+                "previousId": "EligibilityCriterion_22",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -896,7 +1077,7 @@
                 "label": "Exclusion criterion 15 ",
                 "description": "",
                 "category": {
-                  "id": "Code_35",
+                  "id": "Code_32",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -906,8 +1087,8 @@
                 },
                 "identifier": "15",
                 "criterionItemId": "EligibilityCriterionItem_24",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_25",
+                "previousId": "EligibilityCriterion_23",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -918,7 +1099,7 @@
                 "label": "Exclusion criterion 16 ",
                 "description": "",
                 "category": {
-                  "id": "Code_36",
+                  "id": "Code_33",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -928,8 +1109,8 @@
                 },
                 "identifier": "16",
                 "criterionItemId": "EligibilityCriterionItem_25",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_26",
+                "previousId": "EligibilityCriterion_24",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -940,7 +1121,7 @@
                 "label": "Exclusion criterion 17 ",
                 "description": "",
                 "category": {
-                  "id": "Code_37",
+                  "id": "Code_34",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -950,8 +1131,8 @@
                 },
                 "identifier": "17",
                 "criterionItemId": "EligibilityCriterionItem_26",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_27",
+                "previousId": "EligibilityCriterion_25",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -962,7 +1143,7 @@
                 "label": "Exclusion criterion 18 ",
                 "description": "",
                 "category": {
-                  "id": "Code_38",
+                  "id": "Code_35",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -972,8 +1153,8 @@
                 },
                 "identifier": "18",
                 "criterionItemId": "EligibilityCriterionItem_27",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_28",
+                "previousId": "EligibilityCriterion_26",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -984,7 +1165,7 @@
                 "label": "Exclusion criterion 19 ",
                 "description": "",
                 "category": {
-                  "id": "Code_39",
+                  "id": "Code_36",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -994,8 +1175,8 @@
                 },
                 "identifier": "19",
                 "criterionItemId": "EligibilityCriterionItem_28",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_29",
+                "previousId": "EligibilityCriterion_27",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -1006,7 +1187,7 @@
                 "label": "Exclusion criterion 20 ",
                 "description": "",
                 "category": {
-                  "id": "Code_40",
+                  "id": "Code_37",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1016,8 +1197,8 @@
                 },
                 "identifier": "20",
                 "criterionItemId": "EligibilityCriterionItem_29",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_30",
+                "previousId": "EligibilityCriterion_28",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -1028,7 +1209,7 @@
                 "label": "Exclusion criterion 21 ",
                 "description": "",
                 "category": {
-                  "id": "Code_41",
+                  "id": "Code_38",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1038,8 +1219,8 @@
                 },
                 "identifier": "21",
                 "criterionItemId": "EligibilityCriterionItem_30",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_31",
+                "previousId": "EligibilityCriterion_29",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -1050,7 +1231,7 @@
                 "label": "Exclusion criterion 22 ",
                 "description": "",
                 "category": {
-                  "id": "Code_42",
+                  "id": "Code_39",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1060,8 +1241,8 @@
                 },
                 "identifier": "22",
                 "criterionItemId": "EligibilityCriterionItem_31",
-                "nextId": null,
-                "previousId": null,
+                "nextId": "EligibilityCriterion_32",
+                "previousId": "EligibilityCriterion_30",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               },
@@ -1072,7 +1253,7 @@
                 "label": "Exclusion criterion 23 ",
                 "description": "",
                 "category": {
-                  "id": "Code_43",
+                  "id": "Code_40",
                   "extensionAttributes": [],
                   "code": "C25370",
                   "codeSystem": "http://www.cdisc.org",
@@ -1083,7 +1264,7 @@
                 "identifier": "23",
                 "criterionItemId": "EligibilityCriterionItem_32",
                 "nextId": null,
-                "previousId": null,
+                "previousId": "EligibilityCriterion_31",
                 "notes": [],
                 "instanceType": "EligibilityCriterion"
               }
@@ -1093,7 +1274,7 @@
             "instanceType": "InterventionalStudyDesign",
             "subTypes": [],
             "model": {
-              "id": "Code_55",
+              "id": "Code_78",
               "extensionAttributes": [],
               "code": "C82639",
               "codeSystem": "http://www.cdisc.org",
@@ -1132,51 +1313,6 @@
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2026-03-27",
               "decode": "Official Study Title",
-              "instanceType": "Code"
-            },
-            "instanceType": "StudyTitle"
-          },
-          {
-            "id": "StudyTitle_3",
-            "extensionAttributes": [],
-            "text": "",
-            "type": {
-              "id": "Code_3",
-              "extensionAttributes": [],
-              "code": "C207617",
-              "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2026-03-27",
-              "decode": "Public Study Title",
-              "instanceType": "Code"
-            },
-            "instanceType": "StudyTitle"
-          },
-          {
-            "id": "StudyTitle_4",
-            "extensionAttributes": [],
-            "text": "",
-            "type": {
-              "id": "Code_4",
-              "extensionAttributes": [],
-              "code": "C207618",
-              "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2026-03-27",
-              "decode": "Scientific Study Title",
-              "instanceType": "Code"
-            },
-            "instanceType": "StudyTitle"
-          },
-          {
-            "id": "StudyTitle_5",
-            "extensionAttributes": [],
-            "text": "",
-            "type": {
-              "id": "Code_5",
-              "extensionAttributes": [],
-              "code": "C207646",
-              "codeSystem": "http://www.cdisc.org",
-              "codeSystemVersion": "2026-03-27",
-              "decode": "Study Acronym",
               "instanceType": "Code"
             },
             "instanceType": "StudyTitle"
@@ -2478,7 +2614,7 @@
             "label": null,
             "description": null,
             "code": {
-              "id": "Code_6",
+              "id": "Code_3",
               "extensionAttributes": [],
               "code": "C70793",
               "codeSystem": "http://www.cdisc.org",
@@ -2505,7 +2641,7 @@
             "name": "ELI-LILLY-AND-COMPANY",
             "label": "Eli Lilly and Company",
             "type": {
-              "id": "Code_7",
+              "id": "Code_4",
               "extensionAttributes": [],
               "code": "C54149",
               "codeSystem": "http://www.cdisc.org",
@@ -2535,8 +2671,373 @@
             "instanceType": "Organization"
           }
         ],
-        "studyInterventions": [],
-        "administrableProducts": [],
+        "studyInterventions": [
+          {
+            "id": "StudyIntervention_1",
+            "extensionAttributes": [],
+            "name": "XANOMELINE",
+            "label": "Xanomeline",
+            "description": "",
+            "role": {
+              "id": "Code_66",
+              "extensionAttributes": [],
+              "code": "C41161",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Protocol Agent",
+              "instanceType": "Code"
+            },
+            "type": {
+              "id": "Code_67",
+              "extensionAttributes": [],
+              "code": "C1909",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Pharmacologic Substance",
+              "instanceType": "Code"
+            },
+            "minimumResponseDuration": null,
+            "codes": [],
+            "administrations": [
+              {
+                "id": "Administration_1",
+                "extensionAttributes": [],
+                "name": "ADM-XANOMELINE-1",
+                "label": "Xanomeline",
+                "description": "Dose: 54mg/81mg",
+                "duration": {
+                  "id": "Duration_1",
+                  "extensionAttributes": [],
+                  "text": null,
+                  "quantity": null,
+                  "durationWillVary": false,
+                  "reasonDurationWillVary": null,
+                  "instanceType": "Duration"
+                },
+                "dose": null,
+                "route": {
+                  "id": "AliasCode_7",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_61",
+                    "extensionAttributes": [],
+                    "code": "C38288",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2026-03-27",
+                    "decode": "Oral Route of Administration",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "frequency": {
+                  "id": "AliasCode_8",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_62",
+                    "extensionAttributes": [],
+                    "code": "C25473",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2026-03-27",
+                    "decode": "Daily",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "administrableProductId": "AdministrableProduct_1",
+                "medicalDeviceId": null,
+                "notes": [],
+                "instanceType": "Administration"
+              },
+              {
+                "id": "Administration_2",
+                "extensionAttributes": [],
+                "name": "ADM-XANOMELINE-2",
+                "label": "Xanomeline",
+                "description": "",
+                "duration": {
+                  "id": "Duration_2",
+                  "extensionAttributes": [],
+                  "text": null,
+                  "quantity": null,
+                  "durationWillVary": false,
+                  "reasonDurationWillVary": null,
+                  "instanceType": "Duration"
+                },
+                "dose": {
+                  "id": "Quantity_5",
+                  "extensionAttributes": [],
+                  "value": 54.0,
+                  "unit": {
+                    "id": "AliasCode_9",
+                    "extensionAttributes": [],
+                    "standardCode": {
+                      "id": "Code_63",
+                      "extensionAttributes": [],
+                      "code": "C28253",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2026-03-27",
+                      "decode": "Milligram",
+                      "instanceType": "Code"
+                    },
+                    "standardCodeAliases": [],
+                    "instanceType": "AliasCode"
+                  },
+                  "instanceType": "Quantity"
+                },
+                "route": {
+                  "id": "AliasCode_10",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_64",
+                    "extensionAttributes": [],
+                    "code": "C38288",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2026-03-27",
+                    "decode": "Oral Route of Administration",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "frequency": {
+                  "id": "AliasCode_11",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_65",
+                    "extensionAttributes": [],
+                    "code": "C25473",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2026-03-27",
+                    "decode": "Daily",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "administrableProductId": "AdministrableProduct_1",
+                "medicalDeviceId": null,
+                "notes": [],
+                "instanceType": "Administration"
+              }
+            ],
+            "notes": [],
+            "instanceType": "StudyIntervention"
+          },
+          {
+            "id": "StudyIntervention_2",
+            "extensionAttributes": [],
+            "name": "PLACEBO",
+            "label": "Placebo",
+            "description": "",
+            "role": {
+              "id": "Code_70",
+              "extensionAttributes": [],
+              "code": "C753",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Placebo",
+              "instanceType": "Code"
+            },
+            "type": {
+              "id": "Code_71",
+              "extensionAttributes": [],
+              "code": "C1909",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Pharmacologic Substance",
+              "instanceType": "Code"
+            },
+            "minimumResponseDuration": null,
+            "codes": [],
+            "administrations": [
+              {
+                "id": "Administration_3",
+                "extensionAttributes": [],
+                "name": "ADM-PLACEBO",
+                "label": "Placebo",
+                "description": "Dose: NA",
+                "duration": {
+                  "id": "Duration_3",
+                  "extensionAttributes": [],
+                  "text": null,
+                  "quantity": null,
+                  "durationWillVary": false,
+                  "reasonDurationWillVary": null,
+                  "instanceType": "Duration"
+                },
+                "dose": null,
+                "route": {
+                  "id": "AliasCode_12",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_68",
+                    "extensionAttributes": [],
+                    "code": "C38288",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2026-03-27",
+                    "decode": "Oral Route of Administration",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "frequency": {
+                  "id": "AliasCode_13",
+                  "extensionAttributes": [],
+                  "standardCode": {
+                    "id": "Code_69",
+                    "extensionAttributes": [],
+                    "code": "C25473",
+                    "codeSystem": "http://www.cdisc.org",
+                    "codeSystemVersion": "2026-03-27",
+                    "decode": "Daily",
+                    "instanceType": "Code"
+                  },
+                  "standardCodeAliases": [],
+                  "instanceType": "AliasCode"
+                },
+                "administrableProductId": "AdministrableProduct_2",
+                "medicalDeviceId": null,
+                "notes": [],
+                "instanceType": "Administration"
+              }
+            ],
+            "notes": [],
+            "instanceType": "StudyIntervention"
+          }
+        ],
+        "administrableProducts": [
+          {
+            "id": "AdministrableProduct_1",
+            "extensionAttributes": [],
+            "name": "XANOMELINE",
+            "label": "Xanomeline",
+            "description": "",
+            "pharmacologicClass": null,
+            "administrableDoseForm": {
+              "id": "AliasCode_5",
+              "extensionAttributes": [],
+              "standardCode": {
+                "id": "Code_56",
+                "extensionAttributes": [],
+                "code": "C42968",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Patch Dosage Form",
+                "instanceType": "Code"
+              },
+              "standardCodeAliases": [],
+              "instanceType": "AliasCode"
+            },
+            "productDesignation": {
+              "id": "Code_57",
+              "extensionAttributes": [],
+              "code": "C202579",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Investigational Medicinal Product",
+              "instanceType": "Code"
+            },
+            "sourcing": null,
+            "properties": [],
+            "identifiers": [],
+            "ingredients": [
+              {
+                "id": "Ingredient_1",
+                "extensionAttributes": [],
+                "role": {
+                  "id": "Code_55",
+                  "extensionAttributes": [],
+                  "code": "C82533",
+                  "codeSystem": "http://ncithesaurus.nci.nih.gov",
+                  "codeSystemVersion": "",
+                  "decode": "Active Ingredient",
+                  "instanceType": "Code"
+                },
+                "substance": {
+                  "id": "Substance_1",
+                  "extensionAttributes": [],
+                  "name": "XANOMELINE",
+                  "label": "Xanomeline",
+                  "description": "",
+                  "codes": [],
+                  "strengths": [],
+                  "referenceSubstance": null,
+                  "instanceType": "Substance"
+                },
+                "instanceType": "Ingredient"
+              }
+            ],
+            "notes": [],
+            "instanceType": "AdministrableProduct"
+          },
+          {
+            "id": "AdministrableProduct_2",
+            "extensionAttributes": [],
+            "name": "PLACEBO",
+            "label": "Placebo",
+            "description": "",
+            "pharmacologicClass": null,
+            "administrableDoseForm": {
+              "id": "AliasCode_6",
+              "extensionAttributes": [],
+              "standardCode": {
+                "id": "Code_59",
+                "extensionAttributes": [],
+                "code": "C42968",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Patch Dosage Form",
+                "instanceType": "Code"
+              },
+              "standardCodeAliases": [],
+              "instanceType": "AliasCode"
+            },
+            "productDesignation": {
+              "id": "Code_60",
+              "extensionAttributes": [],
+              "code": "C202579",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Investigational Medicinal Product",
+              "instanceType": "Code"
+            },
+            "sourcing": null,
+            "properties": [],
+            "identifiers": [],
+            "ingredients": [
+              {
+                "id": "Ingredient_2",
+                "extensionAttributes": [],
+                "role": {
+                  "id": "Code_58",
+                  "extensionAttributes": [],
+                  "code": "C82533",
+                  "codeSystem": "http://ncithesaurus.nci.nih.gov",
+                  "codeSystemVersion": "",
+                  "decode": "Active Ingredient",
+                  "instanceType": "Code"
+                },
+                "substance": {
+                  "id": "Substance_2",
+                  "extensionAttributes": [],
+                  "name": "PLACEBO",
+                  "label": "Placebo",
+                  "description": "",
+                  "codes": [],
+                  "strengths": [],
+                  "referenceSubstance": null,
+                  "instanceType": "Substance"
+                },
+                "instanceType": "Ingredient"
+              }
+            ],
+            "notes": [],
+            "instanceType": "AdministrableProduct"
+          }
+        ],
         "medicalDevices": [],
         "productOrganizationRoles": [],
         "biomedicalConcepts": [],
@@ -2556,7 +3057,7 @@
         "label": "Protocol Document",
         "description": "Protocol Document",
         "language": {
-          "id": "Code_10",
+          "id": "Code_7",
           "extensionAttributes": [],
           "code": "en",
           "codeSystem": "ISO 639-1",
@@ -2565,7 +3066,7 @@
           "instanceType": "Code"
         },
         "type": {
-          "id": "Code_11",
+          "id": "Code_8",
           "extensionAttributes": [],
           "code": "C70817",
           "codeSystem": "http://www.cdisc.org",
@@ -2580,7 +3081,7 @@
             "extensionAttributes": [],
             "version": "",
             "status": {
-              "id": "Code_9",
+              "id": "Code_6",
               "extensionAttributes": [],
               "code": "C25508",
               "codeSystem": "http://www.cdisc.org",

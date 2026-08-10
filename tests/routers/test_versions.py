@@ -285,7 +285,7 @@ def test_export_excel_failure(mocker, monkeypatch):
     # Verify the response
     assert response.status_code == 200
     assert (
-        "Error downloading the requested Excel (USDM v4) format file" in response.text
+        "Error downloading the requested Excel format file" in response.text
     )
 
     # Verify the mocks were called correctly

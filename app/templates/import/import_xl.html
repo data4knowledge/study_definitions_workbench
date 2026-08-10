@@ -10,7 +10,7 @@
   {% if data['pfda'] or data['os']  %}
     <div class="mt-3 row row-cols-2">
       <div class="col">
-        {% with url="/import/xl", title="Import USDM Excel Definition", subtitle="Import for a USDM formatted '.xlsx' file and image files ('.png' or '.jpg')", text="Select a single Excel file and zero, one or more images files. ", data=data %}
+        {% with url="/import/xl", title="Import USDM Excel Definition", subtitle="Import for a USDM formatted '.xlsx' file and image files ('.png' or '.jpg')", text="Select a single Excel workbook (or, for a multi-design study, the main workbook plus one workbook per study design) and zero, one or more image files. ", data=data %}
           {% include "import/partials/other_file_select.html" %}
         {% endwith %}
       </div>
@@ -18,7 +18,7 @@
   {% else %}
     <div class="mt-3 row row-cols-2">
       <div class="col">
-        {% with url="/import/xl", title="Import USDM Excel Definition", subtitle="Import for a USDM formatted '.xlsx' file and image files ('.png' or '.jpg')", text="Select a single Excel file and zero, one or more images files. ", disable=False %}
+        {% with url="/import/xl", title="Import USDM Excel Definition", subtitle="Import for a USDM formatted '.xlsx' file and image files ('.png' or '.jpg')", text="Select a single Excel workbook (or, for a multi-design study, the main workbook plus one workbook per study design) and zero, one or more image files. ", disable=False %}
           {% include "import/partials/browser_file_select.html" %}
         {% endwith %}
       </div>

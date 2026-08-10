@@ -316,10 +316,10 @@ class DataFiles:
             return False
 
     def _save_excel_file(self, contents, filename):
-        self._save_binary_file(contents, filename)
+        return self._save_binary_file(contents, filename)
 
     def _save_word_file(self, contents, filename):
-        self._save_binary_file(contents, filename)
+        return self._save_binary_file(contents, filename)
 
     def _save_binary_file(self, contents, filename):
         try:
@@ -335,6 +335,7 @@ class DataFiles:
             full_path = self._file_path(filename)
             with open(full_path, "wb") as f:
                 f.write(contents)
+            return full_path
         except Exception as e:  # pragma: no cover
             application_logger.exception("Exception saving source file", e)
 

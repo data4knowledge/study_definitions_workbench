@@ -19,7 +19,9 @@ class RequestHandler:
                 self.source,
             )
             main_file, image_files, messages = await form_handler.get_files()
-            uuid = import_manager.save_files(main_file, image_files)
+            uuid = import_manager.save_files(
+                main_file, image_files, form_handler.extra_files
+            )
             if uuid:
                 execute_import(import_manager)
                 return templates.TemplateResponse(
@@ -33,6 +35,8 @@ class RequestHandler:
                     },
                 )
             else:
+                if import_manager.save_error:
+                    messages.append(import_manager.save_error)
                 messages.append("Failed to process the import file(s)")
                 return templates.TemplateResponse(
                     request,

@@ -6,7 +6,6 @@ from app.imports.import_processors import (
     ImportExcel,
     ImportM11,
     ImportFhirPRISM2,
-    ImportUSDM3,
     ImportUSDM4,
 )
 
@@ -124,14 +123,10 @@ class TestImportManager:
         assert manager.main_file_ext == ".json"
         assert manager.images is False
 
-        # Test with USDM3_JSON
-        manager = ImportManager(mock_user, ImportManager.USDM3_JSON)
-        assert manager.user == mock_user
-        assert manager.type == ImportManager.USDM3_JSON
-        assert manager.processor == ImportUSDM3
-        assert manager.main_file_type == "usdm"
-        assert manager.main_file_ext == ".json"
-        assert manager.images is False
+        # USDM3_JSON is display-only for historical imports — there is
+        # no processor mapping any more, so construction must fail.
+        with pytest.raises(KeyError):
+            ImportManager(mock_user, ImportManager.USDM3_JSON)
 
         # Test with USDM_JSON
         manager = ImportManager(mock_user, ImportManager.USDM4_JSON)
@@ -218,6 +213,71 @@ class TestImportManager:
         mock_data_files.return_value.new.assert_not_called()
         mock_data_files.return_value.save.assert_not_called()
 
+    def test_save_files_multi_workbook(self, mock_user, mock_data_files):
+        """Multi-design Excel upload: all workbooks saved, the one with a
+        'study' sheet becomes the main file."""
+        manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
+        mock_data_files.return_value.save.side_effect = [
+            ("/dir/main.xlsx", "main.xlsx"),
+            ("/dir/design_1.xlsx", "design_1.xlsx"),
+        ]
+        main_file = {"filename": "main.xlsx", "contents": b"main"}
+        extra_files = [{"filename": "design_1.xlsx", "contents": b"design"}]
+
+        with patch("app.imports.import_manager.USDM4Excel") as mock_excel:
+            mock_excel.return_value.is_main_workbook.side_effect = (
+                lambda path: path == "/dir/main.xlsx"
+            )
+            uuid = manager.save_files(main_file, [], extra_files)
+
+        assert uuid == "test-uuid"
+        assert manager.main_full_path == "/dir/main.xlsx"
+        assert manager.original_filename == "main.xlsx"
+        assert manager.save_error is None
+        assert manager.files.save.call_count == 2
+
+    def test_save_files_multi_workbook_extra_first(self, mock_user, mock_data_files):
+        """Detection is content-based: the main workbook is found even
+        when a design workbook was uploaded first."""
+        manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
+        mock_data_files.return_value.save.side_effect = [
+            ("/dir/design_1.xlsx", "design_1.xlsx"),
+            ("/dir/main.xlsx", "main.xlsx"),
+        ]
+        main_file = {"filename": "design_1.xlsx", "contents": b"design"}
+        extra_files = [{"filename": "main.xlsx", "contents": b"main"}]
+
+        with patch("app.imports.import_manager.USDM4Excel") as mock_excel:
+            mock_excel.return_value.is_main_workbook.side_effect = (
+                lambda path: path == "/dir/main.xlsx"
+            )
+            uuid = manager.save_files(main_file, [], extra_files)
+
+        assert uuid == "test-uuid"
+        assert manager.main_full_path == "/dir/main.xlsx"
+        assert manager.original_filename == "main.xlsx"
+
+    def test_save_files_multi_workbook_ambiguous(self, mock_user, mock_data_files):
+        """Zero or several workbooks with a 'study' sheet fails the save
+        with a clear error and cleans up the saved files."""
+        manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
+        mock_data_files.return_value.save.side_effect = [
+            ("/dir/a.xlsx", "a.xlsx"),
+            ("/dir/b.xlsx", "b.xlsx"),
+        ]
+        main_file = {"filename": "a.xlsx", "contents": b"a"}
+        extra_files = [{"filename": "b.xlsx", "contents": b"b"}]
+
+        with patch("app.imports.import_manager.USDM4Excel") as mock_excel:
+            mock_excel.return_value.is_main_workbook.return_value = True
+            uuid = manager.save_files(main_file, [], extra_files)
+
+        assert uuid is None
+        assert manager.uuid is None
+        assert manager.save_error is not None
+        assert "main workbook" in manager.save_error
+        mock_data_files.return_value.delete_all.assert_called_once()
+
     def test_save_files_with_main_file_no_images(self, mock_user, mock_data_files):
         """Test save_files method with main file but no images."""
         # Setup
@@ -255,6 +315,8 @@ class TestImportManager:
             manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
             manager.files = mock_data_files.return_value
             manager.uuid = "test-uuid"
+            manager.main_full_path = "/path/to/file"
+            manager.original_filename = "filename.ext"
 
             # Execute
             await manager.process()
@@ -304,6 +366,8 @@ class TestImportManager:
             manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
             manager.files = mock_data_files.return_value
             manager.uuid = "test-uuid"
+            manager.main_full_path = "/path/to/file"
+            manager.original_filename = "filename.ext"
             mock_import_processor.return_value.errors = [{"message": "Error message"}]
 
             # Execute
@@ -356,6 +420,8 @@ class TestImportManager:
             manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
             manager.files = mock_data_files.return_value
             manager.uuid = "test-uuid"
+            manager.main_full_path = "/path/to/file"
+            manager.original_filename = "filename.ext"
 
             # Execute
             await manager.process()
@@ -400,6 +466,8 @@ class TestImportManager:
             manager = ImportManager(mock_user, ImportManager.USDM_EXCEL)
             manager.files = mock_data_files.return_value
             manager.uuid = "test-uuid"
+            manager.main_full_path = "/path/to/file"
+            manager.original_filename = "filename.ext"
             await manager.process()
             mock_file_import.return_value.update_status.assert_any_call(
                 "Failed", mock_session_local.return_value

@@ -89,6 +89,7 @@ class TestFormHandler:
         "file_extension, is_main_file, is_image_file, expected_message",
         [
             (".xlsx", True, False, "File 'test.xlsx' accepted"),
+            (".xlsx", False, False, "File 'test.xlsx' accepted"),
             (".png", False, True, "Image file 'test.png' accepted"),
             (
                 ".txt",
@@ -127,10 +128,19 @@ class TestFormHandler:
         # Check messages
         if file_extension == ".xlsx":
             assert messages == ["File 'test.xlsx' accepted"]
-            assert result_main_file == {
-                "filename": "test.xlsx",
-                "contents": b"file content",
-            }
+            if is_main_file:
+                # Main slot taken: the workbook is kept as an extra file
+                # (multi-design Excel upload), not silently dropped.
+                assert result_main_file == main_file
+                assert handler.extra_files == [
+                    {"filename": "test.xlsx", "contents": b"file content"}
+                ]
+            else:
+                assert result_main_file == {
+                    "filename": "test.xlsx",
+                    "contents": b"file content",
+                }
+                assert handler.extra_files == []
             assert result_image_files == []
             mock_logger.info.assert_called_once_with("Processing upload file 'test'")
         elif file_extension == ".png" and is_image_file:

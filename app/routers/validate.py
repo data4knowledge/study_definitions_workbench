@@ -9,7 +9,7 @@ from app.dependencies.templates import templates
 from app.configuration.configuration import application_configuration
 from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.data_files import DataFiles
-from usdm_info import __model_version__ as usdm_version
+from usdm4.__info__ import __model_version__ as usdm_version
 from app.database.user import User
 
 from app.imports.form_handler import FormHandler
@@ -21,8 +21,7 @@ from app.utility.findings_export import (
     to_markdown as findings_to_markdown,
     to_xlsx as findings_to_xlsx,
 )
-from usdm4 import USDM4, RulesValidationResults
-from usdm3 import USDM3
+from usdm4 import USDM4
 from usdm4_protocol.validation.m11 import M11Validator
 from simple_error_log import Errors as M11Errors
 from app.utility.finding_projections import (
@@ -37,19 +36,6 @@ from app.utility.finding_projections import (
 router = APIRouter(
     prefix="/validate", tags=["validate"], dependencies=[Depends(protect_endpoint)]
 )
-
-
-@router.get("/usdm3", dependencies=[Depends(protect_endpoint)])
-def validate_usdm3(request: Request, session: Session = Depends(get_db)):
-    return _validate_setup(
-        request,
-        session,
-        "json",
-        False,
-        "/validate/usdm3",
-        "validate/partials/validate_json.html",
-        {"version": "3.0.0"},
-    )
 
 
 @router.get("/usdm", dependencies=[Depends(protect_endpoint)])
@@ -69,14 +55,6 @@ def validate_usdm(request: Request, session: Session = Depends(get_db)):
         "validate/partials/validate_json.html",
         {"version": usdm_version, "engine": "CDISC"},
     )
-
-
-@router.post("/usdm3", dependencies=[Depends(protect_endpoint)])
-async def validate_usdm3_process(
-    request: Request, source: str = "browser", session: Session = Depends(get_db)
-):
-    user, present_in_db = user_details(request, session)
-    return await _process(request, user, USDM3(), source)
 
 
 @router.post("/usdm", dependencies=[Depends(protect_endpoint)])
@@ -198,44 +176,6 @@ def _strip_accepted_messages(messages: list[str]) -> list[str]:
     ignored ...", "Failed to process the validation file") remain.
     """
     return [m for m in messages if not m.endswith(" accepted")]
-
-
-@staticmethod
-async def _process(request: Request, user: User, usdm: USDM3 | USDM4, source: str):
-    form_handler = FormHandler(
-        request,
-        False,
-        ".json",
-        source,
-    )
-    main_file, image_files, messages = await form_handler.get_files()
-    findings: list[dict] = []
-    if main_file:
-        files = DataFiles()
-        _ = files.new()
-        files.save("usdm", main_file["contents"], main_file["filename"])
-        full_path, filename, exists = files.path("usdm")
-        results: RulesValidationResults = usdm.validate(full_path)
-        # Project the engine's row shape into the shared UI row shape
-        # consumed by ``validate/partials/results.html``.  See
-        # ``app/utility/finding_projections.py`` for the row contract.
-        findings = project_usdm_d4k_result(results)
-        files.delete()
-    else:
-        print(f"Messages: {messages}")
-        messages.append("Failed to process the validation file")
-    return templates.TemplateResponse(
-        request,
-        "validate/partials/results.html",
-        {
-            "user": user,
-            "data": {
-                "filename": main_file,
-                "messages": _strip_accepted_messages(messages),
-                "findings": findings,
-            },
-        },
-    )
 
 
 @staticmethod

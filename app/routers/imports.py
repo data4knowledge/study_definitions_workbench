@@ -15,24 +15,11 @@ from d4k_ms_ui.pagination import Pagination
 from app.database.file_import import FileImport
 from app.imports.request_handler import RequestHandler
 from app.imports.import_manager import ImportManager
-from usdm_info import __model_version__ as usdm_version
+from usdm4.__info__ import __model_version__ as usdm_version
 
 router = APIRouter(
     prefix="/import", tags=["import"], dependencies=[Depends(protect_endpoint)]
 )
-
-
-@router.get("/usdm3", dependencies=[Depends(protect_endpoint)])
-def import_usdm3(request: Request, session: Session = Depends(get_db)):
-    return _import_setup(
-        request,
-        session,
-        "json",
-        False,
-        "/import/usdm3",
-        "import/import_json.html",
-        {"version": "3.0.0"},
-    )
 
 
 @router.get("/usdm", dependencies=[Depends(protect_endpoint)])
@@ -153,16 +140,6 @@ async def import_fhir_process(
     )
     application_logger.info(f"FHIR version: {version} -> {request_version}")
     return await RequestHandler(request_version, source).process(
-        request, templates, user
-    )
-
-
-@router.post("/usdm3", dependencies=[Depends(protect_endpoint)])
-async def import_usdm3_process(
-    request: Request, source: str = "browser", session: Session = Depends(get_db)
-):
-    user, present_in_db = user_details(request, session)
-    return await RequestHandler(ImportManager.USDM3_JSON, source).process(
         request, templates, user
     )
 

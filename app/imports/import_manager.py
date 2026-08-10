@@ -1,5 +1,6 @@
 import asyncio
 import threading
+from usdm4_excel import USDM4Excel
 from app.database.database import SessionLocal
 from d4k_ms_base.logger import application_logger
 from app.model.file_handling.data_files import DataFiles
@@ -14,7 +15,6 @@ from app.imports.import_processors import (
     ImportLegacy,
     ImportFhirPRISM2,
     ImportFhirPRISM3,
-    ImportUSDM3,
     ImportUSDM4,
     ImportProcessorBase,
 )
@@ -27,6 +27,9 @@ class ImportManager:
     LEGACY_PDF = "LEGACY_PDF"
     FHIR_PRISM2_JSON = "FHIR_PRISM2_JSON"
     FHIR_PRISM3_JSON = "FHIR_PRISM3_JSON"
+    # USDM3_JSON imports were removed when v3 support was dropped; the
+    # constant and its ``is_usdm3_json_import`` check remain so studies
+    # imported historically still render (source pill, errors file).
     USDM3_JSON = "USDM3_JSON"
     USDM4_JSON = "USDM4_JSON"
 
@@ -68,12 +71,6 @@ class ImportManager:
                 "main_file_ext": ".json",
                 "images": False,
             },
-            self.USDM3_JSON: {
-                "processor": ImportUSDM3,
-                "main_file_type": "usdm",
-                "main_file_ext": ".json",
-                "images": False,
-            },
             self.USDM4_JSON: {
                 "processor": ImportUSDM4,
                 "main_file_type": "usdm",
@@ -90,6 +87,8 @@ class ImportManager:
         self.files = None
         self.uuid = None
         self.original_filename = None
+        self.main_full_path = None
+        self.save_error = None
 
     @classmethod
     def imports_with_errors(cls) -> list[str]:
@@ -136,24 +135,69 @@ class ImportManager:
     def is_usdm4_json_import(cls, value: str) -> bool:
         return value == cls.USDM4_JSON
 
-    def save_files(self, main_file: dict, image_files: dict) -> str:
+    def save_files(
+        self, main_file: dict, image_files: dict, extra_files: list[dict] = None
+    ) -> str:
+        """Save the uploaded files and record which one is the import's
+        main file.
+
+        ``extra_files`` carries any additional files sharing the main
+        extension. Today that is the Excel multi-design format: a main
+        workbook whose 'studyDesigns' row lists one external workbook
+        per study design. All workbooks are saved into the same
+        directory under their original filenames so ``usdm4_excel`` can
+        resolve the references, and the main workbook is identified by
+        its 'study' sheet — design workbooks don't have one. Single-file
+        imports behave exactly as before.
+        """
         if main_file:
             self.files = DataFiles()
             self.uuid = self.files.new()
             self.original_filename = main_file["filename"]
-            # print(f"********** Original filename: {self.original_filename}")
-            # print(f"********** Main file type: {self.main_file_type}")
-            self._save_file(main_file, self.main_file_type)
+            saved = [self._save_file(main_file, self.main_file_type)]
+            for extra_file in extra_files or []:
+                saved.append(self._save_file(extra_file, self.main_file_type))
             for image_file in image_files:
                 self._save_file(image_file, "image")
+            if len(saved) == 1:
+                self.main_full_path = saved[0][0]
+            else:
+                main = self._identify_main_workbook(saved)
+                if main:
+                    self.main_full_path, self.original_filename = main
+                else:
+                    self.save_error = (
+                        "Could not identify the main workbook: exactly one of the "
+                        "uploaded '.xlsx' files must be a main study workbook"
+                    )
+                    self.files.delete_all()
+                    self.uuid = None
         return self.uuid
+
+    def _identify_main_workbook(
+        self, saved: list[tuple[str, str]]
+    ) -> tuple[str, str] | None:
+        """Return the (full_path, filename) of the one main study
+        workbook among the saved files, or None if there isn't exactly
+        one. Detection is delegated to usdm4_excel — the workbook
+        layout is its knowledge, not SDW's."""
+        excel = USDM4Excel()
+        mains = []
+        for full_path, filename in saved:
+            try:
+                if excel.is_main_workbook(full_path):
+                    mains.append((full_path, filename))
+            except Exception as e:
+                application_logger.exception(
+                    f"Exception inspecting workbook '{filename}'", e
+                )
+        return mains[0] if len(mains) == 1 else None
 
     async def process(self) -> None:
         try:
             session = SessionLocal()
             file_import = None
-            full_path, filename, exists = self.files.path(self.main_file_type)
-            # print(f"********** Original filename: {self.original_filename}")
+            full_path, filename = self.main_full_path, self.original_filename
             file_import = FileImport.create(
                 full_path,
                 self.original_filename,

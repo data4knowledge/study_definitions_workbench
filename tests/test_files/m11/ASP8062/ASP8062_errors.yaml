@@ -377,6 +377,22 @@
 - extra: null
   level: Info
   location:
+    class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions
+    method_name: process
+  message: No Trial Intervention table found; using AI narrative extraction
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.common.extract.objectives_extractor.ObjectivesExtractor
+    method_name: guard
+  message: No objectives extracted
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _find_amendment_section
   message: Found amendment section at index 1
@@ -523,6 +539,30 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'brief' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'public' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'scientific' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'acronym' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Debug
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
@@ -618,6 +658,22 @@
   type: ''
 - extra: null
   level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: age_unit
+  message: Age unit 'YEARS' decoded as 'C29848', 'Year'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: age_unit
+  message: Age unit 'YEARS' decoded as 'C29848', 'Year'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
   location: {}
   message: 'Amendment assembler source data {''identifier'': ''1.1'', ''summary'':
     ''This is a nonsubstantial amendment.amuuuSummStnent ementmmdmentmddndndmendment
@@ -683,10 +739,10 @@
   level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_2'',
-    extensionAttributes=[], type=Code(id=''Code_57'', extensionAttributes=[], code=''C25464'',
+    extensionAttributes=[], type=Code(id=''Code_55'', extensionAttributes=[], code=''C25464'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Country'',
-    instanceType=''Code''), code=AliasCode(id=''AliasCode_1'', extensionAttributes=[],
-    standardCode=Code(id=''Code_58'', extensionAttributes=[], code=''USA'', codeSystem=''ISO
+    instanceType=''Code''), code=AliasCode(id=''AliasCode_3'', extensionAttributes=[],
+    standardCode=Code(id=''Code_56'', extensionAttributes=[], code=''USA'', codeSystem=''ISO
     3166 1 alpha3'', codeSystemVersion=''2020-08'', decode=''United States of America'',
     instanceType=''Code''), standardCodeAliases=[], instanceType=''AliasCode''), instanceType=''GeographicScope'')],
     sites: None'

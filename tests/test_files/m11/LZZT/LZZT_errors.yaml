@@ -590,6 +590,23 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions
+    method_name: _validated
+  message: Intervention type 'Placebo' is not an M11 permitted value; passing through
+    for encoder defaulting.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.common.extract.objectives_extractor.ObjectivesExtractor
+    method_name: guard
+  message: No objectives extracted
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
@@ -690,6 +707,24 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'public' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'scientific' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'acronym' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Debug
   location:
     class_name: usdm4.assembler.identification_assembler.IdentificationAssembler
@@ -780,6 +815,31 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.population_assembler.PopulationAssembler
+    method_name: _build_planned_age
+  message: Planned age range partially supplied (min=50.0, max=None); filling missing
+    bound with supplied value.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: age_unit
+  message: Age unit 'YEARS' decoded as 'C29848', 'Year'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: age_unit
+  message: Age unit 'YEARS' decoded as 'C29848', 'Year'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Info
   location: {}
   message: 'Amendment assembler source data {''identifier'': ''H2Q-MC-LXXT(c)'', ''summary'':
@@ -824,7 +884,7 @@
   level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
-    extensionAttributes=[], type=Code(id=''Code_48'', extensionAttributes=[], code=''C68846'',
+    extensionAttributes=[], type=Code(id=''Code_47'', extensionAttributes=[], code=''C68846'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Global'',
     instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
     None'
@@ -858,6 +918,146 @@
   message: 'Extracted section ref from ''5.2 Inclusion Criteria'' -> {''sectionNumber'':
     ''5.2'', ''sectionTitle'': ''Inclusion Criteria'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
+    method_name: _build_strength
+  message: Could not parse strength '50/75 cm2' for substance 'Xanomeline'; dropping.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
+    method_name: _build_strength
+  message: Could not parse strength 'NA' for substance 'Placebo'; dropping.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
+    method_name: _parse_quantity
+  message: Dose unit 'mg/81mg' not recognised; keeping raw text.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: route
+  message: Route of administration 'TRANSDERMAL' not decoded; defaulting to 'Oral
+    Route of Administration'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: frequency
+  message: Frequency 'DAILY' decoded as 'C25473', 'Daily'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: route
+  message: Route of administration 'TRANSDERMAL' not decoded; defaulting to 'Oral
+    Route of Administration'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: frequency
+  message: Frequency 'DAILY' decoded as 'C25473', 'Daily'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_role
+  message: Intervention role 'EXPERIMENTAL INTERVENTIOIN' not decoded; defaulting
+    to 'Protocol Agent'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_type
+  message: Intervention type 'DRUG' decoded as 'C1909', 'Pharmacologic Substance'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
+    method_name: _parse_quantity
+  message: Could not parse dose 'NA' as value+unit; keeping raw text.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: route
+  message: Route of administration 'TRANSDERMAL' not decoded; defaulting to 'Oral
+    Route of Administration'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: frequency
+  message: Frequency 'DAILY' decoded as 'C25473', 'Daily'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_role
+  message: Intervention role 'PLACEBO' decoded as 'C753', 'Placebo'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_type
+  message: Intervention type 'PLACEBO' not decoded; defaulting to 'Pharmacologic Substance'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: arm_type
+  message: Arm type 'EXPERIMENTAL' decoded as 'C174266', 'Investigational Arm'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: arm_type
+  message: Arm type 'EXPERIMENTAL' decoded as 'C174266', 'Investigational Arm'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: arm_type
+  message: Arm type 'CONTROL' decoded as 'C174226', 'Control Arm'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

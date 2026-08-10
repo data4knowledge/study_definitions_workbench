@@ -382,7 +382,25 @@
   location:
     class_name: usdm4_protocol.soa.features.conditions.ConditionsFeature
     method_name: process
-  message: 'Conditions: 23 items extracted'
+  message: 'Conditions: 23 items extracted, 20 with a reference, 0 blocks split on
+    plain-text markers'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.soa.features.cell_markers.CellMarkerScanner
+    method_name: log_summary
+  message: 'Cell markers T1: 0 recovered from flattened cell text (20 legend markers
+    known)'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.soa.decode_soa
+    method_name: _add_cell_conditions
+  message: 'Cell conditions: 4 minted from prose grid cells'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -390,7 +408,7 @@
   location:
     class_name: usdm4_protocol.soa.decode_soa
     method_name: _link_footnotes
-  message: Linked 21 footnote references to activities
+  message: Linked 25 footnote references to activities
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -436,6 +454,14 @@
     \ \uF03C 50,000/\uF06DL at screening (according to local laboratory reference\
     \ ranges)'\nMessage returned 'The input looks more like a filename than markup.\
     \ You may want to open this file and pass the filehandle into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions
+    method_name: process
+  message: No Trial Intervention table found; using AI narrative extraction
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -588,6 +614,30 @@
     interim analyses was updated'', ''rationale'': ''Updated to address the increased
     enrollment target to maintain 90% power for the primary endpoint and the criteria
     for not conducting the interim analyses'', ''section'': ''Section 6.9''}]}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'brief' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'public' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'scientific' is not valid, ignored.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location: {}
+  message: Title '' of type 'acronym' is not valid, ignored.
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -808,7 +858,7 @@
   level: Info
   location: {}
   message: 'Scopes created in assembler, geo: [GeographicScope(id=''GeographicScope_1'',
-    extensionAttributes=[], type=Code(id=''Code_46'', extensionAttributes=[], code=''C68846'',
+    extensionAttributes=[], type=Code(id=''Code_42'', extensionAttributes=[], code=''C68846'',
     codeSystem=''http://www.cdisc.org'', codeSystemVersion=''2026-03-27'', decode=''Global'',
     instanceType=''Code''), code=None, instanceType=''GeographicScope'')], sites:
     None'
@@ -1015,7 +1065,7 @@
   location:
     class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
     method_name: _add_activities
-  message: 'Activities: 28'
+  message: 'Activities (timeline 1): +28 new, 28 total'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -1039,10 +1089,14 @@
   location:
     class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
     method_name: _add_conditions
-  message: 'Failed to align condition {''reference'': ''a'', ''text'': ''a Results
-    from standard-of-care tests or examinations performed prior to obtaining informed
-    consent and within 48 hours before randomization may be used; such tests do not
-    need to be repeated for screening.''}, not created.'
+  message: 'Condition has no reference, not created: {''reference'': '''', ''text'':
+    ''CRP = c-reactive protein; CT = computed tomography; ECG = electrocardiogram;
+    eCRF = electronic case report form; NCI\xa0CTCAE = National Cancer Institute Common
+    Terminology Criteria for Adverse Events v.5.0; NEWS2 = National Early Warning
+    Score; PaO 2 /FiO2 = arterial oxygen partial pressure/fraction of inspired oxygen;
+    PBMCs\xa0=\xa0peripheral blood mononuclear cells; PK\xa0=\xa0pharmacokinetic;
+    PRO-CTCAE = NCI Patient-Reported Outcomes Common Terminology Criteria for Adverse
+    Events; SpO 2 = peripheral capillary oxygen saturation.''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -1050,9 +1104,47 @@
   location:
     class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
     method_name: _add_conditions
-  message: 'Failed to align condition {''reference'': ''b'', ''text'': ''b Informed
+  message: 'Condition has no reference, not created: {''reference'': '''', ''text'':
+    ''Note:  On treatment days, all assessments should be performed prior to dosing,
+    unless otherwise specified.''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_conditions
+  message: 'Failed to align condition {''reference'': ''a'', ''text'': ''Results from
+    standard-of-care tests or examinations performed prior to obtaining informed consent
+    and within 48 hours before randomization may be used; such tests do not need to
+    be repeated for screening.''}, not created.'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_conditions
+  message: 'Failed to align condition {''reference'': ''b'', ''text'': ''Informed
     consent must be documented before any study-specific screening procedure is performed.''},
     not created.'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_conditions
+  message: 'Condition has no reference, not created: {''reference'': '''', ''text'':
+    ''Schedule of Activities:  Days\xa03-28''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.timeline_assembler.TimelineAssembler
+    method_name: _add_conditions
+  message: 'Conditions T1: in=27, referenced=24, aligned=22, dropped_no_ref=3, dropped_no_match=2'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -1077,6 +1169,267 @@
     class_name: usdm4.encoder.encoder.Encoder
     method_name: phase
   message: Trial phase 'III' decoded as 'C15602', 'Phase 3', using M11 decode
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'PRIMARY' decoded as 'C94496', 'Primary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'PRIMARY' decoded as 'C85826', 'Trial Primary Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'SECONDARY' decoded as 'C139173', 'Secondary Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'SECONDARY' decoded as 'C85827', 'Trial Secondary Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'EXPLORATORY' decoded as 'C163559', 'Trial Exploratory
+    Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'EXPLORATORY' decoded as 'C163559', 'Trial Exploratory
+    Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'EXPLORATORY' decoded as 'C163559', 'Trial Exploratory
+    Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'EXPLORATORY' decoded as 'C163559', 'Trial Exploratory
+    Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: endpoint_level
+  message: Endpoint level 'EXPLORATORY' decoded as 'C170559', 'Exploratory Endpoint'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'EXPLORATORY' decoded as 'C163559', 'Trial Exploratory
+    Objective'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

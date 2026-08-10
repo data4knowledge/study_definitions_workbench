@@ -8,7 +8,7 @@ from app.dependencies.dependency import protect_endpoint
 from app.dependencies.utility import user_details
 from app.dependencies.templates import templates, templates_path
 from app import VERSION, SYSTEM_NAME
-from usdm_info import __model_version__ as usdm_version
+from usdm4.__info__ import __model_version__ as usdm_version
 
 router = APIRouter(prefix="/help", tags=["help"])
 PARTIALS_PATH = os.path.join(templates_path, "help", "partials")

@@ -8,20 +8,22 @@ from app.imports.import_processors import (
     ImportLegacy,
     ImportFhirPRISM2,
     ImportFhirPRISM3,
-    ImportUSDM3,
     ImportUSDM4,
 )
 
 
 @pytest.fixture
-def mock_usdm_db():
-    """Mock the USDMDb class."""
-    with patch("app.imports.import_processors.USDMDb") as mock:
+def mock_usdm4_excel():
+    """Mock the USDM4Excel class."""
+    with patch("app.imports.import_processors.USDM4Excel") as mock:
         instance = mock.return_value
-        instance.from_excel.return_value = None
-        instance.from_json.return_value = None
-        instance.to_json.return_value = '{"study": {"name": "test-study"}}'
-        instance.wrapper.return_value = MagicMock()
+        mock_wrapper = MagicMock()
+        mock_wrapper.to_json.return_value = '{"study": {"name": "test-study"}}'
+        instance.from_excel.return_value = mock_wrapper
+        mock_errors = MagicMock()
+        mock_errors.to_dict.return_value = {"errors": []}
+        mock_errors.dump.return_value = "No errors"
+        instance.errors.return_value = mock_errors
         yield mock
 
 
@@ -58,20 +60,6 @@ def mock_from_fhir_v1():
         }
         instance.errors.to_dict.return_value = {"errors": []}
         instance.errors.dump.return_value = "No errors"
-        yield mock
-
-
-@pytest.fixture
-def mock_usdm3():
-    """Mock the USDM3 class."""
-    with patch("app.imports.import_processors.USDM3") as mock:
-        instance = mock.return_value
-        instance.convert.return_value = MagicMock()
-        instance.convert.return_value.to_json.return_value = (
-            '{"study": {"name": "test-study"}}'
-        )
-        instance.validate.return_value = MagicMock()
-        instance.validate.return_value.to_dict.return_value = {"errors": []}
         yield mock
 
 
@@ -178,12 +166,12 @@ class TestImportProcessorBase:
             assert result["nct_identifier"] == "NCT12345678"
             assert result["sponsor"] == "Test Sponsor"
 
-    def test_study_parameters_exception(self, mock_usdm_db, mock_logger):
+    def test_study_parameters_exception(self, mock_usdm4, mock_logger):
         """Test _study_parameters method with exception."""
         # Setup
         processor = ImportProcessorBase("TEST_TYPE", "test-uuid", "/path/to/file")
         processor.usdm = '{"study": {"name": "test-study"}}'
-        mock_usdm_db.return_value.from_json.side_effect = Exception("Test exception")
+        mock_usdm4.return_value.from_json.side_effect = Exception("Test exception")
 
         # Execute
         result = processor._study_parameters()
@@ -224,7 +212,7 @@ class TestImportExcel:
     """Tests for the ImportExcel class."""
 
     @pytest.mark.asyncio
-    async def test_process(self, mock_usdm_db):
+    async def test_process(self, mock_usdm4_excel):
         """Test process method."""
         # Setup
         processor = ImportExcel("USDM_EXCEL", "test-uuid", "/path/to/file")
@@ -236,12 +224,27 @@ class TestImportExcel:
 
         # Assert
         assert result
-        # USDMDb is called multiple times: once in process() and again in _study_parameters()
-        assert mock_usdm_db.call_count >= 1
-        mock_usdm_db.return_value.from_excel.assert_called_once_with("/path/to/file")
-        mock_usdm_db.return_value.to_json.assert_called_once()
-        assert processor.usdm == mock_usdm_db.return_value.to_json.return_value
-        assert processor.errors == mock_usdm_db.return_value.from_excel.return_value
+        mock_usdm4_excel.assert_called_once()
+        instance = mock_usdm4_excel.return_value
+        instance.from_excel.assert_called_once_with("/path/to/file")
+        assert (
+            processor.usdm == instance.from_excel.return_value.to_json.return_value
+        )
+        assert processor.errors == {"errors": []}
+
+    @pytest.mark.asyncio
+    async def test_process_failure(self, mock_usdm4_excel):
+        """No wrapper back from usdm4_excel means a fatal import error."""
+        instance = mock_usdm4_excel.return_value
+        instance.from_excel.return_value = None
+
+        processor = ImportExcel("USDM_EXCEL", "test-uuid", "/path/to/file")
+        result = await processor.process()
+
+        assert not result
+        assert not processor.success
+        assert processor.fatal_error == "Excel import failed, check the error file"
+        assert processor.errors == {"errors": []}
 
 
 class TestImportM11:
@@ -471,120 +474,6 @@ class TestImportFhirPRISM3:
 #         mock_from_fhir_v1.return_value.to_usdm.assert_called_once()
 #         # The to_usdm method is mocked to return a string directly, not a coroutine
 #         assert processor.usdm == mock_from_fhir_v1.return_value.to_usdm.return_value
-
-
-class TestImportUSDM3:
-    """Tests for the ImportUSDM3 class.
-
-    The import contract for v3 is: always run v3 validation, always
-    convert to v4, always run v4 validation, always extract parameters.
-    Validation findings are captured in ``processor.errors`` (sourced
-    from the v4 results — that's the file we keep) but are advisory:
-    they do not fail the import. The only blocking failures are a
-    conversion crash and a missing study-parameter dict.
-    """
-
-    @pytest.mark.asyncio
-    async def test_process(self, mock_data_files, mock_usdm3, mock_usdm4):
-        """Happy path — both validations clean, conversion succeeds."""
-        # Setup
-        processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
-
-        # Execute
-        result = await processor.process()
-
-        # Assert
-        assert result
-        mock_data_files.assert_called_once_with("test-uuid")
-        mock_data_files.return_value.path.assert_called_with("usdm")
-        mock_usdm3.assert_called_once()
-        mock_usdm3.return_value.validate.assert_called_once_with("/path/to/file")
-        mock_usdm4.call_count == 2
-        mock_usdm4.return_value.convert.assert_called_once_with("/path/to/file")
-        mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
-        # Use assert_any_call instead of assert_called_with to check that the method was called with these parameters
-        # regardless of the order
-        mock_data_files.return_value.save.assert_any_call("usdm", processor.usdm)
-        assert (
-            processor.usdm
-            == mock_usdm3.return_value.convert.return_value.to_json.return_value
-        )
-        # Errors come from the v4 validation pass — that's the file
-        # that's stored, so its rule output is what users will be
-        # working from.
-        assert (
-            processor.errors
-            == mock_usdm4.return_value.validate.return_value.to_dict.return_value
-        )
-        assert processor.success
-        assert processor.fatal_error is None
-
-    @pytest.mark.asyncio
-    async def test_process_v3_validation_failure_does_not_block(
-        self, mock_data_files, mock_usdm3, mock_usdm4
-    ):
-        """v3 rule failures used to block; they're now advisory. The
-        import proceeds through conversion and v4 validation regardless
-        of what the v3 engine reports."""
-        instance = mock_usdm3.return_value
-        instance.validate.return_value.passed_or_not_implemented = lambda: False
-        instance.validate.return_value.to_dict.return_value = {
-            "errors": [{"status": "Failure"}]
-        }
-
-        processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
-        result = await processor.process()
-
-        assert result
-        assert processor.success
-        assert processor.fatal_error is None
-        # Conversion and v4 validation must still run on a v3 failure —
-        # that's the whole point of the gate being lifted.
-        mock_usdm4.return_value.convert.assert_called_once_with("/path/to/file")
-        mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
-
-    @pytest.mark.asyncio
-    async def test_process_v4_validation_failure_does_not_block(
-        self, mock_data_files, mock_usdm3, mock_usdm4
-    ):
-        """Same contract as v3: v4 rule failures are persisted but do
-        not fail the import."""
-        instance = mock_usdm4.return_value
-        instance.validate.return_value.passed_or_not_implemented = lambda: False
-        instance.validate.return_value.to_dict.return_value = {
-            "errors": [{"status": "Failure"}]
-        }
-
-        processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
-        result = await processor.process()
-
-        assert result
-        assert processor.success
-        assert processor.fatal_error is None
-        assert processor.errors == {"errors": [{"status": "Failure"}]}
-
-    @pytest.mark.asyncio
-    async def test_process_conversion_crash_blocks(
-        self, mock_data_files, mock_usdm3, mock_usdm4
-    ):
-        """A v3→v4 conversion crash is a structural failure — without a
-        v4 file we have nothing to anchor a study record to, so the
-        import does fail. The diagnostic falls back to the v3 rule
-        output so the user has something to act on."""
-        mock_usdm3.return_value.validate.return_value.to_dict.return_value = {
-            "errors": [{"status": "v3 issue"}]
-        }
-        mock_usdm4.return_value.convert.side_effect = ValueError("bad input")
-
-        processor = ImportUSDM3("USDM3_JSON", "test-uuid", "/path/to/file")
-        result = await processor.process()
-
-        assert not result
-        assert not processor.success
-        assert processor.fatal_error is not None
-        assert "conversion failed" in processor.fatal_error
-        # v3 findings are surfaced when conversion blows up.
-        assert processor.errors == {"errors": [{"status": "v3 issue"}]}
 
 
 class TestImportUSDM:

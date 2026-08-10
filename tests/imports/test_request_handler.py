@@ -29,6 +29,7 @@ class TestRequestHandler:
             mock_im_instance = mock_im.return_value
             mock_im_instance.images = False
             mock_im_instance.main_file_ext = ".docx"
+            mock_im_instance.save_error = None
             mock_fh_instance = mock_fh.return_value
             mock_fh_instance.get_files = AsyncMock(
                 return_value=(
@@ -58,6 +59,7 @@ class TestRequestHandler:
             mock_im_instance = mock_im.return_value
             mock_im_instance.images = False
             mock_im_instance.main_file_ext = ".docx"
+            mock_im_instance.save_error = None
             mock_fh_instance = mock_fh.return_value
             mock_fh_instance.get_files = AsyncMock(
                 return_value=(

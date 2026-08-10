@@ -11,7 +11,7 @@ from usdm4_fhir.soa.export.export_soa import ExportSoA as FHIRSoA
 from app.configuration.configuration import application_configuration
 from app.database.version import Version
 from sqlalchemy.orm import Session
-from usdm_model.wrapper import Wrapper
+from usdm4.api.wrapper import Wrapper
 from app.imports.import_manager import ImportManager
 from usdm4 import USDM4
 from usdm4.api.study import Study
