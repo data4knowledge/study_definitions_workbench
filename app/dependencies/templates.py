@@ -6,6 +6,7 @@ from app.utility.template_methods import (
     server_name,
     single_multiple,
     convert_to_json,
+    ellipsize,
 )
 from app.dependencies.fhir_version import (
     fhir_version_description,
@@ -20,6 +21,7 @@ templates_path = f"{str(Path(full_path).parents[1])}/templates"
 templates = Jinja2Templates(directory=templates_path)
 application_logger.info(f"Template dir set to '{templates_path}'")
 
+templates.env.filters["ellipsize"] = ellipsize
 templates.env.globals["server_name"] = server_name
 templates.env.globals["single_multiple"] = single_multiple
 templates.env.globals["convert_to_json"] = convert_to_json

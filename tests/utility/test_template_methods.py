@@ -80,3 +80,37 @@ class TestConvertToJson:
         data = {"key": "value"}
         result = convert_to_json(data)
         assert json.loads(result) == data
+
+class TestEllipsize:
+    def test_short_text_unchanged(self):
+        from app.utility.template_methods import ellipsize
+
+        assert ellipsize("Design One") == "Design One"
+
+    def test_exact_length_unchanged(self):
+        from app.utility.template_methods import ellipsize
+
+        assert ellipsize("x" * 30) == "x" * 30
+
+    def test_long_text_truncated(self):
+        from app.utility.template_methods import ellipsize
+
+        result = ellipsize("USDM Example Study Design With A Long Name")
+        assert len(result) == 30
+        assert result.endswith("…")
+
+    def test_custom_length(self):
+        from app.utility.template_methods import ellipsize
+
+        assert ellipsize("abcdefghij", 5) == "abcd…"
+
+    def test_trailing_space_stripped(self):
+        from app.utility.template_methods import ellipsize
+
+        # char before the cut is a space: no "word …" gap
+        assert ellipsize("abcd efghij", 6) == "abcd…"
+
+    def test_none_is_empty(self):
+        from app.utility.template_methods import ellipsize
+
+        assert ellipsize(None) == ""

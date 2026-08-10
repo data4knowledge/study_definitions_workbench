@@ -39,3 +39,17 @@ def restructure_study_list(data: list[dict]) -> dict:
 
 def convert_to_json(data) -> str:
     return json.dumps(data, indent=2)
+
+
+def ellipsize(text, length: int = 30) -> str:
+    """Truncate text for space-constrained UI (tab labels, pills,
+    table cells) with a trailing ellipsis. Registered as the Jinja
+    filter ``ellipsize``: ``{{ title | ellipsize }}`` or
+    ``{{ title | ellipsize(20) }}``. Pair with a ``title`` attribute
+    so the full text stays available on hover."""
+    if text is None:
+        return ""
+    text = str(text)
+    if len(text) <= length:
+        return text
+    return text[: length - 1].rstrip() + "…"
