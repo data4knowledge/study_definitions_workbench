@@ -55,7 +55,7 @@
             {% set id = "study_design_tab-" ~ loop.index0 ~ "_div" %}
             {% set title = v['label'] or v['name'] %}
             <li class="nav-item" role="presentation">
-              <button class="nav-link{% if loop.first %} active{% endif %}" id="{{id}}_tab" data-bs-toggle="tab" data-bs-target="#{{id}}" type="button" role="tab" aria-controls="{{id}}" aria-selected="{{'true' if loop.first else 'false'}}" title="{{title}}">Summary: {{title | ellipsize}}</button>
+              <button class="nav-link{% if loop.first %} active{% endif %}" id="{{id}}_tab" data-bs-toggle="tab" data-bs-target="#{{id}}" type="button" role="tab" aria-controls="{{id}}" aria-selected="{{'true' if loop.first else 'false'}}" title="{{title}}">Summary: {{title | ellipsize(16)}}</button>
             </li>
           {% endfor %}
         </ul>
