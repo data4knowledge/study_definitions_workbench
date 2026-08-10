@@ -13,6 +13,15 @@ def _build_usdm(data=None, m11=True, extra=None):
     usdm.m11 = m11
     usdm._data = data or build_usdm_data()
     usdm._wrapper = MagicMock()
+    # study_version() reads the phase via the usdm4 wrapper
+    # (StudyVersion.phases(), deduped, ", "-joined). Mirror the dict
+    # data on the mock the same way so tests stay data-driven.
+    usdm._wrapper.study.first_version.return_value.phases.return_value = ", ".join(
+        dict.fromkeys(
+            d["studyPhase"]["standardCode"]["decode"]
+            for d in usdm._data["study"]["versions"][0]["studyDesigns"]
+        )
+    )
     usdm._files = MagicMock()
     usdm._extra = extra or {}
     return usdm

@@ -186,16 +186,15 @@ class USDMJson:
             }
         for title in version["titles"]:
             result["titles"][title["type"]["code"]] = title["text"]
-        phases = []
         for design in version["studyDesigns"]:
             result["study_designs"][design["id"]] = {
                 "id": design["id"],
                 "name": design["name"],
                 "label": design["label"] if "label" in design else design["name"],
             }
-            phase = design["studyPhase"]["standardCode"]["decode"]
-            phases.append(phase)
-        result["phase"] = ",".join(phases)
+        # Phase display comes from usdm4 (single source of truth) — it
+        # deduplicates across designs while preserving design order.
+        result["phase"] = self._wrapper.study.first_version().phases()
         return result
 
     def templates(self) -> list[str]:
