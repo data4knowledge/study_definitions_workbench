@@ -4,7 +4,7 @@ from fastapi import APIRouter, Form, Depends, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from simple_error_log import Errors
-from usdm4.api.wrapper import Wrapper, StudyVersion, StudyDesign
+from usdm4.api.wrapper import Wrapper, StudyVersion
 from usdm4_protocol.m11.views.data_view import DataView
 from app.database.study import Study
 from app.database.version import Version
@@ -101,7 +101,6 @@ def study_list(
         usdm = USDMJson(version.id, session)
         wrapper: Wrapper = usdm.wrapper()
         study_version: StudyVersion = wrapper.first_version()
-        study_design: StudyDesign = study_version.studyDesigns[0]
         errors = Errors()
         m11 = DataView(wrapper, errors)
         data["import_type"].append(FileImport.find(version.import_id, session).type)
@@ -114,9 +113,28 @@ def study_list(
         # is missing (legacy imports, non-M11 imports) the cell shows
         # empty, which the template renders as "0 findings".
         data["m11_validation"].append(_m11_validation_for_study(usdm))
+        # Criteria per design: one group per study design so multi-design
+        # studies show all their criteria, labelled by design. The template
+        # only prints the design label when a study has more than one.
         ie_map = study_version.eligibility_critieria_item_map()
-        data["inclusion"].append(study_design.inclusion_criteria(ie_map))
-        data["exclusion"].append(study_design.exclusion_criteria(ie_map))
+        data["inclusion"].append(
+            [
+                {
+                    "design": sd.label or sd.name,
+                    "criteria": sd.inclusion_criteria(ie_map),
+                }
+                for sd in study_version.studyDesigns
+            ]
+        )
+        data["exclusion"].append(
+            [
+                {
+                    "design": sd.label or sd.name,
+                    "criteria": sd.exclusion_criteria(ie_map),
+                }
+                for sd in study_version.studyDesigns
+            ]
+        )
     data["m11_title_page"] = restructure_study_list(data["m11_title_page"])
     data["sections"] = _section_toc(section_docs)
     data["fhir"] = {

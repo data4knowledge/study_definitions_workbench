@@ -25,12 +25,21 @@
             {% for w in range(width) %}
                 <td>
                 <table class="table table-responsive table-stripped">
-                    {% for i in data[w] %}
-                    <tr>
-                        <td>
-                        {{i["identifier"]}}: {{i["criterionItem"]["text"]|safe}}
-                        </td>
-                    </tr>
+                    {# One group per study design; the design label is only
+                       shown when the study has more than one design. #}
+                    {% for group in data[w] %}
+                      {% if data[w]|length > 1 %}
+                      <tr>
+                          <td><strong>{{ group["design"] }}</strong></td>
+                      </tr>
+                      {% endif %}
+                      {% for i in group["criteria"] %}
+                      <tr>
+                          <td>
+                          {{i["identifier"]}}: {{i["criterionItem"]["text"]|safe}}
+                          </td>
+                      </tr>
+                      {% endfor %}
                     {% endfor %}
                 </table>
                 </td>

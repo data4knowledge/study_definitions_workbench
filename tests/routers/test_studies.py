@@ -203,6 +203,77 @@ def test_study_list(mocker, monkeypatch):
     m11_helper.assert_called_once()
 
 
+def test_study_list_multi_design_criteria(mocker, monkeypatch):
+    """A study with two designs shows inclusion/exclusion criteria per
+    design, labelled with the design label. Single-design studies (the
+    other tests) render without design labels."""
+    from unittest.mock import MagicMock
+
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+
+    mock_vlv = mocker.patch("app.routers.studies.Version.find_latest_version")
+    mock_vlv.return_value = MagicMock(id=1)
+    mock_wrapper = MagicMock()
+    mock_sv = MagicMock()
+    sd1 = MagicMock()
+    sd1.label = "Design One"
+    sd1.inclusion_criteria.return_value = [
+        {"identifier": "IN1", "criterionItem": {"text": "Adults over 18"}}
+    ]
+    sd1.exclusion_criteria.return_value = []
+    sd2 = MagicMock()
+    sd2.label = "Design Two"
+    sd2.inclusion_criteria.return_value = [
+        {"identifier": "IN1", "criterionItem": {"text": "Healthy volunteers"}}
+    ]
+    sd2.exclusion_criteria.return_value = []
+    mock_sv.studyDesigns = [sd1, sd2]
+    mock_sv.eligibility_critieria_item_map.return_value = {}
+    mock_wrapper.first_version.return_value = mock_sv
+
+    def custom_init(self, *args, **kwargs):
+        pass
+
+    mocker.patch("app.routers.studies.USDMJson.__init__", new=custom_init)
+    mocker.patch("app.routers.studies.USDMJson.wrapper", return_value=mock_wrapper)
+    from simple_error_log import Errors as RealErrors
+
+    mocker.patch(
+        "app.routers.studies.USDMJson.import_errors",
+        return_value=RealErrors(),
+    )
+    mock_dv = mocker.patch("app.routers.studies.DataView")
+    mock_dv_instance = mock_dv.return_value
+    mock_dv_instance.title_page.return_value = {"title": "Test"}
+    mocker.patch(
+        "app.routers.studies.FileImport.find",
+        return_value=MagicMock(type="M11_DOCX"),
+    )
+    mock_dv_instance.amendment_details.return_value = {"amendment": "None"}
+    mocker.patch(
+        "app.routers.studies._m11_validation_for_study",
+        return_value={},
+    )
+    mocker.patch(
+        "app.routers.studies.restructure_study_list", return_value={"title": ["Test"]}
+    )
+    mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
+    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
+    response = client.get("/studies/list?list_studies=1")
+    assert response.status_code == 200
+    text = response.text
+    # Criteria from BOTH designs, each under its design label
+    assert "Design One" in text
+    assert "Design Two" in text
+    assert "Adults over 18" in text
+    assert "Healthy volunteers" in text
+    # Both designs' criteria collected via the shared item map
+    sd1.inclusion_criteria.assert_called_once()
+    sd2.inclusion_criteria.assert_called_once()
+
+
 def test_study_list_renders_validation_badges(mocker, monkeypatch):
     """When M11Validator returns findings, the comparison view renders a
     badge (bootstrap icon) per finding on the matching cell."""

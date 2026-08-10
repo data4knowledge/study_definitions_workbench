@@ -49,6 +49,48 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
     assert_view_menu(response.text, "summary", templates=["M11"])
 
 
+def test_version_summary_multiple_designs(mocker, monkeypatch):
+    """Two study designs render as proper Bootstrap tabs: exactly one
+    active tab / visible pane, one pane per design targeting its own
+    design-scoped summary URL, and innerHTML swaps so the pane wrapper
+    survives the HTMX load."""
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mock_transmit_role_enabled_true(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_json_templates(mocker, "app.routers.versions")
+    mock_fhir_versions(mocker, "app.routers.versions")
+    usv = mocker.patch("app.routers.versions.USDMJson.study_version")
+    usv.return_value = {
+        "id": "1",
+        "version_identifier": "1",
+        "identifiers": {
+            "C54149": {"label": "Sponsor", "identifier": "STUDY-001"}
+        },
+        "titles": {"C207616": "Two Design Study"},
+        "study_designs": {
+            "SD_1": {"id": "SD_1", "name": "Design 1", "label": "Design One"},
+            "SD_2": {"id": "SD_2", "name": "Design 2", "label": "Design Two"},
+        },
+        "phase": "Phase I,Phase II",
+    }
+    response = client.get("/versions/1/summary")
+    assert response.status_code == 200
+    text = response.text
+    # Both tabs present, only the first active
+    assert "Summary: Design One" in text
+    assert "Summary: Design Two" in text
+    assert text.count('aria-selected="true"') == 1
+    assert text.count('aria-selected="false"') == 1
+    assert text.count('class="tab-pane fade show active"') == 1
+    assert text.count('class="tab-pane fade"') == 1
+    # Each pane loads its own design's summary and keeps its wrapper
+    assert "/versions/1/studyDesigns/SD_1/summary" in text
+    assert "/versions/1/studyDesigns/SD_2/summary" in text
+    assert text.count('hx-swap="innerHTML"') == 2
+
+
 def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)

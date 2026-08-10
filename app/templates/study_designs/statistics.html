@@ -4,7 +4,7 @@
       <div class="card-body">
         <h5 class="card-title">Overall Design</h5>
         <h6 class="card-subtitle text-muted">Key aspects of the design</h6>
-        {% set id = "overall_param_" ~ data['uuid'] ~"_div" %}
+        {% set id = "overall_param_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/overallParameters" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
@@ -12,7 +12,7 @@
         </div>
         {% if not data['m11'] %}
           <h6 class="card-subtitle text-muted mt-3">Design Parameters</h6>
-          {% set id = "design_param_" ~ data['uuid'] ~"_div" %}
+          {% set id = "design_param_" ~ data['study_design_id'] ~"_div" %}
           <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/designParameters" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
             {% with %}
               {% include "shared/partials/spinner.html" %}
@@ -25,7 +25,7 @@
       <div class="card-body">
         <h5 class="card-title">Interventions</h5>
         <h6 class="card-subtitle text-muted">Overview of Trial Interventions</h6>
-        {% set id = "intervention_" ~ data['uuid'] ~"_div" %}
+        {% set id = "intervention_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/interventions" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
@@ -39,7 +39,7 @@
       <div class="card-body">
         <h5 class="card-title">Objectives, Endpoints, Estimands</h5>
         <h6 class="card-subtitle text-muted">Estimands, objectives and associated endpoints</h6>
-        {% set id = "estimands_" ~ data['uuid'] ~"_div" %}
+        {% set id = "estimands_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/estimands" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
@@ -53,21 +53,21 @@
       <div class="card-body">
         <h5 class="card-title">Statistical</h5>
         <h6 class="card-subtitle text-muted">Sample Size Determination</h6>
-        {% set id = "sample_size_" ~ data['id'] ~"_div" %}
+        {% set id = "sample_size_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/sampleSize" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
           {% endwith %}            
         </div>
         <h6 class="card-subtitle text-muted mt-3">Analysis Sets</h6>
-        {% set id = "analysis_sets_" ~ data['id'] ~"_div" %}
+        {% set id = "analysis_sets_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/analysisSets" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
           {% endwith %}            
         </div>
         <h6 class="card-subtitle text-muted mt-3">Analysis Associated with Primary Objective</h6>
-        {% set id = "analysis_objective_" ~ data['id'] ~"_div" %}
+        {% set id = "analysis_objective_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/analysisObjective" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}

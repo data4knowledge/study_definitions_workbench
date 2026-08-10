@@ -4,7 +4,7 @@
       <div class="card-body">
         <h5 class="card-title">Trial Schema</h5>
         <h6 class="card-subtitle text-muted">Overall trial schema</h6>
-        {% set id = "schema_" ~ data['id'] ~"_div" %}
+        {% set id = "schema_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/schema" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
@@ -16,7 +16,7 @@
       <div class="card-body">
         <h5 class="card-title">Interventions</h5>
         <h6 class="card-subtitle text-muted">Overview of Trial Interventions</h6>
-        {% set id = "intervention_" ~ data['uuid'] ~"_div" %}
+        {% set id = "intervention_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/interventions" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
@@ -30,7 +30,7 @@
       <div class="card-body">
         <h5 class="card-title">Adverse Events</h5>
         <h6 class="card-subtitle text-muted">Adverse Events of Special Interest</h6>
-        {% set id = "overall_param_" ~ data['uuid'] ~"_div" %}
+        {% set id = "overall_param_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/aeSpecialInterest" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
@@ -44,7 +44,7 @@
       <div class="card-body">
         <h5 class="card-title">Safety Assessments & Procedures</h5>
         <h6 class="card-subtitle text-muted">Safety Assessments & Procedures</h6>
-        {% set id = "estimands_" ~ data['uuid'] ~"_div" %}
+        {% set id = "estimands_" ~ data['study_design_id'] ~"_div" %}
         <div id="{{id}}" class="container" hx-get="/versions/{{data['id']}}/studyDesigns/{{data['study_design_id']}}/safetyAssessments" hx-trigger="load" hx-target="#{{id}}" hx-swap="outerHTML">
           {% with %}
             {% include "shared/partials/spinner.html" %}
