@@ -68,6 +68,7 @@ def test_version_summary_multiple_designs(mocker, monkeypatch):
         "identifiers": {
             "C54149": {"label": "Sponsor", "identifier": "STUDY-001"}
         },
+        "sponsor": {"label": "Sponsor", "identifier": "STUDY-001"},
         "titles": {"C207616": "Two Design Study"},
         "study_designs": {
             "SD_1": {"id": "SD_1", "name": "Design 1", "label": "Design One"},

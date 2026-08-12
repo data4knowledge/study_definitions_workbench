@@ -53,6 +53,23 @@ class TestStudyVersion:
         assert result["identifiers"]["C188863"]["label"] == "Regulatory"
         assert result["identifiers"]["C188863"]["identifier"] == "REG-002"
 
+    def test_sponsor_resolved_via_parsed_model(self):
+        # Sponsor is no longer read off the raw ``identifiers`` dict (which
+        # only works if the sponsor org happens to be typed C54149) — it
+        # comes from StudyVersion.sponsor_organization() on the parsed
+        # model, which finds the org via the Sponsor (C70793) StudyRole
+        # first, falling back to a C54149-typed org. Exercise that here by
+        # stubbing the parsed model directly, independent of what org type
+        # code the raw dict uses.
+        usdm = _build_usdm()
+        version_model = MagicMock()
+        version_model.sponsor_label_name.return_value = "LILLY"
+        version_model.sponsor_identifier_text.return_value = "H6D-MC-LZZT"
+        usdm._wrapper.study.versions = [version_model]
+        result = usdm.study_version()
+        assert result["sponsor"]["label"] == "LILLY"
+        assert result["sponsor"]["identifier"] == "H6D-MC-LZZT"
+
     def test_design_with_label(self):
         usdm = _build_usdm()
         result = usdm.study_version()

@@ -170,6 +170,16 @@ class USDMJson:
     def study_version(self):
         version = self._data["study"]["versions"][0]
         orgs = {x["id"]: x for x in version["organizations"]}
+        # Sponsor is resolved via the parsed model, not by guessing at a
+        # fixed CT code here — StudyVersion.sponsor_organization() looks
+        # for the org carrying the Sponsor (C70793) StudyRole first, and
+        # only falls back to an org typed C54149 (Pharmaceutical Company)
+        # if no such role is present. Organisation.type is an extensible
+        # CDISC codelist, so a hardcoded type-code lookup (the previous
+        # ``identifiers['C54149']`` approach) breaks on valid files that
+        # type their sponsor org differently — e.g. the official DDF-RA
+        # pilot example, which uses C70793 directly on the organisation.
+        version_model: StudyVersion = self._wrapper.study.versions[0]
         result = {
             "id": self.id,
             "version_identifier": version["versionIdentifier"],
@@ -177,6 +187,10 @@ class USDMJson:
             "titles": {},
             "study_designs": {},
             "phase": "",
+            "sponsor": {
+                "label": version_model.sponsor_label_name(),
+                "identifier": version_model.sponsor_identifier_text(),
+            },
         }
         for identifier in version["studyIdentifiers"]:
             org = orgs[identifier["scopeId"]]

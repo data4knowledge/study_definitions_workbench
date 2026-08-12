@@ -49,6 +49,10 @@ def mock_usdm_study_version(mocker, path="app.main"):
                     "identifier": "STUDY-001",
                 }
             },
+            "sponsor": {
+                "label": "Identifier For Test",
+                "identifier": "STUDY-001",
+            },
             "titles": {"C207616": "The Offical Study Title For Test"},
             "study_designs": {
                 "xxx": {
