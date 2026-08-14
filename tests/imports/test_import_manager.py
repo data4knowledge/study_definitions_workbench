@@ -1,11 +1,13 @@
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
-from unittest.mock import MagicMock, patch, AsyncMock
-from app.imports.import_manager import ImportManager, execute_import
+
 from app.database.user import User
+from app.imports.import_manager import ImportManager, execute_import
 from app.imports.import_processors import (
     ImportExcel,
-    ImportM11,
     ImportFhirPRISM2,
+    ImportM11,
     ImportUSDM4,
 )
 
@@ -225,8 +227,8 @@ class TestImportManager:
         extra_files = [{"filename": "design_1.xlsx", "contents": b"design"}]
 
         with patch("app.imports.import_manager.USDM4Excel") as mock_excel:
-            mock_excel.return_value.is_main_workbook.side_effect = (
-                lambda path: path == "/dir/main.xlsx"
+            mock_excel.return_value.is_main_workbook.side_effect = lambda path: (
+                path == "/dir/main.xlsx"
             )
             uuid = manager.save_files(main_file, [], extra_files)
 
@@ -248,8 +250,8 @@ class TestImportManager:
         extra_files = [{"filename": "main.xlsx", "contents": b"main"}]
 
         with patch("app.imports.import_manager.USDM4Excel") as mock_excel:
-            mock_excel.return_value.is_main_workbook.side_effect = (
-                lambda path: path == "/dir/main.xlsx"
+            mock_excel.return_value.is_main_workbook.side_effect = lambda path: (
+                path == "/dir/main.xlsx"
             )
             uuid = manager.save_files(main_file, [], extra_files)
 

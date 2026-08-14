@@ -1,9 +1,12 @@
-from app.database.file_import import FileImport
+from sqlalchemy.orm import Session
+
 from app.database.database_tables import (
     FileImport as FileImportDB,
+)
+from app.database.database_tables import (
     User as UserDB,
 )
-from sqlalchemy.orm import Session
+from app.database.file_import import FileImport
 
 
 def _clean(db: Session):

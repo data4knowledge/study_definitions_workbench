@@ -1,4 +1,5 @@
 import re
+
 from d4k_ms_base.logger import application_logger
 
 
@@ -10,8 +11,8 @@ class ObjectPath:
 
     def get(self, path: str) -> str:
         self._original_path = path
-        path = path[1:] if path.startswith("/") else path
-        path = path[:-1] if path.endswith("/") else path
+        path = path.removeprefix("/")
+        path = path.removesuffix("/")
         self._queue = path.split("/")
         return self._path(self._top_level, self._pop())
 

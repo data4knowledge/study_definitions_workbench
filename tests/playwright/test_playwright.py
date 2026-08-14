@@ -1,7 +1,9 @@
 import os
+
 import pytest
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, expect
+
 from app.__init__ import VERSION
 
 # url = f"https://d4k-sdw-staging.fly.dev"

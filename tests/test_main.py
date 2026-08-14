@@ -1,19 +1,22 @@
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
-from unittest.mock import MagicMock, AsyncMock
-from app.database.user import User
-from app.database.study import Study
-from app.database.version import Version
-from app.database.file_import import FileImport
-from app.database.endpoint import Endpoint
+
 from app.configuration.configuration import application_configuration
+from app.database.endpoint import Endpoint
+from app.database.file_import import FileImport
+from app.database.study import Study
+from app.database.user import User
+from app.database.version import Version
 from tests.mocks.fastapi_mocks import (
+    mock_async_client,
     mock_client,
     mock_client_multiple,
-    mock_async_client,
     protect_endpoint,
 )
-from tests.mocks.user_mocks import mock_user_check_exists
 from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_study_version
+from tests.mocks.user_mocks import mock_user_check_exists
+
 # from tests.mocks.usdm_json_mocks import mock_usdm_json_init, mock_usdm_json_timelines
 # from tests.mocks.file_mocks import mock_file_import_find, mock_file_import_delete, mock_data_file_delete, mock_local_files_dir, mock_local_files_dir_error
 
@@ -299,45 +302,24 @@ def mock_user_check(mocker):
 
 def factory_user() -> User:
     return User(
-        **{
-            "identifier": "FRED",
-            "email": "fred@example.com",
-            "display_name": "Fred Smith",
-            "is_active": True,
-            "id": 1,
-        }
+        identifier="FRED", email="fred@example.com", display_name="Fred Smith", is_active=True, id=1
     )
 
 
 def factory_user_2() -> User:
     return User(
-        **{
-            "identifier": "FRED",
-            "email": "fred@example.com",
-            "display_name": "Fred Smithy",
-            "is_active": True,
-            "id": 1,
-        }
+        identifier="FRED", email="fred@example.com", display_name="Fred Smithy", is_active=True, id=1
     )
 
 
 def factory_study() -> Study:
     return Study(
-        **{
-            "name": "STUDYNAME",
-            "title": "Study Title",
-            "phase": "Phase 1",
-            "sponsor": "ACME",
-            "sponsor_identifier": "STUDY IDENTIFIER",
-            "nct_identifier": "NCT12345678",
-            "id": 1,
-            "user_id": 1,
-        }
+        name="STUDYNAME", title="Study Title", phase="Phase 1", sponsor="ACME", sponsor_identifier="STUDY IDENTIFIER", nct_identifier="NCT12345678", id=1, user_id=1
     )
 
 
 def factory_version() -> Version:
-    return Version(**{"version": "1", "id": 1, "import_id": 1, "study_id": 1})
+    return Version(version="1", id=1, import_id=1, study_id=1)
 
 
 # def factory_file_import() -> FileImport:
@@ -357,12 +339,7 @@ def factory_version() -> Version:
 
 def factory_endpoint() -> FileImport:
     return Endpoint(
-        **{
-            "name": "Endpoint One",
-            "endpoint": "http://example.com",
-            "type": "XXX",
-            "id": 1,
-        }
+        name="Endpoint One", endpoint="http://example.com", type="XXX", id=1
     )
 
 

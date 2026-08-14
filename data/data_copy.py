@@ -1,7 +1,7 @@
 import json
-from pathlib import Path
-import shutil
 import os
+import shutil
+from pathlib import Path
 
 path = "mount/datafiles"
 

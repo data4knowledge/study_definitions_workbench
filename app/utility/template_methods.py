@@ -1,6 +1,8 @@
 import json
-from app.configuration.configuration import application_configuration
+
 from d4k_ms_base.logger import application_logger
+
+from app.configuration.configuration import application_configuration
 
 
 def server_name(request) -> str:
@@ -14,9 +16,7 @@ def server_name(request) -> str:
         return "TRAINING"
     elif "d4k-sdw" in name:
         return "PRODUCTION"
-    elif "localhost" in name:
-        return "DEVELOPMENT"
-    elif "0.0.0.0" in name:
+    elif "localhost" in name or "0.0.0.0" in name:
         return "DEVELOPMENT"
     elif "dnanexus.cloud" in name:
         return "PRISM"

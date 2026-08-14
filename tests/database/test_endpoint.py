@@ -1,10 +1,15 @@
-from unittest.mock import patch, MagicMock
-from app.database.endpoint import Endpoint
+from unittest.mock import MagicMock, patch
+
 from app.database.database_tables import (
     Endpoint as EndpointDB,
+)
+from app.database.database_tables import (
     User as UserDB,
+)
+from app.database.database_tables import (
     UserEndpoint as UserEndpointDB,
 )
+from app.database.endpoint import Endpoint
 
 
 def _clean_db(db):
@@ -414,7 +419,7 @@ def test_delete_endpoint_with_no_users():
                 first=lambda: MagicMock(endpoints=MagicMock(remove=MagicMock()))
             )
         ),
-        UserEndpointDB: MagicMock(filter=lambda *args: MagicMock(all=lambda: [])),
+        UserEndpointDB: MagicMock(filter=lambda *args: MagicMock(all=list)),
     }[model]
 
     # Create an endpoint instance

@@ -463,19 +463,6 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: 'Warning raised within Soup package, processing ''Investigator has obtained
-    informed consent signed by the patient (and/or legal representative) and by the
-    caregiver. ''
-
-    Message returned ''The input looks more like a filename than markup. You may want
-    to open this file and pass the filehandle into Beautiful Soup.'''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
   level: Error
   location: {}
   message: "RawList item detected with no previous RawListItem entries, type: '<class\

@@ -1,21 +1,23 @@
-import pytest
 from unittest.mock import MagicMock
-from app.database.version import Version
+
+import pytest
+
 from app.configuration.configuration import application_configuration
-from tests.mocks.general_mocks import mock_called
-from tests.mocks.user_mocks import mock_user_check_exists
-from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
-from tests.mocks.utility_mocks import (
-    mock_transmit_role_enabled_true,
-    mock_transmit_role_enabled_false,
-)
-from tests.mocks.usdm_json_mocks import (
-    mock_usdm_json_init,
-    mock_usdm_study_version,
-    mock_usdm_json_templates,
-)
+from app.database.version import Version
+from tests.mocks.fastapi_mocks import mock_client, protect_endpoint
 from tests.mocks.fhir_version_mocks import mock_fhir_versions
 from tests.mocks.file_mocks import mock_file_import_find
+from tests.mocks.general_mocks import mock_called
+from tests.mocks.usdm_json_mocks import (
+    mock_usdm_json_init,
+    mock_usdm_json_templates,
+    mock_usdm_study_version,
+)
+from tests.mocks.user_mocks import mock_user_check_exists
+from tests.mocks.utility_mocks import (
+    mock_transmit_role_enabled_false,
+    mock_transmit_role_enabled_true,
+)
 
 
 @pytest.fixture
@@ -65,9 +67,7 @@ def test_version_summary_multiple_designs(mocker, monkeypatch):
     usv.return_value = {
         "id": "1",
         "version_identifier": "1",
-        "identifiers": {
-            "C54149": {"label": "Sponsor", "identifier": "STUDY-001"}
-        },
+        "identifiers": {"C54149": {"label": "Sponsor", "identifier": "STUDY-001"}},
         "sponsor": {"label": "Sponsor", "identifier": "STUDY-001"},
         "titles": {"C207616": "Two Design Study"},
         "study_designs": {
@@ -251,7 +251,7 @@ def mock_version_page(mocker):
 
 
 def factory_version() -> Version:
-    return Version(**{"version": "1", "id": 1, "import_id": 1, "study_id": 1})
+    return Version(version="1", id=1, import_id=1, study_id=1)
 
 
 def test_export_excel_success(mocker, monkeypatch):
@@ -327,9 +327,7 @@ def test_export_excel_failure(mocker, monkeypatch):
 
     # Verify the response
     assert response.status_code == 200
-    assert (
-        "Error downloading the requested Excel format file" in response.text
-    )
+    assert "Error downloading the requested Excel format file" in response.text
 
     # Verify the mocks were called correctly
     assert mock_called(uc)
@@ -516,6 +514,7 @@ def test_protocol_other(mocker, monkeypatch):
 @pytest.mark.anyio
 async def test_versions_post_load_success(mocker, monkeypatch):
     from unittest.mock import AsyncMock
+
     from tests.mocks.fastapi_mocks import mock_async_client
 
     protect_endpoint()
@@ -547,6 +546,7 @@ async def test_versions_post_load_success(mocker, monkeypatch):
 @pytest.mark.anyio
 async def test_versions_post_load_failure(mocker, monkeypatch):
     from unittest.mock import AsyncMock
+
     from tests.mocks.fastapi_mocks import mock_async_client
 
     protect_endpoint()

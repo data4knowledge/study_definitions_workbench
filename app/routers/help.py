@@ -1,14 +1,16 @@
 import os
+
+from d4k_ms_ui.markdown_page import MarkdownPage
+from d4k_ms_ui.release_notes import ReleaseNotes
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
-from d4k_ms_ui.release_notes import ReleaseNotes
-from d4k_ms_ui.markdown_page import MarkdownPage
+from usdm4.__info__ import __model_version__ as usdm_version
+
+from app import SYSTEM_NAME, VERSION
 from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import user_details
 from app.dependencies.templates import templates, templates_path
-from app import VERSION, SYSTEM_NAME
-from usdm4.__info__ import __model_version__ as usdm_version
+from app.dependencies.utility import user_details
 
 router = APIRouter(prefix="/help", tags=["help"])
 PARTIALS_PATH = os.path.join(templates_path, "help", "partials")

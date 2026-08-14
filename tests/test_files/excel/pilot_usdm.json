@@ -1236,7 +1236,7 @@
                 ],
                 "bcCategoryIds": [],
                 "bcSurrogateIds": [],
-                "timelineId": null,
+                "timelineId": "ScheduleTimeline_4",
                 "notes": [],
                 "instanceType": "Activity"
               },

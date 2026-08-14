@@ -1,10 +1,15 @@
-from app.database.user_endpoint import UserEndpoint
+from sqlalchemy.orm import Session
+
 from app.database.database_tables import (
-    UserEndpoint as UserEndpointDB,
-    User as UserDB,
     Endpoint as EndpointDB,
 )
-from sqlalchemy.orm import Session
+from app.database.database_tables import (
+    User as UserDB,
+)
+from app.database.database_tables import (
+    UserEndpoint as UserEndpointDB,
+)
+from app.database.user_endpoint import UserEndpoint
 
 
 def _clean(db: Session):

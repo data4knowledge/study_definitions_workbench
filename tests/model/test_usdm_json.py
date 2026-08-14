@@ -1,5 +1,6 @@
 import copy
 from unittest.mock import MagicMock, patch
+
 from app.model.usdm_json import USDMJson
 from tests.helpers.usdm_test_data import build_usdm_data
 

@@ -1,12 +1,13 @@
 # import json
 # import yaml
-from app.database.file_import import FileImport
-from app.model.file_handling.data_files import DataFiles
-from app.database.version import Version
 from sqlalchemy.orm import Session
 
 # from app.imports.import_manager import ImportManager
 from usdm4_excel import USDM4Excel
+
+from app.database.file_import import FileImport
+from app.database.version import Version
+from app.model.file_handling.data_files import DataFiles
 
 
 class USDMDatabase:

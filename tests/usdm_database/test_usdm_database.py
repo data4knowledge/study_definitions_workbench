@@ -1,10 +1,12 @@
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 from sqlalchemy.orm import Session
-from app.usdm_database.usdm_database import USDMDatabase
-from app.database.version import Version
+
 from app.database.file_import import FileImport
+from app.database.version import Version
 from app.model.file_handling.data_files import DataFiles
+from app.usdm_database.usdm_database import USDMDatabase
 
 
 class TestUSDMDatabase:

@@ -1,9 +1,12 @@
-from app.database.transmission import Transmission
+from sqlalchemy.orm import Session
+
 from app.database.database_tables import (
     TransmissionTable,
+)
+from app.database.database_tables import (
     User as UserDB,
 )
-from sqlalchemy.orm import Session
+from app.database.transmission import Transmission
 
 
 def _clean(db: Session):

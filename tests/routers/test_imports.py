@@ -1,10 +1,11 @@
 import pytest
+from usdm4.__info__ import __model_version__ as usdm_version
+
 from app.configuration.configuration import application_configuration
-from tests.mocks.fastapi_mocks import protect_endpoint, mock_client, mock_async_client
+from tests.mocks.factory_mocks import factory_file_import
+from tests.mocks.fastapi_mocks import mock_async_client, mock_client, protect_endpoint
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import mock_user_check_exists
-from tests.mocks.factory_mocks import factory_file_import
-from usdm4.__info__ import __model_version__ as usdm_version
 
 
 @pytest.fixture

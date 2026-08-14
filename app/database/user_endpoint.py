@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
+
 from app.database.database_tables import UserEndpoint as UserEndpointDB
 
 

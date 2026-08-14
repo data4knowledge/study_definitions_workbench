@@ -37,7 +37,6 @@ import io
 import json
 from datetime import date
 
-
 # The canonical field set — mirrors the column set rendered in the
 # shared ``validate/partials/results.html`` table so the download
 # carries every field the user sees on screen.  The display fuses
@@ -203,7 +202,7 @@ def to_xlsx(
     worksheet titles at 31 characters; callers should stay within that.
     """
     from openpyxl import Workbook
-    from openpyxl.styles import Font, Alignment
+    from openpyxl.styles import Alignment, Font
 
     wb = Workbook()
     ws = wb.active

@@ -1,14 +1,16 @@
-from typing import Annotated, Optional
-from fastapi import APIRouter, Form, Depends, Request, status
+from typing import Annotated
+
+from d4k_ms_base.logger import application_logger
+from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
-from app.database.user import User
-from app.database.endpoint import Endpoint
+
 from app.database.database import get_db
+from app.database.endpoint import Endpoint
+from app.database.user import User
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import admin_role_enabled, user_details
 from app.dependencies.templates import templates
-from d4k_ms_base.logger import application_logger
+from app.dependencies.utility import admin_role_enabled, user_details
 
 router = APIRouter(
     prefix="/users", tags=["users"], dependencies=[Depends(protect_endpoint)]
@@ -31,8 +33,8 @@ def manage_users(request: Request, session: Session = Depends(get_db)):
 def update_user_roles(
     request: Request,
     id: int,
-    admin: Optional[str] = Form(None),
-    transmit: Optional[str] = Form(None),
+    admin: str | None = Form(None),
+    transmit: str | None = Form(None),
     session: Session = Depends(get_db),
 ):
     """Update a user's stored roles. Admin only; rendered as an HTMX row."""

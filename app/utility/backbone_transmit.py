@@ -19,14 +19,16 @@ set, is sent as an ``X-API-Key`` header.
 
 import asyncio
 import threading
+
 import httpx
-from app.database.database import SessionLocal
 from d4k_ms_base.logger import application_logger
-from app.model.connection_manager import connection_manager
-from app.database.user import User
-from app.database.transmission import Transmission
-from app.model.usdm_json import USDMJson
+
 from app.configuration.configuration import application_configuration
+from app.database.database import SessionLocal
+from app.database.transmission import Transmission
+from app.database.user import User
+from app.model.connection_manager import connection_manager
+from app.model.usdm_json import USDMJson
 
 TIMEOUT = 120.0
 ERROR_LEN = 200

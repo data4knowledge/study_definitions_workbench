@@ -1,9 +1,11 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
 from app.configuration.configuration import application_configuration
+from tests.mocks.fastapi_mocks import mock_async_client, mock_client, protect_endpoint
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import mock_user_check_exists
-from tests.mocks.fastapi_mocks import protect_endpoint, mock_client, mock_async_client
 
 
 @pytest.fixture

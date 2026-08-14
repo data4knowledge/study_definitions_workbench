@@ -64,7 +64,7 @@ FILES = [
 TERMINAL_OK = "Success"
 TERMINAL = {"Success", "Failed", "Exception"}
 
-_ROW_RE = re.compile(r"<tr>(.*?)</tr>", re.S)
+_ROW_RE = re.compile(r"<tr>(.*?)</tr>", re.DOTALL)
 # Only matches <td> cells with plain text (no nested tags): the first four
 # columns are Type, Imported At, File Name, Status. The Errors / Validation
 # columns hold anchors and are skipped.

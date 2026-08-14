@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import mock_open
+
+import pytest
 
 from app.model.file_handling.data_files import DataFiles
 

@@ -1,8 +1,9 @@
 import pytest
 from fastapi import FastAPI, HTTPException
-from tests.mocks.general_mocks import mock_called, mock_parameters_correct
 from starlette.middleware.sessions import SessionMiddleware
+
 from app.configuration.configuration import application_configuration
+from tests.mocks.general_mocks import mock_called, mock_parameters_correct
 
 
 class _Req:

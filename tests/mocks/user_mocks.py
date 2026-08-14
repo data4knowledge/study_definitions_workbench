@@ -1,4 +1,4 @@
-from tests.mocks.factory_mocks import factory_user, factory_user_2, factory_endpoint
+from tests.mocks.factory_mocks import factory_endpoint, factory_user, factory_user_2
 
 
 def mock_user_endpoints_page(mocker):

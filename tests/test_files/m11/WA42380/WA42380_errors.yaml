@@ -412,51 +412,6 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tSigned Informed\
-    \ Consent Form by any patient capable of giving consent, or, when the patient\
-    \ is not capable of giving consent, by his or her legal/authorized representative'\n\
-    Message returned 'The input looks more like a filename than markup. You may want\
-    \ to open this file and pass the filehandle into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tSpO2 \uF0A3 93%\
-    \ or PaO2/FiO2 \uF03C 300 mmHg'\nMessage returned 'The input looks more like a\
-    \ filename than markup. You may want to open this file and pass the filehandle\
-    \ into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tANC &lt; 1000/\uF06D\
-    L at screening (according to local laboratory reference ranges)'\nMessage returned\
-    \ 'The input looks more like a filename than markup. You may want to open this\
-    \ file and pass the filehandle into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tPlatelet count\
-    \ \uF03C 50,000/\uF06DL at screening (according to local laboratory reference\
-    \ ranges)'\nMessage returned 'The input looks more like a filename than markup.\
-    \ You may want to open this file and pass the filehandle into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
   level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions

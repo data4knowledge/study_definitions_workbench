@@ -1,5 +1,7 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 from bs4 import BeautifulSoup
+
 from app.utility.soup import get_soup
 
 

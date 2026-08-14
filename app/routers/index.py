@@ -1,14 +1,16 @@
 import json
+
+from d4k_ms_ui.pagination import Pagination
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
+
+from app.database.database import get_db
 from app.database.study import Study
 from app.database.user import User
-from d4k_ms_ui.pagination import Pagination
-from app.database.database import get_db
 from app.dependencies.dependency import protect_endpoint
+from app.dependencies.fhir_version import fhir_versions
 from app.dependencies.templates import templates
 from app.dependencies.utility import transmit_role_enabled, user_details
-from app.dependencies.fhir_version import fhir_versions
 
 COOKIE = "index_filter"
 

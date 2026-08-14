@@ -1,6 +1,8 @@
 import httpx
-from app.utility.service import Service
 from d4k_ms_base.service_environment import ServiceEnvironment
+
+from app.utility.service import Service
+
 # from d4kms_generic.service import Service
 
 

@@ -1,30 +1,32 @@
 import ast
 import csv
 import json
-import yaml
-from app.database.file_import import FileImport
-from app.model.file_handling.data_files import DataFiles
-from usdm4_fhir import M11 as FHIRM11
 
-# from usdm4_fhir import SoA as FHIRSoA
-from usdm4_fhir.soa.export.export_soa import ExportSoA as FHIRSoA
-from app.configuration.configuration import application_configuration
-from app.database.version import Version
+import yaml
+from simple_error_log import Errors
 from sqlalchemy.orm import Session
-from usdm4.api.wrapper import Wrapper
-from app.imports.import_manager import ImportManager
 from usdm4 import USDM4
 from usdm4.api.study import Study
-from usdm4.api.study_design import StudyDesign
-from usdm4.api.study_version import StudyVersion
 from usdm4.api.study_definition_document import (
     StudyDefinitionDocument,
     StudyDefinitionDocumentVersion,
 )
-from usdm4_protocol.soa.soa_model import SoA
+from usdm4.api.study_design import StudyDesign
+from usdm4.api.study_version import StudyVersion
+from usdm4.api.wrapper import Wrapper
+from usdm4_fhir import M11 as FHIRM11
+
+# from usdm4_fhir import SoA as FHIRSoA
+from usdm4_fhir.soa.export.export_soa import ExportSoA as FHIRSoA
 from usdm4_protocol.cpt.views.document_view import DocumentView as CPTDocumentView
 from usdm4_protocol.m11.views.document_view import DocumentView as M11DocumentView
-from simple_error_log import Errors
+from usdm4_protocol.soa.soa_model import SoA
+
+from app.configuration.configuration import application_configuration
+from app.database.file_import import FileImport
+from app.database.version import Version
+from app.imports.import_manager import ImportManager
+from app.model.file_handling.data_files import DataFiles
 from app.utility.soup import get_soup
 
 
@@ -552,13 +554,11 @@ class USDMJson:
 
     def _get_level(self, narrative_content: dict):
         section_number = narrative_content["sectionNumber"]
-        if section_number is None:
-            result = 1
-        elif section_number.lower().startswith("appendix"):
+        if section_number is None or section_number.lower().startswith("appendix"):
             result = 1
         else:
             text = (
-                section_number[:-1] if section_number.endswith(".") else section_number
+                section_number.removesuffix(".")
             )
             result = len(text.split("."))
         return result
@@ -734,10 +734,8 @@ class USDMJson:
             result = self._min_max(population["plannedAge"])
             for cohort in population["cohorts"]:
                 cohort = self._min_max(population["plannedAge"])
-                if cohort["min"] < result["min"]:
-                    result["min"] = cohort["min"]  # pragma: no cover
-                if cohort["max"] > result["max"]:
-                    result["max"] = cohort["max"]  # pragma: no cover
+                result["min"] = min(result["min"], cohort["min"])  # pragma: no cover
+                result["max"] = max(result["max"], cohort["max"])  # pragma: no cover
             return result
         except Exception:
             return self._missing_ages()

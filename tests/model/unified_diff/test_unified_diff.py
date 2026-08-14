@@ -1,4 +1,4 @@
-from app.model.unified_diff.unified_diff import UnifiedDiff, Hunk, LineRange
+from app.model.unified_diff.unified_diff import Hunk, LineRange, UnifiedDiff
 
 
 def test_line_range():

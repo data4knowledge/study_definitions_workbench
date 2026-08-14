@@ -1,10 +1,11 @@
 import json
 from unittest.mock import MagicMock, patch
+
 from app.utility.template_methods import (
+    convert_to_json,
+    restructure_study_list,
     server_name,
     single_multiple,
-    restructure_study_list,
-    convert_to_json,
 )
 
 
@@ -80,6 +81,7 @@ class TestConvertToJson:
         data = {"key": "value"}
         result = convert_to_json(data)
         assert json.loads(result) == data
+
 
 class TestEllipsize:
     def test_short_text_unchanged(self):

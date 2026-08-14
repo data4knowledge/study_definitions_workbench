@@ -1,7 +1,8 @@
 import pytest
+
+from tests.mocks.fastapi_mocks import mock_client, protect_endpoint
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import mock_user_check_exists
-from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
 
 
 @pytest.fixture

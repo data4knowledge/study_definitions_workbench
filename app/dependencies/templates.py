@@ -1,13 +1,9 @@
 import os
 from pathlib import Path
+
 from d4k_ms_base.logger import application_logger
 from fastapi.templating import Jinja2Templates
-from app.utility.template_methods import (
-    server_name,
-    single_multiple,
-    convert_to_json,
-    ellipsize,
-)
+
 from app.dependencies.fhir_version import (
     fhir_version_description,
     fhir_version_export,
@@ -15,9 +11,15 @@ from app.dependencies.fhir_version import (
     fhir_version_transmit,
 )
 from app.imports.import_manager import ImportManager
+from app.utility.template_methods import (
+    convert_to_json,
+    ellipsize,
+    server_name,
+    single_multiple,
+)
 
 full_path = os.path.realpath(__file__)
-templates_path = f"{str(Path(full_path).parents[1])}/templates"
+templates_path = f"{Path(full_path).parents[1]!s}/templates"
 templates = Jinja2Templates(directory=templates_path)
 application_logger.info(f"Template dir set to '{templates_path}'")
 

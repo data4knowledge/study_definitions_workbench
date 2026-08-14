@@ -286,30 +286,6 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: 'Warning raised within Soup package, processing ''Be willing and able to
-    provide written informed consent/assent for the trial. ''
-
-    Message returned ''The input looks more like a filename than markup. You may want
-    to open this file and pass the filehandle into Beautiful Soup.'''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: 'Warning raised within Soup package, processing ''Has a known history of
-    Human Immunodeficiency Virus (HIV) (HIV 1/2 antibodies). ''
-
-    Message returned ''The input looks more like a filename than markup. You may want
-    to open this file and pass the filehandle into Beautiful Soup.'''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
   level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions

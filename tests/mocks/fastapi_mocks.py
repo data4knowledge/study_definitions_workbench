@@ -1,11 +1,10 @@
+from fastapi import Request
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
-from fastapi import Request
 
 
 def protect_endpoint():
-    from app.main import app
-    from app.main import protect_endpoint
+    from app.main import app, protect_endpoint
 
     def override_protect_endpoint(request: Request):
         request.session["userinfo"] = {
@@ -14,7 +13,6 @@ def protect_endpoint():
             "nickname": "Nickname",
             "roles": [],
         }
-        return None
 
     app.dependency_overrides[protect_endpoint] = override_protect_endpoint
 

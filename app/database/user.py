@@ -1,10 +1,12 @@
 import re
 from typing import ClassVar
+
+from d4k_ms_base.logger import application_logger
 from pydantic import BaseModel, ConfigDict
+from sqlalchemy.orm import Session
+
 from app.database.database_tables import User as UserDB
 from app.model.exceptions import FindException
-from sqlalchemy.orm import Session
-from d4k_ms_base.logger import application_logger
 
 
 class UserBase(BaseModel):
@@ -73,7 +75,7 @@ class User(UserBase):
     def endpoints_page(
         cls, page: int, size: int, user_id: int, session: Session
     ) -> list[dict]:
-        page = page if page >= 1 else 1
+        page = max(page, 1)
         size = size if size > 0 else 10
         skip = (page - 1) * size
         user = session.query(UserDB).filter(UserDB.id == user_id).first()

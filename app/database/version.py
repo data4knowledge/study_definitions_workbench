@@ -1,7 +1,8 @@
 from pydantic import BaseModel, ConfigDict
-from app.database.database_tables import Version as VersionDB
-from sqlalchemy.orm import Session
 from sqlalchemy import desc
+from sqlalchemy.orm import Session
+
+from app.database.database_tables import Version as VersionDB
 
 
 class VersionBase(BaseModel):
@@ -57,7 +58,7 @@ class Version(VersionBase):
     def page(
         cls, page: int, size: int, filter: str, study_id: int, session: Session
     ) -> list[dict]:
-        page = page if page >= 1 else 1
+        page = max(page, 1)
         size = size if size > 0 else 10
         skip = (page - 1) * size
         count = session.query(VersionDB).filter(VersionDB.study_id == study_id).count()

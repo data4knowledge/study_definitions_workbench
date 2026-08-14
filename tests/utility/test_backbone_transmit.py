@@ -1,14 +1,16 @@
 import json
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
+
 from app.configuration.configuration import application_configuration
 from app.utility.backbone_transmit import (
+    _outcome_message,
     backbone_enabled,
     backbone_headers,
     backbone_load_url,
     backbone_transmit,
     run_backbone_transmit,
-    _outcome_message,
 )
 
 
@@ -57,9 +59,7 @@ class TestConfiguration:
         assert backbone_load_url() == "http://backbone:8000/v1/studies"
 
     def test_headers_with_api_key(self, mocker):
-        mocker.patch.object(
-            application_configuration, "backbone_api_key", "secret-key"
-        )
+        mocker.patch.object(application_configuration, "backbone_api_key", "secret-key")
         assert backbone_headers() == {"X-API-Key": "secret-key"}
 
     def test_headers_without_api_key(self, mocker):

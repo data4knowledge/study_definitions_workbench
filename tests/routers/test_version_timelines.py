@@ -1,13 +1,15 @@
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
+
+from tests.mocks.fastapi_mocks import mock_client, protect_endpoint
 from tests.mocks.general_mocks import mock_called
-from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
 from tests.mocks.usdm_json_mocks import (
-    mock_usdm_json_init,
-    mock_usdm_json_timelines,
-    mock_usdm_json_soa,
     mock_usdm_json_fhir_soa,
     mock_usdm_json_fhir_soa_error,
+    mock_usdm_json_init,
+    mock_usdm_json_soa,
+    mock_usdm_json_timelines,
 )
 
 

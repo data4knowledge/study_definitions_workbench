@@ -1,16 +1,18 @@
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
+
+from tests.mocks.factory_mocks import factory_user
+from tests.mocks.fastapi_mocks import mock_client, protect_endpoint
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.user_mocks import (
-    mock_user_endpoints_page,
-    mock_user_valid,
-    mock_endpoint_valid,
-    mock_user_update_display_name,
     mock_endpoint_create,
+    mock_endpoint_valid,
+    mock_user_endpoints_page,
     mock_user_find,
+    mock_user_update_display_name,
+    mock_user_valid,
 )
-from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
-from tests.mocks.factory_mocks import factory_user
 
 
 @pytest.fixture

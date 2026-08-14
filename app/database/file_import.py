@@ -1,9 +1,11 @@
 import datetime
 from typing import Optional
+
+from d4k_ms_base.logger import application_logger
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
+
 from app.database.database_tables import FileImport as FileImportDB
-from d4k_ms_base.logger import application_logger
 
 
 class FileImportBase(BaseModel):
@@ -67,7 +69,7 @@ class FileImport(FileImportBase):
 
     @classmethod
     def page(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
-        page = page if page >= 1 else 1
+        page = max(page, 1)
         size = size if size > 0 else 10
         skip = (page - 1) * size
         count = (

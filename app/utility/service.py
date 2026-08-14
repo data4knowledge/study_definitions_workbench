@@ -1,5 +1,6 @@
-import httpx
 import json
+
+import httpx
 from d4k_ms_base.logger import application_logger
 
 
@@ -7,7 +8,7 @@ class Service:
     DEFAULT_TIMEOUT = 5.0
 
     def __init__(self, base_url):
-        self.base_url = base_url[:-1] if base_url.endswith("/") else base_url
+        self.base_url = base_url.removesuffix("/")
         self._client = httpx.AsyncClient(timeout=self.DEFAULT_TIMEOUT)
 
     async def status(self):

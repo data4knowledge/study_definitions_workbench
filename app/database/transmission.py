@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict
-from app.database.database_tables import TransmissionTable
 from sqlalchemy.orm import Session
+
+from app.database.database_tables import TransmissionTable
 
 
 class TransmissionBase(BaseModel):
@@ -35,7 +36,7 @@ class Transmission(TransmissionBase):
 
     @classmethod
     def page(cls, page: int, size: int, user_id: int, session: Session) -> list[dict]:
-        page = page if page >= 1 else 1
+        page = max(page, 1)
         size = size if size > 0 else 10
         skip = (page - 1) * size
         count = (

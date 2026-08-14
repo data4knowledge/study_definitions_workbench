@@ -1,5 +1,5 @@
-from fastapi import WebSocket
 from d4k_ms_base.logger import application_logger
+from fastapi import WebSocket
 
 
 class ConnectionManager:

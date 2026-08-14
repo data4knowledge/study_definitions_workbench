@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Request, HTTPException, status
-from app.database.user import User
+from fastapi import FastAPI, HTTPException, Request, status
 from starlette.middleware.sessions import SessionMiddleware
+
 from app.configuration.configuration import application_configuration
+from app.database.user import User
 
 
 def set_middleware_secret(app: FastAPI):
@@ -13,7 +14,7 @@ def set_middleware_secret(app: FastAPI):
 def protect_endpoint(request: Request) -> None:
     if application_configuration.single_user:
         request.session["userinfo"] = User.single_user()
-        return None
+        return
     # Email-code auth: a logged-in user has 'userinfo' in the session.
     if "userinfo" not in request.session:
         raise HTTPException(

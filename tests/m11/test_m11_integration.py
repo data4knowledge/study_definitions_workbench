@@ -1,11 +1,13 @@
-import re
 import json
+import re
+
 import pytest
-from tests.files.files import write_json, read_json, read_word, write_yaml
-from tests.helpers.errors_clean import errors_clean_all
-from app.model.file_handling.data_files import DataFiles
-from usdm4_protocol.m11 import USDM4M11
 from usdm4.api.wrapper import Wrapper
+from usdm4_protocol.m11 import USDM4M11
+
+from app.model.file_handling.data_files import DataFiles
+from tests.files.files import read_json, read_word, write_json, write_yaml
+from tests.helpers.errors_clean import errors_clean_all
 
 SAVE = False
 

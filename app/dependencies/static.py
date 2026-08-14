@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
+
 from d4k_ms_base.logger import application_logger
 
 _file_path = os.path.realpath(__file__)
-static_path = f"{str(Path(_file_path).parents[1])}/static"
+static_path = f"{Path(_file_path).parents[1]!s}/static"
 application_logger.info(f"Static dir is '{static_path}'")

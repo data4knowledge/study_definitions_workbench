@@ -1,22 +1,24 @@
 import json
 from typing import Annotated
-from fastapi import APIRouter, Form, Depends, Request, status
+
+from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import RedirectResponse
-from sqlalchemy.orm import Session
 from simple_error_log import Errors
-from usdm4.api.wrapper import Wrapper, StudyVersion
+from sqlalchemy.orm import Session
+from usdm4.api.wrapper import StudyVersion, Wrapper
 from usdm4_protocol.m11.views.data_view import DataView
+
+from app.database.database import get_db
+from app.database.file_import import FileImport
 from app.database.study import Study
 from app.database.version import Version
-from app.database.file_import import FileImport
-from app.database.database import get_db
-from app.model.usdm_json import USDMJson
-from app.model.file_handling.data_files import DataFiles
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import transmit_role_enabled, user_details
-from app.dependencies.templates import templates
-from app.utility.template_methods import restructure_study_list
 from app.dependencies.fhir_version import fhir_versions
+from app.dependencies.templates import templates
+from app.dependencies.utility import transmit_role_enabled, user_details
+from app.model.file_handling.data_files import DataFiles
+from app.model.usdm_json import USDMJson
+from app.utility.template_methods import restructure_study_list
 
 router = APIRouter(
     prefix="/studies", tags=["studies"], dependencies=[Depends(protect_endpoint)]

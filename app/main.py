@@ -1,6 +1,8 @@
-import os
 import json
+import os
 import traceback
+
+from d4k_ms_base.logger import application_logger
 from fastapi import (
     Depends,
     FastAPI,
@@ -10,55 +12,53 @@ from fastapi import (
     WebSocketDisconnect,
     status,
 )
-from fastapi.responses import RedirectResponse, FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from d4k_ms_base.logger import application_logger
-from app.database.database import get_db
-from app.database.study import Study
-from app.database.user import User
-from app.database.version import Version
-from app.database.file_import import FileImport
-from app.database.endpoint import Endpoint
-from app.database.user_endpoint import UserEndpoint
-from app.model.connection_manager import connection_manager
 from sqlalchemy.orm import Session
-from app.model.usdm_json import USDMJson
-from app import VERSION, SYSTEM_NAME
-from app.dependencies.fhir_version import check_fhir_version
-from app.utility.fhir_transmit import run_fhir_m11_transmit
-from app.database.database_manager import DatabaseManager as DBM
-from app.model.exceptions import FindException
-from app.model.file_handling.pfda_files import PFDAFiles
-from app.model.file_handling.local_files import LocalFiles
-from app.model.file_handling.data_files import DataFiles
-from app.model.unified_diff.unified_diff import UnifiedDiff
 from usdm4.data_store.data_store import DataStore
 
-from app.routers import (
-    transmissions,
-    users,
-    versions,
-    help,
-    studies,
-    index,
-    version_timelines,
-    imports,
-    validate,
-)
+from app import SYSTEM_NAME, VERSION
+from app.configuration.configuration import application_configuration
+from app.database.database import get_db
+from app.database.database_manager import DatabaseManager as DBM
+from app.database.endpoint import Endpoint
+from app.database.file_import import FileImport
+from app.database.study import Study
+from app.database.user import User
+from app.database.user_endpoint import UserEndpoint
+from app.database.version import Version
 from app.dependencies.dependency import (
-    set_middleware_secret,
     protect_endpoint,
+    set_middleware_secret,
 )
+from app.dependencies.fhir_version import check_fhir_version
+from app.dependencies.templates import templates
+from app.dependencies.utility import admin_role_enabled, user_details
+from app.model.connection_manager import connection_manager
 from app.model.email_auth import (
     generate_code,
     send_code_email,
     send_registration_notification,
     verify_code,
 )
-from app.dependencies.utility import user_details, admin_role_enabled
-from app.dependencies.templates import templates
-
-from app.configuration.configuration import application_configuration
+from app.model.exceptions import FindException
+from app.model.file_handling.data_files import DataFiles
+from app.model.file_handling.local_files import LocalFiles
+from app.model.file_handling.pfda_files import PFDAFiles
+from app.model.unified_diff.unified_diff import UnifiedDiff
+from app.model.usdm_json import USDMJson
+from app.routers import (
+    help,
+    imports,
+    index,
+    studies,
+    transmissions,
+    users,
+    validate,
+    version_timelines,
+    versions,
+)
+from app.utility.fhir_transmit import run_fhir_m11_transmit
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
@@ -88,7 +88,9 @@ app.include_router(imports.router)
 app.include_router(validate.router)
 
 
-def _log_unhandled(request: Request, e: Exception, kind: str) -> None:  # pragma: no cover
+def _log_unhandled(
+    request: Request, e: Exception, kind: str
+) -> None:  # pragma: no cover
     """Log an unhandled exception with its traceback and the request that
     triggered it.
 

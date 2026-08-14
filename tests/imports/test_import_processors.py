@@ -1,13 +1,15 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
+
 from app.imports.import_processors import (
-    ImportProcessorBase,
-    ImportExcel,
-    ImportM11,
     ImportCPT,
-    ImportLegacy,
+    ImportExcel,
     ImportFhirPRISM2,
     ImportFhirPRISM3,
+    ImportLegacy,
+    ImportM11,
+    ImportProcessorBase,
     ImportUSDM4,
 )
 
@@ -227,9 +229,7 @@ class TestImportExcel:
         mock_usdm4_excel.assert_called_once()
         instance = mock_usdm4_excel.return_value
         instance.from_excel.assert_called_once_with("/path/to/file")
-        assert (
-            processor.usdm == instance.from_excel.return_value.to_json.return_value
-        )
+        assert processor.usdm == instance.from_excel.return_value.to_json.return_value
         assert processor.errors == {"errors": []}
 
     @pytest.mark.asyncio

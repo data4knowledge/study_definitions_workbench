@@ -1,30 +1,31 @@
 import json
+
 import yaml
+from d4k_ms_base.logger import application_logger
+from d4k_ms_ui.pagination import Pagination
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
-from d4k_ms_ui.pagination import Pagination
-from d4k_ms_base.logger import application_logger
-from app.database.user import User
-from app.database.version import Version
+from usdm4.api import Wrapper
+from usdm4_protocol.cpt import USDM4CPT
+from usdm4_protocol.m11 import USDM4M11
+
+from app.configuration.configuration import application_configuration
 from app.database.database import get_db
 from app.database.file_import import FileImport
+from app.database.user import User
+from app.database.version import Version
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import transmit_role_enabled, user_details
-from app.dependencies.templates import templates
-from app.model.usdm_json import USDMJson
 from app.dependencies.fhir_version import fhir_versions
-from app.usdm_database.usdm_database import USDMDatabase
-from app.configuration.configuration import application_configuration
-from app.model.file_handling.local_files import LocalFiles
-from app.model.file_handling.data_files import DataFiles
+from app.dependencies.templates import templates
+from app.dependencies.utility import transmit_role_enabled, user_details
 from app.imports.form_handler import FormHandler
-from app.utility.m11_annotate import annotate as m11_annotate
+from app.model.file_handling.data_files import DataFiles
+from app.model.file_handling.local_files import LocalFiles
+from app.model.usdm_json import USDMJson
+from app.usdm_database.usdm_database import USDMDatabase
 from app.utility.backbone_transmit import backbone_enabled, run_backbone_transmit
-from usdm4_protocol.m11 import USDM4M11
-from usdm4_protocol.cpt import USDM4CPT
-from usdm4.api import Wrapper
-
+from app.utility.m11_annotate import annotate as m11_annotate
 
 router = APIRouter(
     prefix="/versions", tags=["versions"], dependencies=[Depends(protect_endpoint)]
@@ -263,9 +264,7 @@ async def get_version_history_data(
 
 
 @router.get("/{id}/export/excel")
-async def export_excel(
-    request: Request, id: int, session: Session = Depends(get_db)
-):
+async def export_excel(request: Request, id: int, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
     usdm_db = USDMDatabase(id, session)
     full_path, filename, media_type = usdm_db.excel()
@@ -277,9 +276,7 @@ async def export_excel(
             "errors/error.html",
             {
                 "user": user,
-                "data": {
-                    "error": "Error downloading the requested Excel format file"
-                },
+                "data": {"error": "Error downloading the requested Excel format file"},
             },
         )
 

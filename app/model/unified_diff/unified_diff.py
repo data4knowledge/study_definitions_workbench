@@ -1,5 +1,6 @@
-import re
 import difflib
+import re
+
 from d4k_ms_base.logger import application_logger
 
 

@@ -1,16 +1,17 @@
 import pytest
+
 from app.configuration.configuration import application_configuration
-from tests.mocks.general_mocks import mock_called, error_logged
-from tests.mocks.user_mocks import mock_user_check_exists
-from tests.mocks.fastapi_mocks import protect_endpoint, mock_client
+from tests.mocks.factory_mocks import factory_study
+from tests.mocks.fastapi_mocks import mock_client, protect_endpoint
 from tests.mocks.file_mocks import (
-    mock_file_import_find,
-    mock_file_import_delete,
     mock_data_file_delete,
+    mock_file_import_delete,
+    mock_file_import_find,
     mock_local_files_dir,
     mock_local_files_dir_error,
 )
-from tests.mocks.factory_mocks import factory_study
+from tests.mocks.general_mocks import error_logged, mock_called
+from tests.mocks.user_mocks import mock_user_check_exists
 
 
 @pytest.fixture
@@ -447,6 +448,7 @@ def test_section_toc_unions_and_sorts():
     (section 0), dedupes by number, and sorts naturally (1.10 after
     1.9)."""
     from unittest.mock import MagicMock
+
     from app.routers.studies import _section_toc
 
     def nc(number, title, level):

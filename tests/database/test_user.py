@@ -1,13 +1,18 @@
 import pytest
-from app.database.user import User
-from app.database.endpoint import Endpoint
-from app.model.exceptions import FindException
+from sqlalchemy.orm import Session
+
+from app.database.database_tables import (
+    Endpoint as EndpointDB,
+)
 from app.database.database_tables import (
     User as UserDB,
-    Endpoint as EndpointDB,
+)
+from app.database.database_tables import (
     UserEndpoint as UserEndpointDB,
 )
-from sqlalchemy.orm import Session
+from app.database.endpoint import Endpoint
+from app.database.user import User
+from app.model.exceptions import FindException
 
 
 def _clean(db: Session):

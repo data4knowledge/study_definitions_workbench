@@ -1,5 +1,6 @@
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 from app.model.file_handling.pfda_files import PFDAFiles
 
 

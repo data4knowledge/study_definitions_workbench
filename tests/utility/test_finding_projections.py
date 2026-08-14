@@ -58,7 +58,7 @@ class TestProjectUsdmCdiscSummary:
         # ``rules_executed`` attribute — the duck-type check should
         # short-circuit and return an empty dict so the template's
         # ``{% if summary %}`` guard skips the CORE-only header.
-        rules_like = SimpleNamespace(to_dict=lambda: [])
+        rules_like = SimpleNamespace(to_dict=list)
         assert project_usdm_cdisc_summary(rules_like) == {}
 
     def test_happy_path_full_summary(self):

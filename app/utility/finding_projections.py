@@ -48,7 +48,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 # ``simple_error_log`` level display names → UI severity bucket.  The
 # three-bucket collapse (Error / Warning / Info) is the vocabulary the
 # results table and its severity pills speak.  ``Debug`` is folded into

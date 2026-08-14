@@ -1,13 +1,16 @@
 import re
-from sqlalchemy import text, or_
-from sqlalchemy.orm import Session, Query
 from typing import Optional
-from pydantic import BaseModel, ConfigDict
-from app.database.database_tables import Study as StudyDB, Version as VersionDB
-from app.database.version import Version
-from app.database.user import User
-from app.database.file_import import FileImport
+
 from d4k_ms_base.logger import application_logger
+from pydantic import BaseModel, ConfigDict
+from sqlalchemy import or_, text
+from sqlalchemy.orm import Query, Session
+
+from app.database.database_tables import Study as StudyDB
+from app.database.database_tables import Version as VersionDB
+from app.database.file_import import FileImport
+from app.database.user import User
+from app.database.version import Version
 
 
 class StudyBase(BaseModel):
@@ -113,7 +116,7 @@ class Study(StudyBase):
     def page(
         cls, page: int, size: int, user_id: int, filter: dict, session: Session
     ) -> list[dict]:
-        page = page if page >= 1 else 1
+        page = max(page, 1)
         size = size if size > 0 else 10
         skip = (page - 1) * size
         c_query = session.query(StudyDB).filter(StudyDB.user_id == user_id)

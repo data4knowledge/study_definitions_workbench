@@ -1,4 +1,5 @@
 import warnings
+
 from bs4 import BeautifulSoup
 from d4k_ms_base.errors_and_logging import application_logger
 

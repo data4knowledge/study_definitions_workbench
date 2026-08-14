@@ -1,13 +1,26 @@
 from unittest.mock import patch
+
 from app.database.database_manager import DatabaseManager
 from app.database.database_tables import (
-    Study as StudyDB,
-    Version as VersionDB,
-    FileImport as FileImportDB,
     Endpoint as EndpointDB,
-    UserEndpoint as UserEndpointDB,
-    User as UserDB,
+)
+from app.database.database_tables import (
+    FileImport as FileImportDB,
+)
+from app.database.database_tables import (
+    Study as StudyDB,
+)
+from app.database.database_tables import (
     TransmissionTable as TransmissionDB,
+)
+from app.database.database_tables import (
+    User as UserDB,
+)
+from app.database.database_tables import (
+    UserEndpoint as UserEndpointDB,
+)
+from app.database.database_tables import (
+    Version as VersionDB,
 )
 from app.model.file_handling.data_files import DataFiles
 

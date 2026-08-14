@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse, RedirectResponse
-from sqlalchemy.orm import Session
-from app.database.user import User
-from app.database.database import get_db
-from app.model.usdm_json import USDMJson
-from app.dependencies.dependency import protect_endpoint
-from app.dependencies.utility import user_details, transmit_role_enabled
-from app.dependencies.templates import templates
-from app.utility.fhir_transmit import run_fhir_soa_transmit
-from usdm4_pj import USDM4PJ
 from simple_error_log import Errors
+from sqlalchemy.orm import Session
+from usdm4_pj import USDM4PJ
 
+from app.database.database import get_db
+from app.database.user import User
+from app.dependencies.dependency import protect_endpoint
+from app.dependencies.templates import templates
+from app.dependencies.utility import transmit_role_enabled, user_details
+from app.model.usdm_json import USDMJson
+from app.utility.fhir_transmit import run_fhir_soa_transmit
 
 router = APIRouter(
     prefix="/versions",

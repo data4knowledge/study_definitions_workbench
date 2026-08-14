@@ -1,13 +1,20 @@
-from app.database.user import User
-from app.database.study import Study
-from app.database.file_import import FileImport
+from sqlalchemy.orm import Session
+
 from app.database.database_tables import (
-    Study as StudyDB,
-    Version as VersionDB,
-    User as UserDB,
     FileImport as FileImportDB,
 )
-from sqlalchemy.orm import Session
+from app.database.database_tables import (
+    Study as StudyDB,
+)
+from app.database.database_tables import (
+    User as UserDB,
+)
+from app.database.database_tables import (
+    Version as VersionDB,
+)
+from app.database.file_import import FileImport
+from app.database.study import Study
+from app.database.user import User
 
 
 def test_page_empty(db):

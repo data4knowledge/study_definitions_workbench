@@ -1,21 +1,33 @@
 import os
+
+from d4k_ms_base.logger import application_logger
+from sqlalchemy.orm import Session
+
+from app.configuration.configuration import application_configuration
 from app.database import database_tables
-from app.database.database import engine, SessionLocal
+from app.database.database import SessionLocal, engine
 from app.database.database_tables import (
-    Study as StudyDB,
-    Version as VersionDB,
-    FileImport as FileImportDB,
     Endpoint as EndpointDB,
 )
 from app.database.database_tables import (
-    UserEndpoint as UserEndpointDB,
-    User as UserDB,
+    FileImport as FileImportDB,
+)
+from app.database.database_tables import (
+    Study as StudyDB,
+)
+from app.database.database_tables import (
     TransmissionTable as TransmissionDB,
 )
+from app.database.database_tables import (
+    User as UserDB,
+)
+from app.database.database_tables import (
+    UserEndpoint as UserEndpointDB,
+)
+from app.database.database_tables import (
+    Version as VersionDB,
+)
 from app.model.file_handling.data_files import DataFiles
-from sqlalchemy.orm import Session
-from d4k_ms_base.logger import application_logger
-from app.configuration.configuration import application_configuration
 
 
 class DatabaseManager:

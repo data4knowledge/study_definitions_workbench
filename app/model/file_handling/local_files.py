@@ -1,8 +1,10 @@
-import os
 import datetime
 import math
+import os
 from pathlib import Path
+
 from d4k_ms_base.logger import application_logger
+
 from app.configuration.configuration import application_configuration
 
 
@@ -98,7 +100,7 @@ class LocalFiles:
         i = int(math.floor(math.log(bytes, 1024)))
         power = math.pow(1024, i)
         size = round(bytes / power, 2)
-        return "{} {}".format(size, size_name[i])
+        return f"{size} {size_name[i]}"
 
     def _read(self, full_path):
         # print(f"FULL_PATH: {full_path}")
