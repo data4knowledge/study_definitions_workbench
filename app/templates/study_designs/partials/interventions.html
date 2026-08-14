@@ -11,7 +11,11 @@
     {% with show_link=False, note="Ongoing work to extract the dashboard view from USDM" %}
       {% include "shared/partials/not_implemented.html" %}
     {% endwith %}
-    <!-- <table class="table responsive mt-1">
+    {# Disabled: dashboard view not extracted yet. Jinja comment, NOT an HTML
+       comment -- Jinja evaluates expressions inside <!-- --> and this block blows
+       up on interventions with no dose or no duration quantity. #}
+    {#
+    <table class="table responsive mt-1">
       <thead>
         <tr>
           <th scope="col">Arm Name</th>
@@ -73,7 +77,8 @@
           {% endfor %}
         {% endfor %}
       </tbody>
-    </table> -->
+    </table>
+    #}
   {% endif %}
 </div>
 
