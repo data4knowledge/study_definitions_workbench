@@ -334,10 +334,10 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
     )
 
     # restructure_study_list returns {element: tuple_of_values_across_studies}.
-    # ``Sponsor Protocol Identifier`` is mandatory: ``studies/list.html``
-    # reads it up front to build the per-study column headers, so the mock
-    # must supply it even when the body of the test only exercises another
-    # element (here, ``Full Title``).
+    # Column headers no longer come from here — ``studies/list.html`` reads
+    # ``data["sponsor_id"]`` (USDM-derived) so the table still has headers
+    # when no selected study is an M11 import — but the element is left in
+    # place as a representative title-page row.
     mocker.patch(
         "app.routers.studies.restructure_study_list",
         return_value={

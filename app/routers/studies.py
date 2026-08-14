@@ -88,6 +88,11 @@ def study_list(
         # carries the same format badge the user saw on the home page.
         "import_type": [],
         "m11_amendment_details": [],
+        # Sponsor protocol identifier per study (parallel list, column
+        # order). Taken from USDM, not from the M11 title page, so the
+        # compare table still has column headers when none of the selected
+        # studies came from an M11 document.
+        "sponsor_id": [],
         # The raw selection string, threaded back into the section-compare
         # TOC links so each hx-get carries the same set of studies.
         "list_studies": list_studies or "",
@@ -104,6 +109,7 @@ def study_list(
         errors = Errors()
         m11 = DataView(wrapper, errors)
         data["import_type"].append(FileImport.find(version.import_id, session).type)
+        data["sponsor_id"].append(study_version.sponsor_identifier_text())
         data["m11_title_page"].append(m11.title_page())
         section_docs.append(wrapper.study_document_version("M11"))
         # M11 validation findings were captured during import and
@@ -136,6 +142,10 @@ def study_list(
             ]
         )
     data["m11_title_page"] = restructure_study_list(data["m11_title_page"])
+    # Column count for the compare tables. Driven by the selection, not by
+    # the M11 title-page rows, which are empty when no selected study is an
+    # M11 import.
+    data["study_count"] = len(parts)
     data["sections"] = _section_toc(section_docs)
     data["fhir"] = {
         "enabled": transmit_role_enabled(request),

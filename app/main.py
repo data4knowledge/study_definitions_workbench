@@ -1,5 +1,6 @@
 import os
 import json
+import traceback
 from fastapi import (
     Depends,
     FastAPI,
@@ -87,10 +88,29 @@ app.include_router(imports.router)
 app.include_router(validate.router)
 
 
+def _log_unhandled(request: Request, e: Exception, kind: str) -> None:  # pragma: no cover
+    """Log an unhandled exception with its traceback and the request that
+    triggered it.
+
+    The error page only shows ``str(e)``, which on its own says nothing
+    about where the failure happened — a bare "'NoneType' object is not
+    subscriptable" could come from any of a dozen call sites. The
+    traceback goes to the application log so the one-liner on screen can
+    be tied back to a line of code.
+    """
+    # Formatted from the exception object rather than format_exc() so it
+    # is correct wherever the handler is called from.
+    trace = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+    application_logger.error(
+        f"{kind} handling {request.method} {request.url}: {e}\n{trace}"
+    )
+
+
 @app.exception_handler(Exception)
 async def exception_callback_general(
     request: Request, e: Exception
 ):  # pragma: no cover
+    _log_unhandled(request, e, "Unhandled exception")
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -102,6 +122,7 @@ async def exception_callback_general(
 async def exception_callback_find(
     request: Request, e: FindException
 ):  # pragma: no cover
+    _log_unhandled(request, e, "Find exception")
     return templates.TemplateResponse(
         request,
         "errors/error.html",

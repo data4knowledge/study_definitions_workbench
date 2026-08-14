@@ -160,8 +160,12 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#exclusion_tab">Exclusion Critieria</button>
         </li>
+        {# Section compare needs M11 narrative content. With none of the
+           selected studies carrying it the tab has nothing to show, so it
+           is disabled rather than opening onto an empty TOC. #}
         <li class="nav-item" role="presentation">
-          <button class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#sections_tab">Sections</button>
+          <button class="nav-link{% if not data["sections"] %} disabled{% endif %}" role="tab"
+                  {% if data["sections"] %}data-bs-toggle="tab" data-bs-target="#sections_tab"{% else %}disabled title="No M11 sections in the selected studies"{% endif %}>Sections</button>
         </li>
       </ul>
       {# Sponsor IDs per study, captured before the {% with %} blocks below
@@ -169,13 +173,16 @@
          across all three tabs so users can tell which column is which
          protocol (sponsor identifier is the only universally-present
          human-readable identifier). #}
-      {% set sponsor_ids = data["m11_title_page"]["Sponsor Protocol Identifier"] %}
+      {% set sponsor_ids = data["sponsor_id"] %}
       {# Captured before the {% with %} blocks below shadow `data`, same as
          sponsor_ids — drives the source pill in the IE/section headers. #}
       {% set import_types = data["import_type"] %}
       <div class="tab-content mt-2">
         <div id="title_page_tab" class="tab-pane fade show active" role="tabpanel">
-          {% set width = data["m11_title_page"]["Full Title"]|length %}
+          {% if not data["m11_title_page"] %}
+            <p class="text-muted mt-3">No M11 title page in the selected studies.</p>
+          {% endif %}
+          {% set width = data["study_count"] %}
           {# Badges reflect M11 validation of the USDM-derived view of each
              protocol \u2014 the same values shown in the cell. See
              usdm4_protocol.m11.validate for the rule catalogue. #}
@@ -232,7 +239,7 @@
                         <td>
                           {% if v[w] is string and v[w].startswith("NP:") %}
                             <span class="not-in-protocol">{{v[w]}}</span>
-                          {% else %}
+                          {% elif v[w] is not none %}
                             {{v[w]}}
                           {% endif %}
                           {# Findings render inside a native <details> element

@@ -29,12 +29,25 @@ def single_multiple() -> str:
 
 
 def restructure_study_list(data: list[dict]) -> dict:
-    result = {}
-    first_with_keys = next((i for i, x in enumerate(data) if x is not None), None)
-    if first_with_keys is not None:
-        for k in data[first_with_keys].keys():
-            result[k] = tuple(d[k] for d in data)
-    return result
+    """Transpose a per-study list of dicts into a dict of per-study tuples.
+
+    ``data`` carries one entry per selected study, in column order, and an
+    entry is ``None`` whenever the view could not be built for that study
+    (e.g. ``DataView.title_page()`` returns ``None`` for a non-M11 import).
+    Those studies still need a column, so the key set is the union over the
+    dicts that do exist and a missing study contributes ``None`` in every
+    row. Indexing ``None`` here used to raise "'NoneType' object is not
+    subscriptable" whenever an M11 study was compared alongside a non-M11
+    one.
+    """
+    keys = []
+    for entry in data:
+        if not entry:
+            continue
+        for k in entry.keys():
+            if k not in keys:
+                keys.append(k)
+    return {k: tuple((d.get(k) if d else None) for d in data) for k in keys}
 
 
 def convert_to_json(data) -> str:
