@@ -1,6 +1,10 @@
-<h5>Release 0.46.0, 2026-07-18</h5>
+<h5>Release 0.46.0, 2026-08-14</h5>
 
 - Add backbone integration option (issue 69)
+- Improve handling of study orgs and roles (issue 70)
+- Updates to usdm4, usdm4_excel and usdm4_protocol and dropped USDM v3 support (issue 71)
+- Handle multiple study designs (issue 72)
+- Various bug fixes (issue 73)
 
 <h5>Release 0.45.0, 2026-07-03</h5>
 
