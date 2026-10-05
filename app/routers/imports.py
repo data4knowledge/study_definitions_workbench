@@ -1,6 +1,5 @@
 import json
 
-from d4k_ms_base.logger import application_logger
 from d4k_ms_ui.pagination import Pagination
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse
@@ -11,7 +10,6 @@ from app.configuration.configuration import application_configuration
 from app.database.database import get_db
 from app.database.file_import import FileImport
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.fhir_version import check_fhir_version
 from app.dependencies.templates import templates
 from app.dependencies.utility import user_details
 from app.imports.import_manager import ImportManager
@@ -66,25 +64,10 @@ def import_xl(request: Request, session: Session = Depends(get_db)):
 
 
 @router.get("/fhir", dependencies=[Depends(protect_endpoint)])
-def import_fhir(request: Request, version: str, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
-    valid, description = check_fhir_version(version)
-    if valid:
-        return _import_setup(
-            request,
-            session,
-            "json",
-            False,
-            "/import/fhir",
-            "import/import_fhir.html",
-            {"version": version, "description": description},
-        )
-    else:
-        message = f"Invalid FHIR version '{version}'"
-        application_logger.error(message)
-        return templates.TemplateResponse(
-            request, "errors/error.html", {"user": user, "data": {"error": message}}
-        )
+def import_fhir(request: Request, session: Session = Depends(get_db)):
+    return _import_setup(
+        request, session, "json", False, "/import/fhir", "import/import_fhir.html"
+    )
 
 
 @router.post("/m11", dependencies=[Depends(protect_endpoint)])
@@ -129,19 +112,10 @@ async def import_xl_process(
 
 @router.post("/fhir", dependencies=[Depends(protect_endpoint)])
 async def import_fhir_process(
-    request: Request,
-    version: str,
-    source: str = "browser",
-    session: Session = Depends(get_db),
+    request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
     user, present_in_db = user_details(request, session)
-    request_version = (
-        ImportManager.FHIR_PRISM3_JSON
-        if version == "prism3"
-        else ImportManager.FHIR_PRISM2_JSON
-    )
-    application_logger.info(f"FHIR version: {version} -> {request_version}")
-    return await RequestHandler(request_version, source).process(
+    return await RequestHandler(ImportManager.FHIR_PRISM3_JSON, source).process(
         request, templates, user
     )
 

@@ -5,7 +5,6 @@ import pytest
 from app.configuration.configuration import application_configuration
 from app.database.version import Version
 from tests.mocks.fastapi_mocks import mock_client, protect_endpoint
-from tests.mocks.fhir_version_mocks import mock_fhir_versions
 from tests.mocks.file_mocks import mock_file_import_find
 from tests.mocks.general_mocks import mock_called
 from tests.mocks.usdm_json_mocks import (
@@ -33,7 +32,6 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
     ujt = mock_usdm_json_templates(mocker, "app.routers.versions")
-    fv = mock_fhir_versions(mocker, "app.routers.versions")
     response = client.get("/versions/1/summary")
     # print(f"RESPONSE: {response.text}")
     assert response.status_code == 200
@@ -47,7 +45,6 @@ def test_version_summary_fhir_authorised(mocker, monkeypatch):
     assert mock_called(uji)
     assert mock_called(usv)
     assert mock_called(ujt)
-    assert mock_called(fv)
     assert_view_menu(response.text, "summary", templates=["M11"])
 
 
@@ -62,7 +59,6 @@ def test_version_summary_multiple_designs(mocker, monkeypatch):
     mock_transmit_role_enabled_true(mocker, "app.routers.versions")
     mock_usdm_json_init(mocker, "app.routers.versions")
     mock_usdm_json_templates(mocker, "app.routers.versions")
-    mock_fhir_versions(mocker, "app.routers.versions")
     usv = mocker.patch("app.routers.versions.USDMJson.study_version")
     usv.return_value = {
         "id": "1",
@@ -100,7 +96,6 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     uji = mock_usdm_json_init(mocker, "app.routers.versions")
     usv = mock_usdm_study_version(mocker, "app.routers.versions")
     ujt = mock_usdm_json_templates(mocker, "app.routers.versions")
-    fv = mock_fhir_versions(mocker, "app.routers.versions")
     response = client.get("/versions/1/summary")
     # print(f"RESPONSE: {response.text}")
     assert response.status_code == 200
@@ -110,7 +105,6 @@ def test_version_summary_fhir_not_authorised(mocker, monkeypatch):
     assert mock_called(uji)
     assert mock_called(usv)
     assert mock_called(ujt)
-    assert mock_called(fv)
     assert_view_menu(response.text, "summary", templates=["M11"])
 
 
@@ -122,7 +116,6 @@ def test_version_summary_backbone_enabled(mocker, monkeypatch):
     mock_usdm_json_init(mocker, "app.routers.versions")
     mock_usdm_study_version(mocker, "app.routers.versions")
     mock_usdm_json_templates(mocker, "app.routers.versions")
-    mock_fhir_versions(mocker, "app.routers.versions")
     be = mocker.patch("app.routers.versions.backbone_enabled")
     be.side_effect = [True]
     response = client.get("/versions/1/summary")
@@ -142,7 +135,6 @@ def test_version_summary_backbone_disabled(mocker, monkeypatch):
     mock_usdm_json_init(mocker, "app.routers.versions")
     mock_usdm_study_version(mocker, "app.routers.versions")
     mock_usdm_json_templates(mocker, "app.routers.versions")
-    mock_fhir_versions(mocker, "app.routers.versions")
     be = mocker.patch("app.routers.versions.backbone_enabled")
     be.side_effect = [False]
     response = client.get("/versions/1/summary")

@@ -195,7 +195,6 @@ def test_study_list(mocker, monkeypatch):
         "app.routers.studies.restructure_study_list", return_value={"title": ["Test"]}
     )
     mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
-    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
     response = client.get("/studies/list?list_studies=1")
     assert response.status_code == 200
     assert mock_called(uc)
@@ -261,7 +260,6 @@ def test_study_list_multi_design_criteria(mocker, monkeypatch):
         "app.routers.studies.restructure_study_list", return_value={"title": ["Test"]}
     )
     mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
-    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
     response = client.get("/studies/list?list_studies=1")
     assert response.status_code == 200
     text = response.text
@@ -347,7 +345,6 @@ def test_study_list_renders_validation_badges(mocker, monkeypatch):
         },
     )
     mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
-    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
 
     response = client.get("/studies/list?list_studies=1")
     assert response.status_code == 200
@@ -481,7 +478,6 @@ def test_study_list_empty(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     uc = mock_user_check_exists(mocker)
     mocker.patch("app.routers.studies.transmit_role_enabled", return_value=False)
-    mocker.patch("app.routers.studies.fhir_versions", return_value=[])
     mocker.patch("app.routers.studies.restructure_study_list", return_value={})
     response = client.get("/studies/list")
     assert response.status_code == 200

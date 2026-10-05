@@ -318,8 +318,8 @@
   level: Error
   location:
     class_name: usdm4_protocol.soa.soa_extractor.SoA
-    method_name: _decode_soa
-  message: No SoA found
+    method_name: process
+  message: 'SoA not read: the SoA reader needs an AI provider and none is available'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -328,6 +328,40 @@
     class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions
     method_name: process
   message: No Trial Intervention table found; using AI narrative extraction
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Intervention Model 'Open Label' is not an M11 term; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Number of Participants 'Approximately 24 male and female participants to
+    complete at least 18 participants. An attempt will be made to enroll 1 female
+    participant for every 3 male participants.' holds no number; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: '1.1.2 values with no usdm4 assembler input slot (not stored): population
+    diagnosis or condition: ''Opiod use''; control type: ''Placebo controlled''; control
+    description: ''Placebo''; site distribution and geographic scope: ''Single site'';
+    intervention assignment method: ''Randomization''; number of arms: ''3''; trial
+    blind schema: ''Double-blind''; blinded roles: ''The following roles indicated
+    will not be made aware of the treatment group assignment during the trial: participant,
+    investigator''; duration: ''The anticipated duration of the study for each participant,
+    including screening and follow-up, is approximately 53 days.''; independent committees:
+    ''Not applicable.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -445,45 +479,44 @@
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: process
-  message: 'Amendment information {''amendment_details'': ''<p>Amendment Details</p>\n<p>This
-    is the first protocol amendment.</p>\n<p>Current Amendment</p>\n<p>The table below
-    describes the current amendment.</p>'', ''identifier'': ''1.1'', ''scope'': {''global'':
-    False, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'': ['''',
-    ''US'']}, ''enrollment'': {''keyword'': ''Globally'', ''value'': 0, ''unit'':
+  message: 'Amendment information {''amendment_details'': ''<p><b>Amendment Details</b></p>\n<p>This
+    is the first protocol amendment.</p>\n<p><u>Current Amendment</u></p>\n<p>The
+    table below describes the current amendment.</p>'', ''identifier'': ''1.1'', ''scope'':
+    {''global'': False, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'':
+    ['''', ''US'']}, ''enrollment'': {''keyword'': ''Globally'', ''value'': 0, ''unit'':
     ''absolute'', ''regions'': []}, ''reasons'': {''primary'': ''Primary: Administrative'',
     ''secondary'': ''Secondary: Not applicable''}, ''summary'': ''This is a nonsubstantial
-    amendment.amuuuSummStnent ementmmdmentmddndndmendment Summary'', ''impact'': {''safety_and_rights'':
-    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
-    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
-    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
-    ''''}}}, ''changes'': [{''description'': ''Update screening language: \nEdit the
-    rescreening language'', ''rationale'': ''To allow for the repeat of screening
-    assessments within the screening window or to allow a subject to rescreen once
-    for the study. Due to the nature of the participant population and the study design,
-    subject safety and data integrity will not be impacted'', ''section'': ''5.4.1
-    Rescreening''}, {''description'': ''Clarify inclusion and exclusion criteria:
-    \nMove exclusion criterion 18 to the inclusion criteria and clarify the CYP450
-    enzymes that are excluded for exclusion criterion 19.'', ''rationale'': ''Previous
-    exclusion 18 should be answered affirmatively in order for the subject to be eligible
-    for participation; as a result, this exclusion should be listed as an inclusion.
-    Exclusion 19 excluded all inducers of metabolism; however, after consideration,
-    it is only necessary to exclude inducers of CYP3A4.'', ''section'': ''5.2 Exclusion
-    Criteria''}, {''description'': ''Clarify procedure for continuous end tidal CO2:\nAdd
-    clarification that subjects may remove cannula to dose or eat'', ''rationale'':
-    ''The timepoints overlap for the collection of end tidal CO2 and it would not
-    be possible for the subject to dose or eat with the cannula in place.'', ''section'':
-    ''7.2.8 Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits
-    for End Tidal Carbon Dioxide''}, {''description'': ''Lower the respiratory rate
-    alarm for continuous end tidal CO2 alarms: \nThe alarm for respiratory rate low
-    was 10 bpm and is now 6 bpm.'', ''rationale'': ''Generally, respiratory rates
-    between 6 and 10 are not clinically relevant. A low respiratory rate alarm of
-    6 will allow a more accurate clinical determination of a true signal.'', ''section'':
-    ''7.2.8 Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits''},
-    {''description'': ''Edit Spot CO2 respiratory rate values: \nThe spot values are
-    lowered to start at > 24, and continue with increments of 4 bpm: >28, >32, and
-    >36.'', ''rationale'': ''This change is made to align with the protocol, Table
-    7, alarm values.'', ''section'': ''9.4.3.3 Vital Signs, Table 7, Criteria for
-    Respiratory Rate''}]}'
+    amendment.'', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
+    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
+    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
+    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''changes'':
+    [{''description'': ''Update screening language: \nEdit the rescreening language'',
+    ''rationale'': ''To allow for the repeat of screening assessments within the screening
+    window or to allow a subject to rescreen once for the study. Due to the nature
+    of the participant population and the study design, subject safety and data integrity
+    will not be impacted'', ''section'': ''5.4.1 Rescreening''}, {''description'':
+    ''Clarify inclusion and exclusion criteria: \nMove exclusion criterion 18 to the
+    inclusion criteria and clarify the CYP450 enzymes that are excluded for exclusion
+    criterion 19.'', ''rationale'': ''Previous exclusion 18 should be answered affirmatively
+    in order for the subject to be eligible for participation; as a result, this exclusion
+    should be listed as an inclusion. Exclusion 19 excluded all inducers of metabolism;
+    however, after consideration, it is only necessary to exclude inducers of CYP3A4.'',
+    ''section'': ''5.2 Exclusion Criteria''}, {''description'': ''Clarify procedure
+    for continuous end tidal CO2:\nAdd clarification that subjects may remove cannula
+    to dose or eat'', ''rationale'': ''The timepoints overlap for the collection of
+    end tidal CO2 and it would not be possible for the subject to dose or eat with
+    the cannula in place.'', ''section'': ''7.2.8 Continuous and Spot End Tidal Carbon
+    Dioxide, Table 5, Established Limits for End Tidal Carbon Dioxide''}, {''description'':
+    ''Lower the respiratory rate alarm for continuous end tidal CO2 alarms: \nThe
+    alarm for respiratory rate low was 10 bpm and is now 6 bpm.'', ''rationale'':
+    ''Generally, respiratory rates between 6 and 10 are not clinically relevant. A
+    low respiratory rate alarm of 6 will allow a more accurate clinical determination
+    of a true signal.'', ''section'': ''7.2.8 Continuous and Spot End Tidal Carbon
+    Dioxide, Table 5, Established Limits''}, {''description'': ''Edit Spot CO2 respiratory
+    rate values: \nThe spot values are lowered to start at > 24, and continue with
+    increments of 4 bpm: >28, >32, and >36.'', ''rationale'': ''This change is made
+    to align with the protocol, Table 7, alarm values.'', ''section'': ''9.4.3.3 Vital
+    Signs, Table 7, Criteria for Respiratory Rate''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -624,11 +657,10 @@
   level: Info
   location: {}
   message: 'Amendment assembler source data {''identifier'': ''1.1'', ''summary'':
-    ''This is a nonsubstantial amendment.amuuuSummStnent ementmmdmentmddndndmendment
-    Summary'', ''reasons'': {''primary'': ''Primary: Administrative'', ''secondary'':
-    ''Secondary: Not applicable''}, ''impact'': {''safety_and_rights'': {''safety'':
-    {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
-    ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    ''This is a nonsubstantial amendment.'', ''reasons'': {''primary'': ''Primary:
+    Administrative'', ''secondary'': ''Secondary: Not applicable''}, ''impact'': {''safety_and_rights'':
+    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
+    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
     False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
     ''''}}}, ''enrollment'': {''value'': 0, ''unit'': ''absolute''}, ''scope'': {''global'':
     False, ''unknown'': ['''', ''US''], ''countries'': [], ''regions'': [], ''sites'':

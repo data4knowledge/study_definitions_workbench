@@ -8,7 +8,6 @@ from app.database.database import get_db
 from app.database.study import Study
 from app.database.user import User
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.fhir_version import fhir_versions
 from app.dependencies.templates import templates
 from app.dependencies.utility import transmit_role_enabled, user_details
 
@@ -20,7 +19,7 @@ router = APIRouter(prefix="", tags=["index"], dependencies=[Depends(protect_endp
 @router.get("/index")
 def index(request: Request, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
-    fhir = {"enabled": transmit_role_enabled(request), "versions": fhir_versions()}
+    fhir = {"enabled": transmit_role_enabled(request)}
     if present_in_db or user:
         data = {"fhir": fhir}
         return templates.TemplateResponse(

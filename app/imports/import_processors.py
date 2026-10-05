@@ -206,29 +206,10 @@ class ImportLegacy(ImportProcessorBase):
         return True
 
 
-class ImportFhirPRISM2(ImportProcessorBase):
-    async def process(self) -> bool:
-        importer = M11()
-        wrapper: Wrapper = await importer.from_message(self.full_path, M11.PRISM2)
-        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
-        if wrapper:
-            self.usdm = wrapper.to_json()
-            self.extra = importer.extra
-            self.study_parameters = self._study_parameters()
-            print(f"STUDY PARAMS: {self.study_parameters}")
-            self.errors = importer.errors.to_dict(sel.Errors.INFO)
-            self.success = True
-        else:
-            self.success = False
-            self.errors = importer.errors.to_dict(sel.Errors.INFO)
-            self.fatal_error = "FHIR (PRISM2) import failed, check the error file"
-        return self.success
-
-
 class ImportFhirPRISM3(ImportProcessorBase):
     async def process(self) -> bool:
         importer = M11()
-        wrapper: Wrapper = await importer.from_message(self.full_path, M11.PRISM3)
+        wrapper: Wrapper = await importer.from_message(self.full_path)
         application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
         if wrapper:
             self.usdm = wrapper.to_json()

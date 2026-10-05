@@ -38,7 +38,8 @@ class TestFhirM11Transmit:
         mock_usdm_instance.study_version.return_value = {"titles": {"C207616": "Test"}}
         mock_usdm_instance.fhir_data.return_value = '{"data": "fhir"}'
         mock_usdm.return_value = mock_usdm_instance
-        await fhir_m11_transmit(1, 2, "prism2", mock_user)
+        await fhir_m11_transmit(1, 2, mock_user)
+        mock_usdm_instance.fhir_data.assert_called_once_with()
         mock_ft.assert_awaited_once()
 
 
@@ -156,7 +157,7 @@ class TestRunFhirTransmitThreads:
     def test_run_m11(self, mock_thread, mock_user):
         mock_thread_instance = MagicMock()
         mock_thread.return_value = mock_thread_instance
-        run_fhir_m11_transmit(1, 2, "prism2", mock_user)
+        run_fhir_m11_transmit(1, 2, mock_user)
         mock_thread.assert_called_once()
         mock_thread_instance.start.assert_called_once()
 

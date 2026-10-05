@@ -31,7 +31,6 @@ from app.dependencies.dependency import (
     protect_endpoint,
     set_middleware_secret,
 )
-from app.dependencies.fhir_version import check_fhir_version
 from app.dependencies.templates import templates
 from app.dependencies.utility import admin_role_enabled, user_details
 from app.model.connection_manager import connection_manager
@@ -642,39 +641,20 @@ async def get_study_design_analysis_obj(
 
 
 @app.get("/versions/{id}/export/fhir", dependencies=[Depends(protect_endpoint)])
-async def export_fhir(
-    request: Request, id: int, version: str, session: Session = Depends(get_db)
-):
+async def export_fhir(request: Request, id: int, session: Session = Depends(get_db)):
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
-    valid, description = check_fhir_version(version)
-    application_logger.info(f"FHIR export requested, version '{version}'")
-    if valid:
-        full_path, filename, media_type = usdm.fhir(version)
-        if full_path:
-            return FileResponse(
-                path=full_path, filename=filename, media_type=media_type
-            )
-        else:
-            return templates.TemplateResponse(
-                request,
-                "errors/error.html",
-                {
-                    "user": user,
-                    "data": {
-                        "error": f"Error encounterd exporting study with id '{id}'."
-                    },
-                },
-            )
+    application_logger.info("FHIR (PRISM3) export requested")
+    full_path, filename, media_type = usdm.fhir()
+    if full_path:
+        return FileResponse(path=full_path, filename=filename, media_type=media_type)
     else:
         return templates.TemplateResponse(
             request,
             "errors/error.html",
             {
                 "user": user,
-                "data": {
-                    "error": f"Invalid FHIR M11 message version export requested. Version requested was '{version}'."
-                },
+                "data": {"error": f"Error encountered exporting study with id '{id}'."},
             },
         )
 
@@ -686,28 +666,12 @@ async def version_transmit(
     request: Request,
     id: int,
     endpoint_id: int,
-    version: str,
     session: Session = Depends(get_db),
 ):
     user, present_in_db = user_details(request, session)
-    valid, description = check_fhir_version(version)
-    application_logger.info(
-        f"FHIR message tx requested, version '{version}: {description}'"
-    )
-    if valid:
-        run_fhir_m11_transmit(id, endpoint_id, version, user)
-        return RedirectResponse(f"/versions/{id}/summary")
-    else:
-        return templates.TemplateResponse(
-            request,
-            "errors/error.html",
-            {
-                "user": user,
-                "data": {
-                    "error": f"Invalid FHIR M11 message version trsnsmission requested. Version requested was '{version}'."
-                },
-            },
-        )
+    application_logger.info("FHIR (PRISM3) message tx requested")
+    run_fhir_m11_transmit(id, endpoint_id, user)
+    return RedirectResponse(f"/versions/{id}/summary")
 
 
 @app.get("/versions/{id}/export/json", dependencies=[Depends(protect_endpoint)])

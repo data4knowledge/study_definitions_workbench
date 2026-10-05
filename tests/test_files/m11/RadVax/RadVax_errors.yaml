@@ -281,8 +281,8 @@
   level: Error
   location:
     class_name: usdm4_protocol.soa.soa_extractor.SoA
-    method_name: _decode_soa
-  message: No SoA found
+    method_name: process
+  message: 'SoA not read: the SoA reader needs an AI provider and none is available'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -291,6 +291,38 @@
     class_name: usdm4_protocol.m11.import_.extract.interventions.Interventions
     method_name: process
   message: No Trial Intervention table found; using AI narrative extraction
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Intervention Model 'Open Label' is not an M11 term; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Number of Participants 'A Total of 70 participants will be enrolled.' holds
+    no number; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: '1.1.2 values with no usdm4 assembler input slot (not stored): population
+    diagnosis or condition: ''Metastatic Cancers''; control type: ''N/A''; control
+    description: ''N/A''; site distribution and geographic scope: ''Single Site Local'';
+    intervention assignment method: ''Cohort trial with randomized expansion phase.'';
+    number of arms: ''2 (possible based on safety assessment of initial 24 patients)'';
+    trial blind schema: ''Not applicable.''; blinded roles: ''Not applicable.''; duration:
+    ''Total planned duration of trial intervention for each participant:''; independent
+    committees: ''Not applicable.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

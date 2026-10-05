@@ -19,6 +19,7 @@ from usdm4_fhir import M11 as FHIRM11
 # from usdm4_fhir import SoA as FHIRSoA
 from usdm4_fhir.soa.export.export_soa import ExportSoA as FHIRSoA
 from usdm4_protocol.cpt.views.document_view import DocumentView as CPTDocumentView
+from usdm4_protocol.m11.export.m11_export import M11Export
 from usdm4_protocol.m11.views.document_view import DocumentView as M11DocumentView
 from usdm4_protocol.soa.soa_model import SoA
 
@@ -48,7 +49,6 @@ class USDMJson:
             if self.type
             in [
                 ImportManager.M11_DOCX,
-                ImportManager.FHIR_PRISM2_JSON,
                 ImportManager.FHIR_PRISM3_JSON,
             ]
             else False
@@ -60,16 +60,15 @@ class USDMJson:
         # print(f"USDM JSON DATA: {self._data}")
         self._extra = self._get_extra()
 
-    def fhir(self, version=FHIRM11.PRISM2):
-        # print(f"VERSION FHIR: {version}")
-        data = self.fhir_data(version)
-        fullpath, filename = self._files.save(f"fhir_{version}", data)
+    def fhir(self):
+        data = self.fhir_data()
+        fullpath, filename = self._files.save("fhir_prism3", data)
         return fullpath, filename, "text/plain"
 
-    def fhir_data(self, version=FHIRM11.PRISM2):
+    def fhir_data(self):
         study: Study = self._wrapper.study
         fhir = FHIRM11()
-        data = fhir.to_message(study, self._extra, version)
+        data = fhir.to_message(study, self._extra)
         return data
 
     def fhir_soa(self, timeline_id: str):
@@ -221,12 +220,17 @@ class USDMJson:
         version = self._data["study"]["versions"][0]
         design = self._study_design(id)
         if design:
-            section = None
-            if self.m11:
-                section = self._section_by_number("1.1.2")
-            if not section:
-                section = self._section_by_title_contains("Overall Design")
-            text = self._section_item(section) if section else ""
+            # M11 1.1.2 is always structured: rendered from the data. The
+            # narrative lookup is the fallback for non-M11 sources and for
+            # USDM written before 1.1.2 was stored structured.
+            text = self._structured_section("overall_design")
+            if not text:
+                section = None
+                if self.m11:
+                    section = self._section_by_number("1.1.2")
+                if not section:
+                    section = self._section_by_title_contains("Overall Design")
+                text = self._section_item(section) if section else ""
             result = {
                 "id": self.id,
                 "m11": self.m11,
@@ -315,14 +319,19 @@ class USDMJson:
     def study_design_interventions(self, id: str):
         design = self._study_design(id)
         if design:
-            section = None
-            if self.m11:
-                section = self._section_by_number("6.1")
-            if not section:
-                section = self._section_by_title_contains("Trial Intervention")
-            if not section:
-                section = self._section_by_title_contains("Intervention")
-            text = self._section_item(section) if section else ""
+            # M11 section 6 is structured (empty narrative) or narrative,
+            # never both. Structured: the intervention table from the data.
+            # Narrative: section 6's own text. Neither: the old 6.1 lookup.
+            text = self._m11_section_6() if self.m11 else ""
+            if not text:
+                section = None
+                if self.m11:
+                    section = self._section_by_number("6.1")
+                if not section:
+                    section = self._section_by_title_contains("Trial Intervention")
+                if not section:
+                    section = self._section_by_title_contains("Intervention")
+                text = self._section_item(section) if section else ""
             result = {
                 "id": self.id,
                 "m11": self.m11,
@@ -354,8 +363,12 @@ class USDMJson:
         design = self._study_design(id)
         # print(f"ESTIMANDS: {'design' if design else ''}")
         if design:
-            number = "3.1" if self.m11 else None
-            text = self._section_full_text(number, "Primary Objective", "")
+            # M11 3.1.x-3.3.x are always structured: every objective and
+            # estimand table from the data, the narrative as fallback.
+            text = self._structured_section("objectives")
+            if not text:
+                number = "3.1" if self.m11 else None
+                text = self._section_full_text(number, "Primary Objective", "")
             result = {
                 "id": self.id,
                 "m11": self.m11,
@@ -504,6 +517,31 @@ class USDMJson:
             narrative_content["text"] = self._section_item(narrative_content)
             return narrative_content
         return None
+
+    def _structured_section(self, name: str) -> str:
+        """An M11 structured section rendered from the study data, as the
+        protocol view renders it, without its heading. "" for non-M11
+        sources or when nothing is rendered."""
+        if not self.m11:
+            return ""
+        return M11Export(self._wrapper, Errors()).structured_section(name) or ""
+
+    def _m11_section_6(self) -> str:
+        section = self._section_by_number("6")
+        narrative = self._section_item(section) if section else ""
+        if self._is_empty_html(narrative):
+            return self._structured_section("interventions")
+        return narrative
+
+    @staticmethod
+    def _is_empty_html(html: str) -> bool:
+        """No text, table or image; an empty div is still empty."""
+        if not html or not html.strip():
+            return True
+        soup = get_soup(html)
+        if not soup:
+            return True
+        return not soup.get_text().strip() and soup.find(["table", "img"]) is None
 
     def _section_item(self, narrative_content: dict) -> str:
         version = self._data["study"]["versions"][0]

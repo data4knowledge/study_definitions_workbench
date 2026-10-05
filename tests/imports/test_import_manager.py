@@ -6,7 +6,7 @@ from app.database.user import User
 from app.imports.import_manager import ImportManager, execute_import
 from app.imports.import_processors import (
     ImportExcel,
-    ImportFhirPRISM2,
+    ImportFhirPRISM3,
     ImportM11,
     ImportUSDM4,
 )
@@ -116,12 +116,12 @@ class TestImportManager:
         assert manager.main_file_ext == ".docx"
         assert manager.images is False
 
-        # Test with FHIR_V1_JSON
-        manager = ImportManager(mock_user, ImportManager.FHIR_PRISM2_JSON)
+        # Test with FHIR_PRISM3_JSON
+        manager = ImportManager(mock_user, ImportManager.FHIR_PRISM3_JSON)
         assert manager.user == mock_user
-        assert manager.type == ImportManager.FHIR_PRISM2_JSON
-        assert manager.processor == ImportFhirPRISM2
-        assert manager.main_file_type == "fhir_prism2"
+        assert manager.type == ImportManager.FHIR_PRISM3_JSON
+        assert manager.processor == ImportFhirPRISM3
+        assert manager.main_file_type == "fhir_prism3"
         assert manager.main_file_ext == ".json"
         assert manager.images is False
 
@@ -142,38 +142,16 @@ class TestImportManager:
     def test_file_types(self):
         assert ImportManager.is_m11_docx_import("M11_DOCX")
         assert ImportManager.is_usdm_excel_import("USDM_EXCEL")
-        assert ImportManager.is_fhir_prism2_import("FHIR_PRISM2_JSON")
         assert ImportManager.is_fhir_prism3_import("FHIR_PRISM3_JSON")
         assert ImportManager.is_usdm3_json_import("USDM3_JSON")
         assert ImportManager.is_usdm4_json_import("USDM4_JSON")
         assert not ImportManager.is_m11_docx_import("USDM_EXCEL")
         assert not ImportManager.is_usdm_excel_import("M11_DOCX")
-        assert not ImportManager.is_fhir_prism2_import("USDM3_JSON")
         assert not ImportManager.is_fhir_prism3_import("USDM3_JSON")
         assert not ImportManager.is_usdm3_json_import("FHIR_V1_JSON")
         assert not ImportManager.is_usdm4_json_import("USDM_EXCEL")
-
-    @classmethod
-    def is_usdm_excel_import(cls, value: str) -> bool:
-        return value == cls.USDM_EXCEL
-
-    @classmethod
-    def is_fhir_v1_import(cls, value: str) -> bool:
-        return value == cls.FHIR_V1_JSON
-
-    @classmethod
-    def is_usdm3_json_import(cls, value: str) -> bool:
-        return value == cls.USDM3_JSON
-
-    @classmethod
-    def is_usdm4_json_import(cls, value: str) -> bool:
-        return value == cls.USDM4_JSON
-        """Test file types."""
-        assert ImportManager.USDM_EXCEL == "USDM_EXCEL"
-        assert ImportManager.M11_DOCX == "M11_DOCX"
-        assert ImportManager.FHIR_PRISM2_JSON == "FHIR_V1_JSON"
-        assert ImportManager.USDM3_JSON == "USDM3_JSON"
-        assert ImportManager.USDM4_JSON == "USDM4_JSON"
+        assert not hasattr(ImportManager, "is_fhir_prism2_import")
+        assert not hasattr(ImportManager, "FHIR_PRISM2_JSON")
 
     def test_save_files(self, mock_user, mock_data_files):
         """Test save_files method."""
@@ -444,7 +422,7 @@ class TestImportManager:
         result = ImportManager.imports_with_errors()
         assert ImportManager.USDM_EXCEL in result
         assert ImportManager.M11_DOCX in result
-        assert len(result) == 8
+        assert len(result) == 7
 
     @pytest.mark.asyncio
     async def test_process_failure(

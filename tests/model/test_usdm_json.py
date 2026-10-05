@@ -1,6 +1,8 @@
 import copy
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from app.model.usdm_json import USDMJson
 from tests.helpers.usdm_test_data import build_usdm_data
 
@@ -26,6 +28,32 @@ def _build_usdm(data=None, m11=True, extra=None):
     usdm._files = MagicMock()
     usdm._extra = extra or {}
     return usdm
+
+
+@pytest.fixture(autouse=True)
+def m11_export():
+    """M11 structured sections render nothing unless a test says otherwise,
+    so the narrative fallbacks stay exercised (``M11Export`` is usdm4_protocol)."""
+    with patch("app.model.usdm_json.M11Export") as mock:
+        mock.return_value.structured_section.return_value = None
+        yield mock
+
+
+def _add_section_6(data, text):
+    version = data["study"]["versions"][0]
+    version["narrativeContentItems"].append({"id": "nci-s6", "text": text})
+    doc = data["study"]["documentedBy"][0]["versions"][0]
+    doc["contents"].append(
+        {
+            "id": "nc-s6",
+            "sectionNumber": "6",
+            "sectionTitle": "Trial Intervention and Concomitant Therapy",
+            "contentItemId": "nci-s6",
+            "childIds": [],
+            "nextId": None,
+            "previousId": None,
+        }
+    )
 
 
 # --- study_version ---
@@ -1015,6 +1043,9 @@ class TestFhirAndExport:
         mock_fhir_cls.return_value.to_message.return_value = '{"bundle": "data"}'
         result = usdm.fhir_data()
         assert result == '{"bundle": "data"}'
+        mock_fhir_cls.return_value.to_message.assert_called_once_with(
+            usdm._wrapper.study, usdm._extra
+        )
 
     @patch("app.model.usdm_json.FHIRM11")
     def test_fhir(self, mock_fhir_cls):
@@ -1022,6 +1053,7 @@ class TestFhirAndExport:
         mock_fhir_cls.return_value.to_message.return_value = '{"bundle": "data"}'
         usdm._files.save.return_value = ("/tmp/fhir.json", "fhir.json")
         fullpath, filename, content_type = usdm.fhir()
+        usdm._files.save.assert_called_once_with("fhir_prism3", '{"bundle": "data"}')
         assert fullpath == "/tmp/fhir.json"
         assert content_type == "text/plain"
 
@@ -1318,3 +1350,72 @@ class TestImportErrors:
         from simple_error_log.error import Error
 
         assert errors._items[0].level == Error.INFO
+
+
+class TestM11StructuredPanels:
+    """Summary panels show M11 structured sections from the data."""
+
+    @staticmethod
+    def _render(m11_export, values):
+        m11_export.return_value.structured_section.side_effect = lambda name: values.get(name)
+
+    def test_overall_design_structured(self, m11_export):
+        self._render(m11_export, {"overall_design": "<div>OD table</div>"})
+        result = _build_usdm().study_design_overall_parameters("design-1")
+        assert result["text"] == "<div>OD table</div>"
+        m11_export.return_value.structured_section.assert_called_with("overall_design")
+
+    def test_overall_design_falls_back_to_narrative(self, m11_export):
+        result = _build_usdm().study_design_overall_parameters("design-1")
+        assert "Overall Design Content" in result["text"]
+
+    def test_non_m11_never_renders_structured(self, m11_export):
+        self._render(m11_export, {"overall_design": "<div>OD table</div>"})
+        result = _build_usdm(m11=False).study_design_overall_parameters("design-1")
+        assert result["text"] != "<div>OD table</div>"
+        m11_export.assert_not_called()
+
+    def test_objectives_structured(self, m11_export):
+        self._render(m11_export, {"objectives": "<div>objectives</div>"})
+        result = _build_usdm().study_design_estimands("design-1")
+        assert result["text"] == "<div>objectives</div>"
+
+    def test_objectives_falls_back_to_narrative(self, m11_export):
+        result = _build_usdm().study_design_estimands("design-1")
+        assert "Primary Objective Content" in result["text"]
+
+    def test_section_6_structured_when_narrative_empty(self, m11_export):
+        self._render(m11_export, {"interventions": "<div>intervention table</div>"})
+        data = build_usdm_data()
+        _add_section_6(data, "<div></div>")
+        result = _build_usdm(data).study_design_interventions("design-1")
+        assert result["text"] == "<div>intervention table</div>"
+
+    def test_section_6_structured_when_no_section_6(self, m11_export):
+        self._render(m11_export, {"interventions": "<div>intervention table</div>"})
+        result = _build_usdm().study_design_interventions("design-1")
+        assert result["text"] == "<div>intervention table</div>"
+
+    def test_section_6_narrative_wins(self, m11_export):
+        self._render(m11_export, {"interventions": "<div>intervention table</div>"})
+        data = build_usdm_data()
+        _add_section_6(data, "<p>Section 6 narrative</p>")
+        result = _build_usdm(data).study_design_interventions("design-1")
+        assert result["text"] == "<p>Section 6 narrative</p>"
+
+    def test_section_6_table_only_narrative_is_not_empty(self, m11_export):
+        self._render(m11_export, {"interventions": "<div>intervention table</div>"})
+        data = build_usdm_data()
+        _add_section_6(data, "<table><tr><td></td></tr></table>")
+        result = _build_usdm(data).study_design_interventions("design-1")
+        assert result["text"] == "<table><tr><td></td></tr></table>"
+
+    def test_section_6_nothing_falls_back_to_6_1(self, m11_export):
+        result = _build_usdm().study_design_interventions("design-1")
+        assert "Trial Intervention Content" in result["text"]
+
+    def test_is_empty_html(self):
+        assert USDMJson._is_empty_html("")
+        assert USDMJson._is_empty_html("<div>  </div>")
+        assert not USDMJson._is_empty_html("<p>x</p>")
+        assert not USDMJson._is_empty_html("<img src='a.png'/>")

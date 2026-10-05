@@ -164,7 +164,7 @@ def test_migrate_below_31(db):
     manager.migrate()
     # A single migrate() call applies every pending step up to the latest.
     version = manager._get_version()
-    assert version == 33
+    assert version == 34
     cursor = db.connection().connection.cursor()
     cols = [row[1] for row in cursor.execute("pragma table_info(user)")]
     assert "roles" in cols
@@ -178,32 +178,108 @@ def test_migrate_at_31(db):
     db.commit()
     manager.migrate()
     version = manager._get_version()
-    assert version == 33
+    assert version == 34
 
 
 def test_migrate_at_32(db):
-    """Test migration when version == 32 (adds roles column, -> 33)."""
+    """Test migration when version == 32 (adds roles column, runs to latest)."""
     manager = DatabaseManager(session=db)
     cursor = db.connection().connection.cursor()
     cursor.execute("pragma user_version = 32")
     db.commit()
     manager.migrate()
     version = manager._get_version()
-    assert version == 33
+    assert version == 34
     # The user table must have a roles column after this migration.
     cols = [row[1] for row in cursor.execute("pragma table_info(user)")]
     assert "roles" in cols
 
 
-def test_migrate_above_32(db):
-    """Test migration when version > 32 (no migration needed)."""
+def _add_import(db, user_id, study_id, type, uuid, version=1):
+    file_import = FileImportDB(
+        uuid=uuid,
+        type=type,
+        filepath="path",
+        filename="file.json",
+        status="Successful",
+        user_id=user_id,
+    )
+    db.add(file_import)
+    db.commit()
+    db.refresh(file_import)
+    db.add(VersionDB(version=version, study_id=study_id, import_id=file_import.id))
+    db.commit()
+    return file_import.id
+
+
+def _add_study(db, user_id, name):
+    study = StudyDB(name=name, user_id=user_id)
+    db.add(study)
+    db.commit()
+    db.refresh(study)
+    return study.id
+
+
+def test_migrate_at_33_drops_prism2_imports(db):
+    """v33 -> v34 deletes PRISM2 imports, their versions and files, and any
+    study left with no versions. Other imports and studies are kept."""
+    _clean_db(db)
+    user = UserDB(
+        identifier="user_migrate_34",
+        email="test_migrate_34@example.com",
+        display_name="Test User",
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    only_prism2 = _add_study(db, user.id, "Only PRISM2")
+    mixed = _add_study(db, user.id, "Mixed")
+    p2_a = _add_import(db, user.id, only_prism2, "FHIR_PRISM2_JSON", "uuid-p2-a")
+    p2_b = _add_import(db, user.id, mixed, "FHIR_PRISM2_JSON", "uuid-p2-b")
+    m11 = _add_import(db, user.id, mixed, "M11_DOCX", "uuid-m11", version=2)
+
     manager = DatabaseManager(session=db)
     cursor = db.connection().connection.cursor()
     cursor.execute("pragma user_version = 33")
     db.commit()
+    with patch.object(DataFiles, "delete") as mock_delete:
+        manager.migrate()
+        assert mock_delete.call_count == 2
+
+    assert manager._get_version() == 34
+    db.expire_all()
+    assert db.query(StudyDB).filter(StudyDB.id == only_prism2).count() == 0
+    assert db.query(StudyDB).filter(StudyDB.id == mixed).count() == 1
+    remaining = [i.id for i in db.query(FileImportDB).all()]
+    assert p2_a not in remaining
+    assert p2_b not in remaining
+    assert m11 in remaining
+    versions = db.query(VersionDB).filter(VersionDB.study_id == mixed).all()
+    assert [v.import_id for v in versions] == [m11]
+
+
+def test_migrate_at_33_no_prism2_imports(db):
+    """v33 -> v34 with no PRISM2 imports changes nothing but the version."""
+    _clean_db(db)
+    manager = DatabaseManager(session=db)
+    cursor = db.connection().connection.cursor()
+    cursor.execute("pragma user_version = 33")
+    db.commit()
+    with patch.object(DataFiles, "delete") as mock_delete:
+        manager.migrate()
+        mock_delete.assert_not_called()
+    assert manager._get_version() == 34
+
+
+def test_migrate_latest(db):
+    """Test migration at the latest version (no migration needed)."""
+    manager = DatabaseManager(session=db)
+    cursor = db.connection().connection.cursor()
+    cursor.execute("pragma user_version = 34")
+    db.commit()
     manager.migrate()
     version = manager._get_version()
-    assert version == 33
+    assert version == 34
 
 
 def test_get_version(db):

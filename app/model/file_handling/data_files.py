@@ -46,24 +46,6 @@ class DataFiles:
                 "filename": "expansion",
                 "extension": "json",
             },
-            "fhir_prism2": {
-                "method": self._save_json_file,
-                "use_original": True,
-                "filename": "fhir_prism2",
-                "extension": "json",
-            },
-            "fhir_atlanta": {
-                "method": self._save_json_file,
-                "use_original": True,
-                "filename": "fhir_atlanta",
-                "extension": "json",
-            },
-            "fhir_madrid": {
-                "method": self._save_json_file,
-                "use_original": True,
-                "filename": "fhir_madrid",
-                "extension": "json",
-            },
             "fhir_prism3": {
                 "method": self._save_json_file,
                 "use_original": True,

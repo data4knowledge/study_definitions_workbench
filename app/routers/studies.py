@@ -13,7 +13,6 @@ from app.database.file_import import FileImport
 from app.database.study import Study
 from app.database.version import Version
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.fhir_version import fhir_versions
 from app.dependencies.templates import templates
 from app.dependencies.utility import transmit_role_enabled, user_details
 from app.model.file_handling.data_files import DataFiles
@@ -149,10 +148,7 @@ def study_list(
     # M11 import.
     data["study_count"] = len(parts)
     data["sections"] = _section_toc(section_docs)
-    data["fhir"] = {
-        "enabled": transmit_role_enabled(request),
-        "versions": fhir_versions(),
-    }
+    data["fhir"] = {"enabled": transmit_role_enabled(request)}
     return templates.TemplateResponse(
         request, "studies/list.html", {"user": user, "data": data}
     )

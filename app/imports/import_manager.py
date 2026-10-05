@@ -11,7 +11,6 @@ from app.database.user import User
 from app.imports.import_processors import (
     ImportCPT,
     ImportExcel,
-    ImportFhirPRISM2,
     ImportFhirPRISM3,
     ImportLegacy,
     ImportM11,
@@ -27,7 +26,6 @@ class ImportManager:
     M11_DOCX = "M11_DOCX"
     CPT_DOCX = "CPT_DOCX"
     LEGACY_PDF = "LEGACY_PDF"
-    FHIR_PRISM2_JSON = "FHIR_PRISM2_JSON"
     FHIR_PRISM3_JSON = "FHIR_PRISM3_JSON"
     # USDM3_JSON imports were removed when v3 support was dropped; the
     # constant and its ``is_usdm3_json_import`` check remain so studies
@@ -59,12 +57,6 @@ class ImportManager:
                 "processor": ImportLegacy,
                 "main_file_type": "protocol",
                 "main_file_ext": ".pdf",
-                "images": False,
-            },
-            self.FHIR_PRISM2_JSON: {
-                "processor": ImportFhirPRISM2,
-                "main_file_type": "fhir_prism2",
-                "main_file_ext": ".json",
                 "images": False,
             },
             self.FHIR_PRISM3_JSON: {
@@ -101,7 +93,6 @@ class ImportManager:
             cls.LEGACY_PDF,
             cls.USDM3_JSON,
             cls.USDM4_JSON,
-            cls.FHIR_PRISM2_JSON,
             cls.FHIR_PRISM3_JSON,
         ]
 
@@ -120,10 +111,6 @@ class ImportManager:
     @classmethod
     def is_usdm_excel_import(cls, value: str) -> bool:
         return value == cls.USDM_EXCEL
-
-    @classmethod
-    def is_fhir_prism2_import(cls, value: str) -> bool:
-        return value == cls.FHIR_PRISM2_JSON
 
     @classmethod
     def is_fhir_prism3_import(cls, value: str) -> bool:

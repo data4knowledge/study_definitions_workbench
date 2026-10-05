@@ -112,11 +112,47 @@ class DatabaseManager:
                 cursor.execute("pragma user_version = 33")
                 self.session.commit()
                 application_logger.info("Database migrated to v33")
+            elif version == 33:
+                # PRISM2 FHIR support removed (usdm4_fhir is PRISM3 only).
+                imports, studies = self._drop_prism2_imports()
+                cursor = self.session.connection().connection.cursor()
+                cursor.execute("pragma user_version = 34")
+                self.session.commit()
+                application_logger.info(
+                    f"Database migrated to v34, removed {imports} PRISM2 import(s) and {studies} study(ies)"
+                )
             else:
                 if not migrated:
                     application_logger.info("No database migration")
                 break
             migrated = True
+
+    def _drop_prism2_imports(self) -> tuple[int, int]:
+        # Delete every PRISM2 import: its data files, its version(s) and the
+        # import row. A study is deleted only if that leaves it with no
+        # versions. The type is a literal: the constant no longer exists.
+        cursor = self.session.connection().connection.cursor()
+        imports = cursor.execute(
+            "SELECT id, uuid FROM import WHERE type = 'FHIR_PRISM2_JSON'"
+        ).fetchall()
+        study_ids = set()
+        for import_id, uuid in imports:
+            rows = cursor.execute(
+                "SELECT study_id FROM version WHERE import_id = ?", (import_id,)
+            ).fetchall()
+            study_ids.update(row[0] for row in rows)
+            DataFiles(uuid).delete()
+            cursor.execute("DELETE FROM version WHERE import_id = ?", (import_id,))
+            cursor.execute("DELETE FROM import WHERE id = ?", (import_id,))
+        studies = 0
+        for study_id in study_ids:
+            remaining = cursor.execute(
+                "SELECT COUNT(*) FROM version WHERE study_id = ?", (study_id,)
+            ).fetchone()[0]
+            if remaining == 0:
+                cursor.execute("DELETE FROM study WHERE id = ?", (study_id,))
+                studies += 1
+        return len(imports), studies
 
     def _get_version(self):
         cursor = self.session.connection().connection.cursor()

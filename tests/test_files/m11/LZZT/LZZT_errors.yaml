@@ -458,8 +458,8 @@
   level: Error
   location:
     class_name: usdm4_protocol.soa.soa_extractor.SoA
-    method_name: _decode_soa
-  message: No SoA found
+    method_name: process
+  message: 'SoA not read: the SoA reader needs an AI provider and none is available'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -586,6 +586,53 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Intervention Model 'Parallel' is not an M11 term; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Population Type 'With dx' is not an M11 term; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Number of Participants 'Approximately 300 patients will be enrolled (see
+    Schedule of Events for Protocol H2Q-MC-LZZT(c), Attachment LZZT.1).' holds no
+    number; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: "1.1.2 values with no usdm4 assembler input slot (not stored): population\
+    \ diagnosis or condition: 'Alzheimer\u2019s Disease'; control type: 'Placebo';\
+    \ control description: 'N/A'; site distribution and geographic scope: 'NA Global';\
+    \ intervention assignment method: 'Randomized, blinded'; number of arms: '[3]';\
+    \ trial blind schema: 'Double blind'; blinded roles: 'The following roles indicated\
+    \ will not be made aware of the treatment group assignment during the trial: Investigator,\
+    \ Patient'; duration: 'Total planned duration of trial intervention for each participant:';\
+    \ committees: 'A Data Safety Monitoring Board (DSMB), chaired by an external cardiologist,\
+    \ will meet after 75, 150, 225, and 300 patients have completed 1 month of treatment.\
+    \ The DSMB will review cardiovascular findings to decide if discontinuation of\
+    \ the study or any treatment arm is appropriate, if additional cardiovascular\
+    \ monitoring is required, if further cardiovascular monitoring is unnecessary,\
+    \ or if adjustment of dose within a treatment arm (or arms) is appropriate (see\
+    \ Section 3.9.4).'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Info
   location:
     class_name: usdm4_protocol.common.extract.objectives_extractor.ObjectivesExtractor
@@ -675,7 +722,7 @@
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: process
-  message: 'Amendment information {''amendment_details'': ''<p>Amendment Details:</p>\n<p>This
+  message: 'Amendment information {''amendment_details'': ''<p><b>Amendment Details:</b></p>\n<p>This
     protocol has been amended previously. Details of prior amendments are presented
     in Prior Protocol Amendment(s).}</p>\n<p>The table below describes the current
     amendment.</p>'', ''identifier'': ''H2Q-MC-LXXT(c)'', ''scope'': {''global'':
@@ -683,14 +730,13 @@
     {''keyword'': ''Globally'', ''value'': 66, ''unit'': ''%'', ''regions'': []},
     ''reasons'': {''primary'': ''Primary: Entry Criteria'', ''secondary'': ''Secondary:
     Administrative.''}, ''summary'': ''(Example data only as exact details of amendment
-    were not available for this test protocol.)amuuuSummStnent ementmmdmentmddndndmendment
-    Summary'', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
-    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
-    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
-    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''changes'':
-    [{''description'': ''Changed Entry Criteria'', ''rationale'': ''Example data only
-    as exact details of amendment were not available for this test protocol.'', ''section'':
-    ''5.2 Inclusion Criteria''}]}'
+    were not available for this test protocol.)'', ''impact'': {''safety_and_rights'':
+    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
+    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
+    ''''}}}, ''changes'': [{''description'': ''Changed Entry Criteria'', ''rationale'':
+    ''Example data only as exact details of amendment were not available for this
+    test protocol.'', ''section'': ''5.2 Inclusion Criteria''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -831,16 +877,16 @@
   location: {}
   message: 'Amendment assembler source data {''identifier'': ''H2Q-MC-LXXT(c)'', ''summary'':
     ''(Example data only as exact details of amendment were not available for this
-    test protocol.)amuuuSummStnent ementmmdmentmddndndmendment Summary'', ''reasons'':
-    {''primary'': ''Primary: Entry Criteria'', ''secondary'': ''Secondary: Administrative.''},
-    ''impact'': {''safety_and_rights'': {''safety'': {''substantial'': False, ''reason'':
-    ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}}, ''reliability_and_robustness'':
-    {''reliability'': {''substantial'': False, ''reason'': ''''}, ''robustness'':
-    {''substantial'': False, ''reason'': ''''}}}, ''enrollment'': {''value'': 66,
-    ''unit'': ''%''}, ''scope'': {''global'': True, ''unknown'': [], ''countries'':
-    [], ''regions'': [], ''sites'': []}, ''changes'': [{''section'': ''5.2 Inclusion
-    Criteria'', ''description'': ''Changed Entry Criteria'', ''rationale'': ''Example
-    data only as exact details of amendment were not available for this test protocol.''}]}'
+    test protocol.)'', ''reasons'': {''primary'': ''Primary: Entry Criteria'', ''secondary'':
+    ''Secondary: Administrative.''}, ''impact'': {''safety_and_rights'': {''safety'':
+    {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
+    ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
+    ''''}}}, ''enrollment'': {''value'': 66, ''unit'': ''%''}, ''scope'': {''global'':
+    True, ''unknown'': [], ''countries'': [], ''regions'': [], ''sites'': []}, ''changes'':
+    [{''section'': ''5.2 Inclusion Criteria'', ''description'': ''Changed Entry Criteria'',
+    ''rationale'': ''Example data only as exact details of amendment were not available
+    for this test protocol.''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -1045,6 +1091,15 @@
     class_name: usdm4.encoder.encoder.Encoder
     method_name: arm_type
   message: Arm type 'CONTROL' decoded as 'C174226', 'Control Arm'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
+    method_name: _synthesised_epochs
+  message: No epochs supplied; synthesised one Treatment Epoch to hold the arm to
+    intervention link
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

@@ -7,8 +7,6 @@
       <a class="dropdown-item" href="#">No endpoints available, you need to create one or more</a>
     {% else %}
       {% for item in data['endpoints']['items'] %}
-        {% set title = "SoA FHIR v" ~ version %}
-        {% set desc = fhir_version_description(version) %}
         <a class="dropdown-item" href="/versions/{{data['id']}}/studyDesigns/{{data['study_id']}}/timelines/{{data['timeline']['id']}}/transmit/{{item['id']}}">FHIR SoA message to {{item['name']}}</a>
       {% endfor %}
     {% endif %}

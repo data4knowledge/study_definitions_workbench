@@ -16,7 +16,6 @@ from app.database.file_import import FileImport
 from app.database.user import User
 from app.database.version import Version
 from app.dependencies.dependency import protect_endpoint
-from app.dependencies.fhir_version import fhir_versions
 from app.dependencies.templates import templates
 from app.dependencies.utility import transmit_role_enabled, user_details
 from app.imports.form_handler import FormHandler
@@ -42,10 +41,7 @@ async def get_version_summary(
         "version": usdm.study_version(),
         "templates": usdm.templates(),
         "endpoints": User.endpoints_page(1, 100, user.id, session),
-        "fhir": {
-            "enabled": transmit_role_enabled(request),
-            "versions": fhir_versions(),
-        },
+        "fhir": {"enabled": transmit_role_enabled(request)},
         "backbone": {"enabled": backbone_enabled()},
         "m11": getattr(usdm, "m11", False),
     }

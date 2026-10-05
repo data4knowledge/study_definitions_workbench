@@ -334,7 +334,7 @@ def test_import_legacy_pdf(mocker, monkeypatch):
     assert mock_called(uc)
 
 
-def test_import_fhir_valid(mocker, monkeypatch):
+def test_import_fhir(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     from tests.mocks.factory_mocks import factory_user
@@ -347,26 +347,9 @@ def test_import_fhir_valid(mocker, monkeypatch):
         "pfda": False,
         "source": "os",
     }
-    mocker.patch(
-        "app.routers.imports.check_fhir_version",
-        return_value=(True, "PRISM 2"),
-    )
-    response = client.get("/import/fhir?version=prism2")
+    response = client.get("/import/fhir")
     assert response.status_code == 200
-    assert mock_called(uc, 2)
-
-
-def test_import_fhir_invalid(mocker, monkeypatch):
-    protect_endpoint()
-    client = mock_client(monkeypatch)
-    uc = mock_user_check_exists(mocker)
-    mocker.patch(
-        "app.routers.imports.check_fhir_version",
-        return_value=(False, ""),
-    )
-    response = client.get("/import/fhir?version=invalid")
-    assert response.status_code == 200
-    assert "Invalid FHIR version" in response.text
+    assert "PRISM 3" in response.text
     assert mock_called(uc)
 
 
@@ -403,7 +386,7 @@ async def test_import_fhir_execute(mocker, monkeypatch):
     uc = mock_user_check_exists(mocker)
     pm = mocker.patch("app.imports.request_handler.RequestHandler.process")
     pm.side_effect = ["<h1>Fake FHIR Response</h1>"]
-    response = await async_client.post("/import/fhir?version=prism3")
+    response = await async_client.post("/import/fhir")
     assert response.status_code == 200
     assert mock_called(uc)
     assert mock_called(pm)

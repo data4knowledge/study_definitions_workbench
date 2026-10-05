@@ -564,7 +564,7 @@ def test_export_fhir_success(mocker, monkeypatch):
         "app.main.USDMJson.fhir",
         return_value=("tests/test_files/main/simple.txt", "simple.txt", "text/plain"),
     )
-    response = client.get("/versions/1/export/fhir?version=prism2")
+    response = client.get("/versions/1/export/fhir")
     assert response.status_code == 200
 
 
@@ -574,19 +574,9 @@ def test_export_fhir_no_file(mocker, monkeypatch):
     mock_user_check_exists(mocker)
     mock_usdm_json_init(mocker)
     mocker.patch("app.main.USDMJson.fhir", return_value=("", "file.txt", "text/plain"))
-    response = client.get("/versions/1/export/fhir?version=prism2")
+    response = client.get("/versions/1/export/fhir")
     assert response.status_code == 200
     assert "Error" in response.text
-
-
-def test_export_fhir_invalid_version(mocker, monkeypatch):
-    protect_endpoint()
-    client = mock_client(monkeypatch)
-    mock_user_check_exists(mocker)
-    mock_usdm_json_init(mocker)
-    response = client.get("/versions/1/export/fhir?version=invalid_version")
-    assert response.status_code == 200
-    assert "Invalid FHIR" in response.text
 
 
 def test_export_json_success(mocker, monkeypatch):
@@ -622,24 +612,14 @@ def test_export_json_no_file(mocker, monkeypatch):
 # --- Transmit ---
 
 
-def test_version_transmit_valid(mocker, monkeypatch):
+def test_version_transmit(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
-    mocker.patch("app.main.run_fhir_m11_transmit")
-    response = client.get(
-        "/versions/1/transmit/2?version=prism3", follow_redirects=False
-    )
+    tx = mocker.patch("app.main.run_fhir_m11_transmit")
+    response = client.get("/versions/1/transmit/2", follow_redirects=False)
     assert response.status_code == 307
-
-
-def test_version_transmit_invalid(mocker, monkeypatch):
-    protect_endpoint()
-    client = mock_client(monkeypatch)
-    mock_user_check_exists(mocker)
-    response = client.get("/versions/1/transmit/2?version=bad_version")
-    assert response.status_code == 200
-    assert "Invalid FHIR" in response.text
+    assert tx.call_args.args[:2] == (1, 2)
 
 
 # --- Admin routes ---

@@ -8,13 +8,7 @@
     {% endfor %}
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/json">USDM v4 (.json)</a>
     <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/excel">USDM v4 format Excel (.xlsx)</a>
-    {% for version in data['fhir']['versions'] %}
-        {% if fhir_version_export(version) %}
-            {% set title = "M11 FHIR" %}
-            {% set desc = fhir_version_description(version) %}
-            <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir?version={{version}}">{{title}}, {{desc}} (.json)</a>
-        {% endif %}
-    {% endfor %}
+    <a class="dropdown-item" href="/versions/{{data['version']['id']}}/export/fhir">M11 FHIR, IG (PRISM 3) (.json)</a>
   </div>
 </li>
 

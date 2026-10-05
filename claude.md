@@ -50,7 +50,7 @@ These test individual classes and methods directly, using test data helpers and 
 - `tests/database/` — Database model tests.
 - `tests/configuration/` — Configuration tests.
 - `tests/dependencies/` — Dependency tests.
-- `tests/routers/` — Router endpoint tests using FastAPI `TestClient`. Uses mocks from `tests/mocks/` to stub out `USDMJson`, user auth, FHIR versions, etc.
+- `tests/routers/` — Router endpoint tests using FastAPI `TestClient`. Uses mocks from `tests/mocks/` to stub out `USDMJson`, user auth, etc.
 - `tests/test_main.py` — Main app endpoint tests, also using `TestClient` and mocks.
 - Other unit test dirs: `tests/excel/`, `tests/fhir/`, `tests/files/`, `tests/imports/`, `tests/m11/`, `tests/usdm/`, `tests/usdm_database/`, `tests/utility/`
 
@@ -67,14 +67,14 @@ Located in `tests/playwright/`. These require a running server and browser envir
 ## Key test infrastructure
 
 - `tests/helpers/usdm_test_data.py` — Builds minimal USDM study dicts for unit testing model methods.
-- `tests/mocks/` — Mock factories for FastAPI endpoint tests (e.g. `usdm_json_mocks.py`, `user_mocks.py`, `fhir_version_mocks.py`).
+- `tests/mocks/` — Mock factories for FastAPI endpoint tests (e.g. `usdm_json_mocks.py`, `user_mocks.py`).
 - `tests/test_files/` — JSON/USDM fixture files used by various tests.
 
 ## Common patterns
 
 - USDM data uses CDISC NCI codes as dictionary keys (e.g. `C54149` for Pharmaceutical Company, `C207616` for Official Study Title). Templates and code reference these codes, not human-readable names.
 - The `study_version()` method returns identifiers as `{code: {label, identifier}}` dicts, and titles as `{code: text}` dicts.
-- FHIR version support is configured in `app/dependencies/fhir_version.py`. Only versions listed in `FHIR_VERSIONS` are valid for export/transmit.
+- FHIR M11 is PRISM3 only (usdm4_fhir dropped Madrid and PRISM2; issue 75). No version parameter on the FHIR import, export or transmit routes. Stored PRISM2 imports were deleted by DB migration v34.
 
 ## Known issues
 

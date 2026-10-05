@@ -13,12 +13,10 @@ from app.model.usdm_json import USDMJson
 from app.utility.fhir_service import FHIRService
 
 
-def run_fhir_m11_transmit(
-    version_id: int, endpoint_id: int, version: str, user: User
-) -> None:
+def run_fhir_m11_transmit(version_id: int, endpoint_id: int, user: User) -> None:
     t = threading.Thread(
         target=asyncio.run,
-        args=(fhir_m11_transmit(version_id, endpoint_id, version, user),),
+        args=(fhir_m11_transmit(version_id, endpoint_id, user),),
     )
     t.start()
 
@@ -33,14 +31,12 @@ def run_fhir_soa_transmit(
     t.start()
 
 
-async def fhir_m11_transmit(
-    version_id: int, endpoint_id: int, version: str, user: User
-) -> None:
+async def fhir_m11_transmit(version_id: int, endpoint_id: int, user: User) -> None:
     session = SessionLocal()
     usdm = USDMJson(version_id, session)
     details = usdm.study_version()
-    application_logger.info(f"M11 FHIR tx, version: {version}")
-    data = usdm.fhir_data(version)
+    application_logger.info("M11 FHIR (PRISM3) tx")
+    data = usdm.fhir_data()
     await fhir_transmit("M11", version_id, endpoint_id, data, details, user, session)
 
 
