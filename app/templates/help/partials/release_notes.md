@@ -1,3 +1,8 @@
+<h5>Release 0.47.0, 2026-10-nn</h5>
+
+- Tidy up FHIR server endpoint handling (issue ##)
+- Update for new package dependencies
+
 <h5>Release 0.46.0, 2026-08-14</h5>
 
 - Add backbone integration option (issue 69)
