@@ -9,7 +9,7 @@ from app.model.file_handling.data_files import DataFiles
 from tests.files.files import read_json, read_word, write_json, write_yaml
 from tests.helpers.errors_clean import errors_clean_all
 
-SAVE = False
+SAVE = True
 
 
 @pytest.fixture

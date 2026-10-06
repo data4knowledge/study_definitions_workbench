@@ -24,6 +24,7 @@ from app.model.file_handling.local_files import LocalFiles
 from app.model.usdm_json import USDMJson
 from app.usdm_database.usdm_database import USDMDatabase
 from app.utility.backbone_transmit import backbone_enabled, run_backbone_transmit
+from app.utility.fhir_transmit import default_fhir_enabled
 from app.utility.m11_annotate import annotate as m11_annotate
 
 router = APIRouter(
@@ -41,7 +42,10 @@ async def get_version_summary(
         "version": usdm.study_version(),
         "templates": usdm.templates(),
         "endpoints": User.endpoints_page(1, 100, user.id, session),
-        "fhir": {"enabled": transmit_role_enabled(request)},
+        "fhir": {
+            "enabled": transmit_role_enabled(request),
+            "default": default_fhir_enabled(),
+        },
         "backbone": {"enabled": backbone_enabled()},
         "m11": getattr(usdm, "m11", False),
     }

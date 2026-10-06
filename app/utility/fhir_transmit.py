@@ -4,6 +4,7 @@ import threading
 from d4k_ms_base.logger import application_logger
 from sqlalchemy.orm import Session
 
+from app.configuration.configuration import application_configuration
 from app.database.database import SessionLocal
 from app.database.endpoint import Endpoint
 from app.database.transmission import Transmission
@@ -12,8 +13,30 @@ from app.model.connection_manager import connection_manager
 from app.model.usdm_json import USDMJson
 from app.utility.fhir_service import FHIRService
 
+# endpoint_id value meaning "the default FHIR server from env config".
+DEFAULT_SERVER = None
+DEFAULT_SERVER_NAME = "default FHIR server"
 
-def run_fhir_m11_transmit(version_id: int, endpoint_id: int, user: User) -> None:
+
+def default_fhir_enabled() -> bool:
+    """True when a default FHIR server URL has been configured."""
+    return bool(application_configuration.fhir_server_url)
+
+
+def default_fhir_service() -> FHIRService:
+    """FHIRService for the default server, with credentials when configured."""
+    username = application_configuration.fhir_server_username
+    password = application_configuration.fhir_server_password
+    auth = (username, password) if username else None
+    return FHIRService(application_configuration.fhir_server_url, auth=auth)
+
+
+def endpoint_fhir_service(endpoint: Endpoint) -> FHIRService:
+    """FHIRService for a user endpoint. Never carries credentials."""
+    return FHIRService(endpoint.endpoint)
+
+
+def run_fhir_m11_transmit(version_id: int, endpoint_id: int | None, user: User) -> None:
     t = threading.Thread(
         target=asyncio.run,
         args=(fhir_m11_transmit(version_id, endpoint_id, user),),
@@ -22,7 +45,7 @@ def run_fhir_m11_transmit(version_id: int, endpoint_id: int, user: User) -> None
 
 
 def run_fhir_soa_transmit(
-    version_id: int, endpoint_id: int, timeline_id: str, user: User
+    version_id: int, endpoint_id: int | None, timeline_id: str, user: User
 ) -> None:
     t = threading.Thread(
         target=asyncio.run,
@@ -31,7 +54,9 @@ def run_fhir_soa_transmit(
     t.start()
 
 
-async def fhir_m11_transmit(version_id: int, endpoint_id: int, user: User) -> None:
+async def fhir_m11_transmit(
+    version_id: int, endpoint_id: int | None, user: User
+) -> None:
     session = SessionLocal()
     usdm = USDMJson(version_id, session)
     details = usdm.study_version()
@@ -41,7 +66,7 @@ async def fhir_m11_transmit(version_id: int, endpoint_id: int, user: User) -> No
 
 
 async def fhir_soa_transmit(
-    version_id: int, endpoint_id: int, timeline_id: str, user: User
+    version_id: int, endpoint_id: int | None, timeline_id: str, user: User
 ) -> None:
     session = SessionLocal()
     usdm = USDMJson(version_id, session)
@@ -53,7 +78,7 @@ async def fhir_soa_transmit(
 async def fhir_transmit(
     type: str,
     version_id: int,
-    endpoint_id: int,
+    endpoint_id: int | None,
     data: str,
     details: dict,
     user: User,
@@ -71,9 +96,16 @@ async def fhir_transmit(
             user_id=user.id,
             session=session,
         )
-        endpoint = Endpoint.find(endpoint_id, session)
-        application_logger.info(f"Sending FHIR message, endpoint '{endpoint}'")
-        server = FHIRService(endpoint.endpoint)
+        if endpoint_id is DEFAULT_SERVER:
+            application_logger.info(
+                f"Sending FHIR message to the {DEFAULT_SERVER_NAME} "
+                f"'{application_configuration.fhir_server_url}'"
+            )
+            server = default_fhir_service()
+        else:
+            endpoint = Endpoint.find(endpoint_id, session)
+            application_logger.info(f"Sending FHIR message, endpoint '{endpoint}'")
+            server = endpoint_fhir_service(endpoint)
         response = await server.put("Bundle", data, 60.0)
         if response["success"]:
             message = f"Succesful transmission of FHIR {type} message: {response['data']['id']}"

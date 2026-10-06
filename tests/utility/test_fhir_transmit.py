@@ -3,6 +3,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from app.utility.fhir_transmit import (
+    default_fhir_enabled,
+    default_fhir_service,
+    endpoint_fhir_service,
     fhir_m11_transmit,
     fhir_soa_transmit,
     fhir_transmit,
@@ -150,6 +153,90 @@ class TestFhirTransmit:
 
         mock_cm.error.assert_awaited_once()
         mock_session.close.assert_called_once()
+
+
+def _patch_config(mocker, url, username, password):
+    config = mocker.patch("app.utility.fhir_transmit.application_configuration")
+    config.fhir_server_url = url
+    config.fhir_server_username = username
+    config.fhir_server_password = password
+    return config
+
+
+class TestDefaultServer:
+    def test_enabled(self, mocker):
+        _patch_config(mocker, "https://aidbox.test", "", "")
+        assert default_fhir_enabled() is True
+
+    def test_disabled(self, mocker):
+        _patch_config(mocker, "", "", "")
+        assert default_fhir_enabled() is False
+        _patch_config(mocker, None, None, None)
+        assert default_fhir_enabled() is False
+
+    def test_default_service_sends_credentials(self, mocker):
+        _patch_config(mocker, "https://aidbox.test", "user", "pass")
+        fhir = mocker.patch("app.utility.fhir_transmit.FHIRService")
+        default_fhir_service()
+        fhir.assert_called_once_with("https://aidbox.test", auth=("user", "pass"))
+
+    def test_default_service_no_username_no_auth(self, mocker):
+        _patch_config(mocker, "https://aidbox.test", "", "")
+        fhir = mocker.patch("app.utility.fhir_transmit.FHIRService")
+        default_fhir_service()
+        fhir.assert_called_once_with("https://aidbox.test", auth=None)
+
+    def test_endpoint_service_no_credentials(self, mocker):
+        _patch_config(mocker, "https://aidbox.test", "user", "pass")
+        fhir = mocker.patch("app.utility.fhir_transmit.FHIRService")
+        endpoint_fhir_service(MagicMock(endpoint="https://hapi.test/baseR5"))
+        fhir.assert_called_once_with("https://hapi.test/baseR5")
+
+
+class TestFhirTransmitCredentials:
+    """End to end through fhir_transmit: which server, which auth."""
+
+    @pytest.mark.asyncio
+    @patch("app.utility.fhir_transmit.connection_manager")
+    @patch("app.utility.fhir_transmit.FHIRService")
+    @patch("app.utility.fhir_transmit.Endpoint")
+    @patch("app.utility.fhir_transmit.Transmission")
+    async def test_default_server_sends_credentials(
+        self, mock_tx, mock_ep, mock_fhir, mock_cm, mock_user, mock_session, mocker
+    ):
+        _patch_config(mocker, "https://aidbox.test", "user", "pass")
+        mock_server = MagicMock()
+        mock_server.put = AsyncMock(
+            return_value={"success": True, "data": {"id": "b1"}}
+        )
+        mock_fhir.return_value = mock_server
+        mock_cm.success = AsyncMock()
+        details = {"titles": {"C207616": "Study X"}}
+        await fhir_transmit("M11", 1, None, "{}", details, mock_user, mock_session)
+        mock_fhir.assert_called_once_with("https://aidbox.test", auth=("user", "pass"))
+        mock_ep.find.assert_not_called()
+        mock_cm.success.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    @patch("app.utility.fhir_transmit.connection_manager")
+    @patch("app.utility.fhir_transmit.FHIRService")
+    @patch("app.utility.fhir_transmit.Endpoint")
+    @patch("app.utility.fhir_transmit.Transmission")
+    async def test_user_endpoint_sends_no_credentials(
+        self, mock_tx, mock_ep, mock_fhir, mock_cm, mock_user, mock_session, mocker
+    ):
+        _patch_config(mocker, "https://aidbox.test", "user", "pass")
+        mock_ep.find.return_value = MagicMock(endpoint="https://hapi.test/baseR5")
+        mock_server = MagicMock()
+        mock_server.put = AsyncMock(
+            return_value={"success": True, "data": {"id": "b2"}}
+        )
+        mock_fhir.return_value = mock_server
+        mock_cm.success = AsyncMock()
+        details = {"titles": {"C207616": "Study X"}}
+        await fhir_transmit("M11", 1, 2, "{}", details, mock_user, mock_session)
+        mock_fhir.assert_called_once_with("https://hapi.test/baseR5")
+        mock_cm.success.assert_awaited_once()
 
 
 class TestRunFhirTransmitThreads:

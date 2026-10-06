@@ -24,6 +24,16 @@ def anyio_backend():
     return "asyncio"
 
 
+@pytest.fixture(autouse=True)
+def no_db_endpoints(mocker):
+    """The summary route reads the user's endpoints from the DB; the mocked
+    user (id 1) need not exist in a fresh test DB, so stub the lookup."""
+    return mocker.patch(
+        "app.routers.versions.User.endpoints_page",
+        return_value={"page": 1, "size": 100, "count": 0, "filter": "", "items": []},
+    )
+
+
 def test_version_summary_fhir_authorised(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
@@ -141,6 +151,36 @@ def test_version_summary_backbone_disabled(mocker, monkeypatch):
     assert response.status_code == 200
     assert "USDM v4 to Backbone" not in response.text
     assert mock_called(be)
+
+
+def _summary_menu(mocker, monkeypatch, default_enabled):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mock_transmit_role_enabled_true(mocker, "app.routers.versions")
+    mock_usdm_json_init(mocker, "app.routers.versions")
+    mock_usdm_study_version(mocker, "app.routers.versions")
+    mock_usdm_json_templates(mocker, "app.routers.versions")
+    mocker.patch("app.routers.versions.backbone_enabled", return_value=False)
+    mocker.patch(
+        "app.routers.versions.default_fhir_enabled", return_value=default_enabled
+    )
+    return client.get("/versions/1/summary")
+
+
+def test_version_summary_fhir_default_shown(mocker, monkeypatch):
+    response = _summary_menu(mocker, monkeypatch, True)
+    assert response.status_code == 200
+    assert (
+        '<a class="dropdown-item" href="/versions/1/transmit/default">M11 FHIR, IG (PRISM 3) to default server</a>'
+        in response.text
+    )
+
+
+def test_version_summary_fhir_default_hidden(mocker, monkeypatch):
+    response = _summary_menu(mocker, monkeypatch, False)
+    assert response.status_code == 200
+    assert "to default server" not in response.text
 
 
 def test_backbone_load(mocker, monkeypatch):

@@ -134,6 +134,30 @@ def test_email_config_set(mocker, monkeypatch):
     assert config.registration_notify_email == "admin@example.com"
 
 
+def test_fhir_server_config_unset(mocker, monkeypatch):
+    mock_se_get(mocker, _base_env())
+    config = Configuration()
+    assert not config.fhir_server_url
+    assert not config.fhir_server_username
+    assert not config.fhir_server_password
+
+
+def test_fhir_server_config_set(mocker, monkeypatch):
+    env = _base_env()
+    env.update(
+        {
+            "FHIR_SERVER_URL": "https://aidbox.example.com/",
+            "FHIR_SERVER_USERNAME": "fhir-user",
+            "FHIR_SERVER_PASSWORD": "fhir-pass",
+        }
+    )
+    mock_se_get(mocker, env)
+    config = Configuration()
+    assert config.fhir_server_url == "https://aidbox.example.com/"
+    assert config.fhir_server_username == "fhir-user"
+    assert config.fhir_server_password == "fhir-pass"
+
+
 def mock_se_get(mocker, mapping):
     """Name-based mock so the test is robust to new config reads."""
     mock = mocker.patch("d4k_ms_base.service_environment.ServiceEnvironment.get")

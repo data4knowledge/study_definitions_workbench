@@ -57,6 +57,13 @@ class Configuration:
         # 'X-API-Key' header on the load request; when unset no auth
         # header is sent.
         self.backbone_api_key = self._se.get("BACKBONE_API_KEY")
+        # Default FHIR server. When FHIR_SERVER_URL is set, users with the
+        # Transmit role get a "default server" entry in the Transmit menus
+        # (not stored in the database). The username/password are sent as
+        # basic auth to this server only — never to user-added endpoints.
+        self.fhir_server_url = self._se.get("FHIR_SERVER_URL")
+        self.fhir_server_username = self._se.get("FHIR_SERVER_USERNAME")
+        self.fhir_server_password = self._se.get("FHIR_SERVER_PASSWORD")
 
     def _email_dev_mode(self) -> bool:
         flag = self._se.get("EMAIL_DEV_MODE")

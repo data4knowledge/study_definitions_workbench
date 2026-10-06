@@ -32,7 +32,11 @@ from app.dependencies.dependency import (
     set_middleware_secret,
 )
 from app.dependencies.templates import templates
-from app.dependencies.utility import admin_role_enabled, user_details
+from app.dependencies.utility import (
+    admin_role_enabled,
+    transmit_role_enabled,
+    user_details,
+)
 from app.model.connection_manager import connection_manager
 from app.model.email_auth import (
     generate_code,
@@ -57,7 +61,7 @@ from app.routers import (
     version_timelines,
     versions,
 )
-from app.utility.fhir_transmit import run_fhir_m11_transmit
+from app.utility.fhir_transmit import default_fhir_enabled, run_fhir_m11_transmit
 
 DataFiles.clean_and_tidy()
 DataFiles.check()
@@ -659,6 +663,38 @@ async def export_fhir(request: Request, id: int, session: Session = Depends(get_
         )
 
 
+def _transmit_error(request: Request, user, message: str):
+    return templates.TemplateResponse(
+        request, "errors/error.html", {"user": user, "data": {"error": message}}
+    )
+
+
+# Declared before the '{endpoint_id}' route so 'default' is not parsed as an id.
+@app.get(
+    "/versions/{id}/transmit/default", dependencies=[Depends(protect_endpoint)]
+)
+async def version_transmit_default(
+    request: Request,
+    id: int,
+    session: Session = Depends(get_db),
+):
+    """Send the M11 FHIR message to the default FHIR server (FHIR_SERVER_URL)."""
+    user, present_in_db = user_details(request, session)
+    if not transmit_role_enabled(request):
+        return _transmit_error(
+            request, user, "User is not authorised to transmit FHIR messages."
+        )
+    if not default_fhir_enabled():
+        return _transmit_error(
+            request,
+            user,
+            "No default FHIR server has been configured (FHIR_SERVER_URL is not set).",
+        )
+    application_logger.info("FHIR (PRISM3) message tx to default server requested")
+    run_fhir_m11_transmit(id, None, user)
+    return RedirectResponse(f"/versions/{id}/summary")
+
+
 @app.get(
     "/versions/{id}/transmit/{endpoint_id}", dependencies=[Depends(protect_endpoint)]
 )
@@ -668,7 +704,16 @@ async def version_transmit(
     endpoint_id: int,
     session: Session = Depends(get_db),
 ):
+    """Send the M11 FHIR message to one of the current user's endpoints."""
     user, present_in_db = user_details(request, session)
+    if not transmit_role_enabled(request):
+        return _transmit_error(
+            request, user, "User is not authorised to transmit FHIR messages."
+        )
+    if not Endpoint.find_for_user(endpoint_id, user.id, session):
+        return _transmit_error(
+            request, user, f"Endpoint '{endpoint_id}' is not available to this user."
+        )
     application_logger.info("FHIR (PRISM3) message tx requested")
     run_fhir_m11_transmit(id, endpoint_id, user)
     return RedirectResponse(f"/versions/{id}/summary")
@@ -703,18 +748,6 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
     if admin_role_enabled(request):
         database_managr = DBM(session)
         database_managr.clear_all()
-        endpoint, validation = Endpoint.create(
-            "Aidbox", "https://tbuofzdjhm.edge.aidbox.app/", "FHIR", user.id, session
-        )
-        # endpoint, validation = Endpoint.create(
-        #     "LOCAL TEST", "http://localhost:8010/m11", "FHIR", user.id, session
-        # )
-        # endpoint, validation = Endpoint.create(
-        #     "Hugh Server", "https://fs-01.azurewebsites.net", "FHIR", user.id, session
-        # )
-        # endpoint, validation = Endpoint.create(
-        #     "HAPI Server", "https://hapi.fhir.org/baseR5", "FHIR", user.id, session
-        # )
         application_logger.info(f"User '{user.id}', '{user.email} cleared the database")
     else:
         # Error here

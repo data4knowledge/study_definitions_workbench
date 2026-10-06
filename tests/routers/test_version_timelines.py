@@ -242,11 +242,121 @@ def test_export_patient_journey_error(mocker, monkeypatch):
     assert "Error downloading the requested JSON file" in response.text
 
 
+SOA_URL = "/versions/1/studyDesigns/d1/timelines/t1"
+VT = "app.routers.version_timelines"
+
+
 def test_timeline_transmit(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
-    mocker.patch("app.routers.version_timelines.run_fhir_soa_transmit")
-    response = client.get(
-        "/versions/1/studyDesigns/d1/timelines/t1/transmit/ep1", follow_redirects=False
-    )
+    mocker.patch(f"{VT}.transmit_role_enabled", return_value=True)
+    fe = mocker.patch(f"{VT}.Endpoint.find_for_user", return_value=MagicMock())
+    tx = mocker.patch(f"{VT}.run_fhir_soa_transmit")
+    response = client.get(f"{SOA_URL}/transmit/7", follow_redirects=False)
     assert response.status_code == 307
+    assert response.headers["location"] == f"{SOA_URL}/soa"
+    assert tx.call_args.args[:3] == (1, 7, "t1")
+    assert fe.call_args.args[0] == 7
+
+
+def test_timeline_transmit_not_authorised(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch(f"{VT}.transmit_role_enabled", return_value=False)
+    tx = mocker.patch(f"{VT}.run_fhir_soa_transmit")
+    response = client.get(f"{SOA_URL}/transmit/7", follow_redirects=False)
+    assert response.status_code == 200
+    assert "User is not authorised to transmit FHIR messages." in response.text
+    tx.assert_not_called()
+
+
+def test_timeline_transmit_other_users_endpoint(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch(f"{VT}.transmit_role_enabled", return_value=True)
+    mocker.patch(f"{VT}.Endpoint.find_for_user", return_value=None)
+    tx = mocker.patch(f"{VT}.run_fhir_soa_transmit")
+    response = client.get(f"{SOA_URL}/transmit/7", follow_redirects=False)
+    assert response.status_code == 200
+    assert "is not available to this user." in response.text
+    tx.assert_not_called()
+
+
+def test_timeline_transmit_default(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch(f"{VT}.transmit_role_enabled", return_value=True)
+    mocker.patch(f"{VT}.default_fhir_enabled", return_value=True)
+    tx = mocker.patch(f"{VT}.run_fhir_soa_transmit")
+    response = client.get(f"{SOA_URL}/transmit/default", follow_redirects=False)
+    assert response.status_code == 307
+    assert tx.call_args.args[:3] == (1, None, "t1")
+
+
+def test_timeline_transmit_default_not_authorised(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch(f"{VT}.transmit_role_enabled", return_value=False)
+    mocker.patch(f"{VT}.default_fhir_enabled", return_value=True)
+    tx = mocker.patch(f"{VT}.run_fhir_soa_transmit")
+    response = client.get(f"{SOA_URL}/transmit/default", follow_redirects=False)
+    assert response.status_code == 200
+    assert "User is not authorised to transmit FHIR messages." in response.text
+    tx.assert_not_called()
+
+
+def test_timeline_transmit_default_not_configured(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mocker.patch(f"{VT}.transmit_role_enabled", return_value=True)
+    mocker.patch(f"{VT}.default_fhir_enabled", return_value=False)
+    tx = mocker.patch(f"{VT}.run_fhir_soa_transmit")
+    response = client.get(f"{SOA_URL}/transmit/default", follow_redirects=False)
+    assert response.status_code == 200
+    assert "No default FHIR server has been configured" in response.text
+    tx.assert_not_called()
+
+
+def _soa_menu(mocker, monkeypatch, default_enabled):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_usdm_json_init(mocker)
+    mocker.patch(
+        f"{VT}.USDMJson.soa",
+        return_value={
+            "id": 1,
+            "study_id": "d1",
+            "timeline": {
+                "id": "t1",
+                "label": "SOA LABEL",
+                "description": "SOA Description",
+                "mainTimeline": False,
+                "name": "SoA Name",
+            },
+            "soa": "<table>SOA Table</table>",
+        },
+    )
+    mocker.patch(f"{VT}.transmit_role_enabled", return_value=True)
+    mocker.patch(f"{VT}.default_fhir_enabled", return_value=default_enabled)
+    mocker.patch(
+        f"{VT}.User.endpoints_page",
+        return_value={"count": 1, "items": [{"id": 7, "name": "HAPI"}]},
+    )
+    return client.get(f"{SOA_URL}/soa")
+
+
+def test_soa_menu_default_shown(mocker, monkeypatch):
+    response = _soa_menu(mocker, monkeypatch, True)
+    assert response.status_code == 200
+    assert (
+        f'href="{SOA_URL}/transmit/default">FHIR SoA message to default server</a>'
+        in response.text
+    )
+    assert f'href="{SOA_URL}/transmit/7">FHIR SoA message to HAPI</a>' in response.text
+
+
+def test_soa_menu_default_hidden(mocker, monkeypatch):
+    response = _soa_menu(mocker, monkeypatch, False)
+    assert response.status_code == 200
+    assert "to default server" not in response.text
+    assert f'href="{SOA_URL}/transmit/7">FHIR SoA message to HAPI</a>' in response.text

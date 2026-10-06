@@ -616,10 +616,77 @@ def test_version_transmit(mocker, monkeypatch):
     protect_endpoint()
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
+    mocker.patch("app.main.transmit_role_enabled", return_value=True)
+    fe = mocker.patch("app.main.Endpoint.find_for_user", return_value=MagicMock())
     tx = mocker.patch("app.main.run_fhir_m11_transmit")
     response = client.get("/versions/1/transmit/2", follow_redirects=False)
     assert response.status_code == 307
     assert tx.call_args.args[:2] == (1, 2)
+    assert fe.call_args.args[0] == 2
+
+
+def test_version_transmit_not_authorised(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mocker.patch("app.main.transmit_role_enabled", return_value=False)
+    tx = mocker.patch("app.main.run_fhir_m11_transmit")
+    response = client.get("/versions/1/transmit/2", follow_redirects=False)
+    assert response.status_code == 200
+    assert "User is not authorised to transmit FHIR messages." in response.text
+    tx.assert_not_called()
+
+
+def test_version_transmit_other_users_endpoint(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mocker.patch("app.main.transmit_role_enabled", return_value=True)
+    mocker.patch("app.main.Endpoint.find_for_user", return_value=None)
+    tx = mocker.patch("app.main.run_fhir_m11_transmit")
+    response = client.get("/versions/1/transmit/2", follow_redirects=False)
+    assert response.status_code == 200
+    assert "is not available to this user." in response.text
+    tx.assert_not_called()
+
+
+def test_version_transmit_default(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mocker.patch("app.main.transmit_role_enabled", return_value=True)
+    mocker.patch("app.main.default_fhir_enabled", return_value=True)
+    tx = mocker.patch("app.main.run_fhir_m11_transmit")
+    response = client.get("/versions/1/transmit/default", follow_redirects=False)
+    assert response.status_code == 307
+    assert response.headers["location"] == "/versions/1/summary"
+    assert tx.call_args.args[:2] == (1, None)
+
+
+def test_version_transmit_default_not_authorised(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mocker.patch("app.main.transmit_role_enabled", return_value=False)
+    mocker.patch("app.main.default_fhir_enabled", return_value=True)
+    tx = mocker.patch("app.main.run_fhir_m11_transmit")
+    response = client.get("/versions/1/transmit/default", follow_redirects=False)
+    assert response.status_code == 200
+    assert "User is not authorised to transmit FHIR messages." in response.text
+    tx.assert_not_called()
+
+
+def test_version_transmit_default_not_configured(mocker, monkeypatch):
+    protect_endpoint()
+    client = mock_client(monkeypatch)
+    mock_user_check_exists(mocker)
+    mocker.patch("app.main.transmit_role_enabled", return_value=True)
+    mocker.patch("app.main.default_fhir_enabled", return_value=False)
+    tx = mocker.patch("app.main.run_fhir_m11_transmit")
+    response = client.get("/versions/1/transmit/default", follow_redirects=False)
+    assert response.status_code == 200
+    assert "No default FHIR server has been configured" in response.text
+    tx.assert_not_called()
 
 
 # --- Admin routes ---
@@ -630,10 +697,12 @@ def test_database_clean_admin(mocker, monkeypatch):
     client = mock_client(monkeypatch)
     mock_user_check_exists(mocker)
     mocker.patch("app.main.admin_role_enabled", return_value=True)
-    mocker.patch("app.main.DBM")
-    mocker.patch("app.main.Endpoint.create", return_value=(MagicMock(), {}))
+    dbm = mocker.patch("app.main.DBM")
+    ec = mocker.patch("app.main.Endpoint.create", return_value=(MagicMock(), {}))
     response = client.get("/database/clean", follow_redirects=False)
     assert response.status_code == 307
+    dbm.return_value.clear_all.assert_called_once()
+    ec.assert_not_called()
 
 
 def test_database_clean_not_admin(mocker, monkeypatch):

@@ -5,12 +5,13 @@ from sqlalchemy.orm import Session
 from usdm4_pj import USDM4PJ
 
 from app.database.database import get_db
+from app.database.endpoint import Endpoint
 from app.database.user import User
 from app.dependencies.dependency import protect_endpoint
 from app.dependencies.templates import templates
 from app.dependencies.utility import transmit_role_enabled, user_details
 from app.model.usdm_json import USDMJson
-from app.utility.fhir_transmit import run_fhir_soa_transmit
+from app.utility.fhir_transmit import default_fhir_enabled, run_fhir_soa_transmit
 
 router = APIRouter(
     prefix="/versions",
@@ -52,7 +53,10 @@ async def get_study_design_timeline_soa(
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.soa(study_design_id, timeline_id)
-    data["fhir"] = {"enabled": transmit_role_enabled(request)}
+    data["fhir"] = {
+        "enabled": transmit_role_enabled(request),
+        "default": default_fhir_enabled(),
+    }
     data["endpoints"] = User.endpoints_page(1, 100, user.id, session)
     # print(f"DATA: {data}")
     return templates.TemplateResponse(
@@ -82,7 +86,10 @@ async def display_patient_journey(
             "id": version_id,
             "study_id": study_design_id,
             "timeline": {"id": timeline_id},
-            "fhir": {"enabled": transmit_role_enabled(request)},
+            "fhir": {
+                "enabled": transmit_role_enabled(request),
+                "default": default_fhir_enabled(),
+            },
             "endpoints": User.endpoints_page(1, 100, user.id, session),
             "json": pj.simple_view(full_path, study_design_id),
         }
@@ -129,7 +136,10 @@ async def display_expansion(
             "id": version_id,
             "study_id": study_design_id,
             "timeline": {"id": timeline_id},
-            "fhir": {"enabled": transmit_role_enabled(request)},
+            "fhir": {
+                "enabled": transmit_role_enabled(request),
+                "default": default_fhir_enabled(),
+            },
             "endpoints": User.endpoints_page(1, 100, user.id, session),
             "json": pj.expanded_view(
                 usdm_full_path,
@@ -256,6 +266,42 @@ async def export_patient_journey(
         )
 
 
+def _transmit_error(request: Request, user, message: str):
+    return templates.TemplateResponse(
+        request, "errors/error.html", {"user": user, "data": {"error": message}}
+    )
+
+
+# Declared before the '{endpoint_id}' route so 'default' is not parsed as an id.
+@router.get(
+    "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/transmit/default",
+    dependencies=[Depends(protect_endpoint)],
+)
+async def get_study_design_timeline_transmit_default(
+    request: Request,
+    version_id: int,
+    study_design_id: str,
+    timeline_id: str,
+    session: Session = Depends(get_db),
+):
+    """Send the SoA FHIR message to the default FHIR server (FHIR_SERVER_URL)."""
+    user, present_in_db = user_details(request, session)
+    if not transmit_role_enabled(request):
+        return _transmit_error(
+            request, user, "User is not authorised to transmit FHIR messages."
+        )
+    if not default_fhir_enabled():
+        return _transmit_error(
+            request,
+            user,
+            "No default FHIR server has been configured (FHIR_SERVER_URL is not set).",
+        )
+    run_fhir_soa_transmit(version_id, None, timeline_id, user)
+    return RedirectResponse(
+        f"/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa"
+    )
+
+
 @router.get(
     "/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/transmit/{endpoint_id}",
     dependencies=[Depends(protect_endpoint)],
@@ -265,10 +311,19 @@ async def get_study_design_timeline_transmit(
     version_id: int,
     study_design_id: str,
     timeline_id: str,
-    endpoint_id: str,
+    endpoint_id: int,
     session: Session = Depends(get_db),
 ):
+    """Send the SoA FHIR message to one of the current user's endpoints."""
     user, present_in_db = user_details(request, session)
+    if not transmit_role_enabled(request):
+        return _transmit_error(
+            request, user, "User is not authorised to transmit FHIR messages."
+        )
+    if not Endpoint.find_for_user(endpoint_id, user.id, session):
+        return _transmit_error(
+            request, user, f"Endpoint '{endpoint_id}' is not available to this user."
+        )
     run_fhir_soa_transmit(version_id, endpoint_id, timeline_id, user)
     return RedirectResponse(
         f"/versions/{version_id}/studyDesigns/{study_design_id}/timelines/{timeline_id}/soa"

@@ -8,29 +8,29 @@ from app.utility.fhir_service import FHIRService
 
 @pytest.fixture
 def fhir_service():
-    with (
-        patch("app.utility.fhir_service.ServiceEnvironment") as mock_se,
-        patch("app.utility.service.httpx.AsyncClient"),
-    ):
-        mock_se_instance = MagicMock()
-        mock_se_instance.get.side_effect = lambda k: {
-            "ENDPOINT_USERNAME": "user",
-            "ENDPOINT_PASSWORD": "pass",
-        }.get(k, "")
-        mock_se.return_value = mock_se_instance
+    with patch("app.utility.service.httpx.AsyncClient"):
         svc = FHIRService("https://fhir.example.com")
+    return svc
+
+
+@pytest.fixture
+def fhir_service_auth():
+    with patch("app.utility.service.httpx.AsyncClient"):
+        svc = FHIRService("https://fhir.example.com", auth=("user", "pass"))
     return svc
 
 
 class TestFHIRServiceInit:
     def test_init(self):
-        with (
-            patch("app.utility.fhir_service.ServiceEnvironment"),
-            patch("app.utility.service.httpx.AsyncClient"),
-        ):
+        with patch("app.utility.service.httpx.AsyncClient"):
             svc = FHIRService("https://fhir.example.com")
         assert svc.base_url == "https://fhir.example.com"
-        assert svc._se is not None
+        assert svc._auth is None
+
+    def test_init_with_auth(self):
+        with patch("app.utility.service.httpx.AsyncClient"):
+            svc = FHIRService("https://fhir.example.com", auth=("u", "p"))
+        assert svc._auth == ("u", "p")
 
 
 class TestFHIRServicePut:
@@ -68,14 +68,24 @@ class TestFHIRServicePut:
         assert result["success"] is False
 
     @pytest.mark.asyncio
-    async def test_put_uses_auth(self, fhir_service):
+    async def test_put_sends_auth_when_given(self, fhir_service_auth):
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.text = '{"id": "bundle-3"}'
+        fhir_service_auth._client.put = AsyncMock(return_value=mock_response)
+        await fhir_service_auth.put("/Bundle")
+        call_kwargs = fhir_service_auth._client.put.call_args[1]
+        assert call_kwargs["auth"] == ("user", "pass")
+
+    @pytest.mark.asyncio
+    async def test_put_sends_no_auth_when_not_given(self, fhir_service):
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.text = '{"id": "bundle-4"}'
         fhir_service._client.put = AsyncMock(return_value=mock_response)
         await fhir_service.put("/Bundle")
         call_kwargs = fhir_service._client.put.call_args[1]
-        assert call_kwargs["auth"] == ("user", "pass")
+        assert "auth" not in call_kwargs
 
 
 class TestFHIRServiceWrappers:

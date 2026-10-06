@@ -45,6 +45,16 @@ The application has two modes controlled by the `SINGLE_USER` variable:
 
 When running via Docker, the Dockerfile pre-sets `MNT_PATH`, `DATABASE_PATH`, `DATABASE_NAME`, `DATAFILE_PATH`, `LOCALFILE_PATH`, `CDISC_CORE_CACHE_PATH`, and `ADDRESS_SERVER_URL`, so only `SESSION_SECRET`, `SINGLE_USER`, `FILE_PICKER`, and (if multi-user) the `SMTP_*` variables need to be supplied externally.
 
+### Default FHIR server (optional)
+
+| Variable | Description |
+| :--- | :--- |
+| `FHIR_SERVER_URL` | Base URL of the default FHIR server (e.g. an Aidbox instance). When set, users with the Transmit role get a "to default server" entry in the M11 and SoA Transmit menus. Not stored in the database. Unset hides the entry and the routes refuse. |
+| `FHIR_SERVER_USERNAME` | Optional basic-auth username for the default server. |
+| `FHIR_SERVER_PASSWORD` | Optional basic-auth password for the default server. |
+
+Credentials are only ever sent to `FHIR_SERVER_URL`. FHIR endpoints that users add themselves (Users → Endpoints) are sent no credentials, so they must be open servers (e.g. the public HAPI server).
+
 ---
 
 ## Persistent Storage (Docker Volume)

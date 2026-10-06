@@ -56,6 +56,19 @@ class Endpoint(EndpointBase):
         return cls(**db_item.__dict__) if db_item else None
 
     @classmethod
+    def find_for_user(
+        cls, id: int, user_id: int, session: Session
+    ) -> Optional["Endpoint"]:
+        """The endpoint, only if it is linked to the given user; else None."""
+        db_item = (
+            session.query(EndpointDB)
+            .join(UserEndpointDB, UserEndpointDB.endpoint_id == EndpointDB.id)
+            .filter(EndpointDB.id == id, UserEndpointDB.user_id == user_id)
+            .first()
+        )
+        return cls(**db_item.__dict__) if db_item else None
+
+    @classmethod
     def debug(cls, session: Session) -> list[dict]:
         count = session.query(EndpointDB).count()
         data = session.query(EndpointDB).all()

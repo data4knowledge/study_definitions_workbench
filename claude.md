@@ -38,6 +38,10 @@ Login is an emailed numeric code, not Auth0/OAuth. Flow: `GET /login` (email for
 
 Users with the Transmit role can push a version's USDM v4 JSON (the `usdm.json` DataFiles artefact) to the d4k backbone: `GET /versions/{id}/backbone/load` → background thread POSTs multipart to `{BACKBONE_URL}/v1/studies` (`app/utility/backbone_transmit.py`, mirroring the FHIR transmit pattern: Transmission audit row + WebSocket outcome). The menu item ("USDM v4 to Backbone", in the Transmit dropdown on the version summary page) only appears when `BACKBONE_URL` is set; the route also enforces the Transmit role and the config server-side. Optional `BACKBONE_API_KEY` is sent as an `X-API-Key` header when set. Backbone responses handled: 200/201 success (`slug`/`triple_count`/`graph_uri` reported), 409 version already loaded, other statuses reported with truncated detail.
 
+## Default FHIR server
+
+Same env-config pattern as the backbone. `FHIR_SERVER_URL`, `FHIR_SERVER_USERNAME`, `FHIR_SERVER_PASSWORD` are read in `Configuration` (`fhir_server_url` / `fhir_server_username` / `fhir_server_password`). When `FHIR_SERVER_URL` is set, the Transmit menus (`shared/partials/transmit_menu.html`, `soa_transmit_menu.html`) show a "to default server" entry (driven by `data['fhir']['default']`); it is not an `Endpoint` row. Routes: `GET /versions/{id}/transmit/default` (M11, `app/main.py`) and `GET /versions/{id}/studyDesigns/{sd}/timelines/{tl}/transmit/default` (SoA, `app/routers/version_timelines.py`), declared before the `{endpoint_id}` routes. In `fhir_transmit.py`, `endpoint_id=None` means the default server: `default_fhir_service()` passes basic auth when a username is set; `endpoint_fhir_service()` never passes credentials. All four FHIR transmit routes enforce the Transmit role server-side; the user-endpoint routes also require `Endpoint.find_for_user(endpoint_id, user.id)` so a user can only send to their own endpoints. Per-endpoint credentials are deliberately out of scope (endpoint rows are shared across users via `user_endpoint`, so they'd need per-user rows plus encryption).
+
 ## Tests
 
 There are two distinct types of tests in this project:

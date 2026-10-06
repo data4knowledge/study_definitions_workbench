@@ -1,15 +1,20 @@
 import httpx
-from d4k_ms_base.service_environment import ServiceEnvironment
 
 from app.utility.service import Service
 
-# from d4kms_generic.service import Service
-
 
 class FHIRService(Service):
-    def __init__(self, url):
+    """FHIR server client.
+
+    ``auth`` is an optional ``(username, password)`` pair sent as basic auth
+    on PUT. Only the configured default server is given credentials; user
+    endpoints are created without them so credentials never leak to servers
+    users add themselves.
+    """
+
+    def __init__(self, url, auth: tuple[str, str] | None = None):
         super().__init__(base_url=url)
-        self._se = ServiceEnvironment()
+        self._auth = auth
 
     def bundle_list(self):
         return super().get("Bundle")
@@ -22,17 +27,12 @@ class FHIRService(Service):
 
     async def put(self, url, data={}, timeout=None):
         try:
-            username = self._se.get("ENDPOINT_USERNAME")
-            password = self._se.get("ENDPOINT_PASSWORD")
             headers = {"Content-Type": "application/json"}
             timeout = timeout if timeout else self.DEFAULT_TIMEOUT
-            response = await self._client.put(
-                self._full_url(url),
-                data=data,
-                timeout=timeout,
-                headers=headers,
-                auth=(username, password),
-            )
+            kwargs = {"data": data, "timeout": timeout, "headers": headers}
+            if self._auth:
+                kwargs["auth"] = self._auth
+            response = await self._client.put(self._full_url(url), **kwargs)
             return (
                 self._success(response)
                 if response.status_code in [200, 201]
