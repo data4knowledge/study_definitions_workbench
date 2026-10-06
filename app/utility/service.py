@@ -74,7 +74,7 @@ class Service:
 
     def _failure(self, operation, response):
         message = (
-            f"An error occurred performing the '{operation}'. Error: '{response.text}'"
+            f"An error occurred performing the '{operation}'. Status: {response.status_code}. Error: '{response.text}'"
         )
         return self._response(False, response.status_code, {}, message)
 

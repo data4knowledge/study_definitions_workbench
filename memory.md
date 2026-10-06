@@ -44,3 +44,7 @@ State: py_compile only — sandbox couldn't install deps (usdm4 0.30 / usdm4_exc
 
 Issue 76 test run: 98 router/main tests failed with "unable to open database file". `.test_env` (dated 2026-06-07) pointed at non-existent `tests/test_files/mount/...` with `MNT_PATH="mount"`, so clean_and_tidy refused and the DB dir was never created. Repointed to `tests/test_area/{database,data,local,core_cache}` with `MNT_PATH="tests/test_area"` (the layout from 2026-07-17). Cause of the revert unknown — `.test_env` is gitignored, so check whatever syncs/restores dotfiles.
 - 2026-10-06 follow-up: targeted issue-76 tests green on Dave's Mac. Test fixes: `test_versions.py` autouse stub for `User.endpoints_page` (mocked user id 1 isn't in a fresh test DB — older summary tests only passed against the stale DB); SoA menu tests now mock full `soa()` data (id/study_id/timeline.id). Remaining: live Aidbox (default) + HAPI (user endpoint, no creds) check from dev server; Fly secrets rename on staging/prod.
+
+## 2026-10-06 — Issue 76 merged; .development_env vars actually renamed
+
+After merge to main, `.development_env` still had ENDPOINT_USERNAME/ENDPOINT_PASSWORD/PITTSBURGH despite the entry above saying renamed — same dotfile-revert pattern as `.test_env`. Renamed in place to FHIR_SERVER_USERNAME/PASSWORD/URL (values unchanged). No old names left in the repo outside htmlcov. Still open: Fly secrets on staging/prod; live Aidbox + HAPI check.
