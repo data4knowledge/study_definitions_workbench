@@ -120,7 +120,7 @@
                     "id": "DocumentContentReference_1",
                     "extensionAttributes": [],
                     "sectionNumber": "5.4.1",
-                    "sectionTitle": "Rescreening",
+                    "sectionTitle": "Definitions Related to Childbearing Potential",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   }
@@ -140,7 +140,7 @@
                     "id": "DocumentContentReference_2",
                     "extensionAttributes": [],
                     "sectionNumber": "5.2",
-                    "sectionTitle": "Exclusion Criteria",
+                    "sectionTitle": "Inclusion Criteria",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   }

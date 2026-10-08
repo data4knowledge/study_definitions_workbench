@@ -714,8 +714,9 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''5.4.1 Rescreening'' -> {''sectionNumber'':
-    ''5.4.1'', ''sectionTitle'': ''Rescreening'', ''appliesToId'': ''StudyDefinitionDocument_1'',
-    ''id'': ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
+    ''5.4.1'', ''sectionTitle'': ''Definitions Related to Childbearing Potential'',
+    ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_1'',
+    ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -724,8 +725,18 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''5.2 Exclusion Criteria'' -> {''sectionNumber'':
-    ''5.2'', ''sectionTitle'': ''Exclusion Criteria'', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''5.2'', ''sectionTitle'': ''Inclusion Criteria'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_2'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 7.2.8 is not in the ICH M11 section codelist C217272; title kept
+    as written ('Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established
+    Limits for End Tidal Carbon Dioxide')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -741,6 +752,16 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 7.2.8 is not in the ICH M11 section codelist C217272; title kept
+    as written ('Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established
+    Limits')
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
@@ -750,6 +771,15 @@
     ''Continuous and Spot End Tidal Carbon Dioxide, Table 5, Established Limits'',
     ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_4'',
     ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 9.4.3.3 is not in the ICH M11 section codelist C217272; title kept
+    as written ('Vital Signs, Table 7, Criteria for Respiratory Rate')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

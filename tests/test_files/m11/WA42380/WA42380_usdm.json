@@ -119,7 +119,7 @@
                     "id": "DocumentContentReference_3",
                     "extensionAttributes": [],
                     "sectionNumber": "3.1",
-                    "sectionTitle": "",
+                    "sectionTitle": "Primary Objective(s) and Associated Estimand(s)",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   },
@@ -127,7 +127,7 @@
                     "id": "DocumentContentReference_4",
                     "extensionAttributes": [],
                     "sectionNumber": "4.1",
-                    "sectionTitle": "",
+                    "sectionTitle": "Description of Trial Design",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   },
@@ -135,7 +135,7 @@
                     "id": "DocumentContentReference_5",
                     "extensionAttributes": [],
                     "sectionNumber": "6.1",
-                    "sectionTitle": "",
+                    "sectionTitle": "Description of Investigational Trial Intervention",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   },
@@ -163,7 +163,7 @@
                     "id": "DocumentContentReference_7",
                     "extensionAttributes": [],
                     "sectionNumber": "3.1",
-                    "sectionTitle": "",
+                    "sectionTitle": "Primary Objective(s) and Associated Estimand(s)",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   },
@@ -171,7 +171,7 @@
                     "id": "DocumentContentReference_8",
                     "extensionAttributes": [],
                     "sectionNumber": "4.2.1",
-                    "sectionTitle": "",
+                    "sectionTitle": "Rationale for Estimand(s)",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   },
@@ -179,7 +179,7 @@
                     "id": "DocumentContentReference_9",
                     "extensionAttributes": [],
                     "sectionNumber": "6.1",
-                    "sectionTitle": "",
+                    "sectionTitle": "Description of Investigational Trial Intervention",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   },
@@ -227,7 +227,7 @@
                     "id": "DocumentContentReference_12",
                     "extensionAttributes": [],
                     "sectionNumber": "6.1",
-                    "sectionTitle": "",
+                    "sectionTitle": "Description of Investigational Trial Intervention",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   },
@@ -295,7 +295,7 @@
                     "id": "DocumentContentReference_16",
                     "extensionAttributes": [],
                     "sectionNumber": "6.9",
-                    "sectionTitle": "",
+                    "sectionTitle": "Description of Noninvestigational Trial Intervention",
                     "appliesToId": "StudyDefinitionDocument_1",
                     "instanceType": "DocumentContentReference"
                   }

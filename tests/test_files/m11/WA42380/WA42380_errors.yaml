@@ -755,6 +755,15 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 2.1.2 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
@@ -762,6 +771,15 @@
   message: 'Extracted section ref from ''Sections 2.1.2 and 6.4.2'' -> {''sectionNumber'':
     ''2.1.2'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_1'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 6.4.2 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -780,8 +798,9 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Sections 3.1, 4.1, 6.1, 9.5'' -> {''sectionNumber'':
-    ''3.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
-    ''id'': ''DocumentContentReference_3'', ''instanceType'': ''DocumentContentReference''}'
+    ''3.1'', ''sectionTitle'': ''Primary Objective(s) and Associated Estimand(s)'',
+    ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_3'',
+    ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -790,7 +809,7 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Sections 3.1, 4.1, 6.1, 9.5'' -> {''sectionNumber'':
-    ''4.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''4.1'', ''sectionTitle'': ''Description of Trial Design'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_4'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -800,8 +819,18 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Sections 3.1, 4.1, 6.1, 9.5'' -> {''sectionNumber'':
-    ''6.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
-    ''id'': ''DocumentContentReference_5'', ''instanceType'': ''DocumentContentReference''}'
+    ''6.1'', ''sectionTitle'': ''Description of Investigational Trial Intervention'',
+    ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_5'',
+    ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 9.5 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -820,8 +849,9 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
-    ''3.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
-    ''id'': ''DocumentContentReference_7'', ''instanceType'': ''DocumentContentReference''}'
+    ''3.1'', ''sectionTitle'': ''Primary Objective(s) and Associated Estimand(s)'',
+    ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_7'',
+    ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -830,7 +860,7 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
-    ''4.2.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
+    ''4.2.1'', ''sectionTitle'': ''Rationale for Estimand(s)'', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_8'', ''instanceType'': ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -840,8 +870,18 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
-    ''6.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
-    ''id'': ''DocumentContentReference_9'', ''instanceType'': ''DocumentContentReference''}'
+    ''6.1'', ''sectionTitle'': ''Description of Investigational Trial Intervention'',
+    ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_9'',
+    ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 6.4.2 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -852,6 +892,15 @@
   message: 'Extracted section ref from ''Sections 3.1, 4.2.1, 6.1, 6.4.2'' -> {''sectionNumber'':
     ''6.4.2'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
     ''id'': ''DocumentContentReference_10'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 5.4.3 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -870,8 +919,18 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Sections 6.1 and 6.4.1'' -> {''sectionNumber'':
-    ''6.1'', ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'',
-    ''id'': ''DocumentContentReference_12'', ''instanceType'': ''DocumentContentReference''}'
+    ''6.1'', ''sectionTitle'': ''Description of Investigational Trial Intervention'',
+    ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_12'',
+    ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 6.4.1 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -885,6 +944,15 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 6.4.2 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Info
   location:
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
@@ -892,6 +960,15 @@
   message: 'Extracted section ref from ''Section 6.4.2'' -> {''sectionNumber'': ''6.4.2'',
     ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
     ''DocumentContentReference_14'', ''instanceType'': ''DocumentContentReference''}'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
+    method_name: _section_title
+  message: Section 6.4.2 is not in the ICH M11 section codelist C217272; title kept
+    as written ('')
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -910,8 +987,9 @@
     class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
     method_name: _extract_section_number_and_title
   message: 'Extracted section ref from ''Section 6.9'' -> {''sectionNumber'': ''6.9'',
-    ''sectionTitle'': '''', ''appliesToId'': ''StudyDefinitionDocument_1'', ''id'':
-    ''DocumentContentReference_16'', ''instanceType'': ''DocumentContentReference''}'
+    ''sectionTitle'': ''Description of Noninvestigational Trial Intervention'', ''appliesToId'':
+    ''StudyDefinitionDocument_1'', ''id'': ''DocumentContentReference_16'', ''instanceType'':
+    ''DocumentContentReference''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

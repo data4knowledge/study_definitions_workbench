@@ -5,7 +5,7 @@ from usdm4_excel import USDM4Excel
 from app.model.file_handling.data_files import DataFiles
 from tests.files.files import read_excel, read_json, write_json
 
-SAVE = True
+SAVE = False
 
 
 def _run_test(name, save=False):
