@@ -34,6 +34,10 @@ class Configuration:
         # login code is logged instead of emailed, so the app is usable in
         # local/dev without a mail server.
         self.email_dev_mode = self._email_dev_mode()
+        # AI in the imports (the M11 import's use_ai). Off unless USE_AI is
+        # truthy: the deploy image installs no AI client, so AI is a local
+        # and opt-in choice, never a cost the deployed app runs up.
+        self.use_ai = self._use_ai()
         # Optional fixed login code used ONLY in dev mode (e.g. for
         # Playwright). When set and email_dev_mode is on, generate_code
         # returns this instead of a random code. Never used in production
@@ -71,6 +75,10 @@ class Configuration:
             return flag.upper() in ["TRUE", "T", "Y", "YES"]
         # Default: dev mode whenever no SMTP host has been configured.
         return not self.smtp_host
+
+    def _use_ai(self) -> bool:
+        flag = self._se.get("USE_AI")
+        return bool(flag) and flag.upper() in ["TRUE", "T", "Y", "YES", "1"]
 
     def _single_user(self) -> bool:
         single = self._se.get("SINGLE_USER")

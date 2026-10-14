@@ -320,6 +320,51 @@ class TestImportM11:
         assert processor.m11_validation == []
         mock_logger.exception.assert_called()
 
+    @pytest.mark.asyncio
+    async def test_importer_exception_dumps_its_errors(
+        self, mock_m11_protocol, mock_logger
+    ):
+        """An exception from the M11 importer fails the import with its
+        errors dumped to the log and kept, never silently."""
+        instance = mock_m11_protocol.return_value
+        instance.from_docx.side_effect = RuntimeError("boom")
+        instance.errors.dump.return_value = "the importer's log"
+        instance.errors.to_dict.return_value = [{"message": "SoA not read"}]
+        processor = ImportM11("M11_DOCX", "test-uuid", "/path/to/file")
+        with (
+            patch("app.imports.import_processors.M11Validator"),
+            patch("app.imports.import_processors.project_m11_result", return_value=[]),
+            patch("app.imports.import_processors.DataFiles"),
+        ):
+            result = await processor.process()
+        assert result is False
+        assert processor.success is False
+        assert processor.fatal_error == "M11 import failed, check the error file"
+        assert processor.errors == [{"message": "SoA not read"}]
+        mock_logger.info.assert_any_call("the importer's log")
+        assert any(
+            "M11 importer" in c.args[0] for c in mock_logger.exception.call_args_list
+        )
+
+
+class TestImportM11UseAI:
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("use_ai", [True, False])
+    async def test_use_ai_comes_from_the_configuration(self, mock_m11_protocol, use_ai):
+        processor = ImportM11("M11_DOCX", "test-uuid", "/path/to/file")
+        with (
+            patch.object(processor, "_study_parameters", return_value={}),
+            patch("app.imports.import_processors.M11Validator"),
+            patch("app.imports.import_processors.project_m11_result", return_value=[]),
+            patch("app.imports.import_processors.DataFiles"),
+            patch("app.imports.import_processors.application_configuration") as config,
+        ):
+            config.use_ai = use_ai
+            await processor.process()
+        mock_m11_protocol.return_value.from_docx.assert_called_once_with(
+            "/path/to/file", use_ai=use_ai
+        )
+
 
 class TestImportCPT:
     """Tests for the ImportCPT class."""
@@ -354,6 +399,39 @@ class TestImportCPT:
             result = await processor.process()
         assert result
         assert processor.usdm is None
+
+    @pytest.mark.asyncio
+    async def test_importer_exception_dumps_its_errors(self, mock_logger):
+        with patch("app.imports.import_processors.USDM4CPT") as mock_cpt:
+            instance = mock_cpt.return_value
+            instance.from_docx.side_effect = RuntimeError("boom")
+            instance.errors.to_dict.return_value = [{"message": "failed"}]
+            instance.errors.dump.return_value = "the importer's log"
+            processor = ImportCPT("CPT_DOCX", "test-uuid", "/path/to/file")
+            result = await processor.process()
+        assert result is False
+        assert processor.fatal_error == "CPT import failed, check the error file"
+        assert processor.errors == [{"message": "failed"}]
+        mock_logger.info.assert_any_call("the importer's log")
+        mock_logger.exception.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_process_dumps_its_errors(self, mock_logger):
+        mock_wrapper = MagicMock()
+        mock_wrapper.to_json.return_value = '{"study": {}}'
+        with patch("app.imports.import_processors.USDM4CPT") as mock_cpt:
+            instance = mock_cpt.return_value
+            instance.from_docx.return_value = mock_wrapper
+            instance.extra = {}
+            instance.errors.to_dict.return_value = {"errors": []}
+            instance.errors.dump.return_value = "No errors"
+            processor = ImportCPT("CPT_DOCX", "test-uuid", "/path/to/file")
+            with patch.object(processor, "_study_parameters", return_value={}):
+                result = await processor.process()
+        assert result
+        assert processor.errors == {"errors": []}
+        mock_logger.info.assert_any_call("No errors")
+        mock_logger.exception.assert_not_called()
 
 
 class TestImportLegacy:

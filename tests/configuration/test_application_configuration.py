@@ -163,3 +163,23 @@ def mock_se_get(mocker, mapping):
     mock = mocker.patch("d4k_ms_base.service_environment.ServiceEnvironment.get")
     mock.side_effect = lambda name: mapping.get(name)
     return mock
+
+
+def test_use_ai_off_when_unset(mocker, monkeypatch):
+    mock_se_get(mocker, _base_env())
+    assert Configuration().use_ai is False
+
+
+def test_use_ai_on_when_true(mocker, monkeypatch):
+    for value in ("true", "True", "T", "yes", "1"):
+        env = _base_env()
+        env["USE_AI"] = value
+        mock_se_get(mocker, env)
+        assert Configuration().use_ai is True, value
+
+
+def test_use_ai_off_when_false(mocker, monkeypatch):
+    env = _base_env()
+    env["USE_AI"] = "false"
+    mock_se_get(mocker, env)
+    assert Configuration().use_ai is False

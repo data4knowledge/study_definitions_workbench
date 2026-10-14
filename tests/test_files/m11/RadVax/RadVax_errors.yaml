@@ -3,8 +3,8 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_area/data/FAKE/RadVax.docx'',
-    dir=''tests/test_area/data/FAKE'', image_path=''tests/test_area/data/FAKE/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/FAKE/RadVax.docx'',
+    dir=''tests/test_files/mount/datafiles/FAKE'', image_path=''tests/test_files/mount/datafiles/FAKE/images'',
     filename=''RadVax.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -189,15 +189,6 @@
   type: ''
 - extra: null
   level: Info
-  location:
-    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
-    method_name: _get_version_number
-  message: Version Number not found on title page; document is an original protocol,
-    defaulting version to '1'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
   location: {}
   message: "Extracting title page field 'Full Title' -> 'RADVAX\u2122: A Stratified\
     \ Phase I Trial of Pembrolizumab with Hypofractionated Radiotherapy in Patients\
@@ -261,12 +252,55 @@
   message: 'Amendment info: {''identifier'': ''Unavailable'', ''scope'': ''Unavailable''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- extra: null
+- extra:
+    reason: the SoA reader needs an AI provider and none is available
+    where: null
   level: Error
   location:
     class_name: usdm4_protocol.soa.soa_extractor.SoA
     method_name: process
   message: 'SoA not read: the SoA reader needs an AI provider and none is available'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: soa_not_read
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: 'Warning raised within Soup package, processing ''Be willing and able to
+    provide written informed consent/assent for the trial. ''
+
+    Message returned ''The input looks more like a filename than markup. You may want
+    to open this file and pass the filehandle into Beautiful Soup.'''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Error
+  location: {}
+  message: "Neither a RawList or RawListItem detected, type: '<class 'raw_docx.raw_paragraph.RawParagraph'>',\
+    \ text: '- Note: Subjects with \u2264 Grade 2 neuropathy are an exception to this\
+    \ criterion and may qualify for the study.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Error
+  location: {}
+  message: 'Neither a RawList or RawListItem detected, type: ''<class ''raw_docx.raw_paragraph.RawParagraph''>'',
+    text: ''- Note: If subject received major surgery, they must have recovered adequately
+    from the toxicity and/or complications from the intervention prior to starting
+    therapy. '''
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: 'Warning raised within Soup package, processing ''Has a known history of
+    Human Immunodeficiency Virus (HIV) (HIV 1/2 antibodies). ''
+
+    Message returned ''The input looks more like a filename than markup. You may want
+    to open this file and pass the filehandle into Beautiful Soup.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -298,15 +332,19 @@
   level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _design
+  message: 'Site Distribution and Geographic Scope ''Single Site Local'': only partly
+    read'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
     method_name: _decode
-  message: '1.1.2 values with no usdm4 assembler input slot (not stored): population
-    diagnosis or condition: ''Metastatic Cancers''; control type: ''N/A''; control
-    description: ''N/A''; site distribution and geographic scope: ''Single Site Local'';
-    intervention assignment method: ''Cohort trial with randomized expansion phase.'';
-    number of arms: ''2 (possible based on safety assessment of initial 24 patients)'';
-    trial blind schema: ''Not applicable.''; blinded roles: ''Not applicable.''; duration:
-    ''Total planned duration of trial intervention for each participant:''; independent
-    committees: ''Not applicable.'''
+  message: '1.1.2 values with no usdm4 assembler input slot (not stored): control
+    description: ''N/A''; number of arms: ''2 (possible based on safety assessment
+    of initial 24 patients)'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -348,6 +386,15 @@
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: process
   message: Amendment information None
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
+    method_name: default_version
+  message: Version Number not found on title page; document is an original protocol,
+    defaulting version to '1'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -447,8 +494,8 @@
   location:
     class_name: usdm4.assembler.population_assembler.PopulationAssembler
     method_name: _build_planned_age
-  message: Planned age range partially supplied (min=18.0, max=None); filling missing
-    bound with supplied value.
+  message: Planned age range partially supplied (min=18.0, max=None); missing bound
+    set to 200 years.
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -481,6 +528,33 @@
     class_name: usdm4.encoder.encoder.Encoder
     method_name: phase
   message: Trial phase 'I' decoded as 'C15600', 'Phase 1', using M11 decode
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: site_distribution
+  message: Site distribution 'Single-Centre' decoded as 'C217004', 'Single-Center
+    Study'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_assignment_method
+  message: Intervention assignment method 'Randomisation' decoded as 'C46079', 'Randomized
+    Controlled Clinical Trial'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
+    method_name: _set_participation_duration
+  message: Planned duration of trial participation supplied but there is no main timeline
+    to hold it; not recorded
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

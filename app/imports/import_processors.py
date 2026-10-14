@@ -47,6 +47,22 @@ class ImportProcessorBase:
     async def process(self) -> bool:
         return False
 
+    def _run_importer(self, importer, call, label: str) -> Wrapper | None:
+        """Run an importer's ``from_*`` call. Its errors are dumped to the
+        application log and kept on ``self.errors`` whether the call
+        returns or raises; an exception is logged with them and fails the
+        import with a fatal error, rather than leaving nothing logged."""
+        try:
+            return call()
+        except Exception as e:
+            application_logger.exception(f"Exception raised by the {label} importer", e)
+            self.success = False
+            self.fatal_error = f"{label} import failed, check the error file"
+            return None
+        finally:
+            application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
+            self.errors = importer.errors.to_dict(sel.Errors.INFO)
+
     def _study_parameters(self) -> dict | None:
         try:
             data = json.loads(self.usdm)
@@ -169,26 +185,34 @@ class ImportM11(ImportProcessorBase):
             )
 
         importer = USDM4M11()
-        wrapper: Wrapper = importer.from_docx(self.full_path, use_ai=True)
-        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
+        wrapper: Wrapper = self._run_importer(
+            importer,
+            lambda: importer.from_docx(
+                self.full_path, use_ai=application_configuration.use_ai
+            ),
+            "M11",
+        )
+        if not self.success:
+            return False
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = self._blank_extra()
             self.study_parameters = self._study_parameters()
-        self.errors = importer.errors.to_dict(sel.Errors.INFO)
         return True
 
 
 class ImportCPT(ImportProcessorBase):
     async def process(self) -> bool:
         importer = USDM4CPT()
-        wrapper: Wrapper = importer.from_docx(self.full_path)
-        application_logger.info(importer.errors.dump(sel.Errors.DEBUG))
+        wrapper: Wrapper = self._run_importer(
+            importer, lambda: importer.from_docx(self.full_path), "CPT"
+        )
+        if not self.success:
+            return False
         if wrapper:
             self.usdm = wrapper.to_json()
             self.extra = importer.extra
             self.study_parameters = self._study_parameters()
-        self.errors = importer.errors.to_dict(sel.Errors.INFO)
         return True
 
 

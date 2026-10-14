@@ -3,8 +3,8 @@
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: __init__
-  message: 'RawDocx initialisation: full_path=''tests/test_area/data/FAKE/WA42380.docx'',
-    dir=''tests/test_area/data/FAKE'', image_path=''tests/test_area/data/FAKE/images'',
+  message: 'RawDocx initialisation: full_path=''tests/test_files/mount/datafiles/FAKE/WA42380.docx'',
+    dir=''tests/test_files/mount/datafiles/FAKE'', image_path=''tests/test_files/mount/datafiles/FAKE/images'',
     filename=''WA42380.docx'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
@@ -262,12 +262,59 @@
   message: 'Amendment info: {''identifier'': ''3'', ''scope'': ''Global''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
-- extra: null
+- extra:
+    reason: the SoA reader needs an AI provider and none is available
+    where: null
   level: Error
   location:
     class_name: usdm4_protocol.soa.soa_extractor.SoA
     method_name: process
   message: 'SoA not read: the SoA reader needs an AI provider and none is available'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: soa_not_read
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tSigned Informed\
+    \ Consent Form by any patient capable of giving consent, or, when the patient\
+    \ is not capable of giving consent, by his or her legal/authorized representative'\n\
+    Message returned 'The input looks more like a filename than markup. You may want\
+    \ to open this file and pass the filehandle into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tSpO2 \uF0A3 93%\
+    \ or PaO2/FiO2 \uF03C 300 mmHg'\nMessage returned 'The input looks more like a\
+    \ filename than markup. You may want to open this file and pass the filehandle\
+    \ into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tANC &lt; 1000/\uF06D\
+    L at screening (according to local laboratory reference ranges)'\nMessage returned\
+    \ 'The input looks more like a filename than markup. You may want to open this\
+    \ file and pass the filehandle into Beautiful Soup.'"
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.common.html.soup_utils
+    method_name: get_soup
+  message: "Warning raised within Soup package, processing '\u2022\tPlatelet count\
+    \ \uF03C 50,000/\uF06DL at screening (according to local laboratory reference\
+    \ ranges)'\nMessage returned 'The input looks more like a filename than markup.\
+    \ You may want to open this file and pass the filehandle into Beautiful Soup.'"
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -290,23 +337,17 @@
   level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _design
+  message: Control Type 'SOC plus placebo' read as 'Placebo'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
     method_name: _decode
-  message: '1.1.2 values with no usdm4 assembler input slot (not stored): population
-    diagnosis or condition: ''Severe COVID 19 pneumonia''; control type: ''SOC plus
-    placebo''; control description: ''N/A''; site distribution and geographic scope:
-    ''Multi-center, Global''; intervention assignment method: ''Randomized, Double-blind,
-    placebo-controlled''; number of arms: ''2''; trial blind schema: ''Double-blind.'';
-    blinded roles: ''The following roles indicated will not be made aware of the treatment
-    group assignment during the trial: Study site personnel, participants, and the
-    sponsor.''; duration: ''Total planned duration of trial intervention for each
-    participant:''; committees: ''A Data Monitoring Committee will also evaluate safety
-    according to policies and procedures detailed in a DMC Charter. Regular safety
-    reviews will begin after approximately 15 patients (10 TCZ, 5 placebo) have been
-    enrolled and reached 14-day follow-up. Early stopping criteria based on compelling
-    efficacy or an imbalance in adverse events will be detailed in the DMC charter.
-    The safety interim analyses will also be conducted by a statistical programmer
-    independent from the study management team and will be reviewed by the DMC. Interactions
-    between the DMC and Sponsor will be carried out as specified in the DMC Charter.'''
+  message: '1.1.2 values with no usdm4 assembler input slot (not stored): control
+    description: ''N/A''; number of arms: ''2'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -635,8 +676,8 @@
   location:
     class_name: usdm4.assembler.population_assembler.PopulationAssembler
     method_name: _build_planned_age
-  message: Planned age range partially supplied (min=18.0, max=None); filling missing
-    bound with supplied value.
+  message: Planned age range partially supplied (min=18.0, max=None); missing bound
+    set to 200 years.
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -1006,6 +1047,73 @@
     class_name: usdm4.encoder.encoder.Encoder
     method_name: phase
   message: Trial phase 'III' decoded as 'C15602', 'Phase 3', using M11 decode
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: control_type
+  message: Control type 'Placebo' decoded as 'C49648', 'Placebo'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: site_distribution
+  message: Site distribution 'Multicentre' decoded as 'C217005', 'Multicenter Study'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: site_geographic_scope
+  message: Site geographic scope 'Multiple Countries' decoded as 'C217007', 'Multiple
+    Countries'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: intervention_assignment_method
+  message: Intervention assignment method 'Randomisation' decoded as 'C46079', 'Randomized
+    Controlled Clinical Trial'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: blinding_schema
+  message: Blinding schema 'Double Blind' decoded as 'C15228', 'Double Blind Study'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: blinded_role
+  message: Blinded role 'Participant' decoded as 'C41189', 'Study Subject'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: blinded_role
+  message: Blinded role 'Sponsor' decoded as 'C70793', 'Clinical Study Sponsor'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: independent_committee
+  message: Independent committee 'Independent Data Monitoring Committee' decoded as
+    'C142578', 'Independent Data Monitoring Committee'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

@@ -13,7 +13,7 @@ protocol views.
 ## Quickstart (local development)
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # requirements.txt alone is the deploy set: no AI client, no test tools
 cp .env.example .env   # or edit the committed .env for local defaults
 ./dev_server.sh        # runs uvicorn on :8000
 ```
@@ -118,6 +118,7 @@ Admins then grant `Admin` / `Transmit` to other registered users at
 | `LOCALFILE_PATH`        | Directory for local working files within the volume                                                                                                                                                                                                          |
 | `CDISC_CORE_CACHE_PATH` | Directory for the CDISC CORE validation cache (rules, JSONata files, XSD schemas, CT packages). Put it on the mounted volume (e.g. `/mnt/<name>/core_cache`) so a cold cache — which can take several minutes to rebuild — survives container restarts. Leave unset to fall through to the USDM4 platform default (ephemeral in a container). |
 | `ADDRESS_SERVER_URL`    | URL for the external address server                                                                                                                                                                                                                          |
+| `USE_AI`                | `True` to use AI (Claude) in the M11 import — needs `requirements-dev.txt` (the `usdm4_protocol[ai]` extra) and `ANTHROPIC_API_KEY`. Off when unset; the Docker image has no AI client, so an M11 SoA is then logged as not read |
 
 When running via Docker, the `Dockerfile` pre-sets `MNT_PATH`,
 `DATABASE_PATH`, `DATABASE_NAME`, `DATAFILE_PATH`, `LOCALFILE_PATH`,

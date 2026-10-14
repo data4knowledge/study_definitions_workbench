@@ -9,14 +9,14 @@
         "id": "StudyVersion_1",
         "extensionAttributes": [
           {
-            "id": "ExtensionAttribute_4",
+            "id": "ExtensionAttribute_5",
             "url": "www.d4k.dk/usdm/extensions/001",
             "valueString": "",
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_5",
+            "id": "ExtensionAttribute_6",
             "url": "www.d4k.dk/usdm/extensions/002",
             "valueBoolean": false,
             "extensionAttributes": [],
@@ -36,7 +36,7 @@
             "label": null,
             "description": null,
             "type": {
-              "id": "Code_66",
+              "id": "Code_72",
               "extensionAttributes": [],
               "code": "C71476",
               "codeSystem": "http://www.cdisc.org",
@@ -50,7 +50,7 @@
                 "id": "GeographicScope_4",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_67",
+                  "id": "Code_73",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -423,6 +423,21 @@
                 "valueString": "defaulted: no intervention model supplied",
                 "extensionAttributes": [],
                 "instanceType": "ExtensionAttribute"
+              },
+              {
+                "id": "ExtensionAttribute_4",
+                "url": "www.d4k.dk/usdm/extensions/018",
+                "valueCode": {
+                  "id": "Code_66",
+                  "code": "C49648",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2025-12-19",
+                  "decode": "Placebo",
+                  "instanceType": "Code",
+                  "extensionAttributes": []
+                },
+                "extensionAttributes": [],
+                "instanceType": "ExtensionAttribute"
               }
             ],
             "name": "STUDY-DESIGN-1",
@@ -453,7 +468,26 @@
               "instanceType": "AliasCode"
             },
             "therapeuticAreas": [],
-            "characteristics": [],
+            "characteristics": [
+              {
+                "id": "Code_67",
+                "extensionAttributes": [],
+                "code": "C217004",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Single-Center Study",
+                "instanceType": "Code"
+              },
+              {
+                "id": "Code_68",
+                "extensionAttributes": [],
+                "code": "C46079",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Randomized Controlled Clinical Trial",
+                "instanceType": "Code"
+              }
+            ],
             "encounters": [],
             "activities": [],
             "arms": [],
@@ -462,7 +496,19 @@
             "epochs": [],
             "elements": [],
             "estimands": [],
-            "indications": [],
+            "indications": [
+              {
+                "id": "Indication_1",
+                "extensionAttributes": [],
+                "name": "INDICATION_1",
+                "label": "Opiod use",
+                "description": "",
+                "codes": [],
+                "isRareDisease": false,
+                "notes": [],
+                "instanceType": "Indication"
+              }
+            ],
             "studyInterventionIds": [],
             "objectives": [],
             "population": {
@@ -1372,7 +1418,21 @@
               "instanceType": "Code"
             },
             "intentTypes": [],
-            "blindingSchema": null
+            "blindingSchema": {
+              "id": "AliasCode_6",
+              "extensionAttributes": [],
+              "standardCode": {
+                "id": "Code_69",
+                "extensionAttributes": [],
+                "code": "C15228",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Double Blind Study",
+                "instanceType": "Code"
+              },
+              "standardCodeAliases": [],
+              "instanceType": "AliasCode"
+            }
           }
         ],
         "titles": [
@@ -1889,7 +1949,7 @@
             "id": "NarrativeContentItem_16",
             "extensionAttributes": [],
             "name": "NCI-15",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul>\n<li>Nature, frequency and severity of AEs </li>\n<li>Clinical laboratory tests (hematology, biochemistry and urinalysis) </li>\n<li>Vital signs (blood pressure, pulse and respiratory rate) </li>\n<li>12-lead ECG </li>\n<li>C-SSRS </li>\n<li>SpO </li>\n<li>End tidal CO</li>\n</ul></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul>\n<li>Nature, frequency and severity of AEs </li>\n<li>Clinical laboratory tests (hematology, biochemistry and urinalysis) </li>\n<li>Vital signs (blood pressure, pulse and respiratory rate) </li>\n<li>12-lead ECG </li>\n<li>C-SSRS </li>\n<li>SpO<sub>2</sub> </li>\n<li>End tidal CO<sub>2</sub></li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -1917,7 +1977,7 @@
             "id": "NarrativeContentItem_20",
             "extensionAttributes": [],
             "name": "NCI-19",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul>\n<li>Plasma ASP8062: AUC24 and C </li>\n<li>Plasma morphine and its metabolites (M3G and M6G): AUC, AUC and C</li>\n</ul></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul>\n<li>Plasma ASP8062: AUC24 and C<sub>max</sub> </li>\n<li>Plasma morphine and its metabolites (M3G and M6G): AUC<sub>inf</sub>, AUC<sub>last</sub> and C<sub>max</sub></li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -1945,7 +2005,7 @@
             "id": "NarrativeContentItem_24",
             "extensionAttributes": [],
             "name": "NCI-23",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul>\n<li>Oral temperature </li>\n<li>ARCI-49   </li>\n<li>Plasma ASP8062: CL/F, t\u00bd, t, t, Vz/F, C and PTR</li>\n<li>Plasma ASP8062 metabolites (AS3486189, AS3486191 and AS3486192): C, AUC, t, t, t, Vz/F, C and PTR  </li>\n<li>Plasma morphine and its metabolites (M3G and M6G): AUC(%extrap), CL/F (morphine), t, t, t and Vz/F </li>\n<li>Plasma ASP8062 metabolites (AS3486189, AS3486191 and AS3486192): AUC and C</li>\n</ul>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul>\n<li>Oral temperature </li>\n<li>ARCI-49   </li>\n<li>Plasma ASP8062: CL/F, t\u00bd, t<sub>max</sub>, t<sub>lag</sub>, Vz/F, C<sub>trough</sub> and PTR</li>\n<li>Plasma ASP8062 metabolites (AS3486189, AS3486191 and AS3486192): C<sub>max</sub>, AUC<sub>24</sub>, t<sub>\u00bd</sub>, t<sub>max</sub>, t<sub>lag</sub>, Vz/F, C<sub>trough</sub> and PTR  </li>\n<li>Plasma morphine and its metabolites (M3G and M6G): AUC<sub>inf</sub>(%extrap), CL/F (morphine), t<sub>\u00bd</sub>, t<sub>max</sub>, t<sub>lag</sub> and Vz/F </li>\n<li>Plasma ASP8062 metabolites (AS3486189, AS3486191 and AS3486192): AUC<sub>24</sub> and C<sub>max</sub></li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2022,7 +2082,7 @@
             "id": "NarrativeContentItem_35",
             "extensionAttributes": [],
             "name": "NCI-34",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul>\n<li>To be eligible to participate in this trial, an individual must meet all the following criteria:</li>\n<li>Institutional Review Board (IRB)/Independent Ethics Committee (IEC)-approved written informed consent and privacy language as per national regulations (e.g., Health Insurance Portability and Accountability Act authorization for US sites) must be obtained from the participant prior to any study-related procedures (including withdrawal of prohibited medication, if applicable). </li>\n<li>Participant is a male or female participant between 18 to 60 years of age, inclusive at screening. </li>\n<li>Participant is a recreational opioid user who has used opioids for nontherapeutic (recreational) purposes on at least 10 occasions within their lifetime, with at least 1 opioid use in the last 90 days. </li>\n<li>Participant has a body mass index (BMI) range of 18 to 36 kg/m2 , inclusive and weighs at least 50 kg at screening. </li>\n<li>Female participant is not pregnant (see [Section 10.2 Appendix 2 Contraception Requirements]) and at least 1 of the following conditions apply: \n<ol>\n<li>Not a woman of childbearing potential (WOCBP) (see [Section 10.2 Appendix 2 Contraception Requirements]) </li>\n<li>WOCBP who agrees to follow the contraceptive guidance (see [Section 10.2 Appendix 2 Contraception Requirements]) from the time of informed consent through at least 28 days after final IP administration. </li>\n</ol>\n</li>\n<li>Female participant must agree not to breastfeed starting at screening and throughout the study period and for 28 days after final IP administration. </li>\n<li>Female participant must not donate ova starting at first dose of IP and throughout the study period and for 28 days after final IP administration. </li>\n<li>Male participant with female partner(s) of childbearing potential (including breastfeeding partner[s]) must agree to use contraception (see [Section 10.2 Appendix 2 Contraception Requirements]), throughout the treatment period and for 90 days after final IP administration. </li>\n<li>Male participant must not donate sperm during the treatment period and for 90 days after final IP administration. </li>\n<li>Male participant with a pregnant partner(s) must agree to remain abstinent or use a condom with spermicide for the duration of the pregnancy throughout the study period and for 90 days after final IP administration. </li>\n<li>Participant agrees to not participate in another interventional study while participating in the present study. </li>\n<li>Participant must be willing to abstain from smoking (including use of tobacco-containing products and nicotine or nicotine-containing products [e.g., electronic vapes]) from at least 1 hour predose through at least 8 hours postdose on days 9 and 10.</li>\n</ul></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>To be eligible to participate in this trial, an individual must meet all the following criteria:</p>\n<ol>\n<li>Institutional Review Board (IRB)/Independent Ethics Committee (IEC)-approved written informed consent and privacy language as per national regulations (e.g., Health Insurance Portability and Accountability Act authorization for US sites) must be obtained from the participant prior to any study-related procedures (including withdrawal of prohibited medication, if applicable). </li>\n<li>Participant is a male or female participant between 18 to 60 years of age, inclusive at screening. </li>\n<li>Participant is a recreational opioid user who has used opioids for nontherapeutic (recreational) purposes on at least 10 occasions within their lifetime, with at least 1 opioid use in the last 90 days. </li>\n<li>Participant has a body mass index (BMI) range of 18 to 36 kg/m2 , inclusive and weighs at least 50 kg at screening. </li>\n<li>Female participant is not pregnant (see [Section 10.2 Appendix 2 Contraception Requirements]) and at least 1 of the following conditions apply: \n<ol>\n<li>Not a woman of childbearing potential (WOCBP) (see [Section 10.2 Appendix 2 Contraception Requirements]) </li>\n<li>WOCBP who agrees to follow the contraceptive guidance (see [Section 10.2 Appendix 2 Contraception Requirements]) from the time of informed consent through at least 28 days after final IP administration. </li>\n</ol>\n</li>\n<li>Female participant must agree not to breastfeed starting at screening and throughout the study period and for 28 days after final IP administration. </li>\n<li>Female participant must not donate ova starting at first dose of IP and throughout the study period and for 28 days after final IP administration. </li>\n<li>Male participant with female partner(s) of childbearing potential (including breastfeeding partner[s]) must agree to use contraception (see [Section 10.2 Appendix 2 Contraception Requirements]), throughout the treatment period and for 90 days after final IP administration. </li>\n<li>Male participant must not donate sperm during the treatment period and for 90 days after final IP administration. </li>\n<li>Male participant with a pregnant partner(s) must agree to remain abstinent or use a condom with spermicide for the duration of the pregnancy throughout the study period and for 90 days after final IP administration. </li>\n<li>Participant agrees to not participate in another interventional study while participating in the present study. </li>\n<li>Participant must be willing to abstain from smoking (including use of tobacco-containing products and nicotine or nicotine-containing products [e.g., electronic vapes]) from at least 1 hour predose through at least 8 hours postdose on days 9 and 10.</li>\n</ol></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2050,7 +2110,7 @@
             "id": "NarrativeContentItem_39",
             "extensionAttributes": [],
             "name": "NCI-38",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>WOCBP who are eligible for participation in the study, including those who choose complete abstinence, must have pregnancy tests as specified in the Schedule of Assessments [Table 1]. Pregnancy test results must confirm that the participant is not pregnant. </p>\n<p><b>CONTRACEPTION GUIDANCE FOR FEMALE PARTICIPANTS OF CHILDBEARING POTENTIAL </b></p>\n<p>Female participants of childbearing potential are eligible for participation in the study if they agree to use 1 of the highly effective methods of contraception listed below from the time of signing the ICF and until the end of relevant systemic exposure, defined as 28 days after the final IP administration.<sup>a</sup> </p>\n<p>Highly effective methods of contraception (failure rate of &lt; 1% per year when used consistently and correctly) <sup>b</sup> : </p>\n<ul>\n<li>A condom and spermicide </li>\n<li>Combined (estrogen- and progestogen-containing) hormonal contraception associated with inhibition of ovulation for at least 30 days prior to first dose of IP.\n<ul>\n<li>Oral  </li>\n<li>Intravaginal  </li>\n<li>Transdermal  </li>\n</ul>\n</li>\n<li>Progestogen-only hormonal contraception associated with inhibition of ovulation for at least 30 days prior to first dose of IP  \n<ul>\n<li>Oral  </li>\n<li>Injectable o Implantable  </li>\n</ul>\n</li>\n<li>Other combined (estrogen- and progesterone-containing) methods for at least 30 days prior to first dose of IP  \n<ul>\n<li>Vaginal ring  </li>\n<li>Injectable  </li>\n<li>Implantable </li>\n<li>Intrauterine hormone-releasing system or intrauterine device  </li>\n</ul>\n</li>\n<li>Bilateral tubal occlusion or ligation  </li>\n<li>Vasectomized partner </li>\n</ul>\n<p>A vasectomized partner is a highly effective contraception method provided that the partner is the sole male sexual partner of the WOCBP.  </p>\n<ul>\n<li>Sexual abstinence Sexual abstinence is considered a highly effective method only if defined as refraining from heterosexual intercourse during the entire period of risk associated with the test product. The reliability of sexual abstinence needs to be evaluated in relation to the duration of the study and the preferred and usual lifestyle of the participant. It is not necessary to use any other method of contraception when complete abstinence is elected. </li>\n</ul>\n<p><sup>a Local laws and regulations may require use of alternative and/or additional contraception methods. </sup></p>\n<p><sup>b Typical use failure rates may differ from those when used consistently and correctly. Use should be consistent with local regulations regarding the use of contraceptive methods for participants participating in clinical studies.</sup> </p>\n<p><b>CONTRACEPTION GUIDANCE FOR MALE PARTICIPANTS WITH PARTNER(S) OF CHILDBEARING POTENTIAL. </b></p>\n<p>Male participants with female partners of childbearing potential are eligible for participation in the study if they agree to the following during treatment and until the end of relevant systemic exposure defined as 90 days after final drug administration.<sup>a</sup>  </p>\n<ul>\n<li>Inform any and all partner(s) of their participation in a clinical drug study and the need to comply with contraception instructions as directed by the investigator </li>\n<li>Use a condom and spermicide  </li>\n<li>Female partners of male participants who have not undergone a vasectomy or a bilateral orchiectomy should consider use of effective methods of contraception  </li>\n<li>If sexual abstinence is practiced, sexual abstinence should be practiced from 30 days prior to screening and participant should agree to continue practicing sexual abstinence during study participation </li>\n</ul>\n<p><sup>a Local laws and regulations may require use of alternative and/or additional contraception methods</sup></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>WOCBP who are eligible for participation in the study, including those who choose complete abstinence, must have pregnancy tests as specified in the Schedule of Assessments [Table 1]. Pregnancy test results must confirm that the participant is not pregnant. </p>\n<p><b>CONTRACEPTION GUIDANCE FOR FEMALE PARTICIPANTS OF CHILDBEARING POTENTIAL </b></p>\n<p>Female participants of childbearing potential are eligible for participation in the study if they agree to use 1 of the highly effective methods of contraception listed below from the time of signing the ICF and until the end of relevant systemic exposure, defined as 28 days after the final IP administration.<sup>a</sup> </p>\n<p>Highly effective methods of contraception (failure rate of &lt; 1% per year when used consistently and correctly) <sup>b</sup> : </p>\n<ul>\n<li>A condom and spermicide </li>\n<li>Combined (estrogen- and progestogen-containing) hormonal contraception associated with inhibition of ovulation for at least 30 days prior to first dose of IP.\n<ul>\n<li>Oral  </li>\n<li>Intravaginal  </li>\n<li>Transdermal  </li>\n</ul>\n</li>\n<li>Progestogen-only hormonal contraception associated with inhibition of ovulation for at least 30 days prior to first dose of IP  \n<ul>\n<li>Oral  </li>\n<li>Injectable o Implantable  </li>\n</ul>\n</li>\n<li>Other combined (estrogen- and progesterone-containing) methods for at least 30 days prior to first dose of IP  \n<ul>\n<li>Vaginal ring  </li>\n<li>Injectable  </li>\n<li>Implantable </li>\n<li>Intrauterine hormone-releasing system or intrauterine device  </li>\n</ul>\n</li>\n<li>Bilateral tubal occlusion or ligation  </li>\n<li>Vasectomized partner \n<p>A vasectomized partner is a highly effective contraception method provided that the partner is the sole male sexual partner of the WOCBP.  </p>\n</li>\n<li>Sexual abstinence Sexual abstinence is considered a highly effective method only if defined as refraining from heterosexual intercourse during the entire period of risk associated with the test product. The reliability of sexual abstinence needs to be evaluated in relation to the duration of the study and the preferred and usual lifestyle of the participant. It is not necessary to use any other method of contraception when complete abstinence is elected. </li>\n</ul>\n<p><sup>a Local laws and regulations may require use of alternative and/or additional contraception methods. </sup></p>\n<p><sup>b Typical use failure rates may differ from those when used consistently and correctly. Use should be consistent with local regulations regarding the use of contraceptive methods for participants participating in clinical studies.</sup> </p>\n<p><b>CONTRACEPTION GUIDANCE FOR MALE PARTICIPANTS WITH PARTNER(S) OF CHILDBEARING POTENTIAL. </b></p>\n<p>Male participants with female partners of childbearing potential are eligible for participation in the study if they agree to the following during treatment and until the end of relevant systemic exposure defined as 90 days after final drug administration.<sup>a</sup>  </p>\n<ul>\n<li>Inform any and all partner(s) of their participation in a clinical drug study and the need to comply with contraception instructions as directed by the investigator </li>\n<li>Use a condom and spermicide  </li>\n<li>Female partners of male participants who have not undergone a vasectomy or a bilateral orchiectomy should consider use of effective methods of contraception  </li>\n<li>If sexual abstinence is practiced, sexual abstinence should be practiced from 30 days prior to screening and participant should agree to continue practicing sexual abstinence during study participation </li>\n</ul>\n<p><sup>a Local laws and regulations may require use of alternative and/or additional contraception methods</sup></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -3051,7 +3111,7 @@
             "id": "NarrativeContentItem_182",
             "extensionAttributes": [],
             "name": "NCI-181",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>The purpose of this appendix is to provide guidance for the monitoring of drug-induced liver injury during the course of the study. It should be noted that this section does not specify the end-of-study analyses of liver enzymes. Any participant enrolled in a study with active drug therapy and reveals an increase of serum aminotransferases (AT) to &gt; 3 \u00d7 ULN or bilirubin &gt; 2 \u00d7 ULN should undergo detailed testing for liver enzymes (including at least ALP, ALT, AST and TBL). Testing should be repeated within 72 hours of notification of the test results. For studies for which a central laboratory is used, alerts will be generated by the central laboratory regarding moderate and severe liver abnormality to inform the investigator and study team. Participants should be asked if they have any symptoms suggestive of hepatobiliary dysfunction. </p>\n<p><b><u>Definition of Liver Abnormalities </u></b></p>\n<p>Confirmed abnormalities will be characterized as moderate and severe where ULN is as shown below. </p>\n<p><b>Table 12 \tModerate and Severe Liver Abnormalities</b></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p></p>\n</td>\n<td>\n<p><b>ALT or AST</b></p>\n</td>\n<td>\n<p></p>\n</td>\n<td>\n<p><b>TBL</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Moderate</p>\n</td>\n<td>\n<p>&gt; 3 \u00d7 ULN</p>\n</td>\n<td>\n<p>or</p>\n</td>\n<td>\n<p>&gt; 2 \u00d7 ULN</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Severe</p>\n</td>\n<td>\n<p>&gt; 3 \u00d7 ULN</p>\n</td>\n<td>\n<p>and\u2020</p>\n</td>\n<td>\n<p>&gt; 2 \u00d7 ULN</p>\n</td>\n</tr>\n</table>\n<p><sup>ALT: alanine aminotransferase; AST: aspartate aminotransferase; TBL: total bilirubin; ULN: upper limit of normal</sup> </p>\n<p><sup>\u2020Samples taken simultaneously or within a maximum of 24 hours.</sup> </p>\n<p>In addition, the participant should be considered to have severe hepatic abnormalities for any of the following: </p>\n<ul>\n<li>ALT or AST &gt; 8 \u00d7 ULN </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN for more than 2 weeks </li>\n<li>ALT or AST &gt; 3 \u00d7 ULN and\u2020 TBL &gt; 2 \u00d7 ULN or international normalized ratio (INR) &gt; 1.5 (if INR testing is applicable/evaluated) </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN and\u2020 (TBL &gt; 2 \u00d7 ULN in participants with liver metastases) </li>\n<li>ALT or AST &gt; 3 \u00d7 ULN with the appearance of fatigue, nausea, vomiting, right upper quadrant pain or tenderness, fever, rash and/or eosinophilia (&gt; 5%) </li>\n</ul>\n<p>\u2020Samples taken simultaneously or within a maximum of 24 hours. </p>\n<p>The investigator may determine that abnormal liver function results, other than as described above, may qualify as moderate or severe abnormalities and require additional monitoring and follow-up. </p>\n<p><b><u>Follow-up Procedures </u></b></p>\n<p>Confirmed moderate and severe abnormalities in hepatic functions should be thoroughly characterized by obtaining appropriate expert consultations, detailed pertinent history, physical examination and clinical laboratory tests. The study site personnel are to complete the liver abnormality case report form (LA-CRF). Participants with confirmed abnormal liver function testing should be followed as described below. </p>\n<p>Confirmed moderately abnormal liver function tests should be repeated 2 to 3 times weekly, and then weekly or less if abnormalities stabilize or the IP has been discontinued and the participant is asymptomatic. </p>\n<p>Severe hepatic liver function abnormalities as defined above, in the absence of another etiology, may be considered an important medical event and may be reported as an SAE. The sponsor should be contacted and informed of all participants for whom severe hepatic liver function abnormalities possibly attributable to IP are observed. </p>\n<p>To further assess abnormal hepatic laboratory findings, the investigator is expected to: </p>\n<ul>\n<li>Obtain a more detailed history of symptoms and prior or concurrent diseases. Symptoms and new-onset diseases are to be recorded as \u201cAEs\u201d within the electronic data source. Illnesses and conditions such as hypotensive events and decompensated cardiac disease that may lead to secondary liver abnormalities should be noted. Nonalcoholic steatohepatitis is seen in obese hyperlipoproteinemic and/or diabetic participants and may be associated with fluctuating AT levels. The investigator should ensure that the medical history form captures any illness that predates study enrollment that may be relevant in assessing hepatic function. </li>\n<li>Obtain a history of concomitant drug use (including nonprescription medication, complementary and alternative medications), alcohol use, recreational drug use and special diets. Medications are to be entered in the electronic data source. Information on alcohol, other substance use and diet should be entered on the LA-CRF or an appropriate document. </li>\n<li>Obtain a history of exposure to environmental chemical agents. </li>\n<li>Based on the participant\u2019s history, other testing may be appropriate including: \n<ul>\n<li>Acute viral hepatitis (A, B, C, D, E or other infectious agent</li>\n<li>Ultrasound or other imaging to assess biliary tract disease</li>\n<li>Other clinical laboratory tests, including INR and direct bilirubin </li>\n</ul>\n</li>\n<li>Consider gastroenterology or hepatology consultations. </li>\n<li>Submit results for any additional testing and possible etiology on the LA-CRF or an appropriate document. </li>\n</ul>\n<p><b><u>Study Treatment Discontinuation </u></b></p>\n<p>In the absence of an explanation for increased liver function tests, such as viral hepatitis, pre-existing or acute liver disease, or exposure to other agents associated with liver injury, the participant may be discontinued from study treatment. The investigator may determine that it is not in the participant\u2019s best interest to continue study treatment. Discontinuation of study treatment should be considered if: </p>\n<ul>\n<li>ALT or AST &gt; 8 \u00d7 ULN </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN for more than 2 weeks</li>\n<li>ALT or AST &gt; 3 \u00d7 ULN and\u2020 TBL &gt; 2 \u00d7 ULN or INR &gt; 1.5) (if INR testing is applicable/evaluated) </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN and\u2020 (TBL &gt; 2 \u00d7 ULN in participants with liver metastases) </li>\n<li>ALT or AST &gt; 3 \u00d7 ULN with the appearance of fatigue, nausea, vomiting, right upper quadrant pain or tenderness, fever, rash and/or eosinophilia (&gt; 5%) </li>\n</ul>\n<p>\u2020 Samples taken simultaneously or within a maximum of 24 hours. </p>\n<p>In addition, if close monitoring for a participant with moderate or severe hepatic laboratory tests is not possible, study treatment should be discontinued. </p>\n<p>Hy\u2019s Law definition: Drug-induced jaundice caused by hepatocellular injury, without a significant obstructive component, has a high rate of bad outcomes, from 10% to 50% mortality (or transplant). </p>\n<p>The 2 \u201crequirements\u201d for Hy\u2019s Law are: </p>\n<ol>\n<li>Evidence that a drug can cause hepatocellular-type injury, generally shown by an increase in AT elevations &gt; 3 \u00d7 ULN (\u201c2 \u00d7 ULN elevations are too common in treated and untreated participants to be discriminating\u201d). </li>\n<li>Cases of increased TBL (at least 2 \u00d7 ULN) with concurrent AT elevations at least 3 \u00d7 ULN and no evidence of intra- or extra-hepatic bilirubin obstruction (elevated ALP) or Gilbert\u2019s syndrome [Temple, 2006]. </li>\n</ol>\n<p>FDA Guidance for Industry titled, \u201cDrug-induced Liver Injury: Premarketing Clinical Evaluation\u201d issued by the FDA on July 2009: </p>\n<ol>\n<li>The drug causes hepatocellular injury, generally shown by a higher incidence of 3-fold or greater elevations above the ULN of ALT or AST than the (nonhepatotoxic) control drug or placebo. </li>\n<li>Among participants showing such AT elevations, often with ATs much greater than 3 \u00d7 ULN, one or more also show elevation of serum TBL to &gt; 2 \u00d7 ULN, without initial findings of cholestasis (elevated serum ALP). </li>\n<li>No other reason can be found to explain the combination of increased AT and TBL, such as viral hepatitis A, B, or C; pre-existing or acute liver disease; or another drug capable of causing the observed injury. </li>\n</ol>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>The purpose of this appendix is to provide guidance for the monitoring of drug-induced liver injury during the course of the study. It should be noted that this section does not specify the end-of-study analyses of liver enzymes. Any participant enrolled in a study with active drug therapy and reveals an increase of serum aminotransferases (AT) to &gt; 3 \u00d7 ULN or bilirubin &gt; 2 \u00d7 ULN should undergo detailed testing for liver enzymes (including at least ALP, ALT, AST and TBL). Testing should be repeated within 72 hours of notification of the test results. For studies for which a central laboratory is used, alerts will be generated by the central laboratory regarding moderate and severe liver abnormality to inform the investigator and study team. Participants should be asked if they have any symptoms suggestive of hepatobiliary dysfunction. </p>\n<p><b><u>Definition of Liver Abnormalities </u></b></p>\n<p>Confirmed abnormalities will be characterized as moderate and severe where ULN is as shown below. </p>\n<p><b>Table 12 \tModerate and Severe Liver Abnormalities</b></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p></p>\n</td>\n<td>\n<p><b>ALT or AST</b></p>\n</td>\n<td>\n<p></p>\n</td>\n<td>\n<p><b>TBL</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Moderate</p>\n</td>\n<td>\n<p>&gt; 3 \u00d7 ULN</p>\n</td>\n<td>\n<p>or</p>\n</td>\n<td>\n<p>&gt; 2 \u00d7 ULN</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>Severe</p>\n</td>\n<td>\n<p>&gt; 3 \u00d7 ULN</p>\n</td>\n<td>\n<p>and\u2020</p>\n</td>\n<td>\n<p>&gt; 2 \u00d7 ULN</p>\n</td>\n</tr>\n</table>\n<p><sup>ALT: alanine aminotransferase; AST: aspartate aminotransferase; TBL: total bilirubin; ULN: upper limit of normal</sup> </p>\n<p><sup>\u2020Samples taken simultaneously or within a maximum of 24 hours.</sup> </p>\n<p>In addition, the participant should be considered to have severe hepatic abnormalities for any of the following: </p>\n<ul>\n<li>ALT or AST &gt; 8 \u00d7 ULN </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN for more than 2 weeks </li>\n<li>ALT or AST &gt; 3 \u00d7 ULN and\u2020 TBL &gt; 2 \u00d7 ULN or international normalized ratio (INR) &gt; 1.5 (if INR testing is applicable/evaluated) </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN and\u2020 (TBL &gt; 2 \u00d7 ULN in participants with liver metastases) </li>\n<li>ALT or AST &gt; 3 \u00d7 ULN with the appearance of fatigue, nausea, vomiting, right upper quadrant pain or tenderness, fever, rash and/or eosinophilia (&gt; 5%) </li>\n</ul>\n<p>\u2020Samples taken simultaneously or within a maximum of 24 hours. </p>\n<p>The investigator may determine that abnormal liver function results, other than as described above, may qualify as moderate or severe abnormalities and require additional monitoring and follow-up. </p>\n<p><b><u>Follow-up Procedures </u></b></p>\n<p>Confirmed moderate and severe abnormalities in hepatic functions should be thoroughly characterized by obtaining appropriate expert consultations, detailed pertinent history, physical examination and clinical laboratory tests. The study site personnel are to complete the liver abnormality case report form (LA-CRF). Participants with confirmed abnormal liver function testing should be followed as described below. </p>\n<p>Confirmed moderately abnormal liver function tests should be repeated 2 to 3 times weekly, and then weekly or less if abnormalities stabilize or the IP has been discontinued and the participant is asymptomatic. </p>\n<p>Severe hepatic liver function abnormalities as defined above, in the absence of another etiology, may be considered an important medical event and may be reported as an SAE. The sponsor should be contacted and informed of all participants for whom severe hepatic liver function abnormalities possibly attributable to IP are observed. </p>\n<p>To further assess abnormal hepatic laboratory findings, the investigator is expected to: </p>\n<ul>\n<li>Obtain a more detailed history of symptoms and prior or concurrent diseases. Symptoms and new-onset diseases are to be recorded as \u201cAEs\u201d within the electronic data source. Illnesses and conditions such as hypotensive events and decompensated cardiac disease that may lead to secondary liver abnormalities should be noted. Nonalcoholic steatohepatitis is seen in obese hyperlipoproteinemic and/or diabetic participants and may be associated with fluctuating AT levels. The investigator should ensure that the medical history form captures any illness that predates study enrollment that may be relevant in assessing hepatic function. </li>\n<li>Obtain a history of concomitant drug use (including nonprescription medication, complementary and alternative medications), alcohol use, recreational drug use and special diets. Medications are to be entered in the electronic data source. Information on alcohol, other substance use and diet should be entered on the LA-CRF or an appropriate document. </li>\n<li>Obtain a history of exposure to environmental chemical agents. </li>\n<li>Based on the participant\u2019s history, other testing may be appropriate including: \n<ul>\n<li>Acute viral hepatitis (A, B, C, D, E or other infectious agent</li>\n<li>Ultrasound or other imaging to assess biliary tract disease</li>\n<li>Other clinical laboratory tests, including INR and direct bilirubin </li>\n</ul>\n</li>\n<li>Consider gastroenterology or hepatology consultations. </li>\n<li>Submit results for any additional testing and possible etiology on the LA-CRF or an appropriate document. </li>\n</ul>\n<p><b><u>Study Treatment Discontinuation </u></b></p>\n<p>In the absence of an explanation for increased liver function tests, such as viral hepatitis, pre-existing or acute liver disease, or exposure to other agents associated with liver injury, the participant may be discontinued from study treatment. The investigator may determine that it is not in the participant\u2019s best interest to continue study treatment. Discontinuation of study treatment should be considered if: </p>\n<ul>\n<li>ALT or AST &gt; 8 \u00d7 ULN </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN for more than 2 weeks</li>\n<li>ALT or AST &gt; 3 \u00d7 ULN and\u2020 TBL &gt; 2 \u00d7 ULN or INR &gt; 1.5) (if INR testing is applicable/evaluated) </li>\n<li>ALT or AST &gt; 5 \u00d7 ULN and\u2020 (TBL &gt; 2 \u00d7 ULN in participants with liver metastases) </li>\n<li>ALT or AST &gt; 3 \u00d7 ULN with the appearance of fatigue, nausea, vomiting, right upper quadrant pain or tenderness, fever, rash and/or eosinophilia (&gt; 5%) </li>\n</ul>\n<p>\u2020 Samples taken simultaneously or within a maximum of 24 hours. </p>\n<p>In addition, if close monitoring for a participant with moderate or severe hepatic laboratory tests is not possible, study treatment should be discontinued. </p>\n<p>Hy\u2019s Law definition: Drug-induced jaundice caused by hepatocellular injury, without a significant obstructive component, has a high rate of bad outcomes, from 10% to 50% mortality (or transplant). </p>\n<p>The 2 \u201crequirements\u201d for Hy\u2019s Law are: </p>\n<ol>\n<li>Evidence that a drug can cause hepatocellular-type injury, generally shown by an increase in AT elevations &gt; 3 \u00d7 ULN (\u201c2 \u00d7 ULN elevations are too common in treated and untreated participants to be discriminating\u201d). </li>\n<li>Cases of increased TBL (at least 2 \u00d7 ULN) with concurrent AT elevations at least 3 \u00d7 ULN and no evidence of intra- or extra-hepatic bilirubin obstruction (elevated ALP) or Gilbert\u2019s syndrome [Temple, 2006]. </li>\n</ol>\n<p>FDA Guidance for Industry titled, \u201cDrug-induced Liver Injury: Premarketing Clinical Evaluation\u201d issued by the FDA on July 2009: </p>\n<ol>\n<li>The drug causes hepatocellular injury, generally shown by a higher incidence of 3-fold or greater elevations above the ULN of ALT or AST than the (nonhepatotoxic) control drug or placebo. </li>\n<li>Among participants showing such AT elevations, often with ATs much greater than 3 \u00d7 ULN, one or more also show elevation of serum TBL to &gt; 2 \u00d7 ULN, without initial findings of cholestasis (elevated serum ALP). </li>\n<li>No other reason can be found to explain the combination of increased AT and TBL, such as viral hepatitis A, B, or C; pre-existing or acute liver disease; or another drug capable of causing the observed injury. </li>\n</ol></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -3148,6 +3208,66 @@
               "Organization_2"
             ],
             "masking": null,
+            "notes": [],
+            "instanceType": "StudyRole"
+          },
+          {
+            "id": "StudyRole_3",
+            "extensionAttributes": [],
+            "name": "DESIGN_ROLE_1",
+            "label": "Participant",
+            "description": null,
+            "code": {
+              "id": "Code_70",
+              "extensionAttributes": [],
+              "code": "C41189",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Study Subject",
+              "instanceType": "Code"
+            },
+            "appliesToIds": [
+              "StudyVersion_1"
+            ],
+            "assignedPersons": [],
+            "organizationIds": [],
+            "masking": {
+              "id": "Masking_1",
+              "extensionAttributes": [],
+              "text": "Study Subject blinded",
+              "isMasked": true,
+              "instanceType": "Masking"
+            },
+            "notes": [],
+            "instanceType": "StudyRole"
+          },
+          {
+            "id": "StudyRole_4",
+            "extensionAttributes": [],
+            "name": "DESIGN_ROLE_2",
+            "label": "Investigator",
+            "description": null,
+            "code": {
+              "id": "Code_71",
+              "extensionAttributes": [],
+              "code": "C25936",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Investigator",
+              "instanceType": "Code"
+            },
+            "appliesToIds": [
+              "StudyVersion_1"
+            ],
+            "assignedPersons": [],
+            "organizationIds": [],
+            "masking": {
+              "id": "Masking_2",
+              "extensionAttributes": [],
+              "text": "Investigator blinded",
+              "isMasked": true,
+              "instanceType": "Masking"
+            },
             "notes": [],
             "instanceType": "StudyRole"
           }
@@ -6185,5 +6305,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 Protocol Package",
-  "systemVersion": "0.11.0.a17"
+  "systemVersion": "0.11.0.a22"
 }

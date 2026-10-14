@@ -1,0 +1,11 @@
+# Development and test: the deploy requirements, the AI extra and the test tools.
+# The Docker image installs requirements.txt only (no AI client, no test tools).
+-r requirements.txt
+usdm4_protocol[ai]>=0.11.0
+pytest
+pytest-mock
+pytest-cov
+pytest-asyncio
+playwright==1.48.0
+pytest-playwright==0.5.2
+ruff

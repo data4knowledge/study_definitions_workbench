@@ -13,10 +13,3 @@ d4k-ms-service>=0.2.0
 d4k-ms-ui>=0.2.0
 python-multipart>=0.0.20
 jinja2==3.1.6
-pytest
-pytest-mock
-pytest-cov
-pytest-asyncio
-playwright==1.48.0
-pytest-playwright==0.5.2
-ruff

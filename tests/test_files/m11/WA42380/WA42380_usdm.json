@@ -9,21 +9,21 @@
         "id": "StudyVersion_1",
         "extensionAttributes": [
           {
-            "id": "ExtensionAttribute_6",
+            "id": "ExtensionAttribute_7",
             "url": "www.d4k.dk/usdm/extensions/008",
             "valueString": "See electronic date stamp",
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_7",
+            "id": "ExtensionAttribute_8",
             "url": "www.d4k.dk/usdm/extensions/001",
             "valueString": "This clinical study is being sponsored globally by F. Hoffmann-La Roche Ltd of Basel,\nSwitzerland. However, it may be implemented in individual countries by Roche's local affiliates,\nincluding Genentech, Inc. in the United States. The information contained in this document, especially\nany unpublished data, is the property of F. Hoffmann-La Roche Ltd (or under its control) and therefore\nis provided to you in confidence as an investigator, potential investigator, or consultant, for review by\nyou, your staff, and an applicable Ethics Committee or Institutional Review Board. It is understood that\nthis information will not be disclosed to others without written authorization from Roche except to the\nextent necessary to obtain informed consent from persons to whom the drug may be administered.",
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_8",
+            "id": "ExtensionAttribute_9",
             "url": "www.d4k.dk/usdm/extensions/002",
             "valueBoolean": false,
             "extensionAttributes": [],
@@ -550,6 +550,21 @@
                 "valueString": "defaulted: no intervention model supplied",
                 "extensionAttributes": [],
                 "instanceType": "ExtensionAttribute"
+              },
+              {
+                "id": "ExtensionAttribute_6",
+                "url": "www.d4k.dk/usdm/extensions/018",
+                "valueCode": {
+                  "id": "Code_54",
+                  "code": "C49648",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2025-12-19",
+                  "decode": "Placebo",
+                  "instanceType": "Code",
+                  "extensionAttributes": []
+                },
+                "extensionAttributes": [],
+                "instanceType": "ExtensionAttribute"
               }
             ],
             "name": "STUDY-DESIGN-1",
@@ -580,7 +595,35 @@
               "instanceType": "AliasCode"
             },
             "therapeuticAreas": [],
-            "characteristics": [],
+            "characteristics": [
+              {
+                "id": "Code_55",
+                "extensionAttributes": [],
+                "code": "C217005",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Multicenter Study",
+                "instanceType": "Code"
+              },
+              {
+                "id": "Code_56",
+                "extensionAttributes": [],
+                "code": "C217007",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Multiple Countries",
+                "instanceType": "Code"
+              },
+              {
+                "id": "Code_57",
+                "extensionAttributes": [],
+                "code": "C46079",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Randomized Controlled Clinical Trial",
+                "instanceType": "Code"
+              }
+            ],
             "encounters": [],
             "activities": [],
             "arms": [],
@@ -589,7 +632,19 @@
             "epochs": [],
             "elements": [],
             "estimands": [],
-            "indications": [],
+            "indications": [
+              {
+                "id": "Indication_1",
+                "extensionAttributes": [],
+                "name": "INDICATION_1",
+                "label": "Severe COVID 19 pneumonia",
+                "description": "",
+                "codes": [],
+                "isRareDisease": false,
+                "notes": [],
+                "instanceType": "Indication"
+              }
+            ],
             "studyInterventionIds": [],
             "objectives": [
               {
@@ -603,7 +658,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_55",
+                  "id": "Code_63",
                   "extensionAttributes": [],
                   "code": "C85826",
                   "codeSystem": "http://www.cdisc.org",
@@ -624,7 +679,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_54",
+                      "id": "Code_62",
                       "extensionAttributes": [],
                       "code": "C94496",
                       "codeSystem": "http://www.cdisc.org",
@@ -646,7 +701,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_67",
+                  "id": "Code_75",
                   "extensionAttributes": [],
                   "code": "C85827",
                   "codeSystem": "http://www.cdisc.org",
@@ -667,7 +722,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_56",
+                      "id": "Code_64",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -688,7 +743,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_57",
+                      "id": "Code_65",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -709,7 +764,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_58",
+                      "id": "Code_66",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -730,7 +785,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_59",
+                      "id": "Code_67",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -751,7 +806,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_60",
+                      "id": "Code_68",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -772,7 +827,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_61",
+                      "id": "Code_69",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -793,7 +848,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_62",
+                      "id": "Code_70",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -814,7 +869,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_63",
+                      "id": "Code_71",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -835,7 +890,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_64",
+                      "id": "Code_72",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -856,7 +911,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_65",
+                      "id": "Code_73",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -877,7 +932,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_66",
+                      "id": "Code_74",
                       "extensionAttributes": [],
                       "code": "C139173",
                       "codeSystem": "http://www.cdisc.org",
@@ -899,7 +954,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_73",
+                  "id": "Code_81",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -920,7 +975,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_68",
+                      "id": "Code_76",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -941,7 +996,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_69",
+                      "id": "Code_77",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -962,7 +1017,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_70",
+                      "id": "Code_78",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -983,7 +1038,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_71",
+                      "id": "Code_79",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1004,7 +1059,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_72",
+                      "id": "Code_80",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1026,7 +1081,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_79",
+                  "id": "Code_87",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -1047,7 +1102,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_74",
+                      "id": "Code_82",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1068,7 +1123,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_75",
+                      "id": "Code_83",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1089,7 +1144,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_76",
+                      "id": "Code_84",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1110,7 +1165,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_77",
+                      "id": "Code_85",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1131,7 +1186,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_78",
+                      "id": "Code_86",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1153,7 +1208,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_81",
+                  "id": "Code_89",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -1174,7 +1229,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_80",
+                      "id": "Code_88",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1196,7 +1251,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_83",
+                  "id": "Code_91",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -1217,7 +1272,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_82",
+                      "id": "Code_90",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1239,7 +1294,7 @@
                 "notes": [],
                 "instanceType": "Objective",
                 "level": {
-                  "id": "Code_85",
+                  "id": "Code_93",
                   "extensionAttributes": [],
                   "code": "C163559",
                   "codeSystem": "http://www.cdisc.org",
@@ -1260,7 +1315,7 @@
                     "instanceType": "Endpoint",
                     "purpose": "",
                     "level": {
-                      "id": "Code_84",
+                      "id": "Code_92",
                       "extensionAttributes": [],
                       "code": "C170559",
                       "codeSystem": "http://www.cdisc.org",
@@ -1355,7 +1410,7 @@
                 "maxValue": {
                   "id": "Quantity_2",
                   "extensionAttributes": [],
-                  "value": 18.0,
+                  "value": 200.0,
                   "unit": {
                     "id": "AliasCode_2",
                     "extensionAttributes": [],
@@ -1817,7 +1872,21 @@
               "instanceType": "Code"
             },
             "intentTypes": [],
-            "blindingSchema": null
+            "blindingSchema": {
+              "id": "AliasCode_5",
+              "extensionAttributes": [],
+              "standardCode": {
+                "id": "Code_58",
+                "extensionAttributes": [],
+                "code": "C15228",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Double Blind Study",
+                "instanceType": "Code"
+              },
+              "standardCodeAliases": [],
+              "instanceType": "AliasCode"
+            }
           }
         ],
         "titles": [
@@ -2074,7 +2143,7 @@
             "id": "NarrativeContentItem_4",
             "extensionAttributes": [],
             "name": "NCI-3",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p><b>Primary Objective</b></p>\n</td>\n<td>\n<p><b>Primary Endpoint</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The primary efficacy objective for this study is to evaluate the efficacy of TCZ compared with placebo in combination with SOC for the treatment of severe COVID-19 pneumonia.</p>\n<p></p>\n</td>\n<td>\n<ul>\n<li>Clinical status assessed using a 7-category ordinal scale at Day 28 </li>\n</ul>\n<p></p>\n</td>\n</tr>\n</table>\n<p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p><b>Secondary Objective</b></p>\n</td>\n<td>\n<p><b>Secondary Endpoints</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The secondary efficacy objective for this study is to evaluate the efficacy of TCZ compared with placebo in combination with SOC for the treatment of severe COVID-19 pneumonia.</p>\n</td>\n<td>\n<ul>\n<li>\u2022\tTime to clinical improvement (TTCI) defined as a National Early Warning Score 2 (NEWS2) of \uf0a3 2 maintained for 24 hours</li>\n<li>\u2022\tTime to improvement of at least 2 categories relative to baseline on a 7-category ordinal scale of clinical status </li>\n<li>\u2022\tIncidence of mechanical ventilation</li>\n<li>\u2022\tVentilator-free days to Day 28</li>\n<li>\u2022\tIncidence of intensive care unit (ICU) stay </li>\n<li>\u2022\tDuration of ICU stay </li>\n<li>\u2022\tTime to clinical failure, defined as the time to death, mechanical ventilation, ICU admission, or withdrawal (whichever occurs first).  For patients entering the study already in ICU or on mechanical ventilation, clinical failure is defined as a one category worsening on the ordinal scale, withdrawal or death.</li>\n<li>\u2022\tMortality rate at Days 7, 14, 21, 28, and 60</li>\n<li>\u2022\tTime to hospital discharge or \u201cready for discharge\u201d (as evidenced by normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen)</li>\n<li>\u2022\tTime to recovery, defined as discharged or \u201cready for discharge\u201d (as evidenced by normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen); OR, in a non-ICU hospital ward (or \u201cready for hospital ward\u201d) not requiring supplemental oxygen</li>\n<li>\u2022\tDuration of supplemental oxygen</li>\n</ul>\n</td>\n</tr>\n</table>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p><b>Primary Objective</b></p>\n</td>\n<td>\n<p><b>Primary Endpoint</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The primary efficacy objective for this study is to evaluate the efficacy of TCZ compared with placebo in combination with SOC for the treatment of severe COVID-19 pneumonia.</p>\n<p></p>\n</td>\n<td>\n<ul>\n<li>Clinical status assessed using a 7-category ordinal scale at Day 28 </li>\n</ul>\n</td>\n</tr>\n</table>\n<p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p><b>Secondary Objective</b></p>\n</td>\n<td>\n<p><b>Secondary Endpoints</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The secondary efficacy objective for this study is to evaluate the efficacy of TCZ compared with placebo in combination with SOC for the treatment of severe COVID-19 pneumonia.</p>\n</td>\n<td>\n<ul>\n<li>\u2022\tTime to clinical improvement (TTCI) defined as a National Early Warning Score 2 (NEWS2) of \uf0a3 2 maintained for 24 hours</li>\n<li>\u2022\tTime to improvement of at least 2 categories relative to baseline on a 7-category ordinal scale of clinical status </li>\n<li>\u2022\tIncidence of mechanical ventilation</li>\n<li>\u2022\tVentilator-free days to Day 28</li>\n<li>\u2022\tIncidence of intensive care unit (ICU) stay </li>\n<li>\u2022\tDuration of ICU stay </li>\n<li>\u2022\tTime to clinical failure, defined as the time to death, mechanical ventilation, ICU admission, or withdrawal (whichever occurs first).  For patients entering the study already in ICU or on mechanical ventilation, clinical failure is defined as a one category worsening on the ordinal scale, withdrawal or death.</li>\n<li>\u2022\tMortality rate at Days 7, 14, 21, 28, and 60</li>\n<li>\u2022\tTime to hospital discharge or \u201cready for discharge\u201d (as evidenced by normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen)</li>\n<li>\u2022\tTime to recovery, defined as discharged or \u201cready for discharge\u201d (as evidenced by normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen); OR, in a non-ICU hospital ward (or \u201cready for hospital ward\u201d) not requiring supplemental oxygen</li>\n<li>\u2022\tDuration of supplemental oxygen</li>\n</ul>\n</td>\n</tr>\n</table>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2165,7 +2234,7 @@
             "id": "NarrativeContentItem_17",
             "extensionAttributes": [],
             "name": "NCI-16",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>This section highlights the main risks for this study population and following 1\uf02d2 doses of TCZ.  For a complete list of all identified or potential risks of TCZ therapy, please refer to the current version of the TCZ Investigator\u2019s Brochure. </p>\n<p><b>Hypersensitivity Reactions, Including Anaphylaxis</b></p>\n<p>An infusion reaction is defined as any adverse event that occurs during or within 24 hours after the infusion.  This may include hypersensitivity or anaphylactic reactions.  Stevens-Johnson syndrome has been reported during treatment with TCZ in the post marketing setting.  Signs of a possible hypersensitivity reaction include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tFever, chills, pruritus, urticaria, angioedema, and skin rash</li>\n<li>\u2022\tCardiopulmonary reactions, including chest pain, dyspnea, hypotension, or hypertension</li>\n</ul>\n<p></p>\n<p>TCZ infusions will be administered to patients at the site under close supervision.  Health care professionals administering TCZ infusions should be trained in the appropriate procedures for TCZ administration, should be able to recognize the symptoms associated with potential hypersensitivity reactions, including anaphylaxis, and should have the appropriate medication available for immediate use in case of hypersensitivity reaction such as anaphylaxis during or after administration of TCZ.  The patient should be treated according to the standard of care for management of the hypersensitivity reaction. </p>\n<p>If a patient has symptoms of serious hypersensitivity reactions, such as anaphylaxis, or requires an interruption of the study drug because of symptoms of hypersensitivity including anaphylaxis, administration of TCZ must be discontinued permanently.</p>\n<p><b>Serious Infections and Opportunistic Infections</b></p>\n<p>Physicians should exercise caution when considering the use of TCZ in patients with increased risk of infection, such as a history of recurring infections or with underlying conditions (e.g., diabetes mellitus) which may predispose patients to serious infections and opportunistic infections such as TB and viral reactivations (e.g., hepatitis B virus).  </p>\n<p>Vigilance for timely detection of serious infection is recommended for patients receiving biologic agents, as signs and symptoms of acute inflammation may be lessened because of suppression of the acute-phase reaction.  The effects of TCZ on CRP and neutrophils, and the signs and symptoms of infection, should be considered when evaluating a patient for a potential infection.  It is recommended that neutropenic patients (ANC \uf03c 1000/\uf06dL) undergo weekly surveillance blood cultures during the study.</p>\n<p>If a patient develops a serious infection, administration of TCZ should be discontinued.</p>\n<p><b>Gastrointestinal Perforations</b></p>\n<p>Symptomatic diverticulosis, diverticulitis, or chronic ulcerative lower GI disease, such as Crohn disease, ulcerative colitis, or other chronic lower GI conditions, might predispose patients to GI perforations.  Timely diagnosis and appropriate treatment may reduce the potential for complications of diverticular disease and thus reduce the risk of GI perforations.  </p>\n<p>Discontinuation of TCZ is required for patients who develop GI perforations.</p>\n<p><b>Hematologic Abnormalities</b></p>\n<p>Decreases in neutrophil counts, platelet counts, and fibrinogen levels have been observed following treatment with TCZ for labelled indications.  Treatment-related neutropenia was not associated with serious infection in clinical trials in any indication and no association between decreases in platelet counts and serious bleeding events has been observed.</p>\n<p><b>Demyelinating Disorders</b></p>\n<p>The effect of treatment with TCZ on demyelinating disorders is not known; events have been reported rarely.  Physicians should exercise caution when considering the use of TCZ in patients with preexisting or recent-onset demyelinating disorders.  </p>\n<p>Patients should be closely monitored for signs and symptoms potentially indicative of central demyelinating disorders.  </p>\n<p><b>Elevated Liver Enzymes</b></p>\n<p>In clinical trials, mild and moderate elevations of hepatic transaminases have been observed with TCZ treatment. </p>\n<p>Recommended TCZ dose modifications for elevated liver enzymes in these populations are not applicable to this study due to single dose therapy (with possible additional infusion) with TCZ or placebo.</p>\n<p>Patients who develop elevated liver function tests during the study must have repeat tests performed as clinically indicated until levels return to baseline, even if they withdraw from the study.  If the specialist deems a liver biopsy necessary, the prepared histologic slides will be requested by the Sponsor for central review by a third party, and the biopsy report should be forwarded to the Sponsor.</p>\n<p><b>CYP450 Enzyme Normalization</b></p>\n<p>The expression of hepatic cytochrome P450 (CYP450) enzymes is suppressed by cytokines, such as IL-6, that stimulate chronic inflammation.  TCZ normalizes expression of these enzymes.  The effect of TCZ on CYP450 enzymes (except CYP2C19 and CYP2D6) is clinically relevant for CYP450 substrates with a narrow therapeutic index and/or when the dose is individually adjusted.</p>\n<p>When starting or stopping therapy with TCZ, patients taking medicinal products which are individually dose adjusted and are metabolized via CYP450 CYP3A4, CYP1A2, CYP2B6, or CYP2C9 (e.g., atorvastatin, calcium-channel blockers, theophylline, warfarin, phenprocoumon, phenytoin, cyclosporine, or benzodiazepines) should be monitored as doses of these products may need to be adjusted to maintain their therapeutic effect.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>This section highlights the main risks for this study population and following 1\uf02d2 doses of TCZ.  For a complete list of all identified or potential risks of TCZ therapy, please refer to the current version of the TCZ Investigator\u2019s Brochure. </p>\n<p><b>Hypersensitivity Reactions, Including Anaphylaxis</b></p>\n<p>An infusion reaction is defined as any adverse event that occurs during or within 24 hours after the infusion.  This may include hypersensitivity or anaphylactic reactions.  Stevens-Johnson syndrome has been reported during treatment with TCZ in the post marketing setting.  Signs of a possible hypersensitivity reaction include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tFever, chills, pruritus, urticaria, angioedema, and skin rash</li>\n<li>\u2022\tCardiopulmonary reactions, including chest pain, dyspnea, hypotension, or hypertension</li>\n</ul>\n<p>TCZ infusions will be administered to patients at the site under close supervision.  Health care professionals administering TCZ infusions should be trained in the appropriate procedures for TCZ administration, should be able to recognize the symptoms associated with potential hypersensitivity reactions, including anaphylaxis, and should have the appropriate medication available for immediate use in case of hypersensitivity reaction such as anaphylaxis during or after administration of TCZ.  The patient should be treated according to the standard of care for management of the hypersensitivity reaction. </p>\n<p>If a patient has symptoms of serious hypersensitivity reactions, such as anaphylaxis, or requires an interruption of the study drug because of symptoms of hypersensitivity including anaphylaxis, administration of TCZ must be discontinued permanently.</p>\n<p><b>Serious Infections and Opportunistic Infections</b></p>\n<p>Physicians should exercise caution when considering the use of TCZ in patients with increased risk of infection, such as a history of recurring infections or with underlying conditions (e.g., diabetes mellitus) which may predispose patients to serious infections and opportunistic infections such as TB and viral reactivations (e.g., hepatitis B virus).  </p>\n<p>Vigilance for timely detection of serious infection is recommended for patients receiving biologic agents, as signs and symptoms of acute inflammation may be lessened because of suppression of the acute-phase reaction.  The effects of TCZ on CRP and neutrophils, and the signs and symptoms of infection, should be considered when evaluating a patient for a potential infection.  It is recommended that neutropenic patients (ANC \uf03c 1000/\uf06dL) undergo weekly surveillance blood cultures during the study.</p>\n<p>If a patient develops a serious infection, administration of TCZ should be discontinued.</p>\n<p><b>Gastrointestinal Perforations</b></p>\n<p>Symptomatic diverticulosis, diverticulitis, or chronic ulcerative lower GI disease, such as Crohn disease, ulcerative colitis, or other chronic lower GI conditions, might predispose patients to GI perforations.  Timely diagnosis and appropriate treatment may reduce the potential for complications of diverticular disease and thus reduce the risk of GI perforations.  </p>\n<p>Discontinuation of TCZ is required for patients who develop GI perforations.</p>\n<p><b>Hematologic Abnormalities</b></p>\n<p>Decreases in neutrophil counts, platelet counts, and fibrinogen levels have been observed following treatment with TCZ for labelled indications.  Treatment-related neutropenia was not associated with serious infection in clinical trials in any indication and no association between decreases in platelet counts and serious bleeding events has been observed.</p>\n<p><b>Demyelinating Disorders</b></p>\n<p>The effect of treatment with TCZ on demyelinating disorders is not known; events have been reported rarely.  Physicians should exercise caution when considering the use of TCZ in patients with preexisting or recent-onset demyelinating disorders.  </p>\n<p>Patients should be closely monitored for signs and symptoms potentially indicative of central demyelinating disorders.  </p>\n<p><b>Elevated Liver Enzymes</b></p>\n<p>In clinical trials, mild and moderate elevations of hepatic transaminases have been observed with TCZ treatment. </p>\n<p>Recommended TCZ dose modifications for elevated liver enzymes in these populations are not applicable to this study due to single dose therapy (with possible additional infusion) with TCZ or placebo.</p>\n<p>Patients who develop elevated liver function tests during the study must have repeat tests performed as clinically indicated until levels return to baseline, even if they withdraw from the study.  If the specialist deems a liver biopsy necessary, the prepared histologic slides will be requested by the Sponsor for central review by a third party, and the biopsy report should be forwarded to the Sponsor.</p>\n<p><b>CYP450 Enzyme Normalization</b></p>\n<p>The expression of hepatic cytochrome P450 (CYP450) enzymes is suppressed by cytokines, such as IL-6, that stimulate chronic inflammation.  TCZ normalizes expression of these enzymes.  The effect of TCZ on CYP450 enzymes (except CYP2C19 and CYP2D6) is clinically relevant for CYP450 substrates with a narrow therapeutic index and/or when the dose is individually adjusted.</p>\n<p>When starting or stopping therapy with TCZ, patients taking medicinal products which are individually dose adjusted and are metabolized via CYP450 CYP3A4, CYP1A2, CYP2B6, or CYP2C9 (e.g., atorvastatin, calcium-channel blockers, theophylline, warfarin, phenprocoumon, phenytoin, cyclosporine, or benzodiazepines) should be monitored as doses of these products may need to be adjusted to maintain their therapeutic effect.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2186,7 +2255,7 @@
             "id": "NarrativeContentItem_20",
             "extensionAttributes": [],
             "name": "NCI-19",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p><b>Primary Objective</b></p>\n</td>\n<td>\n<p><b>Primary Endpoint</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The primary efficacy objective for this study is to evaluate the efficacy of TCZ compared with placebo in combination with SOC for the treatment of severe COVID-19 pneumonia.</p>\n<p></p>\n</td>\n<td>\n<ul>\n<li>Clinical status assessed using a 7-category ordinal scale at Day 28 </li>\n</ul>\n<p></p>\n</td>\n</tr>\n</table>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td>\n<p><b>Primary Objective</b></p>\n</td>\n<td>\n<p><b>Primary Endpoint</b></p>\n</td>\n</tr>\n<tr>\n<td>\n<p>The primary efficacy objective for this study is to evaluate the efficacy of TCZ compared with placebo in combination with SOC for the treatment of severe COVID-19 pneumonia.</p>\n<p></p>\n</td>\n<td>\n<ul>\n<li>Clinical status assessed using a 7-category ordinal scale at Day 28 </li>\n</ul>\n</td>\n</tr>\n</table>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2305,7 +2374,7 @@
             "id": "NarrativeContentItem_37",
             "extensionAttributes": [],
             "name": "NCI-36",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Patients who meet any of the following criteria will be excluded from study entry:</p>\n<ul>\n<li>\u2022\tKnown severe allergic reactions to TCZ or other monoclonal antibodies</li>\n<li>\u2022\tActive TB infection </li>\n<li>\u2022\tSuspected active bacterial, fungal, viral, or other infection (besides COVID-19) </li>\n<li>\u2022\tIn the opinion of the investigator, progression to death is imminent and inevitable within the next 24 hours, irrespective of the provision of treatments </li>\n<li>\u2022\tHave received oral anti-rejection or immunomodulatory drugs (including TCZ) within the past 3 months</li>\n<li>\u2022\tParticipating in other drug clinical trials (participation in COVID-19 anti-viral trials may be permitted if approved by Medical Monitor)</li>\n<li>\u2022\tALT or AST \uf03e 10 x ULN detected within 24 hours at screening (according to local laboratory reference ranges)</li>\n<li>\u2022\tANC &lt; 1000/\uf06dL at screening (according to local laboratory reference ranges)</li>\n<li>\u2022\tPlatelet count \uf03c 50,000/\uf06dL at screening (according to local laboratory reference ranges)</li>\n<li>\u2022\tPregnant or breastfeeding, or positive pregnancy test in a pre-dose examination</li>\n<li>\u2022\tTreatment with an investigational drug within 5 half-lives or 30 days (whichever is longer) of randomization (investigational COVID-19 antivirals may be permitted if approved by Medical Monitor)</li>\n<li>\u2022\tAny serious medical condition or abnormality of clinical laboratory tests that, in the investigator\u2019s judgment, precludes the patient\u2019s safe participation in and completion of the study</li>\n</ul>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Patients who meet any of the following criteria will be excluded from study entry:</p>\n<ul>\n<li>\u2022\tKnown severe allergic reactions to TCZ or other monoclonal antibodies</li>\n<li>\u2022\tActive TB infection </li>\n<li>\u2022\tSuspected active bacterial, fungal, viral, or other infection (besides COVID-19) </li>\n<li>\u2022\tIn the opinion of the investigator, progression to death is imminent and inevitable within the next 24 hours, irrespective of the provision of treatments </li>\n<li>\u2022\tHave received oral anti-rejection or immunomodulatory drugs (including TCZ) within the past 3 months</li>\n<li>\u2022\tParticipating in other drug clinical trials (participation in COVID-19 anti-viral trials may be permitted if approved by Medical Monitor)</li>\n<li>\u2022\tALT or AST \uf03e 10 x ULN detected within 24 hours at screening (according to local laboratory reference ranges)</li>\n<li>\u2022\tANC &lt; 1000/\uf06dL at screening (according to local laboratory reference ranges)</li>\n<li>\u2022\tPlatelet count \uf03c 50,000/\uf06dL at screening (according to local laboratory reference ranges)</li>\n<li>\u2022\tPregnant or breastfeeding, or positive pregnancy test in a pre-dose examination</li>\n<li>\u2022\tTreatment with an investigational drug within 5 half-lives or 30 days (whichever is longer) of randomization (investigational COVID-19 antivirals may be permitted if approved by Medical Monitor)</li>\n<li>\u2022\tAny serious medical condition or abnormality of clinical laboratory tests that, in the investigator\u2019s judgment, precludes the patient\u2019s safe participation in and completion of the study</li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2480,7 +2549,7 @@
             "id": "NarrativeContentItem_62",
             "extensionAttributes": [],
             "name": "NCI-61",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Use of the following concomitant therapies is prohibited as described below:</p>\n<ul>\n<li>\u2022\tTreatment with any investigational agent (except for SARS-CoV-2 [COVID-19] anti-viral agents with approval of Medical Monitor), cell-depleting therapies, biologic agents (e.g., tumor necrosis factor antagonists or IL-6/IL-6R therapies including sarilumab, siltuximab), Janus kinase inhibitors (e.g., tofacitinib, baricitinib), alkylating agents (e.g., chlorambucil, cyclophosphamide), thalidomide, IV gamma globulin, anti-thymocyte globulin, and azathioprine during the study</li>\n<li>\u2022\tBone marrow transplantation with total lymphoid irradiation during the study</li>\n<li>\u2022\tPlasmapheresis or extracorporeal photopheresis during the study</li>\n<li>\u2022\tImmunization with a live or attenuated vaccine for the duration of the patient\u2019s study participation.</li>\n</ul>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Use of the following concomitant therapies is prohibited as described below:</p>\n<ul>\n<li>\u2022\tTreatment with any investigational agent (except for SARS-CoV-2 [COVID-19] anti-viral agents with approval of Medical Monitor), cell-depleting therapies, biologic agents (e.g., tumor necrosis factor antagonists or IL-6/IL-6R therapies including sarilumab, siltuximab), Janus kinase inhibitors (e.g., tofacitinib, baricitinib), alkylating agents (e.g., chlorambucil, cyclophosphamide), thalidomide, IV gamma globulin, anti-thymocyte globulin, and azathioprine during the study</li>\n<li>\u2022\tBone marrow transplantation with total lymphoid irradiation during the study</li>\n<li>\u2022\tPlasmapheresis or extracorporeal photopheresis during the study</li>\n<li>\u2022\tImmunization with a live or attenuated vaccine for the duration of the patient\u2019s study participation.</li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2529,7 +2598,7 @@
             "id": "NarrativeContentItem_69",
             "extensionAttributes": [],
             "name": "NCI-68",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Patients must permanently discontinue study treatment if they experience any of the following:</p>\n<ul>\n<li>\u2022\tAny medical condition that the investigator or Sponsor determines may jeopardize the patient's safety if he or she continues to receive study treatment</li>\n<li>\u2022\tInvestigator or Sponsor determination that treatment discontinuation is in the best interest of the patient</li>\n<li>\u2022\tPregnancy</li>\n<li>\u2022\tAny event that meets stopping criteria defined in Section 5.1.1 </li>\n<li>\u2022\tSevere allergic reaction to TCZ</li>\n</ul>\n<p></p>\n<p>The primary reason for study treatment discontinuation should be documented on the appropriate eCRF.  Patients who discontinue study treatment will not be replaced.</p>\n<p>Patients who discontinue from the study treatment should continue in the study and complete all assessments through Day 60.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Patients must permanently discontinue study treatment if they experience any of the following:</p>\n<ul>\n<li>\u2022\tAny medical condition that the investigator or Sponsor determines may jeopardize the patient's safety if he or she continues to receive study treatment</li>\n<li>\u2022\tInvestigator or Sponsor determination that treatment discontinuation is in the best interest of the patient</li>\n<li>\u2022\tPregnancy</li>\n<li>\u2022\tAny event that meets stopping criteria defined in Section 5.1.1 </li>\n<li>\u2022\tSevere allergic reaction to TCZ</li>\n</ul>\n<p>The primary reason for study treatment discontinuation should be documented on the appropriate eCRF.  Patients who discontinue study treatment will not be replaced.</p>\n<p>Patients who discontinue from the study treatment should continue in the study and complete all assessments through Day 60.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2543,7 +2612,7 @@
             "id": "NarrativeContentItem_71",
             "extensionAttributes": [],
             "name": "NCI-70",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Patients have the right to voluntarily withdraw from the study at any time for any reason.  In addition, the investigator has the right to withdraw a patient from the study at any time.</p>\n<p>Reasons for patient discontinuation from the study may include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tPatient withdrawal of consent</li>\n<li>\u2022\tStudy termination or site closure</li>\n<li>\u2022\tAdverse event</li>\n<li>\u2022\tLoss to follow-up</li>\n</ul>\n<p></p>\n<p>Every effort should be made to obtain information on patients lost to follow up but have not withdrawn consent.  The primary reason for withdrawal from the study should be documented on the appropriate eCRF.  If a patient requests to be withdrawn from the study, this request must be documented in the source documents and signed by the investigator.  Patients who withdraw from the study will not be replaced.</p>\n<p>If a patient withdraws from the study, the study staff may use a public information source (e.g., county records) to obtain information about survival status.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Patients have the right to voluntarily withdraw from the study at any time for any reason.  In addition, the investigator has the right to withdraw a patient from the study at any time.</p>\n<p>Reasons for patient discontinuation from the study may include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tPatient withdrawal of consent</li>\n<li>\u2022\tStudy termination or site closure</li>\n<li>\u2022\tAdverse event</li>\n<li>\u2022\tLoss to follow-up</li>\n</ul>\n<p>Every effort should be made to obtain information on patients lost to follow up but have not withdrawn consent.  The primary reason for withdrawal from the study should be documented on the appropriate eCRF.  If a patient requests to be withdrawn from the study, this request must be documented in the source documents and signed by the investigator.  Patients who withdraw from the study will not be replaced.</p>\n<p>If a patient withdraws from the study, the study staff may use a public information source (e.g., county records) to obtain information about survival status.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2627,7 +2696,7 @@
             "id": "NarrativeContentItem_83",
             "extensionAttributes": [],
             "name": "NCI-82",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Samples for the following laboratory tests will be measured by study site's local laboratory:</p>\n<ul>\n<li>\u2022\tPartial pressure of oxygen (PaO2, if arterial blood gases are performed during screening or follow-up)</li>\n<li>\u2022\tHematology: WBC count, RBC count, hemoglobin, hematocrit, platelet count, differential count (neutrophils, eosinophils, basophils, monocytes, lymphocytes), and lymphocyte subsets (T cells, B cells, and NK cells; if the test is available at the site)</li>\n<li>\u2022\tChemistry panel (serum or plasma): bicarbonate or total carbon dioxide (if considered standard of care for the region), sodium, potassium, chloride, glucose, BUN or urea, creatinine, total protein, albumin, phosphorus, calcium, total bilirubin, ALP, ALT, and/or AST, uric acid, LDH, D-dimer, and ferritin</li>\n<li>\u2022\tPregnancy test</li>\n</ul>\n<p>All women of childbearing potential will have a pregnancy test at screening (urine or serum).  If a urine pregnancy test is positive, it must be confirmed by a serum pregnancy test.</p>\n<ul>\n<li>\u2022\tSARS-CoV-2 (COVID-19) PCR (screening): nasopharyngeal swab, BAL, or other respiratory specimen, blood, urine, stool, other bodily fluid </li>\n</ul>\n<p>Samples for the following laboratory tests will be sent to designated central laboratories or to the Sponsor or a designee for analysis:</p>\n<ul>\n<li>\u2022\tSerum samples for PK analysis</li>\n<li>\u2022\tSerum samples for pharmacodynamic analysis (IL-6, sIL-6R and CRP) and exploratory biomarker research</li>\n<li>\u2022\tSerum samples for SARS-CoV-2 antibody titer</li>\n<li>\u2022\tNasopharyngeal swabs and BAL (if applicable) for SARS-CoV-2 virology tests (viral load and exploratory analysis)</li>\n<li>\u2022\tWhole blood PAXgene\uf0e2 RNA for RNA sequencing or QPCR </li>\n<li>\u2022\tCryopreserved PBMCs for high dimensional cytometry analysis (for sites capable of sample collection)</li>\n</ul>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Samples for the following laboratory tests will be measured by study site's local laboratory:</p>\n<ul>\n<li>\u2022\tPartial pressure of oxygen (PaO2, if arterial blood gases are performed during screening or follow-up)</li>\n<li>\u2022\tHematology: WBC count, RBC count, hemoglobin, hematocrit, platelet count, differential count (neutrophils, eosinophils, basophils, monocytes, lymphocytes), and lymphocyte subsets (T cells, B cells, and NK cells; if the test is available at the site)</li>\n<li>\u2022\tChemistry panel (serum or plasma): bicarbonate or total carbon dioxide (if considered standard of care for the region), sodium, potassium, chloride, glucose, BUN or urea, creatinine, total protein, albumin, phosphorus, calcium, total bilirubin, ALP, ALT, and/or AST, uric acid, LDH, D-dimer, and ferritin</li>\n<li>\u2022\tPregnancy test</li>\n</ul>\n<p>All women of childbearing potential will have a pregnancy test at screening (urine or serum).  If a urine pregnancy test is positive, it must be confirmed by a serum pregnancy test.</p>\n<ul>\n<li>\u2022\tSARS-CoV-2 (COVID-19) PCR (screening): nasopharyngeal swab, BAL, or other respiratory specimen, blood, urine, stool, other bodily fluid </li>\n</ul>\n<p>Samples for the following laboratory tests will be sent to designated central laboratories or to the Sponsor or a designee for analysis:</p>\n<ul>\n<li>\u2022\tSerum samples for PK analysis</li>\n<li>\u2022\tSerum samples for pharmacodynamic analysis (IL-6, sIL-6R and CRP) and exploratory biomarker research</li>\n<li>\u2022\tSerum samples for SARS-CoV-2 antibody titer</li>\n<li>\u2022\tNasopharyngeal swabs and BAL (if applicable) for SARS-CoV-2 virology tests (viral load and exploratory analysis)</li>\n<li>\u2022\tWhole blood PAXgene\uf0e2 RNA for RNA sequencing or QPCR </li>\n<li>\u2022\tCryopreserved PBMCs for high dimensional cytometry analysis (for sites capable of sample collection)</li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2662,7 +2731,7 @@
             "id": "NarrativeContentItem_88",
             "extensionAttributes": [],
             "name": "NCI-87",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection and assay of samples and interpretation of PK assessments. If pharmacokinetic testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li>Describe the biological sample(s) collected, the handling of samples, and the assay method.</li>\n<li>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</li>\n<li>Describe the retention time for the samples (ensuring alignment with the ICF).</li>\n<li>Indicate the types of analyses that may be studied for each sample.</li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection and assay of samples and interpretation of PK assessments. If pharmacokinetic testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li><b>Describe the biological sample(s) collected, the handling of samples, and the assay method.</b></li>\n<li><b>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</b></li>\n<li><b>Describe the retention time for the samples (ensuring alignment with the ICF).</b></li>\n<li><b>Indicate the types of analyses that may be studied for each sample.</b></li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2676,28 +2745,28 @@
             "id": "NarrativeContentItem_90",
             "extensionAttributes": [],
             "name": "NCI-89",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection and assay of samples for genetic and/or pharmacogenomic analysis. If genetic testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.), handling of samples, and the assay method.\n<ul>\n<li>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</li>\n</ul>\n</li>\n<li>Describe the retention time for the samples (ensuring alignment with the ICF).</li>\n<li>Indicate the types of analyses that may be studied for each sample.</li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection and assay of samples for genetic and/or pharmacogenomic analysis. If genetic testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li><b>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.), handling of samples, and the assay method.</b>\n<ul>\n<li><b>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</b></li>\n</ul>\n</li>\n<li><b>Describe the retention time for the samples (ensuring alignment with the ICF).</b></li>\n<li><b>Indicate the types of analyses that may be studied for each sample.</b></li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
             "id": "NarrativeContentItem_91",
             "extensionAttributes": [],
             "name": "NCI-90",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection of samples and assessment of pharmacodynamic biomarkers. If pharmacodynamic biomarker testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.).</li>\n<li>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</li>\n<li>Describe the retention time for the samples (ensuring alignment with the ICF).</li>\n<li>Indicate the types of biomarkers that will be studied for each sample.</li>\n<li>Specify whether each sample is optional or required. Required samples must be based on a protocol objective.</li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection of samples and assessment of pharmacodynamic biomarkers. If pharmacodynamic biomarker testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li><b>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.).</b></li>\n<li><b>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</b></li>\n<li><b>Describe the retention time for the samples (ensuring alignment with the ICF).</b></li>\n<li><b>Indicate the types of biomarkers that will be studied for each sample.</b></li>\n<li><b>Specify whether each sample is optional or required. Required samples must be based on a protocol objective.</b></li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
             "id": "NarrativeContentItem_92",
             "extensionAttributes": [],
             "name": "NCI-91",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection of samples and assessment of other biomarkers.</b></p>\n<ul>\n<li>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.).</li>\n<li>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</li>\n<li>Describe the retention time for the samples (ensuring alignment with the ICF).</li>\n<li>Indicate the types of biomarkers that will be studied for each sample.</li>\n<li>Specify whether each sample is optional or required. Required samples must be based on a protocol objective.</li>\n</ul>\n<p>Samples for the following laboratory tests will be sent to designated central laboratories or to the Sponsor or a designee for analysis:</p>\n<ul>\n<li>\u2022\tSerum samples for PK analysis</li>\n<li>\u2022\tSerum samples for pharmacodynamic analysis (IL-6, sIL-6R and CRP) and exploratory biomarker research</li>\n<li>\u2022\tSerum samples for SARS-CoV-2 antibody titer</li>\n<li>\u2022\tNasopharyngeal swabs and BAL (if applicable) for SARS-CoV-2 virology tests (viral load and exploratory analysis)</li>\n<li>\u2022\tWhole blood PAXgene\uf0e2 RNA for RNA sequencing or QPCR </li>\n<li>\u2022\tCryopreserved PBMCs for high dimensional cytometry analysis (for sites capable of sample collection)</li>\n</ul>\n<p></p>\n<p>Exploratory biomarker research may include, but will not be limited to, analysis of inflammatory mediators and/or cytokines, ARDS-related variables, serum viral load, and virus resistance/mutation analysis.</p>\n<p>In countries where acceptable, research may involve extraction of DNA, cell-free DNA, or RNA; analysis of mutations, single nucleotide polymorphisms, and other genomic variants; and genomic profiling through use of next generation sequencing (NGS) of a comprehensive panel of genes.</p>\n<p>For sampling procedures, storage conditions, and shipment instructions, see the laboratory manual.</p>\n<p>Biological samples will be destroyed no later than the time of completion of the final Clinical Study Report, with the following exceptions:</p>\n<ul>\n<li>\u2022\tSerum samples collected for PK analysis may be needed for additional PK assay development and validation, and biomarker research; therefore, these samples will be destroyed no later than 15 years after the final Clinical Study Report has been completed.</li>\n<li>\u2022\tBlood (serum, plasma, PBMCs), blood PAX\uf0e2gene RNA, and tissue-derived samples (nasopharyngeal swabs and BAL, if applicable) collected for pharmacodynamic analysis and biomarker research will be destroyed no later than 15 years after the final Clinical Study Report has been completed</li>\n</ul>\n<p></p>\n<p>When a patient withdraws from the study, samples collected prior to the date of withdrawal may still be analyzed, unless the patient specifically requests that the samples be destroyed or local laws require destruction of the samples.  However, if samples have been tested prior to withdrawal, results from those tests will remain as part of the overall research data.</p>\n<p>Data arising from sample analysis, including data on genomic variants, will be subject to the confidentiality standards described in Section 8.4.</p>\n<p>Given the complexity and exploratory nature of exploratory biomarker analyses, data derived from these analyses will generally not be provided to study investigators or patients unless required by law.  The aggregate results of any conducted research will be available in accordance with the effective Sponsor policy on study data publication.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection of samples and assessment of other biomarkers.</b></p>\n<ul>\n<li><b>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.).</b></li>\n<li><b>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</b></li>\n<li><b>Describe the retention time for the samples (ensuring alignment with the ICF).</b></li>\n<li><b>Indicate the types of biomarkers that will be studied for each sample.</b></li>\n<li><b>Specify whether each sample is optional or required. Required samples must be based on a protocol objective.</b></li>\n</ul>\n<p>Samples for the following laboratory tests will be sent to designated central laboratories or to the Sponsor or a designee for analysis:</p>\n<ul>\n<li>\u2022\tSerum samples for PK analysis</li>\n<li>\u2022\tSerum samples for pharmacodynamic analysis (IL-6, sIL-6R and CRP) and exploratory biomarker research</li>\n<li>\u2022\tSerum samples for SARS-CoV-2 antibody titer</li>\n<li>\u2022\tNasopharyngeal swabs and BAL (if applicable) for SARS-CoV-2 virology tests (viral load and exploratory analysis)</li>\n<li>\u2022\tWhole blood PAXgene\uf0e2 RNA for RNA sequencing or QPCR </li>\n<li>\u2022\tCryopreserved PBMCs for high dimensional cytometry analysis (for sites capable of sample collection)</li>\n</ul>\n<p>Exploratory biomarker research may include, but will not be limited to, analysis of inflammatory mediators and/or cytokines, ARDS-related variables, serum viral load, and virus resistance/mutation analysis.</p>\n<p>In countries where acceptable, research may involve extraction of DNA, cell-free DNA, or RNA; analysis of mutations, single nucleotide polymorphisms, and other genomic variants; and genomic profiling through use of next generation sequencing (NGS) of a comprehensive panel of genes.</p>\n<p>For sampling procedures, storage conditions, and shipment instructions, see the laboratory manual.</p>\n<p>Biological samples will be destroyed no later than the time of completion of the final Clinical Study Report, with the following exceptions:</p>\n<ul>\n<li>\u2022\tSerum samples collected for PK analysis may be needed for additional PK assay development and validation, and biomarker research; therefore, these samples will be destroyed no later than 15 years after the final Clinical Study Report has been completed.</li>\n<li>\u2022\tBlood (serum, plasma, PBMCs), blood PAX\uf0e2gene RNA, and tissue-derived samples (nasopharyngeal swabs and BAL, if applicable) collected for pharmacodynamic analysis and biomarker research will be destroyed no later than 15 years after the final Clinical Study Report has been completed</li>\n</ul>\n<p>When a patient withdraws from the study, samples collected prior to the date of withdrawal may still be analyzed, unless the patient specifically requests that the samples be destroyed or local laws require destruction of the samples.  However, if samples have been tested prior to withdrawal, results from those tests will remain as part of the overall research data.</p>\n<p>Data arising from sample analysis, including data on genomic variants, will be subject to the confidentiality standards described in Section 8.4.</p>\n<p>Given the complexity and exploratory nature of exploratory biomarker analyses, data derived from these analyses will generally not be provided to study investigators or patients unless required by law.  The aggregate results of any conducted research will be available in accordance with the effective Sponsor policy on study data publication.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
             "id": "NarrativeContentItem_93",
             "extensionAttributes": [],
             "name": "NCI-92",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection of samples and interpretation of immunogenicity. If immunogenicity assessments are included within Efficacy Assessments or Safety Assessments, cross-reference to that section. If immunogenicity testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.).</li>\n<li>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</li>\n<li>Describe the retention time for the samples (ensuring alignment with the ICF).</li>\n<li>Indicate the types of biomarkers that will be studied for each sample.</li>\n<li>Specify whether each sample is optional or required. Required samples must be based on a protocol objective.</li>\n</ul>\n<p></p>\n<p>See section 8.6.3.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Include any specific instructions for the collection of samples and interpretation of immunogenicity. If immunogenicity assessments are included within Efficacy Assessments or Safety Assessments, cross-reference to that section. If immunogenicity testing is not included in the study, state \u201cNot Applicable.\u201d</b></p>\n<ul>\n<li><b>Describe the biological samples that will be collected (for example, tissue, serum, plasma, etc.).</b></li>\n<li><b>Specific sample collection and processing instructions can be described in an appendix or a separate document and cross-referenced.</b></li>\n<li><b>Describe the retention time for the samples (ensuring alignment with the ICF).</b></li>\n<li><b>Indicate the types of biomarkers that will be studied for each sample.</b></li>\n<li><b>Specify whether each sample is optional or required. Required samples must be based on a protocol objective.</b></li>\n</ul>\n<p>See section 8.6.3.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2718,14 +2787,14 @@
             "id": "NarrativeContentItem_96",
             "extensionAttributes": [],
             "name": "NCI-95",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>According to the ICH guideline for Good Clinical Practice, an adverse event is any untoward medical occurrence in a clinical investigation subject administered a pharmaceutical product, regardless of causal attribution.  An adverse event can therefore be any of the following:</p>\n<ul>\n<li>\u2022\tAny unfavorable and unintended sign (including an abnormal laboratory finding), symptom, or disease temporally associated with the use of a medicinal product, whether or not considered related to the medicinal product</li>\n<li>\u2022\tAny new disease or exacerbation of an existing disease (a worsening in the character, frequency, or severity of a known condition) (see Sections 5.3.5.9 and 5.3.5.10 for more information)</li>\n<li>\u2022\tRecurrence of an intermittent medical condition (e.g., headache) not present at baseline</li>\n<li>\u2022\tAny deterioration in a laboratory value or other clinical test (e.g., ECG, X-ray) that is associated with symptoms or leads to a change in study treatment or concomitant treatment or discontinuation from study drug</li>\n<li>\u2022\tAdverse events that are related to a protocol-mandated intervention, including those that occur prior to assignment of study treatment (e.g., screening invasive procedures such as biopsies)</li>\n</ul>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>According to the ICH guideline for Good Clinical Practice, an adverse event is any untoward medical occurrence in a clinical investigation subject administered a pharmaceutical product, regardless of causal attribution.  An adverse event can therefore be any of the following:</p>\n<ul>\n<li>\u2022\tAny unfavorable and unintended sign (including an abnormal laboratory finding), symptom, or disease temporally associated with the use of a medicinal product, whether or not considered related to the medicinal product</li>\n<li>\u2022\tAny new disease or exacerbation of an existing disease (a worsening in the character, frequency, or severity of a known condition) (see Sections 5.3.5.9 and 5.3.5.10 for more information)</li>\n<li>\u2022\tRecurrence of an intermittent medical condition (e.g., headache) not present at baseline</li>\n<li>\u2022\tAny deterioration in a laboratory value or other clinical test (e.g., ECG, X-ray) that is associated with symptoms or leads to a change in study treatment or concomitant treatment or discontinuation from study drug</li>\n<li>\u2022\tAdverse events that are related to a protocol-mandated intervention, including those that occur prior to assignment of study treatment (e.g., screening invasive procedures such as biopsies)</li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
             "id": "NarrativeContentItem_97",
             "extensionAttributes": [],
             "name": "NCI-96",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>A serious adverse event is any adverse event that meets any of the following criteria:</p>\n<ul>\n<li>\u2022\tIs fatal (i.e., the adverse event actually causes or leads to death)</li>\n<li>\u2022\tIs life threatening (i.e., the adverse event, in the view of the investigator, places the patient at immediate risk of death)</li>\n</ul>\n<p>This does not include any adverse event that, had it occurred in a more severe form or was allowed to continue, might have caused death.</p>\n<ul>\n<li>\u2022\tRequires or prolongs inpatient hospitalization (see Section 5.3.5.10)</li>\n<li>\u2022\tResults in persistent or significant disability/incapacity (i.e., the adverse event results in substantial disruption of the patient's ability to conduct normal life functions)</li>\n<li>\u2022\tIs a congenital anomaly/birth defect in a neonate/infant born to a mother exposed to study drug</li>\n<li>\u2022\tIs a significant medical event in the investigator's judgment (e.g., may jeopardize the patient or may require medical/surgical intervention to prevent one of the outcomes listed above)</li>\n</ul>\n<p></p>\n<p>The terms \"severe\" and \"serious\" are not synonymous.  Severity refers to the intensity of an adverse event (e.g., rated as mild, moderate, or severe, or according to National Cancer Institute Common Terminology Criteria for Adverse Events [NCI CTCAE]; see Section 5.3.3); the event itself may be of relatively minor medical significance (such as severe headache without any further findings).</p>\n<p>Severity and seriousness need to be independently assessed for each adverse event recorded on the eCRF.</p>\n<p>Serious adverse events are required to be reported by the investigator to the Sponsor immediately (i.e., no more than 24 hours after learning of the event; see Section 5.4.2 for reporting instructions).</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>A serious adverse event is any adverse event that meets any of the following criteria:</p>\n<ul>\n<li>\u2022\tIs fatal (i.e., the adverse event actually causes or leads to death)</li>\n<li>\u2022\tIs life threatening (i.e., the adverse event, in the view of the investigator, places the patient at immediate risk of death)</li>\n</ul>\n<p>This does not include any adverse event that, had it occurred in a more severe form or was allowed to continue, might have caused death.</p>\n<ul>\n<li>\u2022\tRequires or prolongs inpatient hospitalization (see Section 5.3.5.10)</li>\n<li>\u2022\tResults in persistent or significant disability/incapacity (i.e., the adverse event results in substantial disruption of the patient's ability to conduct normal life functions)</li>\n<li>\u2022\tIs a congenital anomaly/birth defect in a neonate/infant born to a mother exposed to study drug</li>\n<li>\u2022\tIs a significant medical event in the investigator's judgment (e.g., may jeopardize the patient or may require medical/surgical intervention to prevent one of the outcomes listed above)</li>\n</ul>\n<p>The terms \"severe\" and \"serious\" are not synonymous.  Severity refers to the intensity of an adverse event (e.g., rated as mild, moderate, or severe, or according to National Cancer Institute Common Terminology Criteria for Adverse Events [NCI CTCAE]; see Section 5.3.3); the event itself may be of relatively minor medical significance (such as severe headache without any further findings).</p>\n<p>Severity and seriousness need to be independently assessed for each adverse event recorded on the eCRF.</p>\n<p>Serious adverse events are required to be reported by the investigator to the Sponsor immediately (i.e., no more than 24 hours after learning of the event; see Section 5.4.2 for reporting instructions).</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2739,7 +2808,7 @@
             "id": "NarrativeContentItem_99",
             "extensionAttributes": [],
             "name": "NCI-98",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>The investigator is responsible for ensuring that all adverse events (see Section 5.2.1 for definition) are recorded on the Adverse Event eCRF and reported to the Sponsor in accordance with instructions provided in this section and in Sections 5.4\uf02d5.6.</p>\n<p>For each adverse event recorded on the Adverse Event eCRF, the investigator will make an assessment of seriousness (see Section 5.2.2 for seriousness criteria), severity (see Section 5.3.3), and causality (see Section 5.3.4).  </p>\n<p>Investigators should use correct medical terminology/concepts when recording adverse events on the Adverse Event eCRF.  Avoid colloquialisms and abbreviations.</p>\n<p>Only one adverse event term should be recorded in the event field on the Adverse Event eCRF.</p>\n<p></p>\n<p><b>Diagnosis versus Signs and Symptoms</b></p>\n<p>A diagnosis (if known) should be recorded on the Adverse Event eCRF rather than individual signs and symptoms (e.g., record only liver failure or hepatitis rather than jaundice, asterixis, and elevated transaminases).  However, if a constellation of signs and/or symptoms cannot be medically characterized as a single diagnosis or syndrome at the time of reporting, each individual event should be recorded on the Adverse Event eCRF.  If a diagnosis is subsequently established, all previously reported adverse events based on signs and symptoms should be nullified and replaced by one adverse event report based on the single diagnosis, with a starting date that corresponds to the starting date of the first symptom of the eventual diagnosis.</p>\n<p><b>Adverse Events That Are Secondary to Other Events</b></p>\n<p>In general, adverse events that are secondary to other events (e.g., cascade events or clinical sequelae) should be identified by their primary cause, with the exception of severe or serious secondary events.  A medically significant secondary adverse event that is separated in time from the initiating event should be recorded as an independent event on the Adverse Event eCRF.  For example:</p>\n<ul>\n<li>\u2022\tIf vomiting results in mild dehydration with no additional treatment in a healthy adult, only vomiting should be reported on the eCRF.</li>\n<li>\u2022\tIf vomiting results in severe dehydration, both events should be reported separately on the eCRF.</li>\n<li>\u2022\tIf a severe gastrointestinal hemorrhage leads to renal failure, both events should be reported separately on the eCRF.</li>\n<li>\u2022\tIf dizziness leads to a fall and consequent fracture, all three events should be reported separately on the eCRF.</li>\n<li>\u2022\tIf neutropenia is accompanied by an infection, both events should be reported separately on the eCRF.</li>\n</ul>\n<p></p>\n<p>All adverse events should be recorded separately on the Adverse Event eCRF if it is unclear as to whether the events are associated.</p>\n<p><b>Persistent or Recurrent Adverse Events</b></p>\n<p>A persistent adverse event is one that extends continuously, without resolution, between patient evaluation timepoints.  Such events should only be recorded once on the Adverse Event eCRF.  The initial severity (intensity or grade) of the event will be recorded at the time the event is first reported.  If a persistent adverse event becomes more severe, the most extreme severity should also be recorded on the Adverse Event eCRF.  If the event becomes serious, it should be reported to the Sponsor immediately (i.e., no more than 24 hours after learning that the event became serious; see Section 5.4.2 for reporting instructions).  The Adverse Event eCRF should be updated by changing the event from \"non-serious\" to \"serious,\" providing the date that the event became serious, and completing all data fields related to serious adverse events.</p>\n<p>A recurrent adverse event is one that resolves between patient evaluation timepoints and subsequently recurs.  Each recurrence of an adverse event should be recorded as a separate event on the Adverse Event eCRF.</p>\n<p><b>Abnormal Laboratory Values</b></p>\n<p>Not every laboratory abnormality qualifies as an adverse event.  A laboratory test result must be reported as an adverse event if it meets any of the following criteria:</p>\n<ul>\n<li>\u2022\tIs accompanied by clinical symptoms</li>\n<li>\u2022\tResults in a change in study treatment (e.g., dosage modification, treatment interruption, or treatment discontinuation)</li>\n<li>\u2022\tResults in a medical intervention (e.g., potassium supplementation for hypokalemia) or a change in concomitant therapy</li>\n<li>\u2022\tIs clinically significant in the investigator's judgment </li>\n</ul>\n<p></p>\n<p>It is the investigator's responsibility to review all laboratory findings.  Medical and scientific judgment should be exercised in deciding whether an isolated laboratory abnormality should be classified as an adverse event.</p>\n<p>If a clinically significant laboratory abnormality is a sign of a disease or syndrome (e.g., alkaline phosphatase and bilirubin 5 \uf0b4 ULN associated with cholestasis), only the diagnosis (i.e., cholestasis) should be recorded on the Adverse Event eCRF.</p>\n<p>If a clinically significant laboratory abnormality is not a sign of a disease or syndrome, the abnormality itself should be recorded on the Adverse Event eCRF, along with a descriptor indicating whether the test result is above or below the normal range (e.g., \"elevated potassium,\" as opposed to \"abnormal potassium\").  If the laboratory abnormality can be characterized by a precise clinical term per standard definitions, the clinical term should be recorded as the adverse event.  For example, an elevated serum potassium level of 7.0 mEq/L should be recorded as \"hyperkalemia.\"</p>\n<p>Observations of the same clinically significant laboratory abnormality from visit to visit should only be recorded once on the Adverse Event eCRF (see Section for details on recording persistent adverse events).</p>\n<p>5.3.5.5\tAbnormal Vital Sign Values</p>\n<p>Not every vital sign abnormality qualifies as an adverse event.  A vital sign result must be reported as an adverse event if it meets any of the following criteria:</p>\n<ul>\n<li>\u2022\tIs accompanied by clinical symptoms</li>\n<li>\u2022\tResults in a change in study treatment (e.g., dosage modification, treatment interruption, or treatment discontinuation)</li>\n<li>\u2022\tResults in a medical intervention or a change in concomitant therapy</li>\n<li>\u2022\tIs clinically significant in the investigator's judgment </li>\n</ul>\n<p></p>\n<p>It is the investigator's responsibility to review all vital sign findings.  Medical and scientific judgment should be exercised in deciding whether an isolated vital sign abnormality should be classified as an adverse event.</p>\n<p>If a clinically significant vital sign abnormality is a sign of a disease or syndrome (e.g., high blood pressure), only the diagnosis (i.e., hypertension) should be recorded on the Adverse Event eCRF.</p>\n<p>Observations of the same clinically significant vital sign abnormality from visit to visit should only be recorded once on the Adverse Event eCRF (see Section 5.3.5.3 for details on recording persistent adverse events).</p>\n<p><b>Abnormal Liver Function Tests</b></p>\n<p>The finding of an elevated ALT or AST (\uf03e 3 \uf0b4 ULN) in combination with either an elevated total bilirubin (\uf03e 2 \uf0b4 ULN) or clinical jaundice in the absence of cholestasis or other causes of hyperbilirubinemia is considered to be an indicator of severe liver injury (as defined by Hy's Law).  Therefore, investigators must report as an adverse event the occurrence of either of the following:</p>\n<ul>\n<li>\u2022\tTreatment-emergent ALT or AST \uf03e 3 \uf0b4 ULN in combination with total bilirubin \uf03e 2 \uf0b4 ULN</li>\n<li>\u2022\tTreatment-emergent ALT or AST \uf03e 3 \uf0b4 ULN in combination with clinical jaundice</li>\n</ul>\n<p></p>\n<p>The most appropriate diagnosis or (if a diagnosis cannot be established) the abnormal laboratory values should be recorded on the Adverse Event eCRF (see Section 5.3.5.1) and reported to the Sponsor immediately (i.e., no more than 24 hours after learning of the event), either as a serious adverse event or an adverse event of special interest (see Section 5.4.2).</p>\n<p><b>Deaths</b></p>\n<p>All deaths that occur during the protocol-specified adverse event reporting period (see Section 5.3.1), regardless of relationship to study drug, must be recorded on the Adverse Event eCRF and immediately reported to the Sponsor (see Section 5.4.2).  This includes death attributed to progression of COVID-19 pneumonia.</p>\n<p>Death should be considered an outcome and not a distinct event.  The event or condition that caused or contributed to the fatal outcome should be recorded as the single medical concept on the Adverse Event eCRF.  Generally, only one such event should be reported.  If the cause of death is unknown and cannot be ascertained at the time of reporting, \"unexplained death\" should be recorded on the Adverse Event eCRF.  If the cause of death later becomes available (e.g., after autopsy), \"unexplained death\" should be replaced by the established cause of death.  The term \"sudden death\" should not be used unless combined with the presumed cause of death (e.g., \"sudden cardiac death\").</p>\n<p>If the death is attributed solely to progression of COVID-19 pneumonia, \"COVID-19 pneumonia progression\" should be recorded on the Adverse Event eCRF.  </p>\n<p>Deaths that occur after the adverse event reporting period should be reported as described in Section 5.6.</p>\n<p><b>Preexisting Medical Conditions</b></p>\n<p>A preexisting medical condition is one that is present at the screening visit for this study.  Such conditions should be recorded on the General Medical History and Baseline Conditions eCRF.</p>\n<p>A preexisting medical condition should be recorded as an adverse event only if the frequency, severity, or character of the condition worsens during the study.  When recording such events on the Adverse Event eCRF, it is important to convey the concept that the preexisting condition has changed by including applicable descriptors (e.g., \"more frequent headaches\").</p>\n<p><b>Lack of Efficacy or Worsening of COVID-19 Pneumonia</b></p>\n<p>Events that are clearly consistent with the expected pattern of progression of the underlying disease should not be recorded as adverse events (with the exception of death due to COVID-19 pneumonia progression as described in Section 5.3.5.7).  These data will be captured as efficacy assessment data only.  If there is any uncertainty as to whether an event is due to disease progression, it should be reported as an adverse event.</p>\n<p><b>Hospitalization or Prolonged Hospitalization</b></p>\n<p>Any adverse event that results in hospitalization (i.e., inpatient admission to a hospital) or prolonged hospitalization should be documented and reported as a serious adverse event (per the definition of serious adverse event in Section 5.2.2), except as outlined below.  </p>\n<p>An event that leads to hospitalization under the following circumstances should not be reported as an adverse event or a serious adverse event:</p>\n<ul>\n<li>\u2022\tHospitalization for respite care</li>\n<li>\u2022\tHospitalization for a preexisting condition, provided that all of the following criteria are met:</li>\n</ul>\n<p>The hospitalization was planned prior to the study or was scheduled during the study when elective surgery became necessary because of the expected normal progression of the disease</p>\n<p>The patient has not experienced an adverse event</p>\n<p></p>\n<p>An event that leads to hospitalization under the following circumstances is not considered to be a serious adverse event, but should be reported as an adverse event instead:</p>\n<ul>\n<li>\u2022\tHospitalization that was necessary because of patient requirement for outpatient care outside of normal outpatient clinic operating hours</li>\n</ul>\n<p></p>\n<p><b>Cases of Accidental Overdose or Medication Error</b></p>\n<p>Accidental overdose and medication error (hereafter collectively referred to as \"special situations\"), are defined as follows:</p>\n<ul>\n<li>\u2022\tAccidental overdose:  accidental administration of a drug in a quantity that is higher than the assigned dose</li>\n<li>\u2022\tMedication error:  accidental deviation in the administration of a drug </li>\n</ul>\n<p>In some cases, a medication error may be intercepted prior to administration of the drug.</p>\n<p></p>\n<p>Special situations are not in themselves adverse events, but may result in adverse events.  Each adverse event associated with a special situation should be recorded separately on the Adverse Event eCRF.  If the associated adverse event fulfills seriousness criteria, the event should be reported to the Sponsor immediately (i.e., no more than 24 hours after learning of the event; see Section 5.4.2).  For TCZ (or matching placebo), adverse events associated with special situations should be recorded as described below for each situation:</p>\n<ul>\n<li>\u2022\tAccidental overdose:  Enter the adverse event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.</li>\n<li>\u2022\tMedication error that does not qualify as an overdose:  Enter the adverse event term.  Check the \"Medication error\" box.</li>\n<li>\u2022\tMedication error that qualifies as an overdose:  Enter the adverse event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.</li>\n</ul>\n<p></p>\n<p>In addition, all special situations associated with TCZ (or matching placebo), regardless of whether they result in an adverse event, should be recorded on the Adverse Event eCRF as described below:</p>\n<ul>\n<li>\u2022\tAccidental overdose:  Enter the drug name and \"accidental overdose\" as the event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.</li>\n<li>\u2022\tMedication error that does not qualify as an overdose:  Enter the name of the drug administered and a description of the error (e.g., wrong dose administered, wrong dosing schedule, incorrect route of administration, wrong drug, expired drug administered) as the event term.  Check the \"Medication error\" box.</li>\n<li>\u2022\tMedication error that qualifies as an overdose:  Enter the drug name and \"accidental overdose\" as the event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.  Enter a description of the error in the additional case details.</li>\n<li>\u2022\tIntercepted medication error:  Enter the drug name and \"intercepted medication error\" as the event term.  Check the \"Medication error\" box.  Enter a description of the error in the additional case details.</li>\n</ul>\n<p></p>\n<p>As an example, an accidental overdose that resulted in a headache would require two entries on the Adverse Event eCRF, one entry to report the accidental overdose and one entry to report the headache.  The \"Accidental overdose\" and \"Medication error\" boxes would need to be checked for both entries.</p>\n<p><b>Safety Biomarker Data </b></p>\n<p>Adverse event reports will not be derived from safety biomarker data by the Sponsor, and safety biomarker data will not be included in the formal safety analyses for this study.  In addition, safety biomarker data will not inform decisions on patient management.</p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>The investigator is responsible for ensuring that all adverse events (see Section 5.2.1 for definition) are recorded on the Adverse Event eCRF and reported to the Sponsor in accordance with instructions provided in this section and in Sections 5.4\uf02d5.6.</p>\n<p>For each adverse event recorded on the Adverse Event eCRF, the investigator will make an assessment of seriousness (see Section 5.2.2 for seriousness criteria), severity (see Section 5.3.3), and causality (see Section 5.3.4).  </p>\n<p>Investigators should use correct medical terminology/concepts when recording adverse events on the Adverse Event eCRF.  Avoid colloquialisms and abbreviations.</p>\n<p>Only one adverse event term should be recorded in the event field on the Adverse Event eCRF.</p>\n<p></p>\n<p><b>Diagnosis versus Signs and Symptoms</b></p>\n<p>A diagnosis (if known) should be recorded on the Adverse Event eCRF rather than individual signs and symptoms (e.g., record only liver failure or hepatitis rather than jaundice, asterixis, and elevated transaminases).  However, if a constellation of signs and/or symptoms cannot be medically characterized as a single diagnosis or syndrome at the time of reporting, each individual event should be recorded on the Adverse Event eCRF.  If a diagnosis is subsequently established, all previously reported adverse events based on signs and symptoms should be nullified and replaced by one adverse event report based on the single diagnosis, with a starting date that corresponds to the starting date of the first symptom of the eventual diagnosis.</p>\n<p><b>Adverse Events That Are Secondary to Other Events</b></p>\n<p>In general, adverse events that are secondary to other events (e.g., cascade events or clinical sequelae) should be identified by their primary cause, with the exception of severe or serious secondary events.  A medically significant secondary adverse event that is separated in time from the initiating event should be recorded as an independent event on the Adverse Event eCRF.  For example:</p>\n<ul>\n<li>\u2022\tIf vomiting results in mild dehydration with no additional treatment in a healthy adult, only vomiting should be reported on the eCRF.</li>\n<li>\u2022\tIf vomiting results in severe dehydration, both events should be reported separately on the eCRF.</li>\n<li>\u2022\tIf a severe gastrointestinal hemorrhage leads to renal failure, both events should be reported separately on the eCRF.</li>\n<li>\u2022\tIf dizziness leads to a fall and consequent fracture, all three events should be reported separately on the eCRF.</li>\n<li>\u2022\tIf neutropenia is accompanied by an infection, both events should be reported separately on the eCRF.</li>\n</ul>\n<p>All adverse events should be recorded separately on the Adverse Event eCRF if it is unclear as to whether the events are associated.</p>\n<p><b>Persistent or Recurrent Adverse Events</b></p>\n<p>A persistent adverse event is one that extends continuously, without resolution, between patient evaluation timepoints.  Such events should only be recorded once on the Adverse Event eCRF.  The initial severity (intensity or grade) of the event will be recorded at the time the event is first reported.  If a persistent adverse event becomes more severe, the most extreme severity should also be recorded on the Adverse Event eCRF.  If the event becomes serious, it should be reported to the Sponsor immediately (i.e., no more than 24 hours after learning that the event became serious; see Section 5.4.2 for reporting instructions).  The Adverse Event eCRF should be updated by changing the event from \"non-serious\" to \"serious,\" providing the date that the event became serious, and completing all data fields related to serious adverse events.</p>\n<p>A recurrent adverse event is one that resolves between patient evaluation timepoints and subsequently recurs.  Each recurrence of an adverse event should be recorded as a separate event on the Adverse Event eCRF.</p>\n<p><b>Abnormal Laboratory Values</b></p>\n<p>Not every laboratory abnormality qualifies as an adverse event.  A laboratory test result must be reported as an adverse event if it meets any of the following criteria:</p>\n<ul>\n<li>\u2022\tIs accompanied by clinical symptoms</li>\n<li>\u2022\tResults in a change in study treatment (e.g., dosage modification, treatment interruption, or treatment discontinuation)</li>\n<li>\u2022\tResults in a medical intervention (e.g., potassium supplementation for hypokalemia) or a change in concomitant therapy</li>\n<li>\u2022\tIs clinically significant in the investigator's judgment </li>\n</ul>\n<p>It is the investigator's responsibility to review all laboratory findings.  Medical and scientific judgment should be exercised in deciding whether an isolated laboratory abnormality should be classified as an adverse event.</p>\n<p>If a clinically significant laboratory abnormality is a sign of a disease or syndrome (e.g., alkaline phosphatase and bilirubin 5 \uf0b4 ULN associated with cholestasis), only the diagnosis (i.e., cholestasis) should be recorded on the Adverse Event eCRF.</p>\n<p>If a clinically significant laboratory abnormality is not a sign of a disease or syndrome, the abnormality itself should be recorded on the Adverse Event eCRF, along with a descriptor indicating whether the test result is above or below the normal range (e.g., \"elevated potassium,\" as opposed to \"abnormal potassium\").  If the laboratory abnormality can be characterized by a precise clinical term per standard definitions, the clinical term should be recorded as the adverse event.  For example, an elevated serum potassium level of 7.0 mEq/L should be recorded as \"hyperkalemia.\"</p>\n<p>Observations of the same clinically significant laboratory abnormality from visit to visit should only be recorded once on the Adverse Event eCRF (see Section for details on recording persistent adverse events).</p>\n<p>5.3.5.5\tAbnormal Vital Sign Values</p>\n<p>Not every vital sign abnormality qualifies as an adverse event.  A vital sign result must be reported as an adverse event if it meets any of the following criteria:</p>\n<ul>\n<li>\u2022\tIs accompanied by clinical symptoms</li>\n<li>\u2022\tResults in a change in study treatment (e.g., dosage modification, treatment interruption, or treatment discontinuation)</li>\n<li>\u2022\tResults in a medical intervention or a change in concomitant therapy</li>\n<li>\u2022\tIs clinically significant in the investigator's judgment </li>\n</ul>\n<p>It is the investigator's responsibility to review all vital sign findings.  Medical and scientific judgment should be exercised in deciding whether an isolated vital sign abnormality should be classified as an adverse event.</p>\n<p>If a clinically significant vital sign abnormality is a sign of a disease or syndrome (e.g., high blood pressure), only the diagnosis (i.e., hypertension) should be recorded on the Adverse Event eCRF.</p>\n<p>Observations of the same clinically significant vital sign abnormality from visit to visit should only be recorded once on the Adverse Event eCRF (see Section 5.3.5.3 for details on recording persistent adverse events).</p>\n<p><b>Abnormal Liver Function Tests</b></p>\n<p>The finding of an elevated ALT or AST (\uf03e 3 \uf0b4 ULN) in combination with either an elevated total bilirubin (\uf03e 2 \uf0b4 ULN) or clinical jaundice in the absence of cholestasis or other causes of hyperbilirubinemia is considered to be an indicator of severe liver injury (as defined by Hy's Law).  Therefore, investigators must report as an adverse event the occurrence of either of the following:</p>\n<ul>\n<li>\u2022\tTreatment-emergent ALT or AST \uf03e 3 \uf0b4 ULN in combination with total bilirubin \uf03e 2 \uf0b4 ULN</li>\n<li>\u2022\tTreatment-emergent ALT or AST \uf03e 3 \uf0b4 ULN in combination with clinical jaundice</li>\n</ul>\n<p>The most appropriate diagnosis or (if a diagnosis cannot be established) the abnormal laboratory values should be recorded on the Adverse Event eCRF (see Section 5.3.5.1) and reported to the Sponsor immediately (i.e., no more than 24 hours after learning of the event), either as a serious adverse event or an adverse event of special interest (see Section 5.4.2).</p>\n<p><b>Deaths</b></p>\n<p>All deaths that occur during the protocol-specified adverse event reporting period (see Section 5.3.1), regardless of relationship to study drug, must be recorded on the Adverse Event eCRF and immediately reported to the Sponsor (see Section 5.4.2).  This includes death attributed to progression of COVID-19 pneumonia.</p>\n<p>Death should be considered an outcome and not a distinct event.  The event or condition that caused or contributed to the fatal outcome should be recorded as the single medical concept on the Adverse Event eCRF.  Generally, only one such event should be reported.  If the cause of death is unknown and cannot be ascertained at the time of reporting, \"unexplained death\" should be recorded on the Adverse Event eCRF.  If the cause of death later becomes available (e.g., after autopsy), \"unexplained death\" should be replaced by the established cause of death.  The term \"sudden death\" should not be used unless combined with the presumed cause of death (e.g., \"sudden cardiac death\").</p>\n<p>If the death is attributed solely to progression of COVID-19 pneumonia, \"COVID-19 pneumonia progression\" should be recorded on the Adverse Event eCRF.  </p>\n<p>Deaths that occur after the adverse event reporting period should be reported as described in Section 5.6.</p>\n<p><b>Preexisting Medical Conditions</b></p>\n<p>A preexisting medical condition is one that is present at the screening visit for this study.  Such conditions should be recorded on the General Medical History and Baseline Conditions eCRF.</p>\n<p>A preexisting medical condition should be recorded as an adverse event only if the frequency, severity, or character of the condition worsens during the study.  When recording such events on the Adverse Event eCRF, it is important to convey the concept that the preexisting condition has changed by including applicable descriptors (e.g., \"more frequent headaches\").</p>\n<p><b>Lack of Efficacy or Worsening of COVID-19 Pneumonia</b></p>\n<p>Events that are clearly consistent with the expected pattern of progression of the underlying disease should not be recorded as adverse events (with the exception of death due to COVID-19 pneumonia progression as described in Section 5.3.5.7).  These data will be captured as efficacy assessment data only.  If there is any uncertainty as to whether an event is due to disease progression, it should be reported as an adverse event.</p>\n<p><b>Hospitalization or Prolonged Hospitalization</b></p>\n<p>Any adverse event that results in hospitalization (i.e., inpatient admission to a hospital) or prolonged hospitalization should be documented and reported as a serious adverse event (per the definition of serious adverse event in Section 5.2.2), except as outlined below.  </p>\n<p>An event that leads to hospitalization under the following circumstances should not be reported as an adverse event or a serious adverse event:</p>\n<ul>\n<li>\u2022\tHospitalization for respite care</li>\n<li>\u2022\tHospitalization for a preexisting condition, provided that all of the following criteria are met:</li>\n</ul>\n<p>The hospitalization was planned prior to the study or was scheduled during the study when elective surgery became necessary because of the expected normal progression of the disease</p>\n<p>The patient has not experienced an adverse event</p>\n<p></p>\n<p>An event that leads to hospitalization under the following circumstances is not considered to be a serious adverse event, but should be reported as an adverse event instead:</p>\n<ul>\n<li>\u2022\tHospitalization that was necessary because of patient requirement for outpatient care outside of normal outpatient clinic operating hours</li>\n</ul>\n<p><b>Cases of Accidental Overdose or Medication Error</b></p>\n<p>Accidental overdose and medication error (hereafter collectively referred to as \"special situations\"), are defined as follows:</p>\n<ul>\n<li>\u2022\tAccidental overdose:  accidental administration of a drug in a quantity that is higher than the assigned dose</li>\n<li>\u2022\tMedication error:  accidental deviation in the administration of a drug </li>\n</ul>\n<p>In some cases, a medication error may be intercepted prior to administration of the drug.</p>\n<p></p>\n<p>Special situations are not in themselves adverse events, but may result in adverse events.  Each adverse event associated with a special situation should be recorded separately on the Adverse Event eCRF.  If the associated adverse event fulfills seriousness criteria, the event should be reported to the Sponsor immediately (i.e., no more than 24 hours after learning of the event; see Section 5.4.2).  For TCZ (or matching placebo), adverse events associated with special situations should be recorded as described below for each situation:</p>\n<ul>\n<li>\u2022\tAccidental overdose:  Enter the adverse event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.</li>\n<li>\u2022\tMedication error that does not qualify as an overdose:  Enter the adverse event term.  Check the \"Medication error\" box.</li>\n<li>\u2022\tMedication error that qualifies as an overdose:  Enter the adverse event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.</li>\n</ul>\n<p>In addition, all special situations associated with TCZ (or matching placebo), regardless of whether they result in an adverse event, should be recorded on the Adverse Event eCRF as described below:</p>\n<ul>\n<li>\u2022\tAccidental overdose:  Enter the drug name and \"accidental overdose\" as the event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.</li>\n<li>\u2022\tMedication error that does not qualify as an overdose:  Enter the name of the drug administered and a description of the error (e.g., wrong dose administered, wrong dosing schedule, incorrect route of administration, wrong drug, expired drug administered) as the event term.  Check the \"Medication error\" box.</li>\n<li>\u2022\tMedication error that qualifies as an overdose:  Enter the drug name and \"accidental overdose\" as the event term.  Check the \"Accidental overdose\" and \"Medication error\" boxes.  Enter a description of the error in the additional case details.</li>\n<li>\u2022\tIntercepted medication error:  Enter the drug name and \"intercepted medication error\" as the event term.  Check the \"Medication error\" box.  Enter a description of the error in the additional case details.</li>\n</ul>\n<p>As an example, an accidental overdose that resulted in a headache would require two entries on the Adverse Event eCRF, one entry to report the accidental overdose and one entry to report the headache.  The \"Accidental overdose\" and \"Medication error\" boxes would need to be checked for both entries.</p>\n<p><b>Safety Biomarker Data </b></p>\n<p>Adverse event reports will not be derived from safety biomarker data by the Sponsor, and safety biomarker data will not be included in the formal safety analyses for this study.  In addition, safety biomarker data will not inform decisions on patient management.</p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2760,7 +2829,7 @@
             "id": "NarrativeContentItem_102",
             "extensionAttributes": [],
             "name": "NCI-101",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Investigators should use their knowledge of the patient, the circumstances surrounding the event, and an evaluation of any potential alternative causes to determine whether an adverse event is considered to be related to the study drug, indicating \"yes\" or \"no\" accordingly.  The following guidance should be taken into consideration (see also Table 2):</p>\n<ul>\n<li>\u2022\tTemporal relationship of event onset to the initiation of study drug</li>\n<li>\u2022\tCourse of the event, with special consideration of the effects of dose reduction, discontinuation of study drug, or reintroduction of study drug (as applicable)</li>\n<li>\u2022\tKnown association of the event with the study drug or with similar treatments</li>\n<li>\u2022\tKnown association of the event with the disease under study</li>\n<li>\u2022\tPresence of risk factors in the patient or use of concomitant medications known to increase the occurrence of the event</li>\n<li>\u2022\tPresence of non-treatment-related factors that are known to be associated with the occurrence of the event</li>\n</ul>\n<p></p>\n<p><b>Table\u00a0</b><span class=\"raw-docx-bookmark\" id=\"_Toc37674329\"><b>2</b></span><b>\tCausal Attribution Guidance</b></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td colspan=\"2\">\n<p>Is the adverse event suspected to be caused by the study drug on the basis of facts, evidence, science-based rationales, and clinical judgment?</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>YES</p>\n</td>\n<td>\n<p>There is a plausible temporal relationship between the onset of the adverse event and administration of the study drug, and the adverse event cannot be readily explained by the patient's clinical state, intercurrent illness, or concomitant therapies; and/or the adverse event follows a known pattern of response to the study drug; and/or the adverse event abates or resolves upon discontinuation of the study drug or dose reduction and, if\u00a0applicable, reappears upon rechallenge.</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>NO</p>\n</td>\n<td>\n<p><u>An adverse event will be considered related, unless it fulfills the criteria specified below</u>.  </p>\n<p>Evidence exists that the adverse event has an etiology other than the study drug (e.g.,\u00a0preexisting medical condition, underlying disease, intercurrent illness, or\u00a0concomitant medication); and/or the adverse event has no plausible temporal relationship to administration of the study drug (e.g., cancer diagnosed 2 days after first\u00a0dose of study drug).</p>\n</td>\n</tr>\n</table>\n<p></p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Investigators should use their knowledge of the patient, the circumstances surrounding the event, and an evaluation of any potential alternative causes to determine whether an adverse event is considered to be related to the study drug, indicating \"yes\" or \"no\" accordingly.  The following guidance should be taken into consideration (see also Table 2):</p>\n<ul>\n<li>\u2022\tTemporal relationship of event onset to the initiation of study drug</li>\n<li>\u2022\tCourse of the event, with special consideration of the effects of dose reduction, discontinuation of study drug, or reintroduction of study drug (as applicable)</li>\n<li>\u2022\tKnown association of the event with the study drug or with similar treatments</li>\n<li>\u2022\tKnown association of the event with the disease under study</li>\n<li>\u2022\tPresence of risk factors in the patient or use of concomitant medications known to increase the occurrence of the event</li>\n<li>\u2022\tPresence of non-treatment-related factors that are known to be associated with the occurrence of the event</li>\n</ul>\n<p><b>Table\u00a0</b><span class=\"raw-docx-bookmark\" id=\"_Toc37674329\"><b>2</b></span><b>\tCausal Attribution Guidance</b></p>\n<table class=\"raw-docx-table\">\n<tr>\n<td colspan=\"2\">\n<p>Is the adverse event suspected to be caused by the study drug on the basis of facts, evidence, science-based rationales, and clinical judgment?</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>YES</p>\n</td>\n<td>\n<p>There is a plausible temporal relationship between the onset of the adverse event and administration of the study drug, and the adverse event cannot be readily explained by the patient's clinical state, intercurrent illness, or concomitant therapies; and/or the adverse event follows a known pattern of response to the study drug; and/or the adverse event abates or resolves upon discontinuation of the study drug or dose reduction and, if\u00a0applicable, reappears upon rechallenge.</p>\n</td>\n</tr>\n<tr>\n<td>\n<p>NO</p>\n</td>\n<td>\n<p><u>An adverse event will be considered related, unless it fulfills the criteria specified below</u>.  </p>\n<p>Evidence exists that the adverse event has an etiology other than the study drug (e.g.,\u00a0preexisting medical condition, underlying disease, intercurrent illness, or\u00a0concomitant medication); and/or the adverse event has no plausible temporal relationship to administration of the study drug (e.g., cancer diagnosed 2 days after first\u00a0dose of study drug).</p>\n</td>\n</tr>\n</table>\n<p></p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2788,7 +2857,7 @@
             "id": "NarrativeContentItem_106",
             "extensionAttributes": [],
             "name": "NCI-105",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Adverse events of special interest are required to be reported by the investigator to the Sponsor immediately (i.e., no more than 24 hours after learning of the event; see Section 5.4.2 for reporting instructions).  Adverse events of special interest for this study are as follows:</p>\n<ul>\n<li>\u2022\tCases of potential drug-induced liver injury that include an elevated ALT or AST in combination with either an elevated bilirubin or clinical jaundice, as defined by Hy's Law (see Section 5.3.5.6)</li>\n<li>\u2022\tSuspected transmission of an infectious agent by the study drug, as defined below</li>\n</ul>\n<p>Any organism, virus, or infectious particle (e.g., prion protein transmitting transmissible spongiform encephalopathy), pathogenic or non-pathogenic, is considered an infectious agent.  A transmission of an infectious agent may be suspected from clinical symptoms or laboratory findings that indicate an infection in a patient exposed to a medicinal product.  This term applies only when a contamination of the study drug is suspected.</p>\n<ul>\n<li>\u2022\tSerious and/or medically significant infections</li>\n<li>\u2022\tMyocardial infarction or acute coronary syndrome</li>\n<li>\u2022\tGI perforations</li>\n<li>\u2022\tMalignancies</li>\n<li>\u2022\tAnaphylaxis or hypersensitivity reactions </li>\n<li>\u2022\tStroke</li>\n<li>\u2022\tSerious and/or medically significant bleeding events</li>\n<li>\u2022\tSerious and/or medically significant hepatic events</li>\n<li>\u2022\tDemyelinating disorders</li>\n</ul>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Adverse events of special interest are required to be reported by the investigator to the Sponsor immediately (i.e., no more than 24 hours after learning of the event; see Section 5.4.2 for reporting instructions).  Adverse events of special interest for this study are as follows:</p>\n<ul>\n<li>\u2022\tCases of potential drug-induced liver injury that include an elevated ALT or AST in combination with either an elevated bilirubin or clinical jaundice, as defined by Hy's Law (see Section 5.3.5.6)</li>\n<li>\u2022\tSuspected transmission of an infectious agent by the study drug, as defined below</li>\n</ul>\n<p>Any organism, virus, or infectious particle (e.g., prion protein transmitting transmissible spongiform encephalopathy), pathogenic or non-pathogenic, is considered an infectious agent.  A transmission of an infectious agent may be suspected from clinical symptoms or laboratory findings that indicate an infection in a patient exposed to a medicinal product.  This term applies only when a contamination of the study drug is suspected.</p>\n<ul>\n<li>\u2022\tSerious and/or medically significant infections</li>\n<li>\u2022\tMyocardial infarction or acute coronary syndrome</li>\n<li>\u2022\tGI perforations</li>\n<li>\u2022\tMalignancies</li>\n<li>\u2022\tAnaphylaxis or hypersensitivity reactions </li>\n<li>\u2022\tStroke</li>\n<li>\u2022\tSerious and/or medically significant bleeding events</li>\n<li>\u2022\tSerious and/or medically significant hepatic events</li>\n<li>\u2022\tDemyelinating disorders</li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -2893,7 +2962,7 @@
             "id": "NarrativeContentItem_121",
             "extensionAttributes": [],
             "name": "NCI-120",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Time to event secondary endpoints will be compared between the TCZ group and the placebo group using the stratified log-rank test with geographic region (North America, Europe) and mechanical ventilation (yes, no) included as the stratification factors.  The Kaplan-Meier plot, median time to response, and their 95% CIs, and a p-value will be presented.  </p>\n<ul>\n<li>\u2022\tTime to clinical improvement (TTCI)</li>\n</ul>\n<p>Defined as time from first dose of study drug to NEWS2 of \u2264 2 maintained for 24 hours </p>\n<ul>\n<li>\u2022\tTime to improvement in ordinal clinical status (key secondary endpoint)</li>\n</ul>\n<p>Defined as time from first dose of study drug to the time when at least a 2-category improvement in the 7-category ordinal scale is observed</p>\n<ul>\n<li>\u2022\tTime to clinical failure </li>\n</ul>\n<p>Defined as the time to first occurrence on study of death, mechanical ventilation, ICU admission or withdrawal, whichever occurs first.  For patients entering the study already in ICU or on mechanical ventilation, clinical failure is defined as a one-category worsening on the ordinal scale, withdrawal or death.</p>\n<ul>\n<li>\u2022\tTime to hospital discharge or \u201cready for discharge\u201d (key secondary endpoint)</li>\n</ul>\n<p>\u201cReady for discharge\u201d defined as normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen</p>\n<ul>\n<li>\u2022\tTime to recovery </li>\n</ul>\n<p>Defined as discharged or \u201cready for discharge\u201d (as evidenced by normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen); OR, in a non-ICU hospital ward (or \u201cready for hospital ward\u201d) not requiring supplemental oxygen</p>\n<p>Secondary efficacy incidence and rate endpoints will be analyzed using the Cochran-Mantel-Haenszel test statistic adjusted by the stratification factors at baseline geographic region (North America, Europe) and mechanical ventilation (yes, no), unless stated otherwise.  The weighted difference in proportions for the treatment group comparison will be presented, together with a 95% CI using the extended Mantel-Haenszel method.  </p>\n<ul>\n<li>\u2022\tIncidence of mechanical ventilation by Day 28</li>\n<li>\u2022\tIncidence of intensive care unit (ICU) stay by Day 28</li>\n<li>\u2022\tDifference in mortality rate at Day 28 (key secondary endpoint)</li>\n</ul>\n<p>In addition, mortality rates at Days 7, 14, 21, and 60 will be summarized descriptively.</p>\n<p>Comparison of clinical status according to the 7-category ordinal scale (as detailed for the primary endpoint at Day 28) will also be analyzed at Day 14 (key secondary endpoint).</p>\n<p>The NEWS2 score and the ordinal clinical status will be summarized descriptively by visit.</p>\n<p>Other secondary endpoints include:</p>\n<ul>\n<li>\u2022\tVentilator-free days to Day 28 (key secondary endpoint)</li>\n<li>\u2022\tDuration of ICU stay </li>\n<li>\u2022\tDuration of supplemental O2</li>\n</ul>\n<p></p>\n<p>Duration endpoints will be summarized descriptively using the medians, with 95% CIs for the medians by treatment group.</p>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Time to event secondary endpoints will be compared between the TCZ group and the placebo group using the stratified log-rank test with geographic region (North America, Europe) and mechanical ventilation (yes, no) included as the stratification factors.  The Kaplan-Meier plot, median time to response, and their 95% CIs, and a p-value will be presented.  </p>\n<ul>\n<li>\u2022\tTime to clinical improvement (TTCI)</li>\n</ul>\n<p>Defined as time from first dose of study drug to NEWS2 of \u2264 2 maintained for 24 hours </p>\n<ul>\n<li>\u2022\tTime to improvement in ordinal clinical status (key secondary endpoint)</li>\n</ul>\n<p>Defined as time from first dose of study drug to the time when at least a 2-category improvement in the 7-category ordinal scale is observed</p>\n<ul>\n<li>\u2022\tTime to clinical failure </li>\n</ul>\n<p>Defined as the time to first occurrence on study of death, mechanical ventilation, ICU admission or withdrawal, whichever occurs first.  For patients entering the study already in ICU or on mechanical ventilation, clinical failure is defined as a one-category worsening on the ordinal scale, withdrawal or death.</p>\n<ul>\n<li>\u2022\tTime to hospital discharge or \u201cready for discharge\u201d (key secondary endpoint)</li>\n</ul>\n<p>\u201cReady for discharge\u201d defined as normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen</p>\n<ul>\n<li>\u2022\tTime to recovery </li>\n</ul>\n<p>Defined as discharged or \u201cready for discharge\u201d (as evidenced by normal body temperature and respiratory rate, and stable oxygen saturation on ambient air or \uf0a3 2L supplemental oxygen); OR, in a non-ICU hospital ward (or \u201cready for hospital ward\u201d) not requiring supplemental oxygen</p>\n<p>Secondary efficacy incidence and rate endpoints will be analyzed using the Cochran-Mantel-Haenszel test statistic adjusted by the stratification factors at baseline geographic region (North America, Europe) and mechanical ventilation (yes, no), unless stated otherwise.  The weighted difference in proportions for the treatment group comparison will be presented, together with a 95% CI using the extended Mantel-Haenszel method.  </p>\n<ul>\n<li>\u2022\tIncidence of mechanical ventilation by Day 28</li>\n<li>\u2022\tIncidence of intensive care unit (ICU) stay by Day 28</li>\n<li>\u2022\tDifference in mortality rate at Day 28 (key secondary endpoint)</li>\n</ul>\n<p>In addition, mortality rates at Days 7, 14, 21, and 60 will be summarized descriptively.</p>\n<p>Comparison of clinical status according to the 7-category ordinal scale (as detailed for the primary endpoint at Day 28) will also be analyzed at Day 14 (key secondary endpoint).</p>\n<p>The NEWS2 score and the ordinal clinical status will be summarized descriptively by visit.</p>\n<p>Other secondary endpoints include:</p>\n<ul>\n<li>\u2022\tVentilator-free days to Day 28 (key secondary endpoint)</li>\n<li>\u2022\tDuration of ICU stay </li>\n<li>\u2022\tDuration of supplemental O2</li>\n</ul>\n<p>Duration endpoints will be summarized descriptively using the medians, with 95% CIs for the medians by treatment group.</p>\n<p></p></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -3054,7 +3123,7 @@
             "id": "NarrativeContentItem_144",
             "extensionAttributes": [],
             "name": "NCI-143",
-            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>The Sponsor has the right to terminate this study at any time.  Reasons for terminating the study may include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tThe incidence or severity of adverse events in this or other studies indicates a potential health hazard to patients</li>\n<li>\u2022\tPatient enrollment is unsatisfactory</li>\n</ul>\n<p></p>\n<p>The Sponsor will notify the investigator if the Sponsor decides to discontinue the study.  </p>\n<p>The Sponsor has the right to close a site at any time.  Reasons for closing a site may include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tExcessively slow recruitment</li>\n<li>\u2022\tPoor protocol adherence</li>\n<li>\u2022\tInaccurate or incomplete data recording</li>\n<li>\u2022\tNon-compliance with the International Council for Harmonisation (ICH) guideline for Good Clinical Practice</li>\n<li>\u2022\tNo study activity (i.e., all patients have completed the study and all obligations have been fulfilled)</li>\n</ul>\n<p></p></div>",
+            "text": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>The Sponsor has the right to terminate this study at any time.  Reasons for terminating the study may include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tThe incidence or severity of adverse events in this or other studies indicates a potential health hazard to patients</li>\n<li>\u2022\tPatient enrollment is unsatisfactory</li>\n</ul>\n<p>The Sponsor will notify the investigator if the Sponsor decides to discontinue the study.  </p>\n<p>The Sponsor has the right to close a site at any time.  Reasons for closing a site may include, but are not limited to, the following:</p>\n<ul>\n<li>\u2022\tExcessively slow recruitment</li>\n<li>\u2022\tPoor protocol adherence</li>\n<li>\u2022\tInaccurate or incomplete data recording</li>\n<li>\u2022\tNon-compliance with the International Council for Harmonisation (ICH) guideline for Good Clinical Practice</li>\n<li>\u2022\tNo study activity (i.e., all patients have completed the study and all obligations have been fulfilled)</li>\n</ul></div>",
             "instanceType": "NarrativeContentItem"
           },
           {
@@ -3131,7 +3200,13 @@
             "organizationIds": [
               "Organization_1"
             ],
-            "masking": null,
+            "masking": {
+              "id": "Masking_2",
+              "extensionAttributes": [],
+              "text": "Clinical Study Sponsor blinded",
+              "isMasked": true,
+              "instanceType": "Masking"
+            },
             "notes": [],
             "instanceType": "StudyRole"
           },
@@ -3183,6 +3258,60 @@
             "organizationIds": [
               "Organization_4"
             ],
+            "masking": null,
+            "notes": [],
+            "instanceType": "StudyRole"
+          },
+          {
+            "id": "StudyRole_4",
+            "extensionAttributes": [],
+            "name": "DESIGN_ROLE_1",
+            "label": "Participant",
+            "description": null,
+            "code": {
+              "id": "Code_59",
+              "extensionAttributes": [],
+              "code": "C41189",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Study Subject",
+              "instanceType": "Code"
+            },
+            "appliesToIds": [
+              "StudyVersion_1"
+            ],
+            "assignedPersons": [],
+            "organizationIds": [],
+            "masking": {
+              "id": "Masking_1",
+              "extensionAttributes": [],
+              "text": "Study Subject blinded",
+              "isMasked": true,
+              "instanceType": "Masking"
+            },
+            "notes": [],
+            "instanceType": "StudyRole"
+          },
+          {
+            "id": "StudyRole_6",
+            "extensionAttributes": [],
+            "name": "DESIGN_ROLE_3",
+            "label": "Independent Data Monitoring Committee",
+            "description": null,
+            "code": {
+              "id": "Code_61",
+              "extensionAttributes": [],
+              "code": "C142578",
+              "codeSystem": "http://www.cdisc.org",
+              "codeSystemVersion": "2026-03-27",
+              "decode": "Independent Data Monitoring Committee",
+              "instanceType": "Code"
+            },
+            "appliesToIds": [
+              "StudyVersion_1"
+            ],
+            "assignedPersons": [],
+            "organizationIds": [],
             "masking": null,
             "notes": [],
             "instanceType": "StudyRole"
@@ -5701,5 +5830,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 Protocol Package",
-  "systemVersion": "0.11.0.a17"
+  "systemVersion": "0.11.0.a22"
 }
