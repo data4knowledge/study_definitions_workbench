@@ -48,3 +48,13 @@ Issue 76 test run: 98 router/main tests failed with "unable to open database fil
 ## 2026-10-06 — Issue 76 merged; .development_env vars actually renamed
 
 After merge to main, `.development_env` still had ENDPOINT_USERNAME/ENDPOINT_PASSWORD/PITTSBURGH despite the entry above saying renamed — same dotfile-revert pattern as `.test_env`. Renamed in place to FHIR_SERVER_USERNAME/PASSWORD/URL (values unchanged). No old names left in the repo outside htmlcov. Still open: Fly secrets on staging/prod; live Aidbox + HAPI check.
+
+## 2026-10-14 — Issue 77: import failures keep the importer's log; AI a setting, off in the deploy build
+
+Branch `77-import-fails-without-the-log`. A failed M11 import left nothing usdm4_protocol logged: `ImportM11.process` dumped `importer.errors` only after `from_docx` returned, so an exception from it (usdm4_protocol's SoA exception, since removed in its issue 108) lost the log. And the deploy image installed the Anthropic client and every test tool.
+
+What changed: `app/imports/import_processors.py` — `_run_importer` runs the importer's `from_docx`, dumps its errors to the application log and keeps them on the import whether it returns or raises; an exception is logged and fails the import ("M11 import failed, check the error file"; CPT likewise); the M11 import takes `use_ai` from `application_configuration.use_ai` instead of always True. `app/configuration/configuration.py` — `USE_AI`, off unless true / T / yes / 1. `requirements.txt` is the deploy set: `usdm4_protocol>=0.11.0` without `[ai]`, and pytest, pytest-mock, pytest-cov, pytest-asyncio, playwright, pytest-playwright and ruff removed (playwright alone is 106 MB of the venv). New `requirements-dev.txt`: `-r requirements.txt`, `usdm4_protocol[ai]`, the test tools. README quickstart and the `USE_AI` row. Tests: a raising M11 and CPT importer, a normal import, the `USE_AI` setting and its use. Dave ran the suite: green.
+
+Checked: the deploy tree resolved from PyPI (101 packages) holds no docling, torch, anthropic or pymupdf; pandas and pyarrow come from CORE validation (`cdisc-rules-engine`). The Docker image installs from PyPI, never the local editable checkouts.
+
+Open: publish usdm4_protocol 0.11.0 to PyPI before the next image build (PyPI has 0.10.0, the floor is 0.11.0). The four M11 golden files and their errors yamls (`tests/test_files/m11/*`) show as modified since about 10:30 on 2026-10-14, outside this change — confirm they are intended before committing. Locally, `USE_AI=True` goes in `.development_env` (not edited here).
