@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse, RedirectResponse
+from app.utility.safe_path import safe_data_path, safe_identifier
 from simple_error_log import Errors
 from sqlalchemy.orm import Session
 from usdm4_pj import USDM4PJ
@@ -175,9 +176,11 @@ async def get_study_design_timeline_export_fhir(
 ):
     user, present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
-    full_path, filename, media_type = usdm.fhir_soa(timeline_id)
+    full_path, filename, media_type = usdm.fhir_soa(safe_identifier(timeline_id))
     if full_path:
-        return FileResponse(path=full_path, filename=filename, media_type=media_type)
+        return FileResponse(
+            path=safe_data_path(full_path), filename=filename, media_type=media_type
+        )
     else:
         return templates.TemplateResponse(
             request,
@@ -219,12 +222,14 @@ async def export_expansion(
             "expansion",
             pj.expanded_view(
                 full_path,
-                study_design_id,
+                safe_identifier(study_design_id),
                 costs_file_path=costs_full_path,
                 activities_file_path=activities_full_path,
             ),
         )
-        return FileResponse(path=filepath, filename=filename, media_type="text/plain")
+        return FileResponse(
+            path=safe_data_path(filepath), filename=filename, media_type="text/plain"
+        )
     return templates.TemplateResponse(
         request,
         "errors/error.html",
@@ -253,8 +258,12 @@ async def export_patient_journey(
     if full_path:
         errors = Errors()
         pj = USDM4PJ(errors)
-        filepath, filename = df.save("pj", pj.simple_view(full_path, study_design_id))
-        return FileResponse(path=filepath, filename=filename, media_type="text/plain")
+        filepath, filename = df.save(
+            "pj", pj.simple_view(full_path, safe_identifier(study_design_id))
+        )
+        return FileResponse(
+            path=safe_data_path(filepath), filename=filename, media_type="text/plain"
+        )
     else:
         return templates.TemplateResponse(
             request,

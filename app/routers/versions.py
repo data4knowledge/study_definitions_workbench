@@ -5,6 +5,7 @@ from d4k_ms_base.logger import application_logger
 from d4k_ms_ui.pagination import Pagination
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import FileResponse, RedirectResponse
+from app.utility.safe_path import safe_data_path, safe_identifier
 from sqlalchemy.orm import Session
 from usdm4.api import Wrapper
 from usdm4_protocol.cpt import USDM4CPT
@@ -321,7 +322,7 @@ async def export_protocol(
     protocol_path, filename = usdm._files.save(file_type, html)
     if protocol_path:
         return FileResponse(
-            path=protocol_path, filename=filename, media_type="text/html"
+            path=safe_data_path(protocol_path), filename=filename, media_type="text/html"
         )
     else:
         return templates.TemplateResponse(
@@ -339,6 +340,7 @@ async def export_protocol(
 def _generate_protocol(
     template: str, full_path: str, usdm: USDMJson, export: bool = False
 ) -> tuple[str, str]:
+    template = safe_identifier(template)
     html = ""
     file_type = ""
     if template.upper() == "M11":
