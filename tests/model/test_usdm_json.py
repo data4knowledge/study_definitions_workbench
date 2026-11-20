@@ -644,35 +644,35 @@ class TestSection:
 class TestFormatHeading:
     def test_number_zero(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading(
+        heading, _level = usdm._format_heading(
             {"sectionNumber": "0", "sectionTitle": "Title"}
         )
         assert heading == ""
 
     def test_number_and_title(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading(
+        heading, _level = usdm._format_heading(
             {"sectionNumber": "1.2", "sectionTitle": "My Section"}
         )
         assert heading == "<h2>1.2 My Section</h2>"
 
     def test_number_only(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading(
+        heading, _level = usdm._format_heading(
             {"sectionNumber": "3", "sectionTitle": None}
         )
         assert heading == "<h1>3</h1>"
 
     def test_title_only(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading(
+        heading, _level = usdm._format_heading(
             {"sectionNumber": None, "sectionTitle": "Appendix"}
         )
         assert heading == "<h1>Appendix</h1>"
 
     def test_no_number_no_title(self):
         usdm = _build_usdm()
-        heading, level = usdm._format_heading(
+        heading, _level = usdm._format_heading(
             {"sectionNumber": None, "sectionTitle": None}
         )
         assert heading == ""
@@ -1052,7 +1052,7 @@ class TestFhirAndExport:
         usdm = _build_usdm()
         mock_fhir_cls.return_value.to_message.return_value = '{"bundle": "data"}'
         usdm._files.save.return_value = ("/tmp/fhir.json", "fhir.json")
-        fullpath, filename, content_type = usdm.fhir()
+        fullpath, _filename, content_type = usdm.fhir()
         usdm._files.save.assert_called_once_with("fhir_prism3", '{"bundle": "data"}')
         assert fullpath == "/tmp/fhir.json"
         assert content_type == "text/plain"
@@ -1069,14 +1069,14 @@ class TestFhirAndExport:
         usdm = _build_usdm()
         mock_soa_cls.return_value.to_message.return_value = '{"soa": "data"}'
         usdm._files.save.return_value = ("/tmp/soa.json", "soa.json")
-        fullpath, filename, content_type = usdm.fhir_soa("timeline-1")
+        fullpath, _filename, content_type = usdm.fhir_soa("timeline-1")
         assert fullpath == "/tmp/soa.json"
         assert content_type == "application/json"
 
     def test_json(self):
         usdm = _build_usdm()
         usdm._files.path.return_value = ("/tmp/usdm.json", "usdm.json", True)
-        fullpath, filename, content_type = usdm.json()
+        fullpath, _filename, content_type = usdm.json()
         assert fullpath == "/tmp/usdm.json"
         assert content_type == "application/json"
 
@@ -1357,7 +1357,9 @@ class TestM11StructuredPanels:
 
     @staticmethod
     def _render(m11_export, values):
-        m11_export.return_value.structured_section.side_effect = lambda name: values.get(name)
+        m11_export.return_value.structured_section.side_effect = lambda name: (
+            values.get(name)
+        )
 
     def test_overall_design_structured(self, m11_export):
         self._render(m11_export, {"overall_design": "<div>OD table</div>"})

@@ -191,26 +191,28 @@ class TestFormHandler:
         mock_request.form.return_value = form
 
         # Mock json.loads to return a list of file paths
-        with patch("json.loads", return_value=["file1", "file2"]):
+        with (
+            patch("json.loads", return_value=["file1", "file2"]),
+            patch.object(FormHandler, "_handle_file") as mock_handle_file,
+        ):
             # Mock _handle_file to return the expected values
-            with patch.object(FormHandler, "_handle_file") as mock_handle_file:
-                mock_handle_file.return_value = (
-                    {"filename": "test.xlsx", "contents": b"file content"},
-                    [],
-                )
+            mock_handle_file.return_value = (
+                {"filename": "test.xlsx", "contents": b"file content"},
+                [],
+            )
 
-                handler = FormHandler(mock_request, True, ".xlsx", "os")
+            handler = FormHandler(mock_request, True, ".xlsx", "os")
 
-                # Execute
-                main_file, image_files, messages = await handler._get_files_os(form)
+            # Execute
+            main_file, image_files, _messages = await handler._get_files_os(form)
 
-                # Assert
-                assert main_file == {
-                    "filename": "test.xlsx",
-                    "contents": b"file content",
-                }
-                assert image_files == []
-                assert mock_handle_file.call_count == 2
+            # Assert
+            assert main_file == {
+                "filename": "test.xlsx",
+                "contents": b"file content",
+            }
+            assert image_files == []
+            assert mock_handle_file.call_count == 2
 
     @pytest.mark.asyncio
     async def test_get_files_pfda(self, mock_request, mock_pfda_files, mock_logger):
@@ -221,26 +223,28 @@ class TestFormHandler:
         mock_request.form.return_value = form
 
         # Mock json.loads to return a list of file paths
-        with patch("json.loads", return_value=["file1", "file2"]):
+        with (
+            patch("json.loads", return_value=["file1", "file2"]),
+            patch.object(FormHandler, "_handle_file") as mock_handle_file,
+        ):
             # Mock _handle_file to return the expected values
-            with patch.object(FormHandler, "_handle_file") as mock_handle_file:
-                mock_handle_file.return_value = (
-                    {"filename": "test.xlsx", "contents": b"file content"},
-                    [],
-                )
+            mock_handle_file.return_value = (
+                {"filename": "test.xlsx", "contents": b"file content"},
+                [],
+            )
 
-                handler = FormHandler(mock_request, True, ".xlsx", "pfda")
+            handler = FormHandler(mock_request, True, ".xlsx", "pfda")
 
-                # Execute
-                main_file, image_files, messages = await handler._get_files_pfda(form)
+            # Execute
+            main_file, image_files, _messages = await handler._get_files_pfda(form)
 
-                # Assert
-                assert main_file == {
-                    "filename": "test.xlsx",
-                    "contents": b"file content",
-                }
-                assert image_files == []
-                assert mock_handle_file.call_count == 2
+            # Assert
+            assert main_file == {
+                "filename": "test.xlsx",
+                "contents": b"file content",
+            }
+            assert image_files == []
+            assert mock_handle_file.call_count == 2
 
     @pytest.mark.asyncio
     async def test_get_files(self, mock_request):

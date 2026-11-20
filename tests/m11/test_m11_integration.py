@@ -23,7 +23,7 @@ async def _run_test(dir, name, save=False):
     files = DataFiles()
     _ = files.new()
     files.save("docx", contents, filename)
-    filepath, filename, media = files.path("docx")
+    filepath, filename, _media = files.path("docx")
     m11 = USDM4M11()
     wrapper: Wrapper = m11.from_docx(filepath)
     result = wrapper.to_json()

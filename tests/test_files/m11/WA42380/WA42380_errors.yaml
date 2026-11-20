@@ -47,40 +47,8 @@
 - extra: null
   level: Info
   location: {}
-  message: 'Parsing names and address, key sponsor: interim raw result={''sponsor'':
-    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
-    ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key co_sponsor: interim raw result={''sponsor'':
-    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
-    ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key local_sponsor: interim raw result={''sponsor'':
-    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
-    ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key device: interim raw result={''sponsor'':
-    ''F. Hoffmann-La Roche Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None,
-    ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address: raw result={''sponsor'': ''F. Hoffmann-La Roche
-    Ltd\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}'
+  message: 'Parsing names and address: raw result={''sponsor'': [''F. Hoffmann-La
+    Roche Ltd\n''], ''co_sponsor'': [], ''local_sponsor'': [], ''device'': []}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -253,7 +221,7 @@
     class_name: usdm4_protocol.m11.import_.extract.title_page.TitlePage
     method_name: _get_regulatory_identifiers_simple
   message: 'Found regulatory identifiers: NCT=[''NCT04320615''], IND=[''148225''],
-    EMA=[''2020-001154-22''], jRCT=[], WHO=[]'
+    EMA=[''2020-001154-22''], jRCT=[], WHO=[], NMPA=[]'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -272,51 +240,6 @@
   message: 'SoA not read: the SoA reader needs an AI provider and none is available'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: soa_not_read
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tSigned Informed\
-    \ Consent Form by any patient capable of giving consent, or, when the patient\
-    \ is not capable of giving consent, by his or her legal/authorized representative'\n\
-    Message returned 'The input looks more like a filename than markup. You may want\
-    \ to open this file and pass the filehandle into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tSpO2 \uF0A3 93%\
-    \ or PaO2/FiO2 \uF03C 300 mmHg'\nMessage returned 'The input looks more like a\
-    \ filename than markup. You may want to open this file and pass the filehandle\
-    \ into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tANC &lt; 1000/\uF06D\
-    L at screening (according to local laboratory reference ranges)'\nMessage returned\
-    \ 'The input looks more like a filename than markup. You may want to open this\
-    \ file and pass the filehandle into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: "Warning raised within Soup package, processing '\u2022\tPlatelet count\
-    \ \uF03C 50,000/\uF06DL at screening (according to local laboratory reference\
-    \ ranges)'\nMessage returned 'The input looks more like a filename than markup.\
-    \ You may want to open this file and pass the filehandle into Beautiful Soup.'"
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
 - extra: null
   level: Info
   location:
@@ -383,19 +306,10 @@
   level: Info
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
-    method_name: _get_enrollment_simple
-  message: 'Found enrollment: {''keyword'': ''Globally'', ''value'': 0, ''unit'':
-    ''%'', ''regions'': []}'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location:
-    class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _reasons
-  message: 'Amendment reasons found {''primary'': ''Primary: To better align with
-    the statistical analysis plan (SAP)'', ''secondary'': ''Secondary: Minor changes
-    have been made to improve clarity and consistency.''}'
+  message: 'Amendment reasons found {''primary'': ''To better align with the statistical
+    analysis plan (SAP)'', ''secondary'': ''Minor changes have been made to improve
+    clarity and consistency.''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -464,42 +378,41 @@
     in Prior Protocol Amendment(s).</p>\n<p></p>\n<p><b>Current Amendment</b></p>\n<p>The
     table below describes the current amendment.</p>'', ''identifier'': ''3'', ''scope'':
     {''global'': True, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'':
-    []}, ''enrollment'': {''keyword'': ''Globally'', ''value'': 0, ''unit'': ''%'',
-    ''regions'': []}, ''reasons'': {''primary'': ''Primary: To better align with the
-    statistical analysis plan (SAP)'', ''secondary'': ''Secondary: Minor changes have
-    been made to improve clarity and consistency.''}, ''summary'': '''', ''impact'':
-    {''safety_and_rights'': {''safety'': {''substantial'': False, ''reason'': ''''},
-    ''rights'': {''substantial'': False, ''reason'': ''''}}, ''reliability_and_robustness'':
-    {''reliability'': {''substantial'': False, ''reason'': ''''}, ''robustness'':
-    {''substantial'': False, ''reason'': ''''}}}, ''changes'': [{''description'':
-    ''Additional secondary efficacy endpoint of time to recovery was added'', ''rationale'':
-    ''To facilitate comparison with other trials of treatments for COVID-19'', ''section'':
-    ''Sections 2.1.2 and 6.4.2''}, {''description'': ''Text on the sample size and
-    power calculation was updated to incorporate the increased enrollment target to
-    maintain 90% power for the primary endpoint, as described in the SAP'', ''rationale'':
-    ''The potential for an increase in enrollment was included in Version 2 of the
-    protocol, and the confirmation of increased enrollment was communicated to sites,
-    Agencies, and ethics committees in the week of 4 May 2020.'', ''section'': ''Sections
-    3.1, 4.1, 6.1, 9.5''}, {''description'': ''Geographic stratification factors were
-    updated'', ''rationale'': ''To address the inclusion of only North American and
-    Europe because no sites outside of these regions were included in the study'',
-    ''section'': ''Sections 3.1, 4.2.1, 6.1, 6.4.2''}, {''description'': ''Text on
-    the reporting of pregnancies in partner of male patients was removed'', ''rationale'':
-    ''To align with the informed consent form and recommendations for tocilizumab
-    in other indications'', ''section'': ''Section 5.4.3''}, {''description'': ''The
-    method of analysis for the primary endpoint was updated'', ''rationale'': ''To
-    utilize a non-parametric method that was determined to be a more appropriate method,
-    as described in the SAP'', ''section'': ''Sections 6.1 and 6.4.1''}, {''description'':
-    ''The method of analysis for the secondary endpoint of clinical status at additional
-    timepoints was updated'', ''rationale'': ''To utilize a non-parametric method
-    that was determined to be a more appropriate method, as described in the SAP'',
-    ''section'': ''Section 6.4.2''}, {''description'': ''Selected secondary efficacy
-    endpoints were specified as key secondary endpoints'', ''rationale'': ''To address
-    Type I error control, as described in the SAP'', ''section'': ''Section 6.4.2''},
-    {''description'': ''For clarity and as described in the SAP, language on the planned
-    interim analyses was updated'', ''rationale'': ''Updated to address the increased
-    enrollment target to maintain 90% power for the primary endpoint and the criteria
-    for not conducting the interim analyses'', ''section'': ''Section 6.9''}]}'
+    []}, ''enrollment'': None, ''reasons'': {''primary'': ''To better align with the
+    statistical analysis plan (SAP)'', ''secondary'': ''Minor changes have been made
+    to improve clarity and consistency.''}, ''summary'': '''', ''impact'': {''safety_and_rights'':
+    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
+    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
+    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
+    ''''}}}, ''changes'': [{''description'': ''Additional secondary efficacy endpoint
+    of time to recovery was added'', ''rationale'': ''To facilitate comparison with
+    other trials of treatments for COVID-19'', ''section'': ''Sections 2.1.2 and 6.4.2''},
+    {''description'': ''Text on the sample size and power calculation was updated
+    to incorporate the increased enrollment target to maintain 90% power for the primary
+    endpoint, as described in the SAP'', ''rationale'': ''The potential for an increase
+    in enrollment was included in Version 2 of the protocol, and the confirmation
+    of increased enrollment was communicated to sites, Agencies, and ethics committees
+    in the week of 4 May 2020.'', ''section'': ''Sections 3.1, 4.1, 6.1, 9.5''}, {''description'':
+    ''Geographic stratification factors were updated'', ''rationale'': ''To address
+    the inclusion of only North American and Europe because no sites outside of these
+    regions were included in the study'', ''section'': ''Sections 3.1, 4.2.1, 6.1,
+    6.4.2''}, {''description'': ''Text on the reporting of pregnancies in partner
+    of male patients was removed'', ''rationale'': ''To align with the informed consent
+    form and recommendations for tocilizumab in other indications'', ''section'':
+    ''Section 5.4.3''}, {''description'': ''The method of analysis for the primary
+    endpoint was updated'', ''rationale'': ''To utilize a non-parametric method that
+    was determined to be a more appropriate method, as described in the SAP'', ''section'':
+    ''Sections 6.1 and 6.4.1''}, {''description'': ''The method of analysis for the
+    secondary endpoint of clinical status at additional timepoints was updated'',
+    ''rationale'': ''To utilize a non-parametric method that was determined to be
+    a more appropriate method, as described in the SAP'', ''section'': ''Section 6.4.2''},
+    {''description'': ''Selected secondary efficacy endpoints were specified as key
+    secondary endpoints'', ''rationale'': ''To address Type I error control, as described
+    in the SAP'', ''section'': ''Section 6.4.2''}, {''description'': ''For clarity
+    and as described in the SAP, language on the planned interim analyses was updated'',
+    ''rationale'': ''Updated to address the increased enrollment target to maintain
+    90% power for the primary endpoint and the criteria for not conducting the interim
+    analyses'', ''section'': ''Section 6.9''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -700,43 +613,42 @@
   level: Info
   location: {}
   message: 'Amendment assembler source data {''identifier'': ''3'', ''summary'': '''',
-    ''reasons'': {''primary'': ''Primary: To better align with the statistical analysis
-    plan (SAP)'', ''secondary'': ''Secondary: Minor changes have been made to improve
-    clarity and consistency.''}, ''impact'': {''safety_and_rights'': {''safety'':
-    {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
-    ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
-    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
-    ''''}}}, ''enrollment'': {''value'': 0, ''unit'': ''%''}, ''scope'': {''global'':
-    True, ''unknown'': [], ''countries'': [], ''regions'': [], ''sites'': []}, ''changes'':
-    [{''section'': ''Sections 2.1.2 and 6.4.2'', ''description'': ''Additional secondary
-    efficacy endpoint of time to recovery was added'', ''rationale'': ''To facilitate
-    comparison with other trials of treatments for COVID-19''}, {''section'': ''Sections
-    3.1, 4.1, 6.1, 9.5'', ''description'': ''Text on the sample size and power calculation
-    was updated to incorporate the increased enrollment target to maintain 90% power
-    for the primary endpoint, as described in the SAP'', ''rationale'': ''The potential
-    for an increase in enrollment was included in Version 2 of the protocol, and the
-    confirmation of increased enrollment was communicated to sites, Agencies, and
-    ethics committees in the week of 4 May 2020.''}, {''section'': ''Sections 3.1,
-    4.2.1, 6.1, 6.4.2'', ''description'': ''Geographic stratification factors were
-    updated'', ''rationale'': ''To address the inclusion of only North American and
-    Europe because no sites outside of these regions were included in the study''},
-    {''section'': ''Section 5.4.3'', ''description'': ''Text on the reporting of pregnancies
-    in partner of male patients was removed'', ''rationale'': ''To align with the
-    informed consent form and recommendations for tocilizumab in other indications''},
-    {''section'': ''Sections 6.1 and 6.4.1'', ''description'': ''The method of analysis
-    for the primary endpoint was updated'', ''rationale'': ''To utilize a non-parametric
-    method that was determined to be a more appropriate method, as described in the
-    SAP''}, {''section'': ''Section 6.4.2'', ''description'': ''The method of analysis
-    for the secondary endpoint of clinical status at additional timepoints was updated'',
+    ''reasons'': {''primary'': ''To better align with the statistical analysis plan
+    (SAP)'', ''secondary'': ''Minor changes have been made to improve clarity and
+    consistency.''}, ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
+    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
+    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
+    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''enrollment'':
+    None, ''scope'': {''global'': True, ''unknown'': [], ''countries'': [], ''regions'':
+    [], ''sites'': []}, ''changes'': [{''section'': ''Sections 2.1.2 and 6.4.2'',
+    ''description'': ''Additional secondary efficacy endpoint of time to recovery
+    was added'', ''rationale'': ''To facilitate comparison with other trials of treatments
+    for COVID-19''}, {''section'': ''Sections 3.1, 4.1, 6.1, 9.5'', ''description'':
+    ''Text on the sample size and power calculation was updated to incorporate the
+    increased enrollment target to maintain 90% power for the primary endpoint, as
+    described in the SAP'', ''rationale'': ''The potential for an increase in enrollment
+    was included in Version 2 of the protocol, and the confirmation of increased enrollment
+    was communicated to sites, Agencies, and ethics committees in the week of 4 May
+    2020.''}, {''section'': ''Sections 3.1, 4.2.1, 6.1, 6.4.2'', ''description'':
+    ''Geographic stratification factors were updated'', ''rationale'': ''To address
+    the inclusion of only North American and Europe because no sites outside of these
+    regions were included in the study''}, {''section'': ''Section 5.4.3'', ''description'':
+    ''Text on the reporting of pregnancies in partner of male patients was removed'',
+    ''rationale'': ''To align with the informed consent form and recommendations for
+    tocilizumab in other indications''}, {''section'': ''Sections 6.1 and 6.4.1'',
+    ''description'': ''The method of analysis for the primary endpoint was updated'',
     ''rationale'': ''To utilize a non-parametric method that was determined to be
     a more appropriate method, as described in the SAP''}, {''section'': ''Section
-    6.4.2'', ''description'': ''Selected secondary efficacy endpoints were specified
-    as key secondary endpoints'', ''rationale'': ''To address Type I error control,
-    as described in the SAP''}, {''section'': ''Section 6.9'', ''description'': ''For
-    clarity and as described in the SAP, language on the planned interim analyses
-    was updated'', ''rationale'': ''Updated to address the increased enrollment target
-    to maintain 90% power for the primary endpoint and the criteria for not conducting
-    the interim analyses''}]}'
+    6.4.2'', ''description'': ''The method of analysis for the secondary endpoint
+    of clinical status at additional timepoints was updated'', ''rationale'': ''To
+    utilize a non-parametric method that was determined to be a more appropriate method,
+    as described in the SAP''}, {''section'': ''Section 6.4.2'', ''description'':
+    ''Selected secondary efficacy endpoints were specified as key secondary endpoints'',
+    ''rationale'': ''To address Type I error control, as described in the SAP''},
+    {''section'': ''Section 6.9'', ''description'': ''For clarity and as described
+    in the SAP, language on the planned interim analyses was updated'', ''rationale'':
+    ''Updated to address the increased enrollment target to maintain 90% power for
+    the primary endpoint and the criteria for not conducting the interim analyses''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -744,8 +656,8 @@
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: amendment_reason
-  message: 'Unable to decode amendment reason ''Primary: To better align with the
-    statistical analysis plan (SAP)'''
+  message: Unable to decode amendment reason 'To better align with the statistical
+    analysis plan (SAP)'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -753,8 +665,8 @@
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: amendment_reason
-  message: 'Unable to decode amendment reason ''Secondary: Minor changes have been
-    made to improve clarity and consistency.'''
+  message: Unable to decode amendment reason 'Minor changes have been made to improve
+    clarity and consistency.'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -785,14 +697,6 @@
     ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
     False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
     ''''}}}'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location:
-    class_name: usdm4.assembler.amendments_assembler.AmendmentsAssembler
-    method_name: _create_scope
-  message: Created scope of type Global
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

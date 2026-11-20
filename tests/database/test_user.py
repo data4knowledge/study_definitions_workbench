@@ -104,7 +104,7 @@ def test_check_new_user(db):
 def test_check_no_email(db):
     _clean(db)
     info = {"sub": "sub_noemail", "nickname": "NoEmail"}
-    user, present = User.check(info, db)
+    user, _present = User.check(info, db)
     assert user is not None
     assert user.email == "No email"
 
@@ -158,12 +158,12 @@ def test_debug(db):
 
 
 def test_is_valid_true():
-    valid, validation = User._is_valid("ident", "e@e.com", "Valid Name")
+    valid, _validation = User._is_valid("ident", "e@e.com", "Valid Name")
     assert valid is True
 
 
 def test_is_valid_false():
-    valid, validation = User._is_valid("ident", "e@e.com", "Bad!@#")
+    valid, _validation = User._is_valid("ident", "e@e.com", "Bad!@#")
     assert valid is False
 
 
@@ -208,7 +208,9 @@ def test_effective_roles_external_user(db):
 
 def test_register_domain_grants_full_rights(db):
     _clean(db)
-    user, validation, existed = User.register("new@data4knowledge.dk", "New Person", db)
+    user, _validation, existed = User.register(
+        "new@data4knowledge.dk", "New Person", db
+    )
     assert existed is False
     assert user is not None
     assert sorted(user.effective_role_names()) == ["Admin", "Transmit"]
@@ -216,7 +218,7 @@ def test_register_domain_grants_full_rights(db):
 
 def test_register_external_grants_no_roles(db):
     _clean(db)
-    user, validation, existed = User.register("new@gmail.com", "New Person", db)
+    user, _validation, existed = User.register("new@gmail.com", "New Person", db)
     assert existed is False
     assert user.stored_role_names() == []
     assert user.effective_role_names() == []
@@ -225,7 +227,7 @@ def test_register_external_grants_no_roles(db):
 def test_register_existing_email_is_idempotent(db):
     _clean(db)
     User.register("dup@gmail.com", "First", db)
-    user, validation, existed = User.register("dup@gmail.com", "Second", db)
+    _user, _validation, existed = User.register("dup@gmail.com", "Second", db)
     assert existed is True
 
 

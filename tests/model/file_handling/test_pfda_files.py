@@ -11,7 +11,7 @@ class TestPFDAFilesDir:
             stdout=json.dumps({"files": [{"name": "file1.xlsx"}]})
         )
         pf = PFDAFiles()
-        success, data, error = pf.dir("/")
+        success, data, _error = pf.dir("/")
         assert success is True
         assert len(data["files"]) == 1
 
@@ -19,7 +19,7 @@ class TestPFDAFilesDir:
     def test_dir_error_response(self, mock_run):
         mock_run.return_value = MagicMock(stdout=json.dumps({"error": "not found"}))
         pf = PFDAFiles()
-        success, data, error = pf.dir("/")
+        success, _data, error = pf.dir("/")
         assert success is False
         assert error == "not found"
 
@@ -27,7 +27,7 @@ class TestPFDAFilesDir:
     def test_dir_exception(self, mock_run):
         mock_run.side_effect = Exception("pfda not installed")
         pf = PFDAFiles()
-        success, data, error = pf.dir("/")
+        success, _data, error = pf.dir("/")
         assert success is False
         assert "pfda not installed" in error
 
@@ -47,6 +47,6 @@ class TestPFDAFilesDownload:
         pf = PFDAFiles()
         pf._files = MagicMock()
         pf._files.path.return_value = str(tmp_path)
-        stem, ext, contents = pf.download("uid-123")
+        stem, ext, _contents = pf.download("uid-123")
         assert stem == "downloaded"
         assert ext == "xlsx"

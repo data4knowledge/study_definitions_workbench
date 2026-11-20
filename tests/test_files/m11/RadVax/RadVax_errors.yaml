@@ -59,40 +59,8 @@
 - extra: null
   level: Info
   location: {}
-  message: 'Parsing names and address, key sponsor: interim raw result={''sponsor'':
-    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
-    None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key co_sponsor: interim raw result={''sponsor'':
-    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
-    None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key local_sponsor: interim raw result={''sponsor'':
-    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
-    None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key device: interim raw result={''sponsor'':
-    ''University of Pennsylvania\nAddress on File.\n'', ''co_sponsor'': None, ''local_sponsor'':
-    None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address: raw result={''sponsor'': ''University of Pennsylvania\nAddress
-    on File.\n'', ''co_sponsor'': None, ''local_sponsor'': None, ''device'': None}'
+  message: 'Parsing names and address: raw result={''sponsor'': [''University of Pennsylvania\nAddress
+    on File.\n''], ''co_sponsor'': [], ''local_sponsor'': [], ''device'': []}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -263,18 +231,6 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: soa_not_read
 - extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: 'Warning raised within Soup package, processing ''Be willing and able to
-    provide written informed consent/assent for the trial. ''
-
-    Message returned ''The input looks more like a filename than markup. You may want
-    to open this file and pass the filehandle into Beautiful Soup.'''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
   level: Error
   location: {}
   message: "Neither a RawList or RawListItem detected, type: '<class 'raw_docx.raw_paragraph.RawParagraph'>',\
@@ -289,18 +245,6 @@
     text: ''- Note: If subject received major surgery, they must have recovered adequately
     from the toxicity and/or complications from the intervention prior to starting
     therapy. '''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: 'Warning raised within Soup package, processing ''Has a known history of
-    Human Immunodeficiency Virus (HIV) (HIV 1/2 antibodies). ''
-
-    Message returned ''The input looks more like a filename than markup. You may want
-    to open this file and pass the filehandle into Beautiful Soup.'''
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -324,8 +268,8 @@
   location:
     class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
     method_name: _decode
-  message: Number of Participants 'A Total of 70 participants will be enrolled.' holds
-    no number; not stored
+  message: Number of Participants 'A Total of 70 participants will be enrolled.' is
+    not the M11 sentence; 70 stored
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -333,8 +277,34 @@
   location:
     class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
     method_name: _design
-  message: 'Site Distribution and Geographic Scope ''Single Site Local'': only partly
-    read'
+  message: Control Type 'N/A' read as 'No Control'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Site Distribution and Geographic Scope 'Single Site Local' gives no Site
+    Geographic Scope; not stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Warning
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _decode
+  message: Trial Blind Schema stated as not applicable; section 4.1 names none; not
+    stored
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
+    method_name: _design
+  message: Trial Blind Schema not found; 'Open Label' from Blinded Roles stated as
+    not applicable
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -350,9 +320,9 @@
 - extra: null
   level: Info
   location:
-    class_name: usdm4_protocol.common.extract.objectives_extractor.ObjectivesExtractor
-    method_name: guard
-  message: No objectives extracted
+    class_name: usdm4_protocol.m11.import_.extract.estimands.Estimands
+    method_name: process
+  message: No named endpoints available; skipping estimand extraction
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -534,6 +504,14 @@
   level: Info
   location:
     class_name: usdm4.encoder.encoder.Encoder
+    method_name: control_type
+  message: Control type 'No Control' decoded as 'C28280', 'No Control'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
     method_name: site_distribution
   message: Site distribution 'Single-Centre' decoded as 'C217004', 'Single-Center
     Study'
@@ -549,12 +527,62 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: blinding_schema
+  message: Blinding schema 'Open Label' decoded as 'C49659', 'Open Label Study'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Warning
   location:
     class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
     method_name: _set_participation_duration
   message: Planned duration of trial participation supplied but there is no main timeline
     to hold it; not recorded
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'PRIMARY' decoded as 'C85826', 'Trial Primary Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'PRIMARY' decoded as 'C85826', 'Trial Primary Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'SECONDARY' decoded as 'C85827', 'Trial Secondary Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'EXPLORATORY' decoded as 'C163559', 'Trial Exploratory
+    Objective'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: objective_level
+  message: Objective level 'EXPLORATORY' decoded as 'C163559', 'Trial Exploratory
+    Objective'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

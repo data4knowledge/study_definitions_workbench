@@ -19,7 +19,7 @@ from app.database.version import Version
 
 def test_page_empty(db):
     _clean(db)
-    user, study = _base_setup(db)
+    _user, study = _base_setup(db)
     results = Version.page(1, 10, "", study.id, db)
     assert results["count"] == 0
     assert len(results["items"]) == 0
@@ -68,7 +68,7 @@ def test_find_latest_version(db):
 
 def test_find_latest_version_empty(db):
     _clean(db)
-    user, study = _base_setup(db)
+    _user, study = _base_setup(db)
     latest = Version.find_latest_version(study.id, db)
     assert latest is None
 

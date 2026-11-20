@@ -9,14 +9,14 @@
         "id": "StudyVersion_1",
         "extensionAttributes": [
           {
-            "id": "ExtensionAttribute_3",
+            "id": "ExtensionAttribute_6",
             "url": "www.d4k.dk/usdm/extensions/001",
             "valueString": "",
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_4",
+            "id": "ExtensionAttribute_7",
             "url": "www.d4k.dk/usdm/extensions/002",
             "valueBoolean": true,
             "extensionAttributes": [],
@@ -36,7 +36,7 @@
             "label": null,
             "description": null,
             "type": {
-              "id": "Code_53",
+              "id": "Code_61",
               "extensionAttributes": [],
               "code": "C71476",
               "codeSystem": "http://www.cdisc.org",
@@ -50,7 +50,7 @@
                 "id": "GeographicScope_2",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_54",
+                  "id": "Code_62",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -103,6 +103,43 @@
                 "valueString": "defaulted: no intervention model supplied",
                 "extensionAttributes": [],
                 "instanceType": "ExtensionAttribute"
+              },
+              {
+                "id": "ExtensionAttribute_3",
+                "url": "www.d4k.dk/usdm/extensions/018",
+                "valueCode": {
+                  "id": "Code_51",
+                  "code": "C28280",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2025-12-19",
+                  "decode": "No Control",
+                  "instanceType": "Code",
+                  "extensionAttributes": []
+                },
+                "extensionAttributes": [],
+                "instanceType": "ExtensionAttribute"
+              },
+              {
+                "id": "ExtensionAttribute_5",
+                "url": "www.d4k.dk/usdm/extensions/019",
+                "extensionAttributes": [
+                  {
+                    "id": "ExtensionAttribute_4",
+                    "url": "www.d4k.dk/usdm/extensions/020",
+                    "valueCode": {
+                      "id": "Code_52",
+                      "code": "C25196",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2025-12-19",
+                      "decode": "Randomisation",
+                      "instanceType": "Code",
+                      "extensionAttributes": []
+                    },
+                    "extensionAttributes": [],
+                    "instanceType": "ExtensionAttribute"
+                  }
+                ],
+                "instanceType": "ExtensionAttribute"
               }
             ],
             "name": "STUDY-DESIGN-1",
@@ -135,7 +172,7 @@
             "therapeuticAreas": [],
             "characteristics": [
               {
-                "id": "Code_51",
+                "id": "Code_53",
                 "extensionAttributes": [],
                 "code": "C217004",
                 "codeSystem": "http://www.cdisc.org",
@@ -144,7 +181,7 @@
                 "instanceType": "Code"
               },
               {
-                "id": "Code_52",
+                "id": "Code_54",
                 "extensionAttributes": [],
                 "code": "C46079",
                 "codeSystem": "http://www.cdisc.org",
@@ -175,7 +212,113 @@
               }
             ],
             "studyInterventionIds": [],
-            "objectives": [],
+            "objectives": [
+              {
+                "id": "Objective_1",
+                "extensionAttributes": [],
+                "name": "OBJ-1",
+                "label": "",
+                "description": "",
+                "text": "Objective: To determine the safety of combining Pembrolizumab with hypofractionated radiotherapy in patients with advanced and metastatic cancers.",
+                "dictionaryId": null,
+                "notes": [],
+                "instanceType": "Objective",
+                "level": {
+                  "id": "Code_56",
+                  "extensionAttributes": [],
+                  "code": "C85826",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Trial Primary Objective",
+                  "instanceType": "Code"
+                },
+                "endpoints": []
+              },
+              {
+                "id": "Objective_2",
+                "extensionAttributes": [],
+                "name": "OBJ-2",
+                "label": "",
+                "description": "",
+                "text": "Hypothesis: Pembrolizumab will be safe and well tolerated in patients with advanced and metastatic cancers when combined with hypofractionated radiotherapy.",
+                "dictionaryId": null,
+                "notes": [],
+                "instanceType": "Objective",
+                "level": {
+                  "id": "Code_57",
+                  "extensionAttributes": [],
+                  "code": "C85826",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Trial Primary Objective",
+                  "instanceType": "Code"
+                },
+                "endpoints": []
+              },
+              {
+                "id": "Objective_3",
+                "extensionAttributes": [],
+                "name": "OBJ-3",
+                "label": "",
+                "description": "",
+                "text": "Objective: To estimate the immune-related response rate in non-index metastatic lesions of the combination of Pembrolizumab and hypofractionated radiotherapy",
+                "dictionaryId": null,
+                "notes": [],
+                "instanceType": "Objective",
+                "level": {
+                  "id": "Code_58",
+                  "extensionAttributes": [],
+                  "code": "C85827",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Trial Secondary Objective",
+                  "instanceType": "Code"
+                },
+                "endpoints": []
+              },
+              {
+                "id": "Objective_4",
+                "extensionAttributes": [],
+                "name": "OBJ-4",
+                "label": "",
+                "description": "",
+                "text": "(1) Objective: To explore the immune pharmacodynamic changes after treatment with the combination of Pembrolizumab and hypofrationated radiotherapy",
+                "dictionaryId": null,
+                "notes": [],
+                "instanceType": "Objective",
+                "level": {
+                  "id": "Code_59",
+                  "extensionAttributes": [],
+                  "code": "C163559",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Trial Exploratory Objective",
+                  "instanceType": "Code"
+                },
+                "endpoints": []
+              },
+              {
+                "id": "Objective_5",
+                "extensionAttributes": [],
+                "name": "OBJ-5",
+                "label": "",
+                "description": "",
+                "text": "(2) Objective: To explore the relationship between PD-1 expression and response to Pembrolizumab and hypofractionated radiotherapy",
+                "dictionaryId": null,
+                "notes": [],
+                "instanceType": "Objective",
+                "level": {
+                  "id": "Code_60",
+                  "extensionAttributes": [],
+                  "code": "C163559",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Trial Exploratory Objective",
+                  "instanceType": "Code"
+                },
+                "endpoints": []
+              }
+            ],
             "population": {
               "id": "StudyDesignPopulation_1",
               "extensionAttributes": [],
@@ -183,7 +326,13 @@
               "label": "Default population",
               "description": "The study population, currently blank",
               "includesHealthySubjects": false,
-              "plannedEnrollmentNumber": null,
+              "plannedEnrollmentNumber": {
+                "id": "Quantity_3",
+                "extensionAttributes": [],
+                "value": 70.0,
+                "unit": null,
+                "instanceType": "Quantity"
+              },
               "plannedCompletionNumber": null,
               "plannedSex": [
                 {
@@ -1037,7 +1186,21 @@
               "instanceType": "Code"
             },
             "intentTypes": [],
-            "blindingSchema": null
+            "blindingSchema": {
+              "id": "AliasCode_4",
+              "extensionAttributes": [],
+              "standardCode": {
+                "id": "Code_55",
+                "extensionAttributes": [],
+                "code": "C49659",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2026-03-27",
+                "decode": "Open Label Study",
+                "instanceType": "Code"
+              },
+              "standardCodeAliases": [],
+              "instanceType": "AliasCode"
+            }
           }
         ],
         "titles": [
@@ -5469,5 +5632,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 Protocol Package",
-  "systemVersion": "0.11.0.a22"
+  "systemVersion": "0.12.0"
 }

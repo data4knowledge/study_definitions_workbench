@@ -16,8 +16,10 @@ from usdm4_protocol.m11 import USDM4M11
 from usdm4_protocol.validation.m11 import M11Validator
 
 from app.configuration.configuration import application_configuration
+from app.model.exceptions import USDMLoadException
 from app.model.file_handling.data_files import DataFiles
 from app.model.object_path import ObjectPath
+from app.model.usdm_load import load_usdm4
 from app.utility.finding_projections import project_m11_result
 
 
@@ -252,12 +254,12 @@ class ImportUSDM4(ImportProcessorBase):
     """Import a USDM v4 JSON file.
 
     Runs the v4 rules library for diagnostics and persists the findings
-    to the errors file via :class:`ImportManager`. The import always
-    succeeds when the file reaches this processor — validation findings
-    are advisory, and even a parameter-extraction failure (caused by a
-    structurally non-conforming file) falls back to a placeholder dict
-    rather than blocking. The user reviews the imported study and the
-    persisted findings to figure out what's wrong.
+    to the errors file via :class:`ImportManager`. The import fails only
+    when the file does not load into the usdm4 model at all (every study
+    page needs the model, so such a file could never be viewed). Rule
+    findings are advisory, and a parameter-extraction failure falls back
+    to a placeholder dict rather than blocking. The user reviews the
+    imported study and the persisted findings to figure out what's wrong.
     """
 
     async def process(self) -> bool:
@@ -267,6 +269,15 @@ class ImportUSDM4(ImportProcessorBase):
         usdm4 = _usdm4()
         results: RulesValidationResults = usdm4.validate(full_path)
         self.errors = results.to_dict()
+        # A file that does not load into the usdm4 model cannot be shown
+        # on any study page, so it is rejected here (issue 79). Files
+        # that load but break rules still land, as below.
+        try:
+            load_usdm4(usdm4, json.loads(self.usdm))
+        except USDMLoadException as e:
+            self.success = False
+            self.fatal_error = f"the file is not valid USDM v4: {e}"
+            return self.success
         # Best-effort parameter extraction; if the file is malformed
         # enough that the wrapper can't surface a sponsor / title /
         # phase, we still land the study with placeholder values so

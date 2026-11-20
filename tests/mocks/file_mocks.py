@@ -23,7 +23,7 @@ def mock_data_file_delete(mocker):
 
 def mock_local_files_dir(mocker):
     lfd = mocker.patch("app.model.file_handling.local_files.LocalFiles.dir")
-    ts = datetime.datetime.now()
+    ts = datetime.datetime.now(tz=datetime.UTC)
     files = [
         {
             "uid": 1234 - 5678,

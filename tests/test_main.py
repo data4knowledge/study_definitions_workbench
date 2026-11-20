@@ -302,19 +302,34 @@ def mock_user_check(mocker):
 
 def factory_user() -> User:
     return User(
-        identifier="FRED", email="fred@example.com", display_name="Fred Smith", is_active=True, id=1
+        identifier="FRED",
+        email="fred@example.com",
+        display_name="Fred Smith",
+        is_active=True,
+        id=1,
     )
 
 
 def factory_user_2() -> User:
     return User(
-        identifier="FRED", email="fred@example.com", display_name="Fred Smithy", is_active=True, id=1
+        identifier="FRED",
+        email="fred@example.com",
+        display_name="Fred Smithy",
+        is_active=True,
+        id=1,
     )
 
 
 def factory_study() -> Study:
     return Study(
-        name="STUDYNAME", title="Study Title", phase="Phase 1", sponsor="ACME", sponsor_identifier="STUDY IDENTIFIER", nct_identifier="NCT12345678", id=1, user_id=1
+        name="STUDYNAME",
+        title="Study Title",
+        phase="Phase 1",
+        sponsor="ACME",
+        sponsor_identifier="STUDY IDENTIFIER",
+        nct_identifier="NCT12345678",
+        id=1,
+        user_id=1,
     )
 
 

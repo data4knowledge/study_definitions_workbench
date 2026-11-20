@@ -9,14 +9,14 @@
         "id": "StudyVersion_1",
         "extensionAttributes": [
           {
-            "id": "ExtensionAttribute_5",
+            "id": "ExtensionAttribute_7",
             "url": "www.d4k.dk/usdm/extensions/001",
             "valueString": "",
             "extensionAttributes": [],
             "instanceType": "ExtensionAttribute"
           },
           {
-            "id": "ExtensionAttribute_6",
+            "id": "ExtensionAttribute_8",
             "url": "www.d4k.dk/usdm/extensions/002",
             "valueBoolean": false,
             "extensionAttributes": [],
@@ -36,7 +36,7 @@
             "label": null,
             "description": null,
             "type": {
-              "id": "Code_72",
+              "id": "Code_75",
               "extensionAttributes": [],
               "code": "C71476",
               "codeSystem": "http://www.cdisc.org",
@@ -50,7 +50,7 @@
                 "id": "GeographicScope_4",
                 "extensionAttributes": [],
                 "type": {
-                  "id": "Code_73",
+                  "id": "Code_76",
                   "extensionAttributes": [],
                   "code": "C68846",
                   "codeSystem": "http://www.cdisc.org",
@@ -317,7 +317,7 @@
                 "label": null,
                 "description": null,
                 "quantity": {
-                  "id": "Quantity_3",
+                  "id": "Quantity_4",
                   "extensionAttributes": [],
                   "value": 0.0,
                   "unit": null,
@@ -438,6 +438,28 @@
                 },
                 "extensionAttributes": [],
                 "instanceType": "ExtensionAttribute"
+              },
+              {
+                "id": "ExtensionAttribute_6",
+                "url": "www.d4k.dk/usdm/extensions/019",
+                "extensionAttributes": [
+                  {
+                    "id": "ExtensionAttribute_5",
+                    "url": "www.d4k.dk/usdm/extensions/020",
+                    "valueCode": {
+                      "id": "Code_67",
+                      "code": "C25196",
+                      "codeSystem": "http://www.cdisc.org",
+                      "codeSystemVersion": "2025-12-19",
+                      "decode": "Randomisation",
+                      "instanceType": "Code",
+                      "extensionAttributes": []
+                    },
+                    "extensionAttributes": [],
+                    "instanceType": "ExtensionAttribute"
+                  }
+                ],
+                "instanceType": "ExtensionAttribute"
               }
             ],
             "name": "STUDY-DESIGN-1",
@@ -470,7 +492,7 @@
             "therapeuticAreas": [],
             "characteristics": [
               {
-                "id": "Code_67",
+                "id": "Code_68",
                 "extensionAttributes": [],
                 "code": "C217004",
                 "codeSystem": "http://www.cdisc.org",
@@ -479,7 +501,7 @@
                 "instanceType": "Code"
               },
               {
-                "id": "Code_68",
+                "id": "Code_69",
                 "extensionAttributes": [],
                 "code": "C46079",
                 "codeSystem": "http://www.cdisc.org",
@@ -510,7 +532,50 @@
               }
             ],
             "studyInterventionIds": [],
-            "objectives": [],
+            "objectives": [
+              {
+                "id": "Objective_1",
+                "extensionAttributes": [],
+                "name": "OBJ-1",
+                "label": "",
+                "description": "",
+                "text": "To assess the safety and tolerability of multiple doses of ASP8062 or placebo alone and in combination with a single dose of morphine.",
+                "dictionaryId": null,
+                "notes": [],
+                "instanceType": "Objective",
+                "level": {
+                  "id": "Code_73",
+                  "extensionAttributes": [],
+                  "code": "C85826",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Trial Primary Objective",
+                  "instanceType": "Code"
+                },
+                "endpoints": []
+              },
+              {
+                "id": "Objective_2",
+                "extensionAttributes": [],
+                "name": "OBJ-2",
+                "label": "",
+                "description": "",
+                "text": "To assess the potential for pharmacokinetic interaction between ASP8062 and morphine.",
+                "dictionaryId": null,
+                "notes": [],
+                "instanceType": "Objective",
+                "level": {
+                  "id": "Code_74",
+                  "extensionAttributes": [],
+                  "code": "C85827",
+                  "codeSystem": "http://www.cdisc.org",
+                  "codeSystemVersion": "2026-03-27",
+                  "decode": "Trial Secondary Objective",
+                  "instanceType": "Code"
+                },
+                "endpoints": []
+              }
+            ],
             "population": {
               "id": "StudyDesignPopulation_1",
               "extensionAttributes": [],
@@ -518,7 +583,13 @@
               "label": "Default population",
               "description": "The study population, currently blank",
               "includesHealthySubjects": true,
-              "plannedEnrollmentNumber": null,
+              "plannedEnrollmentNumber": {
+                "id": "Quantity_3",
+                "extensionAttributes": [],
+                "value": 24.0,
+                "unit": null,
+                "instanceType": "Quantity"
+              },
               "plannedCompletionNumber": null,
               "plannedSex": [
                 {
@@ -1422,7 +1493,7 @@
               "id": "AliasCode_6",
               "extensionAttributes": [],
               "standardCode": {
-                "id": "Code_69",
+                "id": "Code_70",
                 "extensionAttributes": [],
                 "code": "C15228",
                 "codeSystem": "http://www.cdisc.org",
@@ -3218,7 +3289,7 @@
             "label": "Participant",
             "description": null,
             "code": {
-              "id": "Code_70",
+              "id": "Code_71",
               "extensionAttributes": [],
               "code": "C41189",
               "codeSystem": "http://www.cdisc.org",
@@ -3248,7 +3319,7 @@
             "label": "Investigator",
             "description": null,
             "code": {
-              "id": "Code_71",
+              "id": "Code_72",
               "extensionAttributes": [],
               "code": "C25936",
               "codeSystem": "http://www.cdisc.org",
@@ -6305,5 +6376,5 @@
   },
   "usdmVersion": "4.0.0",
   "systemName": "USDM4 Protocol Package",
-  "systemVersion": "0.11.0.a22"
+  "systemVersion": "0.12.0"
 }

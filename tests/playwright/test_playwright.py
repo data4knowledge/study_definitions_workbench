@@ -3,6 +3,7 @@ import os
 import pytest
 from dotenv import load_dotenv
 from playwright.sync_api import Playwright, expect
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 from app.__init__ import VERSION
 
@@ -1014,7 +1015,7 @@ def test_validate_m11_downloads(playwright: Playwright) -> None:
     end-to-end without paying the CDISC cold-cache cost in CI.
     """
     import re
-    from datetime import date
+    from datetime import datetime
 
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
@@ -1041,7 +1042,8 @@ def test_validate_m11_downloads(playwright: Playwright) -> None:
     download_dir = "tests/test_files/downloads/m11_findings"
     os.makedirs(download_dir, exist_ok=True)
 
-    today = date.today().isoformat()
+    # Local date, matching the server-side filename.
+    today = datetime.now().astimezone().date().isoformat()
     expected = re.compile(rf"^RadVax-m11-findings-{today}\.(csv|json|md|xlsx)$")
 
     # ``button`` text mirrors the labels rendered in
@@ -1315,7 +1317,7 @@ def login(page, email=None, name=None):
     # with guidance instead of letting later steps hang on a missing page.
     try:
         page.wait_for_url("**/index", timeout=10_000)
-    except Exception:
+    except PlaywrightTimeoutError:
         raise AssertionError(
             "Login did not complete (still on the verify page). Start the "
             "server with ./playwright_server.sh so it runs in dev mode with "

@@ -33,7 +33,7 @@ class TestLocalFilesDir:
         (tmp_path / "file2.xlsx").write_text("data")
         (tmp_path / "subdir").mkdir()
         lf = LocalFiles()
-        success, data, error = lf.dir(str(tmp_path))
+        success, data, _error = lf.dir(str(tmp_path))
         assert success is True
         assert len(data["files"]) > 0
         names = [f["name"] for f in data["files"]]
@@ -47,7 +47,7 @@ class TestLocalFilesDir:
         mock_config.local_file_path = root
         lf = LocalFiles()
         (tmp_path / "file.txt").write_text("hi")
-        success, data, error = lf.dir(root)
+        success, data, _error = lf.dir(root)
         assert success is True
         # At root, should not have ".." entry
         names = [f["name"] for f in data["files"]]
@@ -60,7 +60,7 @@ class TestLocalFilesDir:
         (tmp_path / "~$lockfile.xlsx").write_text("lock")
         (tmp_path / "visible.txt").write_text("ok")
         lf = LocalFiles()
-        success, data, error = lf.dir(str(tmp_path))
+        success, data, _error = lf.dir(str(tmp_path))
         assert success is True
         names = [f["name"] for f in data["files"]]
         assert ".hidden" not in names
@@ -75,7 +75,7 @@ class TestLocalFilesDir:
         subdir.mkdir()
         (subdir / "file.txt").write_text("hi")
         lf = LocalFiles()
-        success, data, error = lf.dir(str(subdir))
+        success, data, _error = lf.dir(str(subdir))
         assert success is True
         names = [f["name"] for f in data["files"]]
         assert ".." in names
@@ -86,7 +86,7 @@ class TestLocalFilesDir:
         mock_config.local_file_path = "/fake"
         mock_scandir.side_effect = Exception("scandir fail")
         lf = LocalFiles()
-        success, data, error = lf.dir("/fake")
+        success, _data, error = lf.dir("/fake")
         assert success is False
         assert "scandir fail" in error
 

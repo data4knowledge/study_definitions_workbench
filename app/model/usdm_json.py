@@ -28,6 +28,7 @@ from app.database.file_import import FileImport
 from app.database.version import Version
 from app.imports.import_manager import ImportManager
 from app.model.file_handling.data_files import DataFiles
+from app.model.usdm_load import load_usdm4
 from app.utility.soup import get_soup
 
 
@@ -55,8 +56,9 @@ class USDMJson:
         )
         self._files = DataFiles(file_import.uuid)
         self._data = self._get_usdm()
-        errors = Errors()
-        self._wrapper: Wrapper = usdm4.loadd(self._data, errors)
+        # Raises USDMLoadException (rendered by the app-level handler)
+        # rather than leaving a None wrapper to crash a later accessor.
+        self._wrapper: Wrapper = load_usdm4(usdm4, self._data)
         # print(f"USDM JSON DATA: {self._data}")
         self._extra = self._get_extra()
 
@@ -595,9 +597,7 @@ class USDMJson:
         if section_number is None or section_number.lower().startswith("appendix"):
             result = 1
         else:
-            text = (
-                section_number.removesuffix(".")
-            )
+            text = section_number.removesuffix(".")
             result = len(text.split("."))
         return result
 

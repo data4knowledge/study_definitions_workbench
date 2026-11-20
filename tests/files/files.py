@@ -26,8 +26,8 @@ def read_word(full_path):
 
 
 def read_yaml(full_path):
-    data = open(full_path)
-    return yaml.load(data, Loader=yaml.FullLoader)
+    with open(full_path) as f:
+        return yaml.load(f, Loader=yaml.FullLoader)
 
 
 def write_yaml(full_path, data):

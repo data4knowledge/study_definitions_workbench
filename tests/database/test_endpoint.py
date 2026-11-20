@@ -75,7 +75,7 @@ def test_create_existing_endpoint(db):
     db.refresh(user1)
 
     # Create a new endpoint for user1
-    endpoint1, validation1 = Endpoint.create(
+    _endpoint1, _validation1 = Endpoint.create(
         name="Test Endpoint",
         endpoint="https://example.com/api",
         type="FHIR",
@@ -94,7 +94,7 @@ def test_create_existing_endpoint(db):
     db.refresh(user2)
 
     # Create the same endpoint for user2
-    endpoint2, validation2 = Endpoint.create(
+    _endpoint2, _validation2 = Endpoint.create(
         name="Test Endpoint",
         endpoint="https://example.com/api",
         type="FHIR",
@@ -185,7 +185,7 @@ def test_find_by_endpoint(db):
 
     # Create a new endpoint
     endpoint_url = "https://example.com/api"
-    endpoint, _ = Endpoint.create(
+    _endpoint, _ = Endpoint.create(
         name="Test Endpoint",
         endpoint=endpoint_url,
         type="FHIR",
@@ -327,7 +327,7 @@ def test_delete_endpoint_with_multiple_users(db):
         session=db,
     )
 
-    endpoint2, _ = Endpoint.create(
+    _endpoint2, _ = Endpoint.create(
         name="Test Endpoint",
         endpoint=endpoint_url,
         type="FHIR",

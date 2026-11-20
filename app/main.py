@@ -44,7 +44,7 @@ from app.model.email_auth import (
     send_registration_notification,
     verify_code,
 )
-from app.model.exceptions import FindException
+from app.model.exceptions import FindException, USDMLoadException
 from app.model.file_handling.data_files import DataFiles
 from app.model.file_handling.local_files import LocalFiles
 from app.model.file_handling.pfda_files import PFDAFiles
@@ -132,6 +132,23 @@ async def exception_callback_find(
         request,
         "errors/error.html",
         {"user": None, "data": {"error": f"A find exception '{e}' was raised."}},
+    )
+
+
+@app.exception_handler(USDMLoadException)
+async def exception_callback_usdm_load(
+    request: Request, e: USDMLoadException
+):  # pragma: no cover
+    _log_unhandled(request, e, "USDM load exception")
+    return templates.TemplateResponse(
+        request,
+        "errors/error.html",
+        {
+            "user": None,
+            "data": {
+                "error": f"The stored file for this version failed USDM v4 validation: {e}"
+            },
+        },
     )
 
 
@@ -670,9 +687,7 @@ def _transmit_error(request: Request, user, message: str):
 
 
 # Declared before the '{endpoint_id}' route so 'default' is not parsed as an id.
-@app.get(
-    "/versions/{id}/transmit/default", dependencies=[Depends(protect_endpoint)]
-)
+@app.get("/versions/{id}/transmit/default", dependencies=[Depends(protect_endpoint)])
 async def version_transmit_default(
     request: Request,
     id: int,

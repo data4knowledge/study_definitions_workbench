@@ -97,64 +97,6 @@
   type: ''
 - extra: null
   level: Warning
-  location: {}
-  message: 'Adding list item ''[text=''For patients that are currently in the study
-    with eosinophil counts greater than 0.6x103/microliter: '', level=''3'']'' to
-    item but level jump greater than 1'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location: {}
-  message: Adding list item '[text='Repeat hematology at each visit until resolved
-    in the opinion of the investigator. ', level='4']' to item but level jump greater
-    than 1
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location: {}
-  message: 'Adding list item ''[text=''For patients that are currently in the study
-    with eosinophil counts greater than 1.5x103/microliter: '', level=''3'']'' to
-    item but level jump greater than 1'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location: {}
-  message: Adding list item '[text='Obtain hematology profile every 2 weeks until
-    resolved or explained by other causes in the opinion of the investigator.', level='4']'
-    to item but level jump greater than 1
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location: {}
-  message: Adding list item '[text='Notify CRO medical monitor. ', level='4']' to
-    item but level jump greater than 1
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location: {}
-  message: 'Adding list item ''[text=''For patients with eosinophil counts greater
-    than 0.6x103/microliter at exit from the study or its extension: '', level=''3'']''
-    to item but level jump greater than 1'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
-  location: {}
-  message: 'Adding list item ''[text=''Obtain hematology profile approximately every
-    2 weeks until resolved or, in the opinion of the investigator, explained by other
-    causes. (Note: patients with eosinophil counts greater than 0.6x103/microliter
-    who have previously exited the study or its extension should return for hematology
-    profile at earliest convenience.)'', level=''4'']'' to item but level jump greater
-    than 1'
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Warning
   location:
     class_name: raw_docx.raw_docx.RawDocx
     method_name: _iter_block_items
@@ -208,41 +150,9 @@
 - extra: null
   level: Info
   location: {}
-  message: 'Parsing names and address, key sponsor: interim raw result={''sponsor'':
-    ''Eli Lilly and Company\nLilly Corporate Center\nIndianapolis, IN 46285\n'', ''co_sponsor'':
-    None, ''local_sponsor'': None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key co_sponsor: interim raw result={''sponsor'':
-    ''Eli Lilly and Company\nLilly Corporate Center\nIndianapolis, IN 46285\n'', ''co_sponsor'':
-    None, ''local_sponsor'': None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key local_sponsor: interim raw result={''sponsor'':
-    ''Eli Lilly and Company\nLilly Corporate Center\nIndianapolis, IN 46285\n'', ''co_sponsor'':
-    None, ''local_sponsor'': None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address, key device: interim raw result={''sponsor'':
-    ''Eli Lilly and Company\nLilly Corporate Center\nIndianapolis, IN 46285\n'', ''co_sponsor'':
-    None, ''local_sponsor'': None, ''device'': None}, remaining='
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
-  level: Info
-  location: {}
-  message: 'Parsing names and address: raw result={''sponsor'': ''Eli Lilly and Company\nLilly
-    Corporate Center\nIndianapolis, IN 46285\n'', ''co_sponsor'': None, ''local_sponsor'':
-    None, ''device'': None}'
+  message: 'Parsing names and address: raw result={''sponsor'': [''Eli Lilly and Company\nLilly
+    Corporate Center\nIndianapolis, IN 46285\n''], ''co_sponsor'': [], ''local_sponsor'':
+    [], ''device'': []}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -420,19 +330,6 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Warning
-  location:
-    class_name: usdm4_protocol.common.html.soup_utils
-    method_name: get_soup
-  message: 'Warning raised within Soup package, processing ''Investigator has obtained
-    informed consent signed by the patient (and/or legal representative) and by the
-    caregiver. ''
-
-    Message returned ''The input looks more like a filename than markup. You may want
-    to open this file and pass the filehandle into Beautiful Soup.'''
-  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
-  type: ''
-- extra: null
   level: Error
   location: {}
   message: 'Neither a RawList or RawListItem detected, type: ''<class ''raw_docx.raw_paragraph.RawParagraph''>'',
@@ -465,16 +362,17 @@
     class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
     method_name: _decode
   message: Number of Participants 'Approximately 300 patients will be enrolled (see
-    Schedule of Events for Protocol H2Q-MC-LZZT(c), Attachment LZZT.1).' holds no
-    number; not stored
+    Schedule of Events for Protocol H2Q-MC-LZZT(c), Attachment LZZT.1).' is not the
+    M11 sentence; 300 stored
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Info
+  level: Warning
   location:
     class_name: usdm4_protocol.m11.import_.extract.overall_design.OverallDesign
-    method_name: _design
-  message: 'Site Distribution and Geographic Scope ''NA Global'': only partly read'
+    method_name: _decode
+  message: Site Distribution and Geographic Scope 'NA Global' gives no Site Distribution;
+    not stored
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -597,8 +495,8 @@
   location:
     class_name: usdm4_protocol.m11.import_.extract.amendments.Amendments
     method_name: _reasons
-  message: 'Amendment reasons found {''primary'': ''Primary: Entry Criteria'', ''secondary'':
-    ''Secondary: Administrative.''}'
+  message: 'Amendment reasons found {''primary'': ''Entry Criteria'', ''secondary'':
+    ''Administrative.''}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -642,15 +540,15 @@
     amendment.</p>'', ''identifier'': ''H2Q-MC-LXXT(c)'', ''scope'': {''global'':
     True, ''countries'': [], ''regions'': [], ''sites'': [], ''unknown'': []}, ''enrollment'':
     {''keyword'': ''Globally'', ''value'': 66, ''unit'': ''%'', ''regions'': []},
-    ''reasons'': {''primary'': ''Primary: Entry Criteria'', ''secondary'': ''Secondary:
-    Administrative.''}, ''summary'': ''(Example data only as exact details of amendment
-    were not available for this test protocol.)'', ''impact'': {''safety_and_rights'':
-    {''safety'': {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'':
-    False, ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
-    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
-    ''''}}}, ''changes'': [{''description'': ''Changed Entry Criteria'', ''rationale'':
-    ''Example data only as exact details of amendment were not available for this
-    test protocol.'', ''section'': ''5.2 Inclusion Criteria''}]}'
+    ''reasons'': {''primary'': ''Entry Criteria'', ''secondary'': ''Administrative.''},
+    ''summary'': ''(Example data only as exact details of amendment were not available
+    for this test protocol.)'', ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
+    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
+    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
+    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''changes'':
+    [{''description'': ''Changed Entry Criteria'', ''rationale'': ''Example data only
+    as exact details of amendment were not available for this test protocol.'', ''section'':
+    ''5.2 Inclusion Criteria''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -791,16 +689,16 @@
   location: {}
   message: 'Amendment assembler source data {''identifier'': ''H2Q-MC-LXXT(c)'', ''summary'':
     ''(Example data only as exact details of amendment were not available for this
-    test protocol.)'', ''reasons'': {''primary'': ''Primary: Entry Criteria'', ''secondary'':
-    ''Secondary: Administrative.''}, ''impact'': {''safety_and_rights'': {''safety'':
-    {''substantial'': False, ''reason'': ''''}, ''rights'': {''substantial'': False,
-    ''reason'': ''''}}, ''reliability_and_robustness'': {''reliability'': {''substantial'':
-    False, ''reason'': ''''}, ''robustness'': {''substantial'': False, ''reason'':
-    ''''}}}, ''enrollment'': {''value'': 66, ''unit'': ''%''}, ''scope'': {''global'':
-    True, ''unknown'': [], ''countries'': [], ''regions'': [], ''sites'': []}, ''changes'':
-    [{''section'': ''5.2 Inclusion Criteria'', ''description'': ''Changed Entry Criteria'',
-    ''rationale'': ''Example data only as exact details of amendment were not available
-    for this test protocol.''}]}'
+    test protocol.)'', ''reasons'': {''primary'': ''Entry Criteria'', ''secondary'':
+    ''Administrative.''}, ''impact'': {''safety_and_rights'': {''safety'': {''substantial'':
+    False, ''reason'': ''''}, ''rights'': {''substantial'': False, ''reason'': ''''}},
+    ''reliability_and_robustness'': {''reliability'': {''substantial'': False, ''reason'':
+    ''''}, ''robustness'': {''substantial'': False, ''reason'': ''''}}}, ''enrollment'':
+    {''value'': 66, ''unit'': ''%''}, ''scope'': {''global'': True, ''unknown'': [],
+    ''countries'': [], ''regions'': [], ''sites'': []}, ''changes'': [{''section'':
+    ''5.2 Inclusion Criteria'', ''description'': ''Changed Entry Criteria'', ''rationale'':
+    ''Example data only as exact details of amendment were not available for this
+    test protocol.''}]}'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -808,7 +706,7 @@
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: amendment_reason
-  message: 'Unable to decode amendment reason ''Primary: Entry Criteria'''
+  message: Unable to decode amendment reason 'Entry Criteria'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -816,7 +714,7 @@
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: amendment_reason
-  message: 'Unable to decode amendment reason ''Secondary: Administrative.'''
+  message: Unable to decode amendment reason 'Administrative.'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -876,11 +774,27 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: sourcing
+  message: Sourcing 'CENTRAL' decoded as 'C215659', 'Centrally Sourced Indicator'
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
   level: Warning
   location:
     class_name: usdm4.assembler.study_design_assembler.StudyDesignAssembler
     method_name: _build_strength
   message: Could not parse strength 'NA' for substance 'Placebo'; dropping.
+  timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
+  type: ''
+- extra: null
+  level: Info
+  location:
+    class_name: usdm4.encoder.encoder.Encoder
+    method_name: sourcing
+  message: Sourcing 'CENTRAL' decoded as 'C215659', 'Centrally Sourced Indicator'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -892,12 +806,12 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Warning
+  level: Info
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: route
-  message: Route of administration 'TRANSDERMAL' not decoded; defaulting to 'Oral
-    Route of Administration'
+  message: Route of administration 'Transdermal' decoded from C66729 as 'C38305',
+    'Transdermal Route of Administration'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -909,12 +823,12 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Warning
+  level: Info
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: route
-  message: Route of administration 'TRANSDERMAL' not decoded; defaulting to 'Oral
-    Route of Administration'
+  message: Route of administration 'Transdermal' decoded from C66729 as 'C38305',
+    'Transdermal Route of Administration'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
@@ -951,12 +865,12 @@
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null
-  level: Warning
+  level: Info
   location:
     class_name: usdm4.encoder.encoder.Encoder
     method_name: route
-  message: Route of administration 'TRANSDERMAL' not decoded; defaulting to 'Oral
-    Route of Administration'
+  message: Route of administration 'Transdermal' decoded from C66729 as 'C38305',
+    'Transdermal Route of Administration'
   timestamp: YYYY-MM-DD HH:MM:SS.nnnnnn
   type: ''
 - extra: null

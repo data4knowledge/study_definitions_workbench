@@ -508,7 +508,7 @@ class TestImportUSDM:
         mock_data_files.assert_called_once_with("test-uuid")
         mock_data_files.return_value.path.assert_called_with("usdm")
         mock_data_files.return_value.read.assert_called_once_with("usdm")
-        mock_usdm4.call_count == 2
+        assert mock_usdm4.call_count == 2
         mock_usdm4.return_value.validate.assert_called_once_with("/path/to/file")
         assert processor.usdm == mock_data_files.return_value.read.return_value
         assert (
@@ -538,6 +538,31 @@ class TestImportUSDM:
         # Findings are still persisted on the processor so the import
         # manager can write them to the errors file.
         assert processor.errors == {"errors": [{"status": "Failure"}]}
+
+    @pytest.mark.asyncio
+    async def test_process_model_load_failure_fails_import(
+        self, mock_data_files, mock_usdm4
+    ):
+        """A file that does not load into the usdm4 model fails the
+        import with the field-level reason (issue 79); the rule
+        findings are still kept for the errors file."""
+        mock_usdm4.return_value.loadd.return_value = None
+        mock_data_files.return_value.read.return_value = (
+            '{"study": {"id": "5ce2159ef12f1f3c", "name": "x"}}'
+        )
+
+        processor = ImportUSDM4("USDM4_JSON", "test-uuid", "/path/to/file")
+        result = await processor.process()
+
+        assert not result
+        assert not processor.success
+        assert processor.fatal_error.startswith("the file is not valid USDM v4: ")
+        assert "study.id: " in processor.fatal_error
+        assert (
+            processor.errors
+            == mock_usdm4.return_value.validate.return_value.to_dict.return_value
+        )
+        assert processor.study_parameters is None
 
     @pytest.mark.asyncio
     async def test_process_missing_parameters_falls_back(
