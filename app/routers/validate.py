@@ -75,7 +75,7 @@ async def validate_usdm_process(
     engine — keeps the default route's results page identical to
     ``/validate/usdm/cdisc`` rather than the bare-bones output of
     ``_process``."""
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await _process_usdm_engine(request, user, source, engine="cdisc")
 
 
@@ -99,7 +99,7 @@ def validate_usdm_d4k(request: Request, session: Session = Depends(get_db)):
 async def validate_usdm_d4k_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await _process_usdm_engine(request, user, source, engine="d4k")
 
 
@@ -125,7 +125,7 @@ def validate_usdm_cdisc(request: Request, session: Session = Depends(get_db)):
 async def validate_usdm_cdisc_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await _process_usdm_engine(request, user, source, engine="cdisc")
 
 
@@ -148,7 +148,7 @@ def validate_m11_docx(request: Request, session: Session = Depends(get_db)):
 async def validate_m11_docx_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await _process_m11_docx(request, user, source)
 
 
@@ -160,11 +160,11 @@ def _validate_setup(
     other_file: bool,
     data_url: str,
     page_html: str,
-    extra_data: dict = {},
+    extra_data: dict | None = None,
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = application_configuration.file_picker
-    data.update(extra_data)
+    data.update(extra_data or {})
     data["dir"] = LocalFiles().root if data["os"] else ""
     data["required_ext"] = ext
     data["other_files"] = other_file
@@ -209,14 +209,14 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
     shape, not this helper.
     """
     form_handler = FormHandler(request, False, ".json", source)
-    main_file, image_files, messages = await form_handler.get_files()
+    main_file, _image_files, messages = await form_handler.get_files()
     findings: list[dict] = []
     summary: dict = {}
     if main_file:
         files = DataFiles()
         _ = files.new()
         files.save("usdm", main_file["contents"], main_file["filename"])
-        full_path, filename, exists = files.path("usdm")
+        full_path, _filename, _exists = files.path("usdm")
         # Pass the configured CORE cache path (empty string falls through
         # to the USDM4 platform default). This keeps the downloaded
         # JSONata files, XSD schemas, rules, and CT packages on the
@@ -324,7 +324,7 @@ async def _process_m11_docx(request: Request, user: User, source: str):
         ".docx",
         source,
     )
-    main_file, image_files, messages = await form_handler.get_files()
+    main_file, _image_files, messages = await form_handler.get_files()
     findings: list[dict] = []
     summary: dict = {}
     if main_file:
@@ -333,7 +333,7 @@ async def _process_m11_docx(request: Request, user: User, source: str):
         # Reuse the existing "docx" media type; "m11" isn't registered in
         # DataFiles.media_type and shouldn't be added just for validation.
         files.save("docx", main_file["contents"], main_file["filename"])
-        full_path, filename, exists = files.path("docx")
+        full_path, _filename, _exists = files.path("docx")
         # Standalone validator — runs against the DOCX directly without
         # going through the USDM4 translator.  See
         # usdm4_protocol/docs/m11_validator_v2_plan.md for the design.

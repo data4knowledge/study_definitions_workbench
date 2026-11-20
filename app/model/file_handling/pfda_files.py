@@ -9,7 +9,7 @@ class PFDAFiles:
     def dir(self, dir):
         try:
             args = ["pfda", "ls", "-json"]
-            result = subprocess.run(args, capture_output=True, text=True)
+            result = subprocess.run(args, capture_output=True, text=True, check=False)
             response = json.loads(result.stdout)
             if "error" in response:
                 application_logger.error(f"pFDA error: {response['error']}")
@@ -17,7 +17,7 @@ class PFDAFiles:
             else:
                 application_logger.info(f"pFDA file list response: {response}")
                 return True, {"files": response["files"]}, ""
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("pFDA exception", e)
             return (
                 False,
@@ -38,7 +38,7 @@ class PFDAFiles:
             "true",
         ]
         # print(f"ARGS: {args}")
-        result = subprocess.run(args, capture_output=True, text=True)
+        result = subprocess.run(args, capture_output=True, text=True, check=False)
         # print(f"RESULT: {result}")
         application_logger.info(f"PFDA download: {result.stdout}")
         files = json.loads(result.stdout)

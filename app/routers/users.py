@@ -95,7 +95,7 @@ def create_user_endpoint(
     session: Session = Depends(get_db),
 ):
     user = User.find(id, session)
-    endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
+    _endpoint, validation = Endpoint.create(name, url, "FHIR", user.id, session)
     data = {
         "endpoints": User.endpoints_page(1, 100, user.id, session),
         "validation": {"endpoint": validation},

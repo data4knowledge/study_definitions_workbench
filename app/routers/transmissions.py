@@ -24,7 +24,7 @@ async def import_status(
     filter: str = "",
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if transmit_role_enabled(request):
         data = {"page": page, "size": size, "filter": filter}
         return templates.TemplateResponse(
@@ -49,7 +49,7 @@ async def import_status_data(
     filter: str = "",
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if transmit_role_enabled(request):
         data = Transmission.page(page, size, user.id, session)
         for item in data["items"]:

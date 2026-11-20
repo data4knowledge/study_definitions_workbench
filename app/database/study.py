@@ -162,7 +162,7 @@ class Study(StudyBase):
             session.delete(record)
             session.commit()
             return 1
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Failed to delete study record", e)
             return 0
 
@@ -223,13 +223,13 @@ class Study(StudyBase):
                 for x in FileImport.find_by_filename(file_import.filename)
                 if x.uuid != file_import.uuid
             ]
-            studies = list(set([x.version.study_id for x in previous_imports]))
+            studies = list({x.version.study_id for x in previous_imports})
             return (
                 studies[0].name
                 if len(studies) == 1
                 else Study._generate_name(file_import.filename)
             )
-        except Exception:
+        except Exception:  # noqa: BLE001
             return Study._generate_name(file_import.filename)
 
     @staticmethod

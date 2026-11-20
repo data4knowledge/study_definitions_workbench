@@ -25,10 +25,8 @@ class ObjectPath:
             )
             if group_result:
                 result = group_result.groupdict()
-                is_digits = (
-                    True
-                    if result["subpath_index"] and result["subpath_index"].isdigit()
-                    else False
+                is_digits = bool(
+                    result["subpath_index"] and result["subpath_index"].isdigit()
                 )
                 # print(f"RESULT: {instruction}, {result}")
                 if result["name"] and result["value"] and result["attribute"]:
@@ -68,7 +66,7 @@ class ObjectPath:
                     f"Failed to find path, no matches error '{self._original_path}'"
                 )
                 return None
-        except Exception as e:  # pragma: no cover
+        except Exception as e:  # pragma: no cover  # noqa: BLE001
             application_logger.exception(
                 f"Exception raised processing object path '{self._original_path}'", e
             )

@@ -102,9 +102,9 @@ class User(UserBase):
             # print(f"USER: Not in DB")
             present_in_db = False
             dn = re.sub(r"[^a-zA-Z0-9]", "", info["nickname"])
-            email = info["email"] if "email" in info else "No email"
+            email = info.get("email", "No email")
             display_name = dn if dn else "No display name"
-            user, validation = cls.create(info["sub"], email, display_name, session)
+            user, _validation = cls.create(info["sub"], email, display_name, session)
         return user, present_in_db
 
     @classmethod

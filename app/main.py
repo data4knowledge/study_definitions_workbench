@@ -299,7 +299,7 @@ async def register_submit(
 
 @app.get("/fileList", dependencies=[Depends(protect_endpoint)])
 def file_list(request: Request, dir: str, url: str, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     picker = application_configuration.file_picker
     valid, data, message = (
         PFDAFiles().dir(dir) if picker["pfda"] else LocalFiles().dir(dir)
@@ -323,7 +323,7 @@ def file_list(request: Request, dir: str, url: str, session: Session = Depends(g
 async def get_version_usdm_view(
     request: Request, id: int, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     data = {"version": usdm.study_version(), "version_id": id, "json": usdm._get_raw()}
     return templates.TemplateResponse(
@@ -335,12 +335,12 @@ async def get_version_usdm_view(
 async def get_version_usdm_explore(
     request: Request, id: int, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     version = Version.find(id, session)
     file_import = FileImport.find(version.import_id, session)
     files = DataFiles(file_import.uuid)
-    fullpath, filename, exists = files.path("usdm")
+    fullpath, _filename, _exists = files.path("usdm")
     datastore = DataStore(fullpath)
     datastore.decompose()
     datastore._klasses.pop("Wrapper")
@@ -355,7 +355,7 @@ async def get_version_usdm_explore(
 async def get_version_usdm_diff(
     request: Request, id: int, previous: int, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     curr_usdm = USDMJson(id, session)
     prev_usdm = USDMJson(previous, session)
     curr_lines = curr_usdm._get_raw().split("\n")
@@ -381,7 +381,7 @@ async def get_study_design_summary(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = {"id": version_id, "study_design_id": study_design_id, "m11": usdm.m11}
     return templates.TemplateResponse(
@@ -399,7 +399,7 @@ async def get_study_design_o_parameters(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.study_design_overall_parameters(study_design_id)
     # print(f"OVERALL SUMMARY DATA: {data}")
@@ -420,7 +420,7 @@ async def get_study_design_d_parameters(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.study_design_design_parameters(study_design_id)
     # print(f"DESIGN PARAMETERS DATA: {data}")
@@ -441,7 +441,7 @@ async def get_study_design_schema(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.study_design_schema(study_design_id)
     # print(f"SCHEMA DATA: {data}")
@@ -460,7 +460,7 @@ async def get_study_design_interventions(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.study_design_interventions(study_design_id)
     # print(f"INTERVENTION DATA: {data}")
@@ -481,7 +481,7 @@ async def get_study_design_estimands(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.study_design_estimands(study_design_id)
     # print(f"ESTIMAND DATA: {data}")
@@ -494,7 +494,7 @@ async def get_study_design_estimands(
 async def get_version_safety(
     request: Request, id: int, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     data = {
         "version": usdm.study_version(),
@@ -516,7 +516,7 @@ async def get_study_design_safety(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = {"id": version_id, "study_design_id": study_design_id, "m11": usdm.m11}
     return templates.TemplateResponse(
@@ -534,7 +534,7 @@ async def get_study_design_ae_special_interest(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.adverse_events_special_interest(study_design_id)
     # print(f"AE SPECIAL INTEREST DATA: {data}")
@@ -555,7 +555,7 @@ async def get_study_design_safety_assessments(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.safety_assessments(study_design_id)
     # print(f"SAFETY ASSESSMENT DATA: {data}")
@@ -570,7 +570,7 @@ async def get_study_design_safety_assessments(
 async def get_version_statistics(
     request: Request, id: int, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     data = {
         "version": usdm.study_version(),
@@ -592,7 +592,7 @@ async def get_study_design_statistics(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = {"id": version_id, "study_design_id": study_design_id, "m11": usdm.m11}
     return templates.TemplateResponse(
@@ -610,7 +610,7 @@ async def get_study_design_sample_size(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.sample_size(study_design_id)
     # print(f"SAMPLE SIZE DATA: {data}")
@@ -629,7 +629,7 @@ async def get_study_design_analysis_sets(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.analysis_sets(study_design_id)
     # print(f"ANALYSIS SETS DATA: {data}")
@@ -650,7 +650,7 @@ async def get_study_design_analysis_obj(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.analysis_objectives(study_design_id)
     # print(f"ANALYSIS OBJECTIVES DATA: {data}")
@@ -663,7 +663,7 @@ async def get_study_design_analysis_obj(
 
 @app.get("/versions/{id}/export/fhir", dependencies=[Depends(protect_endpoint)])
 async def export_fhir(request: Request, id: int, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     application_logger.info("FHIR (PRISM3) export requested")
     full_path, filename, media_type = usdm.fhir()
@@ -694,7 +694,7 @@ async def version_transmit_default(
     session: Session = Depends(get_db),
 ):
     """Send the M11 FHIR message to the default FHIR server (FHIR_SERVER_URL)."""
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if not transmit_role_enabled(request):
         return _transmit_error(
             request, user, "User is not authorised to transmit FHIR messages."
@@ -720,7 +720,7 @@ async def version_transmit(
     session: Session = Depends(get_db),
 ):
     """Send the M11 FHIR message to one of the current user's endpoints."""
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if not transmit_role_enabled(request):
         return _transmit_error(
             request, user, "User is not authorised to transmit FHIR messages."
@@ -736,7 +736,7 @@ async def version_transmit(
 
 @app.get("/versions/{id}/export/json", dependencies=[Depends(protect_endpoint)])
 async def export_json(request: Request, id: int, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     application_logger.info("EXPORT JSON")
     usdm = USDMJson(id, session)
     full_path, filename, media_type = usdm.json()
@@ -759,7 +759,7 @@ async def export_json(request: Request, id: int, session: Session = Depends(get_
 
 @app.get("/database/clean", dependencies=[Depends(protect_endpoint)])
 async def database_clean(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if admin_role_enabled(request):
         database_managr = DBM(session)
         database_managr.clear_all()
@@ -774,7 +774,7 @@ async def database_clean(request: Request, session: Session = Depends(get_db)):
 
 @app.get("/database/debug", dependencies=[Depends(protect_endpoint)])
 async def database_debug(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if admin_role_enabled(request):
         data = {}
         data["users"] = json.dumps(User.debug(session), indent=2)
@@ -801,7 +801,7 @@ async def database_debug(request: Request, session: Session = Depends(get_db)):
 async def debug_level(
     request: Request, level: str = "INFO", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if admin_role_enabled(request) and level.upper() in ["DEBUG", "INFO"]:
         level = (
             application_logger.DEBUG

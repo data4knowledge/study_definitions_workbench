@@ -37,7 +37,7 @@ def list_and_copy(path):
                     try:
                         shutil.copyfile(src, dest)
                         print(f"File {src} copied to {dest}")
-                    except Exception as e:
+                    except Exception as e:  # noqa: BLE001
                         print(f"Exception raised copying file {e}")
         elif entry.is_dir():
             list_and_copy(entry)

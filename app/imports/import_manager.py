@@ -125,7 +125,7 @@ class ImportManager:
         return value == cls.USDM4_JSON
 
     def save_files(
-        self, main_file: dict, image_files: dict, extra_files: list[dict] = None
+        self, main_file: dict, image_files: dict, extra_files: list[dict] | None = None
     ) -> str:
         """Save the uploaded files and record which one is the import's
         main file.
@@ -176,7 +176,7 @@ class ImportManager:
             try:
                 if excel.is_main_workbook(full_path):
                     mains.append((full_path, filename))
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 application_logger.exception(
                     f"Exception inspecting workbook '{filename}'", e
                 )
@@ -222,7 +222,7 @@ class ImportManager:
                     f"Error encountered importing '{filename}', {processor.fatal_error}",
                     str(self.user.id),
                 )
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             if file_import:
                 file_import.update_status("Exception", session)
             application_logger.exception("Exception raised processing import", e)

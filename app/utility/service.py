@@ -26,7 +26,7 @@ class Service:
         except httpx.HTTPError as e:
             return self._exception("GET", e)
 
-    async def file_post(self, url, files, data={}):
+    async def file_post(self, url, files, data=None):
         try:
             full_url = self._full_url(url)
             response = (
@@ -42,7 +42,8 @@ class Service:
         except httpx.HTTPError as e:
             return self._exception("POST (file)", e)
 
-    async def post(self, url, data={}, timeout=None):
+    async def post(self, url, data=None, timeout=None):
+        data = {} if data is None else data
         try:
             headers = {"Content-Type": "application/json"}
             timeout = timeout if timeout else self.DEFAULT_TIMEOUT
@@ -57,7 +58,7 @@ class Service:
         except httpx.HTTPError as e:
             return self._exception("POST", e)
 
-    async def delete(self, url, data={}):
+    async def delete(self, url, data=None):
         try:
             headers = {"Content-Type": "application/json"}
             response = await self._client.delete(self._full_url(url), headers=headers)

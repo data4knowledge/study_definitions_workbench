@@ -171,7 +171,7 @@ class DataFiles:
                         application_logger.info(
                             f"Unlinked file '{path}' during clean and tidy"
                         )
-                    except Exception as e:  # pragma: no cover
+                    except Exception as e:  # pragma: no cover  # noqa: BLE001
                         application_logger.exception(
                             f"Exception unlinking file '{path}' during clean and tidy dir '{dir}'",
                             e,
@@ -185,7 +185,7 @@ class DataFiles:
                             application_logger.info(
                                 f"Removed dir '{path}' during clean and tidy"
                             )
-                        except Exception as e:  # pragma: no cover
+                        except Exception as e:  # pragma: no cover  # noqa: BLE001
                             application_logger.exception(
                                 f"Exception deleting '{path}' during clean and tidy dir '{dir}'",
                                 e,
@@ -196,7 +196,7 @@ class DataFiles:
                         )
             application_logger.info("Deleted datafiles dir")
             return True
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(f"Exception during clean and tidy '{dir}'", e)
             return False
 
@@ -210,7 +210,7 @@ class DataFiles:
             return True
         except FileExistsError:
             application_logger.info("Datafiles dir exists")
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(
                 f"Exception checking/creating datafiles dir '{dir}'", e
             )
@@ -234,7 +234,7 @@ class DataFiles:
             filename = filename if filename else self._form_filename(type)
             full_path = self.media_type[type]["method"](contents, filename)
             return full_path, filename
-        except Exception:  # pragma: no cover
+        except Exception:  # pragma: no cover  # noqa: BLE001
             return None, None
 
     def exists(self, type) -> bool:  # pragma: no cover
@@ -245,7 +245,7 @@ class DataFiles:
             full_path = self._file_path(self._form_filename(type))
             with open(full_path, "r") as stream:
                 return stream.read()
-        except Exception:  # pragma: no cover
+        except Exception:  # pragma: no cover  # noqa: BLE001
             return None
 
     def path(self, type):
@@ -283,7 +283,7 @@ class DataFiles:
                     shutil.rmtree(os.path.join(root, d))
             application_logger.info("Deleted datafiles dir")
             return True
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(
                 f"Exception deleting datafiles dir '{self.dir}'", e
             )
@@ -295,7 +295,7 @@ class DataFiles:
             shutil.rmtree(path)
             application_logger.info(f"Deleted study dir '{path}'")
             return True
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(f"Exception deleting study dir '{path}'", e)
             return False
 
@@ -311,7 +311,7 @@ class DataFiles:
             with open(full_path, "wb") as f:
                 f.write(contents)
             return full_path
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Exception saving source file", e)
 
     def _save_image_file(self, contents, filename):
@@ -320,7 +320,7 @@ class DataFiles:
             with open(full_path, "wb") as f:
                 f.write(contents)
             return full_path
-        except Exception as e:  # pragma: no cover
+        except Exception as e:  # pragma: no cover  # noqa: BLE001
             application_logger.exception("Exception saving source file", e)
 
     def _save_json_file(self, contents, filename):
@@ -329,7 +329,7 @@ class DataFiles:
             with open(full_path, "w", encoding="utf-8") as f:
                 f.write(json.dumps(json.loads(contents), indent=2))
             return full_path
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Exception saving results file", e)
 
     def _save_yaml_file(self, contents, filename):
@@ -339,7 +339,7 @@ class DataFiles:
             with open(full_path, "w") as f:
                 yaml.dump(contents, f, default_flow_style=False)
             return full_path
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Exception saving results file", e)
 
     def _save_pdf_file(self, contents, filename):
@@ -348,7 +348,7 @@ class DataFiles:
             with open(full_path, "w+b") as f:
                 f.write(contents)
             return full_path
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Exception saving PDF file", e)
 
     def _save_html_file(self, contents, filename):
@@ -357,7 +357,7 @@ class DataFiles:
             with open(full_path, "w", encoding="utf-8") as f:
                 f.write(contents)
             return full_path
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Exception saving timeline file", e)
 
     def _save_csv_file(self, contents, filename):
@@ -370,14 +370,14 @@ class DataFiles:
                 writer.writeheader()
                 writer.writerows(contents)
             return full_path
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Exception saving error file", e)
 
     def _create_dir(self):
         try:
             os.mkdir(os.path.join(self.dir, self.uuid))
             return True
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(f"Exception creating dir '{self.uuid}'", e)
             return False
 

@@ -48,7 +48,7 @@ class RequestHandler:
                         "type": self.type,
                     },
                 )
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Exception uploading files", e)
             return templates.TemplateResponse(
                 request,

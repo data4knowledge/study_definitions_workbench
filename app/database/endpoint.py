@@ -96,7 +96,7 @@ class Endpoint(EndpointBase):
     @classmethod
     def valid(cls):
         result = {}
-        for attribute, definition in EndpointBase.model_fields.items():
+        for attribute in EndpointBase.model_fields:
             result[attribute] = {"valid": True, "message": ""}
         # print(f"ENDPOINT VALID: {result}")
         return result
@@ -107,7 +107,7 @@ class Endpoint(EndpointBase):
         try:
             http_url_adapter.validate_python(endpoint)
             endpoint_valiadation = True
-        except Exception:
+        except Exception:  # noqa: BLE001
             endpoint_valiadation = False
         type_valiadation = type in ["FHIR"]
         validation = {

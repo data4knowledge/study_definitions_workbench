@@ -41,7 +41,7 @@ def index_page(
     initial: bool = False,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = {}
     cookie, params = _cookie_and_params(initial, request, user, session)
     data["page"] = Study.page(page, size, user.id, params, session)
@@ -65,7 +65,7 @@ def index_filter(
     state: bool,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = _get_cookie(request, user, session)
     data[filter_type][id]["selected"] = state
     response = templates.TemplateResponse(request, "home/partials/empty.html")
@@ -81,8 +81,8 @@ def _cookie_and_params(
         cookie = _base_cookie(user, session)
     else:
         cookie = _get_cookie(request, user, session)
-        all_true = all([x["selected"] for x in cookie["phase"]]) and all(
-            [x["selected"] for x in cookie["sponsor"]]
+        all_true = all(x["selected"] for x in cookie["phase"]) and all(
+            x["selected"] for x in cookie["sponsor"]
         )
         params = {
             "phase": [x["label"] for x in cookie["phase"] if x["selected"]],

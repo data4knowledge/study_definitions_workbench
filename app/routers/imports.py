@@ -74,7 +74,7 @@ def import_fhir(request: Request, session: Session = Depends(get_db)):
 async def import_m11_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await RequestHandler(ImportManager.M11_DOCX, source).process(
         request, templates, user
     )
@@ -84,7 +84,7 @@ async def import_m11_process(
 async def import_cpt_docx_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await RequestHandler(ImportManager.CPT_DOCX, source).process(
         request, templates, user
     )
@@ -94,7 +94,7 @@ async def import_cpt_docx_process(
 async def import_legacy_pdf__process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await RequestHandler(ImportManager.LEGACY_PDF, source).process(
         request, templates, user
     )
@@ -104,7 +104,7 @@ async def import_legacy_pdf__process(
 async def import_xl_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await RequestHandler(ImportManager.USDM_EXCEL, source).process(
         request, templates, user
     )
@@ -114,7 +114,7 @@ async def import_xl_process(
 async def import_fhir_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await RequestHandler(ImportManager.FHIR_PRISM3_JSON, source).process(
         request, templates, user
     )
@@ -124,7 +124,7 @@ async def import_fhir_process(
 async def import_usdm_process(
     request: Request, source: str = "browser", session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     return await RequestHandler(ImportManager.USDM4_JSON, source).process(
         request, templates, user
     )
@@ -138,7 +138,7 @@ async def import_status(
     filter: str = "",
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = {"page": page, "size": size, "filter": filter}
     return templates.TemplateResponse(
         request, "import/status.html", {"user": user, "data": data}
@@ -153,7 +153,7 @@ async def import_status_data(
     filter: str = "",
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = FileImport.page(page, size, user.id, session)
     pagination = Pagination(data, "/import/status/data")
     # print(f"********** Data: {data}")
@@ -166,7 +166,7 @@ async def import_status_data(
 
 @router.get("/{id}/errors", dependencies=[Depends(protect_endpoint)])
 async def import_errors(request: Request, id: str, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = FileImport.find(id, session)
     files = DataFiles(data.uuid)
     fullpath, filename, exists = files.path("errors")
@@ -201,7 +201,7 @@ async def import_m11_validation(
     import) the page renders an informational message rather than
     an error — validator findings are advisory.
     """
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     file_import = FileImport.find(id, session)
     findings: list[dict] = []
     messages: list[str] = []
@@ -242,11 +242,11 @@ def _import_setup(
     other_file: bool,
     data_url: str,
     page_html: str,
-    extra_data: dict = {},
+    extra_data: dict | None = None,
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = application_configuration.file_picker
-    data.update(extra_data)
+    data.update(extra_data or {})
     data["dir"] = LocalFiles().root if data["os"] else ""
     data["required_ext"] = ext
     data["other_files"] = other_file

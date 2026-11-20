@@ -1,5 +1,6 @@
 import difflib
 import re
+from typing import ClassVar
 
 from d4k_ms_base.logger import application_logger
 
@@ -16,12 +17,12 @@ class LineRange:
     def _to_int(self, text: str) -> int:
         try:
             return int(text)
-        except Exception:
+        except Exception:  # noqa: BLE001
             return 1
 
 
 class HunkLine:
-    TYPE_TO_STYLE = {
+    TYPE_TO_STYLE: ClassVar[dict[str, str]] = {
         "deleted": "danger",
         "inserted": "success",
         "nochange": "",
@@ -90,7 +91,7 @@ class UnifiedDiff:
         for text in difflib.unified_diff(old_data, new_data):
             application_logger.debug(f"Unified diff text '{text}'")
             # print(f"UD: {text}")
-            if text.startswith("---") or text.startswith("+++"):
+            if text.startswith(("---", "+++")):
                 pass
             elif text.startswith("@@"):
                 application_logger.debug(f"Hunk detected '{text}'")

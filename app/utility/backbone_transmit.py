@@ -19,6 +19,7 @@ set, is sent as an ``X-API-Key`` header.
 
 import asyncio
 import threading
+from pathlib import Path
 
 import httpx
 from d4k_ms_base.logger import application_logger
@@ -75,8 +76,7 @@ async def backbone_transmit(version_id: int, user: User) -> None:
         application_logger.info(
             f"Backbone load: sending '{filename}' from version id '{version_id}' to '{url}'"
         )
-        with open(full_path, "rb") as fh:
-            contents = fh.read()
+        contents = await asyncio.to_thread(Path(full_path).read_bytes)
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 url,
@@ -92,7 +92,7 @@ async def backbone_transmit(version_id: int, user: User) -> None:
             await connection_manager.success(message, str(user.id))
         else:
             await connection_manager.error(message, str(user.id))
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         application_logger.exception(
             f"Exception loading USDM from version '{version_id}' into the backbone",
             e,
@@ -110,8 +110,10 @@ def _outcome_message(response: httpx.Response) -> tuple[bool, str]:
         body = response.json()
         return (
             True,
-            f"Successful backbone load: study '{body.get('slug', '?')}', "
-            f"{body.get('triple_count', '?')} triples in graph '{body.get('graph_uri', '?')}'",
+            (
+                f"Successful backbone load: study '{body.get('slug', '?')}', "
+                f"{body.get('triple_count', '?')} triples in graph '{body.get('graph_uri', '?')}'"
+            ),
         )
     if response.status_code == 409:
         return (

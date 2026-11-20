@@ -29,12 +29,12 @@ def study_select(
     request: Request,
     id: int,
     action: str,
-    list_studies: Annotated[str, Form()] = None,
+    list_studies: Annotated[str | None, Form()] = None,
     session: Session = Depends(get_db),
 ):
     # data = {}
-    user, present_in_db = user_details(request, session)
-    selected = True if action.upper() == "SELECT" else False
+    user, _present_in_db = user_details(request, session)
+    selected = action.upper() == "SELECT"
     parts = list_studies.split(",") if list_studies else []
     parts = [x.strip() for x in parts]
     parts.append(str(id)) if selected else parts.remove(str(id))
@@ -51,7 +51,7 @@ def study_select(
 @router.post("/delete", dependencies=[Depends(protect_endpoint)])
 def study_delete(
     request: Request,
-    delete_studies: Annotated[str, Form()] = None,
+    delete_studies: Annotated[str | None, Form()] = None,
     session: Session = Depends(get_db),
 ):
     # user, present_in_db = user_details(request, session)
@@ -70,9 +70,11 @@ def study_delete(
 
 @router.get("/list", dependencies=[Depends(protect_endpoint)])
 def study_list(
-    request: Request, list_studies: str = None, session: Session = Depends(get_db)
+    request: Request,
+    list_studies: str | None = None,
+    session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     parts = list_studies.split(",") if list_studies else []
     data = {
         "m11_title_page": [],
@@ -206,8 +208,8 @@ def _section_toc(section_docs: list) -> list[dict]:
 @router.get("/section", dependencies=[Depends(protect_endpoint)])
 def study_section(
     request: Request,
-    list_studies: str = None,
-    section: str = None,
+    list_studies: str | None = None,
+    section: str | None = None,
     session: Session = Depends(get_db),
 ):
     """Render a single M11 section across the selected studies, one
@@ -220,7 +222,7 @@ def study_section(
     section's HTML; studies that lack the section (or aren't M11) show a
     "Not in protocol" placeholder so columns stay aligned.
     """
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     parts = [x.strip() for x in list_studies.split(",")] if list_studies else []
     columns = []
     for id in parts:
@@ -269,14 +271,14 @@ def _m11_validation_for_study(usdm: USDMJson) -> dict[str, list[dict]]:
     try:
         files = DataFiles(usdm.uuid)
         full_path, _filename, exists = files.generic_path("m11_validation")
-    except Exception:
+    except Exception:  # noqa: BLE001
         return {}
     if not exists:
         return {}
     try:
         with open(full_path, "r") as fh:
             findings = json.load(fh) or []
-    except Exception:
+    except Exception:  # noqa: BLE001
         # Degrade to empty — the compare view is not the right place to
         # surface an unexpected read/parse failure.  The persisted file
         # is already projected to the canonical row shape at import

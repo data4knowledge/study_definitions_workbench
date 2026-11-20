@@ -18,7 +18,7 @@ PARTIALS_PATH = os.path.join(templates_path, "help", "partials")
 
 @router.get("/about", dependencies=[Depends(protect_endpoint)])
 def about(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     rn = ReleaseNotes(PARTIALS_PATH)
     data = {
         "release_notes": rn.notes(),
@@ -33,7 +33,7 @@ def about(request: Request, session: Session = Depends(get_db)):
 
 @router.get("/examples", dependencies=[Depends(protect_endpoint)])
 def examples(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     ex = MarkdownPage("examples.md", PARTIALS_PATH)
     data = {"examples": ex.read()}
     return templates.TemplateResponse(
@@ -43,7 +43,7 @@ def examples(request: Request, session: Session = Depends(get_db)):
 
 @router.get("/feedback", dependencies=[Depends(protect_endpoint)])
 def feedback(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     fb = MarkdownPage("feedback.md", PARTIALS_PATH)
     data = {"feedback": fb.read()}
     return templates.TemplateResponse(
@@ -53,7 +53,7 @@ def feedback(request: Request, session: Session = Depends(get_db)):
 
 @router.get("/userGuide", dependencies=[Depends(protect_endpoint)])
 def logged_in_ug(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     ug = MarkdownPage("user_guide.md", PARTIALS_PATH)
     data = {"user_guide": ug.read()}
     return templates.TemplateResponse(
@@ -72,7 +72,7 @@ def splash_ug(request: Request):
 
 @router.get("/privacyPolicy", dependencies=[Depends(protect_endpoint)])
 def logged_in_pp(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     pp = MarkdownPage("privacy_policy.md", PARTIALS_PATH)
     data = {"privacy_policy": pp.read()}
     return templates.TemplateResponse(
@@ -91,7 +91,7 @@ def splash_pp(request: Request):
 
 @router.get("/prism", dependencies=[Depends(protect_endpoint)])
 def prism(request: Request, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     pr = MarkdownPage("prism.md", PARTIALS_PATH)
     data = {"prism": pr.read()}
     return templates.TemplateResponse(

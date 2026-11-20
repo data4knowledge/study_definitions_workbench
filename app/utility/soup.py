@@ -14,6 +14,6 @@ def get_soup(text: str):
                     f"Warning raised within Soup package, processing '{text}'\nMessage returned '{item.message}'"
                 )
         return result
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         application_logger.exception(f"Parsing '{text}' with soup", e)
         return ""

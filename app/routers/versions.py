@@ -1,4 +1,6 @@
+import asyncio
 import json
+from pathlib import Path
 
 import yaml
 from d4k_ms_base.logger import application_logger
@@ -36,7 +38,7 @@ router = APIRouter(
 async def get_version_summary(
     request: Request, id: int, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     data = {
         "version": usdm.study_version(),
@@ -59,7 +61,7 @@ async def get_version_summary(
 def import_yaml(
     request: Request, id: str, load_type: str, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     data = application_configuration.file_picker
     data["dir"] = LocalFiles().root if data["os"] else ""
     data["required_ext"] = "yaml"
@@ -79,7 +81,7 @@ async def import_yaml_process(
     source: str = "browser",
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    _user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     form_handler = FormHandler(
         request,
@@ -125,7 +127,7 @@ async def backbone_load(request: Request, id: int, session: Session = Depends(ge
     back to the summary page. Requires the Transmit role and a
     configured BACKBONE_URL.
     """
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if not transmit_role_enabled(request):
         return templates.TemplateResponse(
             request,
@@ -156,7 +158,7 @@ async def backbone_load(request: Request, id: int, session: Session = Depends(ge
 async def get_version_history(
     request: Request, id: int, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     data = {
         "version": usdm.study_version(),
@@ -189,7 +191,7 @@ async def get_version_validation(
     render the same template with ``available=False`` so the user sees
     an explanatory empty state rather than a 404.
     """
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     is_m11 = getattr(usdm, "m11", False)
     df = DataFiles(usdm.uuid)
@@ -203,10 +205,10 @@ async def get_version_validation(
         full_path, _filename, exists = df.generic_path("m11_validation")
         if exists:
             try:
-                with open(full_path, "r") as fh:
-                    findings = json.load(fh) or []
+                text = await asyncio.to_thread(Path(full_path).read_text)
+                findings = json.loads(text) or []
                 available = True
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 application_logger.exception(
                     f"Failed to read m11_validation file '{full_path}'", e
                 )
@@ -219,7 +221,7 @@ async def get_version_validation(
             annotated_html = annotated.html
             unplaced = annotated.unplaced
             placed_count = annotated.placed_count
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Failed to render annotated protocol", e)
             messages.append("Failed to render the annotated protocol view.")
     data = {
@@ -250,7 +252,7 @@ async def get_version_history_data(
     filter: str = "",
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     version = Version.find(id, session)
     data = Version.page(page, size, filter, version.study_id, session)
     for item in data["items"]:
@@ -265,7 +267,7 @@ async def get_version_history_data(
 
 @router.get("/{id}/export/excel")
 async def export_excel(request: Request, id: int, session: Session = Depends(get_db)):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm_db = USDMDatabase(id, session)
     full_path, filename, media_type = usdm_db.excel()
     if full_path:
@@ -285,7 +287,7 @@ async def export_excel(request: Request, id: int, session: Session = Depends(get
 async def protocol(
     request: Request, id: int, template: str, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(id, session)
     full_path, _, _ = usdm.json()
     if full_path:
@@ -313,7 +315,7 @@ async def protocol(
 async def export_protocol(
     request: Request, id: int, template: str, session: Session = Depends(get_db)
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     application_logger.info("PROTOCOL EXPORT")
     usdm = USDMJson(id, session)
     full_path, _, _ = usdm.json()

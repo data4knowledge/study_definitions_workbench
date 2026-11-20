@@ -56,7 +56,7 @@ class ImportProcessorBase:
         import with a fatal error, rather than leaving nothing logged."""
         try:
             return call()
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(f"Exception raised by the {label} importer", e)
             self.success = False
             self.fatal_error = f"{label} import failed, check the error file"
@@ -82,7 +82,7 @@ class ImportProcessorBase:
                 "nct_identifier": nct.text if nct else "",
                 "sponsor": version.sponsor_label_name(),
             }
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(
                 "Exception raised extracting study parameters", e
             )
@@ -181,7 +181,7 @@ class ImportM11(ImportProcessorBase):
             results = M11Validator(self.full_path, validator_errors).validate()
             self.m11_validation = project_m11_result(results)
             DataFiles(self.uuid).save("m11_validation", json.dumps(self.m11_validation))
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(
                 "Exception raised during M11 validation step", e
             )
@@ -264,7 +264,7 @@ class ImportUSDM4(ImportProcessorBase):
 
     async def process(self) -> bool:
         data_files = DataFiles(self.uuid)
-        full_path, filename, exists = data_files.path("usdm")
+        full_path, _filename, _exists = data_files.path("usdm")
         self.usdm = data_files.read("usdm")
         usdm4 = _usdm4()
         results: RulesValidationResults = usdm4.validate(full_path)

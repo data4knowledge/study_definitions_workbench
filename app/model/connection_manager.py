@@ -1,3 +1,5 @@
+import contextlib
+
 from d4k_ms_base.logger import application_logger
 from fastapi import WebSocket
 
@@ -10,10 +12,10 @@ class ConnectionManager:
         await websocket.accept()
         existing = self.active_connections.get(user_id)
         if existing is not None and existing is not websocket:
-            try:
+            # The old socket may already be dead; replacing it is all
+            # that matters here.
+            with contextlib.suppress(Exception):
                 await existing.close()
-            except Exception:
-                pass
         self.active_connections[user_id] = websocket
 
     def disconnect(self, user_id: str, websocket: WebSocket = None):
@@ -43,7 +45,7 @@ class ConnectionManager:
             )
 
     async def broadcast(self, message: str):
-        for user, connection in self.active_connections.items():
+        for user in self.active_connections:
             await self.warning(message, user)
 
     def _get_connection(self, user_id: str) -> WebSocket:

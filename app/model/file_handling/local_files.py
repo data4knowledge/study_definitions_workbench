@@ -21,7 +21,7 @@ class LocalFiles:
             return True
         except FileExistsError:
             application_logger.info("Localfiles dir exists")
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(
                 f"Exception checking/creating localfiles dir '{application_configuration.local_file_path}'",
                 e,
@@ -49,8 +49,13 @@ class LocalFiles:
                     }
                 )
             for item in os.scandir(path):
-                ts = datetime.datetime.fromtimestamp(item.stat().st_atime).isoformat(
-                    sep=" ", timespec="seconds"
+                # Local time, shown without an offset.
+                ts = (
+                    datetime.datetime.fromtimestamp(
+                        item.stat().st_atime, tz=datetime.UTC
+                    )
+                    .astimezone()
+                    .strftime("%Y-%m-%d %H:%M:%S")
                 )
                 size = self._size_to_string(item.stat().st_size)
                 if os.path.isfile(item.path):
@@ -82,7 +87,7 @@ class LocalFiles:
                 files, key=lambda d: d["name"]
             )
             return True, {"files": results, "dir": rel_dir}, ""
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(
                 f"Exception listing local files dir '{path}'", e
             )
@@ -97,7 +102,7 @@ class LocalFiles:
         if bytes == 0:
             return "0B"
         size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-        i = int(math.floor(math.log(bytes, 1024)))
+        i = math.floor(math.log(bytes, 1024))
         power = math.pow(1024, i)
         size = round(bytes / power, 2)
         return f"{size} {size_name[i]}"

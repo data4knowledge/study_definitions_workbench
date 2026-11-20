@@ -93,7 +93,7 @@ class Configuration:
             "os": picker.upper() == "OS",
             "pfda": picker.upper() == "PFDA",
         }
-        result["source"] = [k for k, v in result.items() if v][0]
+        result["source"] = next(k for k, v in result.items() if v)
         return result
 
 

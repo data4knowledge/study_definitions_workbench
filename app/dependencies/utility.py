@@ -12,10 +12,10 @@ def user_details(request: Request, db):
 def admin_role_enabled(request: Request):
     user_info = request.session["userinfo"]
     role = next((x for x in user_info["roles"] if x["name"] == "Admin"), None)
-    return True if role else False
+    return bool(role)
 
 
 def transmit_role_enabled(request: Request):
     user_info = request.session["userinfo"]
     role = next((x for x in user_info["roles"] if x["name"] == "Transmit"), None)
-    return True if role else False
+    return bool(role)

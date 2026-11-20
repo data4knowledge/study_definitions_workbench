@@ -79,7 +79,7 @@ def send_code_email(email: str, code: str) -> bool:
             server.sendmail(cfg.smtp_from, [email], msg.as_string())
         application_logger.info(f"Login code emailed to {email}")
         return True
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         application_logger.exception(f"Failed to send login code to {email}", e)
         return False
 
@@ -115,7 +115,7 @@ def send_registration_notification(new_email: str, name: str) -> bool:
             server.sendmail(cfg.smtp_from, [notify], msg.as_string())
         application_logger.info(f"Registration notification sent to {notify}")
         return True
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         application_logger.exception(
             f"Failed to send registration notification to {notify}", e
         )

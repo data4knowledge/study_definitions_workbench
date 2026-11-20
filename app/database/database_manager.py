@@ -47,7 +47,7 @@ class DatabaseManager:
             application_logger.info("Database dir exists")
             database_tables.Base.metadata.create_all(bind=engine)
             return False
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception(
                 f"Exception checking/creating database dir '{dir}'", e
             )

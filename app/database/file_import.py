@@ -116,7 +116,7 @@ class FileImport(FileImportBase):
             session.delete(record)
             session.commit()
             return 1
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             application_logger.exception("Failed to delete file import record", e)
             return 0
 

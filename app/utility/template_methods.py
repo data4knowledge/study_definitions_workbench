@@ -44,7 +44,7 @@ def restructure_study_list(data: list[dict]) -> dict:
     for entry in data:
         if not entry:
             continue
-        for k in entry.keys():
+        for k in entry:
             if k not in keys:
                 keys.append(k)
     return {k: tuple((d.get(k) if d else None) for d in data) for k in keys}

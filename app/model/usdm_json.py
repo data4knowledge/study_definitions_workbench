@@ -45,15 +45,10 @@ class USDMJson:
         file_import = FileImport.find(version.import_id, session)
         self.uuid = file_import.uuid
         self.type = file_import.type
-        self.m11 = (
-            True
-            if self.type
-            in [
-                ImportManager.M11_DOCX,
-                ImportManager.FHIR_PRISM3_JSON,
-            ]
-            else False
-        )
+        self.m11 = self.type in [
+            ImportManager.M11_DOCX,
+            ImportManager.FHIR_PRISM3_JSON,
+        ]
         self._files = DataFiles(file_import.uuid)
         self._data = self._get_usdm()
         # Raises USDMLoadException (rendered by the app-level handler)
@@ -84,7 +79,7 @@ class USDMJson:
         return fhir.to_message()
 
     def json(self):
-        fullpath, filename, exists = self._files.path("usdm")
+        fullpath, filename, _exists = self._files.path("usdm")
         return fullpath, filename, "application/json"
 
     # def pdf(self):
@@ -122,7 +117,7 @@ class USDMJson:
         errors = Errors()
         try:
             full_path, _filename, exists = self._files.path("errors")
-        except Exception:
+        except Exception:  # noqa: BLE001
             return errors
         if not exists:
             return errors
@@ -144,7 +139,7 @@ class USDMJson:
                         level=level,
                         extra=extra,
                     )
-        except Exception:
+        except Exception:  # noqa: BLE001, S110
             # The CSV may be malformed for older imports or future
             # format changes. Swallow and return whatever we managed
             # to parse — callers default to empty on full failure.
@@ -579,17 +574,17 @@ class USDMJson:
                 top_level = self._get_level(section)
                 while process:
                     # print(f"SECTION: {section}")
-                    heading, level = self._format_heading(section)
+                    heading, _level = self._format_heading(section)
                     text.append(heading)
                     text.append(self._section_item(section))
                     section = self._find_narrative_content(document, section["nextId"])
-                    process = True if self._get_level(section) > top_level else False
+                    process = self._get_level(section) > top_level
         return ("").join(text) if section else default
 
     def _get_number(self, narrative_content: dict):
         try:
             return int(narrative_content["sectionNumber"])
-        except Exception:
+        except Exception:  # noqa: BLE001
             return 0
 
     def _get_level(self, narrative_content: dict):
@@ -750,7 +745,7 @@ class USDMJson:
                 ),
                 None,
             )
-        except Exception:
+        except Exception:  # noqa: BLE001
             return None
 
     # def _get_soup(self, text: str):
@@ -775,7 +770,7 @@ class USDMJson:
                 result["min"] = min(result["min"], cohort["min"])  # pragma: no cover
                 result["max"] = max(result["max"], cohort["max"])  # pragma: no cover
             return result
-        except Exception:
+        except Exception:  # noqa: BLE001
             return self._missing_ages()
 
     def _min_max(self, item) -> dict:
@@ -801,7 +796,7 @@ class USDMJson:
             complete = self._range_or_quantity(population, "plannedCompletionNumber")
             # print(f"ENORLL: {enroll}, {complete}")
             return {"enroll": int(enroll), "complete": int(complete)}
-        except Exception:
+        except Exception:  # noqa: BLE001
             return {"enroll": "[Enrolled]", "complete": "[Complete]"}
 
     def _range_or_quantity(seæf, data: dict, attribute_name: dict) -> dict:
@@ -814,16 +809,16 @@ class USDMJson:
         return "0"
 
     def _get_usdm(self):
-        fullpath, filename, exists = self._files.path("usdm")
-        data = open(fullpath)
-        return json.load(data)
+        fullpath, _filename, _exists = self._files.path("usdm")
+        with open(fullpath) as f:
+            return json.load(f)
 
     def _get_raw(self):
-        fullpath, filename, exists = self._files.path("usdm")
-        f = open(fullpath)
-        return f.read()
+        fullpath, _filename, _exists = self._files.path("usdm")
+        with open(fullpath) as f:
+            return f.read()
 
     def _get_extra(self):
-        fullpath, filename, exists = self._files.path("extra")
-        data = open(fullpath)
-        return yaml.load(data, Loader=yaml.FullLoader)
+        fullpath, _filename, _exists = self._files.path("extra")
+        with open(fullpath) as f:
+            return yaml.load(f, Loader=yaml.FullLoader)

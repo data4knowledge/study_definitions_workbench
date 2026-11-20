@@ -25,7 +25,8 @@ class FHIRService(Service):
     def post(self, url, data="", timeout=None):
         return super().post(url, data, timeout)
 
-    async def put(self, url, data={}, timeout=None):
+    async def put(self, url, data=None, timeout=None):
+        data = {} if data is None else data
         try:
             headers = {"Content-Type": "application/json"}
             timeout = timeout if timeout else self.DEFAULT_TIMEOUT

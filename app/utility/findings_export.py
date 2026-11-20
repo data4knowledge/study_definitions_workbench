@@ -35,7 +35,7 @@ from __future__ import annotations
 import csv
 import io
 import json
-from datetime import date
+from datetime import datetime
 
 # The canonical field set — mirrors the column set rendered in the
 # shared ``validate/partials/results.html`` table so the download
@@ -120,7 +120,12 @@ def default_filename(
     call sites that don't care still produce a reasonable name.
     """
     base = (source_filename or "protocol").rsplit(".", 1)[0]
-    return f"{base}-{kind}-{date.today().isoformat()}.{extension}"
+    return f"{base}-{kind}-{_today()}.{extension}"
+
+
+def _today() -> str:
+    """Today's local date as ``YYYY-MM-DD``."""
+    return datetime.now().astimezone().date().isoformat()
 
 
 def sanitise_filename(name: str, fallback: str) -> str:
@@ -171,7 +176,7 @@ def to_markdown(
     lines.append(f"# {title}")
     lines.append("")
     lines.append(f"**Source:** {source_filename or '(unknown)'}")
-    lines.append(f"**Generated:** {date.today().isoformat()}")
+    lines.append(f"**Generated:** {_today()}")
     lines.append(f"**Findings:** {len(findings or [])}")
     lines.append("")
     if not findings:
@@ -233,7 +238,7 @@ def to_xlsx(
     meta["A2"] = source_filename or ""
     meta["A3"] = "Generated"
     meta["A3"].font = Font(bold=True)
-    meta["A4"] = date.today().isoformat()
+    meta["A4"] = _today()
     meta.column_dimensions["A"].width = 40
 
     buffer = io.BytesIO()

@@ -30,7 +30,7 @@ async def get_study_design_timelines(
     study_design_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.schedule_of_activities(study_design_id)
     # print(f"DATA: {data}")
@@ -50,7 +50,7 @@ async def get_study_design_timeline_soa(
     timeline_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     data = usdm.soa(study_design_id, timeline_id)
     data["fhir"] = {
@@ -75,10 +75,10 @@ async def display_patient_journey(
     timeline_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     df = usdm._files
-    full_path, filename, media_type = df.path("usdm")
+    full_path, _filename, _media_type = df.path("usdm")
     if full_path:
         errors = Errors()
         pj = USDM4PJ(errors)
@@ -118,7 +118,7 @@ async def display_expansion(
     timeline_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     df = usdm._files
     usdm_full_path, _, _ = df.path("usdm")
@@ -173,7 +173,7 @@ async def get_study_design_timeline_export_fhir(
     timeline_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     full_path, filename, media_type = usdm.fhir_soa(timeline_id)
     if full_path:
@@ -202,10 +202,10 @@ async def export_expansion(
     timeline_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     df = usdm._files
-    full_path, filename, media_type = df.path("usdm")
+    full_path, filename, _media_type = df.path("usdm")
     if full_path:
         costs_full_path = None
         activities_full_path = None
@@ -246,10 +246,10 @@ async def export_patient_journey(
     timeline_id: str,
     session: Session = Depends(get_db),
 ):
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     usdm = USDMJson(version_id, session)
     df = usdm._files
-    full_path, filename, media_type = df.path("usdm")
+    full_path, filename, _media_type = df.path("usdm")
     if full_path:
         errors = Errors()
         pj = USDM4PJ(errors)
@@ -285,7 +285,7 @@ async def get_study_design_timeline_transmit_default(
     session: Session = Depends(get_db),
 ):
     """Send the SoA FHIR message to the default FHIR server (FHIR_SERVER_URL)."""
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if not transmit_role_enabled(request):
         return _transmit_error(
             request, user, "User is not authorised to transmit FHIR messages."
@@ -315,7 +315,7 @@ async def get_study_design_timeline_transmit(
     session: Session = Depends(get_db),
 ):
     """Send the SoA FHIR message to one of the current user's endpoints."""
-    user, present_in_db = user_details(request, session)
+    user, _present_in_db = user_details(request, session)
     if not transmit_role_enabled(request):
         return _transmit_error(
             request, user, "User is not authorised to transmit FHIR messages."

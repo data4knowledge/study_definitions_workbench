@@ -123,7 +123,7 @@ async def fhir_transmit(
             await connection_manager.success(message, str(user.id))
         else:
             await connection_manager.error(message, str(user.id))
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         application_logger.exception(
             f"Exception transmititng FHIR {type} message from version '{version_id}' to endpoint: {endpoint_id}",
             e,

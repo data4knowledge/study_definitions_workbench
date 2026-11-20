@@ -1,0 +1,14 @@
+# FastAPI declares dependencies and request parameters as call
+# defaults (``session: Session = Depends(get_db)``); that is the
+# framework's intended pattern, not a mutable-default bug.
+[lint.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.Form",
+    "fastapi.File",
+    "fastapi.Query",
+    "fastapi.Path",
+    "fastapi.Body",
+    "fastapi.Header",
+    "fastapi.Cookie",
+]
