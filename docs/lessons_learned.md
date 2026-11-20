@@ -502,6 +502,15 @@ The only path that still surfaces a fatal error is an `ImportUSDM3`
 v3 → v4 conversion crash. Without a v4 file there's nothing to save —
 we keep the v3 rule findings as the diagnostic the user can act on.
 
+The one other refusal (issue 79): a file that does not load into the
+usdm4 model at all. Every study page builds `USDMJson`, which needs the
+model, so such a file could never be viewed — landing it only moved the
+failure to a crash on the summary page. `ImportUSDM4` now loads the
+file with `app/model/usdm_load.load_usdm4` after the rules run, and
+fails the import with the field-level reason. `USDM4.loadd` returns
+`None` on a validation error rather than raising, so always load
+through `load_usdm4`, which raises `USDMLoadException`.
+
 The findings remain visible to the user via the existing errors-file
 download and the study view. Don't reinstate the gate without first
 finding a way to surface findings as a soft warning that lets the

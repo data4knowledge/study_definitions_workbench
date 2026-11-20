@@ -1,60 +1,35 @@
 # SDW project memory
 
-## 2026-07-17 — .test_env was missing; recreated
+## 2026-11-20 — Issue 79: a file that does not load into usdm4 is refused, not crashed on; repo ruff-clean
 
-Dave's pytest run failed at collection: `Configuration()` crashed on `SINGLE_USER` being unset. Root cause: `.test_env` (gitignored) did not exist in the working copy, so both conftest's `load_dotenv` and ServiceEnvironment's `.{env}_env` load were silent no-ops. `.development_env` / `.playwright_env` are also absent — if the dev server or Playwright runs fail the same way, those need recreating too. Recreated `.test_env` with self-contained paths under `tests/test_area/` (all keep paths inside MNT_PATH — the layout the `clean_and_tidy` guard requires; also keeps the test SQLite fully separate from the dev DB, which sidesteps the known test/server DB-corruption trap). Added `tests/test_area/` to .gitignore.
+Branch `79-invalid-uuid`. Only this repo changed.
 
-## 2026-07-17 — Backbone load interface added
+**What it was.** A USDM v4 JSON whose `study.id` was a 16-character hex string, not a UUID, imported as "Success". Opening its summary page then raised. `USDM4.loadd` catches the pydantic validation error and returns `None`. `USDMJson.__init__` kept that `None` as the wrapper, so `study_version()` failed on `self._wrapper.study`. `ImportUSDM4` ran the rules library but never loaded the file into the model, so nothing stopped it at import.
 
-SDW can now push a study version's USDM v4 JSON into the d4k backbone. Decisions (Dave): config via `BACKBONE_URL` env var (not the Endpoint table); optional `BACKBONE_API_KEY` sent as `X-API-Key` header when set (backbone doesn't enforce auth yet — header choice is SDW's convention, match it backbone-side when auth lands); action lives in the Transmit dropdown on the version summary page, gated by the Transmit role (server-side too, unlike the FHIR transmit route which only gates in the UI).
+**What changed.**
+- `app/model/usdm_load.py` (new) — `load_usdm4(usdm4, data)` raises `USDMLoadException` when `loadd` returns `None`. `validation_problems` re-validates to list one `field.path: reason` line per error, since `loadd` keeps them only as text with a traceback.
+- `app/model/exceptions.py` — `USDMLoadException(problems)`.
+- `app/model/usdm_json.py` — `__init__` loads through `load_usdm4`.
+- `app/main.py` — handler for `USDMLoadException` renders `errors/error.html` with "The stored file for this version failed USDM v4 validation: …". One handler covers all ~40 `USDMJson(...)` call sites.
+- `app/imports/import_processors.py` — `ImportUSDM4.process` loads the file after the rules run. On failure the import fails with "the file is not valid USDM v4: …", and the rule findings still go to the errors file. Docstring updated.
+- Tests: `tests/model/test_usdm_load.py` (new), `USDMLoadException` in `tests/model/test_exceptions.py`, `test_process_model_load_failure_fails_import` in `tests/imports/test_import_processors.py`.
+- Ruff: the venv's ruff 0.16.3 has a wider default rule set, and the repo had no config, so `ruff check` reported 328 errors. New `ruff.toml` tells B008 that `fastapi.Depends`, `Form`, `File`, `Query`, `Path`, `Body`, `Header` and `Cookie` are immutable calls (93 hits). 134 unused unpacked variables got a `_` prefix. The 47 catch-all `except Exception` got `# noqa: BLE001`. The rest were fixed in code:
+  - mutable `{}` defaults became `None` with the old value restored inside
+  - implicit `Optional` became `X | None`
+  - `True if x else False` became `bool(x)`
+  - `open()` now uses `with`
+  - `subprocess.run(..., check=False)`
+  - `ClassVar` on `HunkLine.TYPE_TO_STYLE`
+  - the findings-export date comes from `_today()` (local date)
+  - the local-files timestamp is local time in the same format
+  - backbone transmit and the M11 findings read go through `asyncio.to_thread`
+  - `scripts/site_populate_http.py` made executable
+  - a bare `mock_usdm4.call_count == 2` in the import tests became an assert
+- `ruff format` also reflowed `app/utility/service.py`, `tests/mocks/factory_mocks.py`, `tests/model/test_usdm_json.py` and `tests/test_main.py`, formatting only.
 
-Files: `app/utility/backbone_transmit.py` (new, mirrors `fhir_transmit.py` — thread + Transmission audit + WebSocket notify, httpx multipart POST to `{BACKBONE_URL}/v1/studies`), `app/routers/versions.py` (route `GET /versions/{id}/backbone/load` + `backbone` key in summary data), `app/templates/shared/partials/transmit_menu.html` (menu item), `app/configuration/configuration.py` (`backbone_url`). Tests: `tests/utility/test_backbone_transmit.py`, additions to `tests/routers/test_versions.py`.
+**Figures.** Dave's first run: 734 passed, 6 failed. All 6 were golden files: the Excel pilot and the four M11 files, because local usdm4_excel and usdm4_protocol now report 0.12.0 and their generated ids changed. Dave regenerated the goldens, and his final run passed.
 
-State: py_compile + Jinja-parse verified only — Cowork sandbox can't run the suite (repo .venv is macOS). Dave to run `python -m pytest tests/utility/test_backbone_transmit.py tests/routers/test_versions.py` (server stopped — SQLite corruption trap). Not yet exercised against a live backbone.
-
-## 2026-08-10 — USDM v3 support removed; Excel via usdm4_excel
-
-Branch 71-package-updates. Dave's decisions: drop v3 entirely (import, validation, Excel export). Removed all use of the frozen `usdm` (usdm_db/usdm_excel/usdm_info/usdm_model), `usdm3` and `usdm3_excel` packages. Excel import and export now both go through `usdm4_excel` (`USDM4Excel.from_excel` / `to_excel(..., format="legacy")`). Model version string now from `usdm4.__info__`. `DataStore` (usdm_explore) and `Wrapper` (usdm_json) now from usdm4. Deleted: /import/usdm3 + /validate/usdm3 routes, ImportUSDM3 processor, v3 menu items, tests/test_files/usdm3/. Kept: `ImportManager.USDM3_JSON` constant + `is_usdm3_json_import` — display-only so historical v3 imports still render (source pill, errors file); constructing ImportManager with it now raises KeyError (pinned by test).
-
-Golden files regenerated against usdm4 0.29.0 / usdm4_excel 0.10.0 / usdm4_protocol 0.10.0: tests/test_files/excel/pilot_usdm.json (now v4-shaped) and all four M11 goldens + errors yamls (new output includes administrableProducts, CT 2026-03-27, renumbered ids) — Dave should sanity-check the M11 diffs are expected new behaviour, not blessed bugs. Note: RadVax golden is tracked lowercase (radvax_usdm.json) but the test reads RadVax_usdm.json — works on macOS, breaks on case-sensitive filesystems.
-
-Verified: full suite (minus playwright) 677 passed, 0 failed, on Linux/py3.12 with the three local editable packages. Playwright tests updated (v3 flows removed; test_excel_v3_export deleted as duplicate of the v4 export test; menus test now pins v3 absence) — Dave ran them, remaining suite green. Old `usdm` 0.67.0 still installed in the repo .venv — nothing depends on it any more; `pip uninstall usdm`.
-
-## 2026-08-10 — Multi-design support in views
-
-Approved plan, three items. (1) Version-level Summary/Statistics/Safety pages: tab markup was broken for N>1 designs (every tab/pane marked active, anchors not wired as Bootstrap toggles, and a malformed `class="nav nav-tabs role="tablist"` attribute); now proper tabs, first active only, panes swap with hx-swap="innerHTML" so the tab-pane wrapper survives the HTMX load. (2) Design-level partials (study_designs/summary|statistics|safety.html, partials/timelines.html): element ids were built from `data['uuid']` (never passed — rendered empty) or `data['id']` (version id — same across designs); all now scoped by study_design_id, including timelines' inner Data/Document tab set. (3) Compare view (studies.py): inclusion/exclusion no longer from studyDesigns[0]; now a list of {design, criteria} groups per study, criteria.html prints the design label only when a study has >1 design.
-
-Audit found everything else already multi-design (timeline/SoA routes take study_design_id; USDMJson methods take design id; study_version() builds all designs and joins phases) or design-agnostic (protocol/document views, exports, transmit, validation, diff, history). Out of scope by agreement: exposing usdm4_excel's multi-format export in the export menu; usdm4_protocol document-view audit.
-
-Tests added (not run — Dave runs): test_version_summary_multiple_designs (tabs/aria/innerHTML assertions) in tests/routers/test_versions.py; test_study_list_multi_design_criteria in tests/routers/test_studies.py. Existing: test_multiple_phases already covers two-design study_version(). Suggested run: tests/routers/test_versions.py, tests/routers/test_studies.py, tests/model/test_usdm_json.py, then a browse of /versions/{id}/summary|statistics|safety with the multi-design pilot import.
-
-## 2026-08-10 — Phase display dedupe (usdm4 branch 55)
-
-Header showed "Phase III Trial," repeated once per design on multi-design studies. Root cause in usdm4: StudyVersion.phases() joined per-design phases without dedupe, and SDW's study_version() duplicated the same join locally. Fix (Dave-approved): usdm4 phases() now dedupes preserving first-occurrence order (dict.fromkeys) — on usdm4 branch 55 (bug fixes); SDW study_version() drops its local loop-join and calls wrapper.study.first_version().phases() — single source of truth. Import-time study_parameters phase (home cards) gets the clean value for NEW imports; existing DB rows keep their stored repeated strings (no migration, agreed). SDW separator changed ","→", " as a side effect.
-
-Tests: usdm4 test_phases updated ("," edge → "" for two empty phases) + two new (dedupe, distinct-order); SDW tests/model/test_usdm_json.py _build_usdm now mirrors the wrapper phases() on the mock. Dave runs: usdm4 tests/usdm4/api/test_study_version.py, SDW tests/model/test_usdm_json.py, tests/routers/test_versions.py.
-
-## 2026-10-06 — Issue 76: default FHIR server from env, no creds to user endpoints
-
-Branch 76-fhir-server-config. Env vars renamed: ENDPOINT_USERNAME/ENDPOINT_PASSWORD/PITTSBURGH → FHIR_SERVER_USERNAME/FHIR_SERVER_PASSWORD/FHIR_SERVER_URL, read in `Configuration` (fhir_server_*). `FHIRService(url, auth=None)` — auth only when given. `fhir_transmit.py`: endpoint_id=None = default server (`default_fhir_service()` with basic auth if username set); user endpoints via `endpoint_fhir_service()` never get creds. New routes `/versions/{id}/transmit/default` (main.py) and `.../timelines/{tl}/transmit/default` (version_timelines.py), declared before the `{endpoint_id}` routes. All four transmit routes now check Transmit role server-side; user-endpoint routes also check `Endpoint.find_for_user` (new). SoA route endpoint_id now int. Menus show "to default server" via `data['fhir']['default']`. `/database/clean` no longer seeds Aidbox. Docs: README, docs/deployment.md, CLAUDE.md. `.development_env` vars renamed.
-
-State: py_compile only — sandbox couldn't install deps (usdm4 0.30 / usdm4_excel 0.11 / raw_docx 0.16 not on PyPI; pyarrow download hung). Dave to run unit tests, check Fly secrets (staging + prod), and do the live Aidbox + HAPI check.
-
-## 2026-10-06 — .test_env had reverted to a stale copy
-
-Issue 76 test run: 98 router/main tests failed with "unable to open database file". `.test_env` (dated 2026-06-07) pointed at non-existent `tests/test_files/mount/...` with `MNT_PATH="mount"`, so clean_and_tidy refused and the DB dir was never created. Repointed to `tests/test_area/{database,data,local,core_cache}` with `MNT_PATH="tests/test_area"` (the layout from 2026-07-17). Cause of the revert unknown — `.test_env` is gitignored, so check whatever syncs/restores dotfiles.
-- 2026-10-06 follow-up: targeted issue-76 tests green on Dave's Mac. Test fixes: `test_versions.py` autouse stub for `User.endpoints_page` (mocked user id 1 isn't in a fresh test DB — older summary tests only passed against the stale DB); SoA menu tests now mock full `soa()` data (id/study_id/timeline.id). Remaining: live Aidbox (default) + HAPI (user endpoint, no creds) check from dev server; Fly secrets rename on staging/prod.
-
-## 2026-10-06 — Issue 76 merged; .development_env vars actually renamed
-
-After merge to main, `.development_env` still had ENDPOINT_USERNAME/ENDPOINT_PASSWORD/PITTSBURGH despite the entry above saying renamed — same dotfile-revert pattern as `.test_env`. Renamed in place to FHIR_SERVER_USERNAME/PASSWORD/URL (values unchanged). No old names left in the repo outside htmlcov. Still open: Fly secrets on staging/prod; live Aidbox + HAPI check.
-
-## 2026-10-14 — Issue 77: import failures keep the importer's log; AI a setting, off in the deploy build
-
-Branch `77-import-fails-without-the-log`. A failed M11 import left nothing usdm4_protocol logged: `ImportM11.process` dumped `importer.errors` only after `from_docx` returned, so an exception from it (usdm4_protocol's SoA exception, since removed in its issue 108) lost the log. And the deploy image installed the Anthropic client and every test tool.
-
-What changed: `app/imports/import_processors.py` — `_run_importer` runs the importer's `from_docx`, dumps its errors to the application log and keeps them on the import whether it returns or raises; an exception is logged and fails the import ("M11 import failed, check the error file"; CPT likewise); the M11 import takes `use_ai` from `application_configuration.use_ai` instead of always True. `app/configuration/configuration.py` — `USE_AI`, off unless true / T / yes / 1. `requirements.txt` is the deploy set: `usdm4_protocol>=0.11.0` without `[ai]`, and pytest, pytest-mock, pytest-cov, pytest-asyncio, playwright, pytest-playwright and ruff removed (playwright alone is 106 MB of the venv). New `requirements-dev.txt`: `-r requirements.txt`, `usdm4_protocol[ai]`, the test tools. README quickstart and the `USE_AI` row. Tests: a raising M11 and CPT importer, a normal import, the `USE_AI` setting and its use. Dave ran the suite: green.
-
-Checked: the deploy tree resolved from PyPI (101 packages) holds no docling, torch, anthropic or pymupdf; pandas and pyarrow come from CORE validation (`cdisc-rules-engine`). The Docker image installs from PyPI, never the local editable checkouts.
-
-Open: publish usdm4_protocol 0.11.0 to PyPI before the next image build (PyPI has 0.10.0, the floor is 0.11.0). The four M11 golden files and their errors yamls (`tests/test_files/m11/*`) show as modified since about 10:30 on 2026-10-14, outside this change — confirm they are intended before committing. Locally, `USE_AI=True` goes in `.development_env` (not edited here).
+**Rejected.**
+- Refusing every file that fails the rules at import. Lesson 16 keeps rules advisory, so only a model-load failure refuses.
+- Narrowing the catch-all excepts. Tests drive those paths with `side_effect=Exception(...)`.
+- Rewriting the 93 FastAPI signatures to `Annotated[...]`. A config entry covers it.

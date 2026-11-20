@@ -11,7 +11,7 @@ a pointer to the branch / PR.
 ## Deployment (2026-10-14)
 
 - **The image cannot build until usdm4_protocol 0.11.0 is on PyPI.** `requirements.txt` needs `usdm4_protocol>=0.11.0`; PyPI's latest is 0.10.0. Publish, then build.
-- **The four M11 golden files are modified** (`tests/test_files/m11/*/*_usdm.json`, `*_errors.yaml`, since about 10:30 on 2026-10-14), outside issue 77. Confirm the diffs are intended new behaviour before committing them.
+- **Golden files regenerated on 2026-11-20** (Excel pilot and the four M11 goldens) against the local usdm4_excel and usdm4_protocol, both now reporting 0.12.0. Their generated ids changed. The deploy `requirements.txt` floors were not checked against 0.12.0.
 - **AI in a deployed environment** needs `USE_AI=true` and `usdm4_protocol[ai]` in that build; the deploy `requirements.txt` carries neither.
 
 ## M11 validation
