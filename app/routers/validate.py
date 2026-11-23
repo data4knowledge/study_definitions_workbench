@@ -1,7 +1,8 @@
 import json
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import Response, StreamingResponse
+from fastapi.responses import PlainTextResponse, Response, StreamingResponse
 from simple_error_log import Errors as M11Errors
 from sqlalchemy.orm import Session
 from usdm4 import USDM4
@@ -212,7 +213,9 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
     main_file, _image_files, messages = await form_handler.get_files()
     findings: list[dict] = []
     summary: dict = {}
+    findings_id = None
     if main_file:
+        DataFiles.prune_validation_findings()
         files = DataFiles()
         _ = files.new()
         files.save("usdm", main_file["contents"], main_file["filename"])
@@ -257,7 +260,7 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
             download_kind = "usdm-d4k-findings"
             download_title = "USDM v4 d4k Findings"
             download_sheet = "USDM d4k Findings"
-        files.delete()
+        findings_id = _keep_findings(files, "usdm", findings)
     else:
         messages.append("Failed to process the validation file")
         download_kind = (
@@ -291,6 +294,7 @@ async def _process_usdm_engine(request: Request, user: User, source: str, engine
                 "download_kind": download_kind,
                 "download_title": download_title,
                 "download_sheet": download_sheet,
+                "findings_id": findings_id,
             },
         },
         headers={
@@ -327,7 +331,9 @@ async def _process_m11_docx(request: Request, user: User, source: str):
     main_file, _image_files, messages = await form_handler.get_files()
     findings: list[dict] = []
     summary: dict = {}
+    findings_id = None
     if main_file:
+        DataFiles.prune_validation_findings()
         files = DataFiles()
         _ = files.new()
         # Reuse the existing "docx" media type; "m11" isn't registered in
@@ -349,7 +355,7 @@ async def _process_m11_docx(request: Request, user: User, source: str):
             # surface the operational problem rather than claim
             # success.
             messages.append("Validation could not be completed (extraction failed).")
-        files.delete()
+        findings_id = _keep_findings(files, "docx", findings)
     else:
         messages.append("Failed to process the validation file")
     # HTMX retarget mirrors the USDM v4 flows: replace the whole
@@ -374,6 +380,7 @@ async def _process_m11_docx(request: Request, user: User, source: str):
                 "download_kind": "m11-findings",
                 "download_title": "M11 Validation Findings",
                 "download_sheet": "M11 Findings",
+                "findings_id": findings_id,
             },
         },
         headers={
@@ -383,12 +390,32 @@ async def _process_m11_docx(request: Request, user: User, source: str):
     )
 
 
+def _keep_findings(
+    files: DataFiles, source_type: str, findings: list[dict]
+) -> str | None:
+    """Replace the uploaded source with the findings, and return the
+    directory id the results page hands to the download routes.
+
+    The findings used to travel in a hidden form field, which broke once
+    they passed Starlette's 1 MB per-field limit (issue 80). The
+    directory is pruned after a day by
+    ``DataFiles.prune_validation_findings``. Returns ``None`` (and
+    removes the directory) if the findings could not be saved."""
+    files.remove(source_type)
+    full_path, _filename = files.save("validation_findings", json.dumps(findings))
+    if full_path is None:
+        files.delete()
+        return None
+    return files.uuid
+
+
 # --- Findings download routes ------------------------------------
 #
 # The results page has a plain HTML form with four submit buttons, each
 # targeting one of the routes below. Form fields:
-#   * ``findings`` — the findings JSON (hidden input rendered by the
-#     results template);
+#   * ``findings_id`` — the DataFiles directory id holding
+#     ``validation_findings.json``, saved by the validate flow (issue 80;
+#     the findings themselves are no longer posted back);
 #   * ``source_filename`` — the uploaded file name, used to build a
 #     deterministic download filename like
 #     ``WP45338-m11-findings-2026-04-19.csv``;
@@ -410,8 +437,36 @@ async def _process_m11_docx(request: Request, user: User, source: str):
 # d4k validation flows can share them.
 
 
+def _load_findings(findings_id: str) -> list[dict] | None:
+    """Read the findings held in DataFiles directory ``findings_id``:
+    a standalone validation's ``validation_findings`` file, else an
+    import's persisted ``m11_validation`` file (the import and study
+    validation pages share this download form). Returns ``None`` when
+    the id is not a UUID (it becomes a directory name, so nothing else
+    is accepted) or neither file exists."""
+    try:
+        uuid = str(UUID(findings_id))
+    except (ValueError, TypeError, AttributeError):
+        return None
+    files = DataFiles(uuid)
+    text = files.read("validation_findings")
+    if text is None:
+        text = files.read("m11_validation")
+    if text is None:
+        return None
+    return _parse_findings(text)
+
+
+def _findings_not_found() -> Response:
+    return PlainTextResponse(
+        "The validation findings for this download were not found. "
+        "Run the validation again to download them.",
+        status_code=404,
+    )
+
+
 def _parse_findings(findings_json: str) -> list[dict]:
-    """Parse the hidden-input findings JSON. Returns ``[]`` on empty /
+    """Parse a saved findings JSON. Returns ``[]`` on empty /
     malformed input rather than raising — the downstream formatters
     all tolerate an empty list cleanly."""
     if not findings_json:
@@ -442,14 +497,17 @@ def _download_response(
 
 @router.post("/download/csv", dependencies=[Depends(protect_endpoint)])
 async def validate_download_csv(
-    findings: str = Form(""),
+    findings_id: str = Form(""),
     source_filename: str = Form("protocol.docx"),
     kind: str = Form("m11-findings"),
 ):
     default = default_filename(source_filename, "csv", kind=kind)
     filename = sanitise_filename(default, default)
+    findings = _load_findings(findings_id)
+    if findings is None:
+        return _findings_not_found()
     return _download_response(
-        findings_to_csv(_parse_findings(findings)),
+        findings_to_csv(findings),
         filename,
         "text/csv; charset=utf-8",
     )
@@ -457,14 +515,17 @@ async def validate_download_csv(
 
 @router.post("/download/json", dependencies=[Depends(protect_endpoint)])
 async def validate_download_json(
-    findings: str = Form(""),
+    findings_id: str = Form(""),
     source_filename: str = Form("protocol.docx"),
     kind: str = Form("m11-findings"),
 ):
     default = default_filename(source_filename, "json", kind=kind)
     filename = sanitise_filename(default, default)
+    findings = _load_findings(findings_id)
+    if findings is None:
+        return _findings_not_found()
     return _download_response(
-        findings_to_json(_parse_findings(findings)),
+        findings_to_json(findings),
         filename,
         "application/json; charset=utf-8",
     )
@@ -472,15 +533,18 @@ async def validate_download_json(
 
 @router.post("/download/md", dependencies=[Depends(protect_endpoint)])
 async def validate_download_md(
-    findings: str = Form(""),
+    findings_id: str = Form(""),
     source_filename: str = Form("protocol.docx"),
     kind: str = Form("m11-findings"),
     title: str = Form("M11 Validation Findings"),
 ):
     default = default_filename(source_filename, "md", kind=kind)
     filename = sanitise_filename(default, default)
+    findings = _load_findings(findings_id)
+    if findings is None:
+        return _findings_not_found()
     return _download_response(
-        findings_to_markdown(_parse_findings(findings), source_filename, title=title),
+        findings_to_markdown(findings, source_filename, title=title),
         filename,
         "text/markdown; charset=utf-8",
     )
@@ -488,16 +552,17 @@ async def validate_download_md(
 
 @router.post("/download/xlsx", dependencies=[Depends(protect_endpoint)])
 async def validate_download_xlsx(
-    findings: str = Form(""),
+    findings_id: str = Form(""),
     source_filename: str = Form("protocol.docx"),
     kind: str = Form("m11-findings"),
     sheet_title: str = Form("M11 Findings"),
 ):
     default = default_filename(source_filename, "xlsx", kind=kind)
     filename = sanitise_filename(default, default)
-    buffer = findings_to_xlsx(
-        _parse_findings(findings), source_filename, sheet_title=sheet_title
-    )
+    findings = _load_findings(findings_id)
+    if findings is None:
+        return _findings_not_found()
+    buffer = findings_to_xlsx(findings, source_filename, sheet_title=sheet_title)
     return StreamingResponse(
         buffer,
         media_type=(

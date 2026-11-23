@@ -172,10 +172,15 @@ async def test_validate_m11_docx_post(mocker, monkeypatch):
     # Lock in the DataFiles convention: the route must use the existing
     # "docx" media_type. Inventing a new one (e.g. "m11") raises KeyError
     # from DataFiles.path — a hazard we already hit once.
-    save_type = df_instance.save.call_args.args[0]
+    save_type = df_instance.save.call_args_list[0].args[0]
     path_type = df_instance.path.call_args.args[0]
     assert save_type == "docx"
     assert path_type == "docx"
+    # Issue 80: the source is removed, the findings saved in its place,
+    # and the page carries only the directory id, not the findings.
+    df_instance.remove.assert_called_once_with("docx")
+    assert df_instance.save.call_args_list[-1].args[0] == "validation_findings"
+    df.prune_validation_findings.assert_called_once()
     # Finding row rendered in the shared findings table.
     body = response.text
     assert "M11_001" in body
@@ -267,28 +272,35 @@ _SAMPLE_FINDINGS = [
 ]
 
 
-def _form_payload(findings=None, source="protocol.docx"):
+_FINDINGS_ID = "3f2b8c1e-6d4a-4e9b-9a7c-2b1d5e8f0a64"
+
+
+def _form_payload(mocker, findings=None, source="protocol.docx", saved=True):
+    """Form data for a download, with ``DataFiles`` patched so the id
+    resolves to ``findings`` (or to nothing when ``saved`` is False)."""
     import json as _json
 
+    df = mocker.patch("app.routers.validate.DataFiles")
+    df.return_value.read.return_value = _json.dumps(findings or []) if saved else None
     # ``kind`` is the validator tag that slots into the filename —
     # defaults to ``m11-findings`` here so filename assertions
     # (``…-m11-findings-YYYY-MM-DD.ext``) still hold after the
     # route rename. The USDM CORE / Rules flows pass their own
     # ``kind`` values at their own call sites.
     return {
-        "findings": _json.dumps(findings or []),
+        "findings_id": _FINDINGS_ID,
         "source_filename": source,
         "kind": "m11-findings",
     }
 
 
 @pytest.mark.anyio
-async def test_download_csv_returns_plain_csv(monkeypatch):
+async def test_download_csv_returns_plain_csv(mocker, monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
         "/validate/download/csv",
-        data=_form_payload(_SAMPLE_FINDINGS),
+        data=_form_payload(mocker, _SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/csv")
@@ -312,12 +324,12 @@ async def test_download_csv_returns_plain_csv(monkeypatch):
 
 
 @pytest.mark.anyio
-async def test_download_json_returns_findings_array(monkeypatch):
+async def test_download_json_returns_findings_array(mocker, monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
         "/validate/download/json",
-        data=_form_payload(_SAMPLE_FINDINGS),
+        data=_form_payload(mocker, _SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("application/json")
@@ -330,12 +342,12 @@ async def test_download_json_returns_findings_array(monkeypatch):
 
 
 @pytest.mark.anyio
-async def test_download_markdown_returns_heading_and_table(monkeypatch):
+async def test_download_markdown_returns_heading_and_table(mocker, monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
         "/validate/download/md",
-        data=_form_payload(_SAMPLE_FINDINGS),
+        data=_form_payload(mocker, _SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/markdown")
@@ -346,12 +358,12 @@ async def test_download_markdown_returns_heading_and_table(monkeypatch):
 
 
 @pytest.mark.anyio
-async def test_download_xlsx_returns_workbook(monkeypatch):
+async def test_download_xlsx_returns_workbook(mocker, monkeypatch):
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
         "/validate/download/xlsx",
-        data=_form_payload(_SAMPLE_FINDINGS),
+        data=_form_payload(mocker, _SAMPLE_FINDINGS),
     )
     assert response.status_code == 200
     assert response.headers["content-type"].startswith(
@@ -376,7 +388,9 @@ async def test_download_xlsx_returns_workbook(monkeypatch):
         ("xlsx", b"PK"),
     ],
 )
-async def test_download_empty_findings_is_valid(monkeypatch, fmt, content_marker):
+async def test_download_empty_findings_is_valid(
+    mocker, monkeypatch, fmt, content_marker
+):
     """Zero findings is a normal case — every route must return a
     valid-but-empty file rather than erroring. Marker bytes vary per
     format but each proves the file is structurally sound."""
@@ -384,24 +398,92 @@ async def test_download_empty_findings_is_valid(monkeypatch, fmt, content_marker
     async_client = mock_async_client(monkeypatch)
     response = await async_client.post(
         f"/validate/download/{fmt}",
-        data=_form_payload(findings=[]),
+        data=_form_payload(mocker, findings=[]),
     )
     assert response.status_code == 200
     assert content_marker in response.content
 
 
 @pytest.mark.anyio
-async def test_download_malformed_findings_json_degrades_to_empty(monkeypatch):
-    """A malformed findings payload shouldn't 500 the route — the
-    parser should swallow the JSON error and produce an empty file."""
+async def test_download_malformed_saved_findings_degrades_to_empty(mocker, monkeypatch):
+    """A malformed findings file shouldn't 500 the route — the parser
+    swallows the JSON error and produces an empty file."""
     protect_endpoint()
     async_client = mock_async_client(monkeypatch)
+    df = mocker.patch("app.routers.validate.DataFiles")
+    df.return_value.read.return_value = "this is not json"
     response = await async_client.post(
         "/validate/download/json",
-        data={
-            "findings": "this is not json",
-            "source_filename": "protocol.docx",
-        },
+        data={"findings_id": _FINDINGS_ID, "source_filename": "protocol.docx"},
     )
     assert response.status_code == 200
     assert response.content.decode("utf-8").strip() == "[]"
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("fmt", ["csv", "json", "md", "xlsx"])
+async def test_download_missing_findings_is_404(mocker, monkeypatch, fmt):
+    """An id with no saved findings (pruned, or never saved) returns a
+    clear 404 rather than an empty file."""
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    response = await async_client.post(
+        f"/validate/download/{fmt}",
+        data=_form_payload(mocker, _SAMPLE_FINDINGS, saved=False),
+    )
+    assert response.status_code == 404
+    assert "Run the validation again" in response.text
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("bad_id", ["", "not-a-uuid", "../../database"])
+async def test_download_rejects_non_uuid_id(mocker, monkeypatch, bad_id):
+    """The id becomes a directory name, so anything but a UUID is
+    refused before DataFiles is touched."""
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    df = mocker.patch("app.routers.validate.DataFiles")
+    response = await async_client.post(
+        "/validate/download/json",
+        data={"findings_id": bad_id, "source_filename": "protocol.docx"},
+    )
+    assert response.status_code == 404
+    df.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_download_large_findings(mocker, monkeypatch):
+    """Over 1 MB of findings downloads fine — the case that failed when
+    the findings were posted back as a form field (issue 80)."""
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    big = [dict(_SAMPLE_FINDINGS[0], message="x" * 2000) for _ in range(800)]
+    response = await async_client.post(
+        "/validate/download/json",
+        data=_form_payload(mocker, big),
+    )
+    assert response.status_code == 200
+    import json as _json
+
+    assert len(_json.loads(response.content.decode("utf-8"))) == 800
+
+
+@pytest.mark.anyio
+async def test_download_falls_back_to_import_m11_validation(mocker, monkeypatch):
+    """The import and study validation pages pass the import's DataFiles
+    id; with no standalone findings file there, the persisted
+    ``m11_validation`` file is read instead."""
+    import json as _json
+
+    protect_endpoint()
+    async_client = mock_async_client(monkeypatch)
+    df = mocker.patch("app.routers.validate.DataFiles")
+    df.return_value.read.side_effect = lambda media: (
+        None if media == "validation_findings" else _json.dumps(_SAMPLE_FINDINGS)
+    )
+    response = await async_client.post(
+        "/validate/download/json",
+        data={"findings_id": _FINDINGS_ID, "source_filename": "protocol.docx"},
+    )
+    assert response.status_code == 200
+    assert _json.loads(response.content.decode("utf-8"))[0]["rule_id"] == "M11_001"

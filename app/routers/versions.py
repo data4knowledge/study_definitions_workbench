@@ -237,6 +237,9 @@ async def get_version_validation(
         "download_kind": "m11-findings",
         "download_title": "M11 Validation Findings",
         "download_sheet": "M11 Findings",
+        # The download routes read the persisted m11_validation file
+        # from this directory (issue 80).
+        "findings_id": usdm.uuid if available else None,
     }
     return templates.TemplateResponse(
         request, "study_versions/validation.html", {"user": user, "data": data}

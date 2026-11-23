@@ -183,6 +183,14 @@ keeps format code in one place; each route is a thin wrapper around
 its `to_*` function. Zero JavaScript, honest round-trip cost,
 consistent filename convention across all four formats.
 
+The form must not carry the findings themselves. Starlette caps a
+form field at 1 MB, and a large USDM result set broke every download
+(issue 80). The form posts `findings_id`, a DataFiles directory id. A
+standalone validation saves `validation_findings.json` there, and an
+import already holds `m11_validation.json`. The route reads the file.
+Anything else large that a page wants posted back follows the same
+rule: save it server-side and post the id.
+
 ## 8. Native `<details>` is a fine toggle — no JS, no framework
 
 The compare view's per-cell finding expand-collapse uses

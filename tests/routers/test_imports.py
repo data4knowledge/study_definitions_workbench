@@ -258,6 +258,9 @@ def test_import_m11_validation(mocker, monkeypatch):
     # Download form is present when findings are non-empty
     assert 'formaction="/validate/download/csv"' in body
     assert 'value="m11-findings"' in body
+    # Issue 80: the form carries the import's DataFiles id, not the findings.
+    assert 'name="findings_id"' in body
+    assert 'name="findings"' not in body
     assert mock_called(uc)
     assert mock_called(fif)
     assert mock_called(dfr)

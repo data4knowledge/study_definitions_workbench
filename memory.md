@@ -33,3 +33,28 @@ Branch `79-invalid-uuid`. Only this repo changed.
 - Refusing every file that fails the rules at import. Lesson 16 keeps rules advisory, so only a model-load failure refuses.
 - Narrowing the catch-all excepts. Tests drive those paths with `side_effect=Exception(...)`.
 - Rewriting the 93 FastAPI signatures to `Annotated[...]`. A config entry covers it.
+
+## 2026-11-20 — Issue 80: validation findings download reads saved findings by id
+
+Branch `80-validation-export-fail`. Only this repo changed.
+
+**What it was.** The validation results page put the whole findings list in one hidden form field, and each download button posted it back to `/validate/download/{fmt}`. Starlette 1.6 caps a form field at 1 MB (`max_part_size`). A USDM file with many findings went over that, and the route answered `{"detail": "Field exceeded maximum size of 1024KB."}` before any SDW code ran.
+
+**What changed.**
+- `app/model/file_handling/data_files.py`:
+  - new `validation_findings` media type
+  - `remove(type)` deletes one file and keeps the directory
+  - `prune_validation_findings(max_age_seconds=24h)` deletes directories that hold only `validation_findings.json` and are older than a day, so import directories are never matched
+- `app/routers/validate.py`:
+  - The USDM (CDISC, d4k) and M11 flows used to delete the whole directory after validating. They now prune first, then run `_keep_findings`: remove the upload, save the findings and return the directory id as `findings_id`.
+  - The download routes take `findings_id`. `_load_findings` accepts only a UUID, because the id becomes a directory name. It reads `validation_findings`, falling back to `m11_validation`. A missing file gives a 404 with "Run the validation again".
+- `app/routers/imports.py` (`/import/{id}/m11-validation`) and `app/routers/versions.py` (version Validation tab) — both include the same results partial for the `m11_validation` file saved at import. They now pass the import's DataFiles uuid as `findings_id`, only when findings exist.
+- `app/templates/validate/partials/results.html` — the form posts `findings_id`, not `findings`. It is rendered only when an id is present.
+- Tests:
+  - `tests/routers/test_validate.py`: downloads go through a patched `DataFiles`, plus a missing id (404 ×4 formats), non-UUID and `../` ids, a download over 1 MB, the `m11_validation` fallback, and the M11 flow removing the upload and saving findings
+  - `tests/model/file_handling/test_data_files.py`: prune and remove against `tmp_path`
+  - `tests/routers/test_imports.py`: the form carries `findings_id` and not `findings`
+
+**Figures.** Dave's first run: 752 passed, 1 failed, `test_import_m11_validation`. The import and version pages had lost their download form because they passed no id. After the fallback fix Dave's tests passed.
+
+**Rejected.** Raising `max_part_size` on the download routes. Every results page would still embed megabytes of findings and post them back on each download.

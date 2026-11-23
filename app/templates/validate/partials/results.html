@@ -23,7 +23,10 @@
      * ``download_kind``  — slug for the download filename suffix
                             (e.g. ``"usdm-d4k-findings"``).
      * ``download_title`` — heading used on the Markdown export.
-     * ``download_sheet`` — worksheet name on the XLSX export. #}
+     * ``download_sheet`` — worksheet name on the XLSX export.
+     * ``findings_id``    — DataFiles directory id holding the saved
+                            findings; the download form posts only this.
+                            No id, no download buttons. #}
 
 {% set findings = data['findings'] if data['findings'] is defined else [] %}
 {% set summary = data['summary'] if data['summary'] is defined else {} %}
@@ -163,12 +166,16 @@
       {% set has_paths = findings | selectattr('path') | list | length > 0 %}
       {# Plain HTML form — zero JavaScript. Each submit button uses
          ``formaction`` to target one of four server-side download
-         routes. The findings are carried along as a hidden JSON
-         blob so the server can regenerate any format on demand.
+         routes. The form carries only ``findings_id``, the DataFiles
+         directory where the validate flow saved the findings; the
+         server reads them from there to build any format (issue 80 —
+         the findings used to be posted back and broke the 1 MB form
+         field limit).
          ``target="_blank"`` keeps the results page in place when
          the download streams. #}
+      {% if data['findings_id'] %}
       <form method="post" target="_blank" class="mb-3">
-        <input type="hidden" name="findings" value='{{ findings|tojson }}'>
+        <input type="hidden" name="findings_id" value="{{ data['findings_id'] }}">
         <input type="hidden" name="source_filename" value="{{ source_filename }}">
         <input type="hidden" name="kind" value="{{ download_kind }}">
         <input type="hidden" name="title" value="{{ download_title }}">
@@ -191,6 +198,7 @@
           <i class="bi bi-file-earmark-excel me-1"></i>XLSX
         </button>
       </form>
+      {% endif %}
 
       {# Column widths are pinned with ``table-layout: fixed`` so the
          long-prose columns (Description, Message) and the long-string

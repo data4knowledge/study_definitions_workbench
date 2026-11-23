@@ -2,6 +2,7 @@ import csv
 import json
 import os
 import shutil
+import time
 from uuid import uuid4
 
 import yaml
@@ -80,6 +81,15 @@ class DataFiles:
                 "method": self._save_json_file,
                 "use_original": False,
                 "filename": "m11_validation",
+                "extension": "json",
+            },
+            # Findings from a standalone validation run (/validate/...),
+            # kept so the download routes can read them by id rather
+            # than having the page post them back (issue 80).
+            "validation_findings": {
+                "method": self._save_json_file,
+                "use_original": False,
+                "filename": "validation_findings",
                 "extension": "json",
             },
             "cpt-protocol": {
@@ -214,6 +224,50 @@ class DataFiles:
             application_logger.exception(
                 f"Exception checking/creating datafiles dir '{dir}'", e
             )
+            return False
+
+    VALIDATION_FINDINGS_FILE = "validation_findings.json"
+
+    @classmethod
+    def prune_validation_findings(cls, max_age_seconds: int = 24 * 60 * 60) -> int:
+        """Delete standalone-validation directories older than
+        ``max_age_seconds``. Such a directory holds only the findings
+        file — the uploaded source is removed once validated — so it is
+        never mistaken for an import's directory. Returns the number
+        removed."""
+        root = application_configuration.data_file_path
+        cutoff = time.time() - max_age_seconds
+        removed = 0
+        try:
+            entries = list(os.scandir(root))
+        except OSError:
+            return 0
+        for entry in entries:
+            if not entry.is_dir():
+                continue
+            try:
+                if os.listdir(entry.path) != [cls.VALIDATION_FINDINGS_FILE]:
+                    continue
+                if os.path.getmtime(entry.path) >= cutoff:
+                    continue
+                shutil.rmtree(entry.path)
+                removed += 1
+            except OSError as e:
+                application_logger.exception(
+                    f"Exception pruning validation findings dir '{entry.path}'", e
+                )
+        return removed
+
+    def remove(self, type) -> bool:
+        """Delete the one file of media ``type`` in this directory,
+        leaving the directory and its other files in place."""
+        try:
+            full_path, _filename, exists = self.path(type)
+            if exists:
+                os.remove(full_path)
+            return True
+        except (OSError, self.LogicError) as e:
+            application_logger.exception(f"Exception removing '{type}' file", e)
             return False
 
     def new(self):

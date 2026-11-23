@@ -971,3 +971,59 @@ class TestDataFiles:
         result = data_files_with_uuid._extension("test.txt")
 
         assert result == "txt"
+
+
+class TestValidationFindingsFiles:
+    """Issue 80: standalone validation keeps only its findings file,
+    and old findings directories are pruned."""
+
+    @pytest.fixture
+    def root(self, mocker, tmp_path):
+        config = mocker.patch(
+            "app.model.file_handling.data_files.application_configuration"
+        )
+        config.data_file_path = str(tmp_path)
+        return tmp_path
+
+    def _dir(self, root, name, files, age_seconds=0):
+        import os
+        import time
+
+        d = root / name
+        d.mkdir()
+        for f in files:
+            (d / f).write_text("{}")
+        stamp = time.time() - age_seconds
+        os.utime(d, (stamp, stamp))
+        return d
+
+    def test_media_type_registered(self, root):
+        assert "validation_findings" in DataFiles().media_type
+
+    def test_prune_removes_only_old_findings_dirs(self, root):
+        day = 24 * 60 * 60
+        old = self._dir(root, "old", ["validation_findings.json"], age_seconds=2 * day)
+        new = self._dir(root, "new", ["validation_findings.json"])
+        old_import = self._dir(
+            root, "import", ["usdm.json", "errors.csv"], age_seconds=2 * day
+        )
+        assert DataFiles.prune_validation_findings() == 1
+        assert not old.exists()
+        assert new.exists()
+        assert old_import.exists()
+
+    def test_prune_missing_root(self, mocker):
+        config = mocker.patch(
+            "app.model.file_handling.data_files.application_configuration"
+        )
+        config.data_file_path = "/does/not/exist"
+        assert DataFiles.prune_validation_findings() == 0
+
+    def test_remove_keeps_other_files(self, root):
+        d = self._dir(root, "abc", ["usdm.json", "validation_findings.json"])
+        assert DataFiles("abc").remove("usdm")
+        assert sorted(p.name for p in d.iterdir()) == ["validation_findings.json"]
+
+    def test_remove_missing_file_is_ok(self, root):
+        self._dir(root, "abc", [])
+        assert DataFiles("abc").remove("usdm")

@@ -229,6 +229,9 @@ async def import_m11_validation(
                 "download_sheet": "M11 Findings",
                 "import_id": id,
                 "import_filename": file_import.filename,
+                # The download routes read the persisted m11_validation
+                # file from this directory (issue 80).
+                "findings_id": file_import.uuid if findings else None,
             },
         },
     )
